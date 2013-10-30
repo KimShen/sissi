@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stream:employee name="kim" xmlns:stream="A">
+	<level>0</level>
+	<dept>
+		<name area="AREA">Production</name>
+		<sort>0</sort>
+		<support>
+			<name>SUPPORT</name>
+		</support>
+	</dept>
+	<local:area xmlns:local="B">
+		<local:name>areaA</local:name>
+		<sort>1</sort>
+	</local:area>
+	<lineManager name="N/A">0</lineManager>

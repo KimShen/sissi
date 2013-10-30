@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:util="http://www.springframework.org/schema/util" 
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="propertiesAccessor" class="com.sisi.process.auth.access.PropertiesAccessor" />
+
+	<bean id="plainUserNormalization" class="com.sisi.process.auth.normalization.PlainUserNormalization" />
+
+	<bean id="userNormalizations" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
+		<property name="targetListClass" value="java.util.ArrayList" />
+		<property name="singleton" value="true" />
+		<property name="sourceList">
+			<list>
+				<ref bean="plainUserNormalization" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="authProcessor" class="com.sisi.process.auth.AuthProcessor">
+		<constructor-arg ref="propertiesAccessor" />
+		<constructor-arg ref="userNormalizations" />
+	</bean>
+
+	<bean id="bindForker" class="com.sisi.process.iq.fork.BindForker" />
+
+	<bean id="forkers" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
+		<property name="targetListClass" value="java.util.ArrayList" />
+		<property name="singleton" value="true" />
+		<property name="sourceList">
+			<list>
+				<ref bean="bindForker" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="iqProcessor" class="com.sisi.process.iq.IQProcessor">
+		<constructor-arg ref="forkers" />
+	</bean>
+	
+	<bean id="presenceProcessor" class="com.sisi.process.presence.PresenceProcessor"/>
+	
+	<bean id="streamProcessor" class="com.sisi.process.stream.StreamProcessor"/>
+	
+	<bean id="processors" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
+		<property name="targetListClass" value="java.util.ArrayList" />
+		<property name="singleton" value="true" />
+		<property name="sourceList">
+			<list>
+				<ref bean="streamProcessor" />
+				<ref bean="iqProcessor" />
+				<ref bean="authProcessor" />
+			</list>
+		</property>
+	</bean>
+	
+</beans>
