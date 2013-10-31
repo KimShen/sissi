@@ -1,5 +1,8 @@
 package com.sisi.process.iq.fork;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.sisi.context.Context;
 import com.sisi.process.iq.Forker;
 import com.sisi.protocol.Protocol;
@@ -12,13 +15,24 @@ public class BindForker implements Forker {
 
 	private final static String FORK_NAME = "bind";
 
+	private Log log = LogFactory.getLog(this.getClass());
+
+	private String host;
+
+	public BindForker(String host) {
+		super();
+		this.host = host;
+	}
+
 	@Override
 	public Protocol process(Context context, Protocol protocol) {
-		Bind resouce = Bind.class.cast(protocol);
-		Bind bind = new Bind();
-		context.jid().setHost("www.myaccount.com");
-		context.jid().setResource(resouce.getResource().getText());
+		Bind bind = Bind.class.cast(protocol);
+		String resource = bind.getResource().getText();
+		bind.clear();
+		context.jid().setHost(this.host);
+		context.jid().setResource(resource);
 		bind.setJid(context.jid().asString());
+		this.log.debug("Bind: " + bind);
 		return bind;
 	}
 
@@ -28,7 +42,7 @@ public class BindForker implements Forker {
 	}
 
 	@Override
-	public String forkName() {
+	public String fork() {
 		return FORK_NAME;
 	}
 }

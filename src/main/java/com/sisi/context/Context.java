@@ -16,4 +16,9 @@ public interface Context {
 	public JID jid();
 
 	public void write(Protocol protocol);
+
+	public interface Writeable {
+
+		public void writeAndFlush(Protocol protocol);
+	}
 }

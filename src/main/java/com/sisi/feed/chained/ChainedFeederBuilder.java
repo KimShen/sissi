@@ -1,4 +1,4 @@
-package com.sisi.netty;
+package com.sisi.feed.chained;
 
 import java.util.List;
 
@@ -10,11 +10,11 @@ import com.sisi.process.Processor;
 /**
  * @author kim 2013-10-30
  */
-public class NettyFeederBuilder implements FeederBuilder {
+public class ChainedFeederBuilder implements FeederBuilder {
 
 	@Override
 	public Feeder builder(Context context, List<Processor> processors) {
-		return new NettyFeeder(context, processors);
+		return new ChainedFeeder(context, processors);
 	}
 
 }

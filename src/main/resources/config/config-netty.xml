@@ -2,23 +2,23 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="systemJID" class="com.sisi.netty.UID">
+	<bean id="systemJID" class="com.sisi.context.user.User">
 		<constructor-arg index="0" value="system" />
-		<constructor-arg index="1" value="www.sisi.com" />
+		<constructor-arg index="1" value="www.myaccount.com" />
 		<constructor-arg index="2">
 			<null />
 		</constructor-arg>
 	</bean>
 
-	<bean id="systemBroadcast" class="com.sisi.context.broadcast.GroupBroadcast">
+	<bean id="systemBroadcast" class="com.sisi.group.impl.GroupBroadcast">
 		<constructor-arg ref="systemJID" />
 	</bean>
 
-	<bean id="nettyFeederBuilder" class="com.sisi.netty.NettyFeederBuilder" />
-
 	<bean id="serverHandlerBuilder" class="com.sisi.netty.ServerHandlerBuilder">
+		<constructor-arg ref="reader" />
+		<constructor-arg ref="writer" />
 		<constructor-arg ref="processors" />
-		<constructor-arg ref="nettyFeederBuilder" />
+		<constructor-arg ref="chainedFeederBuilder" />
 		<constructor-arg ref="threadConnectorBuilder" />
 	</bean>
 </beans>

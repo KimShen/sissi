@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sisi.context.JID;
-import com.sisi.context.broadcast.GroupBroadcast;
+import com.sisi.group.impl.GroupBroadcast;
 
 public class Server {
 
@@ -57,7 +57,7 @@ public class Server {
 					String s = null;
 					while ((s = bfReader.readLine()) != null) {
 						System.out.println(">>");
-						this.broadcast.broadcast(s);
+						this.broadcast.broadcast(s, broadcast.jid(), null);
 					}
 					bfReader.close();
 				}

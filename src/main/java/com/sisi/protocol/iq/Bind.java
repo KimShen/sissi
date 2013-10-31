@@ -13,8 +13,6 @@ import com.sisi.protocol.core.Stream;
 @XmlRootElement(namespace = Stream.NAMESPACE)
 public class Bind extends Feature {
 
-	public static final Bind INSTANCE = new Bind();
-
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-bind";
 
 	private String jid;

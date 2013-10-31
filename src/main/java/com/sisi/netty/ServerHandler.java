@@ -12,17 +12,19 @@ import java.io.PipedOutputStream;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sisi.connector.Connector;
+import com.sisi.connector.ConnectorBuilder;
 import com.sisi.context.Context;
-import com.sisi.context.Group;
-import com.sisi.feed.Connector;
-import com.sisi.feed.ConnectorBuilder;
+import com.sisi.context.user.UserContext;
 import com.sisi.feed.FeederBuilder;
+import com.sisi.group.Group;
 import com.sisi.process.Processor;
-import com.sisi.read.sax.SAXReader;
-import com.sisi.write.jaxb.JAXBWriter;
+import com.sisi.read.Reader;
+import com.sisi.write.Writer;
 
 /**
  * @author kim 2013-10-26
@@ -33,11 +35,15 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
 	private final static AttributeKey<Context> CONTEXT = new AttributeKey<Context>("CONTEXT");
 
-	private final PipedInputStream reader = new PipedInputStream();
+	private final PipedInputStream input = new PipedInputStream();
 
-	private final PipedOutputStream writer;
+	private final PipedOutputStream output;
 
 	private final Group group;
+
+	private final Writer writer;
+
+	private final Reader reader;
 
 	private final List<Processor> processors;
 
@@ -45,30 +51,38 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
 	private final ConnectorBuilder connectorBuilder;
 
-	public ServerHandler(Group group, List<Processor> processors, FeederBuilder feederBuilder, ConnectorBuilder connectorBuilder) throws IOException {
+	public ServerHandler(Group group, Reader reader, Writer writer, List<Processor> processors, FeederBuilder feederBuilder, ConnectorBuilder connectorBuilder) throws IOException {
 		super();
-		this.writer = new PipedOutputStream(reader);
+		this.output = new PipedOutputStream(input);
 		this.group = group;
+		this.reader = reader;
+		this.writer = writer;
 		this.processors = processors;
 		this.feederBuilder = feederBuilder;
 		this.connectorBuilder = connectorBuilder;
 	}
 
 	public void channelActive(final ChannelHandlerContext ctx) {
-		ctx.attr(CONTEXT).set(new UserContext(new JAXBWriter(), ctx));
-		this.group.add(ctx.attr(CONTEXT).get());
-		SAXReader sax = new SAXReader();
+		this.createContextAndJoinGroup(ctx);
 		try {
-			Connector connector = this.connectorBuilder.builder(sax.future(reader), this.feederBuilder.builder(ctx.attr(CONTEXT).get(), this.processors));
+			Connector connector = this.connectorBuilder.builder(this.reader.future(input), this.feederBuilder.builder(ctx.attr(CONTEXT).get(), this.processors));
 			connector.start();
+			LOG.debug("Connector start ... ");
 		} catch (IOException e) {
 			LOG.error(e);
 			throw new RuntimeException(e);
 		}
 	}
 
+	private void createContextAndJoinGroup(final ChannelHandlerContext ctx) {
+		ctx.attr(CONTEXT).set(new UserContext(new NettyWriteable(this.writer, ctx)));
+		this.group.add(ctx.attr(CONTEXT).get());
+	}
+
 	public void channelInactive(ChannelHandlerContext ctx) {
 		this.group.remove(ctx.attr(CONTEXT).get());
+		IOUtils.closeQuietly(this.input);
+		IOUtils.closeQuietly(this.output);
 	}
 
 	@Override
@@ -76,14 +90,18 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 		try {
 			ByteBuf byteBuf = (ByteBuf) msg;
 			this.logIfNecessary(byteBuf);
-			byte[] data = new byte[byteBuf.readableBytes()];
-			byteBuf.readBytes(data);
-			this.writer.write(data);
+			this.output.write(this.copyToBytes(byteBuf));
 		} catch (Exception e) {
 			LOG.fatal(e);
 		} finally {
 			ReferenceCountUtil.release(msg);
 		}
+	}
+
+	private byte[] copyToBytes(ByteBuf byteBuf) {
+		byte[] data = new byte[byteBuf.readableBytes()];
+		byteBuf.readBytes(data);
+		return data;
 	}
 
 	@Override

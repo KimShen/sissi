@@ -2,11 +2,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="threadConnectorBuilder" class="com.sisi.feed.connector.ThreadConnectorBuilder">
+	<bean id="threadConnectorBuilder" class="com.sisi.connector.thread.ThreadConnectorBuilder">
 		<constructor-arg index="0" value="10" />
 		<constructor-arg index="1" value="600" />
 		<constructor-arg index="2" value="30" />
 		<constructor-arg index="3" value="2" />
+		<constructor-arg>
+			<bean class="com.sisi.connector.thread.ThreadConnector$Interval">
+				<constructor-arg value="5000"/>
+				<constructor-arg value="MILLISECONDS"/>
+			</bean>
+		</constructor-arg>
 	</bean>
+
+	<bean id="chainedFeederBuilder" class="com.sisi.feed.chained.ChainedFeederBuilder" />
 
 </beans>

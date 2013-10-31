@@ -17,5 +17,9 @@ public interface JID {
 
 	public void setResource(String resource);
 
+	public Boolean naked();
+
+	public Boolean loop();
+
 	public String asString();
 }

@@ -3,6 +3,7 @@ package com.sisi.protocol.core;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sisi.context.JID;
 import com.sisi.protocol.Protocol;
 
 /**
@@ -17,8 +18,10 @@ public class Message extends Protocol {
 		super();
 	}
 
-	public Message(String body) {
+	public Message(JID from, JID to, String body) {
 		super();
+		super.setFrom(from != null ? from.asString() : null);
+		super.setTo(to != null ? to.asString() : null);
 		this.body = body;
 	}
 

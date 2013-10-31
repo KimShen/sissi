@@ -1,4 +1,4 @@
-package com.sisi.netty;
+package com.sisi.netty.listener;
 
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;

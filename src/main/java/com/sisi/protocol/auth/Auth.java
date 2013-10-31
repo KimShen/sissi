@@ -12,8 +12,6 @@ import com.sisi.protocol.core.Stream;
 @XmlRootElement(namespace = Stream.NAMESPACE)
 public class Auth extends Feature {
 
-	public static final Auth INSTANCE = new Auth();
-
 	private final static String XMLNS = "http://jabber.org/features/iq-auth";
 
 	private String mechanism;

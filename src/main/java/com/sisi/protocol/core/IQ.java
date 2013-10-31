@@ -11,6 +11,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.sisi.protocol.Protocol;
 import com.sisi.protocol.iq.Bind;
 import com.sisi.protocol.iq.Session;
@@ -22,9 +25,11 @@ import com.sisi.read.Collector;
 @XmlRootElement(namespace = "")
 public class IQ extends Protocol implements Collector {
 
-	private final static Set<String> EMPTY_QUERY = new HashSet<String>();
+	private final static Log LOG = LogFactory.getLog(IQ.class);
 
-	private Map<String, Object> query;
+	private final static Set<String> EMPTY_CHILDREN = new HashSet<String>();
+
+	private Map<String, Object> children;
 
 	private List<Protocol> protocols;
 
@@ -42,17 +47,18 @@ public class IQ extends Protocol implements Collector {
 
 	@Override
 	public void set(String localName, Object ob) {
-		if (this.query == null) {
-			this.query = new HashMap<String, Object>();
+		if (this.children == null) {
+			this.children = new HashMap<String, Object>();
 		}
-		this.query.put(localName, ob);
+		LOG.info("Set child: " + localName);
+		this.children.put(localName, ob);
 	}
 
 	public Set<String> listChildren() {
-		return this.query != null ? this.query.keySet() : EMPTY_QUERY;
+		return this.children != null ? this.children.keySet() : EMPTY_CHILDREN;
 	}
 
 	public Object findChild(String key) {
-		return this.query == null ? null : this.query.get(key);
+		return this.children == null ? null : this.children.get(key);
 	}
 }

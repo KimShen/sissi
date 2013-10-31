@@ -7,5 +7,5 @@ import com.sisi.process.Processor;
  */
 public interface Forker extends Processor {
 
-	public String forkName();
+	public String fork();
 }

@@ -9,6 +9,9 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.sisi.context.Context;
 import com.sisi.protocol.Feature;
 import com.sisi.protocol.Protocol;
@@ -24,10 +27,12 @@ import com.sisi.write.WithOutClose;
 @XmlRootElement(namespace = Stream.NAMESPACE)
 public class Stream extends Protocol {
 
-	public static final String NAMESPACE = "http://etherx.jabber.org/streams";
+	private final static Log LOG = LogFactory.getLog(Stream.class);
+
+	public final static String NAMESPACE = "http://etherx.jabber.org/streams";
 
 	private final static String XMLNS = "jabber:client";
-	
+
 	private String version;
 
 	private List<Feature> features;
@@ -45,6 +50,7 @@ public class Stream extends Protocol {
 		if (this.features == null) {
 			this.features = new ArrayList<Feature>();
 		}
+		LOG.info("Add feature: " + feature);
 		this.features.add(feature);
 	}
 

@@ -12,10 +12,7 @@ public class MessageProcessor implements Processor {
 
 	@Override
 	public Protocol process(Context context, Protocol protocol) {
-		protocol.reply(protocol);
-		Message message = Message.class.cast(protocol);
-		message.setBody("A");
-		return message;
+		return null;
 	}
 
 	@Override

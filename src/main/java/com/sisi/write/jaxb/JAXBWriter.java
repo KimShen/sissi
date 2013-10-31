@@ -5,7 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -17,14 +19,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sisi.protocol.Protocol;
-import com.sisi.protocol.auth.Failure;
-import com.sisi.protocol.auth.Success;
-import com.sisi.protocol.core.IQ;
-import com.sisi.protocol.core.Message;
-import com.sisi.protocol.core.Stream;
-import com.sisi.protocol.core.Stream.StreamOpen;
-import com.sisi.protocol.iq.Bind;
-import com.sisi.protocol.iq.Session;
 import com.sisi.write.WithOutClose;
 import com.sisi.write.Writer;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
@@ -34,19 +28,27 @@ import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
  */
 public class JAXBWriter implements Writer {
 
+	private final static Log LOG = LogFactory.getLog(JAXBWriter.class);
+
 	private final static String MAPPING_PROPERTY = "com.sun.xml.bind.namespacePrefixMapper";
 
 	private final static JAXBContext CONTEXT;
 
 	static {
+
 		try {
-			CONTEXT = JAXBContext.newInstance(Stream.class, StreamOpen.class, Failure.class, Success.class, IQ.class, Bind.class, Session.class, Message.class);
-		} catch (JAXBException e) {
+			LineIterator classes = IOUtils.lineIterator(Thread.currentThread().getContextClassLoader().getResourceAsStream("jaxb.properties"), "UTF-8");
+			List<Class<?>> clazz = new ArrayList<Class<?>>();
+			while (classes.hasNext()) {
+				clazz.add(Class.forName(classes.next().trim()));
+			}
+			LOG.info("All classes in JAXB Context: " + clazz);
+			CONTEXT = JAXBContext.newInstance(clazz.toArray(new Class[]{}));
+		} catch (Exception e) {
+			LOG.error(e);
 			throw new RuntimeException("Can't init JAXB context", e);
 		}
 	}
-
-	private Log log = LogFactory.getLog(this.getClass());
 
 	private NamespacePrefixMapper mapper;
 
@@ -73,18 +75,18 @@ public class JAXBWriter implements Writer {
 			Marshaller marshaller = CONTEXT.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
 			marshaller.setProperty(MAPPING_PROPERTY, mapper);
-			if (this.log.isInfoEnabled()) {
+			if (LOG.isInfoEnabled()) {
 				StringWriter writer = new StringWriter();
 				marshaller.marshal(protocol, writer);
 				String content = writer.toString().replaceAll(" xmlns:stream=\"http://etherx.jabber.org/streams\"", "");
-				this.log.info("Write: " + content);
+				LOG.info("Write: " + content);
 				output.write(content.getBytes("UTF-8"));
 
 			} else {
 				marshaller.marshal(protocol, output);
 			}
 		} catch (JAXBException e) {
-			this.log.error(e);
+			LOG.error(e);
 			throw new IOException(e);
 		}
 	}
@@ -105,16 +107,16 @@ public class JAXBWriter implements Writer {
 					contents.add(eachLine);
 				}
 			}
-			this.log.debug("Line XML: " + contents);
+			LOG.debug("Line XML: " + contents);
 			contents.removeLast();
 			StringBuffer sb = new StringBuffer();
 			for (String each : contents) {
 				sb.append(each);
 			}
-			this.log.info("Write: " + sb.toString());
+			LOG.info("Write: " + sb.toString());
 			output.write(sb.toString().getBytes("UTF-8"));
 		} catch (Exception e) {
-			this.log.error(e);
+			LOG.error(e);
 			throw new IOException(e);
 		}
 	}

@@ -1,4 +1,4 @@
-package com.sisi.feed.connector;
+package com.sisi.connector.thread;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -9,8 +9,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.FactoryBean;
 
-import com.sisi.feed.Connector;
-import com.sisi.feed.ConnectorBuilder;
+import com.sisi.connector.Connector;
+import com.sisi.connector.ConnectorBuilder;
+import com.sisi.connector.thread.ThreadConnector.Interval;
+import com.sisi.connector.thread.ThreadConnector.Runner;
 import com.sisi.feed.Feeder;
 
 /**
@@ -22,15 +24,18 @@ public class ThreadConnectorBuilder implements ConnectorBuilder, FactoryBean<Thr
 
 	private Integer threadNum;
 
-	public ThreadConnectorBuilder(int corePoolSize, int maximumPoolSize, long keepAliveTime, Integer threadNum) {
+	private Interval interval;
+
+	public ThreadConnectorBuilder(int corePoolSize, int maximumPoolSize, long keepAliveTime, Integer threadNum, Interval interval) {
 		super();
 		this.threadNum = threadNum;
+		this.interval = interval;
 		this.executor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(), Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
 	}
 
 	@Override
-	public Connector builder(Future<Object> future, Feeder feeder) {
-		return new ThreadConnector(this.executor, this.threadNum, future, feeder);
+	public Connector builder(Future<?> future, Feeder feeder) {
+		return new ThreadConnector(new Runner(this.executor, this.threadNum), interval, future, feeder);
 	}
 
 	@Override
@@ -47,5 +52,4 @@ public class ThreadConnectorBuilder implements ConnectorBuilder, FactoryBean<Thr
 	public boolean isSingleton() {
 		return true;
 	}
-
 }
