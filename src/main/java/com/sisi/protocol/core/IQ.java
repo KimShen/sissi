@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.sisi.protocol.Protocol;
 import com.sisi.protocol.iq.Bind;
+import com.sisi.protocol.iq.Roster;
 import com.sisi.protocol.iq.Session;
 import com.sisi.read.Collector;
 
@@ -33,7 +34,7 @@ public class IQ extends Protocol implements Collector {
 
 	private List<Protocol> protocols;
 
-	@XmlElements({ @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class) })
+	@XmlElements({ @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "query", type = Roster.class) })
 	public List<Protocol> getProtocols() {
 		return protocols;
 	}

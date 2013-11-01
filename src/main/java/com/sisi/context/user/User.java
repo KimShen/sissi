@@ -31,7 +31,7 @@ public class User implements JID {
 		int startHost = jid.indexOf("@");
 		this.user = startHost == -1 ? null : jid.substring(0, startHost);
 		int startResource = jid.indexOf("/");
-		this.host = startResource == -1 ? jid.substring(startHost != -1 ? startHost : 0) : jid.substring(startHost, startResource - startHost);
+		this.host = startResource == -1 ? jid.substring(startHost != -1 ? startHost + 1 : 0) : jid.substring(startHost + 1, startResource - startHost);
 		this.resource = startResource == -1 ? null : jid.substring(startResource);
 		LOG.debug("JID after parse: " + this.asString());
 	}
@@ -70,6 +70,10 @@ public class User implements JID {
 	}
 
 	public String asString() {
-		return (this.user != null ? this.user + "@" : "") + this.host + (this.resource != null ? "/" + this.resource : "");
+		return this.asStringWithLoop() + (this.resource != null ? "/" + this.resource : "");
+	}
+
+	public String asStringWithLoop() {
+		return (this.user != null ? this.user + "@" : "") + this.host;
 	}
 }

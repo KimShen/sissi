@@ -15,6 +15,10 @@ abstract public class Protocol {
 		public String toString() {
 			return super.toString().toLowerCase();
 		}
+		
+		public static Type parse(String value) {
+			return Type.valueOf(value.toUpperCase());
+		}
 	}
 
 	private String id;

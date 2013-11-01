@@ -22,4 +22,6 @@ public interface JID {
 	public Boolean loop();
 
 	public String asString();
+	
+	public String asStringWithLoop();
 }

@@ -9,6 +9,6 @@ import com.sisi.protocol.Protocol;
 public interface Processor {
 
 	public Protocol process(Context context, Protocol protocol);
-	
+
 	public Boolean isSupport(Protocol protocol);
 }

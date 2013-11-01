@@ -1,0 +1,30 @@
+
+INFO - Write:
+<iq id="purplebbb2a9a4" to="kim@www.myaccount.com/kimtekiMacBook-Air" type="result" xmlns:stream="http://etherx.jabber.org/streams" />
+INFO - Set child: query
+INFO - JID: kim@www.myaccount.com/kimtekiMacBook-Air
+INFO - Forker should be process: query
+INFO - Found subProcessor class com.sisi.process.iq.fork.GetRosterForker for get
+INFO - JID: kim@www.myaccount.com/kimtekiMacBook-Air
+INFO
+- JID: kim@www.myaccount.com/kimtekiMacBook-Air
+INFO - Write:
+<presence from="vicki@myaccount.com" to="kim@www.myaccount.com/kimtekiMacBook-Air" xmlns:stream="http://etherx.jabber.org/streams" />
+INFO - JID: kim@www.myaccount.com/kimtekiMacBook-Air
+INFO - Write:
+<iq from="proxy.eu.jabber.org" id="purplebbb2a9a6" to="kim@www.myaccount.com/kimtekiMacBook-Air" type="result" xmlns:stream="http://etherx.jabber.org/streams" />
+INFO - Write:
+<iq id="purplebbb2a9a5" to="kim@www.myaccount.com/kimtekiMacBook-Air" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+	<query xmlns="jabber:iq:roster">
+		<item jid="vicki@myaccount.com" name="vicki" subscription="to">
+			<group>A</group>
+		</item>
+	</query>
+</iq>
+INFO - Read:
+<presence>
+	<c xmlns='http://jabber.org/protocol/caps' node='http://pidgin.im/' hash='sha-1' ver='VUFD6HcFmUT2NxJkBGCiKlZnS3M=' />
+	<x xmlns='vcard-temp:x:update'>
+		<photo />
+	</x>
+</presence>

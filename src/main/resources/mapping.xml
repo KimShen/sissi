@@ -24,4 +24,10 @@
 	<finder uri="jabber:client" localName="presence">
 		<clazz>com.sisi.protocol.core.Presence</clazz>
 	</finder>
+	<finder uri="jabber:iq:roster" localName="query">
+		<clazz>com.sisi.protocol.iq.Roster</clazz>
+	</finder>
+	<finder uri="jabber:iq:roster" localName="item">
+		<clazz>com.sisi.protocol.iq.Item</clazz>
+	</finder>
 </finders>

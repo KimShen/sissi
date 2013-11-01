@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import com.sisi.context.Context;
 import com.sisi.process.iq.Forker;
 import com.sisi.protocol.Protocol;
+import com.sisi.protocol.Protocol.Type;
 import com.sisi.protocol.iq.Bind;
 
 /**
@@ -44,5 +45,10 @@ public class BindForker implements Forker {
 	@Override
 	public String fork() {
 		return FORK_NAME;
+	}
+
+	@Override
+	public Type type() {
+		return Type.SET;
 	}
 }

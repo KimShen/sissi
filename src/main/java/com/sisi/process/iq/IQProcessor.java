@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import com.sisi.context.Context;
 import com.sisi.process.Processor;
 import com.sisi.protocol.Protocol;
+import com.sisi.protocol.Protocol.Type;
 import com.sisi.protocol.core.IQ;
 
 /**
@@ -17,33 +18,48 @@ import com.sisi.protocol.core.IQ;
  */
 public class IQProcessor implements Processor {
 
-	private Log log = LogFactory.getLog(this.getClass());
+	private final Log log = LogFactory.getLog(this.getClass());
 
-	private Map<String, Processor> forkers = new HashMap<String, Processor>();
+	private Map<String, Processors> forkers = new HashMap<String, Processors>();
 
 	public IQProcessor(List<Forker> forkers) {
 		for (Forker forker : forkers) {
-			this.log.debug("Add Forker " + forker.fork());
-			this.forkers.put(forker.fork(), forker);
+			this.log.debug("Add Forker " + forker.getClass() + " for " + forker.fork() + " / " + forker.type());
+			Processors processors = this.forkers.get(forker.fork());
+			if (processors == null) {
+				processors = new Processors();
+			}
+			processors.add(forker.type(), forker);
+			this.forkers.put(forker.fork(), processors);
 		}
 	}
 
 	@Override
 	public Protocol process(Context context, Protocol protocol) {
-		IQ iq = IQ.class.cast(protocol);
-		IQ response = (IQ) iq.reply(new IQ());
+		IQ request = IQ.class.cast(protocol);
+		IQ response = (IQ) request.reply(new IQ());
 		response.setType(Protocol.Type.RESULT.toString());
-		for (String forker : iq.listChildren()) {
-			this.doEachSubProcessor(context, iq, response, forker);
+		response.setTo(context.jid().asString());
+		for (String forker : request.listChildren()) {
+			this.log.info("Forker should be process: " + forker);
+			this.doEachSubProcessor(context, request, response, forker);
 		}
 		return response;
 	}
 
-	private void doEachSubProcessor(Context context, IQ iq, IQ result, String forker) {
-		Processor subProcessor = this.forkers.get(forker);
+	private void doEachSubProcessor(Context context, IQ request, IQ response, String forker) {
+		this.log.debug("All forkers: " + this.forkers);
+		Processors processors = this.forkers.get(forker);
+		if (processors == null) {
+			return;
+		}
+
+		Type type = Type.parse(request.getType());
+		Processor subProcessor = processors.find(type);
+		this.log.info("Found subProcessor " + subProcessor.getClass() + " for " + type);
 		this.log.debug("Before forker: " + forker + " / " + subProcessor);
 		if (subProcessor != null) {
-			this.addSubProtocol(context, iq, result, forker, subProcessor);
+			this.addSubProtocol(context, request, response, forker, subProcessor);
 		}
 	}
 
@@ -58,5 +74,18 @@ public class IQProcessor implements Processor {
 	@Override
 	public Boolean isSupport(Protocol protocol) {
 		return IQ.class.isAssignableFrom(protocol.getClass());
+	}
+
+	private static class Processors {
+
+		private Map<Type, Processor> forkers = new HashMap<Type, Processor>();
+
+		public void add(Type type, Processor processor) {
+			this.forkers.put(type, processor);
+		}
+
+		public Processor find(Type type) {
+			return this.forkers.get(type);
+		}
 	}
 }

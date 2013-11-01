@@ -78,7 +78,7 @@ public class JAXBWriter implements Writer {
 			if (LOG.isInfoEnabled()) {
 				StringWriter writer = new StringWriter();
 				marshaller.marshal(protocol, writer);
-				String content = writer.toString().replaceAll(" xmlns:stream=\"http://etherx.jabber.org/streams\"", "");
+				String content = writer.toString();
 				LOG.info("Write: " + content);
 				output.write(content.getBytes("UTF-8"));
 

@@ -25,12 +25,26 @@
 		<constructor-arg value="www.myaccount.com" />
 	</bean>
 
+	<bean id="memoryRelation" class="com.sisi.relation.mock.MemoryRelation">
+		<constructor-arg value="100" />
+	</bean>
+
+	<bean id="getRosterForker" class="com.sisi.process.iq.fork.GetRosterForker">
+		<constructor-arg ref="memoryRelation" />
+	</bean>
+
+	<bean id="setRosterForker" class="com.sisi.process.iq.fork.SetRosterForker">
+		<constructor-arg ref="memoryRelation" />
+	</bean>
+
 	<bean id="forkers" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
 		<property name="targetListClass" value="java.util.ArrayList" />
 		<property name="singleton" value="true" />
 		<property name="sourceList">
 			<list>
 				<ref bean="bindForker" />
+				<ref bean="setRosterForker" />
+				<ref bean="getRosterForker" />
 			</list>
 		</property>
 	</bean>
@@ -39,7 +53,7 @@
 		<constructor-arg ref="forkers" />
 	</bean>
 
-	<bean id="presenceProcessor" class="com.sisi.process.presence.PresenceProcessor"/>
+	<bean id="presenceProcessor" class="com.sisi.process.presence.PresenceProcessor" />
 
 	<bean id="streamProcessor" class="com.sisi.process.stream.StreamProcessor" />
 
