@@ -1,7 +1,5 @@
 package com.sisi.relation;
 
-import java.util.List;
-
 import com.sisi.context.JID;
 
 /**
@@ -9,7 +7,28 @@ import com.sisi.context.JID;
  */
 public interface Relation {
 
-	public List<JID> relation(JID jid);
+	public enum Type {
 
-	public List<JID> relation(JID from, JID to);
+		FROM, TO, BOTH;
+
+		public String toString() {
+			return super.toString().toLowerCase();
+		}
+
+		public static Type parse(String value) {
+			return Type.valueOf(value.toUpperCase());
+		}
+	}
+
+	public JID from();
+
+	public JID to();
+
+	public Type type();
+
+	public String alias();
+
+	public String group();
+
+	public String getSubscription();
 }

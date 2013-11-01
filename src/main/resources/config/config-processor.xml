@@ -25,16 +25,16 @@
 		<constructor-arg value="www.myaccount.com" />
 	</bean>
 
-	<bean id="memoryRelation" class="com.sisi.relation.mock.MemoryRelation">
+	<bean id="memoryRelationContext" class="com.sisi.relation.mock.MemoryRelationContext">
 		<constructor-arg value="100" />
 	</bean>
 
 	<bean id="getRosterForker" class="com.sisi.process.iq.fork.GetRosterForker">
-		<constructor-arg ref="memoryRelation" />
+		<constructor-arg ref="memoryRelationContext" />
 	</bean>
 
 	<bean id="setRosterForker" class="com.sisi.process.iq.fork.SetRosterForker">
-		<constructor-arg ref="memoryRelation" />
+		<constructor-arg ref="memoryRelationContext" />
 	</bean>
 
 	<bean id="forkers" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">

@@ -1,14 +1,14 @@
 package com.sisi.process.iq.fork;
 
 import com.sisi.context.Context;
-import com.sisi.context.JID;
 import com.sisi.process.iq.Forker;
 import com.sisi.protocol.Protocol;
 import com.sisi.protocol.Protocol.Type;
 import com.sisi.protocol.core.Presence;
-import com.sisi.protocol.iq.Item.Subscription;
+import com.sisi.protocol.iq.Item;
 import com.sisi.protocol.iq.Roster;
 import com.sisi.relation.Relation;
+import com.sisi.relation.RelationContext;
 
 /**
  * @author kim 2013-10-31
@@ -17,11 +17,11 @@ public class GetRosterForker implements Forker {
 
 	private final static String FORK_NAME = "query";
 
-	private Relation relation;
+	private RelationContext relationContext;
 
-	public GetRosterForker(Relation relation) {
+	public GetRosterForker(RelationContext relationContext) {
 		super();
-		this.relation = relation;
+		this.relationContext = relationContext;
 	}
 
 	@Override
@@ -29,9 +29,9 @@ public class GetRosterForker implements Forker {
 		Roster roster = Roster.class.cast(protocol);
 		roster.clear();
 		Presence presence = new Presence();
-		for (JID jid : this.relation.relation(context.jid())) {
-			roster.add(jid.asStringWithLoop(), jid.getUser(), Subscription.TO.toString(), null);
-			presence.setFrom(jid.asStringWithLoop());
+		for (Relation relation : this.relationContext.relation(context.jid())) {
+			roster.add(new Item(relation));
+			presence.setFrom(relation.to().asStringWithLoop());
 			presence.setTo(context.jid().asString());
 			context.write(presence);
 			presence.clear();

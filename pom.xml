@@ -20,7 +20,7 @@
 			<artifactId>netty</artifactId>
 			<version>4.0.4</version>
 			<scope>system</scope>
-			<systemPath>${basedir}/netty-4.0.4.jar</systemPath>
+			<systemPath>${basedir}/lib/netty-4.0.4.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>

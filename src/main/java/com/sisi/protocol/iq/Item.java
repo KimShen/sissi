@@ -4,11 +4,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sisi.protocol.Protocol;
+import com.sisi.relation.Relation;
+
 /**
  * @author kim 2013-10-31
  */
 @XmlRootElement
-public class Item {
+public class Item extends Protocol {
 
 	public static enum Subscription {
 
@@ -29,6 +32,14 @@ public class Item {
 
 	public Item() {
 		super();
+	}
+
+	public Item(Relation relation) {
+		super();
+		this.jid = relation.to().asStringWithLoop();
+		this.group = relation.group();
+		this.name = relation.alias();
+		this.subscription = relation.getSubscription();
 	}
 
 	public Item(String jid, String name, String subscription, String group) {
