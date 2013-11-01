@@ -11,7 +11,7 @@ import com.sisi.protocol.core.Presence;
 import com.sisi.protocol.iq.Item;
 import com.sisi.protocol.iq.Roster;
 import com.sisi.relation.RelationContext;
-import com.sisi.relation.mock.ItemRelation;
+import com.sisi.relation.impl.ItemRelation;
 
 /**
  * @author kim 2013-10-31

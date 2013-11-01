@@ -3,10 +3,8 @@
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
 	<bean id="threadConnectorBuilder" class="com.sisi.connector.thread.ThreadConnectorBuilder">
-		<constructor-arg index="0" value="10" />
-		<constructor-arg index="1" value="600" />
-		<constructor-arg index="2" value="30" />
-		<constructor-arg index="3" value="2" />
+		<constructor-arg index="0" ref="executor" />
+		<constructor-arg index="1" value="2" />
 		<constructor-arg>
 			<bean class="com.sisi.connector.thread.ThreadConnector$Interval">
 				<constructor-arg value="5000"/>

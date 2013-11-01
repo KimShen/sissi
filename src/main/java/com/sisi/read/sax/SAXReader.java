@@ -40,6 +40,10 @@ public class SAXReader implements Reader {
 	public SAXReader(Mapping mapping) {
 		this(mapping, Executors.newSingleThreadExecutor());
 	}
+	
+	public SAXReader(Executor executor) {
+		this(new XMLMapping(), executor);
+	}
 
 	public SAXReader(Mapping mapping, Executor executor) {
 		super();

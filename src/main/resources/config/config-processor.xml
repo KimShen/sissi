@@ -22,10 +22,11 @@
 	</bean>
 
 	<bean id="bindForker" class="com.sisi.process.iq.fork.BindForker">
-		<constructor-arg value="www.myaccount.com" />
+		<constructor-arg value="myaccount.com" />
+		<constructor-arg ref="simpleHashAddressing" />
 	</bean>
 
-	<bean id="memoryRelationContext" class="com.sisi.relation.mock.MemoryRelationContext">
+	<bean id="memoryRelationContext" class="com.sisi.relation.impl.MemoryRelationContext">
 		<constructor-arg value="100" />
 	</bean>
 
@@ -59,6 +60,10 @@
 
 	<bean id="loopProcessor" class="com.sisi.process.loop.LoopProcessor" />
 
+	<bean id="messageProcessor" class="com.sisi.process.message.MessageProcessor">
+		<constructor-arg ref="simpleHashAddressing" />
+	</bean>
+
 	<bean id="processors" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
 		<property name="targetListClass" value="java.util.ArrayList" />
 		<property name="singleton" value="true" />
@@ -69,6 +74,7 @@
 				<ref bean="iqProcessor" />
 				<ref bean="authProcessor" />
 				<ref bean="presenceProcessor" />
+				<ref bean="messageProcessor" />
 			</list>
 		</property>
 	</bean>

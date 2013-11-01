@@ -40,4 +40,8 @@ public class Bind extends Feature {
 	public String getXmlns() {
 		return XMLNS;
 	}
+
+	public Boolean hasResource() {
+		return this.resource != null && this.resource.hasResource();
+	}
 }

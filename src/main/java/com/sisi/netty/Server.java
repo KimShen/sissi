@@ -19,7 +19,7 @@ import com.sisi.group.impl.GroupBroadcast;
 public class Server {
 
 	public void run() throws Exception {
-		String[] configs = new String[] { "classpath:config/config-feed.xml", "classpath:config/config-netty.xml", "classpath:config/config-processor.xml", "classpath:config/config-reader.xml", "classpath:config/config-writer.xml" };
+		String[] configs = new String[] { "classpath:config/config-thread.xml", "classpath:config/config-addressing.xml", "classpath:config/config-feed.xml", "classpath:config/config-netty.xml", "classpath:config/config-processor.xml", "classpath:config/config-reader.xml", "classpath:config/config-writer.xml" };
 		final ApplicationContext context = new ClassPathXmlApplicationContext(configs);
 		final ServerHandlerBuilder serverHandlerBuilder = context.getBean("serverHandlerBuilder", ServerHandlerBuilder.class);
 		final GroupBroadcast group = new GroupBroadcast(context.getBean("systemJID", JID.class));

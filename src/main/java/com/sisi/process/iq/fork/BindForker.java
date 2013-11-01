@@ -3,6 +3,7 @@ package com.sisi.process.iq.fork;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sisi.addressing.Addressing;
 import com.sisi.context.Context;
 import com.sisi.process.iq.Forker;
 import com.sisi.protocol.Protocol;
@@ -20,19 +21,24 @@ public class BindForker implements Forker {
 
 	private String host;
 
-	public BindForker(String host) {
+	private Addressing addressing;
+
+	public BindForker(String host, Addressing addressing) {
 		super();
 		this.host = host;
+		this.addressing = addressing;
 	}
 
 	@Override
 	public Protocol process(Context context, Protocol protocol) {
 		Bind bind = Bind.class.cast(protocol);
-		String resource = bind.getResource().getText();
 		bind.clear();
 		context.jid().setHost(this.host);
-		context.jid().setResource(resource);
+		if (bind.hasResource()) {
+			context.jid().setResource(bind.getResource().getText());
+		}
 		bind.setJid(context.jid().asString());
+		this.addressing.join(context);
 		this.log.debug("Bind: " + bind);
 		return bind;
 	}

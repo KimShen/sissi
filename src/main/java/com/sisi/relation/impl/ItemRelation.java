@@ -1,4 +1,4 @@
-package com.sisi.relation.mock;
+package com.sisi.relation.impl;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 

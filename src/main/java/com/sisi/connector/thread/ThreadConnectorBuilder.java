@@ -1,11 +1,7 @@
 package com.sisi.connector.thread;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.FactoryBean;
 
@@ -26,11 +22,11 @@ public class ThreadConnectorBuilder implements ConnectorBuilder, FactoryBean<Thr
 
 	private Interval interval;
 
-	public ThreadConnectorBuilder(int corePoolSize, int maximumPoolSize, long keepAliveTime, Integer threadNum, Interval interval) {
+	public ThreadConnectorBuilder(Executor executor, Integer threadNum, Interval interval) {
 		super();
 		this.threadNum = threadNum;
 		this.interval = interval;
-		this.executor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(), Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
+		this.executor = executor;
 	}
 
 	@Override

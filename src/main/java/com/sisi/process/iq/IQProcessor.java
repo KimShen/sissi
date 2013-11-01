@@ -39,7 +39,9 @@ public class IQProcessor implements Processor {
 		IQ request = IQ.class.cast(protocol);
 		IQ response = (IQ) request.reply(new IQ());
 		response.setType(Protocol.Type.RESULT.toString());
-		response.setTo(context.jid().asString());
+		if (context.jid() != null) {
+			response.setTo(context.jid().asString());
+		}
 		for (String forker : request.listChildren()) {
 			this.log.info("Forker should be process: " + forker);
 			this.doEachSubProcessor(context, request, response, forker);

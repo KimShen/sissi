@@ -49,7 +49,6 @@ public class ThreadConnector implements Runnable, Connector {
 				this.getAndFeed();
 			} catch (Exception e) {
 				LOG.error(e);
-				throw new RuntimeException(e);
 			}
 		}
 		LOG.info(Thread.currentThread().getId() + " would be closed");

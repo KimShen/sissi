@@ -21,6 +21,9 @@
 	<finder uri="jabber:client" localName="message">
 		<clazz>com.sisi.protocol.core.Message</clazz>
 	</finder>
+	<finder uri="jabber:client" localName="body">
+		<clazz>com.sisi.protocol.core.Body</clazz>
+	</finder>
 	<finder uri="jabber:client" localName="presence">
 		<clazz>com.sisi.protocol.core.Presence</clazz>
 	</finder>

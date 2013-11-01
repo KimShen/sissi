@@ -16,4 +16,8 @@ public class Resource extends Protocol {
 	public void setText(String text) {
 		this.text = text;
 	}
+	
+	public Boolean hasResource(){
+		return this.text != null && !this.text.isEmpty();
+	}
 }

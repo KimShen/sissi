@@ -35,6 +35,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
 	private final static AttributeKey<Context> CONTEXT = new AttributeKey<Context>("CONTEXT");
 
+	private final static AttributeKey<Connector> CONNECTOR = new AttributeKey<Connector>("CONNECTOR");
+
 	private final PipedInputStream input = new PipedInputStream();
 
 	private final PipedOutputStream output;
@@ -66,6 +68,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 		this.createContextAndJoinGroup(ctx);
 		try {
 			Connector connector = this.connectorBuilder.builder(this.reader.future(input), this.feederBuilder.builder(ctx.attr(CONTEXT).get(), this.processors));
+			ctx.attr(CONNECTOR).set(connector);
 			connector.start();
 			LOG.debug("Connector start ... ");
 		} catch (IOException e) {
@@ -81,6 +84,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
 	public void channelInactive(ChannelHandlerContext ctx) {
 		this.group.remove(ctx.attr(CONTEXT).get());
+		ctx.attr(CONNECTOR).get().stop();
 		IOUtils.closeQuietly(this.input);
 		IOUtils.closeQuietly(this.output);
 	}
