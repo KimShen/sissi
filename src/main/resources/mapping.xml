@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <finders>
 	<finder uri="http://etherx.jabber.org/streams" localName="stream">
-		<clazz>com.sisi.protocol.core.Stream</clazz>
+		<clazz>com.sissi.protocol.core.Stream</clazz>
 	</finder>
 	<finder uri="urn:ietf:params:xml:ns:xmpp-sasl" localName="auth">
-		<clazz>com.sisi.protocol.auth.Auth</clazz>
+		<clazz>com.sissi.protocol.auth.Auth</clazz>
 	</finder>
 	<finder uri="jabber:client" localName="iq">
-		<clazz>com.sisi.protocol.core.IQ</clazz>
+		<clazz>com.sissi.protocol.core.IQ</clazz>
 	</finder>
 	<finder uri="urn:ietf:params:xml:ns:xmpp-bind" localName="bind">
-		<clazz>com.sisi.protocol.iq.Bind</clazz>
+		<clazz>com.sissi.protocol.iq.Bind</clazz>
 	</finder>
 	<finder uri="urn:ietf:params:xml:ns:xmpp-bind" localName="resource">
-		<clazz>com.sisi.protocol.iq.Resource</clazz>
+		<clazz>com.sissi.protocol.iq.Resource</clazz>
 	</finder>
 	<finder uri="urn:ietf:params:xml:ns:xmpp-session" localName="session">
-		<clazz>com.sisi.protocol.iq.Session</clazz>
+		<clazz>com.sissi.protocol.iq.Session</clazz>
 	</finder>
 	<finder uri="jabber:client" localName="message">
-		<clazz>com.sisi.protocol.core.Message</clazz>
+		<clazz>com.sissi.protocol.core.Message</clazz>
 	</finder>
 	<finder uri="jabber:client" localName="body">
-		<clazz>com.sisi.protocol.core.Body</clazz>
+		<clazz>com.sissi.protocol.core.Body</clazz>
 	</finder>
 	<finder uri="jabber:client" localName="presence">
-		<clazz>com.sisi.protocol.core.Presence</clazz>
+		<clazz>com.sissi.protocol.core.Presence</clazz>
 	</finder>
 	<finder uri="jabber:iq:roster" localName="query">
-		<clazz>com.sisi.protocol.iq.Roster</clazz>
+		<clazz>com.sissi.protocol.iq.Roster</clazz>
 	</finder>
 	<finder uri="jabber:iq:roster" localName="item">
-		<clazz>com.sisi.protocol.iq.Item</clazz>
+		<clazz>com.sissi.protocol.iq.Item</clazz>
 	</finder>
 </finders>

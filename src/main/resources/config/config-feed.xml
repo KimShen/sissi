@@ -6,7 +6,7 @@
 		<constructor-arg index="0" ref="executor" />
 		<constructor-arg index="1" value="2" />
 		<constructor-arg>
-			<bean class="com.sisi.connector.thread.ThreadConnector$Interval">
+			<bean class="com.sissi.connector.thread.ThreadConnector$Interval">
 				<constructor-arg value="5000"/>
 				<constructor-arg value="MILLISECONDS"/>
 			</bean>
