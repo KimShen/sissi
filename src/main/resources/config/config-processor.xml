@@ -2,9 +2,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="propertiesAccessor" class="com.sisi.process.auth.access.PropertiesAccessor" />
+	<bean id="propertiesAccessor" class="com.sissi.process.auth.access.PropertiesAccessor" />
 
-	<bean id="plainUserNormalization" class="com.sisi.process.auth.normalization.PlainUserNormalization" />
+	<bean id="plainUserNormalization" class="com.sissi.process.auth.normalization.PlainUserNormalization" />
 
 	<bean id="userNormalizations" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
 		<property name="targetListClass" value="java.util.ArrayList" />
@@ -16,25 +16,25 @@
 		</property>
 	</bean>
 
-	<bean id="authProcessor" class="com.sisi.process.auth.AuthProcessor">
+	<bean id="authProcessor" class="com.sissi.process.auth.AuthProcessor">
 		<constructor-arg ref="propertiesAccessor" />
 		<constructor-arg ref="userNormalizations" />
 	</bean>
 
-	<bean id="bindForker" class="com.sisi.process.iq.fork.BindForker">
+	<bean id="bindForker" class="com.sissi.process.iq.fork.BindForker">
 		<constructor-arg value="myaccount.com" />
 		<constructor-arg ref="simpleHashAddressing" />
 	</bean>
 
-	<bean id="memoryRelationContext" class="com.sisi.relation.impl.MemoryRelationContext">
+	<bean id="memoryRelationContext" class="com.sissi.relation.impl.MemoryRelationContext">
 		<constructor-arg value="100" />
 	</bean>
 
-	<bean id="getRosterForker" class="com.sisi.process.iq.fork.GetRosterForker">
+	<bean id="getRosterForker" class="com.sissi.process.iq.fork.GetRosterForker">
 		<constructor-arg ref="memoryRelationContext" />
 	</bean>
 
-	<bean id="setRosterForker" class="com.sisi.process.iq.fork.SetRosterForker">
+	<bean id="setRosterForker" class="com.sissi.process.iq.fork.SetRosterForker">
 		<constructor-arg ref="memoryRelationContext" />
 	</bean>
 
@@ -50,17 +50,17 @@
 		</property>
 	</bean>
 
-	<bean id="iqProcessor" class="com.sisi.process.iq.IQProcessor">
+	<bean id="iqProcessor" class="com.sissi.process.iq.IQProcessor">
 		<constructor-arg ref="forkers" />
 	</bean>
 
-	<bean id="presenceProcessor" class="com.sisi.process.presence.PresenceProcessor" />
+	<bean id="presenceProcessor" class="com.sissi.process.presence.PresenceProcessor" />
 
-	<bean id="streamProcessor" class="com.sisi.process.stream.StreamProcessor" />
+	<bean id="streamProcessor" class="com.sissi.process.stream.StreamProcessor" />
 
-	<bean id="loopProcessor" class="com.sisi.process.loop.LoopProcessor" />
+	<bean id="loopProcessor" class="com.sissi.process.loop.LoopProcessor" />
 
-	<bean id="messageProcessor" class="com.sisi.process.message.MessageProcessor">
+	<bean id="messageProcessor" class="com.sissi.process.message.MessageProcessor">
 		<constructor-arg ref="simpleHashAddressing" />
 	</bean>
 

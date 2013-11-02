@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="simpleHashAddressing" class="com.sisi.addressing.hash.SimpleHashAddressing">
+	<bean id="simpleHashAddressing" class="com.sissi.addressing.hash.SimpleHashAddressing">
 		<constructor-arg value="100" />
 	</bean>
 

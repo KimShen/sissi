@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="threadConnectorBuilder" class="com.sisi.connector.thread.ThreadConnectorBuilder">
+	<bean id="threadConnectorBuilder" class="com.sissi.connector.thread.ThreadConnectorBuilder">
 		<constructor-arg index="0" ref="executor" />
 		<constructor-arg index="1" value="2" />
 		<constructor-arg>
@@ -13,6 +13,6 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="chainedFeederBuilder" class="com.sisi.feed.chained.ChainedFeederBuilder" />
+	<bean id="chainedFeederBuilder" class="com.sissi.feed.chained.ChainedFeederBuilder" />
 
 </beans>
