@@ -10,9 +10,10 @@ import junit.framework.Assert;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import com.sisi.protocol.auth.Auth;
-import com.sisi.protocol.core.Stream;
-import com.sisi.protocol.core.Stream.StreamOpen;
+import com.sissi.protocol.auth.Auth;
+import com.sissi.protocol.core.Stream;
+import com.sissi.protocol.core.Stream.StreamOpen;
+import com.sissi.write.jaxb.JAXBWriter;
 
 /**
  * @author Kim.shen 2013-10-16

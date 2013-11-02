@@ -9,6 +9,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.sissi.read.sax.SAXReader;
+import com.sissi.read.sax.XMLMapping;
+
 /**
  * @author kim 2013-10-21
  */

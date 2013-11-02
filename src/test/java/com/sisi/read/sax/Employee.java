@@ -3,7 +3,7 @@ package com.sisi.read.sax;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sisi.read.Collector;
+import com.sissi.read.Collector;
 
 /**
  * @author kim 2013-10-25

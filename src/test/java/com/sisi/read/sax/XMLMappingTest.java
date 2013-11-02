@@ -4,7 +4,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.sisi.read.Mapping;
+import com.sissi.read.Mapping;
+import com.sissi.read.sax.XMLMapping;
 
 /**
  * @author kim 2013-10-25
