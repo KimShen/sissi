@@ -12,5 +12,5 @@ public interface Addressing {
 
 	public Context find(JID jid);
 	
-	public Boolean isLogin(JID jid);
+	public Boolean online(JID jid);
 }

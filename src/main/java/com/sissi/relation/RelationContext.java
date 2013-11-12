@@ -1,6 +1,6 @@
 package com.sissi.relation;
 
-import java.util.List;
+import java.util.Set;
 
 import com.sissi.context.JID;
 
@@ -9,7 +9,19 @@ import com.sissi.context.JID;
  */
 public interface RelationContext {
 
-	public List<Relation> relation(JID jid);
+	public void subscribe(JID from, Relation relation);
 
-	public List<Relation> relation(Relation relation);
+	public void subscribed(JID from, JID to);
+
+	public void unsubscribed(JID from, JID to);
+	
+	public Relation ourRelation(JID from, JID to);
+	
+	public Boolean weAreFriends(JID from, JID to);
+
+	public Set<Relation> myRelations(JID from);
+	
+	public Set<String> whoSubscribedMe(JID from);
+	
+	public Set<String> iSubscribedWho(JID from);
 }

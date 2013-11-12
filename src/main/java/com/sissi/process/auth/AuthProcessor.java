@@ -19,39 +19,45 @@ public class AuthProcessor implements Processor {
 
 	private Log log = LogFactory.getLog(this.getClass());
 
-	private List<UserNormalization> userNormalizations;
+	private List<Normalization> normalizations;
 
 	private Accessor accessor;
 
-	public AuthProcessor(List<UserNormalization> userNormalizations, Accessor accessor) {
+	public AuthProcessor(List<Normalization> normalizations, Accessor accessor) {
 		super();
-		this.userNormalizations = userNormalizations;
+		this.normalizations = normalizations;
 		this.accessor = accessor;
 	}
 
 	@Override
-	public Protocol process(Context context, Protocol protocol) {
+	public void process(Context context, Protocol protocol) {
 		// For iMessage repeat Auth
 		if (context.access()) {
-			return null;
+			this.log.warn("Duplice access for " + context.jid().asStringWithNaked());
+			return;
 		}
 		Auth auth = Auth.class.cast(protocol);
-		for (UserNormalization un : this.userNormalizations) {
+		for (Normalization un : this.normalizations) {
 			if (un.isSupport(auth.getMechanism())) {
-				this.log.debug(un.getClass() + " will normalize " + auth.getMechanism());
+				this.log.info("Auth match for " + un.getClass());
 				User user = un.normalize(auth);
-				if (context.access(this.accessor.access(user))) {
-					context.jid(new com.sissi.context.user.User(user.getUser(), null, null));
-					return Success.INSTANCE;
+				if (this.accessOK(context, user)) {
+					this.prepareSUCCESS(context, user);
+					return;
 				}
 			}
 		}
-		return Failure.INSTANCE;
+		context.write(Failure.INSTANCE);
 	}
 
-	@Override
-	public Boolean isSupport(Protocol protocol) {
-		return Auth.class.isAssignableFrom(protocol.getClass());
+	private void prepareSUCCESS(Context context, User user) {
+		com.sissi.context.user.User myJID = new com.sissi.context.user.User(user.getUser(), null, null);
+		this.log.info("JID " + myJID.asStringWithNaked() + " can access");
+		context.jid(myJID);
+		context.write(Success.INSTANCE);
 	}
 
+	private Boolean accessOK(Context context, User user) {
+		return context.access(this.accessor.access(user));
+	}
 }

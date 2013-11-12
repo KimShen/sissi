@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.sissi.context.Context;
 import com.sissi.context.JID;
+import com.sissi.context.Writeable;
 import com.sissi.protocol.Protocol;
 
 /**
@@ -12,7 +13,7 @@ import com.sissi.protocol.Protocol;
  */
 public class UserContext implements Context {
 
-	private final static Log LOG = LogFactory.getLog(UserContext.class);
+	private Log log = LogFactory.getLog(this.getClass());
 
 	private enum AuthState {
 
@@ -23,11 +24,11 @@ public class UserContext implements Context {
 		}
 	}
 
-	private Writeable writeable;
+	private JID jid;
 
 	private AuthState state;
 
-	private JID jid;
+	private Writeable writeable;
 
 	public UserContext(Writeable writeable) {
 		super();
@@ -37,9 +38,7 @@ public class UserContext implements Context {
 
 	@Override
 	public Boolean access() {
-		boolean canAccess = (this.state == AuthState.ACCESS);
-		LOG.info("JID: " + (jid != null ? jid.asString() : "N/A") + " can access -> " + canAccess);
-		return canAccess;
+		return this.state == AuthState.ACCESS;
 	}
 
 	@Override
@@ -48,18 +47,21 @@ public class UserContext implements Context {
 		return this.access();
 	}
 
+	public Boolean online() {
+		return this.jid != null;
+	}
+
 	public JID jid(JID jid) {
 		this.jid = jid;
 		return this.jid();
 	}
 
 	public JID jid() {
-		LOG.info("JID: " + (jid != null ? jid.asString() : "N/A"));
 		return this.jid;
 	}
 
 	public void write(Protocol protocol) {
-		LOG.debug("Write Protocol: " + protocol);
+		this.log.info("JID " + (this.jid != null ? this.jid.asStringWithNaked() : "N/A") + " start write ...");
 		this.writeable.writeAndFlush(protocol);
 	}
 }

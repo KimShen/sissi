@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Feature;
-import com.sissi.protocol.core.Stream;
+import com.sissi.protocol.stream.Stream;
 
 /**
  * @author Kim.shen 2013-10-16

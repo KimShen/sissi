@@ -10,7 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.protocol.Feature;
-import com.sissi.protocol.core.Stream;
+import com.sissi.protocol.stream.Stream;
 
 /**
  * @author Kim.shen 2013-10-19

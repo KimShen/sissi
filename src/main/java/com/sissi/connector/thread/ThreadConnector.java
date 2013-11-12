@@ -21,7 +21,7 @@ public class ThreadConnector implements Runnable, Connector {
 
 	private final static Log LOG = LogFactory.getLog(ThreadConnector.class);
 
-	private final AtomicBoolean state = new AtomicBoolean();
+	private final AtomicBoolean state;
 
 	private Runner runner;
 
@@ -33,6 +33,7 @@ public class ThreadConnector implements Runnable, Connector {
 
 	public ThreadConnector(Runner runner, Interval interval, Future<?> future, Feeder feeder) {
 		super();
+		this.state = new AtomicBoolean();
 		this.runner = runner;
 		this.future = future;
 		this.feeder = feeder;
@@ -44,6 +45,7 @@ public class ThreadConnector implements Runnable, Connector {
 		while (true) {
 			try {
 				if (this.prepareStop()) {
+					LOG.debug("ThreadConnector should stop");
 					break;
 				}
 				this.getAndFeed();
@@ -51,12 +53,12 @@ public class ThreadConnector implements Runnable, Connector {
 				LOG.error(e);
 			}
 		}
-		LOG.info(Thread.currentThread().getId() + " would be closed");
 	}
 
 	private void getAndFeed() throws InterruptedException, ExecutionException, TimeoutException {
 		Protocol protocol = (Protocol) future.get(interval.getInterval(), interval.getUnit());
 		if (protocol != null) {
+			LOG.info("Get Protocol: " + protocol);
 			this.feeder.feed(protocol);
 		}
 	}
@@ -69,11 +71,17 @@ public class ThreadConnector implements Runnable, Connector {
 	public void start() {
 		this.state.set(true);
 		this.runner.executor(this);
+		LOG.debug("ThreadConnector start running");
 	}
 
 	@Override
 	public void stop() {
 		this.state.set(false);
+	}
+
+	@Override
+	public Boolean isRunning() {
+		return this.state.get() == true;
 	}
 
 	public static class Interval {
@@ -118,6 +126,7 @@ public class ThreadConnector implements Runnable, Connector {
 		}
 
 		public void executor(Runnable runnable) {
+			LOG.debug("ThreadConnector will open " + threadNum + " threads");
 			for (int num = 0; num < threadNum; num++) {
 				this.executor.execute(runnable);
 			}

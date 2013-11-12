@@ -1,5 +1,8 @@
 package com.sissi.process;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.sissi.context.Context;
 import com.sissi.protocol.Protocol;
 
@@ -8,7 +11,17 @@ import com.sissi.protocol.Protocol;
  */
 public interface Processor {
 
-	public Protocol process(Context context, Protocol protocol);
+	public void process(Context context, Protocol current);
 
-	public Boolean isSupport(Protocol protocol);
+	public final static class NothingProcessor implements Processor {
+
+		public final static Processor NOTHING = new NothingProcessor();
+
+		private Log log = LogFactory.getLog(this.getClass());
+
+		@Override
+		public void process(Context context, Protocol current) {
+			this.log.warn("In nothing processor for " + current + ", please check");
+		}
+	}
 }

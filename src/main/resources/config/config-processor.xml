@@ -2,81 +2,32 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="propertiesAccessor" class="com.sissi.process.auth.access.PropertiesAccessor" />
-
-	<bean id="plainUserNormalization" class="com.sissi.process.auth.normalization.PlainUserNormalization" />
-
-	<bean id="userNormalizations" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
-		<property name="targetListClass" value="java.util.ArrayList" />
-		<property name="singleton" value="true" />
-		<property name="sourceList">
-			<list>
-				<ref bean="plainUserNormalization" />
-			</list>
-		</property>
+	<bean id="matchAllProcessor" class="com.sissi.process.finder.MatchProcessor">
+		<constructor-arg>
+			<bean class="com.sissi.process.Matcher$AllMatcher" />
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.process.Processor$NothingProcessor" />
+		</constructor-arg>
 	</bean>
 
-	<bean id="authProcessor" class="com.sissi.process.auth.AuthProcessor">
-		<constructor-arg ref="propertiesAccessor" />
-		<constructor-arg ref="userNormalizations" />
-	</bean>
-
-	<bean id="bindForker" class="com.sissi.process.iq.fork.BindForker">
-		<constructor-arg value="myaccount.com" />
-		<constructor-arg ref="simpleHashAddressing" />
-	</bean>
-
-	<bean id="memoryRelationContext" class="com.sissi.relation.impl.MemoryRelationContext">
-		<constructor-arg value="100" />
-	</bean>
-
-	<bean id="getRosterForker" class="com.sissi.process.iq.fork.GetRosterForker">
-		<constructor-arg ref="memoryRelationContext" />
-	</bean>
-
-	<bean id="setRosterForker" class="com.sissi.process.iq.fork.SetRosterForker">
-		<constructor-arg ref="memoryRelationContext" />
-	</bean>
-
-	<bean id="forkers" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
-		<property name="targetListClass" value="java.util.ArrayList" />
-		<property name="singleton" value="true" />
-		<property name="sourceList">
-			<list>
-				<ref bean="bindForker" />
-				<ref bean="setRosterForker" />
-				<ref bean="getRosterForker" />
-			</list>
-		</property>
-	</bean>
-
-	<bean id="iqProcessor" class="com.sissi.process.iq.IQProcessor">
-		<constructor-arg ref="forkers" />
-	</bean>
-
-	<bean id="presenceProcessor" class="com.sissi.process.presence.PresenceProcessor" />
-
-	<bean id="streamProcessor" class="com.sissi.process.stream.StreamProcessor" />
-
-	<bean id="loopProcessor" class="com.sissi.process.loop.LoopProcessor" />
-
-	<bean id="messageProcessor" class="com.sissi.process.message.MessageProcessor">
-		<constructor-arg ref="simpleHashAddressing" />
-	</bean>
-
-	<bean id="processors" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
-		<property name="targetListClass" value="java.util.ArrayList" />
-		<property name="singleton" value="true" />
-		<property name="sourceList">
-			<list>
-				<ref bean="loopProcessor" />
-				<ref bean="streamProcessor" />
-				<ref bean="iqProcessor" />
-				<ref bean="authProcessor" />
-				<ref bean="presenceProcessor" />
-				<ref bean="messageProcessor" />
-			</list>
-		</property>
+	<bean id="chainedProcessorFinder" class="com.sissi.process.finder.ChainedProcessorFinder">
+		<constructor-arg>
+			<bean class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
+				<property name="targetListClass" value="java.util.ArrayList" />
+				<property name="singleton" value="true" />
+				<property name="sourceList">
+					<list>
+						<ref bean="authMatchProcessor" />
+						<ref bean="iqMatchProcessor" />
+						<ref bean="messageMatchProcessor" />
+						<ref bean="presenceMatchProcessor" />
+						<ref bean="streamMatchProcessor" />
+						<ref bean="matchAllProcessor" />
+					</list>
+				</property>
+			</bean>
+		</constructor-arg>
 	</bean>
 
 </beans>

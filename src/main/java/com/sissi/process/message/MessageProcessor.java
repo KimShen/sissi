@@ -9,7 +9,8 @@ import com.sissi.context.JID;
 import com.sissi.context.user.User;
 import com.sissi.process.Processor;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.core.Message;
+import com.sissi.protocol.message.Message;
+import com.sissi.relation.RelationContext;
 
 /**
  * @author kim 2013-10-24
@@ -20,32 +21,31 @@ public class MessageProcessor implements Processor {
 
 	private Addressing addressing;
 
-	public MessageProcessor(Addressing addressing) {
+	private RelationContext relationContext;
+
+	public MessageProcessor(Addressing addressing, RelationContext relationContext) {
 		super();
 		this.addressing = addressing;
+		this.relationContext = relationContext;
 	}
 
 	@Override
-	public Protocol process(Context context, Protocol protocol) {
-		Message message = Message.class.cast(protocol);
-		this.log.debug("Message before send: " + message);
-		if (message.hasContent()) {
-			message.setFrom(context.jid().asString());
-			JID to = new User(message.getTo());
-			this.log.info("Message will be send to: " + to.asStringWithLoop());
-			if (this.addressing.isLogin(to)) {
-				Context toContext = this.addressing.find(to);
-				message.setTo(null);
-				this.log.info("Message ( " + message + " ) would be send to: " + toContext.jid().asStringWithLoop());
-				toContext.write(message);
-			}
+	public void process(Context context, Protocol protocol) {
+		if (!this.relationContext.weAreFriends(new User(protocol.getTo()), context.jid())) {
+			this.log.warn("We are not friends: " + context.jid().asStringWithNaked() + " --> " + protocol.getTo());
+			return;
 		}
-		return null;
+		Message message = Message.class.cast(protocol);
+		if (message.hasContent()) {
+			this.processTextMessage(context, message);
+		}
 	}
 
-	@Override
-	public Boolean isSupport(Protocol protocol) {
-		return Message.class.isAssignableFrom(protocol.getClass());
+	private void processTextMessage(Context context, Message message) {
+		message.setFrom(context.jid().asString());
+		JID to = new User(message.getTo());
+		if (this.addressing.online(to)) {
+			this.addressing.find(to).write(message);
+		}
 	}
-
 }

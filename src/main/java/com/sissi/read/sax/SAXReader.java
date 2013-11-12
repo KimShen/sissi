@@ -49,7 +49,7 @@ public class SAXReader implements Reader {
 		super();
 		this.mapping = mapping;
 		this.executor = executor;
-		this.log.debug("Executor is: " + this.executor);
+		this.log.debug("Executor is: " + this.executor.getClass());
 	}
 
 	public Future<Object> future(InputStream stream) throws IOException {

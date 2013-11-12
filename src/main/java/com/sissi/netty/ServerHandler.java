@@ -9,8 +9,9 @@ import io.netty.util.ReferenceCountUtil;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
-import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
@@ -21,8 +22,7 @@ import com.sissi.connector.ConnectorBuilder;
 import com.sissi.context.Context;
 import com.sissi.context.user.UserContext;
 import com.sissi.feed.FeederBuilder;
-import com.sissi.group.Group;
-import com.sissi.process.Processor;
+import com.sissi.process.ProcessorFinder;
 import com.sissi.read.Reader;
 import com.sissi.write.Writer;
 
@@ -33,57 +33,43 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
 	private final static Log LOG = LogFactory.getLog(ServerHandler.class);
 
-	private final static AttributeKey<Context> CONTEXT = new AttributeKey<Context>("CONTEXT");
+	private final static String CONTEXT_ATTR = "CONTEXT_ATTR";
 
-	private final static AttributeKey<Connector> CONNECTOR = new AttributeKey<Connector>("CONNECTOR");
+	private final static String CONNECTOR_ATTR = "CONNECTOR_ATTR";
+
+	private final static AttributeKey<Context> CONTEXT = new AttributeKey<Context>(CONTEXT_ATTR);
+
+	private final static AttributeKey<Connector> CONNECTOR = new AttributeKey<Connector>(CONNECTOR_ATTR);
 
 	private final PipedInputStream input = new PipedInputStream();
 
-	private final PipedOutputStream output;
-
-	private final Group group;
+	private final PipedOutputStream output = new PipedOutputStream(input);
 
 	private final Writer writer;
 
 	private final Reader reader;
 
-	private final List<Processor> processors;
+	private final ProcessorFinder finder;
 
 	private final FeederBuilder feederBuilder;
 
 	private final ConnectorBuilder connectorBuilder;
 
-	public ServerHandler(Group group, Reader reader, Writer writer, List<Processor> processors, FeederBuilder feederBuilder, ConnectorBuilder connectorBuilder) throws IOException {
+	public ServerHandler(Reader reader, Writer writer, ProcessorFinder finder, FeederBuilder feederBuilder, ConnectorBuilder connectorBuilder) throws IOException {
 		super();
-		this.output = new PipedOutputStream(input);
-		this.group = group;
 		this.reader = reader;
 		this.writer = writer;
-		this.processors = processors;
+		this.finder = finder;
 		this.feederBuilder = feederBuilder;
 		this.connectorBuilder = connectorBuilder;
 	}
 
 	public void channelActive(final ChannelHandlerContext ctx) {
 		this.createContextAndJoinGroup(ctx);
-		try {
-			Connector connector = this.connectorBuilder.builder(this.reader.future(input), this.feederBuilder.builder(ctx.attr(CONTEXT).get(), this.processors));
-			ctx.attr(CONNECTOR).set(connector);
-			connector.start();
-			LOG.debug("Connector start ... ");
-		} catch (IOException e) {
-			LOG.error(e);
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void createContextAndJoinGroup(final ChannelHandlerContext ctx) {
-		ctx.attr(CONTEXT).set(new UserContext(new NettyWriteable(this.writer, ctx)));
-		this.group.add(ctx.attr(CONTEXT).get());
+		this.createConnectorAndStart(ctx);
 	}
 
 	public void channelInactive(ChannelHandlerContext ctx) {
-		this.group.remove(ctx.attr(CONTEXT).get());
 		ctx.attr(CONNECTOR).get().stop();
 		IOUtils.closeQuietly(this.input);
 		IOUtils.closeQuietly(this.output);
@@ -93,7 +79,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		try {
 			ByteBuf byteBuf = (ByteBuf) msg;
-			this.logIfNecessary(byteBuf);
+			this.logIfNecessary(ctx, byteBuf);
 			this.output.write(this.copyToBytes(byteBuf));
 		} catch (Exception e) {
 			LOG.fatal(e);
@@ -102,21 +88,43 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 		}
 	}
 
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+		this.logIfDetail(cause);
+		ctx.close();
+	}
+
+	private void logIfDetail(Throwable cause) {
+		StringWriter trace = new StringWriter();
+		cause.printStackTrace(new PrintWriter(trace));
+		LOG.error(trace.toString());
+	}
+
+	private void createConnectorAndStart(final ChannelHandlerContext ctx) {
+		try {
+			Connector connector = this.connectorBuilder.builder(this.reader.future(input), this.feederBuilder.builder(ctx.attr(CONTEXT).get(), this.finder));
+			connector.start();
+			ctx.attr(CONNECTOR).set(connector);
+		} catch (IOException e) {
+			LOG.error(e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void createContextAndJoinGroup(final ChannelHandlerContext ctx) {
+		ctx.attr(CONTEXT).set(new UserContext(new WriteableWrapper(this.writer, ctx)));
+	}
+
 	private byte[] copyToBytes(ByteBuf byteBuf) {
 		byte[] data = new byte[byteBuf.readableBytes()];
 		byteBuf.readBytes(data);
 		return data;
 	}
 
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-		LOG.error(cause);
-		ctx.close();
-	}
-
-	private void logIfNecessary(ByteBuf byteBuf) {
+	private void logIfNecessary(ChannelHandlerContext ctx, ByteBuf byteBuf) {
 		if (LOG.isInfoEnabled()) {
-			LOG.info("Read: " + byteBuf.toString(Charset.forName("UTF-8")));
+			Context context = ctx.attr(CONTEXT).get();
+			LOG.info("Read on " + (context != null && context.jid() != null ? context.jid().asStringWithNaked() : "N/A") + ": " + byteBuf.toString(Charset.forName("UTF-8")));
 			byteBuf.readerIndex(0);
 		}
 	}

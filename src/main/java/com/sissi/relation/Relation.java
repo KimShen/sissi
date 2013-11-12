@@ -1,34 +1,19 @@
 package com.sissi.relation;
 
-import com.sissi.context.JID;
+import java.util.Map;
 
 /**
- * @author kim 2013-11-1
+ * @author kim 2013-11-6
  */
 public interface Relation {
 
-	public enum Type {
+	public String getJid();
 
-		FROM, TO, BOTH;
+	public String getName();
 
-		public String toString() {
-			return super.toString().toLowerCase();
-		}
-
-		public static Type parse(String value) {
-			return Type.valueOf(value.toUpperCase());
-		}
-	}
-
-	public JID from();
-
-	public JID to();
-
-	public Type type();
-
-	public String alias();
-
-	public String group();
-
+	public String getGroup();
+	
 	public String getSubscription();
+	
+	public Map<String, Object> toEntity();
 }

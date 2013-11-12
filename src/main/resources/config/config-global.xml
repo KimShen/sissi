@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:config.properties" />
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+
+	<bean id="mongoClient" class="com.mongodb.MongoClient">
+		<constructor-arg value="${mongo.host}" />
+	</bean>
+
+	<bean id="systemJID" class="com.sissi.context.user.User">
+		<constructor-arg index="0" value="system" />
+		<constructor-arg index="1" value="www.myaccount.com" />
+		<constructor-arg index="2">
+			<null />
+		</constructor-arg>
+	</bean>
+
+</beans>

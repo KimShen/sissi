@@ -1,0 +1,50 @@
+package com.sissi.netty;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+
+import java.io.IOException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.sissi.context.Writeable;
+import com.sissi.netty.io.ByteBufferOutputStream;
+import com.sissi.netty.listener.FailLogGenericFutureListener;
+import com.sissi.protocol.Protocol;
+import com.sissi.write.Writer;
+
+/**
+ * @author kim 2013-10-31
+ */
+public class WriteableWrapper implements Writeable {
+
+	private final static Log LOG = LogFactory.getLog(WriteableWrapper.class);
+
+	private Writer writer;
+
+	private ChannelHandlerContext context;
+
+	public WriteableWrapper(Writer writer, ChannelHandlerContext context) {
+		super();
+		this.writer = writer;
+		this.context = context;
+	}
+
+	@Override
+	public void writeAndFlush(Protocol protocol) {
+		try {
+			ByteBuf byteBuffer = this.allocBuffer();
+			this.writer.write(protocol, new ByteBufferOutputStream(byteBuffer));
+			this.context.writeAndFlush(byteBuffer).addListener(FailLogGenericFutureListener.INSTANCE);
+		} catch (IOException e) {
+			LOG.error(e);
+		}
+	}
+
+	private ByteBuf allocBuffer() {
+		ByteBuf byteBuf = this.context.alloc().buffer();
+		LOG.debug("ByteBuf capacity:" + byteBuf.capacity());
+		return byteBuf;
+	}
+}

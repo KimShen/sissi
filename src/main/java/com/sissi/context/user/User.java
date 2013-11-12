@@ -1,5 +1,6 @@
 package com.sissi.context.user;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -18,6 +19,10 @@ public class User implements JID {
 
 	private String resource;
 
+	public User(String user, String host) {
+		this(user, host, null);
+	}
+
 	public User(String user, String host, String resource) {
 		super();
 		this.user = user;
@@ -27,13 +32,11 @@ public class User implements JID {
 
 	public User(String jid) {
 		super();
-		LOG.debug("JID before parse: " + jid);
 		int startHost = jid.indexOf("@");
 		this.user = startHost == -1 ? null : jid.substring(0, startHost);
 		int startResource = jid.indexOf("/");
-		this.host = startResource == -1 ? jid.substring(startHost != -1 ? startHost + 1 : 0) : jid.substring(startHost + 1, startResource - startHost);
+		this.host = startResource == -1 ? jid.substring(startHost != -1 ? startHost + 1 : 0) : jid.substring(startHost + 1, startResource);
 		this.resource = startResource == -1 ? null : jid.substring(startResource);
-		LOG.debug("JID after parse: " + this.asString());
 	}
 
 	public String getUser() {
@@ -70,10 +73,18 @@ public class User implements JID {
 	}
 
 	public String asString() {
-		return this.asStringWithLoop() + (this.resource != null ? "/" + this.resource : "");
+		String asString = this.asStringWithNaked() + (this.resource != null ? "/" + this.resource : "");
+		LOG.debug("User asString: " + asString);
+		return asString;
 	}
 
-	public String asStringWithLoop() {
-		return (this.user != null ? this.user + "@" : "") + this.host;
+	public String asStringWithNaked() {
+		String asStringWithNaked = (this.user != null ? this.user + "@" : "") + this.host;
+		LOG.debug("User asStringWithNaked: " + asStringWithNaked);
+		return asStringWithNaked;
+	}
+
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 }

@@ -10,15 +10,12 @@ public interface Context {
 	public Boolean access(Boolean canAccess);
 
 	public Boolean access();
+	
+	public Boolean online();
 
 	public JID jid(JID jid);
 
 	public JID jid();
-
+	
 	public void write(Protocol protocol);
-
-	public interface Writeable {
-
-		public void writeAndFlush(Protocol protocol);
-	}
 }

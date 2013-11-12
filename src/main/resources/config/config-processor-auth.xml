@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<alias name="mongoAccessor" alias="accessor" />
+
+	<bean id="mongoAccessor" class="com.sissi.process.auth.access.MongoAccessor">
+		<constructor-arg index="0" value="sissi" />
+		<constructor-arg index="1" value="jids" />
+		<constructor-arg ref="mongoClient" />
+	</bean>
+
+	<bean id="plainNormalization" class="com.sissi.process.auth.normalize.PlainNormalization" />
+
+	<bean id="normalizations" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
+		<property name="targetListClass" value="java.util.ArrayList" />
+		<property name="singleton" value="true" />
+		<property name="sourceList">
+			<list>
+				<ref bean="plainNormalization" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="authMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+		<constructor-arg>
+			<bean class="com.sissi.process.auth.AuthMatcher" />
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.process.auth.AuthProcessor">
+				<constructor-arg ref="accessor" />
+				<constructor-arg ref="normalizations" />
+			</bean>
+		</constructor-arg>
+	</bean>
+</beans>

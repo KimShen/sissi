@@ -48,29 +48,34 @@ public class XMLMapping implements Mapping {
 
 	public Object newInstance(String uri, String localName) {
 		String securityURI = uri != null ? uri : "";
-		Class<?> clazz = this.cached.get(securityURI + localName);
-		if (clazz == null) {
-			clazz = this.selector.find(securityURI, localName);
-		}
+		Class<?> clazz = this.newInstanceAndGetCached(localName, securityURI);
 		this.log.debug("Request uri: " + securityURI + " / localName: " + localName + " and found: " + clazz);
 		try {
-			if (clazz != null) {
-				this.cached.put(securityURI + localName, clazz);
-				return clazz.newInstance();
-			} else {
-				return null;
-			}
+			return clazz != null ? this.newInstanceAndPutCached(localName, securityURI, clazz) : null;
 		} catch (Exception e) {
 			this.log.error(e);
 			return null;
 		}
 	}
 
+	private Object newInstanceAndPutCached(String localName, String securityURI, Class<?> clazz) throws InstantiationException, IllegalAccessException {
+		this.cached.put(securityURI + localName, clazz);
+		return clazz.newInstance();
+	}
+
+	private Class<?> newInstanceAndGetCached(String localName, String securityURI) {
+		Class<?> clazz = this.cached.get(securityURI + localName);
+		if (clazz == null) {
+			clazz = this.selector.find(securityURI, localName);
+		}
+		return clazz;
+	}
+
 	public Boolean hasCached(String uri, String localName) {
 		String securityURI = uri != null ? uri : "";
 		boolean isCached = this.cached.containsKey(securityURI + localName);
 		if (isCached) {
-			this.log.debug("URI: " + uri + " / LocalName: " + localName + " would be reused");
+			this.log.debug("URI: " + uri + " / LocalName: " + localName + " can be reused");
 		}
 		return isCached;
 	}
@@ -87,13 +92,17 @@ public class XMLMapping implements Mapping {
 		public void setFinders(List<Finder> finders) {
 			this.finders = finders;
 			for (Finder finder : finders) {
-				try {
-					String uri = finder.getUri();
-					this.mapping.put((uri != null ? uri : "") + finder.getLocalName(), Class.forName(finder.getClazz()));
-					this.log.debug("Insert Mapping: " + (uri != null ? uri : "") + " / " + finder.getLocalName() + " / " + finder.getClazz());
-				} catch (Exception e) {
-					this.log.warn(e);
-				}
+				this.doEachFinder(finder);
+			}
+		}
+
+		private void doEachFinder(Finder finder) {
+			try {
+				String uri = finder.getUri();
+				this.mapping.put((uri != null ? uri : "") + finder.getLocalName(), Class.forName(finder.getClazz()));
+				this.log.debug("Insert Mapping: " + (uri != null ? uri : "") + " / " + finder.getLocalName() + " / " + finder.getClazz());
+			} catch (Exception e) {
+				this.log.warn(e);
 			}
 		}
 
@@ -142,5 +151,4 @@ public class XMLMapping implements Mapping {
 			this.clazz = clazz;
 		}
 	}
-
 }

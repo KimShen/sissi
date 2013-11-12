@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <finders>
 	<finder uri="test1" localName="A">
-		<clazz>com.sisi.read.sax.XMLMappingTest$A</clazz>
+		<clazz>com.sissi.read.sax.XMLMappingTest$A</clazz>
 	</finder>
 	<finder uri="test2" localName="A">
-		<clazz>com.sisi.read.sax.XMLMappingTest$A</clazz>
+		<clazz>com.sissi.read.sax.XMLMappingTest$A</clazz>
 	</finder>
 	<finder uri="test1" localName="A1">
-		<clazz>com.sisi.read.sax.XMLMappingTest$A</clazz>
+		<clazz>com.sissi.read.sax.XMLMappingTest$A</clazz>
 	</finder>
 	<finder uri="test1" localName="B">
-		<clazz>com.sisi.read.sax.XMLMappingTest$B</clazz>
+		<clazz>com.sissi.read.sax.XMLMappingTest$B</clazz>
 	</finder>
 	<finder localName="B">
-		<clazz>com.sisi.read.sax.XMLMappingTest$C</clazz>
+		<clazz>com.sissi.read.sax.XMLMappingTest$C</clazz>
 	</finder>
 	<finder uri="test1">
-		<clazz>com.sisi.read.sax.XMLMappingTest$C</clazz>
+		<clazz>com.sissi.read.sax.XMLMappingTest$C</clazz>
 	</finder>
 </finders>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="presenceMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+		<constructor-arg>
+			<bean class="com.sissi.process.presence.PresenceMatcher" />
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.process.presence.PresenceForkProcessor">
+				<constructor-arg ref="presenceSubProcessorFinder" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="presenceStateProcessor" class="com.sissi.process.presence.state.PresenceStateProcessor">
+		<constructor-arg ref="addressing" />
+		<constructor-arg ref="relationContext" />
+	</bean>
+
+	<bean id="presenceStateMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+		<constructor-arg>
+			<bean class="com.sissi.process.presence.state.PresenceStateMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="presenceStateProcessor" />
+	</bean>
+
+	<bean id="presenceSubscribeMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+		<constructor-arg>
+			<bean class="com.sissi.process.presence.subscribe.PresenceSubscribeMatcher" />
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.process.presence.subscribe.PresenceSubscribeProcessor">
+				<constructor-arg ref="addressing" />
+				<constructor-arg ref="relationContext" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="presenceSubscribedMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+		<constructor-arg>
+			<bean class="com.sissi.process.presence.subscribed.PresenceSubscribedMatcher" />
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.process.presence.subscribed.PresenceSubscribedProcessor">
+				<constructor-arg ref="addressing" />
+				<constructor-arg ref="relationContext" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="presenceUnSubscribedMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+		<constructor-arg>
+			<bean class="com.sissi.process.presence.unsubscribed.PresenceUnSubscribedMatcher" />
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.process.presence.unsubscribed.PresenceUnSubscribedProcessor">
+				<constructor-arg ref="addressing" />
+				<constructor-arg ref="relationContext" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="presenceSubProcessorFinder" class="com.sissi.process.finder.ChainedProcessorFinder">
+		<constructor-arg>
+			<bean class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
+				<property name="targetListClass" value="java.util.ArrayList" />
+				<property name="singleton" value="true" />
+				<property name="sourceList">
+					<list>
+						<ref bean="presenceStateMatchProcessor" />
+						<ref bean="presenceSubscribeMatchProcessor" />
+						<ref bean="presenceSubscribedMatchProcessor" />
+						<ref bean="presenceUnSubscribedMatchProcessor" />
+						<ref bean="matchAllProcessor" />
+					</list>
+				</property>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+</beans>
