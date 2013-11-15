@@ -6,13 +6,14 @@ import com.sissi.addressing.Addressing;
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 import com.sissi.context.JIDContext;
+import com.sissi.pipeline.process.presence.notify.PresenceBroadcastProcessor;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.relation.RelationContext;
 
 /**
  * @author kim 2013-11-4
  */
-public class PresenceFriendsProcessor extends PresenceStateProcessor {
+public class PresenceFriendsProcessor extends PresenceBroadcastProcessor {
 
 	public PresenceFriendsProcessor(JIDBuilder jidBuilder, Addressing addressing, RelationContext relationContext) {
 		super(jidBuilder, addressing, relationContext);

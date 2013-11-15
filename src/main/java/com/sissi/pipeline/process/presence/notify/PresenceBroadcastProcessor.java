@@ -1,4 +1,4 @@
-package com.sissi.pipeline.process.presence.state;
+package com.sissi.pipeline.process.presence.notify;
 
 import java.util.Set;
 
@@ -14,7 +14,7 @@ import com.sissi.relation.RelationContext;
 /**
  * @author kim 2013-11-14
  */
-public abstract class PresenceStateProcessor implements ProcessPipeline {
+public abstract class PresenceBroadcastProcessor implements ProcessPipeline {
 
 	protected JIDBuilder jidBuilder;
 
@@ -22,7 +22,7 @@ public abstract class PresenceStateProcessor implements ProcessPipeline {
 
 	protected RelationContext relationContext;
 
-	public PresenceStateProcessor(JIDBuilder jidBuilder, Addressing addressing, RelationContext relationContext) {
+	public PresenceBroadcastProcessor(JIDBuilder jidBuilder, Addressing addressing, RelationContext relationContext) {
 		super();
 		this.jidBuilder = jidBuilder;
 		this.addressing = addressing;

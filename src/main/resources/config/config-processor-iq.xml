@@ -88,7 +88,18 @@
 				<constructor-arg>
 					<util:list>
 						<bean class="com.sissi.pipeline.process.iq.roster.RosterSetProcessor">
+							<constructor-arg ref="addressing" />
 							<constructor-arg ref="p2pRelationContext" />
+							<constructor-arg>
+								<bean class="com.sissi.pipeline.process.ChainedProcessor">
+									<constructor-arg>
+										<util:list>
+											<ref bean="presenceOfflineProcessor" />
+											<ref bean="presenceToMeUnicastProcessor" />
+										</util:list>
+									</constructor-arg>
+								</bean>
+							</constructor-arg>
 						</bean>
 						<ref bean="iqResultProcessor" />
 					</util:list>

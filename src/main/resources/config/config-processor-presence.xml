@@ -15,6 +15,16 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="presenceOfflineProcessor" class="com.sissi.pipeline.process.presence.PresenceOfflineProcessor">
+		<constructor-arg ref="jidBuilder" />
+		<constructor-arg ref="addressing" />
+		<constructor-arg ref="storageBox" />
+	</bean>
+
+	<bean id="presenceToMeUnicastProcessor" class="com.sissi.pipeline.process.presence.notify.PresenceToMeUnicastProcessor" />
+
+	<bean id="presenceFromMeUnicastProcessor" class="com.sissi.pipeline.process.presence.notify.PresenceFromMeUnicastProcessor" />
+
 	<bean id="presenceFriendsProcessor" class="com.sissi.pipeline.process.presence.state.PresenceFriendsProcessor">
 		<constructor-arg ref="jidBuilder" />
 		<constructor-arg ref="addressing" />

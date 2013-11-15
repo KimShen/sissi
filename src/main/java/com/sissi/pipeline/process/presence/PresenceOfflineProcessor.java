@@ -1,4 +1,4 @@
-package com.sissi.pipeline.process.message;
+package com.sissi.pipeline.process.presence;
 
 import com.sissi.addressing.Addressing;
 import com.sissi.context.JIDBuilder;
@@ -10,7 +10,7 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013-11-15
  */
-public class MessageOfflineProcessor implements ProcessPipeline {
+public class PresenceOfflineProcessor implements ProcessPipeline {
 
 	private JIDBuilder jidBuilder;
 
@@ -18,7 +18,7 @@ public class MessageOfflineProcessor implements ProcessPipeline {
 
 	private StorageBox storageBox;
 
-	public MessageOfflineProcessor(JIDBuilder jidBuilder, Addressing addressing, StorageBox storageBox) {
+	public PresenceOfflineProcessor(JIDBuilder jidBuilder, Addressing addressing, StorageBox storageBox) {
 		super();
 		this.jidBuilder = jidBuilder;
 		this.addressing = addressing;

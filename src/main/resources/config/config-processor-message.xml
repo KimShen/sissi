@@ -44,11 +44,22 @@
 						<bean class="com.sissi.pipeline.process.message.p2p.MessageP2PContentCheckProcessor" />
 						<bean class="com.sissi.pipeline.process.message.p2p.MessageP2PNoneRelationProcessor">
 							<constructor-arg ref="jidBuilder" />
-							<constructor-arg ref="p2gRelationContext" />
+							<constructor-arg ref="p2pRelationContext" />
 						</bean>
-						<bean class="com.sissi.pipeline.process.message.p2p.MessageP2PRouteProcessor">
-							<constructor-arg ref="jidBuilder" />
-							<constructor-arg ref="addressing" />
+						<bean class="com.sissi.pipeline.process.ChainedProcessor">
+							<constructor-arg>
+								<util:list>
+									<bean class="com.sissi.pipeline.process.message.MessageOfflineProcessor">
+										<constructor-arg ref="jidBuilder" />
+										<constructor-arg ref="addressing" />
+										<constructor-arg ref="storageBox" />
+									</bean>
+									<bean class="com.sissi.pipeline.process.message.p2p.MessageP2PRouteProcessor">
+										<constructor-arg ref="jidBuilder" />
+										<constructor-arg ref="addressing" />
+									</bean>
+								</util:list>
+							</constructor-arg>
 						</bean>
 					</util:list>
 				</constructor-arg>

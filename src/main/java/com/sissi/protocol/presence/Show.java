@@ -8,7 +8,7 @@ import com.sissi.protocol.Protocol;
 public class Show extends Protocol {
 
 	public String text;
-
+	
 	public String getText() {
 		return text;
 	}
