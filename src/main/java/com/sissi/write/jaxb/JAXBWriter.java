@@ -20,7 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.write.WithOutClose;
+import com.sissi.write.WriterWithOutClose;
 import com.sissi.write.Writer;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
@@ -63,7 +63,7 @@ public class JAXBWriter implements Writer {
 	}
 
 	public void write(Protocol protocol, OutputStream output) throws IOException {
-		if (WithOutClose.class.isAssignableFrom(protocol.getClass())) {
+		if (WriterWithOutClose.class.isAssignableFrom(protocol.getClass())) {
 			this.writeWithOutClose(protocol, output);
 		} else {
 			this.writeWithFull(protocol, output);

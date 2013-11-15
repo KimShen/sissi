@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<alias name="mongoAccessor" alias="accessor" />
-
-	<bean id="mongoAccessor" class="com.sissi.process.auth.access.MongoAccessor">
-		<constructor-arg index="0" value="sissi" />
-		<constructor-arg index="1" value="jids" />
-		<constructor-arg ref="mongoClient" />
-	</bean>
-
-	<bean id="plainNormalization" class="com.sissi.process.auth.normalize.PlainNormalization" />
-
-	<bean id="normalizations" class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
-		<property name="targetListClass" value="java.util.ArrayList" />
-		<property name="singleton" value="true" />
-		<property name="sourceList">
-			<list>
-				<ref bean="plainNormalization" />
-			</list>
-		</property>
-	</bean>
-
-	<bean id="authMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+	<bean id="authCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
 		<constructor-arg>
-			<bean class="com.sissi.process.auth.AuthMatcher" />
+			<bean class="com.sissi.pipeline.process.ClassMatcher">
+				<constructor-arg value="com.sissi.protocol.auth.Auth" />
+			</bean>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.process.auth.AuthProcessor">
-				<constructor-arg ref="accessor" />
-				<constructor-arg ref="normalizations" />
+			<bean class="com.sissi.pipeline.process.ChainedProcessor">
+				<constructor-arg>
+					<util:list>
+						<bean class="com.sissi.pipeline.process.auth.AuthNoneRepeatProcessor" />
+						<bean class="com.sissi.pipeline.process.auth.AuthLoginAndSuccessProcessor">
+							<constructor-arg ref="jidBuilder" />
+							<constructor-arg>
+								<bean class="com.sissi.pipeline.process.auth.impl.MongoAuthAccessor">
+									<constructor-arg index="0" value="sissi" />
+									<constructor-arg index="1" value="jids" />
+									<constructor-arg ref="mongoClient" />
+								</bean>
+							</constructor-arg>
+							<constructor-arg>
+								<util:list>
+									<bean class="com.sissi.pipeline.process.auth.impl.PlainAuthNormalization" />
+								</util:list>
+							</constructor-arg>
+						</bean>
+						<bean class="com.sissi.pipeline.process.auth.AuthLoginAndFailedProcessor" />
+					</util:list>
+				</constructor-arg>
 			</bean>
 		</constructor-arg>
 	</bean>

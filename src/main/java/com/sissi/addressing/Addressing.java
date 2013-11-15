@@ -1,6 +1,6 @@
 package com.sissi.addressing;
 
-import com.sissi.context.Context;
+import com.sissi.context.JIDContext;
 import com.sissi.context.JID;
 
 /**
@@ -8,9 +8,9 @@ import com.sissi.context.JID;
  */
 public interface Addressing {
 
-	public Context join(Context context);
+	public JIDContext join(JIDContext context);
 
-	public Context find(JID jid);
+	public JIDContext find(JID jid);
 	
-	public Boolean online(JID jid);
+	public Boolean isOnline(JID jid);
 }

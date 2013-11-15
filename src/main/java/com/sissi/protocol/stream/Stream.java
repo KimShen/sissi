@@ -12,14 +12,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.context.Context;
+import com.sissi.context.JIDContext;
 import com.sissi.protocol.Feature;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.auth.Auth;
 import com.sissi.protocol.auth.Mechanisms;
 import com.sissi.protocol.iq.bind.Bind;
 import com.sissi.protocol.iq.session.Session;
-import com.sissi.write.WithOutClose;
+import com.sissi.write.WriterWithOutClose;
 
 /**
  * @author Kim.shen 2013-10-16
@@ -60,12 +60,12 @@ public class Stream extends Protocol {
 		return features;
 	}
 
-	public static Stream generate(Context context) {
+	public static Stream generate(JIDContext context) {
 		return new StreamOpen();
 	}
 
 	@XmlRootElement(name = "stream", namespace = Stream.NAMESPACE)
-	public static class StreamOpen extends Stream implements WithOutClose {
+	public static class StreamOpen extends Stream implements WriterWithOutClose {
 
 	}
 }

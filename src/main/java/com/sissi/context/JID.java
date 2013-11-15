@@ -5,27 +5,21 @@ package com.sissi.context;
  */
 public interface JID {
 
-	public String getUser();
+	public String user();
 
-	public String getHost();
+	public String host();
 
-	public String getResource();
+	public String resource();
 
-	public void setUser(String user);
+	public String user(String user);
 
-	public void setHost(String host);
+	public String host(String host);
 
-	public void setResource(String resource);
+	public String resource(String resource);
 
-	public Boolean naked();
-
-	/**
-	 * Is Loop in server
-	 * @return
-	 */
-	public Boolean loop();
-
+	public Boolean bare();
+	
 	public String asString();
 
-	public String asStringWithNaked();
+	public String asStringWithBare();
 }

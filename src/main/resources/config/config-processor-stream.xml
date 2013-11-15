@@ -2,12 +2,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="streamMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+	<bean id="streamCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
 		<constructor-arg>
-			<bean class="com.sissi.process.stream.StreamMatcher" />
+			<bean class="com.sissi.pipeline.process.ClassMatcher">
+				<constructor-arg value="com.sissi.protocol.stream.Stream" />
+			</bean>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.process.stream.StreamProcessor" />
+			<bean class="com.sissi.pipeline.process.stream.StreamProcessor" />
 		</constructor-arg>
 	</bean>
 

@@ -17,12 +17,13 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.connector.Connector;
-import com.sissi.connector.ConnectorBuilder;
-import com.sissi.context.Context;
-import com.sissi.context.user.UserContext;
+import com.sissi.context.JIDContext;
+import com.sissi.context.impl.UserContext;
 import com.sissi.feed.FeederBuilder;
-import com.sissi.process.ProcessorFinder;
+import com.sissi.looper.Looper;
+import com.sissi.looper.LooperBuilder;
+import com.sissi.pipeline.ProcessPipelineFinder;
+import com.sissi.pipeline.output.NetworkOutputPipeline;
 import com.sissi.read.Reader;
 import com.sissi.write.Writer;
 
@@ -37,9 +38,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
 	private final static String CONNECTOR_ATTR = "CONNECTOR_ATTR";
 
-	private final static AttributeKey<Context> CONTEXT = new AttributeKey<Context>(CONTEXT_ATTR);
+	private final static AttributeKey<JIDContext> CONTEXT = new AttributeKey<JIDContext>(CONTEXT_ATTR);
 
-	private final static AttributeKey<Connector> CONNECTOR = new AttributeKey<Connector>(CONNECTOR_ATTR);
+	private final static AttributeKey<Looper> CONNECTOR = new AttributeKey<Looper>(CONNECTOR_ATTR);
 
 	private final PipedInputStream input = new PipedInputStream();
 
@@ -49,24 +50,24 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
 	private final Reader reader;
 
-	private final ProcessorFinder finder;
+	private final ProcessPipelineFinder finder;
 
 	private final FeederBuilder feederBuilder;
 
-	private final ConnectorBuilder connectorBuilder;
+	private final LooperBuilder looperBuilder;
 
-	public ServerHandler(Reader reader, Writer writer, ProcessorFinder finder, FeederBuilder feederBuilder, ConnectorBuilder connectorBuilder) throws IOException {
+	public ServerHandler(Reader reader, Writer writer, ProcessPipelineFinder finder, FeederBuilder feederBuilder, LooperBuilder looperBuilder) throws IOException {
 		super();
 		this.reader = reader;
 		this.writer = writer;
 		this.finder = finder;
 		this.feederBuilder = feederBuilder;
-		this.connectorBuilder = connectorBuilder;
+		this.looperBuilder = looperBuilder;
 	}
 
 	public void channelActive(final ChannelHandlerContext ctx) {
 		this.createContextAndJoinGroup(ctx);
-		this.createConnectorAndStart(ctx);
+		this.createLooperAndStart(ctx);
 	}
 
 	public void channelInactive(ChannelHandlerContext ctx) {
@@ -100,11 +101,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 		LOG.error(trace.toString());
 	}
 
-	private void createConnectorAndStart(final ChannelHandlerContext ctx) {
+	private void createLooperAndStart(final ChannelHandlerContext ctx) {
 		try {
-			Connector connector = this.connectorBuilder.builder(this.reader.future(input), this.feederBuilder.builder(ctx.attr(CONTEXT).get(), this.finder));
-			connector.start();
-			ctx.attr(CONNECTOR).set(connector);
+			Looper looper = this.looperBuilder.build(this.reader.future(input), this.feederBuilder.build(ctx.attr(CONTEXT).get(), this.finder));
+			ctx.attr(CONNECTOR).set(looper);
+			looper.start();
 		} catch (IOException e) {
 			LOG.error(e);
 			throw new RuntimeException(e);
@@ -112,7 +113,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 	}
 
 	private void createContextAndJoinGroup(final ChannelHandlerContext ctx) {
-		ctx.attr(CONTEXT).set(new UserContext(new WriteableWrapper(this.writer, ctx)));
+		ctx.attr(CONTEXT).set(new UserContext(new NetworkOutputPipeline(this.writer, ctx)));
 	}
 
 	private byte[] copyToBytes(ByteBuf byteBuf) {
@@ -123,8 +124,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
 	private void logIfNecessary(ChannelHandlerContext ctx, ByteBuf byteBuf) {
 		if (LOG.isInfoEnabled()) {
-			Context context = ctx.attr(CONTEXT).get();
-			LOG.info("Read on " + (context != null && context.jid() != null ? context.jid().asStringWithNaked() : "N/A") + ": " + byteBuf.toString(Charset.forName("UTF-8")));
+			JIDContext context = ctx.attr(CONTEXT).get();
+			LOG.info("Read on " + (context != null && context.jid() != null ? context.jid().asStringWithBare() : "N/A") + ": " + byteBuf.toString(Charset.forName("UTF-8")));
 			byteBuf.readerIndex(0);
 		}
 	}

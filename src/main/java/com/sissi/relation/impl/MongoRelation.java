@@ -1,10 +1,14 @@
 package com.sissi.relation.impl;
 
+import java.util.HashSet;
 import java.util.Map;
 
 import org.bson.types.ObjectId;
 
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sissi.relation.Relation;
+import com.sissi.relation.RelationMapping;
 
 /**
  * @author kim 2013-11-6
@@ -17,8 +21,6 @@ public class MongoRelation extends RelationMapping {
 
 	private String name;
 
-	private String group;
-
 	private String subscription;
 
 	public MongoRelation(DBObject db) {
@@ -26,13 +28,24 @@ public class MongoRelation extends RelationMapping {
 		this.id = (ObjectId) db.get("_id");
 		this.jid = this.secGet(db, "jid");
 		this.name = this.secGet(db, "name");
-		this.group = this.secGet(db, "group");
 		this.subscription = this.secGet(db, "state");
 	}
 
 	private String secGet(DBObject db, String key) {
 		Object value = db.get(key);
 		return value != null ? value.toString() : null;
+	}
+
+	public String getJID() {
+		return jid;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getSubscription() {
+		return subscription;
 	}
 
 	public String getJid() {
@@ -43,24 +56,8 @@ public class MongoRelation extends RelationMapping {
 		this.jid = jid;
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getGroup() {
-		return group;
-	}
-
-	public void setGroup(String group) {
-		this.group = group;
-	}
-
-	public String getSubscription() {
-		return subscription;
 	}
 
 	public void setSubscription(String subscription) {
@@ -72,5 +69,19 @@ public class MongoRelation extends RelationMapping {
 		Map<String, Object> entity = super.toEntity();
 		entity.put("_id", this.id);
 		return entity;
+	}
+
+	public static class MongoRelations extends HashSet<Relation> {
+
+		private static final long serialVersionUID = 1L;
+
+		public MongoRelations(DBCursor cursor) {
+			if (cursor == null) {
+				return;
+			}
+			while (cursor.hasNext()) {
+				this.add(new MongoRelation(cursor.next()));
+			}
+		}
 	}
 }

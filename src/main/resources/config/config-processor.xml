@@ -2,28 +2,28 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="matchAllProcessor" class="com.sissi.process.finder.MatchProcessor">
+	<bean id="allMatcherCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
 		<constructor-arg>
-			<bean class="com.sissi.process.Matcher$AllMatcher" />
+			<bean class="com.sissi.pipeline.process.AllMatcher" />
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.process.Processor$NothingProcessor" />
+			<bean class="com.sissi.pipeline.process.NothingProcessor" />
 		</constructor-arg>
 	</bean>
 
-	<bean id="chainedProcessorFinder" class="com.sissi.process.finder.ChainedProcessorFinder">
+	<bean id="processorFinder" class="com.sissi.pipeline.process.ChainedFinder">
 		<constructor-arg>
 			<bean class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
 				<property name="targetListClass" value="java.util.ArrayList" />
 				<property name="singleton" value="true" />
 				<property name="sourceList">
 					<list>
-						<ref bean="authMatchProcessor" />
-						<ref bean="iqMatchProcessor" />
-						<ref bean="messageMatchProcessor" />
-						<ref bean="presenceMatchProcessor" />
-						<ref bean="streamMatchProcessor" />
-						<ref bean="matchAllProcessor" />
+						<ref bean="authCondition" />
+						<ref bean="iqCondition" />
+						<ref bean="messageForkCondition" />
+						<ref bean="presenceForkCondition" />
+						<ref bean="streamCondition" />
+						<ref bean="allMatcherCondition" />
 					</list>
 				</property>
 			</bean>

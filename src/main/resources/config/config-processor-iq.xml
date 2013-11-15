@@ -1,80 +1,108 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="iqMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+	<bean id="iqCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
 		<constructor-arg>
-			<bean class="com.sissi.process.iq.IQMatcher" />
+			<bean class="com.sissi.pipeline.process.ClassMatcher">
+				<constructor-arg value="com.sissi.protocol.iq.IQ" />
+			</bean>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.process.iq.IQForkProcessor">
-				<constructor-arg ref="iqSubProcessorFinder" />
-				<constructor-arg ref="iqResultProcessor" />
+			<bean class="com.sissi.pipeline.process.ChainedProcessor">
+				<constructor-arg>
+					<util:list>
+						<bean class="com.sissi.pipeline.process.iq.IQNoneChildrenProcessor">
+							<constructor-arg ref="iqResultProcessor" />
+						</bean>
+						<bean class="com.sissi.pipeline.process.iq.IQForkProcessor">
+							<constructor-arg>
+								<bean class="com.sissi.pipeline.process.ChainedFinder">
+									<constructor-arg>
+										<util:list>
+											<ref bean="bindCondition" />
+											<ref bean="rosterGetCondition" />
+											<ref bean="rosterSetCondition" />
+											<ref bean="iqResultCondition" />
+										</util:list>
+									</constructor-arg>
+								</bean>
+							</constructor-arg>
+						</bean>
+					</util:list>
+				</constructor-arg>
 			</bean>
 		</constructor-arg>
 	</bean>
 
-	<bean id="bindMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+	<bean id="bindCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
 		<constructor-arg>
-			<bean class="com.sissi.process.iq.bind.BindMatcher" />
+			<bean class="com.sissi.pipeline.process.ClassMatcher">
+				<constructor-arg value="com.sissi.protocol.iq.bind.Bind" />
+			</bean>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.process.iq.bind.BindProcessor">
-				<constructor-arg ref="systemJID" />
-				<constructor-arg ref="addressing" />
-				<constructor-arg ref="presenceStateProcessor" />
+			<bean class="com.sissi.pipeline.process.ChainedProcessor">
+				<constructor-arg>
+					<util:list>
+						<bean class="com.sissi.pipeline.process.iq.bind.BindProcessor">
+							<constructor-arg ref="systemJID" />
+							<constructor-arg ref="addressing" />
+						</bean>
+						<ref bean="presenceFriendsProcessor" />
+						<bean class="com.sissi.pipeline.process.presence.state.PresenceMyselfProcessor">
+							<constructor-arg ref="jidBuilder" />
+							<constructor-arg ref="addressing" />
+							<constructor-arg ref="p2pRelationContext" />
+						</bean>
+					</util:list>
+				</constructor-arg>
 			</bean>
 		</constructor-arg>
 	</bean>
 
-	<bean id="rosterGetMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+	<bean id="rosterGetCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
 		<constructor-arg>
-			<bean class="com.sissi.process.iq.roster.RosterGetMatcher" />
+			<bean class="com.sissi.pipeline.process.iq.roster.RosterTypeMatcher">
+				<constructor-arg value="GET" />
+			</bean>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.process.iq.roster.RosterGetProcessor">
-				<constructor-arg ref="relationContext" />
+			<bean class="com.sissi.pipeline.process.iq.roster.RosterGetProcessor">
+				<constructor-arg ref="p2pRelationContext" />
 			</bean>
 		</constructor-arg>
 	</bean>
 
-	<bean id="rosterSetMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+	<bean id="rosterSetCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
 		<constructor-arg>
-			<bean class="com.sissi.process.iq.roster.RosterSetMatcher" />
+			<bean class="com.sissi.pipeline.process.iq.roster.RosterTypeMatcher">
+				<constructor-arg value="SET" />
+			</bean>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.process.iq.roster.RosterSetProcessor">
-				<constructor-arg ref="relationContext" />
-				<constructor-arg ref="iqResultProcessor" />
+			<bean class="com.sissi.pipeline.process.ChainedProcessor">
+				<constructor-arg>
+					<util:list>
+						<bean class="com.sissi.pipeline.process.iq.roster.RosterSetProcessor">
+							<constructor-arg ref="p2pRelationContext" />
+						</bean>
+						<ref bean="iqResultProcessor" />
+					</util:list>
+				</constructor-arg>
 			</bean>
 		</constructor-arg>
 	</bean>
 
-	<bean id="iqResultProcessor" class="com.sissi.process.iq.result.IQResultProcessor" />
+	<bean id="iqResultProcessor" class="com.sissi.pipeline.process.iq.result.IQResultProcessor" />
 
-	<bean id="iqResultMatchProcessor" class="com.sissi.process.finder.MatchProcessor">
+	<bean id="iqResultCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
 		<constructor-arg>
-			<bean class="com.sissi.process.iq.result.IQResultMatcher" />
+			<bean class="com.sissi.pipeline.process.AllMatcher" />
 		</constructor-arg>
 		<constructor-arg ref="iqResultProcessor" />
 	</bean>
-
-	<bean id="iqSubProcessorFinder" class="com.sissi.process.finder.ChainedProcessorFinder">
-		<constructor-arg>
-			<bean class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
-				<property name="targetListClass" value="java.util.ArrayList" />
-				<property name="singleton" value="true" />
-				<property name="sourceList">
-					<list>
-						<ref bean="bindMatchProcessor" />
-						<ref bean="rosterGetMatchProcessor" />
-						<ref bean="rosterSetMatchProcessor" />
-						<ref bean="iqResultMatchProcessor" />
-						<ref bean="matchAllProcessor" />
-					</list>
-				</property>
-			</bean>
-		</constructor-arg>
-	</bean>
-
 </beans>

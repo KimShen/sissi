@@ -2,9 +2,9 @@ package com.sissi.netty;
 
 import java.io.IOException;
 
-import com.sissi.connector.ConnectorBuilder;
 import com.sissi.feed.FeederBuilder;
-import com.sissi.process.ProcessorFinder;
+import com.sissi.looper.LooperBuilder;
+import com.sissi.pipeline.ProcessPipelineFinder;
 import com.sissi.read.Reader;
 import com.sissi.write.Writer;
 
@@ -17,13 +17,13 @@ public class ServerHandlerBuilder {
 
 	private final Reader reader;
 
-	private final ProcessorFinder finder;
+	private final ProcessPipelineFinder finder;
 
 	private final FeederBuilder feederBuilder;
 
-	private final ConnectorBuilder connectorBuilder;
+	private final LooperBuilder connectorBuilder;
 
-	public ServerHandlerBuilder(Writer writer, Reader reader, ProcessorFinder finder, FeederBuilder feederBuilder, ConnectorBuilder connectorBuilder) {
+	public ServerHandlerBuilder(Writer writer, Reader reader, ProcessPipelineFinder finder, FeederBuilder feederBuilder, LooperBuilder connectorBuilder) {
 		super();
 		this.writer = writer;
 		this.reader = reader;

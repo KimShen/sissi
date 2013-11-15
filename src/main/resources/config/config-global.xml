@@ -11,12 +11,16 @@
 		<constructor-arg value="${mongo.host}" />
 	</bean>
 
-	<bean id="systemJID" class="com.sissi.context.user.User">
+	<bean id="systemJID" class="com.sissi.context.impl.User">
 		<constructor-arg index="0" value="system" />
 		<constructor-arg index="1" value="www.myaccount.com" />
-		<constructor-arg index="2">
-			<null />
-		</constructor-arg>
 	</bean>
 
+	<bean id="groupJID" class="com.sissi.context.impl.User">
+		<constructor-arg index="0" value="system" />
+		<constructor-arg index="1" value="chatroom.myaccount.com" />
+	</bean>
+
+	<bean id="jidBuilder" class="com.sissi.context.impl.UserBuilder" />
+	
 </beans>

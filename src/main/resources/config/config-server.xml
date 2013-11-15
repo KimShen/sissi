@@ -5,8 +5,8 @@
 	<bean id="serverHandlerBuilder" class="com.sissi.netty.ServerHandlerBuilder">
 		<constructor-arg ref="reader" />
 		<constructor-arg ref="writer" />
-		<constructor-arg ref="chainedProcessorFinder" />
-		<constructor-arg ref="chainedFeederBuilder" />
-		<constructor-arg ref="threadConnectorBuilder" />
+		<constructor-arg ref="processorFinder" />
+		<constructor-arg ref="feederBuilder" />
+		<constructor-arg ref="looperBuilder" />
 	</bean>
 </beans>

@@ -1,11 +1,16 @@
 package com.sissi.relation.impl;
 
+import java.util.Map;
+
 import com.sissi.protocol.iq.roster.Item;
+import com.sissi.protocol.presence.Presence.Subscribe;
+import com.sissi.relation.P2PRelation;
+import com.sissi.relation.RelationMapping;
 
 /**
  * @author kim 2013-11-6
  */
-public class ItemWrapRelation extends RelationMapping {
+public class ItemWrapRelation extends RelationMapping implements P2PRelation {
 
 	private Item item;
 
@@ -15,7 +20,7 @@ public class ItemWrapRelation extends RelationMapping {
 	}
 
 	@Override
-	public String getJid() {
+	public String getJID() {
 		return this.item.getJid();
 	}
 
@@ -25,12 +30,18 @@ public class ItemWrapRelation extends RelationMapping {
 	}
 
 	@Override
-	public String getGroup() {
+	public String group() {
 		return this.item.getGroup();
 	}
-	
+
 	@Override
 	public String getSubscription() {
-		return this.item.getSubscription();
+		return Subscribe.parse(this.item.getSubscription()).toString();
+	}
+
+	public Map<String, Object> toEntity() {
+		Map<String, Object> entity = super.toEntity();
+		entity.put("group", this.group());
+		return entity;
 	}
 }
