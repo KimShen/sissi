@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="config.auth" class="com.sissi.config.impl.MongoConfig">
+		<constructor-arg>
+			<map>
+				<entry>
+					<key>
+						<util:constant static-field="com.sissi.config.impl.MongoConfig.D_NAME" />
+					</key>
+					<value>${mongo.db}</value>
+				</entry>
+				<entry>
+					<key>
+						<util:constant static-field="com.sissi.config.impl.MongoConfig.C_NAME" />
+					</key>
+					<value>${mongo.collection.auth}</value>
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<alias name="auth.accessor.mongo" alias="auth.accessor" />
+	<bean id="auth.accessor.mongo" class="com.sissi.pipeline.in.auth.impl.MongoAuthAccessor">
+		<constructor-arg ref="config.auth" />
+		<constructor-arg ref="mongo.client" />
+	</bean>
+
+	<bean id="auth.nor.plain" class="com.sissi.pipeline.in.auth.impl.PlainAuthNormalization" />
+	<util:list id="auths">
+		<ref bean="auth.nor.plain" />
+	</util:list>
+
+	<bean id="auth.pro.repeat" class="com.sissi.pipeline.in.auth.impl.AuthNoneRepeatProcessor" />
+	<bean id="auth.pro.failed" class="com.sissi.pipeline.in.auth.impl.AuthFailedProcessor" />
+	<bean id="auth.pro.success" class="com.sissi.pipeline.in.auth.impl.AuthSuccessProcessor" parent="global.pro.utils">
+		<constructor-arg ref="auths" />
+		<constructor-arg ref="auth.accessor" />
+	</bean>
+	<bean id="auth.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="auth.pro.repeat" />
+				<ref bean="auth.pro.success" />
+				<ref bean="auth.pro.failed" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="auth.condition" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.MatchClass">
+				<constructor-arg value="com.sissi.protocol.iq.login.Auth" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="auth.pro.chained" />
+	</bean>
+</beans>
