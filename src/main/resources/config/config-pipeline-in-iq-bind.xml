@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="bind.pro.binding" class="com.sissi.pipeline.in.iq.bind.BindingProcessor" parent="global.pro.utils" />
+	<bean id="bind.pro.ban" class="com.sissi.pipeline.in.iq.bind.BindBanProcessor" parent="global.pro.utils" />
+	<bean id="bind.pro.join" class="com.sissi.pipeline.in.iq.bind.BindJoinProcessor" parent="global.pro.utils" />
+	<bean id="bind.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="bind.pro.binding" />
+				<ref bean="bind.pro.ban" />
+				<ref bean="bind.pro.join" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="bind.condition" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.MatchClass">
+				<constructor-arg value="com.sissi.protocol.iq.login.Bind" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="bind.pro.chained" />
+	</bean>
+
+</beans>

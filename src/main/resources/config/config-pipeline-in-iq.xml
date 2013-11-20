@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="iq.pro.result" class="com.sissi.pipeline.in.iq.IQResultProcessor" />
+	<bean id="iq.pro.nonechildren" class="com.sissi.pipeline.in.iq.IQNoneChildrenProcessor">
+		<constructor-arg ref="iq.pro.result" />
+	</bean>
+	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
+		<constructor-arg ref="finder.iq" />
+	</bean>
+	<bean id="iq.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="iq.pro.nonechildren" />
+				<ref bean="iq.pro.fork" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="finder.iq" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="session.condition" />
+				<ref bean="bind.condition" />
+				<ref bean="roster.condition" />
+				<ref bean="iq.condition.matchall" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="iq.condition" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.MatchClass">
+				<constructor-arg value="com.sissi.protocol.iq.IQ" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="iq.pro.chained" />
+	</bean>
+	<bean id="iq.condition.matchall" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.IQResultMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="iq.pro.result" />
+	</bean>
+
+</beans>

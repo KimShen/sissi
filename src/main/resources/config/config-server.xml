@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="builder.server.handler" class="com.sissi.netty.impl.MyServerHandlerBuilder">
+		<constructor-arg ref="reader" />
+		<constructor-arg ref="writer" />
+		<constructor-arg ref="addressing" />
+		<constructor-arg ref="finder.input" />
+		<constructor-arg ref="server.closer" />
+		<constructor-arg ref="builder.feeder" />
+		<constructor-arg ref="builder.looper" />
+		<constructor-arg ref="builder.context.online" />
+	</bean>
+
+	<bean id="server.loop" class="com.sissi.netty.impl.MyServerLoopGroup" />
+	<bean id="server.pipeline" class="com.sissi.netty.impl.MyChannelInitializer">
+		<constructor-arg ref="builder.server.handler" />
+	</bean>
+	<bean id="server.closer" class="com.sissi.netty.impl.MyServerCloser">
+		<constructor-arg ref="broadcast.protocol.fans" />
+	</bean>
+	<bean id="server.start" class="com.sissi.netty.impl.MyServerStart">
+		<constructor-arg value="${global.port}" />
+		<constructor-arg ref="server.loop" />
+		<constructor-arg ref="server.pipeline" />
+	</bean>
+</beans>
