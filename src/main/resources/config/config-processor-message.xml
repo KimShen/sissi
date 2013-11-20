@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="messageForkCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.ClassMatcher">
+				<constructor-arg value="com.sissi.protocol.message.Message" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.message.MessageForkProcessor">
+				<constructor-arg ref="messageSubProcessPipelineFinder" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="messageP2GCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.message.p2g.MessageP2GMatcher">
+				<constructor-arg ref="groupJID" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.message.p2g.MessageP2GProcessor">
+				<constructor-arg ref="jidBuilder" />
+				<constructor-arg ref="addressing" />
+				<constructor-arg ref="p2gRelationContext" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="messageP2PCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.AllMatcher" />
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.ChainedProcessor">
+				<constructor-arg>
+					<util:list>
+						<bean class="com.sissi.pipeline.process.message.p2p.MessageP2PContentCheckProcessor" />
+						<bean class="com.sissi.pipeline.process.message.p2p.MessageP2PNoneRelationProcessor">
+							<constructor-arg ref="jidBuilder" />
+							<constructor-arg ref="p2pRelationContext" />
+						</bean>
+						<bean class="com.sissi.pipeline.process.ChainedProcessor">
+							<constructor-arg>
+								<util:list>
+									<bean class="com.sissi.pipeline.process.message.MessageOfflineProcessor">
+										<constructor-arg ref="jidBuilder" />
+										<constructor-arg ref="addressing" />
+										<constructor-arg ref="storageBox" />
+									</bean>
+									<bean class="com.sissi.pipeline.process.message.p2p.MessageP2PRouteProcessor">
+										<constructor-arg ref="jidBuilder" />
+										<constructor-arg ref="addressing" />
+									</bean>
+								</util:list>
+							</constructor-arg>
+						</bean>
+					</util:list>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="messageSubProcessPipelineFinder" class="com.sissi.pipeline.process.ChainedFinder">
+		<constructor-arg>
+			<bean class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
+				<property name="targetListClass" value="java.util.ArrayList" />
+				<property name="singleton" value="true" />
+				<property name="sourceList">
+					<list>
+						<ref bean="messageP2GCondition" />
+						<ref bean="messageP2PCondition" />
+					</list>
+				</property>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+</beans>

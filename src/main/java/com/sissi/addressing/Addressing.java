@@ -1,15 +1,21 @@
 package com.sissi.addressing;
 
+<<<<<<< HEAD
 import java.util.Collection;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
+=======
+import com.sissi.context.JIDContext;
+import com.sissi.context.JID;
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 
 /**
  * @author kim 2013-11-1
  */
 public interface Addressing {
 
+<<<<<<< HEAD
 	/**
 	 * Ban the context out off server
 	 * 
@@ -37,5 +43,11 @@ public interface Addressing {
 	 */
 	public JIDContext findOne(JID jid);
 
+=======
+	public JIDContext join(JIDContext context);
+
+	public JIDContext find(JID jid);
+	
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 	public Boolean isOnline(JID jid);
 }

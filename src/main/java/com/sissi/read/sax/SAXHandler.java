@@ -1,10 +1,19 @@
 package com.sissi.read.sax;
 
+<<<<<<< HEAD
+=======
+import java.io.IOException;
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
+<<<<<<< HEAD
+=======
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.LineIterator;
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Attributes;
@@ -24,9 +33,24 @@ public class SAXHandler extends DefaultHandler {
 
 	private final static Log LOG = LogFactory.getLog(SAXHandler.class);
 
+<<<<<<< HEAD
 	@SuppressWarnings("serial")
 	private final static Set<String> ROOT_NODE = new HashSet<String>(){{add("stream");}};
 
+=======
+	private final static Set<String> ROOT_NODE = new HashSet<String>();
+
+	static {
+		try {
+			LineIterator rootNodes = IOUtils.lineIterator(Thread.currentThread().getContextClassLoader().getResourceAsStream("root.properties"), "UTF-8");
+			while (rootNodes.hasNext()) {
+				ROOT_NODE.add(rootNodes.next().trim());
+			}
+		} catch (IOException e) {
+			LOG.error(e);
+		}
+	}
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 
 	private Mapping mapping;
 

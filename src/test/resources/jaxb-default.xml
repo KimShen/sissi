@@ -1,0 +1,1 @@
+<stream:stream xmlns="jabber:client" xmlns:stream="http://etherx.jabber.org/streams"><stream:features><auth xmlns="http://jabber.org/features/iq-auth"/></stream:features></stream:stream>

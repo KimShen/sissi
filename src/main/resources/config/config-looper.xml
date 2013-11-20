@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
+<<<<<<< HEAD
 	<bean id="builder.looper" class="com.sissi.looper.impl.MyLooperBuilder">
 		<constructor-arg index="0" ref="executor" />
 		<constructor-arg index="1" value="${looper.thread.num}" />
@@ -9,6 +10,15 @@
 			<bean class="com.sissi.looper.impl.MyLooperBuilder$Interval">
 				<constructor-arg value="${looper.thread.interval}" />
 				<constructor-arg value="${looper.thread.unit}" />
+=======
+	<bean id="looperBuilder" class="com.sissi.looper.impl.MyLooperBuilder">
+		<constructor-arg index="0" ref="executor" />
+		<constructor-arg index="1" value="1" />
+		<constructor-arg>
+			<bean class="com.sissi.looper.impl.MyLooper$Interval">
+				<constructor-arg value="5000" />
+				<constructor-arg value="MILLISECONDS" />
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 			</bean>
 		</constructor-arg>
 	</bean>

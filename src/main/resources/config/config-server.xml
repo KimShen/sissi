@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
+<<<<<<< HEAD
 	<bean id="builder.server.handler" class="com.sissi.netty.impl.MyServerHandlerBuilder">
 		<constructor-arg ref="reader" />
 		<constructor-arg ref="writer" />
@@ -24,5 +25,13 @@
 		<constructor-arg value="${global.port}" />
 		<constructor-arg ref="server.loop" />
 		<constructor-arg ref="server.pipeline" />
+=======
+	<bean id="serverHandlerBuilder" class="com.sissi.netty.ServerHandlerBuilder">
+		<constructor-arg ref="reader" />
+		<constructor-arg ref="writer" />
+		<constructor-arg ref="processorFinder" />
+		<constructor-arg ref="feederBuilder" />
+		<constructor-arg ref="looperBuilder" />
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 	</bean>
 </beans>

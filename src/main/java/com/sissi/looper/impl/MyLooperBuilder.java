@@ -1,5 +1,6 @@
 package com.sissi.looper.impl;
 
+<<<<<<< HEAD
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
@@ -10,18 +11,29 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+=======
+import java.util.concurrent.Executor;
+import java.util.concurrent.Future;
+
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 import org.springframework.beans.factory.FactoryBean;
 
 import com.sissi.feed.Feeder;
 import com.sissi.looper.Looper;
 import com.sissi.looper.LooperBuilder;
+<<<<<<< HEAD
 import com.sissi.protocol.Protocol;
+=======
+import com.sissi.looper.impl.MyLooper.Interval;
+import com.sissi.looper.impl.MyLooper.Runner;
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 
 /**
  * @author kim 2013-10-30
  */
 public class MyLooperBuilder implements LooperBuilder, FactoryBean<MyLooperBuilder> {
 
+<<<<<<< HEAD
 	private final static Log LOG = LogFactory.getLog(MyLooperBuilder.class);
 
 	public static class Interval {
@@ -65,6 +77,8 @@ public class MyLooperBuilder implements LooperBuilder, FactoryBean<MyLooperBuild
 		}
 	}
 
+=======
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 	private Executor executor;
 
 	private Integer threadNum;
@@ -97,6 +111,7 @@ public class MyLooperBuilder implements LooperBuilder, FactoryBean<MyLooperBuild
 	public boolean isSingleton() {
 		return true;
 	}
+<<<<<<< HEAD
 
 	private static class MyLooper implements Runnable, Looper {
 
@@ -166,4 +181,6 @@ public class MyLooperBuilder implements LooperBuilder, FactoryBean<MyLooperBuild
 			this.state.set(false);
 		}
 	}
+=======
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 }

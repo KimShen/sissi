@@ -5,9 +5,12 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+<<<<<<< HEAD
 import com.sissi.context.JID;
 import com.sissi.protocol.presence.Presence;
 
+=======
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 /**
  * @author kim 2013-10-24
  */
@@ -21,10 +24,13 @@ abstract public class Protocol {
 			return super.toString().toLowerCase();
 		}
 
+<<<<<<< HEAD
 		public Boolean equals(String type) {
 			return this == Type.parse(type);
 		}
 
+=======
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 		public static Type parse(String value) {
 			return Type.valueOf(value.toUpperCase());
 		}
@@ -67,6 +73,7 @@ abstract public class Protocol {
 		return from;
 	}
 
+<<<<<<< HEAD
 	public Protocol setFrom(String from) {
 		this.from = from;
 		return this;
@@ -75,6 +82,10 @@ abstract public class Protocol {
 	public Protocol setFrom(JID from) {
 		this.from = from.asString();
 		return this;
+=======
+	public void setFrom(String from) {
+		this.from = from;
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 	}
 
 	@XmlAttribute
@@ -86,11 +97,14 @@ abstract public class Protocol {
 		this.to = to;
 	}
 
+<<<<<<< HEAD
 	public Protocol setTo(JID to) {
 		this.to = to.asString();
 		return this;
 	}
 
+=======
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 	@XmlAttribute
 	public String getType() {
 		return type;
@@ -99,11 +113,14 @@ abstract public class Protocol {
 	public void setType(String type) {
 		this.type = type;
 	}
+<<<<<<< HEAD
 	
 	public Protocol setType(Presence.Type type) {
 		this.type = type.toString();
 		return this;
 	}
+=======
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 
 	public Protocol reply() {
 		this.setId(this.getId());

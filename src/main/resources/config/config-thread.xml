@@ -3,6 +3,7 @@
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
 	<bean id="executor" class="java.util.concurrent.ThreadPoolExecutor">
+<<<<<<< HEAD
 		<constructor-arg index="0" value="${executor.core}" />
 		<constructor-arg index="1" value="${executor.maximum}" />
 		<constructor-arg index="2" value="${executor.keep.alive}" />
@@ -14,6 +15,19 @@
 			<bean class="java.util.concurrent.Executors" factory-method="defaultThreadFactory" />
 		</constructor-arg>
 		<constructor-arg>
+=======
+		<constructor-arg index="0" value="10" />
+		<constructor-arg index="1" value="600" />
+		<constructor-arg index="2" value="30" />
+		<constructor-arg index="3" value="SECONDS" />
+		<constructor-arg index="4">
+			<bean class="java.util.concurrent.LinkedBlockingQueue" />
+		</constructor-arg>
+		<constructor-arg index="5">
+			<bean class="java.util.concurrent.Executors" factory-method="defaultThreadFactory" />
+		</constructor-arg>
+		<constructor-arg index="6">
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 			<bean class="java.util.concurrent.ThreadPoolExecutor$AbortPolicy" />
 		</constructor-arg>
 	</bean>

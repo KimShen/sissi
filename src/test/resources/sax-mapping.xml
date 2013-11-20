@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<finders>
+	<finder uri="A" localName="employee">
+		<clazz>com.sissi.read.sax.Employee</clazz>
+	</finder>
+	<finder localName="level">
+		<clazz>com.sissi.read.sax.Level</clazz>
+	</finder>
+	<finder localName="dept">
+		<clazz>com.sissi.read.sax.Dept</clazz>
+	</finder>
+	<finder localName="name">
+		<clazz>com.sissi.read.sax.Name</clazz>
+	</finder>
+	<finder uri="B" localName="name">
+		<clazz>com.sissi.read.sax.Name</clazz>
+	</finder>
+	<finder localName="sort">
+		<clazz>com.sissi.read.sax.Sort</clazz>
+	</finder>
+	<finder localName="support">
+		<clazz>com.sissi.read.sax.Support</clazz>
+	</finder>
+	<finder uri="B" localName="area">
+		<clazz>com.sissi.read.sax.Area</clazz>
+	</finder>
+	<finder localName="lineManager">
+		<clazz>com.sissi.read.sax.LineManager</clazz>
+	</finder>
+</finders>

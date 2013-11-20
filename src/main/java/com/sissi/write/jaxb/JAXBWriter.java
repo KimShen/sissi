@@ -19,10 +19,16 @@ import org.apache.commons.io.LineIterator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+<<<<<<< HEAD
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.Protocol;
 import com.sissi.write.Writer;
 import com.sissi.write.WriterWithOutClose;
+=======
+import com.sissi.protocol.Protocol;
+import com.sissi.write.WriterWithOutClose;
+import com.sissi.write.Writer;
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
 /**
@@ -63,6 +69,7 @@ public class JAXBWriter implements Writer {
 		this.mapper = mapper;
 	}
 
+<<<<<<< HEAD
 	public void write(JIDContext context, Protocol protocol, OutputStream output) throws IOException {
 		if (WriterWithOutClose.class.isAssignableFrom(protocol.getClass())) {
 			this.writeWithOutClose(context, protocol, output);
@@ -72,13 +79,28 @@ public class JAXBWriter implements Writer {
 	}
 
 	public void writeWithFull(JIDContext context, Protocol protocol, OutputStream output) throws IOException {
+=======
+	public void write(Protocol protocol, OutputStream output) throws IOException {
+		if (WriterWithOutClose.class.isAssignableFrom(protocol.getClass())) {
+			this.writeWithOutClose(protocol, output);
+		} else {
+			this.writeWithFull(protocol, output);
+		}
+	}
+
+	public void writeWithFull(Protocol protocol, OutputStream output) throws IOException {
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 		try {
 			Marshaller marshaller = this.generateMarshaller(false);
 			if (LOG.isInfoEnabled()) {
 				StringWriter writer = new StringWriter();
 				marshaller.marshal(protocol, writer);
 				String content = writer.toString();
+<<<<<<< HEAD
 				LOG.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + content);
+=======
+				LOG.info("Write: " + content);
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 				output.write(content.getBytes("UTF-8"));
 			} else {
 				marshaller.marshal(protocol, output);
@@ -89,7 +111,11 @@ public class JAXBWriter implements Writer {
 		}
 	}
 
+<<<<<<< HEAD
 	private void writeWithOutClose(JIDContext context, Protocol protocol, OutputStream output) throws IOException {
+=======
+	private void writeWithOutClose(Protocol protocol, OutputStream output) throws IOException {
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 		try {
 			Marshaller marshaller = generateMarshaller(true);
 			LinkedList<String> contents = this.prepareToLines(protocol, marshaller);
@@ -99,7 +125,11 @@ public class JAXBWriter implements Writer {
 			for (String each : contents) {
 				sb.append(each);
 			}
+<<<<<<< HEAD
 			LOG.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + sb.toString());
+=======
+			LOG.info("Write: " + sb.toString());
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 			output.write(sb.toString().getBytes("UTF-8"));
 		} catch (Exception e) {
 			LOG.error(e);

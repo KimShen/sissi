@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <finders>
 	<finder uri="http://etherx.jabber.org/streams" localName="stream">
+<<<<<<< HEAD
 		<clazz>com.sissi.protocol.Stream</clazz>
 	</finder>
 	<finder uri="urn:ietf:params:xml:ns:xmpp-sasl" localName="auth">
@@ -17,6 +18,24 @@
 	</finder>
 	<finder uri="jabber:client" localName="iq">
 		<clazz>com.sissi.protocol.iq.IQ</clazz>
+=======
+		<clazz>com.sissi.protocol.stream.Stream</clazz>
+	</finder>
+	<finder uri="urn:ietf:params:xml:ns:xmpp-sasl" localName="auth">
+		<clazz>com.sissi.protocol.auth.Auth</clazz>
+	</finder>
+	<finder uri="jabber:client" localName="iq">
+		<clazz>com.sissi.protocol.iq.IQ</clazz>
+	</finder>
+	<finder uri="urn:ietf:params:xml:ns:xmpp-bind" localName="bind">
+		<clazz>com.sissi.protocol.iq.bind.Bind</clazz>
+	</finder>
+	<finder uri="urn:ietf:params:xml:ns:xmpp-bind" localName="resource">
+		<clazz>com.sissi.protocol.iq.bind.Resource</clazz>
+	</finder>
+	<finder uri="urn:ietf:params:xml:ns:xmpp-session" localName="session">
+		<clazz>com.sissi.protocol.iq.session.Session</clazz>
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 	</finder>
 	<finder uri="jabber:client" localName="message">
 		<clazz>com.sissi.protocol.message.Message</clazz>
@@ -39,7 +58,10 @@
 	<finder uri="jabber:iq:roster" localName="item">
 		<clazz>com.sissi.protocol.iq.roster.Item</clazz>
 	</finder>
+<<<<<<< HEAD
 	<finder uri="jabber:iq:roster" localName="group">
 		<clazz>com.sissi.protocol.iq.roster.Group</clazz>
 	</finder>
+=======
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 </finders>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="presenceForkCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.ClassMatcher">
+				<constructor-arg value="com.sissi.protocol.presence.Presence" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.presence.PresenceForkProcessor">
+				<constructor-arg ref="presenceSubProcessPipelineFinder" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="presenceOfflineProcessor" class="com.sissi.pipeline.process.presence.PresenceOfflineProcessor">
+		<constructor-arg ref="jidBuilder" />
+		<constructor-arg ref="addressing" />
+		<constructor-arg ref="storageBox" />
+	</bean>
+
+	<bean id="presenceToMeUnicastProcessor" class="com.sissi.pipeline.process.presence.notify.PresenceToMeUnicastProcessor" />
+
+	<bean id="presenceFromMeUnicastProcessor" class="com.sissi.pipeline.process.presence.notify.PresenceFromMeUnicastProcessor" />
+
+	<bean id="presenceFriendsProcessor" class="com.sissi.pipeline.process.presence.state.PresenceFriendsProcessor">
+		<constructor-arg ref="jidBuilder" />
+		<constructor-arg ref="addressing" />
+		<constructor-arg ref="p2pRelationContext" />
+	</bean>
+
+	<bean id="presenceFriendsCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.presence.state.PresenceFriendsMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="presenceFriendsProcessor" />
+	</bean>
+
+	<bean id="presenceSubscribeCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.presence.subscribe.PresenceSubscribeMatcher" />
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.presence.subscribe.PresenceSubscribeProcessor">
+				<constructor-arg ref="jidBuilder" />
+				<constructor-arg ref="addressing" />
+				<constructor-arg ref="p2pRelationContext" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="presenceSubscribedCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.presence.subscribed.PresenceSubscribedMatcher" />
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.presence.subscribed.PresenceSubscribedProcessor">
+				<constructor-arg ref="jidBuilder" />
+				<constructor-arg ref="addressing" />
+				<constructor-arg ref="p2pRelationContext" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="presenceUnSubscribedCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.presence.unsubscribed.PresenceUnSubscribedMatcher" />
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.presence.unsubscribed.PresenceUnSubscribedProcessor">
+				<constructor-arg ref="jidBuilder" />
+				<constructor-arg ref="addressing" />
+				<constructor-arg ref="p2pRelationContext" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="persenceMUCCondition" class="com.sissi.pipeline.process.ChainedFinder$Condition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.presence.muc.PresenceMUCMatcher">
+				<constructor-arg ref="groupJID" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.process.presence.muc.PresenceMUCProcessor">
+				<constructor-arg ref="jidBuilder" />
+				<constructor-arg ref="p2gRelationContext" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="presenceSubProcessPipelineFinder" class="com.sissi.pipeline.process.ChainedFinder">
+		<constructor-arg>
+			<bean class="org.springframework.beans.factory.config.ListFactoryBean" scope="prototype">
+				<property name="targetListClass" value="java.util.ArrayList" />
+				<property name="singleton" value="true" />
+				<property name="sourceList">
+					<list>
+						<ref bean="persenceMUCCondition" />
+						<ref bean="presenceFriendsCondition" />
+						<ref bean="presenceSubscribeCondition" />
+						<ref bean="presenceSubscribedCondition" />
+						<ref bean="presenceUnSubscribedCondition" />
+						<ref bean="allMatcherCondition" />
+					</list>
+				</property>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+</beans>

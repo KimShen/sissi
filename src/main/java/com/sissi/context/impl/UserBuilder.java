@@ -1,7 +1,10 @@
 package com.sissi.context.impl;
 
+<<<<<<< HEAD
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+=======
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 
@@ -9,6 +12,7 @@ import com.sissi.context.JIDBuilder;
  * @author kim 2013-11-12
  */
 public class UserBuilder implements JIDBuilder {
+<<<<<<< HEAD
 	
 	private static final Integer DEFAULT_PRIORITY = 0;
 
@@ -18,12 +22,15 @@ public class UserBuilder implements JIDBuilder {
 		super();
 		this.host = host;
 	}
+=======
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 
 	@Override
 	public JID build(String jid) {
 		return new User(jid);
 	}
 
+<<<<<<< HEAD
 	public JID build(String user, String resource) {
 		return new User(user, this.host, resource);
 	}
@@ -110,5 +117,15 @@ public class UserBuilder implements JIDBuilder {
 		public String toString() {
 			return ToStringBuilder.reflectionToString(this);
 		}
+=======
+	@Override
+	public JID build(String name, String pass) {
+		return new User(name, pass);
+	}
+
+	@Override
+	public JID build(String name, String pass, String resource) {
+		return new User(name, pass, resource);
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 	}
 }

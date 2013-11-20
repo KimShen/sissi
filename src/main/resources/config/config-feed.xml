@@ -2,6 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
+<<<<<<< HEAD
 	<bean id="builder.feeder" class="com.sissi.feed.impl.MyFeederBuilder" />
+=======
+	<bean id="feederBuilder" class="com.sissi.feed.impl.ChainedFeederBuilder" />
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 
 </beans>

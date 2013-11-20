@@ -1,17 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<<<<<<< HEAD
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+=======
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location" value="classpath:config.properties" />
 		<property name="fileEncoding" value="utf-8" />
 	</bean>
 
+<<<<<<< HEAD
 	<bean id="mongo.client" class="com.mongodb.MongoClient">
 		<constructor-arg value="${mongo.host}" />
 	</bean>
+=======
+	<bean id="mongoClient" class="com.mongodb.MongoClient">
+		<constructor-arg value="${mongo.host}" />
+	</bean>
+
+	<bean id="systemJID" class="com.sissi.context.impl.User">
+		<constructor-arg index="0" value="system" />
+		<constructor-arg index="1" value="www.myaccount.com" />
+	</bean>
+
+	<bean id="groupJID" class="com.sissi.context.impl.User">
+		<constructor-arg index="0" value="system" />
+		<constructor-arg index="1" value="chatroom.myaccount.com" />
+	</bean>
+
+	<bean id="jidBuilder" class="com.sissi.context.impl.UserBuilder" />
+>>>>>>> 838666326a5f8bf3770663eab3e45807f83c2dc3
 	
 </beans>
