@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="roster.pro.get" class="com.sissi.pipeline.in.iq.roster.RosterGetProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.get.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="roster.pro.get" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="roster.pro.establish.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.iq.roster.establish" />
+	</bean>
+	<bean id="roster.pro.establish.fork.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="roster.pro.establish.fork" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="roster.pro.establish.set" class="com.sissi.pipeline.in.iq.roster.RosterSetProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.set.broadcast" class="com.sissi.pipeline.in.iq.roster.RosterSetAndBroadcastProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="roster.pro.establish.set" />
+				<ref bean="roster.pro.establish.set.broadcast" />
+				<ref bean="iq.pro.result" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="roster.pro.establish.remove" class="com.sissi.pipeline.in.iq.roster.RosterRemoveProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.remove.broadcast" class="com.sissi.pipeline.in.iq.roster.RosterRemoveAndBroadcastProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.remove.offline" class="com.sissi.pipeline.in.iq.roster.RosterRemoveAndOfflineProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.remove.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="roster.pro.establish.remove" />
+				<ref bean="roster.pro.establish.remove.broadcast" />
+				<ref bean="roster.pro.establish.remove.offline" />
+				<ref bean="iq.pro.result" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="roster.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.iq.roster" />
+	</bean>
+	<bean id="roster.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="roster.pro.fork" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="finder.iq.roster" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="roster.establish.condition" />
+				<ref bean="roster.get.condition" />
+				<ref bean="iq.condition.matchall" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="finder.iq.roster.establish" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="roster.establish.remove.condition" />
+				<ref bean="roster.establish.set.condition" />
+				<ref bean="iq.condition.matchall" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="roster.condition" class="com.sissi.pipeline.in.BeanCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.MatchClass">
+				<constructor-arg value="com.sissi.protocol.iq.roster.Roster" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="roster.pro.chained" />
+	</bean>
+	<bean id="roster.get.condition" class="com.sissi.pipeline.in.BeanCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher">
+				<constructor-arg value="GET" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="roster.pro.get.chained" />
+	</bean>
+	<bean id="roster.establish.condition" class="com.sissi.pipeline.in.BeanCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher">
+				<constructor-arg value="SET" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="roster.pro.establish.fork.chained" />
+	</bean>
+	<bean id="roster.establish.set.condition" class="com.sissi.pipeline.in.BeanCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher$RosterActionDetailMatcher">
+				<constructor-arg value="SET" />
+				<constructor-arg value="ADD" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="roster.pro.establish.set.chained" />
+	</bean>
+	<bean id="roster.establish.remove.condition" class="com.sissi.pipeline.in.BeanCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher$RosterActionDetailMatcher">
+				<constructor-arg value="SET" />
+				<constructor-arg value="REMOVE" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="roster.pro.establish.remove.chained" />
+	</bean>
+</beans>

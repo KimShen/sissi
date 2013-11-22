@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<stream:stream xmlns:stream="http://etherx.jabber.org/streams" xmlns="jabber:client" from="www.myaccount.com" id="7859796d" xml:lang="en" version="1.0">
+	<stream:features>
+		<mechanisms xmlns="urn:ietf:params:xml:ns:xmpp-sasl">
+			<mechanism>DIGEST-MD5</mechanism>
+			<mechanism>PLAIN</mechanism>
+			<mechanism>ANONYMOUS</mechanism>
+			<mechanism>CRAM-MD5</mechanism>
+		</mechanisms>
+		<auth xmlns="http://jabber.org/features/iq-auth" />
+		<register xmlns="http://jabber.org/features/iq-register" />
+	</stream:features>
+	<challenge xmlns="urn:ietf:params:xml:ns:xmpp-sasl">cmVhbG09Ind3dy5teWFjY291bnQuY29tIixub25jZT0iY3hxa3UwZDI3YU1adW5oak9vSzdqOHRsN2FzQTFOcXFhZkJwV2tDayIscW9wPSJhdXRoIixjaGFyc2V0PXV0Zi04LGFsZ29yaXRobT1tZDUtc2Vzcw==</challenge>
+	<success xmlns="urn:ietf:params:xml:ns:xmpp-sasl">cnNwYXV0aD01OTY5NjhhZDFhZjNjZGQyNGFiMTg1NmM4YWM0MzhkMw==</success><?xml version='1.0' encoding='UTF-8'?>
+	<stream:stream xmlns:stream="http://etherx.jabber.org/streams" xmlns="jabber:client" from="www.myaccount.com" id="7859796d" xml:lang="en" version="1.0">
+		<stream:features>
+			<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind" />
+			<session xmlns="urn:ietf:params:xml:ns:xmpp-session" />
+		</stream:features>
+		<iq type="result" id="iChat_13DF0AA4" to="www.myaccount.com/7859796d">
+			<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind">
+				<jid>kim@www.myaccount.com/kim���MacBook Air</jid>
+			</bind>
+		</iq>
+		<iq type="result" id="iChat_5BC3EAC5" from="www.myaccount.com" to="kim@www.myaccount.com/kim���MacBook Air" />
+		<iq type="result" id="iChat_4695F1AE" from="www.myaccount.com" to="kim@www.myaccount.com/kim���MacBook Air">
+			<query xmlns="http://jabber.org/protocol/disco#items">
+				<item jid="conference.www.myaccount.com" name="�����辨�块��" />
+				<item jid="broadcast.www.myaccount.com" name="Broadcast service" />
+				<item jid="pubsub.www.myaccount.com" name="Publish-Subscribe service" />
+			</query>
+		</iq>
+		<iq type="result" id="iChat_0AAC6BC5" to="kim@www.myaccount.com/kim���MacBook Air">
+			<query xmlns="jabber:iq:privacy">
+				<list name="invisible">
+					<item action="deny" order="1">
+						<presence-out />
+					</item>
+				</list>
+			</query>
+		</iq>
+		<iq type="result" id="iChat_40599E8C" to="kim@www.myaccount.com/kim���MacBook Air">
+			<vCard xmlns="vcard-temp">
+				<PHOTO>
+					<TYPE>image/jpeg</TYPE>
+					<BINVAL>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
+					</BINVAL>
+				</PHOTO>
+			</vCard>
+		</iq>
+		<iq type="result" id="iChat_340A3A7F" to="kim@www.myaccount.com/kim���MacBook Air">
+			<query xmlns="jabber:iq:roster">
+				<item jid="kim@www" name="" ask="subscribe" subscription="none">
+					<group>濂藉��</group>
+				</item>
+				<item jid="kim@myaccount.com" name="" subscription="none">
+					<group>濂藉��</group>
+				</item>
+				<item jid="test@myaccount.com" name="" ask="subscribe" subscription="none">
+					<group>濂藉��</group>
+				</item>
+				<item jid="test@www.myaccount.com" subscription="both">
+					<group>濂藉��</group>
+				</item>
+			</query>
+		</iq>
+		<presence from="test@www.myaccount.com/kim���MacBook Air" to="kim@www.myaccount.com/kim���MacBook Air">
+			<priority>10</priority>
+			<c xmlns="http://jabber.org/protocol/caps" node="http://www.apple.com/ichat/caps" ver="900" ext="ice recauth rdserver maudio audio rdclient mvideo auxvideo rdmuxing avcap avavail video" />
+			<x xmlns="http://jabber.org/protocol/tune" />
+			<x xmlns="vcard-temp:x:update">
+				<photo>0B9DAC502DBC5C441745A49A73469E93A76E5AEB</photo>
+			</x>
+		</presence>
+		<presence from="test@www.myaccount.com/ABC" to="kim@www.myaccount.com/kim���MacBook Air">
+			<c xmlns="http://jabber.org/protocol/caps" node="http://pidgin.im/" hash="sha-1" ver="DdnydQG7RGhP9E3k9Sf+b+bF0zo=" />
+			<x xmlns="vcard-temp:x:update">
+				<photo>0b9dac502dbc5c441745a49a73469e93a76e5aeb</photo>
+			</x>
+		</presence>
+		<message to="kim@www.myaccount.com/kim���MacBook Air" from="test@www.myaccount.com" id="test@www.myaccount.com__kim@www.myaccount.com__sT666">
+			<event xmlns="http://jabber.org/protocol/pubsub#event">
+				<items node="http://jabber.org/protocol/tune">
+					<item id="9d13a3ab-8b62-41c0-b4eb-3a2c4c66e9ec8">
+						<tune xmlns="http://jabber.org/protocol/tune" />
+					</item>
+				</items>
+			</event>
+			<delay xmlns="urn:xmpp:delay" stamp="2013-11-20T06:08:31.885Z" />
+		</message>
+		<iq type="result" id="iChat_240EDC23" from="conference.www.myaccount.com" to="kim@www.myaccount.com/kim���MacBook Air">
+			<query xmlns="http://jabber.org/protocol/disco#info">
+				<identity category="conference" name="�����辨�块��" type="text" />
+				<identity category="directory" name="Public Chatroom Search" type="chatroom" />
+				<feature var="http://jabber.org/protocol/muc" />
+				<feature var="http://jabber.org/protocol/disco#info" />
+				<feature var="http://jabber.org/protocol/disco#items" />
+				<feature var="jabber:iq:search" />
+				<feature var="http://jabber.org/protocol/rsm" />
+			</query>
+		</iq>
+		<iq type="result" id="iChat_543A4957" from="broadcast.www.myaccount.com" to="kim@www.myaccount.com/kim���MacBook Air">
+			<query xmlns="http://jabber.org/protocol/disco#info">
+				<identity category="component" type="generic" name="Broadcast service" />
+				<feature var="http://jabber.org/protocol/disco#info" />
+				<feature var="http://jabber.org/protocol/disco#items" />
+			</query>
+		</iq>
+		<iq type="result" id="iChat_791FB03F" from="pubsub.www.myaccount.com" to="kim@www.myaccount.com/kim���MacBook Air">
+			<query xmlns="http://jabber.org/protocol/disco#info">
+				<identity category="pubsub" name="Publish-Subscribe service" type="service" />
+				<feature var="http://jabber.org/protocol/pubsub" />
+				<feature var="http://jabber.org/protocol/pubsub#collections" />
+				<feature var="http://jabber.org/protocol/pubsub#config-node" />
+				<feature var="http://jabber.org/protocol/pubsub#create-and-configure" />
+				<feature var="http://jabber.org/protocol/pubsub#create-nodes" />
+				<feature var="http://jabber.org/protocol/pubsub#delete-nodes" />
+				<feature var="http://jabber.org/protocol/pubsub#get-pending" />
+				<feature var="http://jabber.org/protocol/pubsub#instant-nodes" />
+				<feature var="http://jabber.org/protocol/pubsub#item-ids" />
+				<feature var="http://jabber.org/protocol/pubsub#meta-data" />
+				<feature var="http://jabber.org/protocol/pubsub#modify-affiliations" />
+				<feature var="http://jabber.org/protocol/pubsub#manage-subscriptions" />
+				<feature var="http://jabber.org/protocol/pubsub#multi-subscribe" />
+				<feature var="http://jabber.org/protocol/pubsub#outcast-affiliation" />
+				<feature var="http://jabber.org/protocol/pubsub#persistent-items" />
+				<feature var="http://jabber.org/protocol/pubsub#presence-notifications" />
+				<feature var="http://jabber.org/protocol/pubsub#publish" />
+				<feature var="http://jabber.org/protocol/pubsub#publisher-affiliation" />
+				<feature var="http://jabber.org/protocol/pubsub#purge-nodes" />
+				<feature var="http://jabber.org/protocol/pubsub#retract-items" />
+				<feature var="http://jabber.org/protocol/pubsub#retrieve-affiliations" />
+				<feature var="http://jabber.org/protocol/pubsub#retrieve-default" />
+				<feature var="http://jabber.org/protocol/pubsub#retrieve-items" />
+				<feature var="http://jabber.org/protocol/pubsub#retrieve-subscriptions" />
+				<feature var="http://jabber.org/protocol/pubsub#subscribe" />
+				<feature var="http://jabber.org/protocol/pubsub#subscription-options" />
+				<feature var="http://jabber.org/protocol/pubsub#default_access_model_open" />
+				<feature var="http://jabber.org/protocol/disco#info" />
+			</query>
+		</iq>
+		<presence from="test@www.myaccount.com/ABC" to="kim@www.myaccount.com">
+			<show>away</show>
+			<status>绂诲��</status>
+			<c xmlns="http://jabber.org/protocol/caps" node="http://pidgin.im/" hash="sha-1" ver="DdnydQG7RGhP9E3k9Sf+b+bF0zo=" />
+			<x xmlns="vcard-temp:x:update">
+				<photo>0b9dac502dbc5c441745a49a73469e93a76e5aeb</photo>
+			</x>
+		</presence>
+		<presence from="test@www.myaccount.com/kim���MacBook Air" to="kim@www.myaccount.com">
+			<show>xa</show>
+			<status>澶���哄氨椁�</status>
+			<priority>10</priority>
+			<c xmlns="http://jabber.org/protocol/caps" node="http://www.apple.com/ichat/caps" ver="900" ext="ice recauth rdserver maudio audio rdclient mvideo auxvideo rdmuxing avcap avavail video" />
+			<x xmlns="http://jabber.org/protocol/tune" />
+			<x xmlns="vcard-temp:x:update">
+				<photo>0B9DAC502DBC5C441745A49A73469E93A76E5AEB</photo>
+			</x>
+		</presence>
+	</stream:stream>

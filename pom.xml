@@ -10,26 +10,16 @@
 	</properties>
 	<dependencies>
 		<!-- For Test -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.7</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.easymock</groupId>
-			<artifactId>easymock</artifactId>
-			<version>3.2</version>
-			<scope>test</scope>
-		</dependency>
+		<!-- <dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> <version>4.7</version> <scope>test</scope> </dependency> <dependency> <groupId>org.easymock</groupId> <artifactId>easymock</artifactId> <version>3.2</version> <scope>test</scope> 
+			</dependency> -->
 		<!-- For Compile -->
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty</artifactId>
 			<version>4.0.4</version>
-			<!-- 4.0.4 isnot released on MVN center -->
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/netty-4.0.4.jar</systemPath>
+			<!-- 4.0.4 is not released on MVN center -->
+			<!-- U should install first without comment: mvn clean install -->
+			<!-- <scope>system</scope> <systemPath>${basedir}/lib/netty-4.0.4.jar</systemPath> -->
 		</dependency>
 		<!-- For Commons package -->
 		<dependency>
@@ -51,11 +41,6 @@
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.8</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>3.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.collections</groupId>
@@ -117,7 +102,7 @@
 						<configuration>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.sisi.netty.Server</mainClass>
+									<mainClass>com.sissi.netty.impl.Server</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

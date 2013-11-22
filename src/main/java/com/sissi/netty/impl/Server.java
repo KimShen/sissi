@@ -1,10 +1,13 @@
 package com.sissi.netty.impl;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.util.ResourceUtils;
 
 import com.sissi.netty.ServerStart;
 
@@ -13,15 +16,17 @@ import com.sissi.netty.ServerStart;
  */
 public class Server {
 
-	private static List<String> reading() {
-		List<String> files = new ArrayList<String>();
-		for (String file : new File(Thread.currentThread().getContextClassLoader().getResource("config").getFile()).list()) {
-			files.add("classpath:config/" + file);
+	private final static String PREFIX = "classpath:";
+
+	private static String[] reading() throws IOException {
+		List<String> configs = new ArrayList<String>();
+		for (String each : IOUtils.readLines(Thread.currentThread().getContextClassLoader().getResourceAsStream(System.getProperty("loading", "loading.properties")), Charset.forName("UTF-8"))) {
+			configs.add(ResourceUtils.getURL(PREFIX + each).toString());
 		}
-		return files;
+		return configs.toArray(new String[] {});
 	}
 
 	public static void main(String[] args) throws Exception {
-		new ClassPathXmlApplicationContext(reading().toArray(new String[] {})).getBean(ServerStart.class).start();
+		new ClassPathXmlApplicationContext(reading()).getBean(ServerStart.class).start();
 	}
 }
