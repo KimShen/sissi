@@ -16,8 +16,11 @@ import com.sissi.protocol.message.Message;
  */
 public class MyStorageBlock4Message extends MyStorageBlock4Protocol {
 
-	public MyStorageBlock4Message(JIDBuilder jidBuilder) {
+	private String hit;
+
+	public MyStorageBlock4Message(String hit, JIDBuilder jidBuilder) {
 		super(jidBuilder);
+		this.hit = hit;
 	}
 
 	@Override
@@ -34,7 +37,7 @@ public class MyStorageBlock4Message extends MyStorageBlock4Protocol {
 		Message message = new Message();
 		this.based(block, message);
 		message.setBody(new Body(block.get("body").toString()));
-		message.setDelay(new Delay(message.getFrom(), block.get("delay").toString()));
+		message.setDelay(new Delay(this.hit, message.getFrom(), block.get("delay").toString()));
 		return message;
 	}
 

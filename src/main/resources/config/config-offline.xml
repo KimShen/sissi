@@ -26,6 +26,7 @@
 
 	<bean id="storage.message" class="com.sissi.offline.impl.MyStorageBlock4Message">
 		<constructor-arg ref="builder.jid" />
+		<constructor-arg value="${offline.hit}" />
 	</bean>
 	<bean id="storage.presence" class="com.sissi.offline.impl.MyStorageBlock4Presence">
 		<constructor-arg ref="builder.jid" />
