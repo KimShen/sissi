@@ -3,7 +3,6 @@ package com.sissi.pipeline.in.iq.roster;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.UtilProcessor;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.roster.Item;
 import com.sissi.protocol.iq.roster.Roster;
 
 /**
@@ -12,19 +11,8 @@ import com.sissi.protocol.iq.roster.Roster;
 public class RosterRemoveProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
-		Roster roster = Roster.class.cast(protocol);
-		this.remove(context, roster);
+	public Boolean input(JIDContext context, Protocol protocol) {
+		super.relationContext.remove(context.getJid(), super.jidBuilder.build(Roster.class.cast(protocol).getFirstItem().getJid()));
 		return true;
-	}
-
-	private void remove(JIDContext context, Roster roster) {
-		for (Item item : roster.getItem()) {
-			this.removeEach(context, item);
-		}
-	}
-
-	private void removeEach(JIDContext context, Item item) {
-		super.relationContext.remove(context.getJid(), super.jidBuilder.build(item.getJid()));
 	}
 }

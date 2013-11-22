@@ -11,7 +11,7 @@ import com.sissi.protocol.presence.Presence;
 public class SessionPresence2MyFansProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		super.protocolQueue.offer(context.getJid().getBare(), new Presence().setFrom(context.getJid().getBare()));
 		return true;
 	}

@@ -10,7 +10,9 @@ import com.sissi.context.JIDBuilder;
  */
 public class UserBuilder implements JIDBuilder {
 
-	private static final Integer DEFAULT_PRIORITY = 0;
+	private final static Integer DEFAULT_PRIORITY = 0;
+
+	private final None NONE = new None();
 
 	private String host;
 
@@ -21,11 +23,83 @@ public class UserBuilder implements JIDBuilder {
 
 	@Override
 	public JID build(String jid) {
-		return new User(jid);
+		return jid != null ? new User(jid) : NONE;
 	}
 
 	public JID build(String user, String resource) {
 		return new User(user, this.host, resource);
+	}
+
+	private class None implements JID {
+
+		private None() {
+
+		}
+
+		@Override
+		public String getUser() {
+			return "N/A";
+		}
+
+		@Override
+		public String getHost() {
+			return UserBuilder.this.host;
+		}
+
+		@Override
+		public String getResource() {
+			return null;
+		}
+
+		@Override
+		public Integer getPriority() {
+			return -1;
+		}
+
+		@Override
+		public JID setUser(String user) {
+			return this;
+		}
+
+		@Override
+		public JID setHost(String host) {
+			return this;
+		}
+
+		@Override
+		public JID setResource(String resource) {
+			return this;
+		}
+
+		@Override
+		public JID setPriority(Integer priority) {
+			return this;
+		}
+
+		@Override
+		public JID getBare() {
+			return this;
+		}
+
+		@Override
+		public JID getBare(Boolean reuse) {
+			return this;
+		}
+
+		@Override
+		public Boolean isBare() {
+			return true;
+		}
+
+		@Override
+		public String asString() {
+			return this.getUser() + "@" + this.getHost();
+		}
+
+		@Override
+		public String asStringWithBare() {
+			return this.asString();
+		}
 	}
 
 	private class User implements JID {
@@ -92,6 +166,10 @@ public class UserBuilder implements JIDBuilder {
 
 		public JID getBare() {
 			return UserBuilder.this.build(this.asString()).setResource(null);
+		}
+
+		public JID getBare(Boolean reuse) {
+			return this.setResource(null);
 		}
 
 		@Override

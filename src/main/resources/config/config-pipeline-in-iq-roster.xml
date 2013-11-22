@@ -24,7 +24,7 @@
 		</constructor-arg>
 	</bean>
 	<bean id="roster.pro.establish.set" class="com.sissi.pipeline.in.iq.roster.RosterSetProcessor" parent="global.pro.utils" />
-	<bean id="roster.pro.establish.set.broadcast" class="com.sissi.pipeline.in.iq.roster.RosterSetAndBroadcastProtocolProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.set.broadcast" class="com.sissi.pipeline.in.iq.roster.RosterSetAndBroadcastProcessor" parent="global.pro.utils" />
 	<bean id="roster.pro.establish.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
@@ -35,14 +35,14 @@
 		</constructor-arg>
 	</bean>
 	<bean id="roster.pro.establish.remove" class="com.sissi.pipeline.in.iq.roster.RosterRemoveProcessor" parent="global.pro.utils" />
-	<bean id="roster.pro.establish.remove.broadcast.protocol" class="com.sissi.pipeline.in.iq.roster.RosterRemoveAndBroadcastProtocolProcessor" parent="global.pro.utils" />
-	<bean id="roster.pro.establish.remove.broadcast.offline" class="com.sissi.pipeline.in.iq.roster.RosterRemoveAndBroadcastOfflineProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.remove.broadcast" class="com.sissi.pipeline.in.iq.roster.RosterRemoveAndBroadcastProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.remove.offline" class="com.sissi.pipeline.in.iq.roster.RosterRemoveAndOfflineProcessor" parent="global.pro.utils" />
 	<bean id="roster.pro.establish.remove.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="roster.pro.establish.remove" />
-				<ref bean="roster.pro.establish.remove.broadcast.protocol" />
-				<ref bean="roster.pro.establish.remove.broadcast.offline" />
+				<ref bean="roster.pro.establish.remove.broadcast" />
+				<ref bean="roster.pro.establish.remove.offline" />
 				<ref bean="iq.pro.result" />
 			</util:list>
 		</constructor-arg>
@@ -77,7 +77,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="roster.condition" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+	<bean id="roster.condition" class="com.sissi.pipeline.in.BeanCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.MatchClass">
 				<constructor-arg value="com.sissi.protocol.iq.roster.Roster" />
@@ -85,7 +85,7 @@
 		</constructor-arg>
 		<constructor-arg ref="roster.pro.chained" />
 	</bean>
-	<bean id="roster.get.condition" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+	<bean id="roster.get.condition" class="com.sissi.pipeline.in.BeanCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher">
 				<constructor-arg value="GET" />
@@ -93,7 +93,7 @@
 		</constructor-arg>
 		<constructor-arg ref="roster.pro.get.chained" />
 	</bean>
-	<bean id="roster.establish.condition" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+	<bean id="roster.establish.condition" class="com.sissi.pipeline.in.BeanCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher">
 				<constructor-arg value="SET" />
@@ -101,7 +101,7 @@
 		</constructor-arg>
 		<constructor-arg ref="roster.pro.establish.fork.chained" />
 	</bean>
-	<bean id="roster.establish.set.condition" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+	<bean id="roster.establish.set.condition" class="com.sissi.pipeline.in.BeanCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher$RosterActionDetailMatcher">
 				<constructor-arg value="SET" />
@@ -110,7 +110,7 @@
 		</constructor-arg>
 		<constructor-arg ref="roster.pro.establish.set.chained" />
 	</bean>
-	<bean id="roster.establish.remove.condition" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+	<bean id="roster.establish.remove.condition" class="com.sissi.pipeline.in.BeanCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher$RosterActionDetailMatcher">
 				<constructor-arg value="SET" />

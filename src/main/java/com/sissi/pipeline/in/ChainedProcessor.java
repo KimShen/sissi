@@ -38,7 +38,7 @@ public class ChainedProcessor implements Input {
 	}
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		for (Input each : this.processors) {
 			if (!each.input(context, protocol)) {
 				return false;

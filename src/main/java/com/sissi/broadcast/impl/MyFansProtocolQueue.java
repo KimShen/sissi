@@ -1,17 +1,16 @@
 package com.sissi.broadcast.impl;
 
 import com.sissi.addressing.Addressing;
-import com.sissi.broadcast.ProtocolQueue;
+import com.sissi.broadcast.ProtocolBraodcast;
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
-import com.sissi.context.JIDContext;
 import com.sissi.protocol.Protocol;
 import com.sissi.relation.RelationContext;
 
 /**
  * @author kim 2013-11-18
  */
-public class MyFansProtocolQueue implements ProtocolQueue {
+public class MyFansProtocolQueue implements ProtocolBraodcast {
 
 	private Addressing addressing;
 
@@ -29,10 +28,7 @@ public class MyFansProtocolQueue implements ProtocolQueue {
 	@Override
 	public void offer(JID jid, Protocol protocol) {
 		for (String each : this.relationContext.whoSubscribedMe(jid.getBare())) {
-			for (JIDContext toContext : this.addressing.find(this.jidBuilder.build(each))) {
-				toContext.write(protocol);
-			}
+			this.addressing.find(this.jidBuilder.build(each)).write(protocol);
 		}
 	}
-
 }

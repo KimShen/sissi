@@ -15,6 +15,10 @@ public class IQResultMatcher extends MatchClass {
 	}
 
 	public Boolean match(Protocol protocol) {
-		return super.match(protocol.getParent()) && (Type.SET.equals(protocol.getParent().getType()) || protocol.getParent().getType() == null);
+		return super.match(protocol.getParent()) && this.isNotLoop(protocol);
+	}
+
+	private boolean isNotLoop(Protocol protocol) {
+		return Type.SET.equals(protocol.getParent().getType()) || protocol.getParent().getType() == null;
 	}
 }

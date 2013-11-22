@@ -11,6 +11,7 @@
 	</bean>
 	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
 		<constructor-arg ref="finder.iq" />
+		<constructor-arg ref="iq.pro.result" />
 	</bean>
 	<bean id="iq.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -32,7 +33,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="iq.condition" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+	<bean id="iq.condition" class="com.sissi.pipeline.in.BeanCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.MatchClass">
 				<constructor-arg value="com.sissi.protocol.iq.IQ" />
@@ -40,7 +41,7 @@
 		</constructor-arg>
 		<constructor-arg ref="iq.pro.chained" />
 	</bean>
-	<bean id="iq.condition.matchall" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+	<bean id="iq.condition.matchall" class="com.sissi.pipeline.in.BeanCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.IQResultMatcher" />
 		</constructor-arg>

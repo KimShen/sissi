@@ -14,17 +14,17 @@ import com.sissi.relation.RelationRoster;
 /**
  * @author kim 2013-11-18
  */
-public class PresenceRosterSubscribedAndBroadcastProtocolProcessor extends UtilProcessor {
+public class PresenceRosterSubscribedAndBroadcastProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		JID jid = super.jidBuilder.build(protocol.getTo());
-		super.protocolQueue.offer(jid, this.generateResponse(context, jid));
+		super.protocolQueue.offer(jid.getBare(), this.generateResponse(context, jid.getBare()));
 		return true;
 	}
 
 	private IQ generateResponse(JIDContext context, JID jid) {
-		Relation relation = super.relationContext.ourRelation(jid, context.getJid());
-		return ((IQ) new IQ(Type.SET).setTo(jid)).add(new Roster(new Item(context.getJid().asStringWithBare(), relation.getName(), Roster.Subscription.TO.toString(), RelationRoster.class.cast(relation).getGp())));
+		Relation relation = super.relationContext.ourRelation(jid.getBare(), context.getJid().getBare());
+		return ((IQ) new IQ(Type.SET).setTo(jid.getBare())).add(new Roster(new Item(context.getJid().asStringWithBare(), relation.getName(), Roster.Subscription.TO.toString(), RelationRoster.class.cast(relation).getGp())));
 	}
 }

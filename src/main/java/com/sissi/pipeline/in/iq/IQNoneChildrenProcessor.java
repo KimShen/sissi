@@ -18,7 +18,7 @@ public class IQNoneChildrenProcessor implements Input {
 	}
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		return IQ.class.cast(protocol).listChildren().isEmpty() ? this.writeIOResult(context, protocol) : true;
 	}
 

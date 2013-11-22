@@ -18,11 +18,7 @@ public class ForkProcessor implements Input {
 	}
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
-		Input subProcessor = this.finder.find(protocol);
-		if (!subProcessor.input(context, protocol)) {
-			return false;
-		}
-		return false;
+	public Boolean input(JIDContext context, Protocol protocol) {
+		return this.finder.find(protocol).input(context, protocol);
 	}
 }

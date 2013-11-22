@@ -6,7 +6,7 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013-11-18
  */
-public interface ProtocolQueue {
+public interface ProtocolBraodcast {
 
 	public void offer(JID jid, Protocol protocol);
 }

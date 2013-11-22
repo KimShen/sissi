@@ -1,8 +1,8 @@
 package com.sissi.pipeline.in;
 
 import com.sissi.addressing.Addressing;
-import com.sissi.broadcast.PresenceQueue;
-import com.sissi.broadcast.ProtocolQueue;
+import com.sissi.broadcast.PresenceBroadcast;
+import com.sissi.broadcast.ProtocolBraodcast;
 import com.sissi.context.JIDBuilder;
 import com.sissi.pipeline.Input;
 import com.sissi.relation.RelationContext;
@@ -16,9 +16,9 @@ abstract public class UtilProcessor implements Input {
 
 	protected Addressing addressing;
 
-	protected PresenceQueue presenceQueue;
+	protected PresenceBroadcast presenceQueue;
 
-	protected ProtocolQueue protocolQueue;
+	protected ProtocolBraodcast protocolQueue;
 
 	protected RelationContext relationContext;
 
@@ -34,11 +34,11 @@ abstract public class UtilProcessor implements Input {
 		this.relationContext = relationContext;
 	}
 
-	public void setPresenceQueue(PresenceQueue presenceQueue) {
+	public void setPresenceQueue(PresenceBroadcast presenceQueue) {
 		this.presenceQueue = presenceQueue;
 	}
 
-	public void setProtocolQueue(ProtocolQueue protocolQueue) {
+	public void setProtocolQueue(ProtocolBraodcast protocolQueue) {
 		this.protocolQueue = protocolQueue;
 	}
 }

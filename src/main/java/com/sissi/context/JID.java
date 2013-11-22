@@ -10,6 +10,8 @@ public interface JID {
 	public String getHost();
 
 	public String getResource();
+	
+	public Integer getPriority();
 
 	public JID setUser(String user);
 
@@ -18,10 +20,10 @@ public interface JID {
 	public JID setResource(String resource);
 
 	public JID setPriority(Integer priority);
-
+	
 	public JID getBare();
-
-	public Integer getPriority();
+	
+	public JID getBare(Boolean reuse);
 
 	public Boolean isBare();
 

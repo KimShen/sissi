@@ -27,7 +27,7 @@ public class AuthSuccessProcessor extends UtilProcessor {
 	}
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		Auth auth = Auth.class.cast(protocol);
 		for (AuthNormalization un : this.authNormalizations) {
 			if (un.isSupport(auth.getMechanism())) {

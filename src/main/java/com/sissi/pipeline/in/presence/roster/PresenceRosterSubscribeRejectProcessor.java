@@ -12,12 +12,12 @@ import com.sissi.relation.Relation;
 public class PresenceRosterSubscribeRejectProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		return !this.isSubscribed(context, protocol);
 	}
 
 	private boolean isSubscribed(JIDContext context, Protocol protocol) {
-		return this.hasRelation(super.relationContext.ourRelation(context.getJid(), super.jidBuilder.build(protocol.getTo())));
+		return this.hasRelation(super.relationContext.ourRelation(context.getJid().getBare(), super.jidBuilder.build(protocol.getTo()).getBare()));
 	}
 
 	private boolean hasRelation(Relation relation) {

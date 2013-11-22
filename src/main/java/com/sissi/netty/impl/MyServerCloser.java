@@ -1,6 +1,6 @@
 package com.sissi.netty.impl;
 
-import com.sissi.broadcast.ProtocolQueue;
+import com.sissi.broadcast.ProtocolBraodcast;
 import com.sissi.context.JIDContext;
 import com.sissi.netty.ServerCloser;
 import com.sissi.protocol.presence.Presence;
@@ -11,15 +11,16 @@ import com.sissi.protocol.presence.Presence.Type;
  */
 public class MyServerCloser implements ServerCloser {
 
-	private ProtocolQueue protocolQueue;
+	private ProtocolBraodcast protocolBraodcast;
 
-	public MyServerCloser(ProtocolQueue protocolQueue) {
+	public MyServerCloser(ProtocolBraodcast protocolBraodcast) {
 		super();
-		this.protocolQueue = protocolQueue;
+		this.protocolBraodcast = protocolBraodcast;
 	}
 
 	@Override
-	public void callback(JIDContext context) {
-		this.protocolQueue.offer(context.getJid().getBare(), new Presence().setFrom(context.getJid().getBare()).setType(Type.UNAVAILABLE));
+	public void close(JIDContext context) {
+		context.getPresence().clear();
+		this.protocolBraodcast.offer(context.getJid().getBare(), new Presence().setFrom(context.getJid().getBare()).setType(Type.UNAVAILABLE));
 	}
 }

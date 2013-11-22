@@ -11,11 +11,11 @@ import com.sissi.protocol.presence.Presence;
 public class PresenceStateLocationProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		Presence presence = Presence.class.cast(protocol);
-		context.getPresence().type(presence.getType());
-		context.getPresence().show(presence.getShowText());
-		context.getPresence().status(presence.getStatusText());
+		context.getPresence().setTypeText(presence.getTypeText());
+		context.getPresence().setShowText(presence.getShowText());
+		context.getPresence().setStatusText(presence.getStatusText());
 		return true;
 	}
 }

@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Feature;
-import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 
 /**
@@ -25,8 +24,9 @@ public class Bind extends Feature {
 		return jid;
 	}
 
-	public void setJid(String jid) {
+	public Bind setJid(String jid) {
 		this.jid = jid;
+		return this;
 	}
 
 	public Resource getResource() {
@@ -46,7 +46,7 @@ public class Bind extends Feature {
 		return this.resource != null && this.resource.hasResource();
 	}
 
-	public Protocol clear() {
+	public Bind clear() {
 		super.clear();
 		this.jid = null;
 		this.resource = null;

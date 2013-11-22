@@ -17,7 +17,7 @@ import com.sissi.relation.Relation;
 public class RosterGetProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		Roster roster = (Roster) Roster.class.cast(protocol).clear();
 		context.write(this.preparpreResponse(protocol).add(this.prepareRelation(context, roster)));
 		return false;
@@ -33,8 +33,6 @@ public class RosterGetProcessor extends UtilProcessor {
 	}
 
 	private IQ preparpreResponse(Protocol protocol) {
-		IQ response = (IQ) protocol.getParent().reply().clear();
-		response.setType(Type.RESULT.toString());
-		return response;
+		return (IQ)protocol.getParent().reply().clear().setType(Type.RESULT);
 	}
 }

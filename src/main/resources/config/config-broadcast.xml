@@ -20,6 +20,5 @@
 		<constructor-arg ref="relation.roster" />
 	</bean>
 
-	<alias name="builder.presence.default" alias="builder.presence" />
-	<bean id="builder.presence.default" class="com.sissi.broadcast.impl.DefaultPresenceBuilder" />
+	<bean id="builder.presence" class="com.sissi.broadcast.impl.CurrentPresenceQueue$DefaultPresenceBuilder" />
 </beans>

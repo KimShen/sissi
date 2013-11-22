@@ -13,19 +13,19 @@ public class IQForkProcessor implements Input {
 
 	private InputFinder finder;
 
-	public IQForkProcessor(InputFinder finder) {
+	private IQResultProcessor iqResultProcessor;
+
+	public IQForkProcessor(InputFinder finder, IQResultProcessor iqResultProcessor) {
 		super();
 		this.finder = finder;
+		this.iqResultProcessor = iqResultProcessor;
 	}
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		for (Protocol sub : IQ.class.cast(protocol).listChildren()) {
-			Input subProcessor = this.finder.find(sub);
-			if (!subProcessor.input(context, sub)) {
-				return false;
-			}
+			return this.finder.find(sub).input(context, sub);
 		}
-		return false;
+		return this.iqResultProcessor.input(context, protocol);
 	}
 }

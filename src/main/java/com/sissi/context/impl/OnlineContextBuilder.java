@@ -6,22 +6,32 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
-import com.sissi.context.JIDContext.MyPresence;
 import com.sissi.context.JIDContextBuilder;
 import com.sissi.context.JIDContextParam;
+import com.sissi.context.JIDContextPresence;
+import com.sissi.context.JIDContextPresenceBuilder;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Protocol;
 
 /**
  * @author kim 2013-11-19
  */
-public class UserContextBuilder implements JIDContextBuilder {
+public class OnlineContextBuilder implements JIDContextBuilder {
 
-	final static String KEY_OUTPUT = "OUTPUT";
+	public final static String KEY_OUTPUT = "OUTPUT";
+
+	private JIDContextPresenceBuilder jidContextPresenceBuilder;
+
+	public OnlineContextBuilder(JIDContextPresenceBuilder jidContextPresenceBuilder) {
+		super();
+		this.jidContextPresenceBuilder = jidContextPresenceBuilder;
+	}
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
-		return new UserContext(param.find(KEY_OUTPUT, Output.class));
+		UserContext context = new UserContext(param.find(KEY_OUTPUT, Output.class));
+		context.myPresence = this.jidContextPresenceBuilder.build(context);
+		return context;
 	}
 
 	private class UserContext implements JIDContext {
@@ -30,11 +40,11 @@ public class UserContextBuilder implements JIDContextBuilder {
 
 		private final AtomicBoolean isAuth = new AtomicBoolean();
 
-		private final MyPresence myPresence = new UserPresence();
-
-		private JID jid;
+		private JIDContextPresence myPresence;
 
 		private Output output;
+
+		private JID jid;
 
 		public UserContext(Output output) {
 			super();
@@ -84,50 +94,8 @@ public class UserContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public MyPresence getPresence() {
+		public JIDContextPresence getPresence() {
 			return this.myPresence;
-		}
-	}
-
-	private class UserPresence implements MyPresence {
-
-		private String type;
-
-		private String show;
-
-		private String status;
-
-		@Override
-		public String type() {
-			return this.type;
-		}
-
-		@Override
-		public String show() {
-			return this.show;
-		}
-
-		@Override
-		public String status() {
-			return this.status;
-		}
-
-		@Override
-		public String type(String type) {
-			this.type = type;
-			return this.type;
-		}
-
-		@Override
-		public String show(String show) {
-			this.show = show;
-			return this.show;
-		}
-
-		@Override
-		public String status(String status) {
-			this.status = status;
-			return this.status;
 		}
 	}
 }

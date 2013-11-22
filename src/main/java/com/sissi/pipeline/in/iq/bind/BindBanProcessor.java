@@ -10,7 +10,7 @@ import com.sissi.protocol.Protocol;
 public class BindBanProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		super.addressing.ban(context);
 		return true;
 	}

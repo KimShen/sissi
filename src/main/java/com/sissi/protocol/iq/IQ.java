@@ -34,7 +34,7 @@ public class IQ extends Protocol implements Collector {
 		this();
 		super.setType(type.toString());
 	}
-
+	
 	@XmlElements({ @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "query", type = Roster.class) })
 	public List<Protocol> getProtocols() {
 		return protocols;
@@ -58,7 +58,7 @@ public class IQ extends Protocol implements Collector {
 		return this.protocols != null ? this.protocols : EMPTY_CHILDREN;
 	}
 
-	public Protocol clear() {
+	public IQ clear() {
 		this.protocols = null;
 		return this;
 	}

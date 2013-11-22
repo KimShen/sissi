@@ -2,7 +2,6 @@ package com.sissi.netty.impl;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.Future;
@@ -34,31 +33,24 @@ public class MyServerStart implements ServerStart {
 	@Override
 	public void start() {
 		bootstrap.group(serverLoopGroup.boss(), serverLoopGroup.event()).channel(NioServerSocketChannel.class).childHandler(this.channelInitializer);
-		bootstrap.bind(this.port).addListener(new FailShutdownGenericFutureListener(serverLoopGroup.boss(), serverLoopGroup.event()));
+		bootstrap.bind(this.port).addListener(new FailShutdownGenericFutureListener());
 	}
 
 	@Override
 	public void stop() {
+		this.closeAll();
+	}
+
+	private void closeAll() {
 		this.serverLoopGroup.boss().shutdownGracefully();
 		this.serverLoopGroup.event().shutdownGracefully();
 	}
 
 	private class FailShutdownGenericFutureListener implements GenericFutureListener<Future<Void>> {
 
-		private EventLoopGroup boss;
-
-		private EventLoopGroup event;
-
-		public FailShutdownGenericFutureListener(EventLoopGroup boss, EventLoopGroup event) {
-			super();
-			this.boss = boss;
-			this.event = event;
-		}
-
 		public void operationComplete(Future<Void> future) throws Exception {
 			if (!future.isSuccess()) {
-				this.boss.shutdownGracefully();
-				this.event.shutdownGracefully();
+				MyServerStart.this.closeAll();
 			}
 		}
 	}

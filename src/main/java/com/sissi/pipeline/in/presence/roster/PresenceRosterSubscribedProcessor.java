@@ -11,8 +11,8 @@ import com.sissi.protocol.iq.roster.Roster;
 public class PresenceRosterSubscribedProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
-		super.relationContext.update(super.jidBuilder.build(protocol.getTo()), context.getJid(), Roster.Subscription.TO.toString());
+	public Boolean input(JIDContext context, Protocol protocol) {
+		super.relationContext.update(super.jidBuilder.build(protocol.getTo()).getBare(), context.getJid().getBare(), Roster.Subscription.TO.toString());
 		return true;
 	}
 }

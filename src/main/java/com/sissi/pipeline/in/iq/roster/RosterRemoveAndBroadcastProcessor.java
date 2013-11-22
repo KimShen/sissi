@@ -9,12 +9,12 @@ import com.sissi.protocol.iq.roster.Roster;
 /**
  * @author kim 2013-11-18
  */
-public class RosterRemoveAndBroadcastProtocolProcessor extends UtilProcessor {
+public class RosterRemoveAndBroadcastProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		Roster.class.cast(protocol).getFirstItem().setSubscription(Item.Action.REMOVE.toString());
-		super.protocolQueue.offer(context.getJid(), protocol.getParent());
+		super.protocolQueue.offer(context.getJid().getBare(), protocol.getParent());
 		return true;
 	}
 }

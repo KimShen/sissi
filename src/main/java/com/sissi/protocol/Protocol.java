@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import com.sissi.context.JID;
-import com.sissi.protocol.presence.Presence;
 
 /**
  * @author kim 2013-10-24
@@ -42,7 +41,7 @@ abstract public class Protocol {
 
 	@XmlTransient
 	public Protocol getParent() {
-		return parent;
+		return parent != null ? this.parent : this;
 	}
 
 	public void setParent(Protocol parent) {
@@ -73,7 +72,7 @@ abstract public class Protocol {
 	}
 
 	public Protocol setFrom(JID from) {
-		this.from = from.asString();
+		this.from = from.asStringWithBare();
 		return this;
 	}
 
@@ -99,8 +98,8 @@ abstract public class Protocol {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	public Protocol setType(Presence.Type type) {
+
+	public Protocol setType(Type type) {
 		this.type = type.toString();
 		return this;
 	}

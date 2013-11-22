@@ -13,33 +13,13 @@ public interface JIDContext {
 
 	public JID getJid();
 
-	public MyPresence getPresence();
+	public JIDContextPresence getPresence();
 
 	public Boolean isAuth();
 
-	/**
-	 * JID is logining
-	 * 
-	 * @return
-	 */
 	public Boolean isLogining();
 
 	public Boolean close();
 
 	public void write(Protocol protocol);
-
-	public interface MyPresence {
-
-		public String type();
-
-		public String show();
-
-		public String status();
-		
-		public String type(String type);
-
-		public String show(String show);
-
-		public String status(String status);
-	}
 }

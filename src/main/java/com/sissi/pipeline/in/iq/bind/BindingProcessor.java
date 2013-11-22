@@ -13,26 +13,20 @@ import com.sissi.protocol.iq.login.Bind;
 public class BindingProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
-		Bind bind = Bind.class.cast(protocol);
-		this.binding(context, bind);
-		context.write(this.prepareResponse(protocol, bind));
+	public Boolean input(JIDContext context, Protocol protocol) {
+		context.write(this.prepareResponse(protocol, this.binding(context, Bind.class.cast(protocol))));
 		return true;
 	}
 
 	private IQ prepareResponse(Protocol protocol, Bind bind) {
-		IQ iq = (IQ) protocol.getParent().reply();
-		iq.setType(Type.RESULT.toString());
-		iq.clear();
-		iq.add(bind);
-		return iq;
+		IQ response = (IQ) protocol.getParent().reply().setType(Type.RESULT).clear();
+		return response.add(bind);
 	}
 
-	private void binding(JIDContext context, Bind bind) {
+	private Bind binding(JIDContext context, Bind bind) {
 		if (bind.hasResource()) {
 			context.getJid().setResource(bind.getResource().getText());
 		}
-		bind.clear();
-		bind.setJid(context.getJid().asString());
+		return bind.clear().setJid(context.getJid().asString());
 	}
 }

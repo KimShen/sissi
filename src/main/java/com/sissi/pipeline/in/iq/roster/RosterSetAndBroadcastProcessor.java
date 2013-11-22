@@ -8,14 +8,13 @@ import com.sissi.protocol.iq.roster.Roster;
 /**
  * @author kim 2013-10-31
  */
-public class RosterSetAndBroadcastProtocolProcessor extends UtilProcessor {
+public class RosterSetAndBroadcastProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		Roster roster = Roster.class.cast(protocol);
 		roster.getFirstItem().setSubscription(Roster.Subscription.NONE.toString());
-		// Broadcast all resources
-		super.protocolQueue.offer(context.getJid(), roster.getParent());
+		super.protocolQueue.offer(context.getJid().getBare(), roster.getParent());
 		return true;
 	}
 }

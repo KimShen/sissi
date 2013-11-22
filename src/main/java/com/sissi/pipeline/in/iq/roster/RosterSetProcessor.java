@@ -12,7 +12,7 @@ import com.sissi.relation.roster.ItemWrapRelation;
 public class RosterSetProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		super.relationContext.establish(context.getJid(), new ItemWrapRelation(Roster.class.cast(protocol).getFirstItem()));
 		return true;
 	}

@@ -6,5 +6,5 @@ package com.sissi.pipeline.in.auth;
  */
 public interface AuthAccessor {
 
-	public boolean access(AuthCertificate user);
+	public Boolean access(AuthCertificate certificate);
 }

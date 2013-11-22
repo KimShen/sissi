@@ -1,13 +1,11 @@
 package com.sissi.context.impl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
-import com.sissi.context.JIDContext.MyPresence;
 import com.sissi.context.JIDContextBuilder;
 import com.sissi.context.JIDContextParam;
+import com.sissi.context.JIDContextPresence;
+import com.sissi.offline.StorageBox;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
 
@@ -16,11 +14,15 @@ import com.sissi.protocol.presence.Presence;
  */
 public class OfflineContextBuilder implements JIDContextBuilder {
 
-	private final Log log = LogFactory.getLog(this.getClass());
+	private StorageBox storageBox;
+
+	public OfflineContextBuilder(StorageBox storageBox) {
+		super();
+		this.storageBox = storageBox;
+	}
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
-		this.log.debug("JID:" + jid.asString() + " is offlined");
 		return new OfflineContext(jid);
 	}
 
@@ -35,37 +37,32 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public JIDContext setAuth(Boolean canAccess) {
-			return null;
+			return this;
 		}
 
 		@Override
 		public Boolean isLogining() {
-			// TODO Auto-generated method stub
-			return null;
+			return false;
 		}
 
 		@Override
 		public Boolean isAuth() {
-			// TODO Auto-generated method stub
-			return null;
+			return false;
 		}
 
 		@Override
 		public JIDContext setJid(JID jid) {
-			// TODO Auto-generated method stub
-			return null;
+			return this;
 		}
 
 		@Override
 		public JID getJid() {
-			// TODO Auto-generated method stub
-			return null;
+			return this.jid;
 		}
 
 		@Override
 		public void write(Protocol protocol) {
-			// TODO Auto-generated method stub
-
+			OfflineContextBuilder.this.storageBox.push(protocol);
 		}
 
 		@Override
@@ -74,47 +71,51 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public MyPresence getPresence() {
-			return OfflinePresence.OFFLINE;
+		public JIDContextPresence getPresence() {
+			return OfflineContextPresence.OFFLINE;
 		}
 	}
 
-	private static class OfflinePresence implements MyPresence {
+	private static class OfflineContextPresence implements JIDContextPresence {
 
-		private final static MyPresence OFFLINE = new OfflinePresence();
+		private final static JIDContextPresence OFFLINE = new OfflineContextPresence();
 
-		private OfflinePresence() {
+		private OfflineContextPresence() {
 
 		}
 
 		@Override
-		public String type() {
+		public String getTypeText() {
 			return Presence.Type.UNAVAILABLE.toString();
 		}
 
 		@Override
-		public String show() {
+		public String getShowText() {
 			return null;
 		}
 
 		@Override
-		public String status() {
+		public String getStatusText() {
 			return null;
 		}
 
 		@Override
-		public String type(String type) {
-			return this.type();
+		public JIDContextPresence setTypeText(String type) {
+			return this;
 		}
 
 		@Override
-		public String show(String show) {
-			return null;
+		public JIDContextPresence setShowText(String show) {
+			return this;
 		}
 
 		@Override
-		public String status(String status) {
-			return null;
+		public JIDContextPresence setStatusText(String status) {
+			return this;
+		}
+
+		public JIDContextPresence clear() {
+			return this;
 		}
 	}
 }

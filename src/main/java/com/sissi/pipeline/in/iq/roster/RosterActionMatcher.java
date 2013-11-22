@@ -34,7 +34,11 @@ public class RosterActionMatcher extends MatchClass {
 
 		@Override
 		public Boolean match(Protocol protocol) {
-			return super.match(protocol) && (Roster.class.cast(protocol)).getFirstItem().getAction() == this.detail;
+			return super.match(protocol) && this.matchAction(protocol);
+		}
+
+		private boolean matchAction(Protocol protocol) {
+			return (Roster.class.cast(protocol)).getFirstItem().getAction() == this.detail;
 		}
 	}
 }

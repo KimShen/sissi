@@ -1,15 +1,14 @@
 package com.sissi.broadcast.impl;
 
 import com.sissi.addressing.Addressing;
-import com.sissi.broadcast.ProtocolQueue;
+import com.sissi.broadcast.ProtocolBraodcast;
 import com.sissi.context.JID;
-import com.sissi.context.JIDContext;
 import com.sissi.protocol.Protocol;
 
 /**
  * @author kim 2013-11-18
  */
-public class CurrentProtocolQueue implements ProtocolQueue {
+public class CurrentProtocolQueue implements ProtocolBraodcast {
 
 	protected Addressing addressing;
 
@@ -20,8 +19,6 @@ public class CurrentProtocolQueue implements ProtocolQueue {
 
 	@Override
 	public void offer(JID jid, Protocol protocol) {
-		for (JIDContext each : this.addressing.find(jid.getBare())) {
-			each.write(protocol);
-		}
+		this.addressing.find(jid.getBare()).write(protocol);
 	}
 }

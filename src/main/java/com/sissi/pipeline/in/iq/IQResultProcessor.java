@@ -11,15 +11,12 @@ import com.sissi.protocol.Protocol.Type;
 public class IQResultProcessor implements Input {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		context.write(this.prepareIQ(protocol));
 		return false;
 	}
 
 	private Protocol prepareIQ(Protocol protocol) {
-		Protocol response = protocol.hasParent() ? protocol.getParent() : protocol;
-		response.reply().clear();
-		response.setType(Type.RESULT.toString());
-		return response;
+		return protocol.getParent().reply().clear().setType(Type.RESULT);
 	}
 }

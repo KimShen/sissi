@@ -22,7 +22,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="stream.condition" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+	<bean id="stream.condition" class="com.sissi.pipeline.in.BeanCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.MatchClass">
 				<constructor-arg value="com.sissi.protocol.Stream" />
@@ -31,23 +31,14 @@
 		<constructor-arg ref="stream.pro.chained" />
 	</bean>
 
-	<bean id="global.condition" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
-		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.MatchAll" />
-		</constructor-arg>
-		<constructor-arg>
-			<util:constant static-field="com.sissi.pipeline.Input$NothingProcessor.NOTHING" />
-		</constructor-arg>
-	</bean>
-
 	<bean id="finder.input" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<ref bean="message.condition" />
 				<ref bean="presence.condition" />
 				<ref bean="iq.condition" />
 				<ref bean="auth.condition" />
 				<ref bean="stream.condition" />
-				<ref bean="global.condition" />
 			</util:list>
 		</constructor-arg>
 	</bean>

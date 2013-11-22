@@ -5,13 +5,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
+import com.sissi.context.JIDContextPresence;
 import com.sissi.protocol.Protocol;
 
 /**
  * @author kim 2013-10-28
  */
 @XmlRootElement
-public class Presence extends Protocol {
+public class Presence extends Protocol implements JIDContextPresence {
 
 	public static enum Type {
 
@@ -44,16 +45,31 @@ public class Presence extends Protocol {
 		super();
 	}
 
-	public Presence(JID from, JID to, String show, String status, Type type) {
+	public Presence(JID from, JID to, String show, String status, String type) {
 		super.setFrom(from.asString());
 		super.setTo(to.asString());
-		super.setType(type.toString());
+		super.setType(type);
 		if (show != null) {
 			this.setShow(new Show(show));
 		}
 		if (status != null) {
 			this.setStatus(new Status(status));
 		}
+	}
+
+	public Presence setType(Type type) {
+		super.setType(type.toString());
+		return this;
+	}
+
+	public Presence setFrom(JID from) {
+		super.setFrom(from);
+		return this;
+	}
+
+	@XmlTransient
+	public String getTypeText() {
+		return this.getType();
 	}
 
 	@XmlElement(name = "show")
@@ -84,11 +100,32 @@ public class Presence extends Protocol {
 		this.status = status;
 	}
 
-	public Protocol clear() {
+	public Presence clear() {
 		super.clear();
 		super.setType((String) null);
 		this.show = null;
 		this.status = null;
 		return this;
+	}
+
+	@Override
+	public Presence setShowText(String show) {
+		if (show != null) {
+			this.setShow(new Show(show));
+		}
+		return this;
+	}
+
+	@Override
+	public Presence setStatusText(String status) {
+		if (status != null) {
+			this.setStatus(new Status(status));
+		}
+		return this;
+	}
+
+	@Override
+	public JIDContextPresence setTypeText(String type) {
+		return (JIDContextPresence) this.setType(Type.parse(type));
 	}
 }

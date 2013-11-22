@@ -10,9 +10,8 @@ import com.sissi.protocol.Protocol;
 public class PresenceStateBroadcastProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
-		protocol.setFrom(context.getJid().asStringWithBare());
-		super.protocolQueue.offer(context.getJid(), protocol);
+	public Boolean input(JIDContext context, Protocol protocol) {
+		super.protocolQueue.offer(context.getJid().getBare(), protocol.setFrom(context.getJid().getBare()));
 		return true;
 	}
 }

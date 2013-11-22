@@ -51,7 +51,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="auth.condition" class="com.sissi.pipeline.in.ChainedFinder$BeanCondition">
+	<bean id="auth.condition" class="com.sissi.pipeline.in.BeanCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.MatchClass">
 				<constructor-arg value="com.sissi.protocol.iq.login.Auth" />

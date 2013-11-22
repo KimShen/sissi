@@ -10,7 +10,7 @@ import com.sissi.protocol.Protocol;
 public class AuthNoneRepeatProcessor implements Input {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		return context.isLogining() ? false : true;
 	}
 }

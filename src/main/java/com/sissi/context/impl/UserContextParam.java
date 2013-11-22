@@ -17,6 +17,6 @@ public class UserContextParam implements JIDContextParam {
 
 	@Override
 	public <T> T find(String key, Class<T> clazz) {
-		return UserContextBuilder.KEY_OUTPUT.equals(key) ? clazz.cast(output) : null;
+		return OnlineContextBuilder.KEY_OUTPUT.equals(key) ? clazz.cast(output) : null;
 	}
 }

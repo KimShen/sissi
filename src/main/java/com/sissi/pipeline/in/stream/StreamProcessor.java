@@ -15,7 +15,7 @@ import com.sissi.protocol.iq.login.Session;
 public class StreamProcessor implements Input {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		context.write(this.rewriteStreamByAccess(context, Stream.generate(context)));
 		return false;
 	}

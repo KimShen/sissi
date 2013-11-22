@@ -3,7 +3,8 @@ package com.sissi.pipeline.in.auth.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.sissi.config.Config;
 import com.sissi.pipeline.in.auth.AuthAccessor;
@@ -28,10 +29,8 @@ public class MongoAuthAccessor implements AuthAccessor {
 	}
 
 	@Override
-	public boolean access(AuthCertificate user) {
-		BasicDBObject query = new BasicDBObject();
-		query.put("username", user.getUser());
-		query.put("password", user.getPass());
+	public Boolean access(AuthCertificate user) {
+		DBObject query = BasicDBObjectBuilder.start().add("username", user.getUser()).add("password", user.getPass()).get();
 		this.log.debug("Query: " + query);
 		long count = MongoUtils.findCollection(this.config, this.client).count(query);
 		this.logIfDuplication(user, count);

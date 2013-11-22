@@ -9,7 +9,7 @@ import com.sissi.netty.ServerLoopGroup;
  * @author kim 2013-11-19
  */
 public class MyServerLoopGroup implements ServerLoopGroup {
-
+	
 	@Override
 	public EventLoopGroup boss() {
 		return new NioEventLoopGroup();

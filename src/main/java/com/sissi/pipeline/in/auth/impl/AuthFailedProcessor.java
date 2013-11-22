@@ -11,7 +11,7 @@ import com.sissi.protocol.iq.login.Failure;
 public class AuthFailedProcessor implements Input {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		context.write(Failure.INSTANCE);
 		return false;
 	}

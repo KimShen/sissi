@@ -6,7 +6,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.pipeline.Input;
-import com.sissi.pipeline.Input.NothingProcessor;
 import com.sissi.pipeline.InputCondition;
 import com.sissi.pipeline.InputCondition.InputFinder;
 import com.sissi.protocol.Protocol;
@@ -29,32 +28,10 @@ public class ChainedFinder implements InputFinder {
 	public Input find(Protocol protocol) {
 		for (InputCondition each : this.conditions) {
 			if (each.getMatcher().match(protocol)) {
-				this.log.debug("Protocol " + protocol.getClass() + " will use " + each.getClass());
 				return each.getInput();
 			}
 		}
 		this.log.warn("None Input can process " + protocol.getClass());
 		return NothingProcessor.NOTHING;
-	}
-
-	public static class BeanCondition implements InputCondition {
-
-		private Input input;
-
-		private InputMatcher matcher;
-
-		public BeanCondition(Input input, InputMatcher matcher) {
-			super();
-			this.input = input;
-			this.matcher = matcher;
-		}
-
-		public Input getInput() {
-			return input;
-		}
-
-		public InputMatcher getMatcher() {
-			return matcher;
-		}
 	}
 }

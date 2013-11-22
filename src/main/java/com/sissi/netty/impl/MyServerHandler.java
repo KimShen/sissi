@@ -84,19 +84,18 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
 
 	public void channelUnregistered(ChannelHandlerContext ctx) {
 		if (ctx.attr(CONTEXT).get().getJid() != null) {
-			this.serverCloser.callback(ctx.attr(CONTEXT).get());
-			this.addressing.leave(ctx.attr(CONTEXT).get());
 			ctx.attr(CONNECTOR).get().stop();
+			this.serverCloser.close(ctx.attr(CONTEXT).get());
+			this.addressing.leave(ctx.attr(CONTEXT).get());
 		}
+		// Auto close output
 		IOUtils.closeQuietly(this.input);
 	}
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		try {
-			ByteBuf byteBuf = (ByteBuf) msg;
-			this.logIfNecessary(ctx, byteBuf);
-			this.output.write(this.copyToBytes(byteBuf));
+			this.output.write(this.copyToBytes(this.logIfNecessary(ctx, (ByteBuf) msg)));
 		} catch (Exception e) {
 			LOG.fatal(e);
 		} finally {
@@ -112,12 +111,6 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
 		}
 	}
 
-	private void logIfDetail(Throwable cause) {
-		StringWriter trace = new StringWriter();
-		cause.printStackTrace(new PrintWriter(trace));
-		LOG.warn(trace.toString());
-	}
-
 	private void createLooperAndStart(final ChannelHandlerContext ctx) {
 		try {
 			Looper looper = this.looperBuilder.build(this.reader.future(input), this.feederBuilder.build(ctx.attr(CONTEXT).get(), this.finder));
@@ -130,8 +123,7 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
 	}
 
 	private void createContextAndJoinGroup(final ChannelHandlerContext ctx) {
-		NetworkProcessor network = new NetworkProcessor(this.writer, ctx);
-		ctx.attr(CONTEXT).set(this.jidContextBuilder.build(null, new UserContextParam(network)));
+		ctx.attr(CONTEXT).set(this.jidContextBuilder.build(null, new UserContextParam(new NetworkProcessor(this.writer, ctx))));
 	}
 
 	private byte[] copyToBytes(ByteBuf byteBuf) {
@@ -140,11 +132,20 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
 		return data;
 	}
 
-	private void logIfNecessary(ChannelHandlerContext ctx, ByteBuf byteBuf) {
+	private void logIfDetail(Throwable cause) {
+		if (LOG.isWarnEnabled()) {
+			StringWriter trace = new StringWriter();
+			cause.printStackTrace(new PrintWriter(trace));
+			LOG.warn(trace.toString());
+		}
+	}
+
+	private ByteBuf logIfNecessary(ChannelHandlerContext ctx, ByteBuf byteBuf) {
 		if (LOG.isInfoEnabled()) {
 			JIDContext context = ctx.attr(CONTEXT).get();
 			LOG.info("Read on " + (context != null && context.getJid() != null ? context.getJid().asString() : "N/A") + ": " + byteBuf.toString(Charset.forName("UTF-8")));
 			byteBuf.readerIndex(0);
 		}
+		return byteBuf;
 	}
 }

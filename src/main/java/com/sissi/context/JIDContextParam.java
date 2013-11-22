@@ -5,7 +5,7 @@ package com.sissi.context;
  */
 public interface JIDContextParam {
 
-	public JIDContextParam NOTHING = new NothingJIDContextParam();
+	public static final JIDContextParam NOTHING = new NothingJIDContextParam();
 
 	public <T> T find(String key, Class<T> clazz);
 

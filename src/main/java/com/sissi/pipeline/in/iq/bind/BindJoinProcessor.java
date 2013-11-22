@@ -10,7 +10,7 @@ import com.sissi.protocol.Protocol;
 public class BindJoinProcessor extends UtilProcessor {
 
 	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
+	public Boolean input(JIDContext context, Protocol protocol) {
 		super.addressing.join(context);
 		return true;
 	}

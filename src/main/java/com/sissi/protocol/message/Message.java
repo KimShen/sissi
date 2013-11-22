@@ -15,6 +15,8 @@ public class Message extends Protocol {
 
 	private Body body;
 
+	private Delay delay;
+
 	public Message() {
 		super();
 	}
@@ -29,6 +31,15 @@ public class Message extends Protocol {
 	@XmlElement(name = "body")
 	public String getBodyText() {
 		return this.body != null ? this.body.getText() : null;
+	}
+
+	@XmlElement(name = "delay")
+	public Delay getDelay() {
+		return delay;
+	}
+
+	public void setDelay(Delay delay) {
+		this.delay = delay;
 	}
 
 	@XmlTransient
