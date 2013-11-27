@@ -80,7 +80,6 @@ public class MongoHashAddressing implements Addressing {
 	public void leave(JIDContext context) {
 		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).add(FIELD_PRIORITY, context.getJid().getPriority()).get();
 		this.log.debug("Query: " + query);
-		// Like ban as well
 		Long index = new Long(MongoUtils.findCollection(this.config, this.client).findOne(query, DEFAULT_FILTER).get("index").toString());
 		if (this.contexts.remove(index) != null) {
 			MongoUtils.findCollection(this.config, this.client).remove(query);

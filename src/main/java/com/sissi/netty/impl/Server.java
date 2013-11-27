@@ -26,6 +26,7 @@ public class Server {
 		return configs.toArray(new String[] {});
 	}
 
+	@SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception {
 		new ClassPathXmlApplicationContext(reading()).getBean(ServerStart.class).start();
 	}

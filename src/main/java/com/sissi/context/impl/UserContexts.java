@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContextPresence;
-import com.sissi.protocol.Protocol;
+import com.sissi.protocol.Node;
 
 /**
  * @author kim 2013-11-21
@@ -18,6 +18,13 @@ public class UserContexts extends ArrayList<JIDContext> implements JIDContext {
 	public JIDContext setAuth(Boolean canAccess) {
 		for (JIDContext each : this) {
 			each.setAuth(canAccess);
+		}
+		return this;
+	}
+	
+	public JIDContext setBinding(Boolean isBinding) {
+		for (JIDContext each : this) {
+			each.setBinding(isBinding);
 		}
 		return this;
 	}
@@ -49,6 +56,14 @@ public class UserContexts extends ArrayList<JIDContext> implements JIDContext {
 		return isAuth;
 	}
 
+	public Boolean isBinding() {
+		boolean isBinding = true;
+		for (JIDContext each : this) {
+			isBinding = each.isBinding();
+		}
+		return isBinding;
+	}
+
 	@Override
 	public Boolean isLogining() {
 		boolean isLoging = true;
@@ -68,9 +83,9 @@ public class UserContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	@Override
-	public void write(Protocol protocol) {
+	public void write(Node node) {
 		for (JIDContext each : this) {
-			each.write(protocol);
+			each.write(node);
 		}
 	}
 }

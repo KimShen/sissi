@@ -22,7 +22,7 @@ public class Mechanisms extends Feature {
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
 
-	public final static Mechanisms PLAIN = new Mechanisms("PLAIN");
+	public final static Mechanisms MECHANISMS = new Mechanisms("PLAIN", "DIGEST-MD5");
 
 	private Set<String> mechanism;
 
