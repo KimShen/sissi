@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.context.JIDContext;
 import com.sissi.protocol.iq.login.Auth;
 import com.sissi.protocol.iq.login.Bind;
 import com.sissi.protocol.iq.login.Mechanisms;
@@ -57,12 +56,18 @@ public class Stream extends Protocol {
 		return features;
 	}
 
-	public static Stream generate(JIDContext context) {
-		return new StreamOpen();
+	public static Stream generate(Protocol protocol) {
+		return new StreamOpen(protocol.getId());
 	}
 
 	@XmlRootElement(name = "stream", namespace = Stream.NAMESPACE)
 	public static class StreamOpen extends Stream implements WriterWithOutClose {
 
+		public StreamOpen() {
+		}
+
+		public StreamOpen(String id) {
+			super.setId(id);
+		}
 	}
 }

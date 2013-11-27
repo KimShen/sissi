@@ -20,7 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.context.JIDContext;
-import com.sissi.protocol.Protocol;
+import com.sissi.protocol.Node;
 import com.sissi.write.Writer;
 import com.sissi.write.WriterWithOutClose;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
@@ -63,25 +63,25 @@ public class JAXBWriter implements Writer {
 		this.mapper = mapper;
 	}
 
-	public void write(JIDContext context, Protocol protocol, OutputStream output) throws IOException {
-		if (WriterWithOutClose.class.isAssignableFrom(protocol.getClass())) {
-			this.writeWithOutClose(context, protocol, output);
+	public void write(JIDContext context, Node node, OutputStream output) throws IOException {
+		if (WriterWithOutClose.class.isAssignableFrom(node.getClass())) {
+			this.writeWithOutClose(context, node, output);
 		} else {
-			this.writeWithFull(context, protocol, output);
+			this.writeWithFull(context, node, output);
 		}
 	}
 
-	public void writeWithFull(JIDContext context, Protocol protocol, OutputStream output) throws IOException {
+	public void writeWithFull(JIDContext context, Node node, OutputStream output) throws IOException {
 		try {
 			Marshaller marshaller = this.generateMarshaller(false);
 			if (LOG.isInfoEnabled()) {
 				StringWriter writer = new StringWriter();
-				marshaller.marshal(protocol, writer);
+				marshaller.marshal(node, writer);
 				String content = writer.toString();
 				LOG.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + content);
 				output.write(content.getBytes("UTF-8"));
 			} else {
-				marshaller.marshal(protocol, output);
+				marshaller.marshal(node, output);
 			}
 		} catch (JAXBException e) {
 			LOG.error(e);
@@ -89,10 +89,10 @@ public class JAXBWriter implements Writer {
 		}
 	}
 
-	private void writeWithOutClose(JIDContext context, Protocol protocol, OutputStream output) throws IOException {
+	private void writeWithOutClose(JIDContext context, Node node, OutputStream output) throws IOException {
 		try {
 			Marshaller marshaller = generateMarshaller(true);
-			LinkedList<String> contents = this.prepareToLines(protocol, marshaller);
+			LinkedList<String> contents = this.prepareToLines(node, marshaller);
 			LOG.debug("Line XML: " + contents);
 			contents.removeLast();
 			StringBuffer sb = new StringBuffer();
@@ -107,9 +107,9 @@ public class JAXBWriter implements Writer {
 		}
 	}
 
-	private LinkedList<String> prepareToLines(Protocol protocol, Marshaller marshaller) throws JAXBException, IOException {
+	private LinkedList<String> prepareToLines(Node node, Marshaller marshaller) throws JAXBException, IOException {
 		ByteArrayOutputStream prepare = new ByteArrayOutputStream();
-		marshaller.marshal(protocol, prepare);
+		marshaller.marshal(node, prepare);
 		LineIterator iterator = IOUtils.lineIterator(new ByteArrayInputStream(prepare.toByteArray()), "UTF-8");
 		LinkedList<String> contents = new LinkedList<String>();
 		while (iterator.hasNext()) {

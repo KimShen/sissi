@@ -5,12 +5,14 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="bind.pro.repeat" class="com.sissi.pipeline.in.iq.bind.BindNoneRepeatProcessor" />
 	<bean id="bind.pro.binding" class="com.sissi.pipeline.in.iq.bind.BindingProcessor" parent="global.pro.utils" />
 	<bean id="bind.pro.ban" class="com.sissi.pipeline.in.iq.bind.BindBanProcessor" parent="global.pro.utils" />
 	<bean id="bind.pro.join" class="com.sissi.pipeline.in.iq.bind.BindJoinProcessor" parent="global.pro.utils" />
 	<bean id="bind.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="bind.pro.repeat" />
 				<ref bean="bind.pro.binding" />
 				<ref bean="bind.pro.ban" />
 				<ref bean="bind.pro.join" />

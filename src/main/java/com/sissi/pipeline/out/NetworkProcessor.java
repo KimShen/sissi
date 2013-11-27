@@ -15,7 +15,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Output;
-import com.sissi.protocol.Protocol;
+import com.sissi.protocol.Node;
 import com.sissi.write.Writer;
 
 /**
@@ -36,10 +36,10 @@ public class NetworkProcessor implements Output {
 	}
 
 	@Override
-	public Boolean output(JIDContext context, Protocol protocol) {
+	public Boolean output(JIDContext context, Node node) {
 		try {
 			ByteBuf byteBuffer = this.allocBuffer();
-			this.writer.write(context, protocol, new ByteBufferOutputStream(byteBuffer));
+			this.writer.write(context, node, new ByteBufferOutputStream(byteBuffer));
 			this.context.writeAndFlush(byteBuffer).addListener(FailLogGenericFutureListener.INSTANCE);
 		} catch (IOException e) {
 			LOG.error(e);

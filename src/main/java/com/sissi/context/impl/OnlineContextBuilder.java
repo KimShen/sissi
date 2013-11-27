@@ -1,8 +1,6 @@
 package com.sissi.context.impl;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
@@ -11,7 +9,7 @@ import com.sissi.context.JIDContextParam;
 import com.sissi.context.JIDContextPresence;
 import com.sissi.context.JIDContextPresenceBuilder;
 import com.sissi.pipeline.Output;
-import com.sissi.protocol.Protocol;
+import com.sissi.protocol.Node;
 
 /**
  * @author kim 2013-11-19
@@ -36,10 +34,12 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private class UserContext implements JIDContext {
 
-		private final Lock lock = new ReentrantLock();
+		private final AtomicBoolean isBinding = new AtomicBoolean();
+		
+		private final AtomicBoolean isLogin = new AtomicBoolean();
 
 		private final AtomicBoolean isAuth = new AtomicBoolean();
-
+		
 		private JIDContextPresence myPresence;
 
 		private Output output;
@@ -52,15 +52,18 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		public Boolean isLogining() {
-			// First thread into this method the lock can be grab
-			if (this.lock.tryLock()) {
-				return this.isAuth.get();
-			} else {
-				// The subsequent thread always return true until setAuth will be invoke
-				return true;
-			}
+			return this.isLogin.get() ? true : !this.isLogin.compareAndSet(false, true);
 		}
 
+		public Boolean isBinding() {
+			return this.isBinding.get();
+		}
+
+		public JIDContext setBinding(Boolean isBinding) {
+			this.isBinding.set(isBinding);
+			return this;
+		}
+		
 		@Override
 		public Boolean isAuth() {
 			return this.isAuth.get();
@@ -69,7 +72,6 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		@Override
 		public UserContext setAuth(Boolean canAccess) {
 			this.isAuth.set(canAccess);
-			this.lock.unlock();
 			return this;
 		}
 
@@ -83,8 +85,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public void write(Protocol protocol) {
-			this.output.output(this, protocol);
+		public void write(Node node) {
+			this.output.output(this, node);
 		}
 
 		@Override

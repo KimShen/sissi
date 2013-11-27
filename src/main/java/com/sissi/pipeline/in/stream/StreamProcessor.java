@@ -16,7 +16,7 @@ public class StreamProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(this.rewriteStreamByAccess(context, Stream.generate(context)));
+		context.write(this.rewriteStreamByAccess(context, Stream.generate(protocol)));
 		return false;
 	}
 
@@ -25,7 +25,7 @@ public class StreamProcessor implements Input {
 	}
 
 	private Stream buildLoginMethod(Stream stream) {
-		stream.addFeature(Mechanisms.PLAIN).addFeature(new Auth());
+		stream.addFeature(Mechanisms.MECHANISMS).addFeature(new Auth());
 		return stream;
 	}
 

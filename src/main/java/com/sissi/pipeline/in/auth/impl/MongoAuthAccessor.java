@@ -8,7 +8,6 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.sissi.config.Config;
 import com.sissi.pipeline.in.auth.AuthAccessor;
-import com.sissi.pipeline.in.auth.AuthCertificate;
 import com.sissi.util.MongoUtils;
 
 /**
@@ -29,17 +28,11 @@ public class MongoAuthAccessor implements AuthAccessor {
 	}
 
 	@Override
-	public Boolean access(AuthCertificate user) {
-		DBObject query = BasicDBObjectBuilder.start().add("username", user.getUser()).add("password", user.getPass()).get();
+	public String access(String username) {
+		DBObject query = BasicDBObjectBuilder.start().add("username", username).get();
 		this.log.debug("Query: " + query);
-		long count = MongoUtils.findCollection(this.config, this.client).count(query);
-		this.logIfDuplication(user, count);
-		return count > 0;
-	}
-
-	private void logIfDuplication(AuthCertificate user, long count) {
-		if (count > 1) {
-			this.log.fatal("Duplicated account for: " + user.getUser());
-		}
+		DBObject entity = MongoUtils.findCollection(this.config, this.client).findOne(query);
+		this.log.debug("User for: " + username + " is " + entity);
+		return entity != null ? entity.get("password").toString() : null;
 	}
 }

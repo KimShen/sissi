@@ -6,6 +6,9 @@
 	<finder uri="urn:ietf:params:xml:ns:xmpp-sasl" localName="auth">
 		<clazz>com.sissi.protocol.iq.login.Auth</clazz>
 	</finder>
+	<finder uri="urn:ietf:params:xml:ns:xmpp-sasl" localName="response">
+		<clazz>com.sissi.protocol.iq.login.Response</clazz>
+	</finder>
 	<finder uri="urn:ietf:params:xml:ns:xmpp-bind" localName="bind">
 		<clazz>com.sissi.protocol.iq.login.Bind</clazz>
 	</finder>

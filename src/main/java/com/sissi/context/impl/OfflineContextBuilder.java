@@ -6,6 +6,7 @@ import com.sissi.context.JIDContextBuilder;
 import com.sissi.context.JIDContextParam;
 import com.sissi.context.JIDContextPresence;
 import com.sissi.offline.StorageBox;
+import com.sissi.protocol.Node;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
 
@@ -50,6 +51,14 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return false;
 		}
 
+		public Boolean isBinding() {
+			return false;
+		}
+
+		public JIDContext setBinding(Boolean isBinding) {
+			return this;
+		}
+
 		@Override
 		public JIDContext setJid(JID jid) {
 			return this;
@@ -61,8 +70,10 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public void write(Protocol protocol) {
-			OfflineContextBuilder.this.storageBox.push(protocol);
+		public void write(Node node) {
+			if (Protocol.class.isAssignableFrom(node.getClass())) {
+				OfflineContextBuilder.this.storageBox.push(Protocol.class.cast(node));
+			}
 		}
 
 		@Override

@@ -82,8 +82,8 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
 		this.createLooperAndStart(ctx);
 	}
 
-	public void channelUnregistered(ChannelHandlerContext ctx) {
-		if (ctx.attr(CONTEXT).get().getJid() != null) {
+	public void channelInactive(ChannelHandlerContext ctx) {
+		if (ctx.attr(CONTEXT).get().isBinding()) {
 			ctx.attr(CONNECTOR).get().stop();
 			this.serverCloser.close(ctx.attr(CONTEXT).get());
 			this.addressing.leave(ctx.attr(CONTEXT).get());

@@ -1,6 +1,6 @@
 package com.sissi.context;
 
-import com.sissi.protocol.Protocol;
+import com.sissi.protocol.Node;
 
 /**
  * @author kim 2013-10-27
@@ -8,6 +8,8 @@ import com.sissi.protocol.Protocol;
 public interface JIDContext {
 
 	public JIDContext setAuth(Boolean canAccess);
+	
+	public JIDContext setBinding(Boolean isBinding);
 
 	public JIDContext setJid(JID jid);
 
@@ -16,10 +18,12 @@ public interface JIDContext {
 	public JIDContextPresence getPresence();
 
 	public Boolean isAuth();
+	
+	public Boolean isBinding();
 
 	public Boolean isLogining();
 
 	public Boolean close();
 
-	public void write(Protocol protocol);
+	public void write(Node node);
 }

@@ -38,6 +38,7 @@
 				<ref bean="presence.condition" />
 				<ref bean="iq.condition" />
 				<ref bean="auth.condition" />
+				<ref bean="auth.condition.digest" />
 				<ref bean="stream.condition" />
 			</util:list>
 		</constructor-arg>
