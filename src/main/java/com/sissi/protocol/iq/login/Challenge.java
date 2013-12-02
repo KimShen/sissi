@@ -8,13 +8,21 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+<<<<<<< HEAD
 import com.sissi.protocol.Element;
+=======
+import com.sissi.protocol.Node;
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 
 /**
  * @author kim 2013-11-25
  */
 @XmlRootElement
+<<<<<<< HEAD
 public class Challenge implements Element {
+=======
+public class Challenge implements Node {
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
 
@@ -46,6 +54,7 @@ public class Challenge implements Element {
 			throw new RuntimeException(e);
 		}
 	}
+<<<<<<< HEAD
 
 	@XmlAttribute
 	public String getId() {
@@ -85,4 +94,6 @@ public class Challenge implements Element {
 	public Element setType(String type) {
 		return this;
 	}
+=======
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 }

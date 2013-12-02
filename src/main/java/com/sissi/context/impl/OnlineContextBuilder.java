@@ -1,7 +1,10 @@
 package com.sissi.context.impl;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+<<<<<<< HEAD
 import java.util.concurrent.atomic.AtomicLong;
+=======
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
@@ -10,7 +13,11 @@ import com.sissi.context.JIDContext.JIDContextParam;
 import com.sissi.context.MyPresence;
 import com.sissi.context.MyPresence.MyPresenceBuilder;
 import com.sissi.pipeline.Output;
+<<<<<<< HEAD
 import com.sissi.protocol.Element;
+=======
+import com.sissi.protocol.Node;
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 
 /**
  * @author kim 2013-11-19
@@ -38,12 +45,21 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 	private class UserContext implements JIDContext {
 
 		private final AtomicBoolean isBinding = new AtomicBoolean();
+<<<<<<< HEAD
 
 		private final AtomicBoolean isAuth = new AtomicBoolean();
 
 		private MyPresence myPresence;
 
 		private Integer priority;
+=======
+		
+		private final AtomicBoolean isLogin = new AtomicBoolean();
+
+		private final AtomicBoolean isAuth = new AtomicBoolean();
+		
+		private JIDContextPresence myPresence;
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 
 		private Output output;
 
@@ -58,19 +74,32 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			this.index = OnlineContextBuilder.this.indexes.incrementAndGet();
 		}
 
+<<<<<<< HEAD
 		public Long getIndex() {
 			return index;
+=======
+		public Boolean isLogining() {
+			return this.isLogin.get() ? true : !this.isLogin.compareAndSet(false, true);
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 		}
 
 		public Boolean isBinding() {
 			return this.isBinding.get();
+<<<<<<< HEAD
+		}
+
+		public JIDContext setBinding(Boolean isBinding) {
+			this.isBinding.set(isBinding);
+			return this;
+=======
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 		}
 
 		public JIDContext setBinding(Boolean isBinding) {
 			this.isBinding.set(isBinding);
 			return this;
 		}
-
+		
 		@Override
 		public Boolean isAuth() {
 			return this.isAuth.get();
@@ -92,7 +121,11 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
+<<<<<<< HEAD
 		public void write(Element node) {
+=======
+		public void write(Node node) {
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 			this.output.output(this, node);
 		}
 

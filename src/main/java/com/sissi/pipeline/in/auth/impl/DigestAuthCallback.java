@@ -16,7 +16,11 @@ import javax.security.sasl.SaslServer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+<<<<<<< HEAD
 import com.sissi.context.JID.JIDBuilder;
+=======
+import com.sissi.context.JIDBuilder;
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.auth.AuthAccessor;
 import com.sissi.pipeline.in.auth.AuthCallback;

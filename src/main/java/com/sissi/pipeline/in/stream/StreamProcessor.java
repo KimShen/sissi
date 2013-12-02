@@ -26,7 +26,11 @@ public class StreamProcessor implements Input {
 	}
 
 	private Stream buildLoginMethod(Stream stream) {
+<<<<<<< HEAD
 		stream.addFeature(Mechanisms.MECHANISMS).addFeature(new Auth()).addFeature(new Register());
+=======
+		stream.addFeature(Mechanisms.MECHANISMS).addFeature(new Auth());
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 		return stream;
 	}
 

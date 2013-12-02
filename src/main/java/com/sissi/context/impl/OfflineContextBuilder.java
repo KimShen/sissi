@@ -6,7 +6,12 @@ import com.sissi.context.JIDContext.JIDContextBuilder;
 import com.sissi.context.JIDContext.JIDContextParam;
 import com.sissi.context.MyPresence;
 import com.sissi.offline.StorageBox;
+<<<<<<< HEAD
 import com.sissi.protocol.Element;
+=======
+import com.sissi.protocol.Node;
+import com.sissi.protocol.Protocol;
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 import com.sissi.protocol.presence.Presence;
 
 /**
@@ -55,6 +60,13 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return false;
 		}
 
+<<<<<<< HEAD
+=======
+		public Boolean isBinding() {
+			return false;
+		}
+
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 		public JIDContext setBinding(Boolean isBinding) {
 			return this;
 		}
@@ -70,8 +82,15 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
+<<<<<<< HEAD
 		public void write(Element element) {
 			OfflineContextBuilder.this.storageBox.store(element);
+=======
+		public void write(Node node) {
+			if (Protocol.class.isAssignableFrom(node.getClass())) {
+				OfflineContextBuilder.this.storageBox.push(Protocol.class.cast(node));
+			}
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 		}
 
 		@Override

@@ -55,7 +55,11 @@ public class Stream extends Protocol {
 	}
 
 	public static Stream generate(Protocol protocol) {
+<<<<<<< HEAD
 		return new StreamOpen(protocol);
+=======
+		return new StreamOpen(protocol.getId());
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 	}
 
 	@XmlRootElement(name = "stream", namespace = Stream.NAMESPACE)
@@ -64,9 +68,14 @@ public class Stream extends Protocol {
 		public StreamOpen() {
 		}
 
+<<<<<<< HEAD
 		public StreamOpen(Protocol protocol) {
 			super.setId(protocol.getId());
 			super.setFrom("3ti.us");
+=======
+		public StreamOpen(String id) {
+			super.setId(id);
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 		}
 	}
 }

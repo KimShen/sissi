@@ -23,7 +23,11 @@ public class Mechanisms extends Feature {
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
 
+<<<<<<< HEAD
 	public final static Mechanisms MECHANISMS = new Mechanisms(DigestAuthCallback.MECHANISM, "PLAIN", "ANONYMOUS");
+=======
+	public final static Mechanisms MECHANISMS = new Mechanisms("PLAIN", "DIGEST-MD5");
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 
 	private Set<String> mechanism;
 

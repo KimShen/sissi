@@ -10,7 +10,11 @@ import com.sissi.context.JID;
 /**
  * @author kim 2013-10-24
  */
+<<<<<<< HEAD
 abstract public class Protocol implements Element {
+=======
+abstract public class Protocol implements Node{
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 
 	public static enum Type {
 

@@ -20,7 +20,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.context.JIDContext;
+<<<<<<< HEAD
 import com.sissi.protocol.Element;
+=======
+import com.sissi.protocol.Node;
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 import com.sissi.write.Writer;
 import com.sissi.write.WriteWithOutClose;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
@@ -63,15 +67,24 @@ public class JAXBWriter implements Writer {
 		this.mapper = mapper;
 	}
 
+<<<<<<< HEAD
 	public void write(JIDContext context, Element node, OutputStream output) throws IOException {
 		if (WriteWithOutClose.class.isAssignableFrom(node.getClass())) {
+=======
+	public void write(JIDContext context, Node node, OutputStream output) throws IOException {
+		if (WriterWithOutClose.class.isAssignableFrom(node.getClass())) {
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 			this.writeWithOutClose(context, node, output);
 		} else {
 			this.writeWithFull(context, node, output);
 		}
 	}
 
+<<<<<<< HEAD
 	public void writeWithFull(JIDContext context, Element node, OutputStream output) throws IOException {
+=======
+	public void writeWithFull(JIDContext context, Node node, OutputStream output) throws IOException {
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 		try {
 			Marshaller marshaller = this.generateMarshaller(false);
 			if (LOG.isInfoEnabled()) {
@@ -89,7 +102,11 @@ public class JAXBWriter implements Writer {
 		}
 	}
 
+<<<<<<< HEAD
 	private void writeWithOutClose(JIDContext context, Element node, OutputStream output) throws IOException {
+=======
+	private void writeWithOutClose(JIDContext context, Node node, OutputStream output) throws IOException {
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 		try {
 			Marshaller marshaller = generateMarshaller(true);
 			LinkedList<String> contents = this.prepareToLines(node, marshaller);
@@ -107,7 +124,11 @@ public class JAXBWriter implements Writer {
 		}
 	}
 
+<<<<<<< HEAD
 	private LinkedList<String> prepareToLines(Element node, Marshaller marshaller) throws JAXBException, IOException {
+=======
+	private LinkedList<String> prepareToLines(Node node, Marshaller marshaller) throws JAXBException, IOException {
+>>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4
 		ByteArrayOutputStream prepare = new ByteArrayOutputStream();
 		marshaller.marshal(node, prepare);
 		LineIterator iterator = IOUtils.lineIterator(new ByteArrayInputStream(prepare.toByteArray()), "UTF-8");
