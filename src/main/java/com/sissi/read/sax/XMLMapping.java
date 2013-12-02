@@ -23,11 +23,11 @@ import com.sissi.read.Mapping;
  */
 public class XMLMapping implements Mapping {
 
-	private Log log = LogFactory.getLog(this.getClass());
+	private final Log log = LogFactory.getLog(this.getClass());
 
-	private FinderSelector selector;
+	private final FinderSelector selector;
 
-	private Map<String, Class<?>> cached = new HashMap<String, Class<?>>();
+	private final Map<String, Class<?>> cached = new HashMap<String, Class<?>>();
 
 	public XMLMapping() {
 		this(Thread.currentThread().getContextClassLoader().getResourceAsStream("mapping.xml"));
@@ -39,7 +39,10 @@ public class XMLMapping implements Mapping {
 			JAXBContext context = JAXBContext.newInstance(FinderSelector.class);
 			this.selector = (FinderSelector) context.createUnmarshaller().unmarshal(input);
 		} catch (JAXBException e) {
-			this.log.fatal(e);
+			if (this.log.isFatalEnabled()) {
+				this.log.fatal(e);
+				e.printStackTrace();
+			}
 			throw new RuntimeException(e);
 		} finally {
 			IOUtils.closeQuietly(input);
@@ -83,9 +86,9 @@ public class XMLMapping implements Mapping {
 	@XmlRootElement(name = "finders")
 	public static class FinderSelector {
 
-		private Log log = LogFactory.getLog(this.getClass());
+		private final Log log = LogFactory.getLog(this.getClass());
 
-		private Map<String, Class<?>> mapping = new HashMap<String, Class<?>>();
+		private final Map<String, Class<?>> mapping = new HashMap<String, Class<?>>();
 
 		private List<Finder> finders;
 
@@ -102,7 +105,10 @@ public class XMLMapping implements Mapping {
 				this.mapping.put((uri != null ? uri : "") + finder.getLocalName(), Class.forName(finder.getClazz()));
 				this.log.debug("Insert Mapping: " + (uri != null ? uri : "") + " / " + finder.getLocalName() + " / " + finder.getClazz());
 			} catch (Exception e) {
-				this.log.warn(e);
+				if (this.log.isWarnEnabled()) {
+					this.log.warn(e);
+					e.printStackTrace();
+				}
 			}
 		}
 

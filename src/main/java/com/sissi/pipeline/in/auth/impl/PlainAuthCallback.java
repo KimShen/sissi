@@ -25,9 +25,9 @@ public class PlainAuthCallback implements AuthCallback {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private JIDBuilder jidBuilder;
+	private final JIDBuilder jidBuilder;
 
-	private AuthAccessor authAccessor;
+	private final AuthAccessor authAccessor;
 
 	public PlainAuthCallback(JIDBuilder jidBuilder, AuthAccessor authAccessor) {
 		super();
@@ -58,9 +58,9 @@ public class PlainAuthCallback implements AuthCallback {
 
 	private class AuthCertificate {
 
-		private String user;
+		private final String user;
 
-		private String pass;
+		private final String pass;
 
 		public AuthCertificate(Auth auth) {
 			super();

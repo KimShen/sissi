@@ -19,7 +19,7 @@ import com.sissi.write.WriteWithOutClose;
  * @author Kim.shen 2013-10-16
  */
 @XmlRootElement(namespace = Stream.NAMESPACE)
-public class Stream extends Protocol {
+public class Stream extends Protocol implements WriteWithOutClose {
 
 	public final static String NAMESPACE = "http://etherx.jabber.org/streams";
 
@@ -29,6 +29,17 @@ public class Stream extends Protocol {
 
 	private List<Feature> features;
 
+	private String version;
+
+	public Stream() {
+		super();
+	}
+
+	public Stream(String id) {
+		super();
+		super.setId(id);
+	}
+
 	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;
@@ -36,7 +47,12 @@ public class Stream extends Protocol {
 
 	@XmlAttribute
 	public String getVersion() {
-		return VERSION;
+		return this.version != null ? this.version : VERSION;
+	}
+
+	public Stream setVersion(String version) {
+		this.version = version;
+		return this;
 	}
 
 	public Stream addFeature(Feature feature) {
@@ -54,17 +70,6 @@ public class Stream extends Protocol {
 	}
 
 	public static Stream generate(Protocol protocol) {
-		return new StreamOpen(protocol);
-	}
-
-	@XmlRootElement(name = "stream", namespace = Stream.NAMESPACE)
-	public static class StreamOpen extends Stream implements WriteWithOutClose {
-
-		public StreamOpen() {
-		}
-
-		public StreamOpen(Protocol protocol) {
-			super.setId(protocol.getId());
-		}
+		return new Stream(protocol.getId());
 	}
 }

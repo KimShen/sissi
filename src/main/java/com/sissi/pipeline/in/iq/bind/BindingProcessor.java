@@ -19,8 +19,7 @@ public class BindingProcessor extends UtilProcessor {
 	}
 
 	private IQ prepareResponse(Protocol protocol, Bind bind) {
-		IQ response = (IQ) protocol.getParent().reply().setType(Type.RESULT).clear();
-		return response.add(bind);
+		return ((IQ) protocol.getParent().reply().setType(Type.RESULT).clear()).add(bind);
 	}
 
 	private Bind binding(JIDContext context, Bind bind) {

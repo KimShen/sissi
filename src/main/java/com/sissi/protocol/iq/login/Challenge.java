@@ -2,6 +2,7 @@ package com.sissi.protocol.iq.login;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
 
 import org.apache.commons.codec.binary.Base64;
@@ -42,47 +43,50 @@ public class Challenge implements Element {
 		try {
 			return base64.encodeToString(this.text);
 		} catch (Exception e) {
-			LOG.fatal(e);
-			throw new RuntimeException(e);
+			if (LOG.isFatalEnabled()) {
+				LOG.fatal(e);
+				e.printStackTrace();
+			}
+			return null;
 		}
 	}
 
-	@XmlAttribute
+	@XmlTransient
 	public String getId() {
 		return null;
 	}
 
-	public Element setId(String id) {
+	public Challenge setId(String id) {
 		return this;
 	}
 
-	@XmlAttribute
+	@XmlTransient
 	public String getFrom() {
 		return null;
 	}
 
-	public Element setFrom(String from) {
+	public Challenge setFrom(String from) {
 		return this;
 	}
 
-	@XmlAttribute
+	@XmlTransient
 	public String getTo() {
 		return null;
 	}
 
 	@Override
-	public Element setTo(String to) {
+	public Challenge setTo(String to) {
 		return this;
 	}
 
 	@Override
-	@XmlAttribute
+	@XmlTransient
 	public String getType() {
 		return null;
 	}
 
 	@Override
-	public Element setType(String type) {
+	public Challenge setType(String type) {
 		return this;
 	}
 }

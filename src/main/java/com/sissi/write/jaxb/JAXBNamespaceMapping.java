@@ -10,7 +10,7 @@ import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
  */
 public class JAXBNamespaceMapping extends NamespacePrefixMapper {
 
-	private Map<String, String> mapping = new HashMap<String, String>();
+	private final Map<String, String> mapping = new HashMap<String, String>();
 
 	public JAXBNamespaceMapping() {
 		super();

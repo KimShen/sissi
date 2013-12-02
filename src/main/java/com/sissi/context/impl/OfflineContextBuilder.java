@@ -54,8 +54,16 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		public Boolean isBinding() {
 			return false;
 		}
+		
+		public Boolean isSession() {
+			return false;
+		}
 
 		public JIDContext setBinding(Boolean isBinding) {
+			return this;
+		}
+		
+		public JIDContext setSession(Boolean isSession) {
 			return this;
 		}
 

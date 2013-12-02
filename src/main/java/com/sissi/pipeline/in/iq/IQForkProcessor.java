@@ -10,9 +10,9 @@ import com.sissi.protocol.iq.IQ;
  */
 public class IQForkProcessor implements Input {
 
-	private InputFinder finder;
+	private final InputFinder finder;
 
-	private IQResultProcessor iqResultProcessor;
+	private final IQResultProcessor iqResultProcessor;
 
 	public IQForkProcessor(InputFinder finder, IQResultProcessor iqResultProcessor) {
 		super();

@@ -27,15 +27,17 @@ public class Auth extends Feature {
 		return text;
 	}
 
-	public void setText(String text) {
+	public Auth setText(String text) {
 		this.text = text;
+		return this;
 	}
 
 	public String getMechanism() {
 		return mechanism;
 	}
 
-	public void setMechanism(String mechanism) {
+	public Auth setMechanism(String mechanism) {
 		this.mechanism = mechanism;
+		return this;
 	}
 }

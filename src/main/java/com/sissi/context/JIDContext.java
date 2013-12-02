@@ -11,21 +11,25 @@ public interface JIDContext {
 
 	public JIDContext setJid(JID jid);
 
+	public JID getJid();
+	
 	public JIDContext setAuth(Boolean canAccess);
+	
+	public Boolean isAuth();
 
 	public JIDContext setBinding(Boolean isBinding);
 
-	public JIDContext setPriority(Integer priority);
+	public Boolean isBinding();
+	
+	public JIDContext setSession(Boolean isSession);
 
-	public JID getJid();
+	public Boolean isSession();
+
+	public JIDContext setPriority(Integer priority);
 
 	public Integer getPriority();
 
 	public MyPresence getPresence();
-
-	public Boolean isAuth();
-
-	public Boolean isBinding();
 
 	public Boolean close();
 

@@ -1,5 +1,7 @@
 package com.sissi.protocol.iq.roster;
 
+import javax.xml.bind.annotation.XmlValue;
+
 /**
  * @author kim 2013-11-20
  */
@@ -16,6 +18,7 @@ public class Group {
 		this.text = text;
 	}
 
+	@XmlValue
 	public String getText() {
 		return text;
 	}

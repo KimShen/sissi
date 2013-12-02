@@ -46,15 +46,7 @@ public class Presence extends Protocol implements MyPresence {
 	}
 
 	public Presence(JID from, JID to, String show, String status, String type) {
-		super.setFrom(from.asString());
-		super.setTo(to.asString());
-		super.setType(type);
-		if (show != null) {
-			this.setShow(new Show(show));
-		}
-		if (status != null) {
-			this.setStatus(new Status(status));
-		}
+		this.setShow(show != null ? new Show(show) : null).setStatus(status != null ? new Status(status) : null).setFrom(from.asString()).setTo(to.asString()).setType(type);
 	}
 
 	public Presence setType(Type type) {
@@ -87,8 +79,9 @@ public class Presence extends Protocol implements MyPresence {
 		return show;
 	}
 
-	public void setShow(Show show) {
+	public Presence setShow(Show show) {
 		this.show = show;
+		return this;
 	}
 
 	@XmlTransient
@@ -96,8 +89,9 @@ public class Presence extends Protocol implements MyPresence {
 		return status;
 	}
 
-	public void setStatus(Status status) {
+	public Presence setStatus(Status status) {
 		this.status = status;
+		return this;
 	}
 
 	public Presence clear() {
@@ -110,22 +104,18 @@ public class Presence extends Protocol implements MyPresence {
 
 	@Override
 	public Presence setShowText(String show) {
-		if (show != null) {
-			this.setShow(new Show(show));
-		}
+		this.setShow(show != null ? new Show(show) : null);
 		return this;
 	}
 
 	@Override
 	public Presence setStatusText(String status) {
-		if (status != null) {
-			this.setStatus(new Status(status));
-		}
+		this.setStatus(new Status(status != null ? status : null));
 		return this;
 	}
 
 	@Override
-	public MyPresence setTypeText(String type) {
-		return (MyPresence) this.setType(Type.parse(type));
+	public Presence setTypeText(String type) {
+		return this.setType(Type.parse(type));
 	}
 }

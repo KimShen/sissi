@@ -30,7 +30,7 @@ abstract public class Protocol implements Element {
 	}
 
 	private String id;
-
+	
 	private String from;
 
 	private String to;
@@ -44,8 +44,9 @@ abstract public class Protocol implements Element {
 		return parent != null ? this.parent : this;
 	}
 
-	public void setParent(Protocol parent) {
+	public Protocol setParent(Protocol parent) {
 		this.parent = parent;
+		return this;
 	}
 
 	public Boolean hasParent() {
@@ -73,7 +74,7 @@ abstract public class Protocol implements Element {
 	}
 
 	public Protocol setFrom(JID from) {
-		this.from = from.asStringWithBare();
+		this.from = from.asString();
 		return this;
 	}
 
@@ -81,7 +82,7 @@ abstract public class Protocol implements Element {
 	public String getTo() {
 		return to;
 	}
-
+	
 	public Protocol setTo(String to) {
 		this.to = to;
 		return this;

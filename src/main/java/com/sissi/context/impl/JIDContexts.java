@@ -32,6 +32,13 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		}
 		return this;
 	}
+	
+	public JIDContext setSession(Boolean isSession) {
+		for (JIDContext each : this) {
+			each.setSession(isSession);
+		}
+		return this;
+	}
 
 	@Override
 	public JIDContext setPriority(Integer priority) {
@@ -50,21 +57,6 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	@Override
-	public JID getJid() {
-		throw new RuntimeException("MultiContexts not support this funciton");
-	}
-
-	@Override
-	public Integer getPriority() {
-		throw new RuntimeException("MultiContexts not support this funciton");
-	}
-
-	@Override
-	public MyPresence getPresence() {
-		throw new RuntimeException("MultiContexts not support this funciton");
-	}
-
-	@Override
 	public Boolean isAuth() {
 		boolean isAuth = true;
 		for (JIDContext each : this) {
@@ -79,6 +71,14 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 			isBinding = each.isBinding();
 		}
 		return isBinding;
+	}
+	
+	public Boolean isSession() {
+		boolean isSession = true;
+		for (JIDContext each : this) {
+			isSession = each.isSession();
+		}
+		return isSession;
 	}
 
 	@Override
@@ -95,5 +95,20 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		for (JIDContext each : this) {
 			each.write(node);
 		}
+	}
+
+	@Override
+	public JID getJid() {
+		throw new RuntimeException("MultiContexts not support this funciton");
+	}
+
+	@Override
+	public Integer getPriority() {
+		throw new RuntimeException("MultiContexts not support this funciton");
+	}
+
+	@Override
+	public MyPresence getPresence() {
+		throw new RuntimeException("MultiContexts not support this funciton");
 	}
 }

@@ -9,6 +9,7 @@ import io.netty.util.ReferenceCountUtil;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -81,20 +82,22 @@ public class PrivateServerHandlerBuilder {
 
 	private class PrivateServerHandler extends ChannelInboundHandlerAdapter {
 
-		private final PipedInputStream input = new PipedInputStream();
+		private final PipedInputStream inPipe = new PipedInputStream();
+		
+		private final InputStream input = new BufferedInputStream(inPipe);
 
-		private final OutputStream output = new BufferedOutputStream(new PipedOutputStream(input));
+		private final OutputStream output = new BufferedOutputStream(new PipedOutputStream(inPipe));
 
 		public PrivateServerHandler() throws IOException {
 			super();
 		}
 
-		public void channelActive(final ChannelHandlerContext ctx) {
+		public void channelRegistered(final ChannelHandlerContext ctx) {
 			this.createContextAndJoinGroup(ctx);
 			this.createLooperAndStart(ctx);
 		}
 
-		public void channelInactive(ChannelHandlerContext ctx) {
+		public void channelUnregistered(ChannelHandlerContext ctx) {
 			ctx.attr(CONNECTOR).get().stop();
 			if (ctx.attr(CONTEXT).get().isBinding()) {
 				PrivateServerHandlerBuilder.this.serverCloser.close(ctx.attr(CONTEXT).get());
@@ -106,7 +109,6 @@ public class PrivateServerHandlerBuilder {
 		@Override
 		public void channelRead(ChannelHandlerContext ctx, Object msg) {
 			try {
-				System.out.println("rec: " + System.currentTimeMillis());
 				this.output.write(this.copyToBytes(this.logIfNecessary(ctx, (ByteBuf) msg)));
 				this.output.flush();
 			} catch (Exception e) {
@@ -126,7 +128,7 @@ public class PrivateServerHandlerBuilder {
 
 		private void createLooperAndStart(final ChannelHandlerContext ctx) {
 			try {
-				Looper looper = PrivateServerHandlerBuilder.this.looperBuilder.build(PrivateServerHandlerBuilder.this.reader.future(new BufferedInputStream(input)), PrivateServerHandlerBuilder.this.feederBuilder.build(ctx.attr(CONTEXT).get(), PrivateServerHandlerBuilder.this.finder));
+				Looper looper = PrivateServerHandlerBuilder.this.looperBuilder.build(PrivateServerHandlerBuilder.this.reader.future(this.input), PrivateServerHandlerBuilder.this.feederBuilder.build(ctx.attr(CONTEXT).get(), PrivateServerHandlerBuilder.this.finder));
 				ctx.attr(CONNECTOR).set(looper);
 				looper.start();
 			} catch (IOException e) {
@@ -155,10 +157,10 @@ public class PrivateServerHandlerBuilder {
 		}
 
 		private void logIfDetail(Throwable cause) {
-			if (PrivateServerHandlerBuilder.this.log.isWarnEnabled()) {
+			if (PrivateServerHandlerBuilder.this.log.isInfoEnabled()) {
 				StringWriter trace = new StringWriter();
 				cause.printStackTrace(new PrintWriter(trace));
-				PrivateServerHandlerBuilder.this.log.warn(trace.toString());
+				PrivateServerHandlerBuilder.this.log.info(trace.toString());
 			}
 		}
 	}

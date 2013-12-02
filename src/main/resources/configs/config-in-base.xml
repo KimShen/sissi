@@ -13,20 +13,18 @@
 		<property name="relationContext" ref="relation.roster" />
 	</bean>
 
-	<bean id="global.pro.asyn" abstract="true" parent="global.pro.utils">
-		<property name="runner" ref="runner" />
-	</bean>
-
-	<bean id="stream.pro" class="com.sissi.pipeline.in.stream.StreamProcessor" />
+	<bean id="stream.pro.close" class="com.sissi.pipeline.in.stream.StreamCloseProcessor" />
+	<bean id="stream.pro.open" class="com.sissi.pipeline.in.stream.StreamOpenProcessor" />
 	<bean id="stream.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="stream.pro" />
+				<ref bean="stream.pro.close" />
+				<ref bean="stream.pro.open" />
 			</util:list>
 		</constructor-arg>
 	</bean>
 
-	<bean id="stream.condition" class="com.sissi.pipeline.in.BeanCondition">
+	<bean id="stream.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.MatchClass">
 				<constructor-arg value="com.sissi.protocol.Stream" />
@@ -36,7 +34,6 @@
 	</bean>
 
 	<bean id="finder.input" class="com.sissi.pipeline.in.ChainedFinder">
-		<constructor-arg ref="builder.jid" />
 		<constructor-arg>
 			<util:list>
 				<ref bean="message.condition" />
@@ -48,5 +45,4 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-
 </beans>

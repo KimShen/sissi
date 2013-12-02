@@ -11,7 +11,7 @@ import com.sissi.server.ServerCloser;
  */
 public class Offline2FansServerCloser implements ServerCloser {
 
-	private ProtocolBraodcast protocolBraodcast;
+	private final ProtocolBraodcast protocolBraodcast;
 
 	public Offline2FansServerCloser(ProtocolBraodcast protocolBraodcast) {
 		super();

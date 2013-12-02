@@ -5,6 +5,7 @@ import java.util.Map;
 import com.sissi.context.JID.JIDBuilder;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.presence.Presence;
+import com.sissi.protocol.presence.Presence.Type;
 
 /**
  * @author kim 2013-11-15
@@ -26,7 +27,7 @@ public class PresenceStorage extends ProtocolStorage {
 	}
 
 	public Boolean isSupport(Element element) {
-		return Presence.class.isAssignableFrom(element.getClass()) && this.isNotOnlinePresence(element);
+		return Presence.class.isAssignableFrom(element.getClass()) && this.isNotStatus(element);
 	}
 
 	@Override
@@ -34,8 +35,8 @@ public class PresenceStorage extends ProtocolStorage {
 		return Presence.class.getSimpleName().equals(storage.get("class"));
 	}
 
-	private boolean isNotOnlinePresence(Element element) {
-		return Presence.Type.parse(element.getType()) != Presence.Type.ONLINE;
+	private boolean isNotStatus(Element element) {
+		Type type = Presence.Type.parse(element.getType());
+		return type != Presence.Type.ONLINE && type != Presence.Type.UNAVAILABLE;
 	}
-
 }

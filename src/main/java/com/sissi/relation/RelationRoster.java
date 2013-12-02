@@ -6,5 +6,5 @@ package com.sissi.relation;
  */
 public interface RelationRoster extends Relation {
 	
-	public String getGp();
+	public String getGroupText();
 }

@@ -1,13 +1,11 @@
 package com.sissi.protocol.message;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
  * @author kim 2013-11-22
  */
-@XmlRootElement
 public class Delay {
 
 	private final static String XMLNS = "urn:xmpp:delay";

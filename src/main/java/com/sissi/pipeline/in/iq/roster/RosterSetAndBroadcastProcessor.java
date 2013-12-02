@@ -12,9 +12,8 @@ public class RosterSetAndBroadcastProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		Roster roster = Roster.class.cast(protocol);
-		roster.getFirstItem().setSubscription(Roster.Subscription.NONE.toString());
-		super.protocolQueue.offer(context.getJid().getBare(), roster.getParent());
+		Roster.class.cast(protocol).getFirstItem().setSubscription(Roster.Subscription.NONE.toString());
+		super.protocolQueue.offer(context.getJid().getBare(), protocol.getParent());
 		return true;
 	}
 }

@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.FactoryBean;
 
 import com.sissi.feed.Feeder;
 import com.sissi.looper.Looper;
@@ -20,9 +19,9 @@ import com.sissi.thread.Runner;
 /**
  * @author kim 2013-10-30
  */
-public class PrivateLooperBuilder implements LooperBuilder, FactoryBean<PrivateLooperBuilder> {
+public class PrivateLooperBuilder implements LooperBuilder {
 
-	private final static Log LOG = LogFactory.getLog(PrivateLooperBuilder.class);
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final Runner runner;
 
@@ -40,21 +39,6 @@ public class PrivateLooperBuilder implements LooperBuilder, FactoryBean<PrivateL
 	@Override
 	public Looper build(Future<?> future, Feeder feeder) {
 		return new PrivateLooper(future, feeder);
-	}
-
-	@Override
-	public PrivateLooperBuilder getObject() throws Exception {
-		return this;
-	}
-
-	@Override
-	public Class<LooperBuilder> getObjectType() {
-		return LooperBuilder.class;
-	}
-
-	@Override
-	public boolean isSingleton() {
-		return true;
 	}
 
 	private class PrivateLooper implements Runnable, Looper {
@@ -81,13 +65,13 @@ public class PrivateLooperBuilder implements LooperBuilder, FactoryBean<PrivateL
 			while (true) {
 				try {
 					if (this.prepareStop()) {
-						LOG.debug("Looper is stopping, current is " + this.counter.get());
+						PrivateLooperBuilder.this.log.debug("Looper is stopping, current is " + this.counter.get());
 						break;
 					}
 					this.getAndFeed();
 				} catch (Exception e) {
-					if (LOG.isErrorEnabled()) {
-						LOG.error(e);
+					if (PrivateLooperBuilder.this.log.isErrorEnabled()) {
+						PrivateLooperBuilder.this.log.error(e);
 						e.printStackTrace();
 					}
 				}
@@ -110,7 +94,7 @@ public class PrivateLooperBuilder implements LooperBuilder, FactoryBean<PrivateL
 		public void start() {
 			this.state.set(true);
 			PrivateLooperBuilder.this.runner.executor(PrivateLooperBuilder.this.threadNum, this);
-			LOG.debug("Looper is running, current is " + this.counter.get());
+			PrivateLooperBuilder.this.log.debug("Looper is running, current is " + this.counter.get());
 		}
 
 		@Override

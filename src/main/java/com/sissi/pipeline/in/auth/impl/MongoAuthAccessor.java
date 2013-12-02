@@ -15,7 +15,7 @@ public class MongoAuthAccessor implements AuthAccessor {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private MongoCollection config;
+	private final MongoCollection config;
 
 	public MongoAuthAccessor(MongoCollection config) {
 		super();

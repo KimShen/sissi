@@ -5,27 +5,26 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.context.JID.JIDBuilder;
 import com.sissi.pipeline.Input;
 import com.sissi.pipeline.Input.InputCondition;
+import com.sissi.pipeline.Input.InputFinder;
 import com.sissi.protocol.Protocol;
 
 /**
  * @author kim 2013-11-4
  */
-public class ChainedFinder extends JIDWrapFinder {
+public class ChainedFinder implements InputFinder {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private List<InputCondition> conditions;
+	private final List<InputCondition> conditions;
 
-	public ChainedFinder(JIDBuilder jidBuilder, List<InputCondition> conditions) {
-		super(jidBuilder);
+	public ChainedFinder(List<InputCondition> conditions) {
 		this.conditions = conditions;
 	}
 
 	@Override
-	public Input doFind(Protocol protocol) {
+	public Input find(Protocol protocol) {
 		for (InputCondition each : this.conditions) {
 			if (each.getMatcher().match(protocol)) {
 				return each.getInput();

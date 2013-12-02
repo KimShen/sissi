@@ -27,11 +27,11 @@ public class SAXReader implements Reader {
 		FACTORY.setNamespaceAware(true);
 	}
 
-	private Log log = LogFactory.getLog(SAXReader.class);
+	private final Log log = LogFactory.getLog(SAXReader.class);
 
-	private Executor executor;
+	private final Executor executor;
 
-	private Mapping mapping;
+	private final Mapping mapping;
 
 	public SAXReader() {
 		this(new XMLMapping(), Executors.newSingleThreadExecutor());
@@ -67,11 +67,11 @@ public class SAXReader implements Reader {
 
 		private final static Log LOG = LogFactory.getLog(ParseRunnable.class);
 
-		private SAXParser parser;
+		private final SAXParser parser;
 
-		private SAXHandler handler;
+		private final SAXHandler handler;
 
-		private InputStream stream;
+		private final InputStream stream;
 
 		public ParseRunnable(InputStream stream, SAXParser parser, SAXHandler handler) {
 			super();
@@ -84,7 +84,10 @@ public class SAXReader implements Reader {
 			try {
 				this.parser.parse(this.stream, this.handler);
 			} catch (Exception e) {
-				LOG.debug(e);
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(e);
+					e.printStackTrace();
+				}
 			}
 		}
 	}

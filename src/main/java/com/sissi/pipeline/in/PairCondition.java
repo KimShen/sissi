@@ -7,13 +7,13 @@ import com.sissi.pipeline.Input.InputMatcher;
 /**
  * @author kim 2013-11-21
  */
-public class BeanCondition implements InputCondition {
+public class PairCondition implements InputCondition {
 
-	private Input input;
+	private final Input input;
 
-	private InputMatcher matcher;
+	private final InputMatcher matcher;
 
-	public BeanCondition(Input input, InputMatcher matcher) {
+	public PairCondition(Input input, InputMatcher matcher) {
 		super();
 		this.input = input;
 		this.matcher = matcher;

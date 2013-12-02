@@ -7,7 +7,7 @@ import java.util.concurrent.Executor;
  */
 public class Runner {
 
-	private Executor executor;
+	private final Executor executor;
 
 	public Runner(Executor executor) {
 		super();

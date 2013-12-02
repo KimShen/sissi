@@ -51,7 +51,7 @@ public class JAXBWriter implements Writer {
 		}
 	}
 
-	private NamespacePrefixMapper mapper;
+	private final NamespacePrefixMapper mapper;
 
 	public JAXBWriter() {
 		super();
@@ -84,8 +84,10 @@ public class JAXBWriter implements Writer {
 				marshaller.marshal(node, output);
 			}
 		} catch (JAXBException e) {
-			LOG.error(e);
-			throw new IOException(e);
+			if (LOG.isErrorEnabled()) {
+				LOG.error(e);
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -93,7 +95,6 @@ public class JAXBWriter implements Writer {
 		try {
 			Marshaller marshaller = generateMarshaller(true);
 			LinkedList<String> contents = this.prepareToLines(node, marshaller);
-			LOG.debug("Line XML: " + contents);
 			contents.removeLast();
 			StringBuffer sb = new StringBuffer();
 			for (String each : contents) {
@@ -102,8 +103,10 @@ public class JAXBWriter implements Writer {
 			LOG.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + sb.toString());
 			output.write(sb.toString().getBytes("UTF-8"));
 		} catch (Exception e) {
-			LOG.error(e);
-			throw new IOException(e);
+			if (LOG.isErrorEnabled()) {
+				LOG.error(e);
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -113,16 +116,9 @@ public class JAXBWriter implements Writer {
 		LineIterator iterator = IOUtils.lineIterator(new ByteArrayInputStream(prepare.toByteArray()), "UTF-8");
 		LinkedList<String> contents = new LinkedList<String>();
 		while (iterator.hasNext()) {
-			this.addEachLine(iterator, contents);
+			contents.add(iterator.next().trim());
 		}
 		return contents;
-	}
-
-	private void addEachLine(LineIterator iterator, LinkedList<String> contents) {
-		String eachLine = iterator.next().trim();
-		if (!eachLine.isEmpty()) {
-			contents.add(eachLine);
-		}
 	}
 
 	private Marshaller generateMarshaller(Boolean withOutClose) throws JAXBException, PropertyException {
@@ -134,5 +130,4 @@ public class JAXBWriter implements Writer {
 		}
 		return marshaller;
 	}
-
 }

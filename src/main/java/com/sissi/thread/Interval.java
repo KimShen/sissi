@@ -7,9 +7,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class Interval {
 
-	private Long interval;
+	private final Long interval;
 
-	private TimeUnit unit;
+	private final TimeUnit unit;
 
 	public Interval(Long interval, TimeUnit unit) {
 		super();

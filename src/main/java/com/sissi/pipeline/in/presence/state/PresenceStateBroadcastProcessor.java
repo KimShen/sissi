@@ -11,7 +11,7 @@ public class PresenceStateBroadcastProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.protocolQueue.offer(context.getJid().getBare(), protocol.setFrom(context.getJid().getBare()));
+		super.protocolQueue.offer(context.getJid(), protocol.setFrom(context.getJid()));
 		return true;
 	}
 }

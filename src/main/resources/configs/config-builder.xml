@@ -11,7 +11,7 @@
 		<constructor-arg index="2" value="${mongo.collection.presence}" />
 	</bean>
 
-	<bean id="builder.jid" class="com.sissi.context.impl.FixHostJIDBuilder">
+	<bean id="builder.jid" class="com.sissi.context.impl.FixedHostJIDBuilder">
 		<constructor-arg value="${global.host}" />
 	</bean>
 	<bean id="builder.context.online" class="com.sissi.context.impl.OnlineContextBuilder">

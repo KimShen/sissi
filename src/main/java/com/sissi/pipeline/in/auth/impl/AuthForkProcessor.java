@@ -13,7 +13,7 @@ import com.sissi.protocol.iq.login.Auth;
  */
 public class AuthForkProcessor extends UtilProcessor {
 
-	private List<AuthCallback> authCallbacks;
+	private final List<AuthCallback> authCallbacks;
 
 	public AuthForkProcessor(List<AuthCallback> authCallbacks) {
 		super();

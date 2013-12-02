@@ -14,7 +14,7 @@ public class NothingProcessor implements Input {
 
 	public final static Input NOTHING = new NothingProcessor();
 
-	private Log log = LogFactory.getLog(this.getClass());
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	private NothingProcessor() {
 

@@ -2,11 +2,11 @@ package com.sissi.addressing.impl;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -31,15 +31,17 @@ public class MongoAddressing implements Addressing {
 
 	private final static String FIELD_PRIORITY = "priority";
 
-	private final static DBObject DEFAULT_FILTER = new BasicDBObject(FIELD_INDEX, 1);
+	private final static DBObject DEFAULT_FILTER = BasicDBObjectBuilder.start(FIELD_INDEX, 1).get();
 
-	private final static DBObject DEFAULT_SORTER = new BasicDBObject(FIELD_PRIORITY, 1);
+	private final static DBObject DEFAULT_SORTER = BasicDBObjectBuilder.start(FIELD_PRIORITY, 1).get();
 
 	private final static JIDContextParam NOTHING = new NothingJIDContextParam();
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final Map<Long, JIDContext> contexts = new ConcurrentHashMap<Long, JIDContext>();
+
+	private final Interval gcInterval;
 
 	private final MongoConfig config;
 
@@ -48,8 +50,9 @@ public class MongoAddressing implements Addressing {
 	public MongoAddressing(Runner runner, Interval gcInterval, MongoConfig config, JIDContextBuilder jidContextBuilder) {
 		super();
 		this.config = config.dropCollection();
+		this.gcInterval = gcInterval;
 		this.jidContextBuilder = jidContextBuilder;
-		runner.executor(GC_THREAD, new GC(gcInterval));
+		runner.executor(GC_THREAD, new GC());
 	}
 
 	public void ban(JIDContext context) {
@@ -77,7 +80,7 @@ public class MongoAddressing implements Addressing {
 			this.log.debug("Query: " + query);
 			this.config.findCollection().remove(query);
 		} else {
-			this.log.warn("Leave on " + context.getJid().asString() + " failed");
+			this.log.error("Leave on " + context.getJid().asString() + " failed");
 		}
 	}
 
@@ -146,20 +149,13 @@ public class MongoAddressing implements Addressing {
 
 	private class GC implements Runnable {
 
-		private Interval interval;
-
-		public GC(Interval interval) {
-			super();
-			this.interval = interval;
-		}
-
 		@Override
 		public void run() {
 			while (true) {
 				try {
 					this.gc();
-					MongoAddressing.this.log.debug("Next gc after " + interval.getInterval() + " " + interval.getUnit());
-					Thread.sleep(interval.getInterval());
+					MongoAddressing.this.log.debug("Next gc after " + MongoAddressing.this.gcInterval.getInterval() + " / " + MongoAddressing.this.gcInterval.getUnit());
+					Thread.sleep(TimeUnit.MICROSECONDS.convert(MongoAddressing.this.gcInterval.getInterval(), MongoAddressing.this.gcInterval.getUnit()));
 				} catch (Exception e) {
 					MongoAddressing.this.log.error(e);
 				}

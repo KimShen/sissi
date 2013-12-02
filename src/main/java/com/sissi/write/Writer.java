@@ -16,10 +16,10 @@ public interface Writer {
 	public void write(JIDContext context, Element node, OutputStream outputStream) throws IOException;
 
 	public interface Transfer {
+		
+		public ByteBuf allocBuffer();
 
 		public void transfer(ByteBuf bytebuf);
-
-		public ByteBuf allocBuffer();
 
 		public void close();
 	}

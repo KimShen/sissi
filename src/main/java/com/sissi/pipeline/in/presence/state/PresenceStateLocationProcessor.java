@@ -13,9 +13,7 @@ public class PresenceStateLocationProcessor extends UtilProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		Presence presence = Presence.class.cast(protocol);
-		context.getPresence().setTypeText(presence.getTypeText());
-		context.getPresence().setShowText(presence.getShowText());
-		context.getPresence().setStatusText(presence.getStatusText());
+		context.getPresence().setTypeText(presence.getTypeText()).setShowText(presence.getShowText()).setStatusText(presence.getStatusText());
 		return true;
 	}
 }

@@ -3,7 +3,6 @@ package com.sissi.protocol.iq;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
@@ -18,7 +17,7 @@ import com.sissi.read.Collector;
 /**
  * @author Kim.shen 2013-10-16
  */
-@XmlRootElement(namespace = "")
+@XmlRootElement
 public class IQ extends Protocol implements Collector {
 
 	private final static List<Protocol> EMPTY_CHILDREN = new ArrayList<Protocol>();
@@ -42,10 +41,9 @@ public class IQ extends Protocol implements Collector {
 
 	public IQ add(Protocol protocol) {
 		if (this.protocols == null) {
-			this.protocols = new CopyOnWriteArrayList<Protocol>();
+			this.protocols = new ArrayList<Protocol>();
 		}
-		protocol.setParent(this);
-		this.protocols.add(protocol);
+		this.protocols.add(protocol.setParent(this));
 		return this;
 	}
 

@@ -8,7 +8,7 @@ import com.sissi.protocol.Protocol;
  */
 public class MatchClass implements InputMatcher {
 
-	private Class<? extends Protocol> clazz;
+	private final Class<? extends Protocol> clazz;
 
 	public MatchClass(Class<? extends Protocol> clazz) {
 		super();

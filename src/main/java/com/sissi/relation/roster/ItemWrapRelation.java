@@ -13,7 +13,7 @@ import com.sissi.relation.RelationRoster;
  */
 public class ItemWrapRelation implements RelationRoster {
 
-	private Item item;
+	private final Item item;
 
 	public ItemWrapRelation(Item item) {
 		super();
@@ -31,9 +31,9 @@ public class ItemWrapRelation implements RelationRoster {
 	}
 
 	@Override
-	public String getGp() {
-		Group gp = this.item.getGroup();
-		return gp != null ? gp.getText() : null;
+	public String getGroupText() {
+		Group group = this.item.getGroup();
+		return group != null ? group.getText() : null;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class ItemWrapRelation implements RelationRoster {
 
 	public Map<String, Object> plus() {
 		Map<String, Object> plus = new HashMap<String, Object>();
-		plus.put("group", this.getGp());
+		plus.put("group", this.getGroupText());
 		return plus;
 	}
 }

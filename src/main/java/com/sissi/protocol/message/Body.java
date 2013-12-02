@@ -1,11 +1,13 @@
 package com.sissi.protocol.message;
 
+import javax.xml.bind.annotation.XmlValue;
+
 /**
  * @author kim 2013-11-1
  */
 public class Body {
 
-	public String text;
+	private String text;
 
 	public Body() {
 		super();
@@ -16,6 +18,7 @@ public class Body {
 		this.text = text;
 	}
 
+	@XmlValue
 	public String getText() {
 		return text;
 	}

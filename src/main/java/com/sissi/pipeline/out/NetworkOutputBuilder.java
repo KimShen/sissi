@@ -22,7 +22,7 @@ public class NetworkOutputBuilder implements OutputBuilder {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private Writer writer;
+	private final Writer writer;
 
 	public NetworkOutputBuilder(Writer writer) {
 		super();
@@ -36,7 +36,7 @@ public class NetworkOutputBuilder implements OutputBuilder {
 
 	private class NetworkOutut implements Output {
 
-		private Transfer transfer;
+		private final Transfer transfer;
 
 		public NetworkOutut(Transfer transfer) {
 			super();

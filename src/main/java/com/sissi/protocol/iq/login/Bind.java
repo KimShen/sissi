@@ -42,8 +42,9 @@ public class Bind extends Feature {
 		return resource;
 	}
 
-	public void setResource(Resource resource) {
+	public Bind setResource(Resource resource) {
 		this.resource = resource;
+		return this;
 	}
 
 	@XmlAttribute

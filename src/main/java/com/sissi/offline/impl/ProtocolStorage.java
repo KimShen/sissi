@@ -12,7 +12,7 @@ import com.sissi.protocol.Element;
  */
 public abstract class ProtocolStorage implements Storage {
 
-	private JIDBuilder jidBuilder;
+	private final JIDBuilder jidBuilder;
 
 	public ProtocolStorage(JIDBuilder jidBuilder) {
 		super();

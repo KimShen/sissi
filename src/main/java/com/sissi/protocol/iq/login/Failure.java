@@ -1,7 +1,6 @@
 package com.sissi.protocol.iq.login;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
@@ -19,16 +18,5 @@ public class Failure extends Protocol {
 	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;
-	}
-
-	private String notAuthorized;
-
-	@XmlElement(name = "not-authorized", nillable = true)
-	public String getNotAuthorized() {
-		return notAuthorized;
-	}
-
-	public void setNotAuthorized(String notAuthorized) {
-		this.notAuthorized = notAuthorized;
 	}
 }

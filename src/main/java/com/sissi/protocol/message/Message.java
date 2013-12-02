@@ -2,7 +2,6 @@ package com.sissi.protocol.message;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
 import com.sissi.protocol.Protocol;
@@ -28,27 +27,24 @@ public class Message extends Protocol {
 		this.body = new Body(body);
 	}
 
-	@XmlElement(name = "body")
-	public String getBodyText() {
-		return this.body != null ? this.body.getText() : null;
-	}
-
-	@XmlElement(name = "delay")
+	@XmlElement
 	public Delay getDelay() {
 		return delay;
 	}
 
-	public void setDelay(Delay delay) {
+	public Message setDelay(Delay delay) {
 		this.delay = delay;
+		return this;
 	}
 
-	@XmlTransient
+	@XmlElement
 	public Body getBody() {
 		return this.body;
 	}
 
-	public void setBody(Body body) {
+	public Message setBody(Body body) {
 		this.body = body;
+		return this;
 	}
 
 	public Boolean hasContent() {

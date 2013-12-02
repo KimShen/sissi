@@ -18,13 +18,13 @@ public class PresenceRosterUnSubscribedAndBroadcastProtocolProcessor extends Uti
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		JID jid = super.jidBuilder.build(protocol.getTo());
-		super.protocolQueue.offer(jid.getBare(), this.prepareResponse(context, protocol, jid.getBare()));
+		JID master = super.jidBuilder.build(protocol.getTo());
+		super.protocolQueue.offer(master, this.prepareResponse(master, context.getJid(), protocol));
 		return true;
 	}
 
-	private Protocol prepareResponse(JIDContext context, Protocol protocol, JID jid) {
-		Relation relation = super.relationContext.ourRelation(jid, context.getJid().getBare());
-		return ((IQ) new IQ(Type.SET).setTo(jid)).add(new Roster().add(new Item(context.getJid().asStringWithBare(), relation.getName(), Roster.Subscription.NONE.toString(), RelationRoster.class.cast(relation).getGp())));
+	private Protocol prepareResponse(JID master, JID slave, Protocol protocol) {
+		Relation relation = super.relationContext.ourRelation(master, slave);
+		return ((IQ) new IQ(Type.SET).setTo(master)).add(new Roster().add(new Item(slave.asStringWithBare(), relation.getName(), Roster.Subscription.NONE.toString(), RelationRoster.class.cast(relation).getGroupText())));
 	}
 }

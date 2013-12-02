@@ -9,7 +9,7 @@ import com.sissi.protocol.Protocol;
  */
 public class ForkProcessor implements Input {
 
-	private InputFinder finder;
+	private final InputFinder finder;
 
 	public ForkProcessor(InputFinder finder) {
 		super();

@@ -14,13 +14,13 @@ public class MongoRelation implements RelationRoster {
 
 	private final static Map<String, Object> PLUS = new HashMap<String, Object>();
 
-	private String jid;
+	private final String jid;
 
-	private String name;
+	private final String name;
 
-	private String group;
+	private final String group;
 
-	private String subscription;
+	private final String subscription;
 
 	public MongoRelation(DBObject db, MongoConfig config) {
 		super();
@@ -38,7 +38,7 @@ public class MongoRelation implements RelationRoster {
 		return name;
 	}
 
-	public String getGp() {
+	public String getGroupText() {
 		return group;
 	}
 
@@ -48,18 +48,6 @@ public class MongoRelation implements RelationRoster {
 
 	public String getJid() {
 		return jid;
-	}
-
-	public void setJid(String jid) {
-		this.jid = jid;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setSubscription(String subscription) {
-		this.subscription = subscription;
 	}
 
 	public Map<String, Object> plus() {

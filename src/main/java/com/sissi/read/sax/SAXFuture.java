@@ -12,7 +12,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class SAXFuture implements Future<Object> {
 
-	private BlockingQueue<Object> queue = new ArrayBlockingQueue<Object>(20);
+	private final BlockingQueue<Object> queue = new ArrayBlockingQueue<Object>(20);
 
 	public boolean set(Object node) {
 		return this.queue.offer(node);

@@ -16,7 +16,7 @@ import com.sissi.protocol.message.Message;
  */
 public class MessageStorage extends ProtocolStorage {
 
-	private String hit;
+	private final String hit;
 
 	public MessageStorage(String hit, JIDBuilder jidBuilder) {
 		super(jidBuilder);
@@ -35,9 +35,7 @@ public class MessageStorage extends ProtocolStorage {
 	@Override
 	public Message read(Map<String, Object> storage) {
 		Message message = (Message) this.based(storage, new Message());
-		message.setBody(new Body(storage.get("body").toString()));
-		message.setDelay(new Delay(this.hit, message.getFrom(), storage.get("delay").toString()));
-		return message;
+		return message.setBody(new Body(storage.get("body").toString())).setDelay(new Delay(this.hit, message.getFrom(), storage.get("delay").toString()));
 	}
 
 	public Boolean isSupport(Element element) {

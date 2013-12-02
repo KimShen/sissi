@@ -21,11 +21,11 @@ import com.sissi.protocol.Element;
  */
 public class MongoStorageBox implements StorageBox {
 
-	private Log log = LogFactory.getLog(this.getClass());
+	private final Log log = LogFactory.getLog(this.getClass());
 
-	private MongoConfig config;
+	private final MongoConfig config;
 
-	private List<Storage> storageBlocks;
+	private final List<Storage> storageBlocks;
 
 	public MongoStorageBox(MongoConfig config, List<Storage> storageBlocks) {
 		super();

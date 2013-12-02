@@ -6,10 +6,8 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.sissi.pipeline.in.auth.impl.DigestAuthCallback;
+import com.sissi.pipeline.in.auth.impl.PlainAuthCallback;
 import com.sissi.protocol.Feature;
 import com.sissi.protocol.Stream;
 
@@ -18,12 +16,10 @@ import com.sissi.protocol.Stream;
  */
 @XmlRootElement(namespace = Stream.NAMESPACE)
 public class Mechanisms extends Feature {
-
-	private final static Log LOG = LogFactory.getLog(Mechanisms.class);
+	
+	public final static Mechanisms MECHANISMS = new Mechanisms(DigestAuthCallback.MECHANISM, PlainAuthCallback.MECHANISM);
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
-
-	public final static Mechanisms MECHANISMS = new Mechanisms(DigestAuthCallback.MECHANISM,"PLAIN","ANONYMOUS");
 
 	private Set<String> mechanism;
 
@@ -43,20 +39,12 @@ public class Mechanisms extends Feature {
 	public String getXmlns() {
 		return XMLNS;
 	}
-
-	public void addMechanism(String mechanism) {
-		if (this.mechanism == null) {
-			this.mechanism = new HashSet<String>();
-		}
-		LOG.info("Add mechanism " + mechanism);
-		this.mechanism.add(mechanism);
+	
+	public void setMechanism(Set<String> mechanism) {
+		this.mechanism = mechanism;
 	}
 
 	public Set<String> getMechanism() {
 		return mechanism;
-	}
-
-	public void setMechanism(Set<String> mechanism) {
-		this.mechanism = mechanism;
 	}
 }

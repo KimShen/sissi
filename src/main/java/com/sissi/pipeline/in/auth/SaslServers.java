@@ -7,9 +7,9 @@ import com.sissi.context.JIDContext;
 /**
  * @author kim 2013年11月27日
  */
-public interface SaslServerPool {
+public interface SaslServers {
 
-	public void offer(JIDContext context, SaslServer sasl);
-	
-	public SaslServer take(JIDContext context);
+	public SaslServer set(JIDContext context, SaslServer sasl);
+
+	public SaslServer get(JIDContext context);
 }

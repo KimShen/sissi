@@ -67,7 +67,10 @@ public class SAXHandler extends DefaultHandler {
 			finder.invoke(ob, key, value);
 			return true;
 		} catch (Exception e) {
-			LOG.debug(e);
+			if (LOG.isDebugEnabled()) {
+				LOG.debug(e);
+				e.printStackTrace();
+			}
 			return false;
 		}
 	}

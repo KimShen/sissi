@@ -16,7 +16,7 @@ public class FailLogGenericFutureListener implements GenericFutureListener<Futur
 
 	public final static GenericFutureListener<Future<Void>> INSTANCE = new FailLogGenericFutureListener();
 
-	private Log log = LogFactory.getLog(this.getClass());
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	private FailLogGenericFutureListener() {
 		super();

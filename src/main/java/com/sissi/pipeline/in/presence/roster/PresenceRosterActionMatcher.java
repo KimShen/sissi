@@ -10,7 +10,7 @@ import com.sissi.protocol.presence.Presence.Type;
  */
 public class PresenceRosterActionMatcher extends MatchClass {
 
-	private Type type;
+	private final Type type;
 
 	public PresenceRosterActionMatcher(String type) {
 		super(Presence.class);

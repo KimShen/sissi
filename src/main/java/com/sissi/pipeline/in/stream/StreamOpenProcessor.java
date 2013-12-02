@@ -12,7 +12,7 @@ import com.sissi.protocol.iq.login.Session;
 /**
  * @author kim 2013-10-24
  */
-public class StreamProcessor implements Input {
+public class StreamOpenProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

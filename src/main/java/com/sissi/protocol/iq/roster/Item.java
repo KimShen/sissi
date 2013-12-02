@@ -3,9 +3,9 @@ package com.sissi.protocol.iq.roster;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.protocol.Protocol;
+
 /**
  * @author kim 2013-10-31
  */
@@ -50,8 +50,9 @@ public class Item extends Protocol {
 		return jid;
 	}
 
-	public void setJid(String jid) {
+	public Item setJid(String jid) {
 		this.jid = jid;
+		return this;
 	}
 
 	@XmlAttribute
@@ -59,8 +60,9 @@ public class Item extends Protocol {
 		return name;
 	}
 
-	public void setName(String name) {
+	public Item setName(String name) {
 		this.name = name;
+		return this;
 	}
 
 	@XmlAttribute
@@ -68,22 +70,19 @@ public class Item extends Protocol {
 		return this.subscription;
 	}
 
-	public void setSubscription(String subscription) {
+	public Item setSubscription(String subscription) {
 		this.subscription = subscription;
+		return this;
 	}
 
-	@XmlTransient
+	@XmlElement
 	public Group getGroup() {
 		return group;
 	}
 
-	@XmlElement(name = "group")
-	public String getGp() {
-		return group != null ? group.getText() : null;
-	}
-
-	public void setGroup(Group group) {
+	public Item setGroup(Group group) {
 		this.group = group;
+		return this;
 	}
 
 	public Action getAction() {

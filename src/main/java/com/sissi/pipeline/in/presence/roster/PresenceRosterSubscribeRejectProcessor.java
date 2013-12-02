@@ -17,7 +17,7 @@ public class PresenceRosterSubscribeRejectProcessor extends UtilProcessor {
 	}
 
 	private boolean isSubscribed(JIDContext context, Protocol protocol) {
-		return this.hasRelation(super.relationContext.ourRelation(context.getJid().getBare(), super.jidBuilder.build(protocol.getTo()).getBare()));
+		return this.hasRelation(super.relationContext.ourRelation(context.getJid(), super.jidBuilder.build(protocol.getTo())));
 	}
 
 	private boolean hasRelation(Relation relation) {

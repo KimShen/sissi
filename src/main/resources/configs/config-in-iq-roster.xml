@@ -59,7 +59,6 @@
 	</bean>
 
 	<bean id="finder.iq.roster" class="com.sissi.pipeline.in.ChainedFinder">
-		<constructor-arg ref="builder.jid" />
 		<constructor-arg>
 			<util:list>
 				<ref bean="roster.establish.condition" />
@@ -69,7 +68,6 @@
 		</constructor-arg>
 	</bean>
 	<bean id="finder.iq.roster.establish" class="com.sissi.pipeline.in.ChainedFinder">
-		<constructor-arg ref="builder.jid" />
 		<constructor-arg>
 			<util:list>
 				<ref bean="roster.establish.remove.condition" />
@@ -79,7 +77,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="roster.condition" class="com.sissi.pipeline.in.BeanCondition">
+	<bean id="roster.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.MatchClass">
 				<constructor-arg value="com.sissi.protocol.iq.roster.Roster" />
@@ -87,7 +85,7 @@
 		</constructor-arg>
 		<constructor-arg ref="roster.pro.chained" />
 	</bean>
-	<bean id="roster.get.condition" class="com.sissi.pipeline.in.BeanCondition">
+	<bean id="roster.get.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher">
 				<constructor-arg value="GET" />
@@ -95,7 +93,7 @@
 		</constructor-arg>
 		<constructor-arg ref="roster.pro.get.chained" />
 	</bean>
-	<bean id="roster.establish.condition" class="com.sissi.pipeline.in.BeanCondition">
+	<bean id="roster.establish.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher">
 				<constructor-arg value="SET" />
@@ -103,7 +101,7 @@
 		</constructor-arg>
 		<constructor-arg ref="roster.pro.establish.fork.chained" />
 	</bean>
-	<bean id="roster.establish.set.condition" class="com.sissi.pipeline.in.BeanCondition">
+	<bean id="roster.establish.set.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher$RosterActionDetailMatcher">
 				<constructor-arg value="SET" />
@@ -112,7 +110,7 @@
 		</constructor-arg>
 		<constructor-arg ref="roster.pro.establish.set.chained" />
 	</bean>
-	<bean id="roster.establish.remove.condition" class="com.sissi.pipeline.in.BeanCondition">
+	<bean id="roster.establish.remove.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher$RosterActionDetailMatcher">
 				<constructor-arg value="SET" />

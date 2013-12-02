@@ -13,8 +13,8 @@ public class PresenceRosterSubscribedAndOnlineProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		JID master = super.jidBuilder.build(protocol.getTo()).getBare();
-		super.presenceQueue.offer(master, context.getJid().getBare(), master, context.getPresence().setTypeText(Presence.Type.ONLINE.toString()));
+		JID master = super.jidBuilder.build(protocol.getTo());
+		super.presenceQueue.offer(master, context.getJid(), master, context.getPresence().setTypeText(Presence.Type.ONLINE.toString()));
 		return true;
 	}
 }

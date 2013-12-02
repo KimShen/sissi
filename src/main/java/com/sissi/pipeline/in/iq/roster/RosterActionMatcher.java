@@ -11,7 +11,7 @@ import com.sissi.protocol.iq.roster.Roster;
  */
 public class RosterActionMatcher extends MatchClass {
 
-	private Type type;
+	private final Type type;
 
 	public RosterActionMatcher(String type) {
 		super(Roster.class);
@@ -25,7 +25,7 @@ public class RosterActionMatcher extends MatchClass {
 
 	public static class RosterActionDetailMatcher extends RosterActionMatcher {
 
-		private Action detail;
+		private final Action detail;
 
 		public RosterActionDetailMatcher(String type, String detail) {
 			super(type);

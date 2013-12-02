@@ -10,7 +10,7 @@ import com.sissi.protocol.iq.IQ;
  */
 public class IQNoneChildrenProcessor implements Input {
 
-	private IQResultProcessor iqResultProcessor;
+	private final IQResultProcessor iqResultProcessor;
 
 	public IQNoneChildrenProcessor(IQResultProcessor iqResultProcessor) {
 		super();
@@ -23,7 +23,6 @@ public class IQNoneChildrenProcessor implements Input {
 	}
 
 	private boolean writeIOResult(JIDContext context, Protocol protocol) {
-		this.iqResultProcessor.input(context, protocol);
-		return false;
+		return this.iqResultProcessor.input(context, protocol);
 	}
 }
