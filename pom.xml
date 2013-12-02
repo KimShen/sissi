@@ -9,17 +9,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
-		<!-- For Test -->
-		<!-- <dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> <version>4.7</version> <scope>test</scope> </dependency> <dependency> <groupId>org.easymock</groupId> <artifactId>easymock</artifactId> <version>3.2</version> <scope>test</scope> 
-			</dependency> -->
 		<!-- For Compile -->
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty</artifactId>
-			<version>4.0.4</version>
+			<version>4.0.13.final</version>
 			<!-- 4.0.4 is not released on MVN center -->
 			<!-- U should install first without comment: mvn clean install -->
-			<!-- <scope>system</scope> <systemPath>${basedir}/lib/netty-4.0.4.jar</systemPath> -->
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/netty-all-4.0.13.Final.jar</systemPath>
 		</dependency>
 		<!-- For Commons package -->
 		<dependency>
@@ -107,7 +105,7 @@
 						<configuration>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.sissi.netty.impl.Server</mainClass>
+									<mainClass>com.sissi.server.impl.MainServerStart$MainServer</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

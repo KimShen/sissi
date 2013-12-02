@@ -16,7 +16,7 @@ public abstract class JIDWrapFinder implements InputFinder {
 		super();
 		this.jidBuilder = jidBuilder;
 	}
-
+	
 	@Override
 	public Input find(Protocol protocol) {
 		return this.doFind(protocol.setFrom(this.jidBuilder.build(protocol.getFrom())).setTo(this.jidBuilder.build(protocol.getTo())));

@@ -13,6 +13,10 @@
 		<property name="relationContext" ref="relation.roster" />
 	</bean>
 
+	<bean id="global.pro.asyn" abstract="true" parent="global.pro.utils">
+		<property name="runner" ref="runner" />
+	</bean>
+
 	<bean id="stream.pro" class="com.sissi.pipeline.in.stream.StreamProcessor" />
 	<bean id="stream.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>

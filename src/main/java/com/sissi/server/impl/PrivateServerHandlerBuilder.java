@@ -6,7 +6,10 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.AttributeKey;
 import io.netty.util.ReferenceCountUtil;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintWriter;
@@ -38,9 +41,9 @@ public class PrivateServerHandlerBuilder {
 
 	private final static String CONNECTOR_ATTR = "CONNECTOR_ATTR";
 
-	private final static AttributeKey<JIDContext> CONTEXT = new AttributeKey<JIDContext>(CONTEXT_ATTR);
+	private final static AttributeKey<JIDContext> CONTEXT = AttributeKey.valueOf(CONTEXT_ATTR);
 
-	private final static AttributeKey<Looper> CONNECTOR = new AttributeKey<Looper>(CONNECTOR_ATTR);
+	private final static AttributeKey<Looper> CONNECTOR = AttributeKey.valueOf(CONNECTOR_ATTR);
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -80,7 +83,7 @@ public class PrivateServerHandlerBuilder {
 
 		private final PipedInputStream input = new PipedInputStream();
 
-		private final PipedOutputStream output = new PipedOutputStream(input);
+		private final OutputStream output = new BufferedOutputStream(new PipedOutputStream(input));
 
 		public PrivateServerHandler() throws IOException {
 			super();
@@ -103,7 +106,9 @@ public class PrivateServerHandlerBuilder {
 		@Override
 		public void channelRead(ChannelHandlerContext ctx, Object msg) {
 			try {
+				System.out.println("rec: " + System.currentTimeMillis());
 				this.output.write(this.copyToBytes(this.logIfNecessary(ctx, (ByteBuf) msg)));
+				this.output.flush();
 			} catch (Exception e) {
 				PrivateServerHandlerBuilder.this.log.fatal(e);
 			} finally {
@@ -121,7 +126,7 @@ public class PrivateServerHandlerBuilder {
 
 		private void createLooperAndStart(final ChannelHandlerContext ctx) {
 			try {
-				Looper looper = PrivateServerHandlerBuilder.this.looperBuilder.build(PrivateServerHandlerBuilder.this.reader.future(input), PrivateServerHandlerBuilder.this.feederBuilder.build(ctx.attr(CONTEXT).get(), PrivateServerHandlerBuilder.this.finder));
+				Looper looper = PrivateServerHandlerBuilder.this.looperBuilder.build(PrivateServerHandlerBuilder.this.reader.future(new BufferedInputStream(input)), PrivateServerHandlerBuilder.this.feederBuilder.build(ctx.attr(CONTEXT).get(), PrivateServerHandlerBuilder.this.finder));
 				ctx.attr(CONNECTOR).set(looper);
 				looper.start();
 			} catch (IOException e) {

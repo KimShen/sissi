@@ -86,7 +86,10 @@ public class PrivateLooperBuilder implements LooperBuilder, FactoryBean<PrivateL
 					}
 					this.getAndFeed();
 				} catch (Exception e) {
-					LOG.error(e);
+					if (LOG.isErrorEnabled()) {
+						LOG.error(e);
+						e.printStackTrace();
+					}
 				}
 			}
 			this.counter.decrementAndGet();

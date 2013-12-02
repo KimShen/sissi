@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.ResourceUtils;
 
@@ -23,6 +25,8 @@ import com.sissi.server.ServerStart;
  * @author kim 2013-11-19
  */
 public class MainServerStart implements ServerStart {
+
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final ServerBootstrap bootstrap = new ServerBootstrap();
 
@@ -41,8 +45,13 @@ public class MainServerStart implements ServerStart {
 
 	@Override
 	public void start() {
-		bootstrap.group(serverLoopGroup.boss(), serverLoopGroup.event()).channel(NioServerSocketChannel.class).childHandler(this.channelInitializer);
-		bootstrap.bind(this.port).addListener(new FailShutdownGenericFutureListener());
+		try {
+			bootstrap.group(serverLoopGroup.boss(), serverLoopGroup.event()).channel(NioServerSocketChannel.class).childHandler(this.channelInitializer);
+			bootstrap.bind(this.port).addListener(new FailShutdownGenericFutureListener());
+		} catch (Exception e) {
+			this.log.fatal(e);
+			this.closeAll();
+		}
 	}
 
 	@Override
@@ -60,6 +69,7 @@ public class MainServerStart implements ServerStart {
 		public void operationComplete(Future<Void> future) throws Exception {
 			if (!future.isSuccess()) {
 				MainServerStart.this.closeAll();
+				future.cause().printStackTrace();
 			}
 		}
 	}

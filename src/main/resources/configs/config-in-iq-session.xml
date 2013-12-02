@@ -5,10 +5,10 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="session.pro.presence.2myfans" class="com.sissi.pipeline.in.iq.session.SessionPresence2MyFansProcessor" parent="global.pro.utils">
+	<bean id="session.pro.presence.2myfans" class="com.sissi.pipeline.in.iq.session.SessionPresence2MyFansProcessor" parent="global.pro.asyn">
 		<property name="protocolQueue" ref="broadcast.protocol.fans" />
 	</bean>
-	<bean id="session.pro.presence.4myfans" class="com.sissi.pipeline.in.iq.session.SessionPresence4MyFansProcessor" parent="global.pro.utils" />
+	<bean id="session.pro.presence.4myfans" class="com.sissi.pipeline.in.iq.session.SessionPresence4MyFansProcessor" parent="global.pro.asyn" />
 	<bean id="session.pro.recover" class="com.sissi.pipeline.in.iq.session.SessionProtocolRecoverProcessor">
 		<constructor-arg ref="storage.box" />
 	</bean>

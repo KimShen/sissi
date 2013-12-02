@@ -10,7 +10,7 @@ import com.sissi.context.JID.JIDBuilder;
  */
 public class FixHostJIDBuilder implements JIDBuilder {
 
-	private final static String NONE_NAME = "N/A";
+	private final static String NONE_NAME = "None";
 
 	private final static String CONNECT_AT = "@";
 
