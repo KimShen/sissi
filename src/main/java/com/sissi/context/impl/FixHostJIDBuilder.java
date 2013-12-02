@@ -136,7 +136,7 @@ public class FixHostJIDBuilder implements JIDBuilder {
 		}
 
 		public String asStringWithBare() {
-			return (this.user != null ? this.user + FixHostJIDBuilder.CONNECT_AT : "") + this.host;
+			return (this.user != null ? this.user + "@" : "") + this.host;
 		}
 
 		public String toString() {

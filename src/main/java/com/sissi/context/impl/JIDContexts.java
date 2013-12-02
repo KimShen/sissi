@@ -4,13 +4,8 @@ import java.util.ArrayList;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
-<<<<<<< HEAD:src/main/java/com/sissi/context/impl/JIDContexts.java
 import com.sissi.context.MyPresence;
 import com.sissi.protocol.Element;
-=======
-import com.sissi.context.JIDContextPresence;
-import com.sissi.protocol.Node;
->>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4:src/main/java/com/sissi/context/impl/UserContexts.java
 
 /**
  * @author kim 2013-11-21
@@ -27,13 +22,6 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	public JIDContext setAuth(Boolean canAccess) {
 		for (JIDContext each : this) {
 			each.setAuth(canAccess);
-		}
-		return this;
-	}
-	
-	public JIDContext setBinding(Boolean isBinding) {
-		for (JIDContext each : this) {
-			each.setBinding(isBinding);
 		}
 		return this;
 	}
@@ -87,18 +75,6 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	public Boolean isBinding() {
 		boolean isBinding = true;
-<<<<<<< HEAD:src/main/java/com/sissi/context/impl/JIDContexts.java
-=======
-		for (JIDContext each : this) {
-			isBinding = each.isBinding();
-		}
-		return isBinding;
-	}
-
-	@Override
-	public Boolean isLogining() {
-		boolean isLoging = true;
->>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4:src/main/java/com/sissi/context/impl/UserContexts.java
 		for (JIDContext each : this) {
 			isBinding = each.isBinding();
 		}
@@ -115,11 +91,7 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	@Override
-<<<<<<< HEAD:src/main/java/com/sissi/context/impl/JIDContexts.java
 	public void write(Element node) {
-=======
-	public void write(Node node) {
->>>>>>> bb8f10e305055ee0e7cfa0d6430d98b394218ce4:src/main/java/com/sissi/context/impl/UserContexts.java
 		for (JIDContext each : this) {
 			each.write(node);
 		}
