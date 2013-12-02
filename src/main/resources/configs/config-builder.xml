@@ -5,39 +5,23 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="config.presence" class="com.sissi.config.impl.MongoConfig">
-		<constructor-arg>
-			<map>
-				<entry>
-					<key>
-						<util:constant static-field="com.sissi.config.impl.MongoConfig.D_NAME" />
-					</key>
-					<value>${mongo.db}</value>
-				</entry>
-				<entry>
-					<key>
-						<util:constant static-field="com.sissi.config.impl.MongoConfig.C_NAME" />
-					</key>
-					<value>${mongo.collection.presence}</value>
-				</entry>
-			</map>
-		</constructor-arg>
+	<bean id="config.presence" class="com.sissi.config.impl.MongoCollection">
+		<constructor-arg ref="mongo.client" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.presence}" />
 	</bean>
 
-	<alias name="builder.user" alias="builder.jid" />
-	<bean id="builder.user" class="com.sissi.context.impl.UserBuilder">
+	<bean id="builder.jid" class="com.sissi.context.impl.FixHostJIDBuilder">
 		<constructor-arg value="${global.host}" />
 	</bean>
-
 	<bean id="builder.context.online" class="com.sissi.context.impl.OnlineContextBuilder">
-		<constructor-arg ref="jidContextPresenceBuilder" />
+		<constructor-arg ref="myPresenceBuilder" />
 	</bean>
 	<bean id="builder.context.offline" class="com.sissi.context.impl.OfflineContextBuilder">
 		<constructor-arg ref="storage.box" />
 	</bean>
-
-	<bean id="jidContextPresenceBuilder" class="com.sissi.context.impl.MongoContextPresenceBuilder">
-		<constructor-arg ref="mongo.client" />
+	
+	<bean id="myPresenceBuilder" class="com.sissi.context.impl.MongoPresenceBuilder">
 		<constructor-arg ref="config.presence" />
 	</bean>
 

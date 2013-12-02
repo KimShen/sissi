@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="builder.server.handler" class="com.sissi.netty.impl.MyServerHandlerBuilder">
-		<constructor-arg ref="reader" />
+
+	<bean id="writer" class="com.sissi.write.jaxb.JAXBWriter" />
+
+	<bean id="reader" class="com.sissi.read.sax.SAXReader">
+		<constructor-arg ref="executor" />
+	</bean>
+
+	<bean id="builder.output" class="com.sissi.pipeline.out.NetworkOutputBuilder">
 		<constructor-arg ref="writer" />
+	</bean>
+
+	<bean id="closer.4self" class="com.sissi.server.impl.Offline4SelfsServerCloser" />
+	<bean id="closer.2fans" class="com.sissi.server.impl.Offline2FansServerCloser">
+		<constructor-arg ref="broadcast.protocol.fans" />
+	</bean>
+	<bean id="closer.chained" class="com.sissi.server.impl.ChainedServerCloser">
+		<constructor-arg>
+			<util:list>
+				<ref bean="closer.4self" />
+				<ref bean="closer.2fans" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="builder.server.handler" class="com.sissi.server.impl.PrivateServerHandlerBuilder">
+		<constructor-arg ref="reader" />
 		<constructor-arg ref="addressing" />
 		<constructor-arg ref="finder.input" />
-		<constructor-arg ref="server.closer" />
+		<constructor-arg ref="closer.chained" />
+		<constructor-arg ref="builder.output" />
 		<constructor-arg ref="builder.feeder" />
 		<constructor-arg ref="builder.looper" />
 		<constructor-arg ref="builder.context.online" />
 	</bean>
 
-	<bean id="server.loop" class="com.sissi.netty.impl.MyServerLoopGroup" />
-	<bean id="server.pipeline" class="com.sissi.netty.impl.MyChannelInitializer">
+	<bean id="server.loop" class="com.sissi.server.impl.NioServerLoopGroup" />
+	<bean id="server.pipeline" class="com.sissi.server.impl.PrivateServerHandlerChannelInitializer">
 		<constructor-arg ref="builder.server.handler" />
 	</bean>
-	<bean id="server.closer" class="com.sissi.netty.impl.MyServerCloser">
-		<constructor-arg ref="broadcast.protocol.fans" />
-	</bean>
-	<bean id="server.start" class="com.sissi.netty.impl.MyServerStart">
+	<bean id="server.start" class="com.sissi.server.impl.MainServerStart">
 		<constructor-arg value="${global.port}" />
 		<constructor-arg ref="server.loop" />
 		<constructor-arg ref="server.pipeline" />

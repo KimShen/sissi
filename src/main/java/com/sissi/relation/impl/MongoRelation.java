@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mongodb.DBObject;
+import com.sissi.config.MongoConfig;
 import com.sissi.relation.RelationRoster;
-import com.sissi.util.MongoUtils;
 
 /**
  * @author kim 2013-11-6
@@ -22,12 +22,12 @@ public class MongoRelation implements RelationRoster {
 
 	private String subscription;
 
-	public MongoRelation(DBObject db) {
+	public MongoRelation(DBObject db, MongoConfig config) {
 		super();
-		this.jid = MongoUtils.getSecurityString(db, "slave");
-		this.name = MongoUtils.getSecurityString(db, "name");
-		this.group = MongoUtils.getSecurityString(db, "group");
-		this.subscription = MongoUtils.getSecurityString(db, "state");
+		this.jid = config.asString(db, "slave");
+		this.name = config.asString(db, "name");
+		this.group = config.asString(db, "group");
+		this.subscription = config.asString(db, "state");
 	}
 
 	public String getJID() {

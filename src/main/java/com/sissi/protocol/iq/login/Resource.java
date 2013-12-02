@@ -9,6 +9,15 @@ public class Resource extends Protocol {
 
 	private String text;
 
+	public Resource() {
+		super();
+	}
+
+	public Resource(String text) {
+		super();
+		this.text = text;
+	}
+
 	public String getText() {
 		return text;
 	}
@@ -16,8 +25,8 @@ public class Resource extends Protocol {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
-	public Boolean hasResource(){
+
+	public Boolean hasResource() {
 		return this.text != null && !this.text.isEmpty();
 	}
 }

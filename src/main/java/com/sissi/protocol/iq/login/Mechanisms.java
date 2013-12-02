@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.pipeline.in.auth.impl.DigestAuthCallback;
 import com.sissi.protocol.Feature;
 import com.sissi.protocol.Stream;
 
@@ -22,7 +23,7 @@ public class Mechanisms extends Feature {
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
 
-	public final static Mechanisms MECHANISMS = new Mechanisms("PLAIN", "DIGEST-MD5");
+	public final static Mechanisms MECHANISMS = new Mechanisms(DigestAuthCallback.MECHANISM, "PLAIN", "ANONYMOUS");
 
 	private Set<String> mechanism;
 

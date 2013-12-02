@@ -18,4 +18,8 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="runner" class="com.sissi.thread.Runner">
+		<constructor-arg ref="executor" />
+	</bean>
+
 </beans>

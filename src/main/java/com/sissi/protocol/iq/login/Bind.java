@@ -19,6 +19,15 @@ public class Bind extends Feature {
 
 	private Resource resource;
 
+	public Bind() {
+		super();
+	}
+
+	public Bind(String resource) {
+		super();
+		this.resource = new Resource(resource);
+	}
+
 	@XmlElement(name = "jid")
 	public String getJid() {
 		return jid;

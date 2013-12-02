@@ -5,35 +5,22 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="config.offline.storage" class="com.sissi.config.impl.MongoConfig">
-		<constructor-arg>
-			<map>
-				<entry>
-					<key>
-						<util:constant static-field="com.sissi.config.impl.MongoConfig.D_NAME" />
-					</key>
-					<value>${mongo.db}</value>
-				</entry>
-				<entry>
-					<key>
-						<util:constant static-field="com.sissi.config.impl.MongoConfig.C_NAME" />
-					</key>
-					<value>${mongo.collection.offline.storage}</value>
-				</entry>
-			</map>
-		</constructor-arg>
+	<bean id="config.storage.box" class="com.sissi.config.impl.MongoCollection">
+		<constructor-arg ref="mongo.client" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.offline.storage}" />
 	</bean>
 
-	<bean id="storage.message" class="com.sissi.offline.impl.MyStorageBlock4Message">
+	<bean id="storage.message" class="com.sissi.offline.impl.MessageStorage">
 		<constructor-arg ref="builder.jid" />
 		<constructor-arg value="${offline.hit}" />
 	</bean>
-	<bean id="storage.presence" class="com.sissi.offline.impl.MyStorageBlock4Presence">
+	<bean id="storage.presence" class="com.sissi.offline.impl.PresenceStorage">
 		<constructor-arg ref="builder.jid" />
 	</bean>
-	<bean id="storage.box" class="com.sissi.offline.impl.MyStorageBox">
-		<constructor-arg ref="config.offline.storage" />
-		<constructor-arg ref="mongo.client" />
+	
+	<bean id="storage.box" class="com.sissi.offline.impl.MongoStorageBox">
+		<constructor-arg ref="config.storage.box" />
 		<constructor-arg>
 			<util:list>
 				<ref bean="storage.message" />

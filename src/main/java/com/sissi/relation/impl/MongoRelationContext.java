@@ -10,14 +10,12 @@ import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
-import com.sissi.config.Config;
+import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
-import com.sissi.context.JIDBuilder;
+import com.sissi.context.JID.JIDBuilder;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.relation.Relation;
 import com.sissi.relation.RelationContext;
-import com.sissi.util.MongoUtils;
 
 /**
  * @author kim 2013-11-5
@@ -26,17 +24,14 @@ public class MongoRelationContext implements RelationContext {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private Config config;
+	private MongoConfig config;
 
 	private JIDBuilder builder;
 
-	private MongoClient client;
-
-	public MongoRelationContext(Config config, JIDBuilder builder, MongoClient client) {
+	public MongoRelationContext(MongoConfig config, JIDBuilder builder) {
 		super();
 		this.config = config;
 		this.builder = builder;
-		this.client = client;
 	}
 
 	@Override
@@ -51,7 +46,7 @@ public class MongoRelationContext implements RelationContext {
 		entity.put("$set", updated);
 		this.log.debug("Query is: " + query);
 		this.log.debug("Entity is: " + entity);
-		MongoUtils.findCollection(this.config, this.client).update(query, entity, true, true);
+		this.config.findCollection().update(query, entity, true, true);
 	}
 
 	@Override
@@ -62,7 +57,7 @@ public class MongoRelationContext implements RelationContext {
 		query.put("slave", to.asStringWithBare());
 		this.log.debug("Query is: " + query);
 		this.log.debug("Entity is: " + entity);
-		MongoUtils.findCollection(this.config, this.client).update(query, entity);
+		this.config.findCollection().update(query, entity);
 	}
 
 	public void remove(JID from, JID to) {
@@ -70,14 +65,14 @@ public class MongoRelationContext implements RelationContext {
 		query.put("master", from.asStringWithBare());
 		query.put("slave", to.asStringWithBare());
 		this.log.debug("Query is: " + query);
-		MongoUtils.findCollection(this.config, this.client).remove(query);
+		this.config.findCollection().remove(query);
 	}
 
 	@Override
 	public Set<Relation> myRelations(JID from) {
 		DBObject query = new BasicDBObject("master", from.asStringWithBare());
 		this.log.debug("Query is: " + query);
-		return new MongoRelations(MongoUtils.findCollection(this.config, this.client).find(query));
+		return new MongoRelations(this.config.findCollection().find(query), this.config);
 	}
 
 	@Override
@@ -86,8 +81,8 @@ public class MongoRelationContext implements RelationContext {
 		query.put("master", from.asStringWithBare());
 		query.put("slave", to.asStringWithBare());
 		this.log.debug("Query is: " + query);
-		DBObject db = MongoUtils.findCollection(this.config, this.client).findOne(query);
-		return db != null ? new MongoRelation(db) : null;
+		DBObject db = this.config.findCollection().findOne(query);
+		return db != null ? new MongoRelation(db, this.config) : null;
 	}
 
 	@Override
@@ -95,14 +90,14 @@ public class MongoRelationContext implements RelationContext {
 		BasicDBObject query = new BasicDBObject("slave", from.asStringWithBare());
 		query.put("$or", Lists.newArrayList(new BasicDBObject("state", Roster.Subscription.TO.toString()), new BasicDBObject("state", Roster.Subscription.BOTH.toString())));
 		this.log.debug("Query is: " + query);
-		return new JIDs(MongoUtils.findCollection(this.config, this.client).find(query, new BasicDBObject("master", 1)), "master");
+		return new JIDs(this.config.findCollection().find(query, new BasicDBObject("master", 1)), "master");
 	}
 
 	public Set<String> iSubscribedWho(JID from) {
 		BasicDBObject query = new BasicDBObject("master", from.asStringWithBare());
 		query.put("$or", Lists.newArrayList(new BasicDBObject("state", Roster.Subscription.TO.toString()), new BasicDBObject("state", Roster.Subscription.BOTH.toString())));
 		this.log.debug("Query is: " + query);
-		return new JIDs(MongoUtils.findCollection(this.config, this.client).find(query, new BasicDBObject("slave", 1)), "slave");
+		return new JIDs(this.config.findCollection().find(query, new BasicDBObject("slave", 1)), "slave");
 	}
 
 	private static class JIDs extends HashSet<String> {
@@ -123,12 +118,12 @@ public class MongoRelationContext implements RelationContext {
 
 		private static final long serialVersionUID = 1L;
 
-		public MongoRelations(DBCursor cursor) {
+		public MongoRelations(DBCursor cursor, MongoConfig config) {
 			if (cursor == null) {
 				return;
 			}
 			while (cursor.hasNext()) {
-				this.add(new MongoRelation(cursor.next()));
+				this.add(new MongoRelation(cursor.next(), config));
 			}
 		}
 	}

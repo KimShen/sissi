@@ -9,4 +9,21 @@ import com.sissi.protocol.Protocol;
 public interface Input {
 
 	public Boolean input(JIDContext context, Protocol protocol);
+
+	public interface InputCondition {
+
+		public Input getInput();
+
+		public InputMatcher getMatcher();
+	}
+
+	public interface InputMatcher {
+
+		public Boolean match(Protocol protocol);
+	}
+
+	public interface InputFinder {
+
+		public Input find(Protocol protocol);
+	}
 }

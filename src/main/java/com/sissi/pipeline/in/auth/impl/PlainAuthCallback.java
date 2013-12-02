@@ -1,9 +1,13 @@
 package com.sissi.pipeline.in.auth.impl;
 
+import java.util.Arrays;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import com.sissi.context.JIDBuilder;
+import com.sissi.context.JID.JIDBuilder;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.auth.AuthAccessor;
 import com.sissi.pipeline.in.auth.AuthCallback;
@@ -18,6 +22,8 @@ public class PlainAuthCallback implements AuthCallback {
 	public final static String MECHANISM = "PLAIN";
 
 	private final static Base64 base64 = new Base64();
+
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	private JIDBuilder jidBuilder;
 
@@ -50,7 +56,7 @@ public class PlainAuthCallback implements AuthCallback {
 		return true;
 	}
 
-	private static class AuthCertificate {
+	private class AuthCertificate {
 
 		private String user;
 
@@ -59,6 +65,9 @@ public class PlainAuthCallback implements AuthCallback {
 		public AuthCertificate(Auth auth) {
 			super();
 			byte[] afterDecode = base64.decode(auth.getText());
+			if (PlainAuthCallback.this.log.isDebugEnabled()) {
+				PlainAuthCallback.this.log.debug("User/Pass is: " + Arrays.toString(afterDecode));
+			}
 			int passStart = ArrayUtils.lastIndexOf(afterDecode, (byte) 0) + 1;
 			this.pass = new String(afterDecode, passStart, afterDecode.length - passStart).trim();
 			this.user = new String(afterDecode, 0, passStart).trim();

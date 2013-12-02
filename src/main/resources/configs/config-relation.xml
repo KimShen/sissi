@@ -4,29 +4,15 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-	
-	<bean id="config.relation.roster" class="com.sissi.config.impl.MongoConfig">
-		<constructor-arg>
-			<map>
-				<entry>
-					<key>
-						<util:constant static-field="com.sissi.config.impl.MongoConfig.D_NAME" />
-					</key>
-					<value>${mongo.db}</value>
-				</entry>
-				<entry>
-					<key>
-						<util:constant static-field="com.sissi.config.impl.MongoConfig.C_NAME" />
-					</key>
-					<value>${mongo.collection.roster}</value>
-				</entry>
-			</map>
-		</constructor-arg>
+
+	<bean id="config.relation.roster" class="com.sissi.config.impl.MongoCollection">
+		<constructor-arg ref="mongo.client" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.roster}" />
 	</bean>
 
 	<bean id="relation.roster" class="com.sissi.relation.impl.MongoRelationContext">
 		<constructor-arg ref="builder.jid" />
-		<constructor-arg ref="mongo.client" />
 		<constructor-arg ref="config.relation.roster" />
 	</bean>
 

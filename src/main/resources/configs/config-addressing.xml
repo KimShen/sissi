@@ -5,29 +5,21 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="config.addressing" class="com.sissi.config.impl.MongoConfig">
-		<constructor-arg>
-			<map>
-				<entry>
-					<key>
-						<util:constant static-field="com.sissi.config.impl.MongoConfig.D_NAME" />
-					</key>
-					<value>${mongo.db}</value>
-				</entry>
-				<entry>
-					<key>
-						<util:constant static-field="com.sissi.config.impl.MongoConfig.C_NAME" />
-					</key>
-					<value>${mongo.collection.addressing}</value>
-				</entry>
-			</map>
-		</constructor-arg>
+	<bean id="config.addressing" class="com.sissi.config.impl.MongoCollection">
+		<constructor-arg ref="mongo.client" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.addressing}" />
 	</bean>
 
 	<alias name="addressing.mongo" alias="addressing" />
-	<bean id="addressing.mongo" class="com.sissi.addressing.impl.MongoHashAddressing">
-		<constructor-arg ref="mongo.client" />
+	<bean id="addressing.interval" class="com.sissi.thread.Interval">
+		<constructor-arg value="${addressing.thread.interval}" />
+		<constructor-arg value="${addressing.thread.unit}" />
+	</bean>
+	<bean id="addressing.mongo" class="com.sissi.addressing.impl.MongoAddressing">
+		<constructor-arg ref="runner" />
 		<constructor-arg ref="config.addressing" />
+		<constructor-arg ref="addressing.interval" />
 		<constructor-arg ref="builder.context.offline" />
 	</bean>
 

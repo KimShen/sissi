@@ -3,7 +3,7 @@ package com.sissi.pipeline.in;
 import com.sissi.addressing.Addressing;
 import com.sissi.broadcast.PresenceBroadcast;
 import com.sissi.broadcast.ProtocolBraodcast;
-import com.sissi.context.JIDBuilder;
+import com.sissi.context.JID.JIDBuilder;
 import com.sissi.pipeline.Input;
 import com.sissi.relation.RelationContext;
 

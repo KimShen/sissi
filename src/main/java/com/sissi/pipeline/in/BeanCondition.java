@@ -1,7 +1,8 @@
 package com.sissi.pipeline.in;
 
 import com.sissi.pipeline.Input;
-import com.sissi.pipeline.InputCondition;
+import com.sissi.pipeline.Input.InputCondition;
+import com.sissi.pipeline.Input.InputMatcher;
 
 /**
  * @author kim 2013-11-21

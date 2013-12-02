@@ -2,12 +2,11 @@ package com.sissi.context.impl;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
-import com.sissi.context.JIDContextBuilder;
-import com.sissi.context.JIDContextParam;
-import com.sissi.context.JIDContextPresence;
+import com.sissi.context.JIDContext.JIDContextBuilder;
+import com.sissi.context.JIDContext.JIDContextParam;
+import com.sissi.context.MyPresence;
 import com.sissi.offline.StorageBox;
-import com.sissi.protocol.Node;
-import com.sissi.protocol.Protocol;
+import com.sissi.protocol.Element;
 import com.sissi.protocol.presence.Presence;
 
 /**
@@ -15,7 +14,9 @@ import com.sissi.protocol.presence.Presence;
  */
 public class OfflineContextBuilder implements JIDContextBuilder {
 
-	private StorageBox storageBox;
+	private final static Integer DEFAULT_PRIORITY = 0;
+
+	private final StorageBox storageBox;
 
 	public OfflineContextBuilder(StorageBox storageBox) {
 		super();
@@ -29,21 +30,20 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private class OfflineContext implements JIDContext {
 
-		private JID jid;
+		private final JID jid;
 
 		public OfflineContext(JID jid) {
 			super();
 			this.jid = jid;
 		}
 
-		@Override
-		public JIDContext setAuth(Boolean canAccess) {
-			return this;
+		public Long getIndex() {
+			return null;
 		}
 
 		@Override
-		public Boolean isLogining() {
-			return false;
+		public JIDContext setAuth(Boolean canAccess) {
+			return this;
 		}
 
 		@Override
@@ -70,10 +70,8 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public void write(Node node) {
-			if (Protocol.class.isAssignableFrom(node.getClass())) {
-				OfflineContextBuilder.this.storageBox.push(Protocol.class.cast(node));
-			}
+		public void write(Element element) {
+			OfflineContextBuilder.this.storageBox.store(element);
 		}
 
 		@Override
@@ -82,18 +80,24 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public JIDContextPresence getPresence() {
+		public MyPresence getPresence() {
 			return OfflineContextPresence.OFFLINE;
+		}
+
+		@Override
+		public JIDContext setPriority(Integer priority) {
+			return this;
+		}
+
+		@Override
+		public Integer getPriority() {
+			return OfflineContextBuilder.DEFAULT_PRIORITY;
 		}
 	}
 
-	private static class OfflineContextPresence implements JIDContextPresence {
+	private static class OfflineContextPresence implements MyPresence {
 
-		private final static JIDContextPresence OFFLINE = new OfflineContextPresence();
-
-		private OfflineContextPresence() {
-
-		}
+		private final static MyPresence OFFLINE = new OfflineContextPresence();
 
 		@Override
 		public String getTypeText() {
@@ -111,21 +115,21 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public JIDContextPresence setTypeText(String type) {
+		public MyPresence setTypeText(String type) {
 			return this;
 		}
 
 		@Override
-		public JIDContextPresence setShowText(String show) {
+		public MyPresence setShowText(String show) {
 			return this;
 		}
 
 		@Override
-		public JIDContextPresence setStatusText(String status) {
+		public MyPresence setStatusText(String status) {
 			return this;
 		}
 
-		public JIDContextPresence clear() {
+		public MyPresence clear() {
 			return this;
 		}
 	}

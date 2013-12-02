@@ -3,6 +3,7 @@ package com.sissi.pipeline.in.iq.session;
 import com.sissi.context.JIDContext;
 import com.sissi.offline.StorageBox;
 import com.sissi.pipeline.Input;
+import com.sissi.protocol.Element;
 import com.sissi.protocol.Protocol;
 
 /**
@@ -19,7 +20,7 @@ public class SessionProtocolRecoverProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		for (Protocol each : storageBox.pull(context.getJid().getBare())) {
+		for (Element each : storageBox.fetch(context.getJid().getBare())) {
 			context.write(each);
 		}
 		return true;

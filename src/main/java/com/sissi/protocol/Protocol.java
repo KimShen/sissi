@@ -10,7 +10,7 @@ import com.sissi.context.JID;
 /**
  * @author kim 2013-10-24
  */
-abstract public class Protocol implements Node{
+abstract public class Protocol implements Element {
 
 	public static enum Type {
 
@@ -57,8 +57,9 @@ abstract public class Protocol implements Node{
 		return id;
 	}
 
-	public void setId(String id) {
+	public Protocol setId(String id) {
 		this.id = id;
+		return this;
 	}
 
 	@XmlAttribute
@@ -81,8 +82,9 @@ abstract public class Protocol implements Node{
 		return to;
 	}
 
-	public void setTo(String to) {
+	public Protocol setTo(String to) {
 		this.to = to;
+		return this;
 	}
 
 	public Protocol setTo(JID to) {
@@ -95,8 +97,9 @@ abstract public class Protocol implements Node{
 		return type;
 	}
 
-	public void setType(String type) {
+	public Protocol setType(String type) {
 		this.type = type;
+		return this;
 	}
 
 	public Protocol setType(Type type) {

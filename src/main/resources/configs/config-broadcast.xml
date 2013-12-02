@@ -5,20 +5,15 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<alias name="broadcast.presence.current" alias="broadcast.presence" />
-	<bean id="broadcast.presence.current" class="com.sissi.broadcast.impl.CurrentPresenceQueue">
-		<constructor-arg ref="addressing" />
-		<constructor-arg ref="builder.presence" />
-	</bean>
-	<alias name="broadcast.protocol.current" alias="broadcast.protocol" />
-	<bean id="broadcast.protocol.current" class="com.sissi.broadcast.impl.CurrentProtocolQueue">
+	<bean id="broadcast.presence.selfs" class="com.sissi.broadcast.impl.ToJIDSelfsPresenceQueue">
 		<constructor-arg ref="addressing" />
 	</bean>
-	<bean id="broadcast.protocol.fans" class="com.sissi.broadcast.impl.MyFansProtocolQueue">
+	<bean id="broadcast.protocol.selfs" class="com.sissi.broadcast.impl.ToJIDSelfsProtocolQueue">
+		<constructor-arg ref="addressing" />
+	</bean>
+	<bean id="broadcast.protocol.fans" class="com.sissi.broadcast.impl.ToJIDFansProtocolQueue">
 		<constructor-arg ref="addressing" />
 		<constructor-arg ref="builder.jid" />
 		<constructor-arg ref="relation.roster" />
 	</bean>
-
-	<bean id="builder.presence" class="com.sissi.broadcast.impl.CurrentPresenceQueue$DefaultPresenceBuilder" />
 </beans>

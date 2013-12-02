@@ -20,9 +20,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.context.JIDContext;
-import com.sissi.protocol.Node;
+import com.sissi.protocol.Element;
 import com.sissi.write.Writer;
-import com.sissi.write.WriterWithOutClose;
+import com.sissi.write.WriteWithOutClose;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
 /**
@@ -63,15 +63,15 @@ public class JAXBWriter implements Writer {
 		this.mapper = mapper;
 	}
 
-	public void write(JIDContext context, Node node, OutputStream output) throws IOException {
-		if (WriterWithOutClose.class.isAssignableFrom(node.getClass())) {
+	public void write(JIDContext context, Element node, OutputStream output) throws IOException {
+		if (WriteWithOutClose.class.isAssignableFrom(node.getClass())) {
 			this.writeWithOutClose(context, node, output);
 		} else {
 			this.writeWithFull(context, node, output);
 		}
 	}
 
-	public void writeWithFull(JIDContext context, Node node, OutputStream output) throws IOException {
+	public void writeWithFull(JIDContext context, Element node, OutputStream output) throws IOException {
 		try {
 			Marshaller marshaller = this.generateMarshaller(false);
 			if (LOG.isInfoEnabled()) {
@@ -89,7 +89,7 @@ public class JAXBWriter implements Writer {
 		}
 	}
 
-	private void writeWithOutClose(JIDContext context, Node node, OutputStream output) throws IOException {
+	private void writeWithOutClose(JIDContext context, Element node, OutputStream output) throws IOException {
 		try {
 			Marshaller marshaller = generateMarshaller(true);
 			LinkedList<String> contents = this.prepareToLines(node, marshaller);
@@ -107,7 +107,7 @@ public class JAXBWriter implements Writer {
 		}
 	}
 
-	private LinkedList<String> prepareToLines(Node node, Marshaller marshaller) throws JAXBException, IOException {
+	private LinkedList<String> prepareToLines(Element node, Marshaller marshaller) throws JAXBException, IOException {
 		ByteArrayOutputStream prepare = new ByteArrayOutputStream();
 		marshaller.marshal(node, prepare);
 		LineIterator iterator = IOUtils.lineIterator(new ByteArrayInputStream(prepare.toByteArray()), "UTF-8");

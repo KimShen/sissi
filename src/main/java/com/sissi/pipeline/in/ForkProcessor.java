@@ -2,7 +2,6 @@ package com.sissi.pipeline.in;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
-import com.sissi.pipeline.InputCondition.InputFinder;
 import com.sissi.protocol.Protocol;
 
 /**

@@ -5,14 +5,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
-import com.sissi.context.JIDContextPresence;
+import com.sissi.context.MyPresence;
 import com.sissi.protocol.Protocol;
 
 /**
  * @author kim 2013-10-28
  */
 @XmlRootElement
-public class Presence extends Protocol implements JIDContextPresence {
+public class Presence extends Protocol implements MyPresence {
 
 	public static enum Type {
 
@@ -125,7 +125,7 @@ public class Presence extends Protocol implements JIDContextPresence {
 	}
 
 	@Override
-	public JIDContextPresence setTypeText(String type) {
-		return (JIDContextPresence) this.setType(Type.parse(type));
+	public MyPresence setTypeText(String type) {
+		return (MyPresence) this.setType(Type.parse(type));
 	}
 }

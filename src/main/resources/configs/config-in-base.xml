@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="global.pro.utils" abstract="true">
+		<property name="jidBuilder" ref="builder.jid" />
+		<property name="addressing" ref="addressing" />
+		<property name="presenceQueue" ref="broadcast.presence.selfs" />
+		<property name="protocolQueue" ref="broadcast.protocol.selfs" />
+		<property name="relationContext" ref="relation.roster" />
+	</bean>
+
+	<bean id="stream.pro" class="com.sissi.pipeline.in.stream.StreamProcessor" />
+	<bean id="stream.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="stream.pro" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="stream.condition" class="com.sissi.pipeline.in.BeanCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.MatchClass">
+				<constructor-arg value="com.sissi.protocol.Stream" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="stream.pro.chained" />
+	</bean>
+
+	<bean id="finder.input" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg ref="builder.jid" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="message.condition" />
+				<ref bean="presence.condition" />
+				<ref bean="iq.condition" />
+				<ref bean="auth.condition" />
+				<ref bean="auth.condition.digest" />
+				<ref bean="stream.condition" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+</beans>

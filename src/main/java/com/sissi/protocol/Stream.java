@@ -13,7 +13,7 @@ import com.sissi.protocol.iq.login.Auth;
 import com.sissi.protocol.iq.login.Bind;
 import com.sissi.protocol.iq.login.Mechanisms;
 import com.sissi.protocol.iq.login.Session;
-import com.sissi.write.WriterWithOutClose;
+import com.sissi.write.WriteWithOutClose;
 
 /**
  * @author Kim.shen 2013-10-16
@@ -25,7 +25,7 @@ public class Stream extends Protocol {
 
 	private final static String XMLNS = "jabber:client";
 
-	private String version;
+	private final static String VERSION = "1.0";
 
 	private List<Feature> features;
 
@@ -34,12 +34,9 @@ public class Stream extends Protocol {
 		return XMLNS;
 	}
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
+	@XmlAttribute
 	public String getVersion() {
-		return version;
+		return VERSION;
 	}
 
 	public Stream addFeature(Feature feature) {
@@ -51,23 +48,25 @@ public class Stream extends Protocol {
 	}
 
 	@XmlElementWrapper(namespace = Stream.NAMESPACE, name = "features")
-	@XmlElements({ @XmlElement(name = "auth", type = Auth.class), @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class) })
+	@XmlElements({ @XmlElement(name = "auth", type = Auth.class), @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "bind", type = Bind.class),
+			@XmlElement(name = "session", type = Session.class) })
 	public List<Feature> getFeatures() {
 		return features;
 	}
 
 	public static Stream generate(Protocol protocol) {
-		return new StreamOpen(protocol.getId());
+		return new StreamOpen(protocol);
 	}
 
 	@XmlRootElement(name = "stream", namespace = Stream.NAMESPACE)
-	public static class StreamOpen extends Stream implements WriterWithOutClose {
+	public static class StreamOpen extends Stream implements WriteWithOutClose {
 
 		public StreamOpen() {
 		}
 
-		public StreamOpen(String id) {
-			super.setId(id);
+		public StreamOpen(Protocol protocol) {
+			super.setId(protocol.getId());
+			super.setFrom("3ti.us");
 		}
 	}
 }

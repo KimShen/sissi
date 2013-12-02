@@ -1,10 +1,13 @@
 package com.sissi.read.sax;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Attributes;
@@ -24,9 +27,14 @@ public class SAXHandler extends DefaultHandler {
 
 	private final static Log LOG = LogFactory.getLog(SAXHandler.class);
 
-	@SuppressWarnings("serial")
-	private final static Set<String> ROOT_NODE = new HashSet<String>(){{add("stream");}};
+	private final static Map<Class<?>, MethodFinder> CACHED_METHOD = new HashMap<Class<?>, MethodFinder>();
 
+	@SuppressWarnings("serial")
+	private final static Set<String> ROOT_NODE = new HashSet<String>() {
+		{
+			add("stream");
+		}
+	};
 
 	private Mapping mapping;
 
@@ -50,9 +58,13 @@ public class SAXHandler extends DefaultHandler {
 	}
 
 	private boolean propertyCopy(Object ob, String key, Object value) {
+		MethodFinder finder = CACHED_METHOD.get(ob.getClass());
+		if (finder == null) {
+			LOG.debug("Create MethodFinder for " + ob.getClass());
+			CACHED_METHOD.put(ob.getClass(), (finder = new MethodFinder()));
+		}
 		try {
-			LOG.debug("Copy " + key + " / " + value + " on " + ob.getClass());
-			PropertyUtils.setProperty(ob, key, value);
+			finder.invoke(ob, key, value);
 			return true;
 		} catch (Exception e) {
 			LOG.debug(e);
@@ -115,5 +127,33 @@ public class SAXHandler extends DefaultHandler {
 
 	public void fatalError(SAXParseException e) throws SAXException {
 		LOG.warn(e);
+	}
+
+	private static class MethodFinder extends HashMap<String, Method> {
+
+		private static final long serialVersionUID = 1L;
+
+		private static final Class<?>[] TYPES = new Class[] { String.class };
+
+		private final Set<String> ignores = new HashSet<String>();
+
+		public void invoke(Object ob, String key, Object value) throws Exception {
+			if (this.ignores.contains(key)) {
+				return;
+			}
+			this.cacheMethod(ob, key, this.get(key)).invoke(ob, value);
+		}
+
+		private Method cacheMethod(Object ob, String key, Method method) throws NoSuchMethodException {
+			if (method == null) {
+				try {
+					this.put(key, (method = ob.getClass().getMethod("set" + StringUtils.capitalize(key), TYPES)));
+				} catch (NoSuchMethodException e) {
+					this.ignores.add(key);
+					throw e;
+				}
+			}
+			return method;
+		}
 	}
 }
