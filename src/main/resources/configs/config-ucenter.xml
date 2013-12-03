@@ -9,9 +9,14 @@
 		<constructor-arg ref="mongo.client" />
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.auth}" />
-		<constructor-arg>
+		<constructor-arg index="3">
 			<util:map map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Integer">
 				<entry key="username" value="1" />
+			</util:map>
+		</constructor-arg>
+		<constructor-arg index="4">
+			<util:map map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Boolean">
+				<entry key="unique" value="true" />
 			</util:map>
 		</constructor-arg>
 	</bean>

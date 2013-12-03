@@ -6,9 +6,25 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="register.pro.fields" class="com.sissi.pipeline.in.iq.register.RegisterFieldsProcessor" />
+	<bean id="register.pro.verify.username" class="com.sissi.pipeline.in.iq.register.RegisterUsernameVerifyProcessor">
+		<constructor-arg ref="iq.pro.error" />
+	</bean>
+	<bean id="register.pro.verify.password" class="com.sissi.pipeline.in.iq.register.RegisterPasswordVerifyProcessor">
+		<constructor-arg ref="iq.pro.error" />
+	</bean>
 	<bean id="register.pro.store" class="com.sissi.pipeline.in.iq.register.RegisterStoreProcessor">
 		<constructor-arg ref="iq.pro.error" />
 		<constructor-arg ref="ucenter.register" />
+	</bean>
+	<bean id="register.pro.store.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="register.pro.verify.username" />
+				<ref bean="register.pro.verify.password" />
+				<ref bean="register.pro.store" />
+				<ref bean="iq.pro.result" />
+			</util:list>
+		</constructor-arg>
 	</bean>
 	<bean id="register.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.register" />
@@ -40,7 +56,7 @@
 				<constructor-arg value="SET" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="register.pro.store" />
+		<constructor-arg ref="register.pro.store.chained" />
 	</bean>
 	<bean id="register.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

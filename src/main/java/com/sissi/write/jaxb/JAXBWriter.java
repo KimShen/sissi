@@ -66,16 +66,20 @@ public class JAXBWriter implements Writer {
 	}
 
 	public void write(JIDContext context, Element node, OutputStream output) throws IOException {
-		if (WriteWithOutClose.class.isAssignableFrom(node.getClass())) {
-			this.writeWithOutClose(context, node, output);
-		} else {
-			this.writeWithFull(context, node, output);
+		BufferedOutputStream bufferOut = new BufferedOutputStream(output);
+		try {
+			if (WriteWithOutClose.class.isAssignableFrom(node.getClass())) {
+				this.writeWithOutClose(context, node, bufferOut);
+			} else {
+				this.writeWithFull(context, node, bufferOut);
+			}
+		} finally {
+			bufferOut.close();
 		}
 	}
 
 	public void writeWithFull(JIDContext context, Element node, OutputStream output) throws IOException {
 		try {
-			BufferedOutputStream bufferOut = new BufferedOutputStream(output);
 			Marshaller marshaller = this.generateMarshaller(false);
 			if (LOG.isInfoEnabled()) {
 				StringBufferWriter bufferTemp = new StringBufferWriter(new StringWriter());
@@ -83,11 +87,11 @@ public class JAXBWriter implements Writer {
 				bufferTemp.flush();
 				String content = bufferTemp.toString();
 				LOG.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + content);
-				bufferOut.write(content.getBytes("UTF-8"));
+				output.write(content.getBytes("UTF-8"));
 			} else {
-				marshaller.marshal(node, bufferOut);
+				marshaller.marshal(node, output);
 			}
-			bufferOut.flush();
+			output.flush();
 		} catch (JAXBException e) {
 			if (LOG.isErrorEnabled()) {
 				LOG.error(e);
@@ -98,7 +102,6 @@ public class JAXBWriter implements Writer {
 
 	private void writeWithOutClose(JIDContext context, Element node, OutputStream output) throws IOException {
 		try {
-			BufferedOutputStream bufferOut = new BufferedOutputStream(output);
 			Marshaller marshaller = generateMarshaller(true);
 			LinkedList<String> contents = this.prepareToLines(node, marshaller);
 			contents.removeLast();
@@ -107,8 +110,8 @@ public class JAXBWriter implements Writer {
 				sb.append(each);
 			}
 			LOG.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + sb.toString());
-			bufferOut.write(sb.toString().getBytes("UTF-8"));
-			bufferOut.flush();
+			output.write(sb.toString().getBytes("UTF-8"));
+			output.flush();
 		} catch (Exception e) {
 			if (LOG.isErrorEnabled()) {
 				LOG.error(e);

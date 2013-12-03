@@ -2,7 +2,7 @@ package com.sissi.protocol.iq.login;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.protocol.iq.login.Register.Field;
+import com.sissi.ucenter.Field;
 
 /**
  * @author kim 2013年12月3日

@@ -1,7 +1,8 @@
 package com.sissi.protocol.iq.login;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -10,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.read.Collector;
+import com.sissi.ucenter.Field;
 
 /**
  * @author kim 2013年12月3日
@@ -19,18 +21,22 @@ public class Register extends Protocol implements Collector {
 
 	private final static String XMLNS = "jabber:iq:register";
 
-	private List<Field> fields;
+	private Map<Class<? extends Field>, Field> fields;
 
 	@XmlElements({ @XmlElement(name = "username", type = Username.class), @XmlElement(name = "password", type = Password.class) })
-	public List<Field> getFields() {
-		return fields;
+	public Collection<Field> getFields() {
+		return fields.values();
+	}
+
+	public <T> T findField(Class<T> field) {
+		return field.cast(this.fields.get(field));
 	}
 
 	public Register add(Field field) {
 		if (this.fields == null) {
-			this.fields = new ArrayList<Field>();
+			this.fields = new TreeMap<Class<? extends Field>, Field>();
 		}
-		fields.add(field);
+		fields.put(field.getClass(), field);
 		return this;
 	}
 
@@ -48,12 +54,5 @@ public class Register extends Protocol implements Collector {
 	@Override
 	public void set(String localName, Object ob) {
 		this.add((Field) ob);
-	}
-
-	public interface Field {
-
-		public String getName();
-
-		public String getText();
 	}
 }

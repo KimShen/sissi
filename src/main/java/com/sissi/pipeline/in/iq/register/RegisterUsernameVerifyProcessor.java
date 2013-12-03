@@ -5,25 +5,23 @@ import com.sissi.pipeline.Input;
 import com.sissi.pipeline.in.iq.IQTypeProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.login.Register;
-import com.sissi.ucenter.RegisterManager;
+import com.sissi.protocol.iq.login.Username;
 
 /**
  * @author kim 2013年12月3日
  */
-public class RegisterStoreProcessor implements Input {
-
-	private RegisterManager registerManager;
+public class RegisterUsernameVerifyProcessor implements Input {
 
 	private IQTypeProcessor iqTypeProcessor;
 
-	public RegisterStoreProcessor(RegisterManager registerManager, IQTypeProcessor iqTypeProcessor) {
+	public RegisterUsernameVerifyProcessor(IQTypeProcessor iqTypeProcessor) {
 		super();
-		this.registerManager = registerManager;
 		this.iqTypeProcessor = iqTypeProcessor;
 	}
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return this.registerManager.register(Register.class.cast(protocol).getFields()) ? true : this.iqTypeProcessor.input(context, protocol.clear());
+		Username username = Register.class.cast(protocol).findField(Username.class);
+		return username != null && username.getText() != null && !username.getText().isEmpty() ? true : this.iqTypeProcessor.input(context, protocol);
 	}
 }
