@@ -39,8 +39,6 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final AtomicBoolean isBinding = new AtomicBoolean();
 
-		private final AtomicBoolean isSesison = new AtomicBoolean();
-		
 		private final AtomicBoolean isAuth = new AtomicBoolean();
 
 		private final Output output;
@@ -70,15 +68,6 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		public JIDContext setBinding(Boolean isBinding) {
 			this.isBinding.set(isBinding);
-			return this;
-		}
-		
-		public Boolean isSession() {
-			return this.isSesison.get();
-		}
-
-		public JIDContext setSession(Boolean isSession) {
-			this.isSesison.set(isSession);
 			return this;
 		}
 

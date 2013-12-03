@@ -32,13 +32,6 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		}
 		return this;
 	}
-	
-	public JIDContext setSession(Boolean isSession) {
-		for (JIDContext each : this) {
-			each.setSession(isSession);
-		}
-		return this;
-	}
 
 	@Override
 	public JIDContext setPriority(Integer priority) {
@@ -71,14 +64,6 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 			isBinding = each.isBinding();
 		}
 		return isBinding;
-	}
-	
-	public Boolean isSession() {
-		boolean isSession = true;
-		for (JIDContext each : this) {
-			isSession = each.isSession();
-		}
-		return isSession;
 	}
 
 	@Override

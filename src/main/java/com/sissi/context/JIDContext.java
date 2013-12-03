@@ -20,10 +20,6 @@ public interface JIDContext {
 	public JIDContext setBinding(Boolean isBinding);
 
 	public Boolean isBinding();
-	
-	public JIDContext setSession(Boolean isSession);
-
-	public Boolean isSession();
 
 	public JIDContext setPriority(Integer priority);
 

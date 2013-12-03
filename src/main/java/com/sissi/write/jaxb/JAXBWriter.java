@@ -1,5 +1,7 @@
 package com.sissi.write.jaxb;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -73,16 +75,19 @@ public class JAXBWriter implements Writer {
 
 	public void writeWithFull(JIDContext context, Element node, OutputStream output) throws IOException {
 		try {
+			BufferedOutputStream bufferOut = new BufferedOutputStream(output);
 			Marshaller marshaller = this.generateMarshaller(false);
 			if (LOG.isInfoEnabled()) {
-				StringWriter writer = new StringWriter();
-				marshaller.marshal(node, writer);
-				String content = writer.toString();
+				StringBufferWriter bufferTemp = new StringBufferWriter(new StringWriter());
+				marshaller.marshal(node, bufferTemp);
+				bufferTemp.flush();
+				String content = bufferTemp.toString();
 				LOG.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + content);
-				output.write(content.getBytes("UTF-8"));
+				bufferOut.write(content.getBytes("UTF-8"));
 			} else {
-				marshaller.marshal(node, output);
+				marshaller.marshal(node, bufferOut);
 			}
+			bufferOut.flush();
 		} catch (JAXBException e) {
 			if (LOG.isErrorEnabled()) {
 				LOG.error(e);
@@ -93,6 +98,7 @@ public class JAXBWriter implements Writer {
 
 	private void writeWithOutClose(JIDContext context, Element node, OutputStream output) throws IOException {
 		try {
+			BufferedOutputStream bufferOut = new BufferedOutputStream(output);
 			Marshaller marshaller = generateMarshaller(true);
 			LinkedList<String> contents = this.prepareToLines(node, marshaller);
 			contents.removeLast();
@@ -101,7 +107,8 @@ public class JAXBWriter implements Writer {
 				sb.append(each);
 			}
 			LOG.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + sb.toString());
-			output.write(sb.toString().getBytes("UTF-8"));
+			bufferOut.write(sb.toString().getBytes("UTF-8"));
+			bufferOut.flush();
 		} catch (Exception e) {
 			if (LOG.isErrorEnabled()) {
 				LOG.error(e);
@@ -129,5 +136,19 @@ public class JAXBWriter implements Writer {
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		}
 		return marshaller;
+	}
+
+	private class StringBufferWriter extends BufferedWriter {
+
+		private StringWriter out;
+
+		public StringBufferWriter(StringWriter out) {
+			super(out);
+			this.out = out;
+		}
+
+		public String toString() {
+			return this.out.toString();
+		}
 	}
 }

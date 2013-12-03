@@ -5,7 +5,6 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="session.pro.created" class="com.sissi.pipeline.in.iq.session.SessionCreatedProcessor" />
 	<bean id="session.pro.2fans" class="com.sissi.pipeline.in.iq.session.Session2FansProcessor" parent="global.pro.utils">
 		<property name="protocolQueue" ref="broadcast.protocol.fans" />
 	</bean>
@@ -16,7 +15,6 @@
 	<bean id="session.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="session.pro.created" />
 				<ref bean="session.pro.2fans" />
 				<ref bean="session.pro.4fans" />
 				<ref bean="session.pro.4storage" />

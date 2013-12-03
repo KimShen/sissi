@@ -2,6 +2,7 @@ package com.sissi.protocol;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -27,17 +28,29 @@ public class Stream extends Protocol implements WriteWithOutClose {
 
 	private final static String VERSION = "1.0";
 
+	private final AtomicBoolean isUsing = new AtomicBoolean();
+
 	private List<Feature> features;
 
 	private String version;
 
 	public Stream() {
 		super();
+		this.isUsing.set(false);
 	}
 
 	public Stream(String id) {
-		super();
+		this();
 		super.setId(id);
+	}
+	
+	public Stream consume(){
+		this.isUsing.set(true);
+		return this;
+	}
+
+	public Boolean isUsing() {
+		return this.isUsing.get();
 	}
 
 	@XmlAttribute

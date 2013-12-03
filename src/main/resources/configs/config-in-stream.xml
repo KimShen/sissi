@@ -5,6 +5,7 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="stream.pro.consume" class="com.sissi.pipeline.in.stream.StreamConsumeProcessor" />
 	<bean id="stream.pro.close" class="com.sissi.pipeline.in.stream.StreamCloseProcessor" />
 	<bean id="stream.pro.open" class="com.sissi.pipeline.in.stream.StreamOpenProcessor" />
 	<bean id="stream.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
@@ -12,6 +13,7 @@
 			<util:list>
 				<ref bean="stream.pro.close" />
 				<ref bean="stream.pro.open" />
+				<ref bean="stream.pro.consume" />
 			</util:list>
 		</constructor-arg>
 	</bean>

@@ -17,7 +17,7 @@ public class StreamOpenProcessor implements Input {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		context.write(this.rewriteStreamByAccess(context, Stream.generate(protocol)));
-		return false;
+		return true;
 	}
 
 	private Stream rewriteStreamByAccess(JIDContext context, Stream stream) {
