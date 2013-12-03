@@ -13,31 +13,11 @@
 		<property name="relationContext" ref="relation.roster" />
 	</bean>
 
-	<bean id="stream.pro.close" class="com.sissi.pipeline.in.stream.StreamCloseProcessor" />
-	<bean id="stream.pro.open" class="com.sissi.pipeline.in.stream.StreamOpenProcessor" />
-	<bean id="stream.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
-		<constructor-arg>
-			<util:list>
-				<ref bean="stream.pro.close" />
-				<ref bean="stream.pro.open" />
-			</util:list>
-		</constructor-arg>
-	</bean>
-
-	<bean id="stream.condition" class="com.sissi.pipeline.in.PairCondition">
-		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.MatchClass">
-				<constructor-arg value="com.sissi.protocol.Stream" />
-			</bean>
-		</constructor-arg>
-		<constructor-arg ref="stream.pro.chained" />
-	</bean>
-
 	<bean id="finder.input" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="message.condition" />
 				<ref bean="presence.condition" />
+				<ref bean="message.condition" />
 				<ref bean="iq.condition" />
 				<ref bean="auth.condition" />
 				<ref bean="auth.condition.digest" />

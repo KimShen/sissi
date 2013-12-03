@@ -8,7 +8,7 @@ import com.sissi.protocol.iq.roster.Roster;
 /**
  * @author kim 2013-10-31
  */
-public class RosterSetAndUnicastProcessor extends UtilProcessor {
+public class RosterSet2SelfsPresenceProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

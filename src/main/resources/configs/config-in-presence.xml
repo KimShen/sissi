@@ -18,47 +18,47 @@
 	<bean id="presence.pro.roster.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.presence.roster" />
 	</bean>
-	<bean id="presence.pro.state.location" class="com.sissi.pipeline.in.presence.state.PresenceStateLocationProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.state.broadcast" class="com.sissi.pipeline.in.presence.state.PresenceStateBroadcastProcessor" parent="global.pro.utils">
+	<bean id="presence.pro.state.4store" class="com.sissi.pipeline.in.presence.state.PresenceState4StoreProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.state.2fans" class="com.sissi.pipeline.in.presence.state.PresenceState2FansProcessor" parent="global.pro.utils">
 		<property name="protocolQueue" ref="broadcast.protocol.fans" />
 	</bean>
 	<bean id="presence.pro.state.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.state.location" />
-				<ref bean="presence.pro.state.broadcast" />
+				<ref bean="presence.pro.state.4store" />
+				<ref bean="presence.pro.state.2fans" />
 			</util:list>
 		</constructor-arg>
 	</bean>
 	<bean id="presence.pro.roster.subscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.roster.subscribe.reject" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeRejectProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.subscribe.relation" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeRelationProcessor" parent="global.pro.utils" />
 	<bean id="presence.pro.roster.subscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.roster.subscribe.reject" />
+				<ref bean="presence.pro.roster.subscribe.relation" />
 				<ref bean="presence.pro.roster.subscribe" />
 			</util:list>
 		</constructor-arg>
 	</bean>
 	<bean id="presence.pro.roster.unsubscribed" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnsubscribedProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.roster.unsubscribed.broadcast" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribedAndBroadcastProtocolProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.unsubscribed.2source.item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribed2SourceItemProcessor" parent="global.pro.utils" />
 	<bean id="presence.pro.roster.unsubscribed.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.roster.unsubscribed.broadcast" />
 				<ref bean="presence.pro.roster.unsubscribed" />
+				<ref bean="presence.pro.roster.unsubscribed.2source.item" />
 			</util:list>
 		</constructor-arg>
 	</bean>
 	<bean id="presence.pro.roster.subscribed" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.roster.subscribed.broadcast" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedAndBroadcastProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.roster.subscribed.online" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedAndOnlineProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.subscribed.2source.item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribed2SourceItemProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.subscribed.2source.presence" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribed2SourcePresenceProcessor" parent="global.pro.utils" />
 	<bean id="presence.pro.roster.subscribed.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.roster.subscribed.broadcast" />
-				<ref bean="presence.pro.roster.subscribed.online" />
 				<ref bean="presence.pro.roster.subscribed" />
+				<ref bean="presence.pro.roster.subscribed.2source.item" />
+				<ref bean="presence.pro.roster.subscribed.2source.presence" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -74,9 +74,9 @@
 	<bean id="finder.presence.roster" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.condition.roster.unsubscribed" />
-				<ref bean="presence.condition.roster.subscribed" />
 				<ref bean="presence.condition.roster.subscribe" />
+				<ref bean="presence.condition.roster.subscribed" />
+				<ref bean="presence.condition.roster.unsubscribed" />
 			</util:list>
 		</constructor-arg>
 	</bean>

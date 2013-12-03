@@ -10,7 +10,7 @@ import com.sissi.protocol.iq.login.Bind;
 /**
  * @author kim 2013-10-29
  */
-public class BindingProcessor extends UtilProcessor {
+public class BindResourceProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

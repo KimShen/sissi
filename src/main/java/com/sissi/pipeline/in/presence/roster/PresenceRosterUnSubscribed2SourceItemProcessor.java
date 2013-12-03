@@ -14,7 +14,7 @@ import com.sissi.relation.RelationRoster;
 /**
  * @author kim 2013-11-18
  */
-public class PresenceRosterUnSubscribedAndBroadcastProtocolProcessor extends UtilProcessor {
+public class PresenceRosterUnSubscribed2SourceItemProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

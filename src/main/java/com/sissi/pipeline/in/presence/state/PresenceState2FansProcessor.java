@@ -7,7 +7,7 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013-11-18
  */
-public class PresenceStateBroadcastProcessor extends UtilProcessor {
+public class PresenceState2FansProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

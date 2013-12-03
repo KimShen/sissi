@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<import resource="config-addressing.xml" />
+	<import resource="config-broadcast.xml" />
+	<import resource="config-context.xml" />
+	<import resource="config-feeder.xml" />
+	<import resource="config-global.xml" />
+	<import resource="config-in-auth.xml" />
+	<import resource="config-in-base.xml" />
+	<import resource="config-in-iq.xml" />
+	<import resource="config-in-iq-bind.xml" />
+	<import resource="config-in-iq-roster.xml" />
+	<import resource="config-in-iq-session.xml" />
+	<import resource="config-in-message.xml" />
+	<import resource="config-in-presence.xml" />
+	<import resource="config-in-stream.xml" />
+	<import resource="config-offline.xml" />
+	<import resource="config-relation.xml" />
+	<import resource="config-server.xml" />
+	<import resource="config-thread.xml" />
+
+</beans>

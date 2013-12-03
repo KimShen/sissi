@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.sisi</groupId>
-	<artifactId>xmpp</artifactId>
+	<groupId>com.sissi</groupId>
+	<artifactId>sissi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>xmpp</name>
+	<name>sissi</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -12,12 +12,8 @@
 		<!-- For Compile -->
 		<dependency>
 			<groupId>io.netty</groupId>
-			<artifactId>netty</artifactId>
-			<version>4.0.13.final</version>
-			<!-- 4.0.4 is not released on MVN center -->
-			<!-- U should install first without comment: mvn clean install -->
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/netty-all-4.0.13.Final.jar</systemPath>
+			<artifactId>netty-all</artifactId>
+			<version>4.0.13.Final</version>
 		</dependency>
 		<!-- For Commons package -->
 		<dependency>
@@ -91,6 +87,7 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<finalName>sissi</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -114,13 +111,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>env-test</id>
-			<properties>
-				<maven.mongo.host>127.0.0.1</maven.mongo.host>
-				<maven.mongo.host.test>192.168.2.165</maven.mongo.host.test>
-			</properties>
-		</profile>
-	</profiles>
 </project>

@@ -24,25 +24,27 @@
 		</constructor-arg>
 	</bean>
 	<bean id="roster.pro.establish.set" class="com.sissi.pipeline.in.iq.roster.RosterSetProcessor" parent="global.pro.utils" />
-	<bean id="roster.pro.establish.set.broadcast" class="com.sissi.pipeline.in.iq.roster.RosterSetAndBroadcastProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.set.2selfs.item" class="com.sissi.pipeline.in.iq.roster.RosterSet2SelfsItemProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.set.2selfs.presence" class="com.sissi.pipeline.in.iq.roster.RosterSet2SelfsPresenceProcessor" parent="global.pro.utils" />
 	<bean id="roster.pro.establish.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="roster.pro.establish.set" />
-				<ref bean="roster.pro.establish.set.broadcast" />
+				<ref bean="roster.pro.establish.set.2selfs.item" />
+				<ref bean="roster.pro.establish.set.2selfs.presence" />
 				<ref bean="iq.pro.result" />
 			</util:list>
 		</constructor-arg>
 	</bean>
 	<bean id="roster.pro.establish.remove" class="com.sissi.pipeline.in.iq.roster.RosterRemoveProcessor" parent="global.pro.utils" />
-	<bean id="roster.pro.establish.remove.broadcast" class="com.sissi.pipeline.in.iq.roster.RosterRemoveAndBroadcastProcessor" parent="global.pro.utils" />
-	<bean id="roster.pro.establish.remove.offline" class="com.sissi.pipeline.in.iq.roster.RosterRemoveAndOfflineProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.remove.2selfs.item" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsItemProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.remove.2selfs.presence" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsPresenceProcessor" parent="global.pro.utils" />
 	<bean id="roster.pro.establish.remove.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="roster.pro.establish.remove" />
-				<ref bean="roster.pro.establish.remove.broadcast" />
-				<ref bean="roster.pro.establish.remove.offline" />
+				<ref bean="roster.pro.establish.remove.2selfs.item" />
+				<ref bean="roster.pro.establish.remove.2selfs.presence" />
 				<ref bean="iq.pro.result" />
 			</util:list>
 		</constructor-arg>
@@ -61,8 +63,8 @@
 	<bean id="finder.iq.roster" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="roster.establish.condition" />
-				<ref bean="roster.get.condition" />
+				<ref bean="roster.condition.get" />
+				<ref bean="roster.condition.establish" />
 				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>
@@ -70,8 +72,8 @@
 	<bean id="finder.iq.roster.establish" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="roster.establish.remove.condition" />
-				<ref bean="roster.establish.set.condition" />
+				<ref bean="roster.condition.establish.set" />
+				<ref bean="roster.condition.establish.remove" />
 				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>
@@ -85,7 +87,7 @@
 		</constructor-arg>
 		<constructor-arg ref="roster.pro.chained" />
 	</bean>
-	<bean id="roster.get.condition" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="roster.condition.get" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher">
 				<constructor-arg value="GET" />
@@ -93,7 +95,7 @@
 		</constructor-arg>
 		<constructor-arg ref="roster.pro.get.chained" />
 	</bean>
-	<bean id="roster.establish.condition" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="roster.condition.establish" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher">
 				<constructor-arg value="SET" />
@@ -101,7 +103,7 @@
 		</constructor-arg>
 		<constructor-arg ref="roster.pro.establish.fork.chained" />
 	</bean>
-	<bean id="roster.establish.set.condition" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="roster.condition.establish.set" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher$RosterActionDetailMatcher">
 				<constructor-arg value="SET" />
@@ -110,7 +112,7 @@
 		</constructor-arg>
 		<constructor-arg ref="roster.pro.establish.set.chained" />
 	</bean>
-	<bean id="roster.establish.remove.condition" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="roster.condition.establish.remove" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.roster.RosterActionMatcher$RosterActionDetailMatcher">
 				<constructor-arg value="SET" />

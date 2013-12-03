@@ -4,18 +4,18 @@
 
 	<bean id="builder.feeder" class="com.sissi.feed.impl.DirectFeederBuilder" />
 
+	<bean id="builder.looper" class="com.sissi.looper.impl.PrivateLooperBuilder">
+		<constructor-arg ref="looper.runner" />
+		<constructor-arg ref="looper.interval" />
+		<constructor-arg value="${looper.thread.num}" />
+	</bean>
+
 	<bean id="looper.runner" class="com.sissi.thread.Runner">
 		<constructor-arg ref="executor" />
 	</bean>
 	<bean id="looper.interval" class="com.sissi.thread.Interval">
 		<constructor-arg value="${looper.thread.interval}" />
 		<constructor-arg value="${looper.thread.unit}" />
-	</bean>
-
-	<bean id="builder.looper" class="com.sissi.looper.impl.PrivateLooperBuilder">
-		<constructor-arg ref="looper.runner" />
-		<constructor-arg ref="looper.interval" />
-		<constructor-arg value="${looper.thread.num}" />
 	</bean>
 
 </beans>

@@ -6,20 +6,20 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="session.pro.created" class="com.sissi.pipeline.in.iq.session.SessionCreatedProcessor" />
-	<bean id="session.pro.presence.2myfans" class="com.sissi.pipeline.in.iq.session.SessionPresence2MyFansProcessor" parent="global.pro.utils">
+	<bean id="session.pro.2fans" class="com.sissi.pipeline.in.iq.session.Session2FansProcessor" parent="global.pro.utils">
 		<property name="protocolQueue" ref="broadcast.protocol.fans" />
 	</bean>
-	<bean id="session.pro.presence.4myfans" class="com.sissi.pipeline.in.iq.session.SessionPresence4MyFansProcessor" parent="global.pro.utils" />
-	<bean id="session.pro.storage" class="com.sissi.pipeline.in.iq.session.SessionProtocolStorageProcessor">
+	<bean id="session.pro.4fans" class="com.sissi.pipeline.in.iq.session.Session4FansProcessor" parent="global.pro.utils" />
+	<bean id="session.pro.4storage" class="com.sissi.pipeline.in.iq.session.Session4StorageProcessor">
 		<constructor-arg ref="storage.box" />
 	</bean>
 	<bean id="session.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="session.pro.created" />
-				<ref bean="session.pro.presence.2myfans" />
-				<ref bean="session.pro.presence.4myfans" />
-				<ref bean="session.pro.storage" />
+				<ref bean="session.pro.2fans" />
+				<ref bean="session.pro.4fans" />
+				<ref bean="session.pro.4storage" />
 				<ref bean="iq.pro.result" />
 			</util:list>
 		</constructor-arg>

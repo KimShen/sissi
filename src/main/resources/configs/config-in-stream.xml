@@ -5,24 +5,24 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="bind.pro.resource" class="com.sissi.pipeline.in.iq.bind.BindResourceProcessor" parent="global.pro.utils" />
-	<bean id="bind.pro.addressing" class="com.sissi.pipeline.in.iq.bind.BindAddressProcessor" parent="global.pro.utils" />
-	<bean id="bind.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+	<bean id="stream.pro.close" class="com.sissi.pipeline.in.stream.StreamCloseProcessor" />
+	<bean id="stream.pro.open" class="com.sissi.pipeline.in.stream.StreamOpenProcessor" />
+	<bean id="stream.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="bind.pro.resource" />
-				<ref bean="bind.pro.addressing" />
+				<ref bean="stream.pro.close" />
+				<ref bean="stream.pro.open" />
 			</util:list>
 		</constructor-arg>
 	</bean>
 
-	<bean id="bind.condition" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="stream.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.MatchClass">
-				<constructor-arg value="com.sissi.protocol.iq.login.Bind" />
+				<constructor-arg value="com.sissi.protocol.Stream" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="bind.pro.chained" />
+		<constructor-arg ref="stream.pro.chained" />
 	</bean>
 
 </beans>

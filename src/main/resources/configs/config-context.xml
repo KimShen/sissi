@@ -15,13 +15,13 @@
 		<constructor-arg value="${global.host}" />
 	</bean>
 	<bean id="builder.context.online" class="com.sissi.context.impl.OnlineContextBuilder">
-		<constructor-arg ref="myPresenceBuilder" />
+		<constructor-arg ref="builder.presence" />
 	</bean>
 	<bean id="builder.context.offline" class="com.sissi.context.impl.OfflineContextBuilder">
 		<constructor-arg ref="storage.box" />
 	</bean>
 	
-	<bean id="myPresenceBuilder" class="com.sissi.context.impl.MongoPresenceBuilder">
+	<bean id="builder.presence" class="com.sissi.context.impl.MongoPresenceBuilder">
 		<constructor-arg ref="config.presence" />
 	</bean>
 

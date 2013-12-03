@@ -25,9 +25,9 @@
 	<bean id="finder.iq" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<ref bean="roster.condition" />
 				<ref bean="session.condition" />
 				<ref bean="bind.condition" />
-				<ref bean="roster.condition" />
 				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>

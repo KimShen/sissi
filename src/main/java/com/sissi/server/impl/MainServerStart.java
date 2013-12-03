@@ -7,16 +7,11 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.util.ResourceUtils;
 
 import com.sissi.server.ServerLoopGroup;
 import com.sissi.server.ServerStart;
@@ -78,17 +73,9 @@ public class MainServerStart implements ServerStart {
 
 		private final static String PREFIX = "classpath:";
 
-		private static String[] reading() throws IOException {
-			List<String> configs = new ArrayList<String>();
-			for (String each : IOUtils.readLines(Thread.currentThread().getContextClassLoader().getResourceAsStream(System.getProperty("loading", "loading.properties")), Charset.forName("UTF-8"))) {
-				configs.add(ResourceUtils.getURL(PREFIX + each).toString());
-			}
-			return configs.toArray(new String[] {});
-		}
-
 		@SuppressWarnings("resource")
 		public static void main(String[] args) throws Exception {
-			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(reading());
+			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(PREFIX + "configs" + File.separatorChar + "config-loading.xml");
 			ServerStart start = context.getBean(ServerStart.class);
 			start.start();
 		}

@@ -9,7 +9,7 @@ import com.sissi.relation.Relation;
 /**
  * @author kim 2013-11-18
  */
-public class PresenceRosterSubscribeRejectProcessor extends UtilProcessor {
+public class PresenceRosterSubscribeRelationProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

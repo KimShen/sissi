@@ -9,11 +9,11 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013-10-29
  */
-public class SessionProtocolStorageProcessor implements Input {
+public class Session4StorageProcessor implements Input {
 
 	private StorageBox storageBox;
 
-	public SessionProtocolStorageProcessor(StorageBox storageBox) {
+	public Session4StorageProcessor(StorageBox storageBox) {
 		super();
 		this.storageBox = storageBox;
 	}

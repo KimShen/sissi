@@ -34,9 +34,6 @@
 		<ref bean="auth.call.digest" />
 	</util:list>
 
-	<bean id="auth.pro.digest" class="com.sissi.pipeline.in.auth.impl.AuthDigestProcessor" parent="global.pro.utils">
-		<constructor-arg ref="auth.sasl" />
-	</bean>
 	<bean id="auth.pro.failed" class="com.sissi.pipeline.in.auth.impl.AuthFailedProcessor" />
 	<bean id="auth.pro.fork" class="com.sissi.pipeline.in.auth.impl.AuthForkProcessor" parent="global.pro.utils">
 		<constructor-arg ref="auth.call.chained" />
@@ -49,7 +46,10 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="auth.pro.chained.digest" class="com.sissi.pipeline.in.ChainedProcessor">
+	<bean id="auth.pro.digest" class="com.sissi.pipeline.in.auth.impl.AuthDigestProcessor" parent="global.pro.utils">
+		<constructor-arg ref="auth.sasl" />
+	</bean>
+	<bean id="auth.pro.digest.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="auth.pro.digest" />
@@ -72,6 +72,6 @@
 				<constructor-arg value="com.sissi.protocol.iq.login.Response" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="auth.pro.chained.digest" />
+		<constructor-arg ref="auth.pro.digest.chained" />
 	</bean>
 </beans>

@@ -8,7 +8,7 @@ import com.sissi.protocol.presence.Presence;
 /**
  * @author kim 2013-11-20
  */
-public class PresenceStateLocationProcessor extends UtilProcessor {
+public class PresenceState4StoreProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

@@ -8,7 +8,7 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013-10-29
  */
-public class SessionPresence4MyFansProcessor extends UtilProcessor {
+public class Session4FansProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

@@ -9,7 +9,7 @@ import com.sissi.protocol.presence.Presence;
 /**
  * @author kim 2013-11-18
  */
-public class PresenceRosterSubscribedAndOnlineProcessor extends UtilProcessor {
+public class PresenceRosterSubscribed2SourcePresenceProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
