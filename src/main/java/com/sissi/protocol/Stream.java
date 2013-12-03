@@ -43,8 +43,8 @@ public class Stream extends Protocol implements WriteWithOutClose {
 		this();
 		super.setId(id);
 	}
-	
-	public Stream consume(){
+
+	public Stream consume() {
 		this.isUsing.set(true);
 		return this;
 	}
@@ -80,9 +80,5 @@ public class Stream extends Protocol implements WriteWithOutClose {
 	@XmlElements({ @XmlElement(name = "auth", type = Auth.class), @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class) })
 	public List<Feature> getFeatures() {
 		return features;
-	}
-
-	public static Stream generate(Protocol protocol) {
-		return new Stream(protocol.getId());
 	}
 }

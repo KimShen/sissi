@@ -7,7 +7,9 @@ import javax.xml.bind.annotation.XmlValue;
  */
 public class Group {
 
-	private String text;
+	private final static String DEFAULT = "";
+
+	private String text = DEFAULT;
 
 	public Group() {
 		super();

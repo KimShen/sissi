@@ -1,7 +1,10 @@
 package com.sissi.offline.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.lang.time.DateFormatUtils;
 
 import com.sissi.context.JID.JIDBuilder;
 import com.sissi.offline.Storage;
@@ -12,10 +15,13 @@ import com.sissi.protocol.Element;
  */
 public abstract class ProtocolStorage implements Storage {
 
-	private final JIDBuilder jidBuilder;
+	protected final String hit;
 
-	public ProtocolStorage(JIDBuilder jidBuilder) {
+	protected final JIDBuilder jidBuilder;
+
+	public ProtocolStorage(String hit, JIDBuilder jidBuilder) {
 		super();
+		this.hit = hit;
 		this.jidBuilder = jidBuilder;
 	}
 
@@ -29,6 +35,7 @@ public abstract class ProtocolStorage implements Storage {
 		entity.put("from", this.jidBuilder.build(element.getFrom()).asStringWithBare());
 		entity.put("to", this.jidBuilder.build(element.getTo()).asStringWithBare());
 		entity.put("type", element.getType());
+		entity.put("delay", DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
 		entity.put("class", element.getClass().getSimpleName());
 		return entity;
 	}

@@ -17,6 +17,7 @@
 	</bean>
 	<bean id="storage.presence" class="com.sissi.offline.impl.PresenceStorage">
 		<constructor-arg ref="builder.jid" />
+		<constructor-arg value="${offline.hit}" />
 	</bean>
 	
 	<bean id="storage.box" class="com.sissi.offline.impl.MongoStorageBox">

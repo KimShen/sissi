@@ -40,8 +40,8 @@ public class MongoRelationContext implements RelationContext {
 
 	@Override
 	public void establish(JID from, Relation relation) {
-		DBObject query = BasicDBObjectBuilder.start().add("master", from.asStringWithBare()).get();
-		DBObject entity = BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(relation.plus()).add("slave", this.builder.build(relation.getJID()).asStringWithBare()).add("name", relation.getName()).add("state", relation.getSubscription()).get()).get();
+		DBObject query = BasicDBObjectBuilder.start().add("master", from.asStringWithBare()).add("slave", this.builder.build(relation.getJID()).asStringWithBare()).get();
+		DBObject entity = BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(relation.plus()).add("name", relation.getName()).add("state", relation.getSubscription()).get()).get();
 		this.log.debug("Query is: " + query);
 		this.log.debug("Entity is: " + entity);
 		this.config.findCollection().update(query, entity, true, true);

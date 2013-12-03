@@ -4,13 +4,15 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.context.JID;
+import com.sissi.protocol.Delay;
 import com.sissi.protocol.Protocol;
+import com.sissi.read.Collector;
 
 /**
  * @author kim 2013-10-27
  */
 @XmlRootElement
-public class Message extends Protocol {
+public class Message extends Protocol implements Collector {
 
 	private Body body;
 
@@ -49,5 +51,10 @@ public class Message extends Protocol {
 
 	public Boolean hasContent() {
 		return this.body != null && this.body.hasContent();
+	}
+
+	@Override
+	public void set(String localName, Object ob) {
+		this.setBody((Body) ob);
 	}
 }

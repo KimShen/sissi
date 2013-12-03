@@ -1,10 +1,12 @@
 package com.sissi.protocol.message;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
  * @author kim 2013-11-1
  */
+@XmlRootElement
 public class Body {
 
 	private String text;

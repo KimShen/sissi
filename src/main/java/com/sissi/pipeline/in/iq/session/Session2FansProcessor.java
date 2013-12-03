@@ -12,7 +12,7 @@ public class Session2FansProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		this.protocolQueue.offer(context.getJid().getBare(), new Presence().setFrom(context.getJid().getBare()));
+		this.protocolQueue.offer(context.getJid().getBare(), new Presence().setFrom(context.getJid().asStringWithBare()));
 		return true;
 	}
 }

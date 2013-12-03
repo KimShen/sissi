@@ -3,6 +3,7 @@ package com.sissi.offline.impl;
 import java.util.Map;
 
 import com.sissi.context.JID.JIDBuilder;
+import com.sissi.protocol.Delay;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.Presence.Type;
@@ -12,8 +13,8 @@ import com.sissi.protocol.presence.Presence.Type;
  */
 public class PresenceStorage extends ProtocolStorage {
 
-	public PresenceStorage(JIDBuilder jidBuilder) {
-		super(jidBuilder);
+	public PresenceStorage(String hit, JIDBuilder jidBuilder) {
+		super(hit, jidBuilder);
 	}
 
 	@Override
@@ -23,7 +24,9 @@ public class PresenceStorage extends ProtocolStorage {
 
 	@Override
 	public Element read(Map<String, Object> storage) {
-		return this.based(storage, new Presence());
+		Presence presence = (Presence) super.based(storage, new Presence());
+		presence.setDelay(new Delay(super.hit, presence.getFrom(), storage.get("delay").toString()));
+		return presence;
 	}
 
 	public Boolean isSupport(Element element) {

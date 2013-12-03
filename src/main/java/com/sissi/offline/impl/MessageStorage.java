@@ -1,14 +1,11 @@
 package com.sissi.offline.impl;
 
-import java.util.Date;
 import java.util.Map;
 
-import org.apache.commons.lang.time.DateFormatUtils;
-
 import com.sissi.context.JID.JIDBuilder;
+import com.sissi.protocol.Delay;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.message.Body;
-import com.sissi.protocol.message.Delay;
 import com.sissi.protocol.message.Message;
 
 /**
@@ -16,11 +13,8 @@ import com.sissi.protocol.message.Message;
  */
 public class MessageStorage extends ProtocolStorage {
 
-	private final String hit;
-
 	public MessageStorage(String hit, JIDBuilder jidBuilder) {
-		super(jidBuilder);
-		this.hit = hit;
+		super(hit, jidBuilder);
 	}
 
 	@Override
@@ -28,14 +22,13 @@ public class MessageStorage extends ProtocolStorage {
 		Message message = Message.class.cast(element);
 		Map<String, Object> entity = super.based(message);
 		entity.put("body", message.getBody().getText());
-		entity.put("delay", DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
 		return entity;
 	}
 
 	@Override
 	public Message read(Map<String, Object> storage) {
-		Message message = (Message) this.based(storage, new Message());
-		return message.setBody(new Body(storage.get("body").toString())).setDelay(new Delay(this.hit, message.getFrom(), storage.get("delay").toString()));
+		Message message = (Message) super.based(storage, new Message());
+		return message.setBody(new Body(storage.get("body").toString())).setDelay(new Delay(super.hit, message.getFrom(), storage.get("delay").toString()));
 	}
 
 	public Boolean isSupport(Element element) {

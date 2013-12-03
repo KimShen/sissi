@@ -6,13 +6,19 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
 import com.sissi.context.MyPresence;
+import com.sissi.protocol.Delay;
 import com.sissi.protocol.Protocol;
+import com.sissi.read.Collector;
 
 /**
  * @author kim 2013-10-28
  */
 @XmlRootElement
-public class Presence extends Protocol implements MyPresence {
+public class Presence extends Protocol implements MyPresence, Collector {
+
+	private final static String STATUS = "status";
+
+	private final static String SHOW = "show";
 
 	public static enum Type {
 
@@ -38,6 +44,8 @@ public class Presence extends Protocol implements MyPresence {
 	}
 
 	private Show show;
+	
+	private Delay delay;
 
 	private Status status;
 
@@ -62,6 +70,16 @@ public class Presence extends Protocol implements MyPresence {
 	@XmlTransient
 	public String getTypeText() {
 		return this.getType();
+	}
+
+	@XmlElement
+	public Delay getDelay() {
+		return this.delay;
+	}
+
+	public Presence setDelay(Delay delay) {
+		this.delay = delay;
+		return this;
 	}
 
 	@XmlElement(name = "show")
@@ -117,5 +135,17 @@ public class Presence extends Protocol implements MyPresence {
 	@Override
 	public Presence setTypeText(String type) {
 		return this.setType(Type.parse(type));
+	}
+
+	@Override
+	public void set(String localName, Object ob) {
+		switch (localName) {
+		case STATUS:
+			this.setStatus((Status) ob);
+			break;
+		case SHOW:
+			this.setShow((Show) ob);
+			break;
+		}
 	}
 }

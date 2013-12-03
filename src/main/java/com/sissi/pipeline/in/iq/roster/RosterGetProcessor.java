@@ -25,7 +25,7 @@ public class RosterGetProcessor extends UtilProcessor {
 	private Roster prepareRelation(JIDContext context, Roster roster) {
 		for (Relation each : super.relationContext.myRelations(context.getJid())) {
 			RelationRoster relation = RelationRoster.class.cast(each);
-			roster.add((Item)new Item().setName(relation.getName()).setGroup(new Group(relation.getGroupText())).setSubscription(relation.getSubscription()).setFrom(each.getJID()));
+			roster.add((Item)new Item().setName(relation.getName()).setGroup(new Group(relation.getGroupText())).setSubscription(relation.getSubscription()).setJid(each.getJID()));
 		}
 		return roster;
 	}

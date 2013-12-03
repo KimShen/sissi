@@ -6,12 +6,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Feature;
 import com.sissi.protocol.Stream;
+import com.sissi.read.Collector;
 
 /**
  * @author Kim.shen 2013-10-20
  */
 @XmlRootElement(namespace = Stream.NAMESPACE)
-public class Bind extends Feature {
+public class Bind extends Feature implements Collector {
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-bind";
 
@@ -61,5 +62,10 @@ public class Bind extends Feature {
 		this.jid = null;
 		this.resource = null;
 		return this;
+	}
+
+	@Override
+	public void set(String localName, Object ob) {
+		this.setResource((Resource) ob);
 	}
 }

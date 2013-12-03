@@ -42,7 +42,7 @@ public class Item extends Protocol {
 		this.jid = jid;
 		this.name = name;
 		this.subscription = subscription;
-		this.group = new Group(group);
+		this.group = group != null ? new Group(group) : null;
 	}
 
 	@XmlAttribute
@@ -81,7 +81,7 @@ public class Item extends Protocol {
 	}
 
 	public Item setGroup(Group group) {
-		this.group = group;
+		this.group = group.getText() != null ? group : null;
 		return this;
 	}
 

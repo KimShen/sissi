@@ -11,7 +11,7 @@ public class PresenceState2FansProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.protocolQueue.offer(context.getJid(), protocol.setFrom(context.getJid()));
+		super.protocolQueue.offer(context.getJid(), protocol.setFrom(context.getJid().asStringWithBare()));
 		return true;
 	}
 }

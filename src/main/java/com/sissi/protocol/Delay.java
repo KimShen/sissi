@@ -1,4 +1,4 @@
-package com.sissi.protocol.message;
+package com.sissi.protocol;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;

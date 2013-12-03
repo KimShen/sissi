@@ -12,7 +12,7 @@ public class Session4FansProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		for (String relation : super.relationContext.iSubscribedWho(context.getJid())) {
+		for (String relation : super.relationContext.iSubscribedWho(context.getJid().getBare())) {
 			this.fromMyFans(context, super.jidBuilder.build(relation));
 		}
 		return true;

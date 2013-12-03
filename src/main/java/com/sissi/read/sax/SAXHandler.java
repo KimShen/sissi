@@ -81,20 +81,25 @@ public class SAXHandler extends DefaultHandler {
 
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 		LOG.debug("Process uri: " + uri + " localName: " + localName);
-		if (this.generateNode(uri != null ? uri : null, localName)) {
-			for (int index = 0; index < attributes.getLength(); index++) {
-				this.propertyCopy(this.stack.getFirst(), attributes.getLocalName(index), attributes.getValue(index));
-			}
+		if (this.generateNode(attributes, uri != null ? uri : null, localName)) {
+			this.propertyCopy(attributes, this.stack.getFirst());
 		}
 	}
 
-	private boolean generateNode(String uri, String localName) {
+	private void propertyCopy(Attributes attributes, Object element) {
+		for (int index = 0; index < attributes.getLength(); index++) {
+			this.propertyCopy(element, attributes.getLocalName(index), attributes.getValue(index));
+		}
+	}
+
+	private boolean generateNode(Attributes attributes, String uri, String localName) {
 		if (ROOT_NODE.contains(localName.intern().trim())) {
 			this.stack.clear();
 		}
 		this.current = this.mapping.newInstance(uri, localName);
 		if (this.current != null) {
 			if (this.stack.isEmpty()) {
+				this.propertyCopy(attributes, this.current);
 				this.future.set(this.current);
 			} else {
 				this.propertyCopy(this.stack.getFirst(), localName, this.current);
