@@ -27,7 +27,7 @@ public class MongoPresenceBuilder implements MyPresenceBuilder {
 
 	public MongoPresenceBuilder(MongoConfig config) {
 		super();
-		this.config = config.dropCollection();
+		this.config = config.rebuild();
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class MongoPresenceBuilder implements MyPresenceBuilder {
 		DBObject filter = BasicDBObjectBuilder.start(key, "1").get();
 		this.log.debug("Query: " + query);
 		this.log.debug("Filter: " + filter);
-		DBCursor cursor = this.config.findCollection().find(query, filter).sort(DEFAULT_SORTER).limit(1);
+		DBCursor cursor = this.config.find().find(query, filter).sort(DEFAULT_SORTER).limit(1);
 		return this.config.asString(cursor.hasNext() ? cursor.next() : null, key);
 	}
 
@@ -49,13 +49,13 @@ public class MongoPresenceBuilder implements MyPresenceBuilder {
 		DBObject upsert = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(key, value).add("priority", context.getPriority()).get()).get();
 		this.log.debug("Query: " + query);
 		this.log.debug("Upsert: " + upsert);
-		this.config.findCollection().update(query, upsert, true, false);
+		this.config.find().update(query, upsert, true, false);
 	}
 
 	private void remove(JIDContext context) {
 		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).get();
 		this.log.debug("Query: " + query);
-		this.config.findCollection().remove(query);
+		this.config.find().remove(query);
 	}
 
 	private class MongoContextPresence implements MyPresence {

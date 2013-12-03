@@ -9,6 +9,11 @@
 		<constructor-arg ref="mongo.client" />
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.offline.storage}" />
+		<constructor-arg>
+			<util:map map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Integer">
+				<entry key="to" value="1" />
+			</util:map>
+		</constructor-arg>
 	</bean>
 
 	<bean id="storage.message" class="com.sissi.offline.impl.MessageStorage">

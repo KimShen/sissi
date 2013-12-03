@@ -3,6 +3,7 @@ package com.sissi.config.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
@@ -17,14 +18,17 @@ public class MongoCollection implements MongoConfig {
 
 	private final DBCollection collection;
 
+	private final DBObject indexes;
+
 	private final MongoClient client;
 
-	public MongoCollection(MongoClient client, String db, String collection) {
+	public MongoCollection(MongoClient client, String db, String collection, Map<String, Object> indexes) {
 		super();
 		this.client = client;
 		this.configs.put(MongoCollection.D_NAME, db);
 		this.configs.put(MongoCollection.C_NAME, collection);
 		this.collection = this.client.getDB(db).getCollection(collection);
+		this.indexes = BasicDBObjectBuilder.start(indexes).get();
 	}
 
 	@Override
@@ -32,12 +36,20 @@ public class MongoCollection implements MongoConfig {
 		return this.configs.get(key);
 	}
 
-	public MongoConfig dropCollection() {
-		this.findCollection().drop();
+	public MongoConfig rebuild() {
+		this.find().drop();
+		this.index();
 		return this;
 	}
 
-	public DBCollection findCollection() {
+	public MongoConfig index() {
+		if (!this.indexes.keySet().isEmpty()) {
+			this.find().ensureIndex(this.indexes);
+		}
+		return this;
+	}
+
+	public DBCollection find() {
 		return this.collection;
 	}
 

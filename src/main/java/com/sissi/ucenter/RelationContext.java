@@ -1,4 +1,4 @@
-package com.sissi.relation;
+package com.sissi.ucenter;
 
 import java.util.Set;
 

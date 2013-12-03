@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.auth.impl;
+package com.sissi.ucenter.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -6,7 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.sissi.config.impl.MongoCollection;
-import com.sissi.pipeline.in.auth.AuthAccessor;
+import com.sissi.ucenter.AuthAccessor;
 
 /**
  * @author kim 2013-11-6
@@ -26,7 +26,7 @@ public class MongoAuthAccessor implements AuthAccessor {
 	public String access(String username) {
 		DBObject query = BasicDBObjectBuilder.start().add("username", username).get();
 		this.log.debug("Query: " + query);
-		DBObject entity = this.config.findCollection().findOne(query);
+		DBObject entity = this.config.find().findOne(query);
 		this.log.debug("User for: " + username + " is " + entity);
 		return entity != null ? entity.get("password").toString() : null;
 	}

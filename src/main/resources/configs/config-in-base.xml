@@ -10,7 +10,7 @@
 		<property name="addressing" ref="addressing" />
 		<property name="presenceQueue" ref="broadcast.presence.selfs" />
 		<property name="protocolQueue" ref="broadcast.protocol.selfs" />
-		<property name="relationContext" ref="relation.roster" />
+		<property name="relationContext" ref="ucenter.relation.roster" />
 	</bean>
 
 	<bean id="finder.input" class="com.sissi.pipeline.in.ChainedFinder">

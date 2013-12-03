@@ -4,7 +4,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.UtilProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.roster.Roster;
-import com.sissi.relation.Relation;
+import com.sissi.ucenter.Relation;
 
 /**
  * @author kim 2013-11-18

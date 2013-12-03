@@ -9,10 +9,10 @@ import org.apache.commons.logging.LogFactory;
 
 import com.sissi.context.JID.JIDBuilder;
 import com.sissi.context.JIDContext;
-import com.sissi.pipeline.in.auth.AuthAccessor;
 import com.sissi.pipeline.in.auth.AuthCallback;
 import com.sissi.protocol.iq.login.Auth;
 import com.sissi.protocol.iq.login.Success;
+import com.sissi.ucenter.AuthAccessor;
 
 /**
  * @author kim 2013-10-24

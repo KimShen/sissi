@@ -49,7 +49,7 @@ public class MongoAddressing implements Addressing {
 
 	public MongoAddressing(Runner runner, Interval gcInterval, MongoConfig config, JIDContextBuilder jidContextBuilder) {
 		super();
-		this.config = config.dropCollection();
+		this.config = config.rebuild();
 		this.gcInterval = gcInterval;
 		this.jidContextBuilder = jidContextBuilder;
 		runner.executor(GC_THREAD, new GC());
@@ -70,7 +70,7 @@ public class MongoAddressing implements Addressing {
 		this.contexts.put(context.getIndex(), context);
 		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).add(FIELD_PRIORITY, context.getPriority()).add("index", context.getIndex()).get();
 		this.log.debug("Query: " + query);
-		this.config.findCollection().save(query);
+		this.config.find().save(query);
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class MongoAddressing implements Addressing {
 		if (this.contexts.remove(context.getIndex()) != null) {
 			DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).add(FIELD_PRIORITY, context.getPriority()).get();
 			this.log.debug("Query: " + query);
-			this.config.findCollection().remove(query);
+			this.config.find().remove(query);
 		} else {
 			this.log.error("Leave on " + context.getJid().asString() + " failed");
 		}
@@ -93,7 +93,7 @@ public class MongoAddressing implements Addressing {
 	public JIDContext findOne(JID jid) {
 		DBObject query = this.buildQueryWithSmartResource(jid, false);
 		this.log.debug("Query: " + query);
-		DBObject entity = this.config.findCollection().findOne(query, DEFAULT_FILTER);
+		DBObject entity = this.config.find().findOne(query, DEFAULT_FILTER);
 		return entity != null ? this.contexts.get(new Long(entity.get("index").toString())) : this.jidContextBuilder.build(jid, MongoAddressing.NOTHING);
 	}
 
@@ -104,7 +104,7 @@ public class MongoAddressing implements Addressing {
 	private JIDContexts find(JID jid, Boolean usingResource, Boolean usingOffline) {
 		DBObject query = this.buildQueryWithSmartResource(jid, true);
 		this.log.debug("Query: " + query);
-		return new MongoUserContexts(jid, usingOffline, this.config.findCollection().find(query, DEFAULT_FILTER).sort(DEFAULT_SORTER));
+		return new MongoUserContexts(jid, usingOffline, this.config.find().find(query, DEFAULT_FILTER).sort(DEFAULT_SORTER));
 	}
 
 	private DBObject buildQueryWithSmartResource(JID jid, Boolean usingResource) {
@@ -119,7 +119,7 @@ public class MongoAddressing implements Addressing {
 	private boolean exists(Long index) {
 		DBObject query = BasicDBObjectBuilder.start().add("index", index).get();
 		this.log.debug("Query: " + query);
-		return this.config.findCollection().findOne(query, DEFAULT_FILTER) != null;
+		return this.config.find().findOne(query, DEFAULT_FILTER) != null;
 	}
 
 	private class MongoUserContexts extends JIDContexts {

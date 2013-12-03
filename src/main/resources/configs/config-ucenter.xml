@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="config.auth" class="com.sissi.config.impl.MongoCollection">
+		<constructor-arg ref="mongo.client" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.auth}" />
+		<constructor-arg>
+			<util:map map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Integer">
+				<entry key="username" value="1" />
+			</util:map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="config.ucenter.relation.roster" class="com.sissi.config.impl.MongoCollection">
+		<constructor-arg ref="mongo.client" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.roster}" />
+		<constructor-arg>
+			<util:map map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Integer">
+				<entry key="master" value="1" />
+				<entry key="slave" value="1" />
+				<entry key="state" value="1" />
+			</util:map>
+		</constructor-arg>
+	</bean>
+
+	<alias name="ucenter.accessor.mongo" alias="ucenter.accessor" />
+	<bean id="ucenter.accessor.mongo" class="com.sissi.ucenter.impl.MongoAuthAccessor">
+		<constructor-arg ref="config.auth" />
+	</bean>
+
+	<bean id="ucenter.relation.roster" class="com.sissi.ucenter.impl.MongoRelationContext">
+		<constructor-arg ref="builder.jid" />
+		<constructor-arg ref="config.ucenter.relation.roster" />
+	</bean>
+	
+	<bean id="ucenter.register" class="com.sissi.ucenter.impl.MongoRegisterManager">
+		<constructor-arg ref="config.auth" />
+	</bean>
+
+</beans>

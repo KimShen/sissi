@@ -14,6 +14,6 @@
 	<bean id="broadcast.protocol.fans" class="com.sissi.broadcast.impl.ToJIDFansProtocolQueue">
 		<constructor-arg ref="addressing" />
 		<constructor-arg ref="builder.jid" />
-		<constructor-arg ref="relation.roster" />
+		<constructor-arg ref="ucenter.relation.roster" />
 	</bean>
 </beans>

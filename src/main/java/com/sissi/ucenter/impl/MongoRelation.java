@@ -1,11 +1,11 @@
-package com.sissi.relation.impl;
+package com.sissi.ucenter.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
-import com.sissi.relation.RelationRoster;
+import com.sissi.ucenter.RelationRoster;
 
 /**
  * @author kim 2013-11-6

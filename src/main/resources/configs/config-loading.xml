@@ -16,11 +16,12 @@
 	<import resource="config-in-iq-bind.xml" />
 	<import resource="config-in-iq-roster.xml" />
 	<import resource="config-in-iq-session.xml" />
+	<import resource="config-in-iq-register.xml" />
 	<import resource="config-in-message.xml" />
 	<import resource="config-in-presence.xml" />
 	<import resource="config-in-stream.xml" />
 	<import resource="config-offline.xml" />
-	<import resource="config-relation.xml" />
+	<import resource="config-ucenter.xml" />
 	<import resource="config-server.xml" />
 	<import resource="config-thread.xml" />
 

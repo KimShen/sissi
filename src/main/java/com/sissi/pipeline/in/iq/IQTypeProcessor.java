@@ -6,9 +6,16 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Protocol.Type;
 
 /**
- * @author kim 2013-10-24
+ * @author kim 2013年12月3日
  */
-public class IQResultProcessor implements Input {
+public class IQTypeProcessor implements Input {
+
+	private Type type;
+
+	public IQTypeProcessor(String type) {
+		super();
+		this.type = Type.parse(type);
+	}
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
@@ -17,6 +24,6 @@ public class IQResultProcessor implements Input {
 	}
 
 	private Protocol prepareIQ(Protocol protocol) {
-		return protocol.getParent().reply().clear().setType(Type.RESULT);
+		return protocol.getParent().reply().clear().setType(type);
 	}
 }

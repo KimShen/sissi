@@ -18,6 +18,15 @@
 	<finder uri="urn:ietf:params:xml:ns:xmpp-session" localName="session">
 		<clazz>com.sissi.protocol.iq.login.Session</clazz>
 	</finder>
+	<finder uri="jabber:iq:register" localName="query">
+		<clazz>com.sissi.protocol.iq.login.Register</clazz>
+	</finder>
+	<finder uri="jabber:iq:register" localName="username">
+		<clazz>com.sissi.protocol.iq.login.Username</clazz>
+	</finder>
+	<finder uri="jabber:iq:register" localName="password">
+		<clazz>com.sissi.protocol.iq.login.Password</clazz>
+	</finder>
 	<finder uri="jabber:client" localName="iq">
 		<clazz>com.sissi.protocol.iq.IQ</clazz>
 	</finder>

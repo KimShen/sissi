@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.login.Bind;
+import com.sissi.protocol.iq.login.Register;
 import com.sissi.protocol.iq.login.Session;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.read.Collector;
@@ -33,8 +34,8 @@ public class IQ extends Protocol implements Collector {
 		this();
 		super.setType(type.toString());
 	}
-	
-	@XmlElements({ @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "query", type = Roster.class) })
+
+	@XmlElements({ @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "query", type = Roster.class), @XmlElement(name = "query", type = Register.class) })
 	public List<Protocol> getProtocols() {
 		return protocols;
 	}

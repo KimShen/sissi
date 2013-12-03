@@ -37,8 +37,8 @@ public class MongoStorageBox implements StorageBox {
 	public List<Element> fetch(JID jid) {
 		DBObject query = BasicDBObjectBuilder.start().add("to", jid.asStringWithBare()).get();
 		this.log.debug("Query: " + query);
-		Elements elements = new Elements(this.config.findCollection().find(query));
-		this.config.findCollection().remove(query);
+		Elements elements = new Elements(this.config.find().find(query));
+		this.config.find().remove(query);
 		return elements;
 	}
 
@@ -48,7 +48,7 @@ public class MongoStorageBox implements StorageBox {
 			if (blocks.isSupport(element)) {
 				DBObject entity = BasicDBObjectBuilder.start(blocks.write(element)).get();
 				this.log.info("Entity: " + entity);
-				this.config.findCollection().save(entity);
+				this.config.find().save(entity);
 			}
 		}
 	}

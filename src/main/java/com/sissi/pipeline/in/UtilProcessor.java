@@ -5,7 +5,7 @@ import com.sissi.broadcast.PresenceBroadcast;
 import com.sissi.broadcast.ProtocolBraodcast;
 import com.sissi.context.JID.JIDBuilder;
 import com.sissi.pipeline.Input;
-import com.sissi.relation.RelationContext;
+import com.sissi.ucenter.RelationContext;
 
 /**
  * @author kim 2013-11-16

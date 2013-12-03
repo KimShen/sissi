@@ -1,44 +1,28 @@
 package com.sissi.pipeline.in.iq.roster;
 
-import com.sissi.pipeline.in.MatchClass;
+import com.sissi.pipeline.in.iq.IQActionMatcher;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.Protocol.Type;
 import com.sissi.protocol.iq.roster.Item.Action;
 import com.sissi.protocol.iq.roster.Roster;
 
 /**
- * @author kim 2013-11-4
+ * @author kim 2013年12月3日
  */
-public class RosterActionMatcher extends MatchClass {
+public class RosterActionMatcher extends IQActionMatcher {
 
-	private final Type type;
+	private final Action detail;
 
-	public RosterActionMatcher(String type) {
-		super(Roster.class);
-		this.type = Type.parse(type);
+	public RosterActionMatcher(String type, String detail) {
+		super(Roster.class, type);
+		this.detail = Action.parse(detail);
 	}
 
 	@Override
 	public Boolean match(Protocol protocol) {
-		return super.match(protocol) && this.type.equals(protocol.getParent().getType());
+		return super.match(protocol) && this.matchAction(protocol);
 	}
 
-	public static class RosterActionDetailMatcher extends RosterActionMatcher {
-
-		private final Action detail;
-
-		public RosterActionDetailMatcher(String type, String detail) {
-			super(type);
-			this.detail = Action.parse(detail);
-		}
-
-		@Override
-		public Boolean match(Protocol protocol) {
-			return super.match(protocol) && this.matchAction(protocol);
-		}
-
-		private boolean matchAction(Protocol protocol) {
-			return (Roster.class.cast(protocol)).getFirstItem().getAction() == this.detail;
-		}
+	private boolean matchAction(Protocol protocol) {
+		return (Roster.class.cast(protocol)).getFirstItem().getAction() == this.detail;
 	}
 }

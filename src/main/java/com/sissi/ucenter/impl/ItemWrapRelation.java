@@ -1,4 +1,4 @@
-package com.sissi.relation.roster;
+package com.sissi.ucenter.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import com.sissi.protocol.iq.roster.Group;
 import com.sissi.protocol.iq.roster.Item;
 import com.sissi.protocol.iq.roster.Roster.Subscription;
-import com.sissi.relation.RelationRoster;
+import com.sissi.ucenter.RelationRoster;
 
 /**
  * @author kim 2013-11-6

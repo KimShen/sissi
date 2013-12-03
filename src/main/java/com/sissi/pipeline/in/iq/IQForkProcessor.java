@@ -12,12 +12,12 @@ public class IQForkProcessor implements Input {
 
 	private final InputFinder finder;
 
-	private final IQResultProcessor iqResultProcessor;
+	private final IQTypeProcessor iqTypeProcessor;
 
-	public IQForkProcessor(InputFinder finder, IQResultProcessor iqResultProcessor) {
+	public IQForkProcessor(InputFinder finder, IQTypeProcessor iqTypeProcessor) {
 		super();
 		this.finder = finder;
-		this.iqResultProcessor = iqResultProcessor;
+		this.iqTypeProcessor = iqTypeProcessor;
 	}
 
 	@Override
@@ -25,6 +25,6 @@ public class IQForkProcessor implements Input {
 		for (Protocol sub : IQ.class.cast(protocol).listChildren()) {
 			return this.finder.find(sub).input(context, sub);
 		}
-		return this.iqResultProcessor.input(context, protocol);
+		return this.iqTypeProcessor.input(context, protocol);
 	}
 }
