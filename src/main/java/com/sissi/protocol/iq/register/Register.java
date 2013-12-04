@@ -14,11 +14,13 @@ import javax.xml.bind.annotation.XmlType;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 import com.sissi.read.Collector;
-import com.sissi.ucenter.Field;
+import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.ucenter.RegisterContext.Field;
 
 /**
  * @author kim 2013年12月3日
  */
+@MappingMetadata(uri = "jabber:iq:register", localName = "query")
 @XmlType(namespace = Stream.NAMESPACE)
 @XmlRootElement(name = "query")
 public class Register extends Protocol implements Collector {

@@ -10,19 +10,18 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
 import com.sissi.config.MongoConfig;
-import com.sissi.ucenter.Field;
-import com.sissi.ucenter.RegisterManager;
+import com.sissi.ucenter.RegisterContext;
 
 /**
  * @author kim 2013年12月3日
  */
-public class MongoRegisterManager implements RegisterManager {
+public class MongoRegisterContext implements RegisterContext {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private MongoConfig config;
 
-	public MongoRegisterManager(MongoConfig config) {
+	public MongoRegisterContext(MongoConfig config) {
 		super();
 		this.config = config;
 	}

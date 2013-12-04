@@ -16,11 +16,13 @@ import com.sissi.protocol.feature.Feature;
 import com.sissi.protocol.feature.Mechanisms;
 import com.sissi.protocol.feature.Register;
 import com.sissi.protocol.feature.Session;
+import com.sissi.read.Mapping.MappingMetadata;
 import com.sissi.write.WriteWithOutClose;
 
 /**
  * @author Kim.shen 2013-10-16
  */
+@MappingMetadata(uri = "http://etherx.jabber.org/streams", localName = "stream")
 @XmlRootElement(namespace = Stream.NAMESPACE)
 public class Stream extends Protocol implements WriteWithOutClose {
 
@@ -79,7 +81,7 @@ public class Stream extends Protocol implements WriteWithOutClose {
 	}
 
 	@XmlElementWrapper(namespace = Stream.NAMESPACE, name = "features")
-	@XmlElements({ @XmlElement(name = "auth", type = Auth.class), @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class),@XmlElement(name = "register", type = Register.class) })
+	@XmlElements({ @XmlElement(name = "auth", type = Auth.class), @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "register", type = Register.class) })
 	public List<Feature> getFeatures() {
 		return features;
 	}

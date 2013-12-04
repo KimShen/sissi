@@ -3,10 +3,12 @@ package com.sissi.protocol.presence;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
+import com.sissi.read.Mapping.MappingMetadata;
 
 /**
  * @author kim 2013-11-2
  */
+@MappingMetadata(uri = "jabber:client", localName = "status")
 @XmlRootElement
 public class Status extends Protocol {
 

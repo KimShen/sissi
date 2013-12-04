@@ -10,10 +10,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.read.Collector;
+import com.sissi.read.Mapping.MappingMetadata;
 
 /**
  * @author kim 2013-10-31
  */
+@MappingMetadata(uri = "jabber:iq:roster", localName = "query")
 @XmlRootElement(name = "query")
 public class Roster extends Protocol implements Collector {
 

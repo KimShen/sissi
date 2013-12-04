@@ -44,7 +44,7 @@
 		<constructor-arg ref="config.ucenter.relation.roster" />
 	</bean>
 	
-	<bean id="ucenter.register" class="com.sissi.ucenter.impl.MongoRegisterManager">
+	<bean id="ucenter.register" class="com.sissi.ucenter.impl.MongoRegisterContext">
 		<constructor-arg ref="config.auth" />
 	</bean>
 

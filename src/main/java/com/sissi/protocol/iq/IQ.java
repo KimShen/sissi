@@ -16,10 +16,12 @@ import com.sissi.protocol.iq.register.Register;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.protocol.iq.session.Session;
 import com.sissi.read.Collector;
+import com.sissi.read.Mapping.MappingMetadata;
 
 /**
  * @author Kim.shen 2013-10-16
  */
+@MappingMetadata(uri = "jabber:client", localName = "iq")
 @XmlRootElement(namespace = Stream.NAMESPACE)
 public class IQ extends Protocol implements Collector {
 
@@ -71,7 +73,7 @@ public class IQ extends Protocol implements Collector {
 		this.protocols = null;
 		return this;
 	}
-	
+
 	@Override
 	public void set(String localName, Object ob) {
 		this.add((Protocol.class.cast(ob)));

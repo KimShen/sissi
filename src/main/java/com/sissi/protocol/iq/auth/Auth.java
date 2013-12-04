@@ -6,10 +6,12 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
+import com.sissi.read.Mapping.MappingMetadata;
 
 /**
  * @author Kim.shen 2013-10-16
  */
+@MappingMetadata(uri="urn:ietf:params:xml:ns:xmpp-sasl", localName="auth")
 @XmlType(namespace = Stream.NAMESPACE)
 @XmlRootElement
 public class Auth extends Protocol {

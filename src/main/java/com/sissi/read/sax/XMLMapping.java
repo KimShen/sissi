@@ -1,21 +1,14 @@
 package com.sissi.read.sax;
 
-import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.comons.ScanUtil;
 import com.sissi.read.Mapping;
 
 /**
@@ -23,29 +16,22 @@ import com.sissi.read.Mapping;
  */
 public class XMLMapping implements Mapping {
 
+	private final static String PACKAGE = "com.sissi.protocol";
+
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private final FinderSelector selector;
+	private final FinderSelector selector = new FinderSelector();
 
 	private final Map<String, Class<?>> cached = new HashMap<String, Class<?>>();
 
 	public XMLMapping() {
-		this(Thread.currentThread().getContextClassLoader().getResourceAsStream("mapping.xml"));
-	}
-
-	public XMLMapping(InputStream input) {
 		super();
-		try {
-			JAXBContext context = JAXBContext.newInstance(FinderSelector.class);
-			this.selector = (FinderSelector) context.createUnmarshaller().unmarshal(input);
-		} catch (JAXBException e) {
-			if (this.log.isFatalEnabled()) {
-				this.log.fatal(e);
-				e.printStackTrace();
+		Finder finder = new Finder();
+		for (Class<?> each : ScanUtil.getClasses(PACKAGE)) {
+			MappingMetadata metadata = each.getAnnotation(MappingMetadata.class);
+			if (metadata != null) {
+				this.selector.addFinder(finder.cover(metadata.uri(), metadata.localName(), each));
 			}
-			throw new RuntimeException(e);
-		} finally {
-			IOUtils.closeQuietly(input);
 		}
 	}
 
@@ -90,31 +76,14 @@ public class XMLMapping implements Mapping {
 
 		private final Map<String, Class<?>> mapping = new HashMap<String, Class<?>>();
 
-		private List<Finder> finders;
-
-		public void setFinders(List<Finder> finders) {
-			this.finders = finders;
-			for (Finder finder : finders) {
-				this.doEachFinder(finder);
-			}
+		public void addFinder(Finder finder) {
+			this.doEachFinder(finder);
 		}
 
 		private void doEachFinder(Finder finder) {
-			try {
-				String uri = finder.getUri();
-				this.mapping.put((uri != null ? uri : "") + finder.getLocalName(), Class.forName(finder.getClazz()));
-				this.log.debug("Insert Mapping: " + (uri != null ? uri : "") + " / " + finder.getLocalName() + " / " + finder.getClazz());
-			} catch (Exception e) {
-				if (this.log.isWarnEnabled()) {
-					this.log.warn(e);
-					e.printStackTrace();
-				}
-			}
-		}
-
-		@XmlElements({ @XmlElement(name = "finder", type = Finder.class) })
-		public List<Finder> getFinders() {
-			return finders;
+			String uri = finder.getUri();
+			this.mapping.put((uri != null ? uri : "") + finder.getLocalName(), finder.getClazz());
+			this.log.debug("Insert Mapping: " + (uri != null ? uri : "") + " / " + finder.getLocalName() + " / " + finder.getClazz());
 		}
 
 		public Class<?> find(String uri, String localName) {
@@ -122,39 +91,31 @@ public class XMLMapping implements Mapping {
 		}
 	}
 
-	@XmlRootElement
 	public static class Finder {
 
 		private String uri;
 
 		private String localName;
 
-		private String clazz;
+		private Class<?> clazz;
 
-		@XmlAttribute
 		public String getUri() {
 			return uri;
 		}
 
-		public void setUri(String uri) {
-			this.uri = uri;
-		}
-
-		@XmlAttribute
 		public String getLocalName() {
 			return localName;
 		}
 
-		public void setLocalName(String localName) {
-			this.localName = localName;
-		}
-
-		public String getClazz() {
+		public Class<?> getClazz() {
 			return clazz;
 		}
 
-		public void setClazz(String clazz) {
+		public Finder cover(String uri, String localName, Class<?> clazz) {
+			this.uri = uri;
+			this.localName = localName;
 			this.clazz = clazz;
+			return this;
 		}
 	}
 }

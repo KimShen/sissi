@@ -5,10 +5,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
+import com.sissi.read.Mapping.MappingMetadata;
 
 /**
  * @author kim 2013-10-31
  */
+@MappingMetadata(uri = "jabber:iq:roster", localName = "item")
 @XmlRootElement
 public class Item extends Protocol {
 

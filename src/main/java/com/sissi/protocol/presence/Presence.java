@@ -9,10 +9,12 @@ import com.sissi.context.MyPresence;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.read.Collector;
+import com.sissi.read.Mapping.MappingMetadata;
 
 /**
  * @author kim 2013-10-28
  */
+@MappingMetadata(uri = "jabber:client", localName = "presence")
 @XmlRootElement
 public class Presence extends Protocol implements MyPresence, Collector {
 
@@ -44,7 +46,7 @@ public class Presence extends Protocol implements MyPresence, Collector {
 	}
 
 	private Show show;
-	
+
 	private Delay delay;
 
 	private Status status;

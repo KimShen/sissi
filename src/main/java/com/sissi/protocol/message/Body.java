@@ -3,9 +3,12 @@ package com.sissi.protocol.message;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import com.sissi.read.Mapping.MappingMetadata;
+
 /**
  * @author kim 2013-11-1
  */
+@MappingMetadata(uri="jabber:client", localName="body")
 @XmlRootElement
 public class Body {
 
