@@ -43,9 +43,12 @@
 		<constructor-arg ref="builder.jid" />
 		<constructor-arg ref="config.ucenter.relation.roster" />
 	</bean>
-	
+
 	<bean id="ucenter.register" class="com.sissi.ucenter.impl.MongoRegisterContext">
 		<constructor-arg ref="config.auth" />
 	</bean>
+
+	<bean id="ucenter.invitation.multi" class="com.sissi.ucenter.impl.MultiFormInvitation" />
+	<bean id="ucenter.invitation.simple" class="com.sissi.ucenter.impl.SimpleFormInvitation" />
 
 </beans>

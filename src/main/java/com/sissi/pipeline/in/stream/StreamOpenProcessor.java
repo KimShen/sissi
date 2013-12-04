@@ -4,7 +4,6 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
-import com.sissi.protocol.feature.Auth;
 import com.sissi.protocol.feature.Bind;
 import com.sissi.protocol.feature.Mechanisms;
 import com.sissi.protocol.feature.Register;
@@ -26,7 +25,7 @@ public class StreamOpenProcessor implements Input {
 	}
 
 	private Stream buildLoginMethod(Stream stream) {
-		stream.addFeature(Mechanisms.MECHANISMS).addFeature(Auth.AUTH).addFeature(Register.REGISTER);
+		stream.addFeature(Mechanisms.MECHANISMS).addFeature(Register.REGISTER);
 		return stream;
 	}
 

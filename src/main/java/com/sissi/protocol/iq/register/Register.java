@@ -2,6 +2,7 @@ package com.sissi.protocol.iq.register;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -13,6 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
+import com.sissi.protocol.iq.register.form.Form;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
 import com.sissi.ucenter.RegisterContext.Field;
@@ -35,9 +37,25 @@ public class Register extends Protocol implements Collector {
 		}
 	};
 
+	private String instructions;
+
 	private Map<Class<? extends Field>, Field> fields;
 
-	@XmlElements({ @XmlElement(name = "username", type = Username.class), @XmlElement(name = "password", type = Password.class) })
+	public Register() {
+		super();
+	}
+
+	public Register(String instructions) {
+		super();
+		this.instructions = instructions;
+	}
+
+	@XmlElement
+	public String getInstructions() {
+		return instructions;
+	}
+
+	@XmlElements({ @XmlElement(name = "username", type = Username.class), @XmlElement(name = "password", type = Password.class), @XmlElement(name = "x", type = Form.class)})
 	public Collection<Field> getFields() {
 		return fields.values();
 	}
@@ -51,6 +69,13 @@ public class Register extends Protocol implements Collector {
 			this.fields = new TreeMap<Class<? extends Field>, Field>(COMPARATOR);
 		}
 		fields.put(field.getClass(), field);
+		return this;
+	}
+
+	public Register add(List<Field> fields) {
+		for (Field each : fields) {
+			this.add(each);
+		}
 		return this;
 	}
 
