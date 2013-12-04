@@ -50,7 +50,7 @@
 	<bean id="auth.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.MatchClass">
-				<constructor-arg value="com.sissi.protocol.iq.login.Auth" />
+				<constructor-arg value="com.sissi.protocol.iq.auth.Auth" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="auth.pro.chained" />
@@ -58,7 +58,7 @@
 	<bean id="auth.condition.digest" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.MatchClass">
-				<constructor-arg value="com.sissi.protocol.iq.login.Response" />
+				<constructor-arg value="com.sissi.protocol.iq.auth.Response" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="auth.pro.digest.chained" />

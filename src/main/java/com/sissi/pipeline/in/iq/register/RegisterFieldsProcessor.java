@@ -4,9 +4,9 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Protocol.Type;
-import com.sissi.protocol.iq.login.Password;
-import com.sissi.protocol.iq.login.Register;
-import com.sissi.protocol.iq.login.Username;
+import com.sissi.protocol.iq.register.Password;
+import com.sissi.protocol.iq.register.Register;
+import com.sissi.protocol.iq.register.Username;
 
 /**
  * @author kim 2013年12月3日

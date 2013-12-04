@@ -9,8 +9,8 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.UtilProcessor;
 import com.sissi.pipeline.in.auth.SaslServers;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.login.Response;
-import com.sissi.protocol.iq.login.Success;
+import com.sissi.protocol.iq.auth.Response;
+import com.sissi.protocol.iq.auth.Success;
 
 /**
  * @author kim 2013年11月26日

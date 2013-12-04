@@ -3,8 +3,8 @@ package com.sissi.offline.impl;
 import java.util.Map;
 
 import com.sissi.context.JID.JIDBuilder;
-import com.sissi.protocol.Delay;
 import com.sissi.protocol.Element;
+import com.sissi.protocol.offline.Delay;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.Presence.Type;
 

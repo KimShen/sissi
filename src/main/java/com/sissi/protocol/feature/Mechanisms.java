@@ -1,14 +1,15 @@
-package com.sissi.protocol.iq.login;
+package com.sissi.protocol.feature;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.pipeline.in.auth.impl.DigestAuthCallback;
 import com.sissi.pipeline.in.auth.impl.PlainAuthCallback;
-import com.sissi.protocol.Feature;
 import com.sissi.protocol.Stream;
 
 /**
@@ -16,18 +17,18 @@ import com.sissi.protocol.Stream;
  */
 @XmlRootElement(namespace = Stream.NAMESPACE)
 public class Mechanisms extends Feature {
-	
+
 	public final static Mechanisms MECHANISMS = new Mechanisms(DigestAuthCallback.MECHANISM, PlainAuthCallback.MECHANISM);
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
 
 	private Set<String> mechanism;
 
-	public Mechanisms() {
-		super();
+	private Mechanisms() {
+
 	}
 
-	public Mechanisms(String... mechanisms) {
+	private Mechanisms(String... mechanisms) {
 		super();
 		this.mechanism = new HashSet<String>();
 		for (String each : mechanisms) {
@@ -39,11 +40,8 @@ public class Mechanisms extends Feature {
 	public String getXmlns() {
 		return XMLNS;
 	}
-	
-	public void setMechanism(Set<String> mechanism) {
-		this.mechanism = mechanism;
-	}
 
+	@XmlElements({ @XmlElement(name = "mechanism", type = String.class) })
 	public Set<String> getMechanism() {
 		return mechanism;
 	}

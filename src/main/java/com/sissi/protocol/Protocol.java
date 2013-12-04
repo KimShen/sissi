@@ -3,8 +3,6 @@ package com.sissi.protocol;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import com.sissi.context.JID;
 
 /**
@@ -30,7 +28,7 @@ abstract public class Protocol implements Element {
 	}
 
 	private String id;
-	
+
 	private String from;
 
 	private String to;
@@ -82,7 +80,7 @@ abstract public class Protocol implements Element {
 	public String getTo() {
 		return to;
 	}
-	
+
 	public Protocol setTo(String to) {
 		this.to = to;
 		return this;
@@ -121,9 +119,5 @@ abstract public class Protocol implements Element {
 		this.to = null;
 		this.type = null;
 		return this;
-	}
-
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
 	}
 }

@@ -4,7 +4,10 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.pipeline.in.iq.IQTypeProcessor;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.login.Register;
+import com.sissi.protocol.Protocol.Type;
+import com.sissi.protocol.error.Error;
+import com.sissi.protocol.iq.IQ;
+import com.sissi.protocol.iq.register.Register;
 import com.sissi.ucenter.RegisterManager;
 
 /**
@@ -24,6 +27,6 @@ public class RegisterStoreProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return this.registerManager.register(Register.class.cast(protocol).getFields()) ? true : this.iqTypeProcessor.input(context, protocol.clear());
+		return this.registerManager.register(Register.class.cast(protocol).getFields()) ? true : this.iqTypeProcessor.input(context, IQ.class.cast(protocol.getParent()).setError(new Error("409", Type.ERROR)).getParent());
 	}
 }

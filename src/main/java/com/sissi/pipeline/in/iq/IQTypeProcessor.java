@@ -12,9 +12,16 @@ public class IQTypeProcessor implements Input {
 
 	private Type type;
 
+	private Boolean clear;
+
 	public IQTypeProcessor(String type) {
+		this(type, true);
+	}
+
+	public IQTypeProcessor(String type, Boolean clear) {
 		super();
 		this.type = Type.parse(type);
+		this.clear = clear;
 	}
 
 	@Override
@@ -24,6 +31,6 @@ public class IQTypeProcessor implements Input {
 	}
 
 	private Protocol prepareIQ(Protocol protocol) {
-		return protocol.getParent().reply().clear().setType(type);
+		return this.clear ? protocol.getParent().reply().clear().setType(this.type) : protocol.getParent().reply().setType(this.type);
 	}
 }

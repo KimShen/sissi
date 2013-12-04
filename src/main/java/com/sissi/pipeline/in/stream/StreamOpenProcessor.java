@@ -4,10 +4,11 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
-import com.sissi.protocol.iq.login.Auth;
-import com.sissi.protocol.iq.login.Bind;
-import com.sissi.protocol.iq.login.Mechanisms;
-import com.sissi.protocol.iq.login.Session;
+import com.sissi.protocol.feature.Auth;
+import com.sissi.protocol.feature.Bind;
+import com.sissi.protocol.feature.Mechanisms;
+import com.sissi.protocol.feature.Register;
+import com.sissi.protocol.feature.Session;
 
 /**
  * @author kim 2013-10-24
@@ -25,7 +26,7 @@ public class StreamOpenProcessor implements Input {
 	}
 
 	private Stream buildLoginMethod(Stream stream) {
-		stream.addFeature(Mechanisms.MECHANISMS).addFeature(new Auth());
+		stream.addFeature(Mechanisms.MECHANISMS).addFeature(Auth.AUTH).addFeature(Register.REGISTER);
 		return stream;
 	}
 

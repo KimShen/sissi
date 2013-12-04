@@ -3,7 +3,7 @@ package com.sissi.pipeline.in.auth.impl;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.login.Failure;
+import com.sissi.protocol.iq.auth.Failure;
 
 /**
  * @author kim 2013-10-24

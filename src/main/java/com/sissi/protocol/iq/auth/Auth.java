@@ -1,16 +1,18 @@
-package com.sissi.protocol.iq.login;
+package com.sissi.protocol.iq.auth;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-import com.sissi.protocol.Feature;
+import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 
 /**
  * @author Kim.shen 2013-10-16
  */
-@XmlRootElement(namespace = Stream.NAMESPACE)
-public class Auth extends Feature {
+@XmlType(namespace = Stream.NAMESPACE)
+@XmlRootElement
+public class Auth extends Protocol {
 
 	private final static String XMLNS = "http://jabber.org/features/iq-auth";
 

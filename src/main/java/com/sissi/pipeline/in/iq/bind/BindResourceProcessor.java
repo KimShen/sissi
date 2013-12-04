@@ -5,7 +5,7 @@ import com.sissi.pipeline.in.UtilProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Protocol.Type;
 import com.sissi.protocol.iq.IQ;
-import com.sissi.protocol.iq.login.Bind;
+import com.sissi.protocol.iq.bind.Bind;
 
 /**
  * @author kim 2013-10-29

@@ -6,7 +6,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.UtilProcessor;
 import com.sissi.pipeline.in.auth.AuthCallback;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.login.Auth;
+import com.sissi.protocol.iq.auth.Auth;
 
 /**
  * @author kim 2013-10-24

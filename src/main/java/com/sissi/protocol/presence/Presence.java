@@ -6,8 +6,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
 import com.sissi.context.MyPresence;
-import com.sissi.protocol.Delay;
 import com.sissi.protocol.Protocol;
+import com.sissi.protocol.offline.Delay;
 import com.sissi.read.Collector;
 
 /**

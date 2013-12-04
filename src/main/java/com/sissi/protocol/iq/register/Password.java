@@ -1,21 +1,23 @@
-package com.sissi.protocol.iq.login;
+package com.sissi.protocol.iq.register;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
 
 import com.sissi.ucenter.Field;
 
 /**
  * @author kim 2013年12月3日
  */
-@XmlRootElement(name = "username")
-public class Username implements Field {
+@XmlRootElement(name = "password")
+public class Password implements Field {
 
-	public final static Username FIELD = new Username();
-	
-	private final static String NAME = "username";
+	public final static Password FIELD = new Password();
+
+	private final static String NAME = "password";
 
 	private String text;
 
+	@XmlValue
 	public String getText() {
 		return text;
 	}

@@ -1,4 +1,4 @@
-package com.sissi.protocol;
+package com.sissi.protocol.offline;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;

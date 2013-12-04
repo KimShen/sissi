@@ -9,21 +9,25 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.login.Bind;
-import com.sissi.protocol.iq.login.Register;
-import com.sissi.protocol.iq.login.Session;
+import com.sissi.protocol.Stream;
+import com.sissi.protocol.error.Error;
+import com.sissi.protocol.iq.bind.Bind;
+import com.sissi.protocol.iq.register.Register;
 import com.sissi.protocol.iq.roster.Roster;
+import com.sissi.protocol.iq.session.Session;
 import com.sissi.read.Collector;
 
 /**
  * @author Kim.shen 2013-10-16
  */
-@XmlRootElement
+@XmlRootElement(namespace = Stream.NAMESPACE)
 public class IQ extends Protocol implements Collector {
 
 	private final static List<Protocol> EMPTY_CHILDREN = new ArrayList<Protocol>();
 
 	private List<Protocol> protocols;
+
+	private Error error;
 
 	public IQ() {
 		super();
@@ -48,17 +52,28 @@ public class IQ extends Protocol implements Collector {
 		return this;
 	}
 
-	@Override
-	public void set(String localName, Object ob) {
-		this.add((Protocol.class.cast(ob)));
-	}
-
 	public List<Protocol> listChildren() {
 		return this.protocols != null ? this.protocols : EMPTY_CHILDREN;
+	}
+
+	public IQ setError(Error error) {
+		this.error = error;
+		super.setType(Type.ERROR);
+		return this;
+	}
+
+	@XmlElement
+	public Error getError() {
+		return error;
 	}
 
 	public IQ clear() {
 		this.protocols = null;
 		return this;
+	}
+	
+	@Override
+	public void set(String localName, Object ob) {
+		this.add((Protocol.class.cast(ob)));
 	}
 }

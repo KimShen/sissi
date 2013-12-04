@@ -1,4 +1,4 @@
-package com.sissi.protocol.iq.login;
+package com.sissi.protocol.iq.bind;
 
 import com.sissi.protocol.Protocol;
 

@@ -21,6 +21,8 @@ public class Roster extends Protocol implements Collector {
 
 		TO, BOTH, NONE;
 
+		private final static String REMOVE = "remove";
+
 		public String toString() {
 			return super.toString().toLowerCase();
 		}
@@ -30,7 +32,7 @@ public class Roster extends Protocol implements Collector {
 		}
 
 		public static Subscription parse(String subscribe) {
-			if (subscribe == null || subscribe.toLowerCase() == "remove") {
+			if (subscribe == null || subscribe.toLowerCase() == REMOVE) {
 				return NONE;
 			}
 			return Subscription.valueOf(subscribe.toUpperCase());

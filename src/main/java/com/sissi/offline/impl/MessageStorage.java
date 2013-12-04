@@ -3,10 +3,10 @@ package com.sissi.offline.impl;
 import java.util.Map;
 
 import com.sissi.context.JID.JIDBuilder;
-import com.sissi.protocol.Delay;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.message.Body;
 import com.sissi.protocol.message.Message;
+import com.sissi.protocol.offline.Delay;
 
 /**
  * @author kim 2013-11-15

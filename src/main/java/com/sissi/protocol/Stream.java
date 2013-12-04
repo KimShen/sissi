@@ -10,10 +10,12 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.protocol.iq.login.Auth;
-import com.sissi.protocol.iq.login.Bind;
-import com.sissi.protocol.iq.login.Mechanisms;
-import com.sissi.protocol.iq.login.Session;
+import com.sissi.protocol.feature.Auth;
+import com.sissi.protocol.feature.Bind;
+import com.sissi.protocol.feature.Feature;
+import com.sissi.protocol.feature.Mechanisms;
+import com.sissi.protocol.feature.Register;
+import com.sissi.protocol.feature.Session;
 import com.sissi.write.WriteWithOutClose;
 
 /**
@@ -77,7 +79,7 @@ public class Stream extends Protocol implements WriteWithOutClose {
 	}
 
 	@XmlElementWrapper(namespace = Stream.NAMESPACE, name = "features")
-	@XmlElements({ @XmlElement(name = "auth", type = Auth.class), @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class) })
+	@XmlElements({ @XmlElement(name = "auth", type = Auth.class), @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class),@XmlElement(name = "register", type = Register.class) })
 	public List<Feature> getFeatures() {
 		return features;
 	}

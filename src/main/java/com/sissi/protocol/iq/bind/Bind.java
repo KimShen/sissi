@@ -1,18 +1,20 @@
-package com.sissi.protocol.iq.login;
+package com.sissi.protocol.iq.bind;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
-import com.sissi.protocol.Feature;
+import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 import com.sissi.read.Collector;
 
 /**
  * @author Kim.shen 2013-10-20
  */
-@XmlRootElement(namespace = Stream.NAMESPACE)
-public class Bind extends Feature implements Collector {
+@XmlType(namespace = Stream.NAMESPACE)
+@XmlRootElement
+public class Bind extends Protocol implements Collector {
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-bind";
 

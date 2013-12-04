@@ -1,4 +1,4 @@
-package com.sissi.protocol.iq.login;
+package com.sissi.protocol.iq.auth;
 
 import org.apache.commons.codec.binary.Base64;
 

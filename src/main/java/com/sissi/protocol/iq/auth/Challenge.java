@@ -1,4 +1,4 @@
-package com.sissi.protocol.iq.login;
+package com.sissi.protocol.iq.auth;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;

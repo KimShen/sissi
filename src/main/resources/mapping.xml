@@ -4,28 +4,28 @@
 		<clazz>com.sissi.protocol.Stream</clazz>
 	</finder>
 	<finder uri="urn:ietf:params:xml:ns:xmpp-sasl" localName="auth">
-		<clazz>com.sissi.protocol.iq.login.Auth</clazz>
+		<clazz>com.sissi.protocol.iq.auth.Auth</clazz>
 	</finder>
 	<finder uri="urn:ietf:params:xml:ns:xmpp-sasl" localName="response">
-		<clazz>com.sissi.protocol.iq.login.Response</clazz>
+		<clazz>com.sissi.protocol.iq.auth.Response</clazz>
 	</finder>
 	<finder uri="urn:ietf:params:xml:ns:xmpp-bind" localName="bind">
-		<clazz>com.sissi.protocol.iq.login.Bind</clazz>
+		<clazz>com.sissi.protocol.iq.bind.Bind</clazz>
 	</finder>
 	<finder uri="urn:ietf:params:xml:ns:xmpp-bind" localName="resource">
-		<clazz>com.sissi.protocol.iq.login.Resource</clazz>
+		<clazz>com.sissi.protocol.iq.bind.Resource</clazz>
 	</finder>
 	<finder uri="urn:ietf:params:xml:ns:xmpp-session" localName="session">
-		<clazz>com.sissi.protocol.iq.login.Session</clazz>
+		<clazz>com.sissi.protocol.iq.session.Session</clazz>
 	</finder>
 	<finder uri="jabber:iq:register" localName="query">
-		<clazz>com.sissi.protocol.iq.login.Register</clazz>
+		<clazz>com.sissi.protocol.iq.register.Register</clazz>
 	</finder>
 	<finder uri="jabber:iq:register" localName="username">
-		<clazz>com.sissi.protocol.iq.login.Username</clazz>
+		<clazz>com.sissi.protocol.iq.register.Username</clazz>
 	</finder>
 	<finder uri="jabber:iq:register" localName="password">
-		<clazz>com.sissi.protocol.iq.login.Password</clazz>
+		<clazz>com.sissi.protocol.iq.register.Password</clazz>
 	</finder>
 	<finder uri="jabber:client" localName="iq">
 		<clazz>com.sissi.protocol.iq.IQ</clazz>

@@ -8,8 +8,12 @@
 	<bean id="iq.pro.result" class="com.sissi.pipeline.in.iq.IQTypeProcessor">
 		<constructor-arg value="result" />
 	</bean>
-	<bean id="iq.pro.error" class="com.sissi.pipeline.in.iq.IQTypeProcessor">
+	<bean id="iq.pro.error.clear" class="com.sissi.pipeline.in.iq.IQTypeProcessor">
 		<constructor-arg value="error" />
+	</bean>
+	<bean id="iq.pro.error.none" class="com.sissi.pipeline.in.iq.IQTypeProcessor">
+		<constructor-arg value="error" />
+		<constructor-arg value="false" />
 	</bean>
 	<bean id="iq.pro.nonechildren" class="com.sissi.pipeline.in.iq.IQNoneChildrenProcessor">
 		<constructor-arg ref="iq.pro.result" />
