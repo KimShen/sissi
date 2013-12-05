@@ -108,8 +108,9 @@ abstract public class Protocol implements Element {
 
 	public Protocol reply() {
 		this.setId(this.getId());
+		final String tempFrom = this.getFrom();
 		this.setFrom(this.getTo());
-		this.setTo(this.getFrom());
+		this.setTo(tempFrom);
 		return this;
 	}
 

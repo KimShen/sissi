@@ -80,7 +80,7 @@ public class Stream extends Protocol implements WriteWithOutClose {
 	}
 
 	@XmlElementWrapper(namespace = Stream.NAMESPACE, name = "features")
-	@XmlElements({ @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "register", type = Register.class) })
+	@XmlElements({ @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "register", type = Register.class) })
 	public List<Feature> getFeatures() {
 		return features;
 	}
