@@ -7,11 +7,13 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.register.Register;
 import com.sissi.ucenter.RegisterContext;
+import com.sissi.ucenter.RegisterContext.FieldFinder;
+import com.sissi.ucenter.RegisterContext.Fields;
 
 /**
- * @author kim 2013年12月3日
+ * @author kim 2013年12月5日
  */
-public class RegisterStoreProcessor implements Input {
+abstract public class RegisterStoreProcessor implements Input {
 
 	private RegisterContext registerContext;
 
@@ -25,6 +27,8 @@ public class RegisterStoreProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return this.registerContext.register(Register.class.cast(protocol).getFields()) ? true : this.iqTypeProcessor.input(context, IQ.class.cast(protocol.getParent()).getParent());
+		return this.registerContext.register(this.build(Register.class.cast(protocol))) ? true : this.iqTypeProcessor.input(context, IQ.class.cast(protocol.getParent()).clear().getParent());
 	}
+
+	abstract protected Fields build(FieldFinder finder);
 }

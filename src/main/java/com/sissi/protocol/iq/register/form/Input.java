@@ -27,21 +27,21 @@ public class Input implements Field {
 
 	}
 
-	public Input(Type type, String name, String var) {
+	public Input(String type, String name, String var) {
 		this(type, null, name, var);
 	}
 
-	public Input(Type type, String value, String name, String var) {
+	public Input(String type, String value, String name, String var) {
 		this(type, value, name, var, null);
 	}
 
-	public Input(Type type, String name, String var, Required required) {
+	public Input(String type, String name, String var, Required required) {
 		this(type, null, name, var, required);
 	}
 
-	public Input(Type type, String value, String name, String var, Required required) {
+	public Input(String type, String value, String name, String var, Required required) {
 		super();
-		this.type = type.toString();
+		this.type = Type.parse(type).toString();
 		this.value = value;
 		this.name = name;
 		this.var = var;

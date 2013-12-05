@@ -25,6 +25,8 @@ public class SAXHandler extends DefaultHandler {
 
 	private final static Integer ONLY_ROOT = 1;
 
+	private final static String ROOT = "stream";
+
 	private final static Log LOG = LogFactory.getLog(SAXHandler.class);
 
 	private final static Map<Class<?>, MethodFinder> CACHED_METHOD = new HashMap<Class<?>, MethodFinder>();
@@ -32,7 +34,7 @@ public class SAXHandler extends DefaultHandler {
 	@SuppressWarnings("serial")
 	private final static Set<String> ROOT_NODE = new HashSet<String>() {
 		{
-			add("stream");
+			add(ROOT);
 		}
 	};
 
@@ -150,6 +152,7 @@ public class SAXHandler extends DefaultHandler {
 				return;
 			}
 			this.cacheMethod(ob, key, this.get(key)).invoke(ob, value);
+			LOG.debug("Copy " + key + " / " + value + " on " + ob.getClass());
 		}
 
 		private Method cacheMethod(Object ob, String key, Method method) throws NoSuchMethodException {

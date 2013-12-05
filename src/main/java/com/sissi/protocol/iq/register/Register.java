@@ -18,6 +18,7 @@ import com.sissi.protocol.iq.register.form.Form;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
 import com.sissi.ucenter.RegisterContext.Field;
+import com.sissi.ucenter.RegisterContext.FieldFinder;
 
 /**
  * @author kim 2013年12月3日
@@ -25,7 +26,7 @@ import com.sissi.ucenter.RegisterContext.Field;
 @MappingMetadata(uri = "jabber:iq:register", localName = "query")
 @XmlType(namespace = Stream.NAMESPACE)
 @XmlRootElement(name = "query")
-public class Register extends Protocol implements Collector {
+public class Register extends Protocol implements FieldFinder, Collector {
 
 	private final static String XMLNS = "jabber:iq:register";
 
@@ -33,7 +34,7 @@ public class Register extends Protocol implements Collector {
 
 		@Override
 		public int compare(Class<? extends Field> f1, Class<? extends Field> f2) {
-			return 1;
+			return f1.equals(f2) ? 0 : 1;
 		}
 	};
 
@@ -55,7 +56,7 @@ public class Register extends Protocol implements Collector {
 		return instructions;
 	}
 
-	@XmlElements({ @XmlElement(name = "username", type = Username.class), @XmlElement(name = "password", type = Password.class), @XmlElement(name = "x", type = Form.class)})
+	@XmlElements({ @XmlElement(name = "username", type = Username.class), @XmlElement(name = "password", type = Password.class), @XmlElement(name = "x", type = Form.class) })
 	public Collection<Field> getFields() {
 		return fields.values();
 	}
@@ -82,6 +83,10 @@ public class Register extends Protocol implements Collector {
 	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;
+	}
+
+	public Boolean isMulti() {
+		return this.findField(Form.class) != null;
 	}
 
 	public Register clear() {

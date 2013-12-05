@@ -48,7 +48,62 @@
 		<constructor-arg ref="config.auth" />
 	</bean>
 
-	<bean id="ucenter.invitation.multi" class="com.sissi.ucenter.impl.MultiFormInvitation" />
 	<bean id="ucenter.invitation.simple" class="com.sissi.ucenter.impl.SimpleFormInvitation" />
+	<bean id="ucenter.invitation.multi" class="com.sissi.ucenter.impl.MultiFormInvitation">
+		<constructor-arg value="${register.invitation.title}" />
+		<constructor-arg value="${register.invitation.instructions}" />
+		<constructor-arg ref="uncenter.fields.builder" />
+	</bean>
+
+	<!-- For test -->
+	<bean id="uncenter.fields.builder" class="com.sissi.ucenter.impl.ConfigRegisterInvitationFieldsBuilder">
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.protocol.iq.register.form.Input">
+					<constructor-arg value="HIDDEN" />
+					<constructor-arg value="from" />
+					<constructor-arg>
+						<null />
+					</constructor-arg>
+					<constructor-arg value="mobile" />
+				</bean>
+				<bean class="com.sissi.protocol.iq.register.form.Input">
+					<constructor-arg value="TEXT_SINGLE" />
+					<constructor-arg value="username" />
+					<constructor-arg value="username" />
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.register.form.Required.FIELD" />
+					</constructor-arg>
+				</bean>
+				<bean class="com.sissi.protocol.iq.register.form.Input">
+					<constructor-arg value="TEXT_SINGLE" />
+					<constructor-arg value="password" />
+					<constructor-arg value="password" />
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.register.form.Required.FIELD" />
+					</constructor-arg>
+				</bean>
+				<bean class="com.sissi.protocol.iq.register.form.Select">
+					<constructor-arg value="gender" />
+					<constructor-arg value="gender" />
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.register.form.Required.FIELD" />
+					</constructor-arg>
+					<constructor-arg>
+						<util:list>
+							<bean class="com.sissi.protocol.iq.register.form.Option">
+								<constructor-arg index="0" value="Male" />
+								<constructor-arg index="1" value="M" />
+							</bean>
+							<bean class="com.sissi.protocol.iq.register.form.Option">
+								<constructor-arg index="0" value="Female" />
+								<constructor-arg index="1" value="F" />
+							</bean>
+						</util:list>
+					</constructor-arg>
+				</bean>
+			</util:list>
+		</constructor-arg>
+	</bean>
 
 </beans>

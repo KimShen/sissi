@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.Stream;
 import com.sissi.protocol.error.Error;
 import com.sissi.protocol.iq.bind.Bind;
 import com.sissi.protocol.iq.register.Register;
@@ -22,7 +21,7 @@ import com.sissi.read.Mapping.MappingMetadata;
  * @author Kim.shen 2013-10-16
  */
 @MappingMetadata(uri = "jabber:client", localName = "iq")
-@XmlRootElement(namespace = Stream.NAMESPACE)
+@XmlRootElement
 public class IQ extends Protocol implements Collector {
 
 	private final static List<Protocol> EMPTY_CHILDREN = new ArrayList<Protocol>();

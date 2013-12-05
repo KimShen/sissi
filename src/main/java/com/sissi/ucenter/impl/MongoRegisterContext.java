@@ -1,7 +1,5 @@
 package com.sissi.ucenter.impl;
 
-import java.util.Collection;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -27,7 +25,7 @@ public class MongoRegisterContext implements RegisterContext {
 	}
 
 	@Override
-	public Boolean register(Collection<Field> fields) {
+	public Boolean register(Fields fields) {
 		BasicDBObjectBuilder builder = BasicDBObjectBuilder.start();
 		for (Field field : fields) {
 			builder.add(field.getName(), field.getText());
@@ -35,7 +33,7 @@ public class MongoRegisterContext implements RegisterContext {
 		DBObject entity = builder.get();
 		this.log.debug("Entity: " + entity);
 		try {
-			this.config.find().save(entity, WriteConcern.SAFE).getN();
+			this.config.find().save(entity, WriteConcern.SAFE);
 			return true;
 		} catch (MongoException e) {
 			return false;

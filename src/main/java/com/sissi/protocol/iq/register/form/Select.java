@@ -21,16 +21,23 @@ public class Select extends Input {
 
 	}
 
-	public Select(Type type, String name, String var) {
-		super(type, null, name, var);
+	public Select(String name, String var) {
+		super(Type.LIST_SINGLE.toString(), null, name, var);
 	}
 
-	public Select(Type type, String value, String name, String var) {
-		super(type, value, name, var, null);
+	public Select(String value, String name, String var) {
+		super(Type.LIST_SINGLE.toString(), value, name, var, null);
 	}
 
-	public Select(Type type, String name, String var, Required required) {
-		super(type, null, name, var, required);
+	public Select(String name, String var, Required required) {
+		super(Type.LIST_SINGLE.toString(), null, name, var, required);
+	}
+
+	public Select(String name, String var, Required required, Option... option) {
+		super(Type.LIST_SINGLE.toString(), null, name, var, required);
+		for (Option each : option) {
+			this.add(each);
+		}
 	}
 
 	public Select add(Option option) {
