@@ -81,9 +81,10 @@ public class XMLMapping implements Mapping {
 		}
 
 		private void doEachFinder(Finder finder) {
-			String uri = finder.getUri();
-			this.mapping.put((uri != null ? uri : "") + finder.getLocalName(), finder.getClazz());
-			this.log.debug("Insert Mapping: " + (uri != null ? uri : "") + " / " + finder.getLocalName() + " / " + finder.getClazz());
+			for (String uri : finder.getUris()) {
+				this.mapping.put((uri != null ? uri : "") + finder.getLocalName(), finder.getClazz());
+				this.log.debug("Insert Mapping: " + (uri != null ? uri : "") + " / " + finder.getLocalName() + " / " + finder.getClazz());
+			}
 		}
 
 		public Class<?> find(String uri, String localName) {
@@ -93,14 +94,14 @@ public class XMLMapping implements Mapping {
 
 	public static class Finder {
 
-		private String uri;
+		private String[] uris;
 
 		private String localName;
 
 		private Class<?> clazz;
 
-		public String getUri() {
-			return uri;
+		public String[] getUris() {
+			return uris;
 		}
 
 		public String getLocalName() {
@@ -111,8 +112,8 @@ public class XMLMapping implements Mapping {
 			return clazz;
 		}
 
-		public Finder cover(String uri, String localName, Class<?> clazz) {
-			this.uri = uri;
+		public Finder cover(String[] uris, String localName, Class<?> clazz) {
+			this.uris = uris;
 			this.localName = localName;
 			this.clazz = clazz;
 			return this;

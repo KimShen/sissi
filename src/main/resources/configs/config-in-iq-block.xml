@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="block.pro.blocked" class="com.sissi.pipeline.in.iq.block.BlockedProcessor" parent="global.pro.utils">
+		<constructor-arg ref="ucenter.ban" />
+	</bean>
+	<bean id="block.pro.blocked.2selfs.item" class="com.sissi.pipeline.in.iq.block.Blocked2SelfsItemProcessor" parent="global.pro.utils" />
+	<bean id="block.pro.blocked.2selfs.presence" class="com.sissi.pipeline.in.iq.block.Blocked2SelfsPresenceProcessor" parent="global.pro.utils" />
+	<bean id="block.pro.blocked.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="block.pro.blocked" />
+				<ref bean="block.pro.blocked.2selfs.item" />
+				<ref bean="block.pro.blocked.2selfs.presence" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="block.pro.unblock" class="com.sissi.pipeline.in.iq.block.UnBlockProcessor" parent="global.pro.utils">
+		<constructor-arg ref="ucenter.ban" />
+	</bean>
+	<bean id="block.pro.unblock.2selfs.item" class="com.sissi.pipeline.in.iq.block.UnBlock2SelfsItemProcessor" parent="global.pro.utils" />
+	<bean id="block.pro.unblock.2selfs.presence" class="com.sissi.pipeline.in.iq.block.UnBlock2SelfsPresenceProcessor" parent="global.pro.utils" />
+	<bean id="block.pro.unblock.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="block.pro.unblock" />
+				<ref bean="block.pro.unblock.2selfs.item" />
+				<ref bean="block.pro.unblock.2selfs.presence" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="block.pro.list" class="com.sissi.pipeline.in.iq.block.BlockListProcessor" parent="global.pro.utils">
+		<constructor-arg ref="ucenter.ban" />
+	</bean>
+	<bean id="block.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.block" />
+	</bean>
+
+	<bean id="finder.block" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="block.condition.list" />
+				<ref bean="block.condition.blocked" />
+				<ref bean="block.condition.unblock" />
+				<ref bean="iq.condition.matchall" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="block.condition" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.MatchClasses">
+				<constructor-arg>
+					<util:list>
+						<value>com.sissi.protocol.iq.block.BlockList</value>
+						<value>com.sissi.protocol.iq.block.Blocked</value>
+						<value>com.sissi.protocol.iq.block.UnBlock</value>
+					</util:list>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="block.pro.fork" />
+	</bean>
+	<bean id="block.condition.list" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.MatchClass">
+				<constructor-arg value="com.sissi.protocol.iq.block.BlockList" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="block.pro.list" />
+	</bean>
+	<bean id="block.condition.blocked" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.MatchClass">
+				<constructor-arg value="com.sissi.protocol.iq.block.Blocked" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="block.pro.blocked.chained" />
+	</bean>
+	<bean id="block.condition.unblock" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.MatchClass">
+				<constructor-arg value="com.sissi.protocol.iq.block.UnBlock" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="block.pro.unblock.chained" />
+	</bean>
+
+</beans>

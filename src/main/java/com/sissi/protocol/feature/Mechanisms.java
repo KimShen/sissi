@@ -18,7 +18,7 @@ import com.sissi.protocol.Stream;
 @XmlRootElement(namespace = Stream.NAMESPACE)
 public class Mechanisms extends Feature {
 
-	public final static Mechanisms MECHANISMS = new Mechanisms(DigestAuthCallback.MECHANISM, PlainAuthCallback.MECHANISM);
+	public final static Mechanisms FEATURE = new Mechanisms(DigestAuthCallback.MECHANISM, PlainAuthCallback.MECHANISM);
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
 

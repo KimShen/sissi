@@ -14,8 +14,10 @@ public class MongoRelation implements RelationRoster {
 
 	private final static Map<String, Object> PLUS = new HashMap<String, Object>();
 
+	private final Boolean ban;
+	
 	private final String jid;
-
+	
 	private final String name;
 
 	private final String group;
@@ -24,6 +26,7 @@ public class MongoRelation implements RelationRoster {
 
 	public MongoRelation(DBObject db, MongoConfig config) {
 		super();
+		this.ban = config.asBoolean(db, "ban");
 		this.jid = config.asString(db, "slave");
 		this.name = config.asString(db, "name");
 		this.group = config.asString(db, "group");
@@ -44,6 +47,10 @@ public class MongoRelation implements RelationRoster {
 
 	public String getSubscription() {
 		return subscription;
+	}
+	
+	public Boolean isBan(){
+		return ban;
 	}
 
 	public String getJid() {

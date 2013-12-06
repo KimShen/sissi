@@ -34,6 +34,10 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="ucenter.ban" class="com.sissi.ucenter.impl.MongoBanContext">
+		<constructor-arg ref="config.auth" />
+	</bean>
+
 	<alias name="ucenter.accessor.mongo" alias="ucenter.accessor" />
 	<bean id="ucenter.accessor.mongo" class="com.sissi.ucenter.impl.MongoAuthAccessor">
 		<constructor-arg ref="config.auth" />

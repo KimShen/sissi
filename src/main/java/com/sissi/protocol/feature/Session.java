@@ -12,7 +12,7 @@ import com.sissi.protocol.feature.Feature;
 @XmlRootElement(namespace = Stream.NAMESPACE)
 public class Session extends Feature {
 
-	public static final Session INSTANCE = new Session();
+	public static final Session FEATURE = new Session();
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-session";
 

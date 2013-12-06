@@ -11,6 +11,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.error.Error;
 import com.sissi.protocol.iq.bind.Bind;
+import com.sissi.protocol.iq.block.BlockList;
+import com.sissi.protocol.iq.block.Blocked;
+import com.sissi.protocol.iq.block.UnBlock;
+import com.sissi.protocol.iq.disco.Info;
 import com.sissi.protocol.iq.register.Register;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.protocol.iq.session.Session;
@@ -40,7 +44,7 @@ public class IQ extends Protocol implements Collector {
 		super.setType(type.toString());
 	}
 
-	@XmlElements({ @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "query", type = Roster.class), @XmlElement(name = "query", type = Register.class) })
+	@XmlElements({ @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "query", type = Roster.class), @XmlElement(name = "query", type = Register.class), @XmlElement(name = "query", type = Info.class), @XmlElement(name = "block", type = Blocked.class), @XmlElement(name = "unblock", type = UnBlock.class), @XmlElement(name = "blocklist", type = BlockList.class) })
 	public List<Protocol> getProtocols() {
 		return protocols;
 	}

@@ -12,8 +12,20 @@
 		<constructor-arg ref="executor" />
 	</bean>
 
-	<bean id="builder.output" class="com.sissi.pipeline.out.NetworkOutputBuilder">
+	<bean id="builder.output.ban" class="com.sissi.pipeline.out.BanOutputBuilder">
+		<constructor-arg ref="ucenter.ban" />
+		<constructor-arg ref="builder.jid" />
+	</bean>
+	<bean id="builder.output.network" class="com.sissi.pipeline.out.NetworkOutputBuilder">
 		<constructor-arg ref="writer" />
+	</bean>
+	<bean id="builder.output" class="com.sissi.pipeline.out.ChainedOutputBuilder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="builder.output.ban" />
+				<ref bean="builder.output.network" />
+			</util:list>
+		</constructor-arg>
 	</bean>
 
 	<bean id="closer.4self" class="com.sissi.server.impl.Offline4SelfsServerCloser" />

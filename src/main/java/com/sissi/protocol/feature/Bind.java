@@ -9,7 +9,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Bind extends Feature {
 
+	public final static Bind FEATURE = new Bind();
+
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-bind";
+
+	private Bind() {
+
+	}
 
 	@XmlAttribute
 	public String getXmlns() {

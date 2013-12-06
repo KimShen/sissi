@@ -11,7 +11,7 @@ import com.sissi.protocol.Stream;
 @XmlRootElement(namespace = Stream.NAMESPACE)
 public class Register extends Feature {
 
-	public final static Register REGISTER = new Register();
+	public final static Register FEATURE = new Register();
 
 	private final static String XMLNS = "http://jabber.org/features/iq-register";
 

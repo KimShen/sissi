@@ -14,7 +14,7 @@ public interface JID {
 	public JID setResource(String resource);
 
 	public JID getBare();
-
+	
 	public String asString();
 
 	public String asStringWithBare();

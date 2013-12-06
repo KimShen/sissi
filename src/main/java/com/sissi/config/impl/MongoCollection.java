@@ -29,11 +29,11 @@ public class MongoCollection implements MongoConfig {
 	public MongoCollection(MongoClient client, String db, String collection, Map<String, Object> indexes) {
 		this(client, db, collection, true, indexes, OPTIONS);
 	}
-	
+
 	public MongoCollection(MongoClient client, String db, String collection, Boolean indexIfNotExists, Map<String, Object> indexes) {
 		this(client, db, collection, indexIfNotExists, indexes, OPTIONS);
 	}
-	
+
 	public MongoCollection(MongoClient client, String db, String collection, Map<String, Object> indexes, Map<String, Object> options) {
 		this(client, db, collection, true, indexes, options);
 	}
@@ -85,5 +85,14 @@ public class MongoCollection implements MongoConfig {
 		}
 		Object value = db.get(key);
 		return value != null ? value.toString() : null;
+	}
+
+	public Boolean asBoolean(DBObject db, String key) {
+		if (db == null) {
+			return null;
+		}
+		Object value = db.get(key);
+		return value != null ? (Boolean) value : Boolean.FALSE;
+
 	}
 }

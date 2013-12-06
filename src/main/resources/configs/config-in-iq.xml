@@ -35,9 +35,11 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="roster.condition" />
+				<ref bean="disco.condition" />
 				<ref bean="session.condition" />
 				<ref bean="bind.condition" />
 				<ref bean="register.condition" />
+				<ref bean="block.condition" />
 				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>

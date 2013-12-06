@@ -20,7 +20,7 @@ public interface Mapping {
 	@Inherited
 	public @interface MappingMetadata {
 
-		public String uri();
+		public String[] uri();
 
 		public String localName();
 	}

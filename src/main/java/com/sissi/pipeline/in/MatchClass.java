@@ -16,6 +16,6 @@ public class MatchClass implements InputMatcher {
 	}
 
 	public Boolean match(Protocol protocol) {
-		return this.clazz.isAssignableFrom(protocol.getClass());
+		return this.clazz == protocol.getClass();
 	}
 }

@@ -25,12 +25,12 @@ public class StreamOpenProcessor implements Input {
 	}
 
 	private Stream buildLoginMethod(Stream stream) {
-		stream.addFeature(Mechanisms.MECHANISMS).addFeature(Register.REGISTER);
+		stream.addFeature(Mechanisms.FEATURE).addFeature(Register.FEATURE);
 		return stream;
 	}
 
 	private Stream buildBindingFeature(Stream stream) {
-		stream.addFeature(Session.INSTANCE).addFeature(new Bind());
+		stream.addFeature(Session.FEATURE).addFeature(Bind.FEATURE);
 		return stream;
 	}
 }

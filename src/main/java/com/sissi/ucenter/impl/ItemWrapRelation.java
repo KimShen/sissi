@@ -41,6 +41,10 @@ public class ItemWrapRelation implements RelationRoster {
 		return Subscription.parse(this.item.getSubscription()).toString();
 	}
 
+	public Boolean isBan() {
+		return false;
+	}
+
 	public Map<String, Object> plus() {
 		Map<String, Object> plus = new HashMap<String, Object>();
 		plus.put("group", this.getGroupText());
