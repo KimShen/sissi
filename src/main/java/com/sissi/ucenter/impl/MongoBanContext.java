@@ -52,6 +52,14 @@ public class MongoBanContext implements BanContext {
 		this.log.debug("Entity: " + entity);
 		this.config.find().update(query, entity);
 	}
+	
+	public void free(JID from) {
+		DBObject query = BasicDBObjectBuilder.start().add("username", from.getUser()).get();
+		DBObject entity = BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start().add("bans", 0).get()).get();
+		this.log.debug("Query: " + query);
+		this.log.debug("Entity: " + entity);
+		this.config.find().update(query, entity);
+	}
 
 	@Override
 	public Boolean isBan(JID from, JID to) {

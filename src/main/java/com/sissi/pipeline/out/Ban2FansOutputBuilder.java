@@ -1,8 +1,5 @@
 package com.sissi.pipeline.out;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.sissi.context.JID;
 import com.sissi.context.JID.JIDBuilder;
 import com.sissi.context.JIDContext;
@@ -17,15 +14,13 @@ import com.sissi.write.Writer.Transfer;
 /**
  * @author kim 2013年12月6日
  */
-public class BanOutputBuilder implements OutputBuilder {
-
-	private final Log log = LogFactory.getLog(this.getClass());
+public class Ban2FansOutputBuilder implements OutputBuilder {
 
 	private BanContext context;
 
 	private JIDBuilder jidBuilder;
 
-	public BanOutputBuilder(BanContext context, JIDBuilder jidBuilder) {
+	public Ban2FansOutputBuilder(BanContext context, JIDBuilder jidBuilder) {
 		super();
 		this.context = context;
 		this.jidBuilder = jidBuilder;
@@ -40,15 +35,11 @@ public class BanOutputBuilder implements OutputBuilder {
 
 		@Override
 		public Boolean output(JIDContext context, Element node) {
-			JID mayBan = BanOutputBuilder.this.jidBuilder.build(node.getFrom());
-			if (this.isEmpty(context.getJid()) || this.isEmpty(mayBan)) {
+			JID mayBan = Ban2FansOutputBuilder.this.jidBuilder.build(node.getFrom());
+			if (this.isEmpty(context, mayBan)) {
 				return true;
 			}
-			Boolean isBan = this.isMatchNode(node) ? BanOutputBuilder.this.context.isBan(context.getJid(), mayBan) : false;
-			if (isBan) {
-				BanOutputBuilder.this.log.warn("Ban on " + context.getJid().asString() + " / " + node.getFrom());
-			}
-			return !isBan;
+			return !(this.isMatchNode(node) ? Ban2FansOutputBuilder.this.context.isBan(mayBan, context.getJid()) : false);
 		}
 
 		@Override
@@ -57,6 +48,10 @@ public class BanOutputBuilder implements OutputBuilder {
 
 		private Boolean isEmpty(JID jid) {
 			return (jid == null || jid.getUser() == null);
+		}
+
+		private boolean isEmpty(JIDContext context, JID mayBan) {
+			return this.isEmpty(context.getJid()) || this.isEmpty(mayBan);
 		}
 
 		private Boolean isMatchNode(Element node) {

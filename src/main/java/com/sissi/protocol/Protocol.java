@@ -1,9 +1,11 @@
 package com.sissi.protocol;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
+import com.sissi.protocol.error.Error;
 
 /**
  * @author kim 2013-10-24
@@ -34,6 +36,8 @@ abstract public class Protocol implements Element {
 	private String to;
 
 	private String type;
+
+	private Error error;
 
 	private Protocol parent;
 
@@ -103,6 +107,17 @@ abstract public class Protocol implements Element {
 
 	public Protocol setType(Type type) {
 		this.type = type.toString();
+		return this;
+	}
+
+	@XmlElement
+	public Error getError() {
+		return error;
+	}
+
+	public Protocol setError(Error error) {
+		this.error = error;
+		this.setType(Type.ERROR);
 		return this;
 	}
 

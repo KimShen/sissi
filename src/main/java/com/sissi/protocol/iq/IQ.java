@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.error.Error;
 import com.sissi.protocol.iq.bind.Bind;
 import com.sissi.protocol.iq.block.BlockList;
 import com.sissi.protocol.iq.block.Blocked;
@@ -31,8 +30,6 @@ public class IQ extends Protocol implements Collector {
 	private final static List<Protocol> EMPTY_CHILDREN = new ArrayList<Protocol>();
 
 	private List<Protocol> protocols;
-
-	private Error error;
 
 	public IQ() {
 		super();
@@ -59,17 +56,6 @@ public class IQ extends Protocol implements Collector {
 
 	public List<Protocol> listChildren() {
 		return this.protocols != null ? this.protocols : EMPTY_CHILDREN;
-	}
-
-	public IQ setError(Error error) {
-		this.error = error;
-		super.setType(Type.ERROR);
-		return this;
-	}
-
-	@XmlElement
-	public Error getError() {
-		return error;
 	}
 
 	public IQ clear() {

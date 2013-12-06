@@ -10,12 +10,14 @@
 	</bean>
 	<bean id="block.pro.blocked.2selfs.item" class="com.sissi.pipeline.in.iq.block.Blocked2SelfsItemProcessor" parent="global.pro.utils" />
 	<bean id="block.pro.blocked.2selfs.presence" class="com.sissi.pipeline.in.iq.block.Blocked2SelfsPresenceProcessor" parent="global.pro.utils" />
+	<bean id="block.pro.blocked.2fans.presence" class="com.sissi.pipeline.in.iq.block.Blocked2FansPresenceProcessor" parent="global.pro.utils" />
 	<bean id="block.pro.blocked.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="block.pro.blocked" />
 				<ref bean="block.pro.blocked.2selfs.item" />
 				<ref bean="block.pro.blocked.2selfs.presence" />
+				<ref bean="block.pro.blocked.2fans.presence" />
+				<ref bean="block.pro.blocked" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -24,12 +26,14 @@
 	</bean>
 	<bean id="block.pro.unblock.2selfs.item" class="com.sissi.pipeline.in.iq.block.UnBlock2SelfsItemProcessor" parent="global.pro.utils" />
 	<bean id="block.pro.unblock.2selfs.presence" class="com.sissi.pipeline.in.iq.block.UnBlock2SelfsPresenceProcessor" parent="global.pro.utils" />
+	<bean id="block.pro.unblock.2fans.presence" class="com.sissi.pipeline.in.iq.block.UnBlock2FansPresenceProcessor" parent="global.pro.utils" />
 	<bean id="block.pro.unblock.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="block.pro.unblock" />
 				<ref bean="block.pro.unblock.2selfs.item" />
 				<ref bean="block.pro.unblock.2selfs.presence" />
+				<ref bean="block.pro.unblock.2fans.presence" />
 			</util:list>
 		</constructor-arg>
 	</bean>

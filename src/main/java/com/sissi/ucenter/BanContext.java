@@ -10,7 +10,9 @@ import com.sissi.context.JID;
 public interface BanContext {
 
 	public void ban(JID from, JID to);
-
+	
+	public void free(JID from);
+	
 	public void free(JID from, JID to);
 
 	public Boolean isBan(JID from, JID to);

@@ -20,7 +20,17 @@ public class UnBlockProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		this.banContext.free(context.getJid(), super.jidBuilder.build(UnBlock.class.cast(protocol).getItem().getJid()));
+		UnBlock ub = UnBlock.class.cast(protocol);
+		return ub.isUnBlockAll() ? writeAndReturn(context) : writeAndReturn(context, ub);
+	}
+
+	private Boolean writeAndReturn(JIDContext context, UnBlock ub) {
+		this.banContext.free(context.getJid(), super.jidBuilder.build(ub.getItem().getJid()));
+		return true;
+	}
+
+	private Boolean writeAndReturn(JIDContext context) {
+		this.banContext.free(context.getJid());
 		return true;
 	}
 }

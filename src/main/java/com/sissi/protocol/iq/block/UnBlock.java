@@ -11,4 +11,7 @@ import com.sissi.read.Mapping.MappingMetadata;
 @XmlRootElement(name = "unblock")
 public class UnBlock extends Block {
 
+	public Boolean isUnBlockAll() {
+		return super.getItem() == null;
+	}
 }

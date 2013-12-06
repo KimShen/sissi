@@ -22,6 +22,7 @@
 	<import resource="config-in-message.xml" />
 	<import resource="config-in-presence.xml" />
 	<import resource="config-in-stream.xml" />
+	<import resource="config-out.xml" />
 	<import resource="config-offline.xml" />
 	<import resource="config-ucenter.xml" />
 	<import resource="config-server.xml" />
