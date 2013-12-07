@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.protocol.Element;
+import com.sissi.protocol.Failed;
 
 /**
  * @author kim 2013-11-25
@@ -87,6 +88,17 @@ public class Challenge implements Element {
 
 	@Override
 	public Challenge setType(String type) {
+		return this;
+	}
+
+	@Override
+	@XmlTransient
+	public Failed getError() {
+		return null;
+	}
+
+	@Override
+	public Element setError(Failed failed) {
 		return this;
 	}
 }

@@ -20,4 +20,8 @@ public interface Element {
 	public String getType();
 
 	public Element setType(String type);
+
+	public Failed getError();
+
+	public Element setError(Failed failed);
 }
