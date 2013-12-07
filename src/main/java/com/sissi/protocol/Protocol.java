@@ -14,7 +14,7 @@ abstract public class Protocol implements Element {
 
 	public static enum Type {
 
-		SET, GET, RESULT, ERROR;
+		SET, GET, RESULT, ERROR, CANCEL;
 
 		public String toString() {
 			return super.toString().toLowerCase();
@@ -115,8 +115,8 @@ abstract public class Protocol implements Element {
 		return error;
 	}
 
-	public Protocol setError(Error error) {
-		this.error = error;
+	public Protocol setError(Failed failed) {
+		this.error = new Error(failed);
 		this.setType(Type.ERROR);
 		return this;
 	}
