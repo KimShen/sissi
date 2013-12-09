@@ -8,8 +8,8 @@
 	<bean id="global.pro.utils" abstract="true">
 		<property name="jidBuilder" ref="builder.jid" />
 		<property name="addressing" ref="addressing" />
-		<property name="presenceQueue" ref="broadcast.presence.selfs" />
 		<property name="protocolQueue" ref="broadcast.protocol.selfs" />
+		<property name="presenceQueue" ref="broadcast.presence.selfs" />
 		<property name="relationContext" ref="ucenter.relation.roster" />
 	</bean>
 

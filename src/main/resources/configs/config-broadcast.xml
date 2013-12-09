@@ -8,6 +8,9 @@
 	<bean id="broadcast.presence.selfs" class="com.sissi.broadcast.impl.ToJIDSelfsPresenceQueue">
 		<constructor-arg ref="addressing" />
 	</bean>
+	<bean id="broadcast.protocol.self" class="com.sissi.broadcast.impl.ToJIDSelfProtocolQueue">
+		<constructor-arg ref="addressing" />
+	</bean>
 	<bean id="broadcast.protocol.selfs" class="com.sissi.broadcast.impl.ToJIDSelfsProtocolQueue">
 		<constructor-arg ref="addressing" />
 	</bean>
