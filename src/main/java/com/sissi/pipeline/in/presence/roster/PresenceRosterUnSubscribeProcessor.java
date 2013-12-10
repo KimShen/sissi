@@ -6,13 +6,13 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.roster.Roster;
 
 /**
- * @author kim 2013-11-17
+ * @author kim 2013年12月10日
  */
-public class PresenceRosterUnSubscribedProcessor extends UtilProcessor {
+public class PresenceRosterUnSubscribeProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.relationContext.update(super.build(protocol.getTo()), context.getJid(), Roster.Subscription.NONE.toString());
+		super.relationContext.update(context.getJid(), super.build(protocol.getTo()), Roster.Subscription.NONE.toString());
 		return true;
 	}
 }

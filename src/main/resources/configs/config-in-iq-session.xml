@@ -15,10 +15,10 @@
 	<bean id="session.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="iq.pro.result.next" />
 				<ref bean="session.pro.2fans" />
 				<ref bean="session.pro.4fans" />
 				<ref bean="session.pro.4selfs" />
-				<ref bean="iq.pro.result" />
 			</util:list>
 		</constructor-arg>
 	</bean>

@@ -24,7 +24,7 @@ public class Presence extends Protocol implements OnlineStatus, Collector {
 
 	public static enum Type {
 
-		SUBSCRIBE, SUBSCRIBED, UNSUBSCRIBED, UNAVAILABLE, ONLINE;
+		SUBSCRIBE, SUBSCRIBED, UNSUBSCRIBE, UNSUBSCRIBED, UNAVAILABLE, ONLINE;
 
 		public String toString() {
 			if (ONLINE == this) {

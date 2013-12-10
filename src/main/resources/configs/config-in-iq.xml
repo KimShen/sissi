@@ -5,8 +5,13 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="iq.pro.result" class="com.sissi.pipeline.in.iq.IQTypeProcessor">
+	<bean id="iq.pro.result.stop" class="com.sissi.pipeline.in.iq.IQTypeProcessor">
 		<constructor-arg value="result" />
+	</bean>
+	<bean id="iq.pro.result.next" class="com.sissi.pipeline.in.iq.IQTypeProcessor">
+		<constructor-arg value="result" />
+		<constructor-arg value="true" />
+		<constructor-arg value="true" />
 	</bean>
 	<bean id="iq.pro.error.clear" class="com.sissi.pipeline.in.iq.IQTypeProcessor">
 		<constructor-arg value="error" />
@@ -17,7 +22,7 @@
 	</bean>
 	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
 		<constructor-arg ref="finder.iq" />
-		<constructor-arg ref="iq.pro.result" />
+		<constructor-arg ref="iq.pro.result.stop" />
 	</bean>
 	<bean id="iq.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -53,7 +58,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.IQResultMatcher" />
 		</constructor-arg>
-		<constructor-arg ref="iq.pro.result" />
+		<constructor-arg ref="iq.pro.result.stop" />
 	</bean>
 
 </beans>

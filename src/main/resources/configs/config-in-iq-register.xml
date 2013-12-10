@@ -23,7 +23,7 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="register.pro.store.fork" />
-				<ref bean="iq.pro.result" />
+				<ref bean="iq.pro.result.stop" />
 			</util:list>
 		</constructor-arg>
 	</bean>

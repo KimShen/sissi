@@ -34,7 +34,7 @@
 				<ref bean="roster.pro.establish.set.2selfs.item" />
 				<ref bean="roster.pro.establish.set.2selfs.presence" />
 				<ref bean="roster.pro.establish.set.2fans.presence" />
-				<ref bean="iq.pro.result" />
+				<ref bean="iq.pro.result.stop" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -47,7 +47,7 @@
 				<ref bean="roster.pro.establish.remove" />
 				<ref bean="roster.pro.establish.remove.2selfs.item" />
 				<ref bean="roster.pro.establish.remove.2selfs.presence" />
-				<ref bean="iq.pro.result" />
+				<ref bean="iq.pro.result.stop" />
 			</util:list>
 		</constructor-arg>
 	</bean>

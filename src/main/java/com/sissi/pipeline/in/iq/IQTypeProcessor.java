@@ -14,20 +14,26 @@ public class IQTypeProcessor implements Input {
 
 	private final Boolean clear;
 
+	private final Boolean doNext;
+
 	public IQTypeProcessor(String type) {
 		this(type, true);
 	}
 
 	public IQTypeProcessor(String type, Boolean clear) {
-		super();
+		this(type, true, false);
+	}
+
+	public IQTypeProcessor(String type, Boolean clear, Boolean doNext) {
 		this.type = Type.parse(type);
 		this.clear = clear;
+		this.doNext = doNext;
 	}
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		context.write(this.prepare(protocol));
-		return false;
+		return this.doNext;
 	}
 
 	private Protocol prepare(Protocol protocol) {

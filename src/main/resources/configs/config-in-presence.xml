@@ -40,7 +40,7 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.roster.unsubscribed" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnsubscribedProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.unsubscribed" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribedProcessor" parent="global.pro.utils" />
 	<bean id="presence.pro.roster.unsubscribed.2source.item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribed2SourceItemProcessor" parent="global.pro.utils" />
 	<bean id="presence.pro.roster.unsubscribed.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -64,6 +64,18 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="presence.pro.roster.unsubscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribeProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.unsubscribe.2source.item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2SourceItemProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.unsubscribe.2source.presence" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2SourcePresenceProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.unsubscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.pro.roster.unsubscribe.2source.item" />
+				<ref bean="presence.pro.roster.unsubscribe.2source.presence" />
+				<ref bean="presence.pro.roster.unsubscribe" />
+			</util:list>
+		</constructor-arg>
+	</bean>
 
 	<bean id="finder.presence" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
@@ -78,6 +90,7 @@
 			<util:list>
 				<ref bean="presence.condition.roster.subscribe" />
 				<ref bean="presence.condition.roster.subscribed" />
+				<ref bean="presence.condition.roster.unsubscribe" />
 				<ref bean="presence.condition.roster.unsubscribed" />
 			</util:list>
 		</constructor-arg>
@@ -102,6 +115,14 @@
 			<bean class="com.sissi.pipeline.in.MatchAll" />
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.roster.fork" />
+	</bean>
+	<bean id="presence.condition.roster.unsubscribe" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.presence.roster.PresenceRosterActionMatcher">
+				<constructor-arg value="unsubscribe" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="presence.pro.roster.unsubscribe.chained" />
 	</bean>
 	<bean id="presence.condition.roster.unsubscribed" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
