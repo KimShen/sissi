@@ -31,7 +31,7 @@ public class ItemWrapRelation implements RelationRoster {
 	}
 
 	@Override
-	public String getGroupText() {
+	public String asGroup() {
 		Group group = this.item.getGroup();
 		return group != null ? group.getText() : null;
 	}
@@ -47,7 +47,7 @@ public class ItemWrapRelation implements RelationRoster {
 
 	public Map<String, Object> plus() {
 		Map<String, Object> plus = new HashMap<String, Object>();
-		plus.put("group", this.getGroupText());
+		plus.put("group", this.asGroup());
 		return plus;
 	}
 }

@@ -9,30 +9,28 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JIDContext;
-import com.sissi.context.MyPresence;
-import com.sissi.context.MyPresence.MyPresenceBuilder;
+import com.sissi.context.OnlineStatus;
+import com.sissi.context.OnlineStatus.OnlineStatusBuilder;
 
 /**
  * @author kim 2013-11-21
  */
-public class MongoPresenceBuilder implements MyPresenceBuilder {
+public class MongoOnlineStatusBuilder implements OnlineStatusBuilder {
 
-	private final static String FIELD_PRIORITY = "priority";
-
-	private final static DBObject DEFAULT_SORTER = new BasicDBObject(FIELD_PRIORITY, 1);
+	private final static DBObject DEFAULT_SORTER = new BasicDBObject("priority", 1);
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final MongoConfig config;
 
-	public MongoPresenceBuilder(MongoConfig config) {
+	public MongoOnlineStatusBuilder(MongoConfig config) {
 		super();
-		this.config = config.rebuild();
+		this.config = config.clear();
 	}
 
 	@Override
-	public MyPresence build(JIDContext context) {
-		return new MongoContextPresence(context);
+	public OnlineStatus build(JIDContext context) {
+		return new MongoOnlineStatus(context);
 	}
 
 	private String get(JIDContext context, String key) {
@@ -58,50 +56,50 @@ public class MongoPresenceBuilder implements MyPresenceBuilder {
 		this.config.find().remove(query);
 	}
 
-	private class MongoContextPresence implements MyPresence {
+	private class MongoOnlineStatus implements OnlineStatus {
 
 		private JIDContext context;
 
-		public MongoContextPresence(JIDContext context) {
+		public MongoOnlineStatus(JIDContext context) {
 			super();
 			this.context = context;
 		}
 
 		@Override
-		public String getTypeText() {
-			return MongoPresenceBuilder.this.get(this.context, "type");
+		public String getTypeAsText() {
+			return MongoOnlineStatusBuilder.this.get(this.context, "type");
 		}
 
 		@Override
-		public String getShowText() {
-			return MongoPresenceBuilder.this.get(this.context, "show");
+		public String getShowAsText() {
+			return MongoOnlineStatusBuilder.this.get(this.context, "show");
 		}
 
 		@Override
-		public String getStatusText() {
-			return MongoPresenceBuilder.this.get(this.context, "status");
+		public String getStatusAsText() {
+			return MongoOnlineStatusBuilder.this.get(this.context, "status");
 		}
 
 		@Override
-		public MyPresence setTypeText(String type) {
-			MongoPresenceBuilder.this.set(this.context, "type", type);
+		public OnlineStatus asType(String type) {
+			MongoOnlineStatusBuilder.this.set(this.context, "type", type);
 			return this;
 		}
 
 		@Override
-		public MyPresence setShowText(String show) {
-			MongoPresenceBuilder.this.set(this.context, "show", show);
+		public OnlineStatus asShow(String show) {
+			MongoOnlineStatusBuilder.this.set(this.context, "show", show);
 			return this;
 		}
 
 		@Override
-		public MyPresence setStatusText(String status) {
-			MongoPresenceBuilder.this.set(this.context, "status", status);
+		public OnlineStatus asStatus(String status) {
+			MongoOnlineStatusBuilder.this.set(this.context, "status", status);
 			return this;
 		}
 
-		public MyPresence clear() {
-			MongoPresenceBuilder.this.remove(this.context);
+		public OnlineStatus clear() {
+			MongoOnlineStatusBuilder.this.remove(this.context);
 			return this;
 		}
 	}

@@ -24,5 +24,4 @@ public class Blocked implements Detail {
 	public String getXmlns() {
 		return XMLNS;
 	}
-
 }

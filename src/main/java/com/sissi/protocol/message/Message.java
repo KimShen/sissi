@@ -57,6 +57,6 @@ public class Message extends Protocol implements Collector {
 
 	@Override
 	public void set(String localName, Object ob) {
-		this.setBody((Body) ob);
+		this.setBody(Body.class.cast(ob));
 	}
 }

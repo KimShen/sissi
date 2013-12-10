@@ -13,7 +13,7 @@ public class RosterRemove2SelfsPresenceProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.presenceQueue.offer(context.getJid(), super.jidBuilder.build(Roster.class.cast(protocol).getFirstItem().getJid()), context.getJid(), new Presence().setType(Presence.Type.UNAVAILABLE));
+		super.presenceQueue.offer(context.getJid(), super.build(Roster.class.cast(protocol).getFirstItem().getJid()), context.getJid(), new Presence().setType(Presence.Type.UNAVAILABLE));
 		return true;
 	}
 }

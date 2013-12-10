@@ -28,15 +28,14 @@ public class Error extends Protocol implements Failed {
 	}
 	
 	public Error(Failed failed) {
-		this.code = failed.getCode();
-		this.details = failed.getDetails();
 		super.setFrom(failed.getFrom());
 		super.setTo(failed.getTo());
 		super.setType(failed.getType());
+		this.code = failed.getCode();
+		this.details = failed.getDetails();
 	}
 
 	public Error(String code, Type type) {
-		super();
 		super.setType(type);
 		this.code = code;
 	}

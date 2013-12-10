@@ -15,9 +15,6 @@
 		<constructor-arg value="error" />
 		<constructor-arg value="false" />
 	</bean>
-	<bean id="iq.pro.nonechildren" class="com.sissi.pipeline.in.iq.IQNoneChildrenProcessor">
-		<constructor-arg ref="iq.pro.result" />
-	</bean>
 	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
 		<constructor-arg ref="finder.iq" />
 		<constructor-arg ref="iq.pro.result" />
@@ -25,7 +22,6 @@
 	<bean id="iq.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="iq.pro.nonechildren" />
 				<ref bean="iq.pro.fork" />
 			</util:list>
 		</constructor-arg>

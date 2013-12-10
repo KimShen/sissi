@@ -11,8 +11,7 @@ public class BindAddressProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		this.addressing.ban(context);
-		this.addressing.join(context);
+		super.addressing.ban(context).join(context);
 		context.setBinding(true);
 		return true;
 	}

@@ -3,6 +3,6 @@ package com.sissi.write;
 /**
  * @author kim 2013-10-24
  */
-public interface WriteWithOutClose {
+public interface WithOutClose {
 
 }

@@ -24,5 +24,4 @@ public class CachedSaslServers extends HashMap<JIDContext, SaslServer> implement
 	public SaslServer get(JIDContext context) {
 		return super.remove(context);
 	}
-
 }

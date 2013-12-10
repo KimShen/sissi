@@ -11,14 +11,14 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.addressing.Addressing;
+import com.sissi.commons.Interval;
+import com.sissi.commons.Runner;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContext.JIDContextBuilder;
 import com.sissi.context.JIDContext.JIDContextParam;
 import com.sissi.context.impl.JIDContexts;
-import com.sissi.thread.Interval;
-import com.sissi.thread.Runner;
 
 /**
  * @author kim 2013-11-1
@@ -41,47 +41,43 @@ public class MongoAddressing implements Addressing {
 
 	private final Map<Long, JIDContext> contexts = new ConcurrentHashMap<Long, JIDContext>();
 
-	private final Interval gcInterval;
-
 	private final MongoConfig config;
 
-	private final JIDContextBuilder jidContextBuilder;
+	private final JIDContextBuilder offlineContextBuilder;
 
-	public MongoAddressing(Runner runner, Interval gcInterval, MongoConfig config, JIDContextBuilder jidContextBuilder) {
+	public MongoAddressing(Runner runner, Interval interval, MongoConfig config, JIDContextBuilder offlineContextBuilder) {
 		super();
-		this.config = config.rebuild();
-		this.gcInterval = gcInterval;
-		this.jidContextBuilder = jidContextBuilder;
-		runner.executor(GC_THREAD, new GC());
+		this.config = config.clear();
+		this.offlineContextBuilder = offlineContextBuilder;
+		runner.executor(GC_THREAD, new GC(interval));
 	}
 
-	public void ban(JIDContext context) {
+	public Addressing ban(JIDContext context) {
 		for (JIDContext current : this.find(context.getJid(), true, false)) {
 			if (current.close()) {
 				this.leave(current);
-			} else {
-				this.log.warn("Ban on " + current.getJid().asString() + " failed");
 			}
 		}
+		return this;
 	}
 
 	@Override
-	public void join(JIDContext context) {
+	public Addressing join(JIDContext context) {
 		this.contexts.put(context.getIndex(), context);
 		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).add(FIELD_PRIORITY, context.getPriority()).add("index", context.getIndex()).get();
 		this.log.debug("Query: " + query);
 		this.config.find().save(query);
+		return this;
 	}
 
 	@Override
-	public void leave(JIDContext context) {
+	public Addressing leave(JIDContext context) {
 		if (this.contexts.remove(context.getIndex()) != null) {
 			DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).add(FIELD_PRIORITY, context.getPriority()).get();
 			this.log.debug("Query: " + query);
 			this.config.find().remove(query);
-		} else {
-			this.log.error("Leave on " + context.getJid().asString() + " failed");
 		}
+		return this;
 	}
 
 	@Override
@@ -94,7 +90,7 @@ public class MongoAddressing implements Addressing {
 		DBObject query = this.buildQueryWithSmartResource(jid, false);
 		this.log.debug("Query: " + query);
 		DBObject entity = this.config.find().findOne(query, DEFAULT_FILTER);
-		return entity != null ? this.contexts.get(new Long(entity.get("index").toString())) : this.jidContextBuilder.build(jid, MongoAddressing.NOTHING);
+		return entity != null ? this.contexts.get(new Long(entity.get("index").toString())) : this.offlineContextBuilder.build(jid, MongoAddressing.NOTHING);
 	}
 
 	private JIDContexts find(JID jid, Boolean usingResource) {
@@ -132,8 +128,6 @@ public class MongoAddressing implements Addressing {
 				JIDContext context = MongoAddressing.this.contexts.get(index);
 				if (context != null) {
 					this.add(context);
-				} else {
-					MongoAddressing.this.log.warn("Index: " + index + " is leaked");
 				}
 			}
 			this.usingOffline(jid, usingOffline);
@@ -141,21 +135,27 @@ public class MongoAddressing implements Addressing {
 
 		private void usingOffline(JID jid, Boolean usingOffline) {
 			if (usingOffline && this.isEmpty()) {
-				MongoAddressing.this.log.debug("Using the offline context for " + jid.asString());
-				this.add(MongoAddressing.this.jidContextBuilder.build(jid, MongoAddressing.NOTHING));
+				this.add(MongoAddressing.this.offlineContextBuilder.build(jid, MongoAddressing.NOTHING));
 			}
 		}
 	}
 
 	private class GC implements Runnable {
 
+		private final Interval interval;
+
+		public GC(Interval interval) {
+			super();
+			this.interval = interval;
+		}
+
 		@Override
 		public void run() {
 			while (true) {
 				try {
 					this.gc();
-					MongoAddressing.this.log.debug("Next gc after " + MongoAddressing.this.gcInterval.getInterval() + " / " + MongoAddressing.this.gcInterval.getUnit());
-					Thread.sleep(TimeUnit.MICROSECONDS.convert(MongoAddressing.this.gcInterval.getInterval(), MongoAddressing.this.gcInterval.getUnit()));
+					MongoAddressing.this.log.debug("Next gc after " + this.interval.getInterval() + " / " + interval.getUnit());
+					Thread.sleep(TimeUnit.MICROSECONDS.convert(this.interval.getInterval(), this.interval.getUnit()));
 				} catch (Exception e) {
 					MongoAddressing.this.log.error(e);
 				}

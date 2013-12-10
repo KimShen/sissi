@@ -37,28 +37,31 @@ public class MongoBanContext implements BanContext {
 	}
 
 	@Override
-	public void ban(JID from, JID to) {
+	public BanContext ban(JID from, JID to) {
 		DBObject query = BasicDBObjectBuilder.start().add("username", from.getUser()).get();
 		DBObject entity = BasicDBObjectBuilder.start().add("$addToSet", BasicDBObjectBuilder.start().add("bans", to.getUser()).get()).get();
 		this.log.debug("Query: " + query);
 		this.log.debug("Entity: " + entity);
 		this.config.find().update(query, entity);
+		return this;
 	}
 
-	public void free(JID from, JID to) {
+	public BanContext free(JID from, JID to) {
 		DBObject query = BasicDBObjectBuilder.start().add("username", from.getUser()).get();
 		DBObject entity = BasicDBObjectBuilder.start().add("$pull", BasicDBObjectBuilder.start().add("bans", to.getUser()).get()).get();
 		this.log.debug("Query: " + query);
 		this.log.debug("Entity: " + entity);
 		this.config.find().update(query, entity);
+		return this;
 	}
-	
-	public void free(JID from) {
+
+	public BanContext free(JID from) {
 		DBObject query = BasicDBObjectBuilder.start().add("username", from.getUser()).get();
 		DBObject entity = BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start().add("bans", 0).get()).get();
 		this.log.debug("Query: " + query);
 		this.log.debug("Entity: " + entity);
 		this.config.find().update(query, entity);
+		return this;
 	}
 
 	@Override

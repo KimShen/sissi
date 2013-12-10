@@ -27,7 +27,8 @@ public class Show extends Protocol {
 		return text;
 	}
 
-	public void setText(String text) {
+	public Show setText(String text) {
 		this.text = text;
+		return this;
 	}
 }

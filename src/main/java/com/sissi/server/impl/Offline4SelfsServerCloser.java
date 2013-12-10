@@ -10,6 +10,6 @@ public class Offline4SelfsServerCloser implements ServerCloser {
 
 	@Override
 	public void close(JIDContext context) {
-		context.getPresence().clear();
+		context.getOnlineStatus().clear();
 	}
 }

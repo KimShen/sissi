@@ -12,7 +12,7 @@ public class PresenceRosterSubscribedProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.relationContext.update(super.jidBuilder.build(protocol.getTo()), context.getJid(), Roster.Subscription.TO.toString());
+		super.relationContext.update(super.build(protocol.getTo()), context.getJid(), Roster.Subscription.TO.toString());
 		return true;
 	}
 }

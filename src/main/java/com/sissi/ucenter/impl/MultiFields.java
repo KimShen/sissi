@@ -16,8 +16,7 @@ public class MultiFields extends ArrayList<Field> implements Fields {
 	private static final long serialVersionUID = 1L;
 
 	public MultiFields(FieldFinder finder) {
-		Form form = finder.findField(Form.class);
-		this.addAll(form.getField());
+		this.addAll(finder.findField(Form.class).getField());
 	}
 
 	@Override

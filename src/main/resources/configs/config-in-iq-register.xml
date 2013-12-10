@@ -6,8 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="register.pro.fields" class="com.sissi.pipeline.in.iq.register.RegisterFieldsProcessor">
-		<constructor-arg ref="ucenter.invitation.multi" />
-		<!-- <constructor-arg ref="ucenter.invitation.simple" /> -->
+		<constructor-arg ref="ucenter.invitation.simple" />
 	</bean>
 	<bean id="register.pro.store.simple" class="com.sissi.pipeline.in.iq.register.RegisterStoreSimpleProcessor">
 		<constructor-arg ref="iq.pro.error.none" />
@@ -72,7 +71,6 @@
 	<bean id="register.condition.store.simple" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.register.RegisterStoreForkMatcher">
-				<constructor-arg value="com.sissi.protocol.iq.register.Register" />
 				<constructor-arg value="false" />
 			</bean>
 		</constructor-arg>
@@ -81,7 +79,6 @@
 	<bean id="register.condition.store.multi" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.register.RegisterStoreForkMatcher">
-				<constructor-arg value="com.sissi.protocol.iq.register.Register" />
 				<constructor-arg value="true" />
 			</bean>
 		</constructor-arg>

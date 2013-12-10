@@ -5,7 +5,7 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="disco.pro.info" class="com.sissi.pipeline.in.iq.disco.InfoProcessor" />
+	<bean id="disco.pro.info" class="com.sissi.pipeline.in.iq.disco.DiscoInfoProcessor" />
 	<bean id="disco.pro.info.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
@@ -17,7 +17,7 @@
 	<bean id="disco.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.MatchClass">
-				<constructor-arg value="com.sissi.protocol.iq.disco.Info" />
+				<constructor-arg value="com.sissi.protocol.iq.disco.DiscoInfo" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="disco.pro.info.chained" />

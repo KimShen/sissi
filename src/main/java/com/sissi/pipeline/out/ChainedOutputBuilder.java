@@ -14,7 +14,7 @@ import com.sissi.write.Writer.Transfer;
  */
 public class ChainedOutputBuilder implements OutputBuilder {
 
-	private List<OutputBuilder> builders;
+	private final List<OutputBuilder> builders;
 
 	public ChainedOutputBuilder(List<OutputBuilder> builders) {
 		super();

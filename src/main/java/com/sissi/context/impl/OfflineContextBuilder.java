@@ -4,8 +4,8 @@ import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContext.JIDContextBuilder;
 import com.sissi.context.JIDContext.JIDContextParam;
-import com.sissi.context.MyPresence;
-import com.sissi.offline.StorageBox;
+import com.sissi.context.OnlineStatus;
+import com.sissi.offline.DelayElementBox;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.presence.Presence;
 
@@ -16,11 +16,11 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private final static Integer DEFAULT_PRIORITY = 0;
 
-	private final StorageBox storageBox;
+	private final DelayElementBox delayElementBox;
 
-	public OfflineContextBuilder(StorageBox storageBox) {
+	public OfflineContextBuilder(DelayElementBox delayElementBox) {
 		super();
-		this.storageBox = storageBox;
+		this.delayElementBox = delayElementBox;
 	}
 
 	@Override
@@ -70,8 +70,9 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public void write(Element element) {
-			OfflineContextBuilder.this.storageBox.store(element);
+		public JIDContext write(Element element) {
+			OfflineContextBuilder.this.delayElementBox.store(element);
+			return this;
 		}
 
 		@Override
@@ -80,8 +81,8 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public MyPresence getPresence() {
-			return OfflineContextPresence.OFFLINE;
+		public OnlineStatus getOnlineStatus() {
+			return OfflineStatus.OFFLINE;
 		}
 
 		@Override
@@ -95,45 +96,45 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 	}
 
-	private static class OfflineContextPresence implements MyPresence {
+	private static class OfflineStatus implements OnlineStatus {
 
-		private final static MyPresence OFFLINE = new OfflineContextPresence();
+		private final static OnlineStatus OFFLINE = new OfflineStatus();
 
-		private OfflineContextPresence() {
+		private OfflineStatus() {
 
 		}
 
 		@Override
-		public String getTypeText() {
+		public String getTypeAsText() {
 			return Presence.Type.UNAVAILABLE.toString();
 		}
 
 		@Override
-		public String getShowText() {
+		public String getShowAsText() {
 			return null;
 		}
 
 		@Override
-		public String getStatusText() {
+		public String getStatusAsText() {
 			return null;
 		}
 
 		@Override
-		public MyPresence setTypeText(String type) {
+		public OnlineStatus asType(String type) {
 			return this;
 		}
 
 		@Override
-		public MyPresence setShowText(String show) {
+		public OnlineStatus asShow(String show) {
 			return this;
 		}
 
 		@Override
-		public MyPresence setStatusText(String status) {
+		public OnlineStatus asStatus(String status) {
 			return this;
 		}
 
-		public MyPresence clear() {
+		public OnlineStatus clear() {
 			return this;
 		}
 	}

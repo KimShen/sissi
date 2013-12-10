@@ -13,7 +13,7 @@ public class PresenceRosterSubscribeProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.presenceQueue.offer(super.jidBuilder.build(protocol.getTo()), context.getJid(), super.jidBuilder.build(protocol.getTo()), Presence.class.cast(protocol).setFrom(context.getJid()).setType(Type.SUBSCRIBE));
+		super.presenceQueue.offer(super.build(protocol.getTo()), context.getJid(), super.build(protocol.getTo()), Presence.class.cast(protocol).setFrom(context.getJid()).setType(Type.SUBSCRIBE));
 		return false;
 	}
 }

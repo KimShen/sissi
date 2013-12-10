@@ -12,8 +12,8 @@ public class UnBlock2FansPresenceProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		JIDContext freeContext = super.addressing.findOne(super.jidBuilder.build(UnBlock.class.cast(protocol).getItem().getJid()));
-		super.presenceQueue.offer(freeContext.getJid(), context.getJid(), freeContext.getJid(), context.getPresence());
+		JIDContext contacter = super.addressing.findOne(super.build(UnBlock.class.cast(protocol).getItem().getJid()));
+		super.presenceQueue.offer(contacter.getJid(), context.getJid(), contacter.getJid(), context.getOnlineStatus());
 		return true;
 	}
 

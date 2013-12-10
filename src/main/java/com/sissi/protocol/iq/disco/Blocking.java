@@ -22,5 +22,4 @@ public class Blocking implements Feature {
 	public String getVar() {
 		return VAR;
 	}
-
 }

@@ -6,5 +6,5 @@ package com.sissi.ucenter;
  */
 public interface RelationRoster extends Relation {
 	
-	public String getGroupText();
+	public String asGroup();
 }

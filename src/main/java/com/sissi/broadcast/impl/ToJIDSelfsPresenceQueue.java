@@ -3,7 +3,7 @@ package com.sissi.broadcast.impl;
 import com.sissi.addressing.Addressing;
 import com.sissi.broadcast.PresenceBroadcast;
 import com.sissi.context.JID;
-import com.sissi.context.MyPresence;
+import com.sissi.context.OnlineStatus;
 import com.sissi.protocol.presence.Presence;
 
 /**
@@ -18,19 +18,19 @@ public class ToJIDSelfsPresenceQueue extends ToJIDSelfsProtocolQueue implements 
 		this.presenceBuilder = new DefaultPresenceBuilder();
 	}
 
-	public void offer(JID jid, JID from, JID to, MyPresence presence) {
-		super.offer(jid.getBare(), this.presenceBuilder.build(from.getBare(), to.getBare(), presence));
+	public void offer(JID jid, JID from, JID to, OnlineStatus status) {
+		super.offer(jid.getBare(), this.presenceBuilder.build(from.getBare(), to.getBare(), status));
 	}
 
 	private class DefaultPresenceBuilder implements PresenceBuilder {
 
 		@Override
-		public Presence build(JID from, JID to, MyPresence presence) {
-			return Presence.class.isAssignableFrom(presence.getClass()) ? (Presence) Presence.class.cast(presence).setFrom(from.getBare()).setTo(to.getBare()) : this.newOne(from.getBare(), to.getBare(), presence);
+		public Presence build(JID from, JID to, OnlineStatus status) {
+			return Presence.class.isAssignableFrom(status.getClass()) ? (Presence) Presence.class.cast(status).setFrom(from.getBare()).setTo(to.getBare()) : this.newOne(from.getBare(), to.getBare(), status);
 		}
 
-		private Presence newOne(JID from, JID to, MyPresence presence) {
-			return new Presence(from.getBare(), to.getBare(), presence.getShowText(), presence.getStatusText(), presence.getTypeText());
+		private Presence newOne(JID from, JID to, OnlineStatus status) {
+			return new Presence(from.getBare(), to.getBare(), status.getShowAsText(), status.getStatusAsText(), status.getTypeAsText());
 		}
 	}
 }

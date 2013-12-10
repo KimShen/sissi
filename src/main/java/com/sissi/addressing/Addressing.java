@@ -8,11 +8,11 @@ import com.sissi.context.JIDContext;
  */
 public interface Addressing {
 
-	public void ban(JIDContext context);
+	public Addressing ban(JIDContext context);
 
-	public void join(JIDContext context);
+	public Addressing join(JIDContext context);
 
-	public void leave(JIDContext context);
+	public Addressing leave(JIDContext context);
 
 	public JIDContext find(JID jid);
 

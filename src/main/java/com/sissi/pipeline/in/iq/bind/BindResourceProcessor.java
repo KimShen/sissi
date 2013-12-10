@@ -14,12 +14,12 @@ public class BindResourceProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(this.prepareResponse(protocol, this.binding(context, Bind.class.cast(protocol))));
+		context.write(this.prepare(protocol, this.binding(context, Bind.class.cast(protocol))));
 		return true;
 	}
 
-	private IQ prepareResponse(Protocol protocol, Bind bind) {
-		return ((IQ) protocol.getParent().reply().setType(Type.RESULT).clear()).add(bind);
+	private IQ prepare(Protocol protocol, Bind bind) {
+		return IQ.class.cast(protocol.getParent().reply().setType(Type.RESULT).clear()).add(bind);
 	}
 
 	private Bind binding(JIDContext context, Bind bind) {

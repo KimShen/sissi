@@ -22,12 +22,14 @@ public class NetworkTransfer implements Transfer {
 	}
 
 	@Override
-	public void transfer(ByteBuf bytebuf) {
+	public Transfer transfer(ByteBuf bytebuf) {
 		this.context.writeAndFlush(bytebuf).addListener(FailLogGenericFutureListener.INSTANCE);
+		return this;
 	}
 
 	@Override
-	public void close() {
+	public Transfer close() {
 		this.context.close().addListener(FailLogGenericFutureListener.INSTANCE);
+		return this;
 	}
 }

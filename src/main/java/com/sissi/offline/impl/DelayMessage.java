@@ -11,9 +11,9 @@ import com.sissi.protocol.offline.Delay;
 /**
  * @author kim 2013-11-15
  */
-public class MessageStorage extends ProtocolStorage {
+public class DelayMessage extends DelayProtocol {
 
-	public MessageStorage(String hit, JIDBuilder jidBuilder) {
+	public DelayMessage(String hit, JIDBuilder jidBuilder) {
 		super(hit, jidBuilder);
 	}
 
@@ -26,9 +26,9 @@ public class MessageStorage extends ProtocolStorage {
 	}
 
 	@Override
-	public Message read(Map<String, Object> storage) {
-		Message message = (Message) super.based(storage, new Message());
-		return message.setBody(new Body(storage.get("body").toString())).setDelay(new Delay(super.hit, message.getFrom(), storage.get("delay").toString()));
+	public Message read(Map<String, Object> element) {
+		Message message = (Message) super.based(element, new Message());
+		return message.setBody(new Body(element.get("body").toString())).setDelay(new Delay(super.hit, message.getFrom(), element.get("delay").toString()));
 	}
 
 	public Boolean isSupport(Element element) {
@@ -36,7 +36,7 @@ public class MessageStorage extends ProtocolStorage {
 	}
 
 	@Override
-	public Boolean isSupport(Map<String, Object> storage) {
-		return Message.class.getSimpleName().equals(storage.get("class"));
+	public Boolean isSupport(Map<String, Object> element) {
+		return Message.class.getSimpleName().equals(element.get("class"));
 	}
 }

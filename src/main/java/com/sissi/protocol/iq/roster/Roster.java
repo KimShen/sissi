@@ -82,7 +82,7 @@ public class Roster extends Protocol implements Collector {
 		}
 	}
 
-	public Protocol clear() {
+	public Roster clear() {
 		super.clear();
 		this.item = null;
 		return this;

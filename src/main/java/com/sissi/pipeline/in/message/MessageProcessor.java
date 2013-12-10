@@ -11,7 +11,7 @@ public class MessageProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.protocolQueue.offer(super.jidBuilder.build(protocol.getTo()), protocol.setFrom(context.getJid()));
+		super.protocolQueue.offer(super.build(protocol.getTo()), protocol.setFrom(context.getJid()));
 		return false;
 	}
 }

@@ -9,11 +9,11 @@ import com.sissi.context.JID;
  */
 public interface RelationContext {
 
-	public void establish(JID from, Relation relation);
+	public RelationContext establish(JID from, Relation relation);
 
-	public void update(JID from, JID to, String state);
+	public RelationContext update(JID from, JID to, String state);
 
-	public void remove(JID from, JID to);
+	public RelationContext remove(JID from, JID to);
 
 	public Relation ourRelation(JID from, JID to);
 

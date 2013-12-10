@@ -41,7 +41,7 @@ public class MongoRelation implements RelationRoster {
 		return name;
 	}
 
-	public String getGroupText() {
+	public String asGroup() {
 		return group;
 	}
 

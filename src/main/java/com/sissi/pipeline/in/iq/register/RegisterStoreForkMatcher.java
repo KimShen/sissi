@@ -11,8 +11,8 @@ public class RegisterStoreForkMatcher extends MatchClass {
 
 	private final Boolean isMulti;
 
-	public RegisterStoreForkMatcher(Class<? extends Protocol> clazz, Boolean isMulti) {
-		super(clazz);
+	public RegisterStoreForkMatcher(Boolean isMulti) {
+		super(Register.class);
 		this.isMulti = isMulti;
 	}
 

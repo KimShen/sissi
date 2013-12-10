@@ -61,7 +61,7 @@ public class NetworkOutputBuilder implements OutputBuilder {
 
 		private class ByteBufferOutputStream extends OutputStream {
 
-			private ByteBuf buffer;
+			private final ByteBuf buffer;
 
 			public ByteBufferOutputStream(ByteBuf buffer) {
 				super();

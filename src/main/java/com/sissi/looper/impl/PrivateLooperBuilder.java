@@ -4,17 +4,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.commons.Interval;
+import com.sissi.commons.Runner;
 import com.sissi.feed.Feeder;
 import com.sissi.looper.Looper;
 import com.sissi.looper.Looper.LooperBuilder;
 import com.sissi.protocol.Protocol;
-import com.sissi.thread.Interval;
-import com.sissi.thread.Runner;
 
 /**
  * @author kim 2013-10-30
@@ -45,8 +44,6 @@ public class PrivateLooperBuilder implements LooperBuilder {
 
 		private final AtomicBoolean state;
 
-		private final AtomicInteger counter;
-
 		private final Future<?> future;
 
 		private final Feeder feeder;
@@ -54,18 +51,15 @@ public class PrivateLooperBuilder implements LooperBuilder {
 		private PrivateLooper(Future<?> future, Feeder feeder) {
 			super();
 			this.state = new AtomicBoolean();
-			this.counter = new AtomicInteger();
 			this.future = future;
 			this.feeder = feeder;
 		}
 
 		@Override
 		public void run() {
-			this.counter.incrementAndGet();
 			while (true) {
 				try {
 					if (this.prepareStop()) {
-						PrivateLooperBuilder.this.log.debug("Looper is stopping, current is " + this.counter.get());
 						break;
 					}
 					this.getAndFeed();
@@ -76,7 +70,6 @@ public class PrivateLooperBuilder implements LooperBuilder {
 					}
 				}
 			}
-			this.counter.decrementAndGet();
 		}
 
 		private void getAndFeed() throws InterruptedException, ExecutionException, TimeoutException {
@@ -94,7 +87,6 @@ public class PrivateLooperBuilder implements LooperBuilder {
 		public void start() {
 			this.state.set(true);
 			PrivateLooperBuilder.this.runner.executor(PrivateLooperBuilder.this.threadNum, this);
-			PrivateLooperBuilder.this.log.debug("Looper is running, current is " + this.counter.get());
 		}
 
 		@Override

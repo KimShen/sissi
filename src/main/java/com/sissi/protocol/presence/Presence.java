@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
-import com.sissi.context.MyPresence;
+import com.sissi.context.OnlineStatus;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.read.Collector;
@@ -16,7 +16,7 @@ import com.sissi.read.Mapping.MappingMetadata;
  */
 @MappingMetadata(uri = "jabber:client", localName = "presence")
 @XmlRootElement
-public class Presence extends Protocol implements MyPresence, Collector {
+public class Presence extends Protocol implements OnlineStatus, Collector {
 
 	private final static String STATUS = "status";
 
@@ -65,12 +65,12 @@ public class Presence extends Protocol implements MyPresence, Collector {
 	}
 
 	public Presence setFrom(JID from) {
-		super.setFrom(from);
+		super.setFrom(from.asString());
 		return this;
 	}
 
 	@XmlTransient
-	public String getTypeText() {
+	public String getTypeAsText() {
 		return this.getType();
 	}
 
@@ -85,12 +85,12 @@ public class Presence extends Protocol implements MyPresence, Collector {
 	}
 
 	@XmlElement(name = "show")
-	public String getShowText() {
+	public String getShowAsText() {
 		return this.show != null ? this.show.getText() : null;
 	}
 
 	@XmlElement(name = "status")
-	public String getStatusText() {
+	public String getStatusAsText() {
 		return this.status != null ? this.status.getText() : null;
 	}
 
@@ -123,19 +123,19 @@ public class Presence extends Protocol implements MyPresence, Collector {
 	}
 
 	@Override
-	public Presence setShowText(String show) {
+	public Presence asShow(String show) {
 		this.setShow(show != null ? new Show(show) : null);
 		return this;
 	}
 
 	@Override
-	public Presence setStatusText(String status) {
+	public Presence asStatus(String status) {
 		this.setStatus(new Status(status != null ? status : null));
 		return this;
 	}
 
 	@Override
-	public Presence setTypeText(String type) {
+	public Presence asType(String type) {
 		return this.setType(Type.parse(type));
 	}
 

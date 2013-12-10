@@ -75,7 +75,10 @@ public class DigestAuthCallback implements AuthCallback {
 			context.write(new Challenge(this.saslServers.set(context, Sasl.createSaslServer(MECHANISM, PROTOCOL, this.host, PROPS, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
 			return true;
 		} catch (Exception e) {
-			this.log.fatal(e);
+			if (this.log.isFatalEnabled()) {
+				this.log.fatal(e);
+				e.printStackTrace();
+			}
 			return false;
 		}
 	}

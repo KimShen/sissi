@@ -5,31 +5,24 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="config.presence" class="com.sissi.config.impl.MongoCollection">
+	<bean id="config.status" class="com.sissi.config.impl.MongoCollection">
 		<constructor-arg ref="mongo.client" />
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.presence}" />
-		<constructor-arg>
-			<util:map map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Integer">
-				<entry key="jid" value="1" />
-				<entry key="resource" value="1" />
-				<entry key="priority" value="1" />
-			</util:map>
-		</constructor-arg>
 	</bean>
 
 	<bean id="builder.jid" class="com.sissi.context.impl.FixedHostJIDBuilder">
 		<constructor-arg value="${global.host}" />
 	</bean>
 	<bean id="builder.context.online" class="com.sissi.context.impl.OnlineContextBuilder">
-		<constructor-arg ref="builder.presence" />
+		<constructor-arg ref="builder.status" />
 	</bean>
 	<bean id="builder.context.offline" class="com.sissi.context.impl.OfflineContextBuilder">
 		<constructor-arg ref="storage.box" />
 	</bean>
 	
-	<bean id="builder.presence" class="com.sissi.context.impl.MongoPresenceBuilder">
-		<constructor-arg ref="config.presence" />
+	<bean id="builder.status" class="com.sissi.context.impl.MongoOnlineStatusBuilder">
+		<constructor-arg ref="config.status" />
 	</bean>
 
 </beans>

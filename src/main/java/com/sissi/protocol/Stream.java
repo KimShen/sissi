@@ -16,14 +16,14 @@ import com.sissi.protocol.feature.Mechanisms;
 import com.sissi.protocol.feature.Register;
 import com.sissi.protocol.feature.Session;
 import com.sissi.read.Mapping.MappingMetadata;
-import com.sissi.write.WriteWithOutClose;
+import com.sissi.write.WithOutClose;
 
 /**
  * @author Kim.shen 2013-10-16
  */
 @MappingMetadata(uri = "http://etherx.jabber.org/streams", localName = "stream")
 @XmlRootElement(namespace = Stream.NAMESPACE)
-public class Stream extends Protocol implements WriteWithOutClose {
+public class Stream extends Protocol implements WithOutClose {
 
 	public final static String NAMESPACE = "http://etherx.jabber.org/streams";
 

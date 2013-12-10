@@ -13,7 +13,7 @@ import com.sissi.ucenter.BanContext;
  */
 public class BlockListProcessor extends UtilProcessor {
 
-	private BanContext banContext;
+	private final BanContext banContext;
 
 	public BlockListProcessor(BanContext banContext) {
 		super();
@@ -24,9 +24,9 @@ public class BlockListProcessor extends UtilProcessor {
 	public Boolean input(JIDContext context, Protocol protocol) {
 		BlockList list = BlockList.class.cast(protocol);
 		for (String each : this.banContext.iBanedWho(context.getJid())) {
-			list.add(new Item().setJid(super.jidBuilder.build(each, null).asStringWithBare()));
+			list.add(new Item().setJid(super.build(each, null).asStringWithBare()));
 		}
-		context.write(protocol.getParent().reply().setType(Type.RESULT));
+		context.write(list.getParent().reply().setType(Type.RESULT));
 		return true;
 	}
 }

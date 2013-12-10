@@ -25,11 +25,11 @@ public interface JIDContext {
 
 	public Integer getPriority();
 
-	public MyPresence getPresence();
+	public OnlineStatus getOnlineStatus();
 
 	public Boolean close();
 
-	public void write(Element element);
+	public JIDContext write(Element element);
 
 	public interface JIDContextBuilder {
 

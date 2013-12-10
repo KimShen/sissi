@@ -8,12 +8,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sissi.context.JID;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.bind.Bind;
 import com.sissi.protocol.iq.block.BlockList;
 import com.sissi.protocol.iq.block.Blocked;
 import com.sissi.protocol.iq.block.UnBlock;
-import com.sissi.protocol.iq.disco.Info;
+import com.sissi.protocol.iq.disco.DiscoInfo;
 import com.sissi.protocol.iq.register.Register;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.protocol.iq.session.Session;
@@ -40,8 +41,13 @@ public class IQ extends Protocol implements Collector {
 		this();
 		super.setType(type.toString());
 	}
+	
+	public IQ setTo(JID to){
+		super.setTo(to);
+		return this;
+	}
 
-	@XmlElements({ @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "query", type = Roster.class), @XmlElement(name = "query", type = Register.class), @XmlElement(name = "query", type = Info.class), @XmlElement(name = "block", type = Blocked.class), @XmlElement(name = "unblock", type = UnBlock.class), @XmlElement(name = "blocklist", type = BlockList.class) })
+	@XmlElements({ @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "query", type = Roster.class), @XmlElement(name = "query", type = Register.class), @XmlElement(name = "query", type = DiscoInfo.class), @XmlElement(name = "block", type = Blocked.class), @XmlElement(name = "unblock", type = UnBlock.class), @XmlElement(name = "blocklist", type = BlockList.class) })
 	public List<Protocol> getProtocols() {
 		return protocols;
 	}
@@ -65,6 +71,6 @@ public class IQ extends Protocol implements Collector {
 
 	@Override
 	public void set(String localName, Object ob) {
-		this.add((Protocol.class.cast(ob)));
+		this.add(Protocol.class.cast(ob));
 	}
 }

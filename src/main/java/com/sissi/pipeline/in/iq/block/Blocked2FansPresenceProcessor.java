@@ -14,8 +14,8 @@ public class Blocked2FansPresenceProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		JIDContext freeContext = super.addressing.findOne(super.jidBuilder.build(Blocked.class.cast(protocol).getItem().getJid()));
-		super.presenceQueue.offer(freeContext.getJid(), context.getJid(), freeContext.getJid(), new Presence().setType(Type.UNAVAILABLE));
+		JIDContext contacter = super.addressing.findOne(super.build(Blocked.class.cast(protocol).getItem().getJid()));
+		super.presenceQueue.offer(contacter.getJid(), context.getJid(), contacter.getJid(), new Presence().setType(Type.UNAVAILABLE));
 		return true;
 	}
 }

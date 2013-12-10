@@ -20,6 +20,6 @@ public class Offline2FansServerCloser implements ServerCloser {
 
 	@Override
 	public void close(JIDContext context) {
-		this.protocolBraodcast.offer(context.getJid().getBare(), new Presence().setFrom(context.getJid().getBare()).setType(Type.UNAVAILABLE));
+		this.protocolBraodcast.offer(context.getJid(), new Presence().setFrom(context.getJid().getBare()).setType(Type.UNAVAILABLE));
 	}
 }

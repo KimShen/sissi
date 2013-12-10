@@ -18,24 +18,24 @@
 	<bean id="presence.pro.roster.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.presence.roster" />
 	</bean>
-	<bean id="presence.pro.state.4store" class="com.sissi.pipeline.in.presence.state.PresenceState4StoreProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.state.2fans" class="com.sissi.pipeline.in.presence.state.PresenceState2FansProcessor" parent="global.pro.utils">
+	<bean id="presence.pro.status.2self" class="com.sissi.pipeline.in.presence.status.PresenceStatus2SelfProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.status.2fans" class="com.sissi.pipeline.in.presence.status.PresenceStatus2FansProcessor" parent="global.pro.utils">
 		<property name="protocolQueue" ref="broadcast.protocol.fans" />
 	</bean>
-	<bean id="presence.pro.state.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+	<bean id="presence.pro.status.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.state.4store" />
-				<ref bean="presence.pro.state.2fans" />
+				<ref bean="presence.pro.status.2self" />
+				<ref bean="presence.pro.status.2fans" />
 			</util:list>
 		</constructor-arg>
 	</bean>
 	<bean id="presence.pro.roster.subscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.roster.subscribe.relation" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeRelationProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.subscribe.validate" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeValidateProcessor" parent="global.pro.utils" />
 	<bean id="presence.pro.roster.subscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.roster.subscribe.relation" />
+				<ref bean="presence.pro.roster.subscribe.validate" />
 				<ref bean="presence.pro.roster.subscribe" />
 			</util:list>
 		</constructor-arg>
@@ -51,11 +51,13 @@
 		</constructor-arg>
 	</bean>
 	<bean id="presence.pro.roster.subscribed" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.subscribed.validate" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedValidateProcessor" parent="global.pro.utils" />
 	<bean id="presence.pro.roster.subscribed.2source.item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribed2SourceItemProcessor" parent="global.pro.utils" />
 	<bean id="presence.pro.roster.subscribed.2source.presence" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribed2SourcePresenceProcessor" parent="global.pro.utils" />
 	<bean id="presence.pro.roster.subscribed.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="presence.pro.roster.subscribed.validate" />
 				<ref bean="presence.pro.roster.subscribed" />
 				<ref bean="presence.pro.roster.subscribed.2source.item" />
 				<ref bean="presence.pro.roster.subscribed.2source.presence" />
@@ -66,7 +68,7 @@
 	<bean id="finder.presence" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.condition.state" />
+				<ref bean="presence.condition.status" />
 				<ref bean="presence.condition.roster" />
 			</util:list>
 		</constructor-arg>
@@ -89,11 +91,11 @@
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.chained" />
 	</bean>
-	<bean id="presence.condition.state" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="presence.condition.status" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.presence.state.PresenceStateMatcher" />
+			<bean class="com.sissi.pipeline.in.presence.status.PresenceStatusMatcher" />
 		</constructor-arg>
-		<constructor-arg ref="presence.pro.state.chained" />
+		<constructor-arg ref="presence.pro.status.chained" />
 	</bean>
 	<bean id="presence.condition.roster" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

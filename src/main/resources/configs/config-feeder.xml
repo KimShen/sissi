@@ -10,10 +10,10 @@
 		<constructor-arg value="${looper.thread.num}" />
 	</bean>
 
-	<bean id="looper.runner" class="com.sissi.thread.Runner">
+	<bean id="looper.runner" class="com.sissi.commons.Runner">
 		<constructor-arg ref="executor" />
 	</bean>
-	<bean id="looper.interval" class="com.sissi.thread.Interval">
+	<bean id="looper.interval" class="com.sissi.commons.Interval">
 		<constructor-arg value="${looper.thread.interval}" />
 		<constructor-arg value="${looper.thread.unit}" />
 	</bean>

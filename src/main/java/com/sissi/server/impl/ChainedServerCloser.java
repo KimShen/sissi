@@ -23,5 +23,4 @@ public class ChainedServerCloser implements ServerCloser {
 			each.close(context);
 		}
 	}
-
 }

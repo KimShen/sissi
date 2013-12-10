@@ -22,10 +22,10 @@ import org.apache.commons.io.LineIterator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.comons.ScanUtil;
+import com.sissi.commons.ScanUtil;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.Element;
-import com.sissi.write.WriteWithOutClose;
+import com.sissi.write.WithOutClose;
 import com.sissi.write.Writer;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
@@ -35,7 +35,7 @@ import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 public class JAXBWriter implements Writer {
 
 	private final static String PACKAGE = "com.sissi.protocol";
-	
+
 	private final static Log LOG = LogFactory.getLog(JAXBWriter.class);
 
 	private final static String MAPPING_PROPERTY = "com.sun.xml.bind.namespacePrefixMapper";
@@ -70,31 +70,32 @@ public class JAXBWriter implements Writer {
 		this.mapper = mapper;
 	}
 
-	public void write(JIDContext context, Element node, OutputStream output) throws IOException {
+	public Element write(JIDContext context, Element element, OutputStream output) throws IOException {
 		BufferedOutputStream bufferOut = new BufferedOutputStream(output);
 		try {
-			if (WriteWithOutClose.class.isAssignableFrom(node.getClass())) {
-				this.writeWithOutClose(context, node, bufferOut);
+			if (WithOutClose.class.isAssignableFrom(element.getClass())) {
+				this.writeWithOutClose(context, element, bufferOut);
 			} else {
-				this.writeWithFull(context, node, bufferOut);
+				this.writeWithFull(context, element, bufferOut);
 			}
 		} finally {
 			bufferOut.close();
 		}
+		return element;
 	}
 
-	public void writeWithFull(JIDContext context, Element node, OutputStream output) throws IOException {
+	public void writeWithFull(JIDContext context, Element element, OutputStream output) throws IOException {
 		try {
 			Marshaller marshaller = this.generateMarshaller(false);
 			if (LOG.isInfoEnabled()) {
 				StringBufferWriter bufferTemp = new StringBufferWriter(new StringWriter());
-				marshaller.marshal(node, bufferTemp);
+				marshaller.marshal(element, bufferTemp);
 				bufferTemp.flush();
 				String content = bufferTemp.toString();
 				LOG.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + content);
 				output.write(content.getBytes("UTF-8"));
 			} else {
-				marshaller.marshal(node, output);
+				marshaller.marshal(element, output);
 			}
 			output.flush();
 		} catch (JAXBException e) {
@@ -105,10 +106,10 @@ public class JAXBWriter implements Writer {
 		}
 	}
 
-	private void writeWithOutClose(JIDContext context, Element node, OutputStream output) throws IOException {
+	private void writeWithOutClose(JIDContext context, Element element, OutputStream output) throws IOException {
 		try {
 			Marshaller marshaller = generateMarshaller(true);
-			LinkedList<String> contents = this.prepareToLines(node, marshaller);
+			LinkedList<String> contents = this.prepareToLines(element, marshaller);
 			contents.removeLast();
 			StringBuffer sb = new StringBuffer();
 			for (String each : contents) {

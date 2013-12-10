@@ -9,12 +9,12 @@ import com.sissi.write.Writer.Transfer;
  */
 public interface Output {
 
-	public Boolean output(JIDContext context, Element node);
+	public Boolean output(JIDContext context, Element element);
 
 	public void close();
 
 	public interface OutputBuilder {
 
-		public Output build(Transfer writeable);
+		public Output build(Transfer transfer);
 	}
 }

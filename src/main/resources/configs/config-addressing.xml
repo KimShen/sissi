@@ -9,16 +9,9 @@
 		<constructor-arg ref="mongo.client" />
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.addressing}" />
-		<constructor-arg>
-			<util:map map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Integer">
-				<entry key="jid" value="1" />
-				<entry key="resource" value="1" />
-				<entry key="priority" value="1" />
-			</util:map>
-		</constructor-arg>
 	</bean>
 
-	<bean id="addressing.interval" class="com.sissi.thread.Interval">
+	<bean id="addressing.interval" class="com.sissi.commons.Interval">
 		<constructor-arg value="${addressing.thread.interval}" />
 		<constructor-arg value="${addressing.thread.unit}" />
 	</bean>

@@ -12,13 +12,11 @@ public interface MongoConfig extends Config {
 
 	public final static String C_NAME = "CL_NAME";
 
-	public MongoConfig rebuild();
-
-	public MongoConfig index();
+	public MongoConfig clear();
 
 	public DBCollection find();
 
 	public String asString(DBObject db, String key);
-	
+
 	public Boolean asBoolean(DBObject db, String key);
 }

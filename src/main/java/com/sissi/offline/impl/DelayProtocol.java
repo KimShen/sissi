@@ -7,19 +7,19 @@ import java.util.Map;
 import org.apache.commons.lang.time.DateFormatUtils;
 
 import com.sissi.context.JID.JIDBuilder;
-import com.sissi.offline.Storage;
+import com.sissi.offline.DelayElement;
 import com.sissi.protocol.Element;
 
 /**
  * @author kim 2013-11-15
  */
-public abstract class ProtocolStorage implements Storage {
+public abstract class DelayProtocol implements DelayElement {
 
 	protected final String hit;
 
 	protected final JIDBuilder jidBuilder;
 
-	public ProtocolStorage(String hit, JIDBuilder jidBuilder) {
+	public DelayProtocol(String hit, JIDBuilder jidBuilder) {
 		super();
 		this.hit = hit;
 		this.jidBuilder = jidBuilder;
@@ -40,8 +40,8 @@ public abstract class ProtocolStorage implements Storage {
 		return entity;
 	}
 
-	protected String toString(Map<String, Object> storage, String key) {
-		Object value = storage.get(key);
+	protected String toString(Map<String, Object> element, String key) {
+		Object value = element.get(key);
 		return value != null ? value.toString() : null;
 	}
 }

@@ -7,8 +7,8 @@ import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContext.JIDContextBuilder;
 import com.sissi.context.JIDContext.JIDContextParam;
-import com.sissi.context.MyPresence;
-import com.sissi.context.MyPresence.MyPresenceBuilder;
+import com.sissi.context.OnlineStatus;
+import com.sissi.context.OnlineStatus.OnlineStatusBuilder;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 
@@ -21,17 +21,17 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final AtomicLong indexes = new AtomicLong();
 
-	private final MyPresenceBuilder myPresenceBuilder;
+	private final OnlineStatusBuilder onlineStatusBuilder;
 
-	public OnlineContextBuilder(MyPresenceBuilder myPresenceBuilder) {
+	public OnlineContextBuilder(OnlineStatusBuilder onlineStatusBuilder) {
 		super();
-		this.myPresenceBuilder = myPresenceBuilder;
+		this.onlineStatusBuilder = onlineStatusBuilder;
 	}
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
 		UserContext context = new UserContext(param.find(KEY_OUTPUT, Output.class));
-		context.myPresence = this.myPresenceBuilder.build(context);
+		context.onlineStatus = this.onlineStatusBuilder.build(context);
 		return context;
 	}
 
@@ -45,7 +45,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final Long index;
 
-		private MyPresence myPresence;
+		private OnlineStatus onlineStatus;
 
 		private Integer priority;
 
@@ -92,8 +92,9 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public void write(Element node) {
+		public JIDContext write(Element node) {
 			this.output.output(this, node);
+			return this;
 		}
 
 		@Override
@@ -103,8 +104,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public MyPresence getPresence() {
-			return this.myPresence;
+		public OnlineStatus getOnlineStatus() {
+			return this.onlineStatus;
 		}
 
 		@Override

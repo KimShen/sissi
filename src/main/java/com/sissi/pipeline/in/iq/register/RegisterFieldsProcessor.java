@@ -13,7 +13,7 @@ import com.sissi.ucenter.RegisterInvitation;
  */
 public class RegisterFieldsProcessor implements Input {
 
-	private RegisterInvitation registerInvitation;
+	private final RegisterInvitation registerInvitation;
 
 	public RegisterFieldsProcessor(RegisterInvitation registerInvitation) {
 		super();

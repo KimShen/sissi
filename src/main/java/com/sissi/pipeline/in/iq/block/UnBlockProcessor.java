@@ -4,6 +4,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.UtilProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.block.UnBlock;
+import com.sissi.protocol.iq.roster.Item;
 import com.sissi.ucenter.BanContext;
 
 /**
@@ -11,7 +12,7 @@ import com.sissi.ucenter.BanContext;
  */
 public class UnBlockProcessor extends UtilProcessor {
 
-	private BanContext banContext;
+	private final BanContext banContext;
 
 	public UnBlockProcessor(BanContext banContext) {
 		super();
@@ -21,11 +22,11 @@ public class UnBlockProcessor extends UtilProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		UnBlock ub = UnBlock.class.cast(protocol);
-		return ub.isUnBlockAll() ? writeAndReturn(context) : writeAndReturn(context, ub);
+		return ub.isUnBlockAll() ? writeAndReturn(context) : writeAndReturn(context, ub.getItem());
 	}
 
-	private Boolean writeAndReturn(JIDContext context, UnBlock ub) {
-		this.banContext.free(context.getJid(), super.jidBuilder.build(ub.getItem().getJid()));
+	private Boolean writeAndReturn(JIDContext context, Item item) {
+		this.banContext.free(context.getJid(), super.build(item.getJid()));
 		return true;
 	}
 

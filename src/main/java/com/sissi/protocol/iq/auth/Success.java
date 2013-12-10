@@ -15,6 +15,10 @@ public class Success extends Protocol {
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
 
+	private Success() {
+
+	}
+
 	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;

@@ -9,23 +9,18 @@
 		<constructor-arg ref="mongo.client" />
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.offline.storage}" />
-		<constructor-arg>
-			<util:map map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Integer">
-				<entry key="to" value="1" />
-			</util:map>
-		</constructor-arg>
 	</bean>
 
-	<bean id="storage.message" class="com.sissi.offline.impl.MessageStorage">
+	<bean id="storage.message" class="com.sissi.offline.impl.DelayMessage">
 		<constructor-arg ref="builder.jid" />
 		<constructor-arg value="${offline.hit}" />
 	</bean>
-	<bean id="storage.presence" class="com.sissi.offline.impl.PresenceStorage">
+	<bean id="storage.presence" class="com.sissi.offline.impl.DelayPresence">
 		<constructor-arg ref="builder.jid" />
 		<constructor-arg value="${offline.hit}" />
 	</bean>
 	
-	<bean id="storage.box" class="com.sissi.offline.impl.MongoStorageBox">
+	<bean id="storage.box" class="com.sissi.offline.impl.MongoDelayElementBox">
 		<constructor-arg ref="config.storage.box" />
 		<constructor-arg>
 			<util:list>

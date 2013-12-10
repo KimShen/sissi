@@ -12,18 +12,18 @@ import com.sissi.protocol.Protocol;
  */
 public class ChainedProcessor implements Input {
 
-	private Boolean doNext = Boolean.FALSE;
+	private final static List<Input> EMPTY = new ArrayList<Input>();
 
-	private List<Input> processors;
+	private final Boolean doNext;
+
+	private final List<Input> processors;
 
 	public ChainedProcessor() {
-		super();
-		this.processors = new ArrayList<Input>();
+		this(Boolean.FALSE, EMPTY);
 	}
 
 	public ChainedProcessor(List<Input> processors) {
-		super();
-		this.processors = processors;
+		this(Boolean.FALSE, processors);
 	}
 
 	public ChainedProcessor(Boolean doNext, List<Input> processors) {

@@ -1,9 +1,9 @@
 package com.sissi.read.sax;
 
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class SAXFuture implements Future<Object> {
 
-	private final BlockingQueue<Object> queue = new ArrayBlockingQueue<Object>(20);
+	private final BlockingQueue<Object> queue = new LinkedBlockingQueue<Object>();
 
 	public boolean set(Object node) {
 		return this.queue.offer(node);

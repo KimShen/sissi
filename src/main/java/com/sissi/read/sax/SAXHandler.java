@@ -12,7 +12,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.sissi.read.Collector;
@@ -53,32 +52,41 @@ public class SAXHandler extends DefaultHandler {
 		this.stack = new LinkedList<Object>();
 	}
 
-	public void startDocument() throws SAXException {
-	}
-
-	public void endDocument() throws SAXException {
+	private void propertyCopy(Attributes attributes, Object element) {
+		for (int index = 0; index < attributes.getLength(); index++) {
+			this.propertyCopy(element, attributes.getLocalName(index), attributes.getValue(index));
+		}
 	}
 
 	private boolean propertyCopy(Object ob, String key, Object value) {
-		MethodFinder finder = CACHED_METHOD.get(ob.getClass());
-		if (finder == null) {
-			LOG.debug("Create MethodFinder for " + ob.getClass());
-			CACHED_METHOD.put(ob.getClass(), (finder = new MethodFinder()));
-		}
 		try {
-			finder.invoke(ob, key, value);
+			this.find4Cached(ob).invoke(ob, key, value);
 			return true;
 		} catch (Exception e) {
 			if (LOG.isDebugEnabled()) {
 				LOG.debug(e);
-				e.printStackTrace();
 			}
 			return false;
 		}
 	}
 
+	private MethodFinder find4Cached(Object ob) {
+		MethodFinder finder = CACHED_METHOD.get(ob.getClass());
+		if (finder == null) {
+			LOG.debug("Create MethodFinder for " + ob.getClass());
+			CACHED_METHOD.put(ob.getClass(), (finder = new MethodFinder()));
+		}
+		return finder;
+	}
+
 	private boolean isCollector() {
 		return Collector.class.isAssignableFrom(this.stack.getFirst().getClass());
+	}
+
+	private void newRoot2Reset(String localName) {
+		if (ROOT_NODE.contains(localName.intern().trim())) {
+			this.stack.clear();
+		}
 	}
 
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -88,16 +96,8 @@ public class SAXHandler extends DefaultHandler {
 		}
 	}
 
-	private void propertyCopy(Attributes attributes, Object element) {
-		for (int index = 0; index < attributes.getLength(); index++) {
-			this.propertyCopy(element, attributes.getLocalName(index), attributes.getValue(index));
-		}
-	}
-
 	private boolean generateNode(Attributes attributes, String uri, String localName) {
-		if (ROOT_NODE.contains(localName.intern().trim())) {
-			this.stack.clear();
-		}
+		this.newRoot2Reset(localName);
 		this.current = this.mapping.newInstance(uri, localName);
 		if (this.current != null) {
 			if (this.stack.isEmpty()) {
@@ -135,10 +135,6 @@ public class SAXHandler extends DefaultHandler {
 		}
 	}
 
-	public void fatalError(SAXParseException e) throws SAXException {
-		LOG.warn(e);
-	}
-
 	private static class MethodFinder extends HashMap<String, Method> {
 
 		private static final long serialVersionUID = 1L;
@@ -161,7 +157,6 @@ public class SAXHandler extends DefaultHandler {
 					this.put(key, (method = ob.getClass().getMethod("set" + StringUtils.capitalize(key), TYPES)));
 				} catch (NoSuchMethodException e) {
 					this.ignores.add(key);
-					throw e;
 				}
 			}
 			return method;

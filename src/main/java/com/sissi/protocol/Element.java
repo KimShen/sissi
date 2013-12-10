@@ -23,5 +23,5 @@ public interface Element {
 
 	public Failed getError();
 
-	public Element setError(Failed failed);
+	public Element setError(Failed error);
 }

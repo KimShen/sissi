@@ -26,12 +26,14 @@
 	<bean id="roster.pro.establish.set" class="com.sissi.pipeline.in.iq.roster.RosterSetProcessor" parent="global.pro.utils" />
 	<bean id="roster.pro.establish.set.2selfs.item" class="com.sissi.pipeline.in.iq.roster.RosterSet2SelfsItemProcessor" parent="global.pro.utils" />
 	<bean id="roster.pro.establish.set.2selfs.presence" class="com.sissi.pipeline.in.iq.roster.RosterSet2SelfsPresenceProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.set.2fans.presence" class="com.sissi.pipeline.in.iq.roster.RosterSet2FansPresenceProcessor" parent="global.pro.utils" />
 	<bean id="roster.pro.establish.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="roster.pro.establish.set" />
 				<ref bean="roster.pro.establish.set.2selfs.item" />
 				<ref bean="roster.pro.establish.set.2selfs.presence" />
+				<ref bean="roster.pro.establish.set.2fans.presence" />
 				<ref bean="iq.pro.result" />
 			</util:list>
 		</constructor-arg>

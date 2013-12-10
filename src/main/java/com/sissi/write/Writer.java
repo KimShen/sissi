@@ -13,14 +13,14 @@ import com.sissi.protocol.Element;
  */
 public interface Writer {
 
-	public void write(JIDContext context, Element node, OutputStream outputStream) throws IOException;
+	public Element write(JIDContext context, Element element, OutputStream outputStream) throws IOException;
 
 	public interface Transfer {
 		
 		public ByteBuf allocBuffer();
 
-		public void transfer(ByteBuf bytebuf);
+		public Transfer transfer(ByteBuf bytebuf);
 
-		public void close();
+		public Transfer close();
 	}
 }

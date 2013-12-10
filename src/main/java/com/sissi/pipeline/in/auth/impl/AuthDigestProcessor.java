@@ -37,8 +37,7 @@ public class AuthDigestProcessor extends UtilProcessor {
 	}
 
 	private Boolean isSuccess(JIDContext context, Protocol protocol) throws SaslException {
-		Response res = Response.class.cast(protocol);
-		this.saslServers.get(context).evaluateResponse(res.getResponse());
+		this.saslServers.get(context).evaluateResponse(Response.class.cast(protocol).getResponse());
 		context.setAuth(true).write(Success.INSTANCE);
 		return false;
 	}

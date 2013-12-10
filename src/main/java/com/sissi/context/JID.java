@@ -11,10 +11,10 @@ public interface JID {
 
 	public String getResource();
 
+	public JID getBare();
+
 	public JID setResource(String resource);
 
-	public JID getBare();
-	
 	public String asString();
 
 	public String asStringWithBare();

@@ -15,9 +15,9 @@ import com.sissi.ucenter.RegisterContext.Fields;
  */
 abstract public class RegisterStoreProcessor implements Input {
 
-	private RegisterContext registerContext;
+	private final RegisterContext registerContext;
 
-	private IQTypeProcessor iqTypeProcessor;
+	private final IQTypeProcessor iqTypeProcessor;
 
 	public RegisterStoreProcessor(RegisterContext registerContext, IQTypeProcessor iqTypeProcessor) {
 		super();

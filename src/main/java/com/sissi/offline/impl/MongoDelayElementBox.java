@@ -12,25 +12,25 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
-import com.sissi.offline.Storage;
-import com.sissi.offline.StorageBox;
+import com.sissi.offline.DelayElement;
+import com.sissi.offline.DelayElementBox;
 import com.sissi.protocol.Element;
 
 /**
  * @author kim 2013-11-15
  */
-public class MongoStorageBox implements StorageBox {
+public class MongoDelayElementBox implements DelayElementBox {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final MongoConfig config;
 
-	private final List<Storage> storageBlocks;
+	private final List<DelayElement> elements;
 
-	public MongoStorageBox(MongoConfig config, List<Storage> storageBlocks) {
+	public MongoDelayElementBox(MongoConfig config, List<DelayElement> elements) {
 		super();
 		this.config = config;
-		this.storageBlocks = storageBlocks;
+		this.elements = elements;
 	}
 
 	@Override
@@ -44,9 +44,9 @@ public class MongoStorageBox implements StorageBox {
 
 	@Override
 	public void store(Element element) {
-		for (Storage blocks : this.storageBlocks) {
-			if (blocks.isSupport(element)) {
-				DBObject entity = BasicDBObjectBuilder.start(blocks.write(element)).get();
+		for (DelayElement delay : this.elements) {
+			if (delay.isSupport(element)) {
+				DBObject entity = BasicDBObjectBuilder.start(delay.write(element)).get();
 				this.log.info("Entity: " + entity);
 				this.config.find().save(entity);
 			}
@@ -61,7 +61,7 @@ public class MongoStorageBox implements StorageBox {
 			super();
 			while (cursor.hasNext()) {
 				BasicDBObject each = (BasicDBObject) cursor.next();
-				for (Storage blocks : MongoStorageBox.this.storageBlocks) {
+				for (DelayElement blocks : MongoDelayElementBox.this.elements) {
 					if (blocks.isSupport(each)) {
 						this.add(blocks.read(each));
 					}

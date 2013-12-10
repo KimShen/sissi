@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
-import com.sissi.context.MyPresence;
+import com.sissi.context.OnlineStatus;
 import com.sissi.protocol.Element;
 
 /**
@@ -13,10 +13,8 @@ import com.sissi.protocol.Element;
 public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	private static final long serialVersionUID = 1L;
-
-	public Long getIndex() {
-		throw new RuntimeException("MultiContexts not support this funciton");
-	}
+	
+	private final RuntimeException NOT_SUPPORT = new RuntimeException("MultiContexts not support this funciton");
 
 	@Override
 	public JIDContext setAuth(Boolean canAccess) {
@@ -76,24 +74,29 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	@Override
-	public void write(Element node) {
+	public JIDContext write(Element node) {
 		for (JIDContext each : this) {
 			each.write(node);
 		}
+		return this;
+	}
+
+	public Long getIndex() {
+		throw NOT_SUPPORT;
 	}
 
 	@Override
 	public JID getJid() {
-		throw new RuntimeException("MultiContexts not support this funciton");
+		throw NOT_SUPPORT;
 	}
 
 	@Override
 	public Integer getPriority() {
-		throw new RuntimeException("MultiContexts not support this funciton");
+		throw NOT_SUPPORT;
 	}
 
 	@Override
-	public MyPresence getPresence() {
-		throw new RuntimeException("MultiContexts not support this funciton");
+	public OnlineStatus getOnlineStatus() {
+		throw NOT_SUPPORT;
 	}
 }

@@ -9,29 +9,12 @@
 		<constructor-arg ref="mongo.client" />
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.auth}" />
-		<constructor-arg index="3">
-			<util:map map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Integer">
-				<entry key="username" value="1" />
-			</util:map>
-		</constructor-arg>
-		<constructor-arg index="4">
-			<util:map map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Boolean">
-				<entry key="unique" value="true" />
-			</util:map>
-		</constructor-arg>
 	</bean>
 
 	<bean id="config.ucenter.relation.roster" class="com.sissi.config.impl.MongoCollection">
 		<constructor-arg ref="mongo.client" />
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.roster}" />
-		<constructor-arg>
-			<util:map map-class="java.util.TreeMap" key-type="java.lang.String" value-type="java.lang.Integer">
-				<entry key="master" value="1" />
-				<entry key="slave" value="1" />
-				<entry key="state" value="1" />
-			</util:map>
-		</constructor-arg>
 	</bean>
 
 	<bean id="ucenter.ban" class="com.sissi.ucenter.impl.MongoBanContext">
@@ -60,7 +43,7 @@
 	</bean>
 
 	<!-- For test -->
-	<bean id="uncenter.fields.builder" class="com.sissi.ucenter.impl.ConfigRegisterInvitationFieldsBuilder">
+	<bean id="uncenter.fields.builder" class="com.sissi.ucenter.impl.ConfigRegisterFieldsBuilder">
 		<constructor-arg>
 			<util:list>
 				<bean class="com.sissi.protocol.iq.register.form.Input">

@@ -79,7 +79,7 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 
 		private String resource;
 
-		private User userWithoutResource;
+		private User bareUser;
 
 		private User() {
 
@@ -104,9 +104,9 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 		}
 
 		private void copy2NoneResourceClone() {
-			this.userWithoutResource = new User();
-			this.userWithoutResource.user = this.user;
-			this.userWithoutResource.host = this.host;
+			this.bareUser = new User();
+			this.bareUser.user = this.user;
+			this.bareUser.host = this.host;
 		}
 
 		public String getUser() {
@@ -128,7 +128,7 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 		}
 
 		public JID getBare() {
-			return this.userWithoutResource != null ? this.userWithoutResource : this;
+			return this.bareUser != null ? this.bareUser : this;
 		}
 
 		public String asString() {

@@ -16,13 +16,13 @@ import com.sissi.read.Mapping.MappingMetadata;
  */
 @MappingMetadata(uri = "http://jabber.org/protocol/disco#info", localName = "query")
 @XmlRootElement(name = "query")
-public class Info extends Protocol {
+public class DiscoInfo extends Protocol {
 
 	private final static String XMLNS = "http://jabber.org/protocol/disco#info";
 
 	private List<Feature> feature;
 
-	public Info add(Feature feature) {
+	public DiscoInfo add(Feature feature) {
 		if (this.feature == null) {
 			this.feature = new ArrayList<Feature>();
 		}

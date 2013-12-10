@@ -116,13 +116,17 @@ abstract public class Protocol implements Element {
 	}
 
 	public Protocol setError(Failed failed) {
-		this.error = new Error(failed);
 		this.setType(Type.ERROR);
+		this.error = new Error(failed);
 		return this;
 	}
 
 	public Protocol reply() {
-		this.setId(this.getId());
+		this.exchange().setId(this.getId());
+		return this;
+	}
+
+	private Protocol exchange() {
 		final String tempFrom = this.getFrom();
 		this.setFrom(this.getTo());
 		this.setTo(tempFrom);

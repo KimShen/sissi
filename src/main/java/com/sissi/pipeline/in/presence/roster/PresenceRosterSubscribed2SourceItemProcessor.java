@@ -8,7 +8,6 @@ import com.sissi.protocol.Protocol.Type;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.roster.Item;
 import com.sissi.protocol.iq.roster.Roster;
-import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationRoster;
 
 /**
@@ -18,13 +17,13 @@ public class PresenceRosterSubscribed2SourceItemProcessor extends UtilProcessor 
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		JID jid = super.jidBuilder.build(protocol.getTo());
-		super.protocolQueue.offer(jid, this.generateResponse(context, jid));
+		JID source = super.build(protocol.getTo());
+		super.protocolQueue.offer(source, this.prepare(context, source));
 		return true;
 	}
 
-	private IQ generateResponse(JIDContext context, JID jid) {
-		Relation relation = super.relationContext.ourRelation(jid, context.getJid());
-		return ((IQ) new IQ(Type.SET).setTo(jid)).add(new Roster(new Item(context.getJid().asStringWithBare(), relation.getName(), Roster.Subscription.TO.toString(), RelationRoster.class.cast(relation).getGroupText())));
+	private IQ prepare(JIDContext context, JID jid) {
+		RelationRoster relation = RelationRoster.class.cast(super.relationContext.ourRelation(jid, context.getJid()));
+		return new IQ(Type.SET).setTo(jid).add(new Roster(new Item(context.getJid().asStringWithBare(), relation.getName(), Roster.Subscription.TO.toString(), relation.asGroup())));
 	}
 }

@@ -10,10 +10,14 @@ import com.sissi.protocol.Protocol;
  */
 @XmlRootElement
 public class Failure extends Protocol {
-	
+
 	public final static Failure INSTANCE = new Failure();
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
+
+	private Failure() {
+
+	}
 
 	@XmlAttribute
 	public String getXmlns() {

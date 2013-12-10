@@ -11,7 +11,7 @@ public class Delay {
 	private final static String XMLNS = "urn:xmpp:delay";
 
 	private String hit;
-	
+
 	private String from;
 
 	private String stamp;
@@ -26,7 +26,7 @@ public class Delay {
 		this.from = from;
 		this.stamp = stamp;
 	}
-	
+
 	@XmlValue
 	public String getHit() {
 		return hit;
@@ -42,8 +42,9 @@ public class Delay {
 		return from;
 	}
 
-	public void setFrom(String from) {
+	public Delay setFrom(String from) {
 		this.from = from;
+		return this;
 	}
 
 	@XmlAttribute
@@ -51,7 +52,8 @@ public class Delay {
 		return stamp;
 	}
 
-	public void setStamp(String stamp) {
+	public Delay setStamp(String stamp) {
 		this.stamp = stamp;
+		return this;
 	}
 }

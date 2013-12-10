@@ -3,12 +3,10 @@ package com.sissi.read.sax;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.comons.ScanUtil;
+import com.sissi.commons.ScanUtil;
 import com.sissi.read.Mapping;
 
 /**
@@ -69,8 +67,7 @@ public class XMLMapping implements Mapping {
 		return isCached;
 	}
 
-	@XmlRootElement(name = "finders")
-	public static class FinderSelector {
+	private class FinderSelector {
 
 		private final Log log = LogFactory.getLog(this.getClass());
 
@@ -92,7 +89,7 @@ public class XMLMapping implements Mapping {
 		}
 	}
 
-	public static class Finder {
+	private class Finder {
 
 		private String[] uris;
 

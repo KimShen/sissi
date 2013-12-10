@@ -29,7 +29,7 @@ public class Ban2FansOutputBuilder extends BanOutputBuilder {
 		}
 
 		@Override
-		protected JID contact(JIDContext context, Element node) {
+		protected JID contacter(JIDContext context, Element node) {
 			return context.getJid();
 		}
 	}

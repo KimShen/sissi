@@ -12,7 +12,7 @@ public class RosterRemoveProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.relationContext.remove(context.getJid(), super.jidBuilder.build(Roster.class.cast(protocol).getFirstItem().getJid()));
+		super.relationContext.remove(context.getJid(), super.build(Roster.class.cast(protocol).getFirstItem().getJid()));
 		return true;
 	}
 }

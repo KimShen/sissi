@@ -20,10 +20,6 @@ public class Response extends Protocol {
 		this.text = text;
 	}
 
-	public String getText() {
-		return this.text;
-	}
-
 	public byte[] getResponse() {
 		return Base64.decodeBase64(this.text);
 	}

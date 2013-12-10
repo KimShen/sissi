@@ -11,7 +11,7 @@ import com.sissi.ucenter.BanContext;
  */
 public class BlockedProcessor extends UtilProcessor {
 
-	private BanContext banContext;
+	private final BanContext banContext;
 
 	public BlockedProcessor(BanContext banContext) {
 		super();
@@ -20,7 +20,7 @@ public class BlockedProcessor extends UtilProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		this.banContext.ban(context.getJid(), super.jidBuilder.build(Blocked.class.cast(protocol).getItem().getJid()));
+		this.banContext.ban(context.getJid(), super.build(Blocked.class.cast(protocol).getItem().getJid()));
 		return true;
 	}
 }

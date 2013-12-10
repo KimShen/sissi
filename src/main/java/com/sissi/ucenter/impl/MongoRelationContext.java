@@ -46,24 +46,27 @@ public class MongoRelationContext implements RelationContext {
 	}
 
 	@Override
-	public void establish(JID from, Relation relation) {
+	public RelationContext establish(JID from, Relation relation) {
 		DBObject query = BasicDBObjectBuilder.start().add("master", from.asStringWithBare()).add("slave", this.builder.build(relation.getJID()).asStringWithBare()).get();
 		DBObject entity = BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(relation.plus()).add("name", relation.getName()).add("state", relation.getSubscription()).get()).get();
 		this.log.debug("Query is: " + query);
 		this.log.debug("Entity is: " + entity);
 		this.config.find().update(query, entity, true, true);
+		return this;
 	}
 
 	@Override
-	public void update(JID from, JID to, String state) {
+	public RelationContext update(JID from, JID to, String state) {
 		DBObject entity = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add("state", state).get()).get();
 		this.updateEntityForQuery(from, to, entity);
+		return this;
 	}
 
-	public void remove(JID from, JID to) {
+	public RelationContext remove(JID from, JID to) {
 		DBObject query = BasicDBObjectBuilder.start().add("master", from.asStringWithBare()).add("slave", to.asStringWithBare()).get();
 		this.log.debug("Query is: " + query);
 		this.config.find().remove(query);
+		return this;
 	}
 
 	@Override

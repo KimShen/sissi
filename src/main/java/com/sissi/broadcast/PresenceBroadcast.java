@@ -1,7 +1,7 @@
 package com.sissi.broadcast;
 
 import com.sissi.context.JID;
-import com.sissi.context.MyPresence;
+import com.sissi.context.OnlineStatus;
 import com.sissi.protocol.Protocol;
 
 /**
@@ -9,10 +9,10 @@ import com.sissi.protocol.Protocol;
  */
 public interface PresenceBroadcast {
 
-	public void offer(JID jid, JID from, JID to, MyPresence presence);
+	public void offer(JID jid, JID from, JID to, OnlineStatus status);
 
 	public interface PresenceBuilder {
 
-		public Protocol build(JID from, JID to, MyPresence presence);
+		public Protocol build(JID from, JID to, OnlineStatus status);
 	}
 }

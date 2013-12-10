@@ -27,7 +27,8 @@ public class Status extends Protocol {
 		return text;
 	}
 
-	public void setText(String text) {
+	public Status setText(String text) {
 		this.text = text;
+		return this;
 	}
 }

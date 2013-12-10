@@ -23,9 +23,9 @@ public class AuthForkProcessor extends UtilProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		Auth auth = Auth.class.cast(protocol);
-		for (AuthCallback ap : this.authCallbacks) {
-			if (ap.isSupport(auth.getMechanism())) {
-				return !ap.auth(context, auth);
+		for (AuthCallback ac : this.authCallbacks) {
+			if (ac.isSupport(auth.getMechanism())) {
+				return !ac.auth(context, auth);
 			}
 		}
 		return true;

@@ -18,13 +18,13 @@ public class PresenceRosterUnSubscribed2SourceItemProcessor extends UtilProcesso
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		JID master = super.jidBuilder.build(protocol.getTo());
-		super.protocolQueue.offer(master, this.prepareResponse(master, context.getJid(), protocol));
+		JID source = super.build(protocol.getTo());
+		super.protocolQueue.offer(source, this.prepare(source, context.getJid(), protocol));
 		return true;
 	}
 
-	private Protocol prepareResponse(JID master, JID slave, Protocol protocol) {
+	private Protocol prepare(JID master, JID slave, Protocol protocol) {
 		Relation relation = super.relationContext.ourRelation(master, slave);
-		return ((IQ) new IQ(Type.SET).setTo(master)).add(new Roster().add(new Item(slave.asStringWithBare(), relation.getName(), Roster.Subscription.NONE.toString(), RelationRoster.class.cast(relation).getGroupText())));
+		return new IQ(Type.SET).setTo(master).add(new Roster().add(new Item(slave.asStringWithBare(), relation.getName(), Roster.Subscription.NONE.toString(), RelationRoster.class.cast(relation).asGroup())));
 	}
 }

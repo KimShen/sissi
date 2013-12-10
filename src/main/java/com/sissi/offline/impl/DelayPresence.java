@@ -11,9 +11,9 @@ import com.sissi.protocol.presence.Presence.Type;
 /**
  * @author kim 2013-11-15
  */
-public class PresenceStorage extends ProtocolStorage {
+public class DelayPresence extends DelayProtocol {
 
-	public PresenceStorage(String hit, JIDBuilder jidBuilder) {
+	public DelayPresence(String hit, JIDBuilder jidBuilder) {
 		super(hit, jidBuilder);
 	}
 
@@ -23,9 +23,9 @@ public class PresenceStorage extends ProtocolStorage {
 	}
 
 	@Override
-	public Element read(Map<String, Object> storage) {
-		Presence presence = (Presence) super.based(storage, new Presence());
-		presence.setDelay(new Delay(super.hit, presence.getFrom(), storage.get("delay").toString()));
+	public Element read(Map<String, Object> element) {
+		Presence presence = (Presence) super.based(element, new Presence());
+		presence.setDelay(new Delay(super.hit, presence.getFrom(), element.get("delay").toString()));
 		return presence;
 	}
 

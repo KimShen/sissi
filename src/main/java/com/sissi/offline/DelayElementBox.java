@@ -8,7 +8,7 @@ import com.sissi.protocol.Element;
 /**
  * @author kim 2013-11-15
  */
-public interface StorageBox {
+public interface DelayElementBox {
 
 	public List<Element> fetch(JID jid);
 

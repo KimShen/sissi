@@ -1,4 +1,4 @@
-package com.sissi.comons;
+package com.sissi.commons;
 
 import java.io.File;
 import java.io.FileFilter;

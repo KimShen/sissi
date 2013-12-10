@@ -13,13 +13,13 @@ public class Session4FansProcessor extends UtilProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		for (String relation : super.relationContext.iSubscribedWho(context.getJid().getBare())) {
-			this.fromMyFans(context, super.jidBuilder.build(relation));
+			this.fromMyFans(context, super.build(relation));
 		}
 		return true;
 	}
 
 	private void fromMyFans(JIDContext context, JID from) {
-		JIDContext fromContext = super.addressing.findOne(from);
-		super.presenceQueue.offer(context.getJid().getBare(), from.getBare(), context.getJid().getBare(), fromContext.getPresence());
+		JIDContext whoISubscribed = super.addressing.findOne(from);
+		super.presenceQueue.offer(context.getJid().getBare(), from, context.getJid(), whoISubscribed.getOnlineStatus());
 	}
 }
