@@ -2,7 +2,7 @@ package com.sissi.ucenter.impl;
 
 import java.util.List;
 
-import com.sissi.ucenter.RegisterContext.Field;
+import com.sissi.ucenter.Field;
 import com.sissi.ucenter.RegisterFieldsBuilder;
 
 /**

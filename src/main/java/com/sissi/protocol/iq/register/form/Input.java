@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.iq.register.form.Form.Type;
-import com.sissi.ucenter.RegisterContext.Field;
+import com.sissi.ucenter.Field;
 
 /**
  * @author kim 2013年12月4日
@@ -71,7 +71,12 @@ public class Input implements Field {
 
 	@Override
 	@XmlElement(name = "value")
-	public String getText() {
+	public String getValue() {
 		return value;
+	}
+
+	@Override
+	public Boolean isEmpty() {
+		return this.getValue() == null;
 	}
 }

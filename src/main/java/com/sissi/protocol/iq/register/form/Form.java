@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
-import com.sissi.ucenter.RegisterContext.Field;
+import com.sissi.ucenter.Field;
 
 /**
  * @author kim 2013年12月5日
@@ -94,7 +94,7 @@ public class Form implements Field, Collector {
 
 	@Override
 	@XmlElement(name = "instructions")
-	public String getText() {
+	public String getValue() {
 		return instructions;
 	}
 
@@ -114,5 +114,10 @@ public class Form implements Field, Collector {
 	@Override
 	public void set(String localName, Object ob) {
 		this.add((Field) ob);
+	}
+
+	@Override
+	public Boolean isEmpty() {
+		return this.getValue() == null;
 	}
 }

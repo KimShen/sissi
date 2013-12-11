@@ -1,9 +1,9 @@
 package com.sissi.pipeline.in.iq.register;
 
 import com.sissi.pipeline.in.iq.IQTypeProcessor;
+import com.sissi.ucenter.Field.FieldFinder;
+import com.sissi.ucenter.Field.Fields;
 import com.sissi.ucenter.RegisterContext;
-import com.sissi.ucenter.RegisterContext.FieldFinder;
-import com.sissi.ucenter.RegisterContext.Fields;
 import com.sissi.ucenter.impl.MultiFields;
 
 /**

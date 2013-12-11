@@ -14,6 +14,7 @@
 	<import resource="config-in-base.xml" />
 	<import resource="config-in-iq.xml" />
 	<import resource="config-in-iq-bind.xml" />
+	<import resource="config-in-iq-vcard.xml" />
 	<import resource="config-in-iq-block.xml" />
 	<import resource="config-in-iq-roster.xml" />
 	<import resource="config-in-iq-disco.xml" />

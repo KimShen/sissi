@@ -17,8 +17,8 @@ import com.sissi.protocol.Stream;
 import com.sissi.protocol.iq.register.form.Form;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
-import com.sissi.ucenter.RegisterContext.Field;
-import com.sissi.ucenter.RegisterContext.FieldFinder;
+import com.sissi.ucenter.Field;
+import com.sissi.ucenter.Field.FieldFinder;
 
 /**
  * @author kim 2013年12月3日

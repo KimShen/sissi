@@ -1,7 +1,9 @@
-package com.sissi.protocol.iq.disco;
+package com.sissi.protocol.iq.disco.feature;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.sissi.protocol.iq.disco.Feature;
 
 /**
  * @author kim 2013年12月5日

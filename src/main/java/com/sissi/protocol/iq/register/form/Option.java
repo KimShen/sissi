@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.ucenter.RegisterContext.Field;
+import com.sissi.ucenter.Field;
 
 /**
  * @author kim 2013年12月5日
@@ -34,8 +34,12 @@ public class Option implements Field {
 
 	@Override
 	@XmlElement(name = "value")
-	public String getText() {
+	public String getValue() {
 		return value;
 	}
 
+	@Override
+	public Boolean isEmpty() {
+		return this.getValue() == null;
+	}
 }

@@ -45,6 +45,8 @@ public class Presence extends Protocol implements OnlineStatus, Collector {
 		}
 	}
 
+	private X x;
+
 	private Show show;
 
 	private Delay delay;
@@ -57,6 +59,16 @@ public class Presence extends Protocol implements OnlineStatus, Collector {
 
 	public Presence(JID from, JID to, String show, String status, String type) {
 		this.setShow(show != null ? new Show(show) : null).setStatus(status != null ? new Status(status) : null).setFrom(from.asString()).setTo(to.asString()).setType(type);
+	}
+
+	@XmlElement
+	public X getX() {
+		return x;
+	}
+
+	public Presence setX(X x) {
+		this.x = x;
+		return this;
 	}
 
 	public Presence setType(Type type) {

@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
+import com.sissi.protocol.iq.disco.feature.Blocking;
+import com.sissi.protocol.iq.disco.feature.VCard;
 import com.sissi.read.Mapping.MappingMetadata;
 
 /**
@@ -30,7 +32,7 @@ public class DiscoInfo extends Protocol {
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = "feature", type = Blocking.class) })
+	@XmlElements({ @XmlElement(name = "feature", type = Blocking.class),@XmlElement(name = "feature", type = VCard.class)  })
 	public List<Feature> getFeature() {
 		return feature;
 	}

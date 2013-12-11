@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.sissi.protocol.iq.register.Password;
 import com.sissi.protocol.iq.register.Username;
-import com.sissi.ucenter.RegisterContext.Field;
+import com.sissi.ucenter.Field;
 import com.sissi.ucenter.RegisterInvitation;
 
 /**

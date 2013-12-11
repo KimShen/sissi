@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
 import com.sissi.read.Mapping.MappingMetadata;
-import com.sissi.ucenter.RegisterContext.Field;
+import com.sissi.ucenter.Field;
 
 /**
  * @author kim 2013年12月3日
@@ -20,7 +20,7 @@ public class Username implements Field {
 	private String text;
 
 	@XmlValue
-	public String getText() {
+	public String getValue() {
 		return text;
 	}
 
@@ -31,5 +31,10 @@ public class Username implements Field {
 	@Override
 	public String getName() {
 		return NAME;
+	}
+
+	@Override
+	public Boolean isEmpty() {
+		return this.getValue() == null;
 	}
 }

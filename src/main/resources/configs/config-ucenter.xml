@@ -17,7 +17,13 @@
 		<constructor-arg index="2" value="${mongo.collection.roster}" />
 	</bean>
 
-	<bean id="ucenter.ban" class="com.sissi.ucenter.impl.MongoBanContext">
+	<alias name="ucenter.ban.mongo" alias="ucenter.ban" />
+	<bean id="ucenter.ban.mongo" class="com.sissi.ucenter.impl.MongoBanContext">
+		<constructor-arg ref="config.auth" />
+	</bean>
+	
+	<alias name="ucenter.vcard.mongo" alias="ucenter.vcard" />
+	<bean id="ucenter.vcard.mongo" class="com.sissi.ucenter.impl.MongoVCardContext">
 		<constructor-arg ref="config.auth" />
 	</bean>
 
@@ -26,12 +32,14 @@
 		<constructor-arg ref="config.auth" />
 	</bean>
 
-	<bean id="ucenter.relation.roster" class="com.sissi.ucenter.impl.MongoRelationContext">
+	<alias name="ucenter.relation.roster.mongo" alias="ucenter.relation.roster" />
+	<bean id="ucenter.relation.roster.mongo" class="com.sissi.ucenter.impl.MongoRelationContext">
 		<constructor-arg ref="builder.jid" />
 		<constructor-arg ref="config.ucenter.relation.roster" />
 	</bean>
 
-	<bean id="ucenter.register" class="com.sissi.ucenter.impl.MongoRegisterContext">
+	<alias name="ucenter.register.mongo" alias="ucenter.register" />
+	<bean id="ucenter.register.mongo" class="com.sissi.ucenter.impl.MongoRegisterContext">
 		<constructor-arg ref="config.auth" />
 	</bean>
 

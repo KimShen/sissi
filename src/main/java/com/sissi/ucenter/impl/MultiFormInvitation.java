@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sissi.protocol.iq.register.form.Form;
-import com.sissi.ucenter.RegisterContext.Field;
+import com.sissi.ucenter.Field;
 import com.sissi.ucenter.RegisterFieldsBuilder;
 import com.sissi.ucenter.RegisterInvitation;
 

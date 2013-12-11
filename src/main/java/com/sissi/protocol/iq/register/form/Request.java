@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
-import com.sissi.ucenter.RegisterContext.Field;
+import com.sissi.ucenter.Field;
 
 /**
  * @author kim 2013年12月5日
@@ -27,12 +27,17 @@ public class Request implements Field, Collector {
 	}
 
 	@Override
-	public String getText() {
+	public String getValue() {
 		return this.value != null ? this.value.getText() : null;
 	}
 
 	public void set(String localName, Object ob) {
 		this.value = Value.class.cast(ob);
+	}
+
+	@Override
+	public Boolean isEmpty() {
+		return this.getValue() == null;
 	}
 
 	@MappingMetadata(uri = "jabber:x:data", localName = "value")

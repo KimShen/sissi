@@ -36,6 +36,7 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="roster.condition" />
+				<ref bean="vcard.condition" />
 				<ref bean="disco.condition" />
 				<ref bean="session.condition" />
 				<ref bean="bind.condition" />
