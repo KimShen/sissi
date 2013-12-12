@@ -8,11 +8,11 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013年12月6日
  */
-public class ClassesMatch implements InputMatcher {
+public class ClassesMatcher implements InputMatcher {
 
 	private final List<Class<? extends Protocol>> clazzes;
 
-	public ClassesMatch(List<Class<? extends Protocol>> clazzes) {
+	public ClassesMatcher(List<Class<? extends Protocol>> clazzes) {
 		super();
 		this.clazzes = clazzes;
 	}

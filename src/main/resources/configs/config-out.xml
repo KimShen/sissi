@@ -5,12 +5,12 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="builder.output.ban.4fans" class="com.sissi.pipeline.out.Ban4FansOutputBuilder">
-		<constructor-arg ref="ucenter.ban" />
+	<bean id="builder.output.block.4fans" class="com.sissi.pipeline.out.Block4FansOutputBuilder">
+		<constructor-arg ref="ucenter.block" />
 		<constructor-arg ref="builder.jid" />
 	</bean>
-	<bean id="builder.output.ban.2fans" class="com.sissi.pipeline.out.Ban2FansOutputBuilder">
-		<constructor-arg ref="ucenter.ban" />
+	<bean id="builder.output.block.2fans" class="com.sissi.pipeline.out.Block2FansOutputBuilder">
+		<constructor-arg ref="ucenter.block" />
 		<constructor-arg ref="builder.jid" />
 	</bean>
 	<bean id="builder.output.network" class="com.sissi.pipeline.out.NetworkOutputBuilder">
@@ -19,8 +19,8 @@
 	<bean id="builder.output" class="com.sissi.pipeline.out.ChainedOutputBuilder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="builder.output.ban.2fans" />
-				<ref bean="builder.output.ban.4fans" />
+				<ref bean="builder.output.block.2fans" />
+				<ref bean="builder.output.block.4fans" />
 				<ref bean="builder.output.network" />
 			</util:list>
 		</constructor-arg>

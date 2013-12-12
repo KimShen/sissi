@@ -1,7 +1,6 @@
 package com.sissi.pipeline.out;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.util.ReferenceCountUtil;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -78,10 +77,6 @@ public class NetworkOutputBuilder implements OutputBuilder {
 			@Override
 			public void write(int b) throws IOException {
 				this.buffer.writeByte(b);
-			}
-
-			public void close() {
-				ReferenceCountUtil.release(this.buffer);
 			}
 		}
 	}

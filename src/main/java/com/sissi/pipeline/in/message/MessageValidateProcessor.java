@@ -18,7 +18,7 @@ public class MessageValidateProcessor extends ProxyProcessor {
 	}
 
 	private boolean isSubscribed(JID master, JID slave) {
-		return this.hasRelation(super.relationContext.ourRelation(master, slave));
+		return this.hasRelation(super.ourRelation(master, slave));
 	}
 
 	private boolean hasRelation(Relation relation) {

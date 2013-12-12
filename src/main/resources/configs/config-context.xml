@@ -21,7 +21,7 @@
 		<constructor-arg ref="storage.box" />
 	</bean>
 	
-	<bean id="builder.status" class="com.sissi.context.impl.MongoOnlineStatusBuilder">
+	<bean id="builder.status" class="com.sissi.context.impl.MongoStatusBuilder">
 		<constructor-arg ref="config.status" />
 	</bean>
 

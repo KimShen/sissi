@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="block.pro.blocked" class="com.sissi.pipeline.in.iq.block.BlockedProcessor" parent="global.pro.utils">
-		<constructor-arg ref="ucenter.ban" />
+		<constructor-arg ref="ucenter.block" />
 	</bean>
 	<bean id="block.pro.blocked.2selfs.item" class="com.sissi.pipeline.in.iq.block.Blocked2SelfsItemProcessor" parent="global.pro.utils" />
 	<bean id="block.pro.blocked.2selfs.presence" class="com.sissi.pipeline.in.iq.block.Blocked2SelfsPresenceProcessor" parent="global.pro.utils" />
@@ -22,7 +22,7 @@
 		</constructor-arg>
 	</bean>
 	<bean id="block.pro.unblock" class="com.sissi.pipeline.in.iq.block.UnBlockProcessor" parent="global.pro.utils">
-		<constructor-arg ref="ucenter.ban" />
+		<constructor-arg ref="ucenter.block" />
 	</bean>
 	<bean id="block.pro.unblock.2selfs.item" class="com.sissi.pipeline.in.iq.block.UnBlock2SelfsItemProcessor" parent="global.pro.utils" />
 	<bean id="block.pro.unblock.2selfs.presence" class="com.sissi.pipeline.in.iq.block.UnBlock2SelfsPresenceProcessor" parent="global.pro.utils" />
@@ -37,8 +37,8 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="block.pro.list" class="com.sissi.pipeline.in.iq.block.BlockListProcessor" parent="global.pro.utils">
-		<constructor-arg ref="ucenter.ban" />
+	<bean id="block.pro.list" class="com.sissi.pipeline.in.iq.block.BlockedListProcessor" parent="global.pro.utils">
+		<constructor-arg ref="ucenter.block" />
 	</bean>
 	<bean id="block.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.block" />
@@ -57,7 +57,7 @@
 
 	<bean id="block.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.MatchClasses">
+			<bean class="com.sissi.pipeline.in.ClassesMatcher">
 				<constructor-arg>
 					<util:list>
 						<value>com.sissi.protocol.iq.block.BlockList</value>
@@ -71,7 +71,7 @@
 	</bean>
 	<bean id="block.condition.list" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.MatchClass">
+			<bean class="com.sissi.pipeline.in.ClassMatcher">
 				<constructor-arg value="com.sissi.protocol.iq.block.BlockList" />
 			</bean>
 		</constructor-arg>
@@ -79,7 +79,7 @@
 	</bean>
 	<bean id="block.condition.blocked" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.MatchClass">
+			<bean class="com.sissi.pipeline.in.ClassMatcher">
 				<constructor-arg value="com.sissi.protocol.iq.block.Blocked" />
 			</bean>
 		</constructor-arg>
@@ -87,7 +87,7 @@
 	</bean>
 	<bean id="block.condition.unblock" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.MatchClass">
+			<bean class="com.sissi.pipeline.in.ClassMatcher">
 				<constructor-arg value="com.sissi.protocol.iq.block.UnBlock" />
 			</bean>
 		</constructor-arg>

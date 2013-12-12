@@ -25,7 +25,7 @@
 
 	<bean id="session.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.MatchClass">
+			<bean class="com.sissi.pipeline.in.ClassMatcher">
 				<constructor-arg value="com.sissi.protocol.iq.session.Session" />
 			</bean>
 		</constructor-arg>
