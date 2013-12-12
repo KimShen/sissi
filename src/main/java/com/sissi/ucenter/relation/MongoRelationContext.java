@@ -14,7 +14,6 @@ import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
 import com.sissi.context.JID.JIDBuilder;
 import com.sissi.protocol.iq.roster.Roster;
-import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationContext;
 
 /**
@@ -42,7 +41,7 @@ public class MongoRelationContext implements RelationContext {
 		DBObject query = BasicDBObjectBuilder.start().add("master", from.asStringWithBare()).add("slave", to.asStringWithBare()).get();
 		this.log.debug("Query is: " + query);
 		this.log.debug("Entity is: " + entity);
-		this.config.find().update(query, entity);
+		this.config.collection().update(query, entity);
 	}
 
 	@Override
@@ -51,7 +50,7 @@ public class MongoRelationContext implements RelationContext {
 		DBObject entity = BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(relation.plus()).add("name", relation.getName()).add("state", relation.getSubscription()).get()).get();
 		this.log.debug("Query is: " + query);
 		this.log.debug("Entity is: " + entity);
-		this.config.find().update(query, entity, true, true);
+		this.config.collection().update(query, entity, true, true);
 		return this;
 	}
 
@@ -65,7 +64,7 @@ public class MongoRelationContext implements RelationContext {
 	public RelationContext remove(JID from, JID to) {
 		DBObject query = BasicDBObjectBuilder.start().add("master", from.asStringWithBare()).add("slave", to.asStringWithBare()).get();
 		this.log.debug("Query is: " + query);
-		this.config.find().remove(query);
+		this.config.collection().remove(query);
 		return this;
 	}
 
@@ -73,14 +72,14 @@ public class MongoRelationContext implements RelationContext {
 	public Set<Relation> myRelations(JID from) {
 		DBObject query = BasicDBObjectBuilder.start().add("master", from.asStringWithBare()).get();
 		this.log.debug("Query is: " + query);
-		return new MongoRelations(this.config.find().find(query), this.config);
+		return new MongoRelations(this.config.collection().find(query), this.config);
 	}
 
 	@Override
 	public Relation ourRelation(JID from, JID to) {
 		DBObject query = BasicDBObjectBuilder.start().add("master", from.asStringWithBare()).add("slave", to.asStringWithBare()).get();
 		this.log.debug("Query is: " + query);
-		DBObject db = this.config.find().findOne(query);
+		DBObject db = this.config.collection().findOne(query);
 		return db != null ? new MongoRelation(db, this.config) : null;
 	}
 
@@ -88,13 +87,13 @@ public class MongoRelationContext implements RelationContext {
 	public Set<String> whoSubscribedMe(JID from) {
 		DBObject query = BasicDBObjectBuilder.start().add("slave", from.asStringWithBare()).add("$or", Lists.newArrayList(BasicDBObjectBuilder.start().add("state", Roster.Subscription.TO.toString()).get(), BasicDBObjectBuilder.start().add("state", Roster.Subscription.BOTH.toString()).get())).get();
 		this.log.debug("Query is: " + query);
-		return new JIDs(this.config.find().find(query, FILTER_MASTER), "master");
+		return new JIDs(this.config.collection().find(query, FILTER_MASTER), "master");
 	}
 
 	public Set<String> iSubscribedWho(JID from) {
 		DBObject query = BasicDBObjectBuilder.start("master", from.asStringWithBare()).add("$or", Lists.newArrayList(BasicDBObjectBuilder.start("state", Roster.Subscription.TO.toString()).get(), BasicDBObjectBuilder.start("state", Roster.Subscription.BOTH.toString()).get())).get();
 		this.log.debug("Query is: " + query);
-		return new JIDs(this.config.find().find(query, FILTER_SLAVE), "slave");
+		return new JIDs(this.config.collection().find(query, FILTER_SLAVE), "slave");
 	}
 
 	private class JIDs extends HashSet<String> {

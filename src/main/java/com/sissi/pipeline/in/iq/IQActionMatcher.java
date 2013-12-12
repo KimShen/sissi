@@ -1,13 +1,13 @@
 package com.sissi.pipeline.in.iq;
 
-import com.sissi.pipeline.in.MatchClass;
+import com.sissi.pipeline.in.ClassMatcher;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Protocol.Type;
 
 /**
  * @author kim 2013-11-4
  */
-public class IQActionMatcher extends MatchClass {
+public class IQActionMatcher extends ClassMatcher {
 
 	private final Type type;
 

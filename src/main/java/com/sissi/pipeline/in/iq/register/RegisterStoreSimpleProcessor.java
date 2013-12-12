@@ -1,6 +1,6 @@
 package com.sissi.pipeline.in.iq.register;
 
-import com.sissi.pipeline.in.iq.IQTypeProcessor;
+import com.sissi.pipeline.in.iq.IQProcessor;
 import com.sissi.ucenter.RegisterContext;
 import com.sissi.ucenter.field.Field.Fields;
 
@@ -9,12 +9,12 @@ import com.sissi.ucenter.field.Field.Fields;
  */
 public class RegisterStoreSimpleProcessor extends RegisterStoreProcessor {
 
-	public RegisterStoreSimpleProcessor(RegisterContext registerContext, IQTypeProcessor iqTypeProcessor) {
-		super(registerContext, iqTypeProcessor);
+	public RegisterStoreSimpleProcessor(RegisterContext registerContext, IQProcessor iqProcessor) {
+		super(registerContext, iqProcessor);
 	}
 
 	@Override
-	protected Fields filter(Fields vCardFields) {
-		return vCardFields;
+	protected Fields filter(Fields field) {
+		return field;
 	}
 }

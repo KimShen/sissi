@@ -26,7 +26,7 @@ public class MongoAuthAccessor implements AuthAccessor {
 	public String access(String username) {
 		DBObject query = BasicDBObjectBuilder.start().add("username", username).get();
 		this.log.debug("Query: " + query);
-		DBObject entity = this.config.find().findOne(query);
+		DBObject entity = this.config.collection().findOne(query);
 		this.log.debug("User for: " + username + " is " + entity);
 		return entity != null ? entity.get("password").toString() : null;
 	}

@@ -16,6 +16,10 @@ public class GenericityVCardField<T> implements Field<T> {
 
 	private T value;
 
+	public GenericityVCardField() {
+
+	}
+
 	public GenericityVCardField(String name, T value) {
 		super();
 		this.name = name;

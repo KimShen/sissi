@@ -4,7 +4,7 @@ import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContext.JIDContextBuilder;
 import com.sissi.context.JIDContext.JIDContextParam;
-import com.sissi.context.OnlineStatus;
+import com.sissi.context.JIDContext.Status;
 import com.sissi.offline.DelayElementBox;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.presence.Presence;
@@ -71,7 +71,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public JIDContext write(Element element) {
-			OfflineContextBuilder.this.delayElementBox.store(element);
+			OfflineContextBuilder.this.delayElementBox.add(element);
 			return this;
 		}
 
@@ -81,7 +81,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public OnlineStatus getOnlineStatus() {
+		public Status getStatus() {
 			return OfflineStatus.OFFLINE;
 		}
 
@@ -96,9 +96,9 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 	}
 
-	private static class OfflineStatus implements OnlineStatus {
+	private static class OfflineStatus implements Status {
 
-		private final static OnlineStatus OFFLINE = new OfflineStatus();
+		private final static Status OFFLINE = new OfflineStatus();
 
 		private OfflineStatus() {
 
@@ -120,21 +120,21 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public OnlineStatus asType(String type) {
+		public Status asType(String type) {
 			return this;
 		}
 
 		@Override
-		public OnlineStatus asShow(String show) {
+		public Status asShow(String show) {
 			return this;
 		}
 
 		@Override
-		public OnlineStatus asStatus(String status) {
+		public Status asStatus(String status) {
 			return this;
 		}
 
-		public OnlineStatus clear() {
+		public Status clear() {
 			return this;
 		}
 	}

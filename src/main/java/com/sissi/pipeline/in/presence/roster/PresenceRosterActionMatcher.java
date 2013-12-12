@@ -1,6 +1,6 @@
 package com.sissi.pipeline.in.presence.roster;
 
-import com.sissi.pipeline.in.MatchClass;
+import com.sissi.pipeline.in.ClassMatcher;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.Presence.Type;
@@ -8,7 +8,7 @@ import com.sissi.protocol.presence.Presence.Type;
 /**
  * @author kim 2013-11-4
  */
-public class PresenceRosterActionMatcher extends MatchClass {
+public class PresenceRosterActionMatcher extends ClassMatcher {
 
 	private final Type type;
 

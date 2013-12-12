@@ -8,5 +8,5 @@ import com.sissi.protocol.Protocol;
  */
 public interface ProtocolBraodcast {
 
-	public void offer(JID jid, Protocol protocol);
+	public ProtocolBraodcast offer(JID jid, Protocol protocol);
 }

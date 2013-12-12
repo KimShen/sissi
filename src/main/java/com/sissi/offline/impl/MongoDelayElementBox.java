@@ -34,23 +34,24 @@ public class MongoDelayElementBox implements DelayElementBox {
 	}
 
 	@Override
-	public List<Element> fetch(JID jid) {
+	public List<Element> get(JID jid) {
 		DBObject query = BasicDBObjectBuilder.start().add("to", jid.asStringWithBare()).get();
 		this.log.debug("Query: " + query);
-		Elements elements = new Elements(this.config.find().find(query));
-		this.config.find().remove(query);
+		Elements elements = new Elements(this.config.collection().find(query));
+		this.config.collection().remove(query);
 		return elements;
 	}
 
 	@Override
-	public void store(Element element) {
+	public DelayElementBox add(Element element) {
 		for (DelayElement delay : this.elements) {
 			if (delay.isSupport(element)) {
 				DBObject entity = BasicDBObjectBuilder.start(delay.write(element)).get();
 				this.log.info("Entity: " + entity);
-				this.config.find().save(entity);
+				this.config.collection().save(entity);
 			}
 		}
+		return this;
 	}
 
 	private class Elements extends ArrayList<Element> {

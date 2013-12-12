@@ -77,9 +77,7 @@ public class Roster extends Protocol implements Collector {
 
 	@Override
 	public void set(String localName, Object protocol) {
-		if (localName.equals("item")) {
-			this.add((Item) protocol);
-		}
+		this.add(Item.class.cast(protocol));
 	}
 
 	public Roster clear() {

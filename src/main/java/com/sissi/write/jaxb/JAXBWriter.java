@@ -36,13 +36,21 @@ public class JAXBWriter implements Writer {
 
 	private final static String PACKAGE = "com.sissi.protocol";
 
-	private final static Log LOG = LogFactory.getLog(JAXBWriter.class);
-
 	private final static String MAPPING_PROPERTY = "com.sun.xml.bind.namespacePrefixMapper";
 
-	private final static JAXBContext CONTEXT;
+	private final Log log = LogFactory.getLog(this.getClass());
 
-	static {
+	private final JAXBContext context;
+
+	private final NamespacePrefixMapper mapper;
+
+	public JAXBWriter() {
+		this(new JAXBNamespaceMapping());
+	}
+
+	public JAXBWriter(NamespacePrefixMapper mapper) {
+		super();
+		this.mapper = mapper;
 		try {
 			List<Class<?>> clazz = new ArrayList<Class<?>>();
 			for (Class<?> each : ScanUtil.getClasses(PACKAGE)) {
@@ -50,24 +58,12 @@ public class JAXBWriter implements Writer {
 					clazz.add(each);
 				}
 			}
-			LOG.info("All classes in JAXB Context: " + clazz);
-			CONTEXT = JAXBContext.newInstance(clazz.toArray(new Class[] {}));
+			this.log.info("All classes in JAXB Context: " + clazz);
+			context = JAXBContext.newInstance(clazz.toArray(new Class[] {}));
 		} catch (Exception e) {
-			LOG.error(e);
+			this.log.error(e);
 			throw new RuntimeException("Can't init JAXB context", e);
 		}
-	}
-
-	private final NamespacePrefixMapper mapper;
-
-	public JAXBWriter() {
-		super();
-		this.mapper = new JAXBNamespaceMapping();
-	}
-
-	public JAXBWriter(NamespacePrefixMapper mapper) {
-		super();
-		this.mapper = mapper;
 	}
 
 	public Element write(JIDContext context, Element element, OutputStream output) throws IOException {
@@ -87,20 +83,20 @@ public class JAXBWriter implements Writer {
 	public void writeWithFull(JIDContext context, Element element, OutputStream output) throws IOException {
 		try {
 			Marshaller marshaller = this.generateMarshaller(false);
-			if (LOG.isInfoEnabled()) {
+			if (this.log.isInfoEnabled()) {
 				StringBufferWriter bufferTemp = new StringBufferWriter(new StringWriter());
 				marshaller.marshal(element, bufferTemp);
 				bufferTemp.flush();
 				String content = bufferTemp.toString();
-				LOG.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + content);
+				this.log.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + content);
 				output.write(content.getBytes("UTF-8"));
 			} else {
 				marshaller.marshal(element, output);
 			}
 			output.flush();
 		} catch (JAXBException e) {
-			if (LOG.isErrorEnabled()) {
-				LOG.error(e);
+			if (this.log.isErrorEnabled()) {
+				this.log.error(e);
 				e.printStackTrace();
 			}
 		}
@@ -115,12 +111,12 @@ public class JAXBWriter implements Writer {
 			for (String each : contents) {
 				sb.append(each);
 			}
-			LOG.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + sb.toString());
+			this.log.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + sb.toString());
 			output.write(sb.toString().getBytes("UTF-8"));
 			output.flush();
 		} catch (Exception e) {
-			if (LOG.isErrorEnabled()) {
-				LOG.error(e);
+			if (this.log.isErrorEnabled()) {
+				this.log.error(e);
 				e.printStackTrace();
 			}
 		}
@@ -138,7 +134,7 @@ public class JAXBWriter implements Writer {
 	}
 
 	private Marshaller generateMarshaller(Boolean withOutClose) throws JAXBException, PropertyException {
-		Marshaller marshaller = CONTEXT.createMarshaller();
+		Marshaller marshaller = context.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
 		marshaller.setProperty(MAPPING_PROPERTY, mapper);
 		if (withOutClose) {

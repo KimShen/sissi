@@ -25,17 +25,19 @@ public class SAXHandler extends DefaultHandler {
 	private final static Integer ONLY_ROOT = 1;
 
 	private final static String ROOT = "stream";
+	
+	private final static String TEXT = "text";
 
 	private final static Log LOG = LogFactory.getLog(SAXHandler.class);
 
-	private final static Map<Class<?>, MethodFinder> CACHED_METHOD = new HashMap<Class<?>, MethodFinder>();
-
 	@SuppressWarnings("serial")
-	private final static Set<String> ROOT_NODE = new HashSet<String>() {
+	private final Set<String> rootNode = new HashSet<String>() {
 		{
 			add(ROOT);
 		}
 	};
+	
+	private final Map<Class<?>, MethodFinder> cachedMethod = new HashMap<Class<?>, MethodFinder>();
 
 	private Mapping mapping;
 
@@ -71,10 +73,10 @@ public class SAXHandler extends DefaultHandler {
 	}
 
 	private MethodFinder find4Cached(Object ob) {
-		MethodFinder finder = CACHED_METHOD.get(ob.getClass());
+		MethodFinder finder = this.cachedMethod.get(ob.getClass());
 		if (finder == null) {
 			LOG.debug("Create MethodFinder for " + ob.getClass());
-			CACHED_METHOD.put(ob.getClass(), (finder = new MethodFinder()));
+			this.cachedMethod.put(ob.getClass(), (finder = new MethodFinder()));
 		}
 		return finder;
 	}
@@ -84,7 +86,7 @@ public class SAXHandler extends DefaultHandler {
 	}
 
 	private void newRoot2Reset(String localName) {
-		if (ROOT_NODE.contains(localName.intern().trim())) {
+		if (this.rootNode.contains(localName.intern().trim())) {
 			this.stack.clear();
 		}
 	}
@@ -130,7 +132,7 @@ public class SAXHandler extends DefaultHandler {
 		String text = new String(ch, start, length).trim();
 		if (!text.isEmpty()) {
 			if (this.current != null) {
-				this.propertyCopy(this.stack.getFirst(), "text", text);
+				this.propertyCopy(this.stack.getFirst(), TEXT, text);
 			}
 		}
 	}

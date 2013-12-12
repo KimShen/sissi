@@ -33,11 +33,11 @@ public class MongoCollection implements MongoConfig {
 	}
 
 	public MongoConfig clear() {
-		this.find().drop();
+		this.collection().drop();
 		return this;
 	}
 
-	public DBCollection find() {
+	public DBCollection collection() {
 		return this.collection;
 	}
 
@@ -55,6 +55,5 @@ public class MongoCollection implements MongoConfig {
 		}
 		Object value = db.get(key);
 		return value != null ? (Boolean) value : Boolean.FALSE;
-
 	}
 }

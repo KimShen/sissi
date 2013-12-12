@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
-import com.sissi.context.OnlineStatus;
 import com.sissi.protocol.Element;
 
 /**
@@ -96,7 +95,7 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	@Override
-	public OnlineStatus getOnlineStatus() {
+	public Status getStatus() {
 		throw NOT_SUPPORT;
 	}
 }

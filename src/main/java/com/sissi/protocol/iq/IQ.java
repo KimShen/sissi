@@ -2,13 +2,11 @@ package com.sissi.protocol.iq;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.context.JID;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.bind.Bind;
 import com.sissi.protocol.iq.block.BlockList;
@@ -32,21 +30,6 @@ public class IQ extends Protocol implements Collector {
 	private final static List<Protocol> EMPTY_CHILDREN = new ArrayList<Protocol>();
 
 	private List<Protocol> protocols;
-
-	public IQ() {
-		super();
-		super.setId(UUID.randomUUID().toString());
-	}
-
-	public IQ(Type type) {
-		this();
-		super.setType(type.toString());
-	}
-
-	public IQ setTo(JID to) {
-		super.setTo(to);
-		return this;
-	}
 
 	@XmlElements({ @XmlElement(name = "vCard", type = VCard.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "query", type = Roster.class), @XmlElement(name = "query", type = Register.class), @XmlElement(name = "query", type = DiscoInfo.class), @XmlElement(name = "block", type = Blocked.class), @XmlElement(name = "unblock", type = UnBlock.class), @XmlElement(name = "blocklist", type = BlockList.class) })
 	public List<Protocol> getProtocols() {

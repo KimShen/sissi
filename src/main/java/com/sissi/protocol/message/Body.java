@@ -28,8 +28,9 @@ public class Body {
 		return text;
 	}
 
-	public void setText(String text) {
+	public Body setText(String text) {
 		this.text = text;
+		return this;
 	}
 
 	public Boolean hasContent() {

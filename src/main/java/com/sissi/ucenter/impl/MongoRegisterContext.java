@@ -30,7 +30,7 @@ public class MongoRegisterContext extends MongoFieldContext implements RegisterC
 		DBObject entity = super.getEntities(fields, BasicDBObjectBuilder.start());
 		this.log.debug("Entity: " + entity);
 		try {
-			this.config.find().save(entity, WriteConcern.SAFE);
+			this.config.collection().save(entity, WriteConcern.SAFE);
 			return true;
 		} catch (MongoException e) {
 			return false;

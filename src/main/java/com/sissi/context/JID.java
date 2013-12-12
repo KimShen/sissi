@@ -9,11 +9,11 @@ public interface JID {
 
 	public String getHost();
 
+	public JID setResource(String resource);
+	
 	public String getResource();
 
 	public JID getBare();
-
-	public JID setResource(String resource);
 
 	public String asString();
 

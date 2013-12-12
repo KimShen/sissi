@@ -6,7 +6,7 @@ import java.util.Map;
 import com.sissi.protocol.iq.roster.Group;
 import com.sissi.protocol.iq.roster.Item;
 import com.sissi.protocol.iq.roster.Roster.Subscription;
-import com.sissi.ucenter.Relation.RelationRoster;
+import com.sissi.ucenter.RelationContext.RelationRoster;
 
 /**
  * @author kim 2013-11-6
@@ -41,7 +41,7 @@ public class ItemWrapRelation implements RelationRoster {
 		return Subscription.parse(this.item.getSubscription()).toString();
 	}
 
-	public Boolean isBan() {
+	public Boolean isBlock() {
 		return false;
 	}
 

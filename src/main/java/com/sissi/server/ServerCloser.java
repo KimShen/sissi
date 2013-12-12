@@ -7,5 +7,5 @@ import com.sissi.context.JIDContext;
  */
 public interface ServerCloser {
 
-	public void close(JIDContext context);
+	public ServerCloser close(JIDContext context);
 }

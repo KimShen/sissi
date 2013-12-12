@@ -20,7 +20,7 @@ public class Session4SelfsProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		for (Element each : delayElementBox.fetch(context.getJid().getBare())) {
+		for (Element each : delayElementBox.get(context.getJid())) {
 			context.write(each);
 		}
 		return true;

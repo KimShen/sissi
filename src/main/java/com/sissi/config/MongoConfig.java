@@ -14,7 +14,7 @@ public interface MongoConfig extends Config {
 
 	public MongoConfig clear();
 
-	public DBCollection find();
+	public DBCollection collection();
 
 	public String asString(DBObject db, String key);
 

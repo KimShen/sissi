@@ -18,9 +18,10 @@ public class ChainedServerCloser implements ServerCloser {
 	}
 
 	@Override
-	public void close(JIDContext context) {
+	public ChainedServerCloser close(JIDContext context) {
 		for (ServerCloser each : this.closers) {
 			each.close(context);
 		}
+		return this;
 	}
 }

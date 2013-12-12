@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
-import com.sissi.context.OnlineStatus;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.read.Collector;
@@ -16,7 +15,7 @@ import com.sissi.read.Mapping.MappingMetadata;
  */
 @MappingMetadata(uri = "jabber:client", localName = "presence")
 @XmlRootElement
-public class Presence extends Protocol implements OnlineStatus, Collector {
+public class Presence extends Protocol implements com.sissi.context.JIDContext.Status, Collector {
 
 	private final static String STATUS = "status";
 
@@ -58,7 +57,7 @@ public class Presence extends Protocol implements OnlineStatus, Collector {
 	}
 
 	public Presence(JID from, JID to, String show, String status, String type) {
-		this.setShow(show != null ? new Show(show) : null).setStatus(status != null ? new Status(status) : null).setFrom(from.asString()).setTo(to.asString()).setType(type);
+		this.setShow(show != null ? new Show(show) : null).setStatus(status != null ? new Status(status) : null).setFrom(from.asStringWithBare()).setTo(to.asStringWithBare()).setType(type);
 	}
 
 	@XmlElement
@@ -81,11 +80,6 @@ public class Presence extends Protocol implements OnlineStatus, Collector {
 		return this;
 	}
 
-	@XmlTransient
-	public String getTypeAsText() {
-		return this.getType();
-	}
-
 	@XmlElement
 	public Delay getDelay() {
 		return this.delay;
@@ -94,6 +88,11 @@ public class Presence extends Protocol implements OnlineStatus, Collector {
 	public Presence setDelay(Delay delay) {
 		this.delay = delay;
 		return this;
+	}
+
+	@XmlTransient
+	public String getTypeAsText() {
+		return this.getType();
 	}
 
 	@XmlElement(name = "show")

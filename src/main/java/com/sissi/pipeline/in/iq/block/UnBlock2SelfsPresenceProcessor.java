@@ -1,20 +1,15 @@
 package com.sissi.pipeline.in.iq.block;
 
 import com.sissi.context.JIDContext;
-import com.sissi.pipeline.in.UtilProcessor;
-import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.block.UnBlock;
+import com.sissi.context.JIDContext.Status;
 
 /**
  * @author kim 2013年12月6日
  */
-public class UnBlock2SelfsPresenceProcessor extends UtilProcessor {
+public class UnBlock2SelfsPresenceProcessor extends Block2SelfsPresenceProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		JIDContext contacter = super.addressing.findOne(super.jidBuilder.build(UnBlock.class.cast(protocol).getItem().getJid()));
-		super.presenceQueue.offer(context.getJid(), contacter.getJid(), context.getJid(), contacter.getOnlineStatus());
-		return true;
+	protected Status build(JIDContext contacter) {
+		return contacter.getStatus();
 	}
-
 }

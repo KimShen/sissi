@@ -1,6 +1,6 @@
 package com.sissi.pipeline.in.iq.vcard;
 
-import com.sissi.pipeline.in.MatchClass;
+import com.sissi.pipeline.in.ClassMatcher;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.vcard.VCard;
@@ -8,7 +8,7 @@ import com.sissi.protocol.iq.vcard.VCard;
 /**
  * @author kim 2013年12月3日
  */
-public class VCardGetMatcher extends MatchClass {
+public class VCardGetMatcher extends ClassMatcher {
 
 	private final Boolean self;
 

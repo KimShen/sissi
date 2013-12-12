@@ -9,7 +9,8 @@ import com.sissi.server.ServerCloser;
 public class Offline4SelfsServerCloser implements ServerCloser {
 
 	@Override
-	public void close(JIDContext context) {
-		context.getOnlineStatus().clear();
+	public Offline4SelfsServerCloser close(JIDContext context) {
+		context.getStatus().clear();
+		return this;
 	}
 }

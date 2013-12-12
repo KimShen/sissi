@@ -6,7 +6,7 @@ package com.sissi.ucenter.vcard;
 public class StringVCardField extends GenericityVCardField<String> {
 	
 	public StringVCardField() {
-		super(null, null);
+		super();
 	}
 
 	public StringVCardField(String element, String value) {

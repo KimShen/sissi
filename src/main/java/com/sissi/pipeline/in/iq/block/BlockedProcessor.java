@@ -1,26 +1,26 @@
 package com.sissi.pipeline.in.iq.block;
 
 import com.sissi.context.JIDContext;
-import com.sissi.pipeline.in.UtilProcessor;
+import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.block.Blocked;
-import com.sissi.ucenter.BanContext;
+import com.sissi.ucenter.BlockContext;
 
 /**
  * @author kim 2013年12月5日
  */
-public class BlockedProcessor extends UtilProcessor {
+public class BlockedProcessor extends ProxyProcessor {
 
-	private final BanContext banContext;
+	private final BlockContext blockContext;
 
-	public BlockedProcessor(BanContext banContext) {
+	public BlockedProcessor(BlockContext blockContext) {
 		super();
-		this.banContext = banContext;
+		this.blockContext = blockContext;
 	}
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		this.banContext.ban(context.getJid(), super.build(Blocked.class.cast(protocol).getItem().getJid()));
+		this.blockContext.block(context.getJid(), super.build(Blocked.class.cast(protocol).getItem().getJid()));
 		return true;
 	}
 }

@@ -3,7 +3,7 @@ package com.sissi.protocol.error.detail;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.protocol.Failed.Detail;
+import com.sissi.protocol.Error.Detail;
 
 /**
  * @author kim 2013年12月7日

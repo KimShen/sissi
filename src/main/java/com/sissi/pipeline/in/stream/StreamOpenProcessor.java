@@ -16,12 +16,8 @@ public class StreamOpenProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(this.rewriteStreamByAccess(context, new Stream(protocol.getId())));
+		context.write(context.isAuth() ? this.buildBindingFeature(Stream.class.cast(protocol)) : this.buildLoginMethod(Stream.class.cast(protocol)));
 		return true;
-	}
-
-	private Stream rewriteStreamByAccess(JIDContext context, Stream stream) {
-		return context.isAuth() ? this.buildBindingFeature(stream) : this.buildLoginMethod(stream);
 	}
 
 	private Stream buildLoginMethod(Stream stream) {

@@ -10,13 +10,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.pipeline.in.auth.impl.DigestAuthCallback;
 import com.sissi.pipeline.in.auth.impl.PlainAuthCallback;
+import com.sissi.protocol.Feature;
 import com.sissi.protocol.Stream;
 
 /**
  * @author Kim.shen 2013-10-19
  */
 @XmlRootElement(namespace = Stream.NAMESPACE)
-public class Mechanisms extends Feature {
+public class Mechanisms implements Feature {
 
 	public final static Mechanisms FEATURE = new Mechanisms(DigestAuthCallback.MECHANISM, PlainAuthCallback.MECHANISM);
 

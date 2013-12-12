@@ -1,11 +1,13 @@
 package com.sissi.protocol;
 
+import java.util.UUID;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
-import com.sissi.protocol.error.Error;
+import com.sissi.protocol.error.ServerError;
 
 /**
  * @author kim 2013-10-24
@@ -37,13 +39,13 @@ abstract public class Protocol implements Element {
 
 	private String type;
 
-	private Error error;
+	private ServerError error;
 
 	private Protocol parent;
 
 	@XmlTransient
 	public Protocol getParent() {
-		return parent != null ? this.parent : this;
+		return this.parent != null ? this.parent : this;
 	}
 
 	public Protocol setParent(Protocol parent) {
@@ -57,7 +59,7 @@ abstract public class Protocol implements Element {
 
 	@XmlAttribute
 	public String getId() {
-		return id;
+		return this.id != null ? this.id : UUID.randomUUID().toString();
 	}
 
 	public Protocol setId(String id) {
@@ -67,7 +69,7 @@ abstract public class Protocol implements Element {
 
 	@XmlAttribute
 	public String getFrom() {
-		return from;
+		return this.from;
 	}
 
 	public Protocol setFrom(String from) {
@@ -82,7 +84,7 @@ abstract public class Protocol implements Element {
 
 	@XmlAttribute
 	public String getTo() {
-		return to;
+		return this.to;
 	}
 
 	public Protocol setTo(String to) {
@@ -97,7 +99,7 @@ abstract public class Protocol implements Element {
 
 	@XmlAttribute
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public Protocol setType(String type) {
@@ -111,13 +113,13 @@ abstract public class Protocol implements Element {
 	}
 
 	@XmlElement
-	public Error getError() {
-		return error;
+	public ServerError getError() {
+		return this.error;
 	}
 
-	public Protocol setError(Failed failed) {
+	public Protocol setError(Error error) {
 		this.setType(Type.ERROR);
-		this.error = new Error(failed);
+		this.error = new ServerError(error);
 		return this;
 	}
 

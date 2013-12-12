@@ -5,7 +5,7 @@ package com.sissi.server;
  */
 public interface ServerStart {
 
-	public void start();
+	public ServerStart start();
 
-	public void stop();
+	public ServerStart stop();
 }

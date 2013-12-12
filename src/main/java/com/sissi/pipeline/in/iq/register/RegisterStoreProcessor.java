@@ -2,7 +2,7 @@ package com.sissi.pipeline.in.iq.register;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
-import com.sissi.pipeline.in.iq.IQTypeProcessor;
+import com.sissi.pipeline.in.iq.IQProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.register.Register;
@@ -12,21 +12,22 @@ import com.sissi.ucenter.field.Field.Fields;
 /**
  * @author kim 2013年12月5日
  */
-abstract public class RegisterStoreProcessor implements Input {
+abstract class RegisterStoreProcessor implements Input {
 
-	private final RegisterContext vCardRegisterContext;
+	private final RegisterContext registerContext;
 
-	private final IQTypeProcessor iqTypeProcessor;
+	private final IQProcessor iqProcessor;
 
-	public RegisterStoreProcessor(RegisterContext vCardRegisterContext, IQTypeProcessor iqTypeProcessor) {
+	public RegisterStoreProcessor(RegisterContext registerContext, IQProcessor iqProcessor) {
 		super();
-		this.vCardRegisterContext = vCardRegisterContext;
-		this.iqTypeProcessor = iqTypeProcessor;
+		this.registerContext = registerContext;
+		this.iqProcessor = iqProcessor;
 	}
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return this.vCardRegisterContext.register(this.filter(Register.class.cast(protocol))) ? true : this.iqTypeProcessor.input(context, IQ.class.cast(protocol.getParent()).clear().getParent());
+		return this.registerContext.register(this.filter(Register.class.cast(protocol))) ? true : this.iqProcessor.input(context, IQ.class.cast(protocol.getParent()).clear().getParent());
 	}
-	abstract protected Fields filter(Fields vCardFields);
+
+	abstract protected Fields filter(Fields fields);
 }

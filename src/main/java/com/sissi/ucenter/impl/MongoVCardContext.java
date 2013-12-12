@@ -31,21 +31,21 @@ public class MongoVCardContext extends MongoFieldContext implements VCardContext
 	}
 
 	@Override
-	public VCardContext push(JID jid, Fields fields) {
+	public VCardContext set(JID jid, Fields fields) {
 		DBObject query = BasicDBObjectBuilder.start("username", jid.getUser()).get();
 		DBObject entity = BasicDBObjectBuilder.start("$set", super.getEntities(fields, BasicDBObjectBuilder.start())).get();
 		this.log.debug("Query: " + query);
 		this.log.debug("Entity: " + entity);
-		this.config.find().update(query, entity);
+		this.config.collection().update(query, entity);
 		return this;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Fields> T pull(JID jid, T fields) {
+	public <T extends Fields> T fill(JID jid, T fields) {
 		DBObject query = BasicDBObjectBuilder.start("username", jid.getUser()).get();
 		this.log.debug("Query: " + query);
-		Map<String, Object> entity = this.config.find().findOne(query).toMap();
+		Map<String, Object> entity = this.config.collection().findOne(query).toMap();
 		for (String element : entity.keySet()) {
 			if(this.parser.containsKey(element)){
 				fields.add(this.parser.get(element).read(entity.get(element)));

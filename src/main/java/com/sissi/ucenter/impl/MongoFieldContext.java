@@ -13,16 +13,20 @@ public class MongoFieldContext {
 	protected DBObject getEntities(Fields fields, BasicDBObjectBuilder builder) {
 		for (Field<?> field : fields) {
 			if (field.hasChild()) {
-				if (field.getChildren().isEmbed()) {
-					this.getEntities(field.getChildren(), builder);
-				} else {
-					builder.add(field.getName(), this.getEntities(field.getChildren(), BasicDBObjectBuilder.start()));
-				}
+				this.embedOrNot(builder, field);
 			} else {
 				builder.add(field.getName(), field.getValue());
 			}
 		}
 		return builder.get();
+	}
+
+	private void embedOrNot(BasicDBObjectBuilder builder, Field<?> field) {
+		if (field.getChildren().isEmbed()) {
+			this.getEntities(field.getChildren(), builder);
+		} else {
+			builder.add(field.getName(), this.getEntities(field.getChildren(), BasicDBObjectBuilder.start()));
+		}
 	}
 
 }

@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.feature.Bind;
-import com.sissi.protocol.feature.Feature;
 import com.sissi.protocol.feature.Mechanisms;
 import com.sissi.protocol.feature.Register;
 import com.sissi.protocol.feature.Session;
@@ -34,8 +33,6 @@ public class Stream extends Protocol implements WithOutClose {
 	private final AtomicBoolean isUsing = new AtomicBoolean();
 
 	private List<Feature> features;
-
-	private String version;
 
 	public Stream() {
 		super();
@@ -63,12 +60,7 @@ public class Stream extends Protocol implements WithOutClose {
 
 	@XmlAttribute
 	public String getVersion() {
-		return this.version != null ? this.version : VERSION;
-	}
-
-	public Stream setVersion(String version) {
-		this.version = version;
-		return this;
+		return VERSION;
 	}
 
 	public Stream addFeature(Feature feature) {

@@ -12,8 +12,8 @@ import javax.xml.bind.annotation.XmlType;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 import com.sissi.protocol.iq.register.form.Form;
-import com.sissi.protocol.iq.register.form.Password;
-import com.sissi.protocol.iq.register.form.Username;
+import com.sissi.protocol.iq.register.simple.Password;
+import com.sissi.protocol.iq.register.simple.Username;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
 import com.sissi.ucenter.field.Field;
@@ -29,16 +29,16 @@ import com.sissi.ucenter.vcard.ListVCardFields;
 public class Register extends Protocol implements Fields, Collector {
 
 	private final static String XMLNS = "jabber:iq:register";
-
-	private ListVCardFields vCardFields = new ListVCardFields(true);
+	
+	private final ListVCardFields vCardFields = new ListVCardFields(true);
 
 	private String instructions;
 
 	public Register() {
-
 	}
 
 	public Register(String instructions) {
+		this();
 		this.instructions = instructions;
 	}
 
@@ -57,7 +57,7 @@ public class Register extends Protocol implements Fields, Collector {
 		return this;
 	}
 
-	public Register add(Fields fields) {
+	public Register add(List<Field<?>> fields) {
 		for (Field<?> each : fields) {
 			this.vCardFields.add(each);
 		}
@@ -69,13 +69,8 @@ public class Register extends Protocol implements Fields, Collector {
 		return this.vCardFields.getFields();
 	}
 
-	public Boolean isMulti() {
+	public Boolean isForm() {
 		return this.vCardFields.findField(Form.NAME, Field.class) != null;
-	}
-
-	public Register clear() {
-		this.vCardFields = new ListVCardFields(true);
-		return this;
 	}
 
 	@Override

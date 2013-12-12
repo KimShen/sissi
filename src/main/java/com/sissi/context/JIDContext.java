@@ -25,7 +25,7 @@ public interface JIDContext {
 
 	public Integer getPriority();
 
-	public OnlineStatus getOnlineStatus();
+	public Status getStatus();
 
 	public Boolean close();
 
@@ -39,5 +39,27 @@ public interface JIDContext {
 	public interface JIDContextParam {
 
 		public <T> T find(String key, Class<T> clazz);
+	}
+	
+	public interface Status {
+
+		public String getTypeAsText();
+
+		public String getShowAsText();
+
+		public String getStatusAsText();
+
+		public Status asType(String type);
+
+		public Status asShow(String show);
+
+		public Status asStatus(String status);
+
+		public Status clear();
+
+		public interface StatusBuilder {
+
+			public Status build(JIDContext context);
+		}
 	}
 }

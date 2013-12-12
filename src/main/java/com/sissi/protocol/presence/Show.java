@@ -2,7 +2,6 @@ package com.sissi.protocol.presence;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.protocol.Protocol;
 import com.sissi.read.Mapping.MappingMetadata;
 
 /**
@@ -10,7 +9,7 @@ import com.sissi.read.Mapping.MappingMetadata;
  */
 @MappingMetadata(uri = "jabber:client", localName = "show")
 @XmlRootElement
-public class Show extends Protocol {
+public class Show{
 
 	private String text;
 

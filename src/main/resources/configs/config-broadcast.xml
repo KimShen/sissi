@@ -5,16 +5,16 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="broadcast.presence.selfs" class="com.sissi.broadcast.impl.ToJIDSelfsPresenceQueue">
+	<bean id="broadcast.presence.selfs" class="com.sissi.broadcast.impl.ToSelfsPresenceQueue">
 		<constructor-arg ref="addressing" />
 	</bean>
-	<bean id="broadcast.protocol.self" class="com.sissi.broadcast.impl.ToJIDSelfProtocolQueue">
+	<bean id="broadcast.protocol.self" class="com.sissi.broadcast.impl.ToSelfProtocolQueue">
 		<constructor-arg ref="addressing" />
 	</bean>
-	<bean id="broadcast.protocol.selfs" class="com.sissi.broadcast.impl.ToJIDSelfsProtocolQueue">
+	<bean id="broadcast.protocol.selfs" class="com.sissi.broadcast.impl.ToSelfsProtocolQueue">
 		<constructor-arg ref="addressing" />
 	</bean>
-	<bean id="broadcast.protocol.fans" class="com.sissi.broadcast.impl.ToJIDFansProtocolQueue">
+	<bean id="broadcast.protocol.fans" class="com.sissi.broadcast.impl.ToFansProtocolQueue">
 		<constructor-arg ref="addressing" />
 		<constructor-arg ref="builder.jid" />
 		<constructor-arg ref="ucenter.relation.roster" />

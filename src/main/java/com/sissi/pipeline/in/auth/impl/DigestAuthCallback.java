@@ -57,16 +57,16 @@ public class DigestAuthCallback implements AuthCallback {
 
 	private final JIDBuilder jidBuilder;
 
+	private final SaslServers saslServers;
+	
 	private final AuthAccessor authAccessor;
 
-	private final SaslServers saslServers;
-
-	public DigestAuthCallback(String host, JIDBuilder jidBuilder, AuthAccessor authAccessor, SaslServers saslServers) {
+	public DigestAuthCallback(String host, JIDBuilder jidBuilder, SaslServers saslServers, AuthAccessor authAccessor) {
 		super();
 		this.host = host;
 		this.jidBuilder = jidBuilder;
-		this.authAccessor = authAccessor;
 		this.saslServers = saslServers;
+		this.authAccessor = authAccessor;
 	}
 
 	@Override
@@ -75,8 +75,8 @@ public class DigestAuthCallback implements AuthCallback {
 			context.write(new Challenge(this.saslServers.set(context, Sasl.createSaslServer(MECHANISM, PROTOCOL, this.host, PROPS, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
 			return true;
 		} catch (Exception e) {
-			if (this.log.isFatalEnabled()) {
-				this.log.fatal(e);
+			if (this.log.isErrorEnabled()) {
+				this.log.error(e);
 				e.printStackTrace();
 			}
 			return false;
@@ -88,11 +88,11 @@ public class DigestAuthCallback implements AuthCallback {
 		return MECHANISM.equals(mechanism);
 	}
 
-	public class ServerCallbackHandler implements CallbackHandler {
+	private class ServerCallbackHandler implements CallbackHandler {
 
 		private final JIDContext context;
 
-		public ServerCallbackHandler(JIDContext context) {
+		private ServerCallbackHandler(JIDContext context) {
 			super();
 			this.context = context;
 		}
@@ -125,7 +125,7 @@ public class DigestAuthCallback implements AuthCallback {
 		@Override
 		public void handler(JIDContext context, Callback callback) {
 			String password = DigestAuthCallback.this.authAccessor.access(context.getJid().getUser());
-			((PasswordCallback) callback).setPassword(password != null ? password.toCharArray() : new char[0]);
+			PasswordCallback.class.cast(callback).setPassword(password != null ? DigestAuthCallback.this.authAccessor.access(context.getJid().getUser()).toCharArray() : new char[0]);
 		}
 	}
 
@@ -133,8 +133,7 @@ public class DigestAuthCallback implements AuthCallback {
 
 		@Override
 		public void handler(JIDContext context, Callback callback) {
-			AuthorizeCallback authCallback = ((AuthorizeCallback) callback);
-			authCallback.setAuthorized(true);
+			AuthorizeCallback.class.cast(callback).setAuthorized(true);
 		}
 	}
 }

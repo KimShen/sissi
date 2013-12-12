@@ -1,10 +1,13 @@
 package com.sissi.pipeline.out;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.util.ReferenceCountUtil;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -45,12 +48,16 @@ public class NetworkOutputBuilder implements OutputBuilder {
 
 		@Override
 		public Boolean output(JIDContext context, Element node) {
+			ByteBuf byteBuffer = this.transfer.allocBuffer();
+			BufferedOutputStream output = new BufferedOutputStream(new ByteBufferOutputStream(byteBuffer));
 			try {
-				ByteBuf byteBuffer = this.transfer.allocBuffer();
-				NetworkOutputBuilder.this.writer.write(context, node, new ByteBufferOutputStream(byteBuffer));
+				NetworkOutputBuilder.this.writer.write(context, node, output);
+				output.flush();
 				this.transfer.transfer(byteBuffer);
 			} catch (IOException e) {
 				NetworkOutputBuilder.this.log.error(e);
+			} finally {
+				IOUtils.closeQuietly(output);
 			}
 			return false;
 		}
@@ -70,7 +77,11 @@ public class NetworkOutputBuilder implements OutputBuilder {
 
 			@Override
 			public void write(int b) throws IOException {
-				buffer.writeByte(b);
+				this.buffer.writeByte(b);
+			}
+
+			public void close() {
+				ReferenceCountUtil.release(this.buffer);
 			}
 		}
 	}

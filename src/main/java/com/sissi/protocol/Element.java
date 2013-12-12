@@ -1,5 +1,6 @@
 package com.sissi.protocol;
 
+
 /**
  * @author kim 2013年11月25日
  */
@@ -21,7 +22,7 @@ public interface Element {
 
 	public Element setType(String type);
 
-	public Failed getError();
+	public Error getError();
 
-	public Element setError(Failed error);
+	public Element setError(Error error);
 }

@@ -8,7 +8,7 @@ import com.sissi.ucenter.field.Field.Fields;
  */
 public interface VCardContext {
 
-	public VCardContext push(JID jid, Fields fields);
+	public VCardContext set(JID jid, Fields fields);
 
-	public <T extends Fields> T pull(JID jid, T fields);
+	public <T extends Fields> T fill(JID jid, T fields);
 }

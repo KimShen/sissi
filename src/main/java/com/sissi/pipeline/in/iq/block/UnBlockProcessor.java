@@ -1,22 +1,22 @@
 package com.sissi.pipeline.in.iq.block;
 
 import com.sissi.context.JIDContext;
-import com.sissi.pipeline.in.UtilProcessor;
+import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.block.UnBlock;
 import com.sissi.protocol.iq.roster.Item;
-import com.sissi.ucenter.BanContext;
+import com.sissi.ucenter.BlockContext;
 
 /**
  * @author kim 2013年12月6日
  */
-public class UnBlockProcessor extends UtilProcessor {
+public class UnBlockProcessor extends ProxyProcessor {
 
-	private final BanContext banContext;
+	private final BlockContext blockContext;
 
-	public UnBlockProcessor(BanContext banContext) {
+	public UnBlockProcessor(BlockContext blockContext) {
 		super();
-		this.banContext = banContext;
+		this.blockContext = blockContext;
 	}
 
 	@Override
@@ -26,12 +26,12 @@ public class UnBlockProcessor extends UtilProcessor {
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Item item) {
-		this.banContext.free(context.getJid(), super.build(item.getJid()));
+		this.blockContext.unblock(context.getJid(), super.build(item.getJid()));
 		return true;
 	}
 
 	private Boolean writeAndReturn(JIDContext context) {
-		this.banContext.free(context.getJid());
+		this.blockContext.unblock(context.getJid());
 		return true;
 	}
 }

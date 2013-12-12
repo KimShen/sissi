@@ -12,9 +12,7 @@ import com.sissi.read.Mapping.MappingMetadata;
 @XmlRootElement
 public class Group {
 
-	private final static String DEFAULT = "";
-
-	private String text = DEFAULT;
+	private String text;
 
 	public Group() {
 		super();

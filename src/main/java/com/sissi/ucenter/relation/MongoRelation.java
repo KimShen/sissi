@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
-import com.sissi.ucenter.Relation.RelationRoster;
+import com.sissi.ucenter.RelationContext.RelationRoster;
 
 /**
  * @author kim 2013-11-6
@@ -14,8 +14,6 @@ public class MongoRelation implements RelationRoster {
 
 	private final static Map<String, Object> PLUS = new HashMap<String, Object>();
 
-	private final Boolean ban;
-	
 	private final String jid;
 	
 	private final String name;
@@ -26,7 +24,6 @@ public class MongoRelation implements RelationRoster {
 
 	public MongoRelation(DBObject db, MongoConfig config) {
 		super();
-		this.ban = config.asBoolean(db, "ban");
 		this.jid = config.asString(db, "slave");
 		this.name = config.asString(db, "name");
 		this.group = config.asString(db, "group");
@@ -49,10 +46,6 @@ public class MongoRelation implements RelationRoster {
 		return subscription;
 	}
 	
-	public Boolean isBan(){
-		return ban;
-	}
-
 	public String getJid() {
 		return jid;
 	}

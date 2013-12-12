@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.protocol.Protocol;
 import com.sissi.read.Mapping.MappingMetadata;
 
 /**
@@ -12,7 +11,7 @@ import com.sissi.read.Mapping.MappingMetadata;
  */
 @MappingMetadata(uri = { "jabber:iq:roster", "urn:xmpp:blocking" }, localName = "item")
 @XmlRootElement
-public class Item extends Protocol {
+public class Item {
 
 	public static enum Action {
 
@@ -56,7 +55,7 @@ public class Item extends Protocol {
 		this.jid = jid;
 		return this;
 	}
-	
+
 	@XmlAttribute
 	public String getName() {
 		return name;

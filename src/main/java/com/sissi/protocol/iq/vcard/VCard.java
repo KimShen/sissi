@@ -33,9 +33,6 @@ public class VCard extends Protocol implements Fields, Collector {
 	public VCard() {
 	}
 
-	public VCard(String name, Boolean isEmbed) {
-	}
-
 	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;

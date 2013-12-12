@@ -39,7 +39,7 @@ public class MainServerStart implements ServerStart {
 	}
 
 	@Override
-	public void start() {
+	public MainServerStart start() {
 		try {
 			bootstrap.group(serverLoopGroup.boss(), serverLoopGroup.event()).channel(NioServerSocketChannel.class).childHandler(this.channelInitializer);
 			bootstrap.bind(this.port).addListener(new FailShutdownGenericFutureListener());
@@ -47,11 +47,13 @@ public class MainServerStart implements ServerStart {
 			this.log.fatal(e);
 			this.closeAll();
 		}
+		return this;
 	}
 
 	@Override
-	public void stop() {
+	public MainServerStart stop() {
 		this.closeAll();
+		return this;
 	}
 
 	private void closeAll() {

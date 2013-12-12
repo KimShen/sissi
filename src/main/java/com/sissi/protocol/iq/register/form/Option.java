@@ -14,7 +14,7 @@ public class Option extends StringVCardField {
 
 	public Option() {
 	}
-	
+
 	public Option(String name, String value) {
 		super(name, value);
 	}
@@ -24,9 +24,9 @@ public class Option extends StringVCardField {
 	public String getName() {
 		return super.getName();
 	}
-	
+
 	@XmlElement
-	public String getValue(){
+	public String getValue() {
 		return super.getValue();
 	}
 }

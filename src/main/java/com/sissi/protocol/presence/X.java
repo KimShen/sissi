@@ -4,13 +4,11 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.protocol.Protocol;
-
 /**
  * @author kim 2013年12月11日
  */
 @XmlRootElement
-public class X extends Protocol {
+public class X {
 
 	private final static String XMLNS = "vcard-temp:x:update";
 

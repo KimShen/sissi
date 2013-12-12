@@ -1,7 +1,5 @@
 package com.sissi.context.impl;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import com.sissi.context.JID;
 import com.sissi.context.JID.JIDBuilder;
 
@@ -16,7 +14,7 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 
 	private final static String CONNECT_SLASH = "/";
 
-	private final None NONE = new None();
+	private final None none = new None();
 
 	private final String host;
 
@@ -27,7 +25,7 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 
 	@Override
 	public JID build(String jid) {
-		return jid != null ? new User(jid) : NONE;
+		return jid != null ? new User(jid) : none;
 	}
 
 	public JID build(String username, String resource) {
@@ -137,10 +135,6 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 
 		public String asStringWithBare() {
 			return (this.user != null ? this.user + "@" : "") + this.host;
-		}
-
-		public String toString() {
-			return ToStringBuilder.reflectionToString(this);
 		}
 	}
 }

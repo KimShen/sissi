@@ -1,13 +1,13 @@
 package com.sissi.pipeline.in.presence.status;
 
-import com.sissi.pipeline.in.MatchClass;
+import com.sissi.pipeline.in.ClassMatcher;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
 
 /**
  * @author kim 2013-11-4
  */
-public class PresenceStatusMatcher extends MatchClass {
+public class PresenceStatusMatcher extends ClassMatcher {
 
 	public PresenceStatusMatcher() {
 		super(Presence.class);

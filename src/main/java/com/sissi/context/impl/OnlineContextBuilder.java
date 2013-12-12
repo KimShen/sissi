@@ -7,8 +7,7 @@ import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContext.JIDContextBuilder;
 import com.sissi.context.JIDContext.JIDContextParam;
-import com.sissi.context.OnlineStatus;
-import com.sissi.context.OnlineStatus.OnlineStatusBuilder;
+import com.sissi.context.JIDContext.Status.StatusBuilder;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 
@@ -21,9 +20,9 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final AtomicLong indexes = new AtomicLong();
 
-	private final OnlineStatusBuilder onlineStatusBuilder;
+	private final StatusBuilder onlineStatusBuilder;
 
-	public OnlineContextBuilder(OnlineStatusBuilder onlineStatusBuilder) {
+	public OnlineContextBuilder(StatusBuilder onlineStatusBuilder) {
 		super();
 		this.onlineStatusBuilder = onlineStatusBuilder;
 	}
@@ -45,7 +44,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final Long index;
 
-		private OnlineStatus onlineStatus;
+		private Status onlineStatus;
 
 		private Integer priority;
 
@@ -104,7 +103,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public OnlineStatus getOnlineStatus() {
+		public Status getStatus() {
 			return this.onlineStatus;
 		}
 

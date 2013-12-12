@@ -20,14 +20,9 @@ import com.sissi.read.Reader;
  */
 public class SAXReader implements Reader {
 
-	private final static SAXParserFactory FACTORY;
+	private final Log log = LogFactory.getLog(this.getClass());
 
-	static {
-		FACTORY = SAXParserFactory.newInstance();
-		FACTORY.setNamespaceAware(true);
-	}
-
-	private final Log log = LogFactory.getLog(SAXReader.class);
+	private final SAXParserFactory factory;
 
 	private final Executor executor;
 
@@ -49,13 +44,14 @@ public class SAXReader implements Reader {
 		super();
 		this.mapping = mapping;
 		this.executor = executor;
-		this.log.debug("Executor is: " + this.executor.getClass());
+		this.factory = SAXParserFactory.newInstance();
+		this.factory.setNamespaceAware(true);
 	}
 
 	public Future<Object> future(InputStream stream) throws IOException {
 		try {
 			SAXFuture future = new SAXFuture();
-			this.executor.execute(new ParseRunnable(stream, FACTORY.newSAXParser(), new SAXHandler(this.mapping, future)));
+			this.executor.execute(new ParseRunnable(stream, this.factory.newSAXParser(), new SAXHandler(this.mapping, future)));
 			return future;
 		} catch (Exception e) {
 			this.log.error(e);
