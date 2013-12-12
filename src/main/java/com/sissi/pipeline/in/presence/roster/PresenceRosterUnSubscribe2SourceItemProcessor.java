@@ -9,7 +9,7 @@ import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.roster.Item;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.ucenter.Relation;
-import com.sissi.ucenter.RelationRoster;
+import com.sissi.ucenter.Relation.RelationRoster;
 
 /**
  * @author kim 2013-11-18

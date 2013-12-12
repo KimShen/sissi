@@ -16,4 +16,9 @@ public interface Relation {
 	public Boolean isBan();
 
 	public Map<String, Object> plus();
+
+	public interface RelationRoster extends Relation {
+
+		public String asGroup();
+	}
 }

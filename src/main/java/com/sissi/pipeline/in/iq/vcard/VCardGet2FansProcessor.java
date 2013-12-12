@@ -34,7 +34,6 @@ public class VCardGet2FansProcessor extends UtilProcessor {
 		//VCard.class.cast(protocol).setPhoto(new Photo("image/jpeg", bytes));
 		//context.write(protocol.getParent().reply().setTo(context.getJid().asStringWithBare()).setType(Type.RESULT));
 		IQ iq = (IQ)this.vcardContext.pull(super.build(protocol.getParent().getTo()), VCard.class.cast(protocol)).getParent().reply().setTo(context.getJid().asStringWithBare()).setType(Type.RESULT);
-		System.out.println("OUT: " + VCard.class.cast(protocol).getPhoto().getBinval().getValue());
 		context.write(iq);
 		return true;
 	}

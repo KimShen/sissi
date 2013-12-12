@@ -1,6 +1,6 @@
 package com.sissi.ucenter;
 
-import com.sissi.ucenter.Field.Fields;
+import com.sissi.ucenter.field.Field.Fields;
 
 
 /**

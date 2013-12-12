@@ -6,8 +6,9 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="register.pro.fields" class="com.sissi.pipeline.in.iq.register.RegisterFieldsProcessor">
-		<constructor-arg ref="ucenter.invitation.simple" />
+		<constructor-arg ref="uncenter.fields.form" />
 	</bean>
+	
 	<bean id="register.pro.store.simple" class="com.sissi.pipeline.in.iq.register.RegisterStoreSimpleProcessor">
 		<constructor-arg ref="iq.pro.error.none" />
 		<constructor-arg ref="ucenter.register" />

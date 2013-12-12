@@ -1,4 +1,4 @@
-package com.sissi.ucenter.impl;
+package com.sissi.ucenter.relation;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

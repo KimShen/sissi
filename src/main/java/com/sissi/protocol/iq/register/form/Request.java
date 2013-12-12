@@ -4,21 +4,30 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
-import com.sissi.ucenter.Field;
+import com.sissi.ucenter.field.Field;
 
 /**
  * @author kim 2013年12月5日
  */
 @MappingMetadata(uri = "jabber:x:data", localName = "field")
 @XmlRootElement
-public class Request implements Field, Collector {
+public class Request implements Field<String>, Collector {
 
 	private String var;
 
 	private Value value;
 
-	public void setVar(String var) {
+	public Request() {
+	}
+
+	public Request setVar(String var) {
 		this.var = var;
+		return this;
+	}
+
+	@Override
+	public String getValue() {
+		return this.value != null ? this.value.getText() : null;
 	}
 
 	@Override
@@ -27,17 +36,17 @@ public class Request implements Field, Collector {
 	}
 
 	@Override
-	public String getValue() {
-		return this.value != null ? this.value.getText() : null;
+	public Fields getChildren() {
+		return null;
+	}
+
+	@Override
+	public Boolean hasChild() {
+		return false;
 	}
 
 	public void set(String localName, Object ob) {
 		this.value = Value.class.cast(ob);
-	}
-
-	@Override
-	public Boolean isEmpty() {
-		return this.getValue() == null;
 	}
 
 	@MappingMetadata(uri = "jabber:x:data", localName = "value")
@@ -45,8 +54,9 @@ public class Request implements Field, Collector {
 
 		private String text;
 
-		public void setText(String text) {
+		public Value setText(String text) {
 			this.text = text;
+			return this;
 		}
 
 		public String getText() {

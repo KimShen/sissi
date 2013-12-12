@@ -1,4 +1,4 @@
-package com.sissi.ucenter.impl;
+package com.sissi.ucenter.relation;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,21 +5,21 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.iq.register.form.Form.Type;
-import com.sissi.ucenter.Field;
+import com.sissi.ucenter.field.Field;
 
 /**
  * @author kim 2013年12月4日
  */
 @XmlRootElement(name = "field")
-public class Input implements Field {
+public class Input implements Field<String> {
 
-	private String value;
+	private String var;
 
 	private String type;
 
 	private String name;
-
-	private String var;
+	
+	private String value;
 
 	private Required required;
 
@@ -27,22 +27,8 @@ public class Input implements Field {
 
 	}
 
-	public Input(String type, String name, String var) {
-		this(type, null, name, var);
-	}
-
-	public Input(String type, String value, String name, String var) {
-		this(type, value, name, var, null);
-	}
-
 	public Input(String type, String name, String var, Required required) {
-		this(type, null, name, var, required);
-	}
-
-	public Input(String type, String value, String name, String var, Required required) {
-		super();
 		this.type = Type.parse(type).toString();
-		this.value = value;
 		this.name = name;
 		this.var = var;
 		this.required = required;
@@ -55,28 +41,32 @@ public class Input implements Field {
 	}
 
 	@XmlAttribute
-	public String getType() {
-		return type;
-	}
-
-	@XmlAttribute
 	public String getVar() {
-		return var;
+		return this.var;
 	}
 
 	@XmlElement
 	public Required getRequired() {
-		return required;
+		return this.required;
+	}
+
+	@XmlAttribute
+	public String getType() {
+		return this.type;
 	}
 
 	@Override
-	@XmlElement(name = "value")
 	public String getValue() {
-		return value;
+		return this.value;
 	}
 
 	@Override
-	public Boolean isEmpty() {
-		return this.getValue() == null;
+	public Fields getChildren() {
+		return null;
+	}
+
+	@Override
+	public Boolean hasChild() {
+		return false;
 	}
 }

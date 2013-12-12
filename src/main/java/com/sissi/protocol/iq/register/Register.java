@@ -1,10 +1,7 @@
 package com.sissi.protocol.iq.register;
 
-import java.util.Collection;
-import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -15,10 +12,13 @@ import javax.xml.bind.annotation.XmlType;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 import com.sissi.protocol.iq.register.form.Form;
+import com.sissi.protocol.iq.register.form.Password;
+import com.sissi.protocol.iq.register.form.Username;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
-import com.sissi.ucenter.Field;
-import com.sissi.ucenter.Field.FieldFinder;
+import com.sissi.ucenter.field.Field;
+import com.sissi.ucenter.field.Field.Fields;
+import com.sissi.ucenter.vcard.ListVCardFields;
 
 /**
  * @author kim 2013年12月3日
@@ -26,28 +26,19 @@ import com.sissi.ucenter.Field.FieldFinder;
 @MappingMetadata(uri = "jabber:iq:register", localName = "query")
 @XmlType(namespace = Stream.NAMESPACE)
 @XmlRootElement(name = "query")
-public class Register extends Protocol implements FieldFinder, Collector {
+public class Register extends Protocol implements Fields, Collector {
 
 	private final static String XMLNS = "jabber:iq:register";
 
-	private final static Comparator<Class<? extends Field>> COMPARATOR = new Comparator<Class<? extends Field>>() {
-
-		@Override
-		public int compare(Class<? extends Field> f1, Class<? extends Field> f2) {
-			return f1.equals(f2) ? 0 : 1;
-		}
-	};
+	private ListVCardFields vCardFields = new ListVCardFields(true);
 
 	private String instructions;
 
-	private Map<Class<? extends Field>, Field> fields;
-
 	public Register() {
-		super();
+
 	}
 
 	public Register(String instructions) {
-		super();
 		this.instructions = instructions;
 	}
 
@@ -56,47 +47,54 @@ public class Register extends Protocol implements FieldFinder, Collector {
 		return instructions;
 	}
 
-	@XmlElements({ @XmlElement(name = "username", type = Username.class), @XmlElement(name = "password", type = Password.class), @XmlElement(name = "x", type = Form.class) })
-	public Collection<Field> getFields() {
-		return fields.values();
-	}
-
-	public <T> T findField(Class<T> field) {
-		return field.cast(this.fields.get(field));
-	}
-
-	public Register add(Field field) {
-		if (this.fields == null) {
-			this.fields = new TreeMap<Class<? extends Field>, Field>(COMPARATOR);
-		}
-		fields.put(field.getClass(), field);
-		return this;
-	}
-
-	public Register add(List<Field> fields) {
-		for (Field each : fields) {
-			this.add(each);
-		}
-		return this;
-	}
-
 	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;
 	}
 
+	public Register add(Field<?> field) {
+		this.vCardFields.add(field);
+		return this;
+	}
+
+	public Register add(Fields fields) {
+		for (Field<?> each : fields) {
+			this.vCardFields.add(each);
+		}
+		return this;
+	}
+
+	@XmlElements({ @XmlElement(name = "username", type = Username.class), @XmlElement(name = "password", type = Password.class), @XmlElement(name = "x", type = Form.class) })
+	public List<Field<?>> getFields() {
+		return this.vCardFields.getFields();
+	}
+
 	public Boolean isMulti() {
-		return this.findField(Form.class) != null;
+		return this.vCardFields.findField(Form.NAME, Field.class) != null;
 	}
 
 	public Register clear() {
-		super.clear();
-		this.fields = null;
+		this.vCardFields = new ListVCardFields(true);
 		return this;
 	}
 
 	@Override
 	public void set(String localName, Object ob) {
-		this.add((Field) ob);
+		this.vCardFields.add(Field.class.cast(ob));
+	}
+
+	@Override
+	public Iterator<Field<?>> iterator() {
+		return this.vCardFields.iterator();
+	}
+
+	@Override
+	public Boolean isEmbed() {
+		return this.vCardFields.isEmbed();
+	}
+
+	@Override
+	public <T extends Field<?>> T findField(String name, Class<T> clazz) {
+		return this.vCardFields.findField(name, clazz);
 	}
 }

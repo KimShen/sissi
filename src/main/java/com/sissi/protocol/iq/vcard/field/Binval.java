@@ -4,14 +4,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
 import com.sissi.read.Mapping.MappingMetadata;
-import com.sissi.ucenter.Field;
+import com.sissi.ucenter.field.Field;
 
 /**
  * @author kim 2013年12月5日
  */
 @MappingMetadata(uri = "vcard-temp", localName = "BINVAL")
 @XmlRootElement(name = "BINVAL")
-public class Binval implements Field {
+public class Binval implements Field<String> {
+	
+	public final static String NAME = Binval.class.getSimpleName().toLowerCase();
 
 	private StringBuffer text;
 
@@ -30,8 +32,9 @@ public class Binval implements Field {
 		return text.toString();
 	}
 
-	public void setText(String text) {
+	public Binval setText(String text) {
 		this.text.append(text);
+		return this;
 	}
 
 	public Boolean hasContent() {
@@ -40,11 +43,16 @@ public class Binval implements Field {
 
 	@Override
 	public String getName() {
-		return this.getClass().getSimpleName().toLowerCase();
+		return NAME;
 	}
 
 	@Override
-	public Boolean isEmpty() {
-		return this.getValue() == null;
+	public Fields getChildren() {
+		return null;
+	}
+
+	@Override
+	public Boolean hasChild() {
+		return false;
 	}
 }

@@ -20,7 +20,6 @@ public class VCardSetProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		System.out.println("IN: " + VCard.class.cast(protocol).getPhoto().getBinval().getValue());
 		this.vcardContext.push(context.getJid(), VCard.class.cast(protocol));
 		return true;
 	}

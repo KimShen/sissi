@@ -1,17 +1,17 @@
-package com.sissi.protocol.iq.register;
+package com.sissi.protocol.iq.register.form;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
 import com.sissi.read.Mapping.MappingMetadata;
-import com.sissi.ucenter.Field;
+import com.sissi.ucenter.field.Field;
 
 /**
  * @author kim 2013年12月3日
  */
 @MappingMetadata(uri = "jabber:iq:register", localName = "password")
 @XmlRootElement(name = "password")
-public class Password implements Field {
+public class Password implements Field<String> {
 
 	public final static Password FIELD = new Password();
 
@@ -34,7 +34,12 @@ public class Password implements Field {
 	}
 
 	@Override
-	public Boolean isEmpty() {
-		return this.getValue() == null;
+	public Fields getChildren() {
+		return null;
+	}
+
+	@Override
+	public Boolean hasChild() {
+		return false;
 	}
 }

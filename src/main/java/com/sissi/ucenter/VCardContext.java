@@ -1,7 +1,7 @@
 package com.sissi.ucenter;
 
 import com.sissi.context.JID;
-import com.sissi.ucenter.Field.Fields;
+import com.sissi.ucenter.field.Field.Fields;
 
 /**
  * @author kim 2013年12月10日

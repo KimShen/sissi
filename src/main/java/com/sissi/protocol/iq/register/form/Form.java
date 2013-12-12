@@ -1,6 +1,5 @@
 package com.sissi.protocol.iq.register.form;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -10,14 +9,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
-import com.sissi.ucenter.Field;
+import com.sissi.ucenter.field.Field;
+import com.sissi.ucenter.vcard.ListVCardFields;
 
 /**
  * @author kim 2013年12月5日
  */
 @MappingMetadata(uri = "jabber:x:data", localName = "x")
 @XmlRootElement(name = "x")
-public class Form implements Field, Collector {
+public class Form extends ListVCardFields implements Field<List<Field<?>>>, Collector {
 
 	public static enum Type {
 
@@ -37,7 +37,7 @@ public class Form implements Field, Collector {
 				return super.toString().toLowerCase();
 			}
 		}
-		
+
 		public static Type parse(String type) {
 			switch (type) {
 			case TEXT_SINGLE_TEXT:
@@ -50,6 +50,8 @@ public class Form implements Field, Collector {
 		}
 	}
 
+	public final static String NAME = "FORM";
+
 	private final static String XMLNS = "jabber:x:data";
 
 	private String type;
@@ -58,17 +60,16 @@ public class Form implements Field, Collector {
 
 	private String instructions;
 
-	private List<Field> field;
-
 	public Form() {
-
+		super(false);
 	}
 
-	public Form(String title, String instructions) {
-		super();
-		this.type = Type.FORM.toString();
+	public Form(String type, String title, String instructions, List<Field<?>> fields) {
+		this();
+		this.type = type;
 		this.title = title;
 		this.instructions = instructions;
+		super.add(fields);
 	}
 
 	@XmlAttribute
@@ -76,48 +77,53 @@ public class Form implements Field, Collector {
 		return XMLNS;
 	}
 
-	@Override
-	@XmlElement(name = "title")
-	public String getName() {
-		return title;
-	}
-
-	public Form setType(String type) {
-		this.type = type;
-		return this;
-	}
-
 	@XmlAttribute
 	public String getType() {
-		return type;
+		return this.type;
+	}
+	
+	@XmlElement
+	public String getTitle() {
+		return this.title;
 	}
 
-	@Override
-	@XmlElement(name = "instructions")
-	public String getValue() {
-		return instructions;
+	@XmlElement
+	public String getInstructions(){
+		return this.instructions;
 	}
-
-	public Form add(Field field) {
-		if (this.field == null) {
-			this.field = new ArrayList<Field>();
-		}
-		this.field.add(field);
-		return this;
-	}
-
+	
 	@XmlElements({ @XmlElement(name = "field", type = Input.class), @XmlElement(name = "field", type = Select.class) })
-	public List<Field> getField() {
-		return field;
+	public List<Field<?>> getFields() {
+		return super.getFields();
 	}
 
 	@Override
 	public void set(String localName, Object ob) {
-		this.add((Field) ob);
+		super.add(Field.class.cast(ob));
 	}
 
 	@Override
-	public Boolean isEmpty() {
-		return this.getValue() == null;
+	public String getName() {
+		return NAME;
+	}
+
+	@Override
+	public Boolean isEmbed() {
+		return false;
+	}
+
+	@Override
+	public List<Field<?>> getValue() {
+		return this.getFields();
+	}
+
+	@Override
+	public Fields getChildren() {
+		return this;
+	}
+
+	@Override
+	public Boolean hasChild() {
+		return !this.getFields().isEmpty();
 	}
 }

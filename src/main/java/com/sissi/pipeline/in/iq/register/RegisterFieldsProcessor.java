@@ -5,7 +5,7 @@ import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Protocol.Type;
 import com.sissi.protocol.iq.register.Register;
-import com.sissi.ucenter.RegisterInvitation;
+import com.sissi.ucenter.field.Field.Fields;
 
 /**
  * 
@@ -13,16 +13,16 @@ import com.sissi.ucenter.RegisterInvitation;
  */
 public class RegisterFieldsProcessor implements Input {
 
-	private final RegisterInvitation registerInvitation;
+	private final Fields fields;
 
-	public RegisterFieldsProcessor(RegisterInvitation registerInvitation) {
+	public RegisterFieldsProcessor(Fields fields) {
 		super();
-		this.registerInvitation = registerInvitation;
+		this.fields = fields;
 	}
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(Register.class.cast(protocol).add(registerInvitation.build()).getParent().setType(Type.RESULT));
+		context.write(Register.class.cast(protocol).add(fields).getParent().setType(Type.RESULT));
 		return true;
 	}
 }

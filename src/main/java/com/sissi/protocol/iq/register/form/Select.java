@@ -18,25 +18,14 @@ public class Select extends Input {
 	private List<Option> option;
 
 	public Select() {
-
 	}
 
-	public Select(String name, String var) {
-		super(Type.LIST_SINGLE.toString(), null, name, var);
-	}
-
-	public Select(String value, String name, String var) {
-		super(Type.LIST_SINGLE.toString(), value, name, var, null);
-	}
-
-	public Select(String name, String var, Required required) {
-		super(Type.LIST_SINGLE.toString(), null, name, var, required);
-	}
-
-	public Select(String name, String var, Required required, Option... option) {
-		super(Type.LIST_SINGLE.toString(), null, name, var, required);
-		for (Option each : option) {
-			this.add(each);
+	public Select(String name, String var, Required required, Option... options) {
+		super(Type.LIST_SINGLE.toString(), name, var, required);
+		if (options != null) {
+			for (Option each : options) {
+				this.add(each);
+			}
 		}
 	}
 

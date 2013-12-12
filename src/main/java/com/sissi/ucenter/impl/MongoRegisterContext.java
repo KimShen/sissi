@@ -8,14 +8,13 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
 import com.sissi.config.MongoConfig;
-import com.sissi.ucenter.Field;
-import com.sissi.ucenter.Field.Fields;
 import com.sissi.ucenter.RegisterContext;
+import com.sissi.ucenter.field.Field.Fields;
 
 /**
  * @author kim 2013年12月3日
  */
-public class MongoRegisterContext implements RegisterContext {
+public class MongoRegisterContext extends MongoFieldContext implements RegisterContext {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -28,11 +27,7 @@ public class MongoRegisterContext implements RegisterContext {
 
 	@Override
 	public Boolean register(Fields fields) {
-		BasicDBObjectBuilder builder = BasicDBObjectBuilder.start();
-		for (Field field : fields.getFields()) {
-			builder.add(field.getName(), field.getValue());
-		}
-		DBObject entity = builder.get();
+		DBObject entity = super.getEntities(fields, BasicDBObjectBuilder.start());
 		this.log.debug("Entity: " + entity);
 		try {
 			this.config.find().save(entity, WriteConcern.SAFE);
