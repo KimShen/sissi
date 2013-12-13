@@ -1,6 +1,10 @@
 package com.sissi.protocol.presence;
 
+import java.util.Iterator;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -9,13 +13,18 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.ucenter.field.Field;
+import com.sissi.ucenter.field.Field.Fields;
+import com.sissi.ucenter.vcard.ListVCardFields;
 
 /**
  * @author kim 2013-10-28
  */
 @MappingMetadata(uri = "jabber:client", localName = "presence")
 @XmlRootElement
-public class Presence extends Protocol implements com.sissi.context.JIDContext.Status, Collector {
+public class Presence extends Protocol implements com.sissi.context.JIDContext.Status, Fields, Collector {
+
+	private final static String X = "x";
 
 	private final static String STATUS = "status";
 
@@ -44,7 +53,7 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		}
 	}
 
-	private X x;
+	private final ListVCardFields vCardFields = new ListVCardFields(false);
 
 	private Show show;
 
@@ -58,16 +67,6 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 
 	public Presence(JID from, JID to, String show, String status, String type) {
 		this.setShow(show != null ? new Show(show) : null).setStatus(status != null ? new Status(status) : null).setFrom(from.asStringWithBare()).setTo(to.asStringWithBare()).setType(type);
-	}
-
-	@XmlElement
-	public X getX() {
-		return x;
-	}
-
-	public Presence setX(X x) {
-		this.x = x;
-		return this;
 	}
 
 	public Presence setType(Type type) {
@@ -125,6 +124,11 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		return this;
 	}
 
+	@XmlElements({ @XmlElement(name = "x", type = X.class) })
+	public List<Field<?>> getFields() {
+		return this.vCardFields.getFields();
+	}
+
 	public Presence clear() {
 		super.clear();
 		super.setType((String) null);
@@ -153,6 +157,9 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 	@Override
 	public void set(String localName, Object ob) {
 		switch (localName) {
+		case X:
+			this.vCardFields.add(X.class.cast(ob));
+			break;
 		case STATUS:
 			this.setStatus((Status) ob);
 			break;
@@ -160,5 +167,25 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 			this.setShow((Show) ob);
 			break;
 		}
+	}
+
+	@Override
+	public Iterator<Field<?>> iterator() {
+		return this.vCardFields.iterator();
+	}
+
+	@Override
+	public Boolean isEmbed() {
+		return this.vCardFields.isEmbed();
+	}
+
+	@Override
+	public Fields add(Field<?> field) {
+		return this.vCardFields.add(field);
+	}
+
+	@Override
+	public <T extends Field<?>> T findField(String name, Class<T> clazz) {
+		return this.vCardFields.findField(name, clazz);
 	}
 }

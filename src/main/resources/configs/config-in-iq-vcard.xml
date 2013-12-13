@@ -16,7 +16,7 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="vcard.pro.get.2fans" class="com.sissi.pipeline.in.iq.vcard.VCardGet2FansProcessor" parent="global.pro.utils">
+	<bean id="vcard.pro.get.2fans" class="com.sissi.pipeline.in.iq.vcard.VCardGet2FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.vcard" />
 	</bean>
 	<bean id="vcard.pro.get.2self" class="com.sissi.pipeline.in.iq.vcard.VCardGet2SelfProcessor">

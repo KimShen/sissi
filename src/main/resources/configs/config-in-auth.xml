@@ -24,7 +24,7 @@
 	</util:list>
 
 	<bean id="auth.pro.failed" class="com.sissi.pipeline.in.auth.impl.AuthFailedProcessor" />
-	<bean id="auth.pro.fork" class="com.sissi.pipeline.in.auth.impl.AuthForkProcessor" parent="global.pro.utils">
+	<bean id="auth.pro.fork" class="com.sissi.pipeline.in.auth.impl.AuthForkProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="auth.call.chained" />
 	</bean>
 	<bean id="auth.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
@@ -35,7 +35,7 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="auth.pro.digest" class="com.sissi.pipeline.in.auth.impl.AuthDigestProcessor" parent="global.pro.utils">
+	<bean id="auth.pro.digest" class="com.sissi.pipeline.in.auth.impl.AuthDigestProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="auth.sasl" />
 	</bean>
 	<bean id="auth.pro.digest.chained" class="com.sissi.pipeline.in.ChainedProcessor">

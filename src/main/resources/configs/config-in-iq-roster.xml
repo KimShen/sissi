@@ -5,7 +5,7 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="roster.pro.get" class="com.sissi.pipeline.in.iq.roster.RosterGetProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.get" class="com.sissi.pipeline.in.iq.roster.RosterGetProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.get.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
@@ -23,10 +23,10 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="roster.pro.establish.set" class="com.sissi.pipeline.in.iq.roster.RosterSetProcessor" parent="global.pro.utils" />
-	<bean id="roster.pro.establish.set.2selfs.item" class="com.sissi.pipeline.in.iq.roster.RosterSet2SelfsItemProcessor" parent="global.pro.utils" />
-	<bean id="roster.pro.establish.set.2selfs.presence" class="com.sissi.pipeline.in.iq.roster.RosterSet2SelfsPresenceProcessor" parent="global.pro.utils" />
-	<bean id="roster.pro.establish.set.2fans.presence" class="com.sissi.pipeline.in.iq.roster.RosterSet2FansPresenceProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.set" class="com.sissi.pipeline.in.iq.roster.RosterSetProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.set.2selfs.item" class="com.sissi.pipeline.in.iq.roster.RosterSet2SelfsItemProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.set.2selfs.presence" class="com.sissi.pipeline.in.iq.roster.RosterSet2SelfsPresenceProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.set.2fans.presence" class="com.sissi.pipeline.in.iq.roster.RosterSet2FansPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
@@ -38,9 +38,9 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="roster.pro.establish.remove" class="com.sissi.pipeline.in.iq.roster.RosterRemoveProcessor" parent="global.pro.utils" />
-	<bean id="roster.pro.establish.remove.2selfs.item" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsItemProcessor" parent="global.pro.utils" />
-	<bean id="roster.pro.establish.remove.2selfs.presence" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsPresenceProcessor" parent="global.pro.utils" />
+	<bean id="roster.pro.establish.remove" class="com.sissi.pipeline.in.iq.roster.RosterRemoveProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.remove.2selfs.item" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsItemProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.remove.2selfs.presence" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.remove.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>

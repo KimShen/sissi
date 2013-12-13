@@ -18,8 +18,8 @@
 	<bean id="presence.pro.roster.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.presence.roster" />
 	</bean>
-	<bean id="presence.pro.status.2self" class="com.sissi.pipeline.in.presence.status.PresenceStatus2SelfProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.status.2fans" class="com.sissi.pipeline.in.presence.status.PresenceStatus2FansProcessor" parent="global.pro.utils">
+	<bean id="presence.pro.status.2self" class="com.sissi.pipeline.in.presence.status.PresenceStatus2SelfProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.2fans" class="com.sissi.pipeline.in.presence.status.PresenceStatus2FansProcessor" parent="global.pro.proxy">
 		<property name="protocolQueue" ref="broadcast.protocol.fans" />
 	</bean>
 	<bean id="presence.pro.status.chained" class="com.sissi.pipeline.in.ChainedProcessor">
@@ -30,8 +30,8 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.roster.subscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.roster.subscribe.validate" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeValidateProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.subscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.subscribe.validate" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeValidateProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
@@ -40,8 +40,8 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.roster.unsubscribed" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribedProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.roster.unsubscribed.2master.item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribed2MasterItemProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.unsubscribed" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribedProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.unsubscribed.2master.item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribed2MasterItemProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.unsubscribed.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
@@ -50,10 +50,10 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.roster.subscribed" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.roster.subscribed.validate" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedValidateProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.roster.subscribed.2master.item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribed2MasterItemProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.roster.subscribed.2master.presence" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribed2MasterPresenceProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.subscribed" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.subscribed.validate" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedValidateProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.subscribed.2master.item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribed2MasterItemProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.subscribed.2master.presence" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribed2MasterPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribed.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
@@ -64,9 +64,9 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.roster.unsubscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribeProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.roster.unsubscribe.2master.item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2MasterItemProcessor" parent="global.pro.utils" />
-	<bean id="presence.pro.roster.unsubscribe.2master.presence" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2MasterPresenceProcessor" parent="global.pro.utils" />
+	<bean id="presence.pro.roster.unsubscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribeProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.unsubscribe.2master.item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2MasterItemProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.unsubscribe.2master.presence" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2MasterPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.unsubscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>

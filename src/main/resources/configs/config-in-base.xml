@@ -5,7 +5,7 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="global.pro.utils" abstract="true">
+	<bean id="global.pro.proxy" abstract="true">
 		<property name="jidBuilder" ref="builder.jid" />
 		<property name="addressing" ref="addressing" />
 		<property name="protocolQueue" ref="broadcast.protocol.selfs" />

@@ -74,4 +74,9 @@ public class ListVCardFields implements Fields {
 		}
 		return null;
 	}
+
+	public interface Xmlns {
+
+		public String getXmlns();
+	}
 }

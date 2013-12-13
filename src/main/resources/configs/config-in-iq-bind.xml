@@ -5,8 +5,8 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="bind.pro.resource" class="com.sissi.pipeline.in.iq.bind.BindResourceProcessor" parent="global.pro.utils" />
-	<bean id="bind.pro.addressing" class="com.sissi.pipeline.in.iq.bind.BindAddressProcessor" parent="global.pro.utils" />
+	<bean id="bind.pro.resource" class="com.sissi.pipeline.in.iq.bind.BindResourceProcessor" parent="global.pro.proxy" />
+	<bean id="bind.pro.addressing" class="com.sissi.pipeline.in.iq.bind.BindAddressProcessor" parent="global.pro.proxy" />
 	<bean id="bind.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>

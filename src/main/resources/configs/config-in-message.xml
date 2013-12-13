@@ -5,8 +5,8 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="message.pro.validate" class="com.sissi.pipeline.in.message.MessageValidateProcessor" parent="global.pro.utils" />
-	<bean id="message.pro" class="com.sissi.pipeline.in.message.MessageProcessor" parent="global.pro.utils" />
+	<bean id="message.pro.validate" class="com.sissi.pipeline.in.message.MessageValidateProcessor" parent="global.pro.proxy" />
+	<bean id="message.pro" class="com.sissi.pipeline.in.message.MessageProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>

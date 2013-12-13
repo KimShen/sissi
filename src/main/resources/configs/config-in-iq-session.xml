@@ -5,10 +5,7 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="session.pro.2fans" class="com.sissi.pipeline.in.iq.session.Session2FansProcessor" parent="global.pro.utils">
-		<property name="protocolQueue" ref="broadcast.protocol.fans" />
-	</bean>
-	<bean id="session.pro.4fans" class="com.sissi.pipeline.in.iq.session.Session4FansProcessor" parent="global.pro.utils" />
+	<bean id="session.pro.4fans" class="com.sissi.pipeline.in.iq.session.Session4FansProcessor" parent="global.pro.proxy" />
 	<bean id="session.pro.4selfs" class="com.sissi.pipeline.in.iq.session.Session4SelfsProcessor">
 		<constructor-arg ref="storage.box" />
 	</bean>
@@ -16,7 +13,6 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="iq.pro.result.next" />
-				<ref bean="session.pro.2fans" />
 				<ref bean="session.pro.4fans" />
 				<ref bean="session.pro.4selfs" />
 			</util:list>
