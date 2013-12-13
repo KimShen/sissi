@@ -118,6 +118,11 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		public String getStatusAsText() {
 			return null;
 		}
+		
+		@Override
+		public String getAvatorAsText() {
+			return null;
+		}
 
 		@Override
 		public Status asType(String type) {
@@ -131,6 +136,10 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public Status asStatus(String status) {
+			return this;
+		}
+		
+		public Status asAvator(String avator) {
 			return this;
 		}
 

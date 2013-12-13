@@ -31,7 +31,7 @@ public class ToSelfsPresenceQueue extends ToSelfsProtocolQueue implements Presen
 		}
 
 		private Presence newOne(JID from, JID to, Status status) {
-			return new Presence(from.getBare(), to.getBare(), status.getShowAsText(), status.getStatusAsText(), status.getTypeAsText());
+			return new Presence(from.getBare(), to.getBare(), status.getShowAsText(), status.getStatusAsText(), status.getTypeAsText(), status.getAvatorAsText());
 		}
 	}
 }

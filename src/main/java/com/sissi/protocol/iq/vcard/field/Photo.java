@@ -1,13 +1,10 @@
 package com.sissi.protocol.iq.vcard.field;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.apache.commons.codec.digest.DigestUtils;
 
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
@@ -22,8 +19,6 @@ import com.sissi.ucenter.vcard.ListVCardFields;
 public class Photo implements Field<String>, Collector {
 
 	public final static String NAME = Photo.class.getSimpleName().toLowerCase();
-
-	private final static String NAME_SHA1 = SHA1.class.getSimpleName().toLowerCase();
 
 	private ListVCardFields vCardFields = new ListVCardFields(false);
 
@@ -56,39 +51,11 @@ public class Photo implements Field<String>, Collector {
 
 	@Override
 	public Fields getChildren() {
-		return this.vCardFields.add(new SHA1());
+		return this.vCardFields;
 	}
 
 	@Override
 	public Boolean hasChild() {
 		return true;
-	}
-
-	private class SHA1 implements Field<String> {
-		
-		private String cached;
-
-		public String getName() {
-			return NAME_SHA1;
-		}
-
-		@Override
-		public String getValue() {
-			try {
-				return this.cached != null ? cached : (cached = new String(DigestUtils.getSha1Digest().digest(Photo.this.vCardFields.findField(Binval.NAME, Binval.class).getValue().getBytes("UTF-8")), "UTF-8"));
-			} catch (UnsupportedEncodingException e) {
-				return this.cached;
-			}
-		}
-
-		@Override
-		public Fields getChildren() {
-			return null;
-		}
-
-		@Override
-		public Boolean hasChild() {
-			return false;
-		}
 	}
 }

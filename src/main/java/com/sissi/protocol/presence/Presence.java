@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.sissi.context.JID;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.offline.Delay;
+import com.sissi.protocol.presence.x.XVCardPhoto;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
 import com.sissi.ucenter.field.Field;
@@ -53,7 +54,7 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		}
 	}
 
-	private final ListVCardFields vCardFields = new ListVCardFields(false);
+	private ListVCardFields vCardFields = new ListVCardFields(false);
 
 	private Show show;
 
@@ -65,8 +66,13 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		super();
 	}
 
-	public Presence(JID from, JID to, String show, String status, String type) {
-		this.setShow(show != null ? new Show(show) : null).setStatus(status != null ? new Status(status) : null).setFrom(from.asStringWithBare()).setTo(to.asStringWithBare()).setType(type);
+	public Presence(JID from, JID to, String show, String status, String type, String avator) {
+		this.asShow(show != null ? show : null).asStatus(status != null ? status : null).asAvator(avator != null ? avator : null).setFrom(from.asStringWithBare()).setTo(to.asStringWithBare()).setType(type);
+	}
+
+	private X findX() {
+		X x = com.sissi.protocol.presence.X.class.cast(this.vCardFields != null ? this.vCardFields.findField(com.sissi.protocol.presence.X.NAME, X.class) : null);
+		return x;
 	}
 
 	public Presence setType(Type type) {
@@ -105,6 +111,13 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 	}
 
 	@XmlTransient
+	public String getAvatorAsText() {
+		X x = null;
+		XVCardPhoto xp = (x = this.findX()) != null ? Fields.class.cast(x).findField(XVCardPhoto.NAME, XVCardPhoto.class) : null;
+		return xp != null ? xp.getValue() : null;
+	}
+
+	@XmlTransient
 	public Show getShow() {
 		return show;
 	}
@@ -134,6 +147,7 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		super.setType((String) null);
 		this.show = null;
 		this.status = null;
+		this.vCardFields = null;
 		return this;
 	}
 
@@ -154,11 +168,16 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		return this.setType(Type.parse(type));
 	}
 
+	public Presence asAvator(String type) {
+		this.add(new X().add(new XVCardPhoto(type)));
+		return this;
+	}
+
 	@Override
 	public void set(String localName, Object ob) {
 		switch (localName) {
 		case X:
-			this.vCardFields.add(X.class.cast(ob));
+			this.add(Field.class.cast(ob));
 			break;
 		case STATUS:
 			this.setStatus((Status) ob);
@@ -181,6 +200,9 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 
 	@Override
 	public Fields add(Field<?> field) {
+		if (this.vCardFields == null) {
+			this.vCardFields = new ListVCardFields(false);
+		}
 		return this.vCardFields.add(field);
 	}
 

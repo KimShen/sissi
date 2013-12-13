@@ -81,6 +81,11 @@ public class MongoStatusBuilder implements StatusBuilder {
 		}
 
 		@Override
+		public String getAvatorAsText() {
+			return MongoStatusBuilder.this.get(this.context, "avator");
+		}
+
+		@Override
 		public Status asType(String type) {
 			MongoStatusBuilder.this.set(this.context, "type", type);
 			return this;
@@ -95,6 +100,12 @@ public class MongoStatusBuilder implements StatusBuilder {
 		@Override
 		public Status asStatus(String status) {
 			MongoStatusBuilder.this.set(this.context, "status", status);
+			return this;
+		}
+
+		@Override
+		public Status asAvator(String avator) {
+			MongoStatusBuilder.this.set(this.context, "avator", avator);
 			return this;
 		}
 

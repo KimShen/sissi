@@ -48,12 +48,16 @@ public interface JIDContext {
 		public String getShowAsText();
 
 		public String getStatusAsText();
+		
+		public String getAvatorAsText();
 
 		public Status asType(String type);
 
 		public Status asShow(String show);
 
 		public Status asStatus(String status);
+		
+		public Status asAvator(String avator);
 
 		public Status clear();
 
