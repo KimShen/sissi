@@ -1,10 +1,10 @@
 package com.sissi.pipeline.in.iq.register;
 
 import com.sissi.pipeline.in.iq.IQProcessor;
-import com.sissi.protocol.iq.register.form.Form;
+import com.sissi.protocol.iq.data.XData;
 import com.sissi.ucenter.RegisterContext;
 import com.sissi.ucenter.field.Field.Fields;
-import com.sissi.ucenter.vcard.ListVCardFields;
+import com.sissi.ucenter.field.impl.BeanFields;
 
 /**
  * @author kim 2013年12月5日
@@ -17,6 +17,6 @@ public class RegisterStoreMultiProcessor extends RegisterStoreProcessor {
 
 	@Override
 	protected Fields filter(Fields fields) {
-		return new ListVCardFields(false, fields.findField(Form.NAME, Form.class).getFields());
+		return new BeanFields(false, fields.findField(XData.NAME, XData.class).getFields());
 	}
 }

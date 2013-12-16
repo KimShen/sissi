@@ -16,20 +16,24 @@ import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Field.Fields;
-import com.sissi.ucenter.vcard.ListVCardFields;
+import com.sissi.ucenter.field.impl.BeanFields;
 
 /**
  * @author kim 2013-10-28
  */
-@MappingMetadata(uri = "jabber:client", localName = "presence")
+@MappingMetadata(uri = Presence.XMLNS, localName = Presence.NAME)
 @XmlRootElement
 public class Presence extends Protocol implements com.sissi.context.JIDContext.Status, Fields, Collector {
+	
+	public final static String XMLNS = "jabber:client";
 
-	private final static String X = "x";
+	public final static String NAME = "presence";
 
-	private final static String STATUS = "status";
+	private final static String FIELD_X = "x";
 
-	private final static String SHOW = "show";
+	private final static String FIELD_STATUS = "status";
+
+	private final static String FIELD_SHOW = "show";
 
 	public static enum Type {
 
@@ -54,7 +58,7 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		}
 	}
 
-	private ListVCardFields vCardFields = new ListVCardFields(false);
+	private BeanFields fields;
 
 	private Show show;
 
@@ -64,15 +68,16 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 
 	public Presence() {
 		super();
+		this.fields = new BeanFields(false);
 	}
 
 	public Presence(JID from, JID to, String show, String status, String type, String avator) {
+		this();
 		this.asShow(show != null ? show : null).asStatus(status != null ? status : null).asAvator(avator != null ? avator : null).setFrom(from.asStringWithBare()).setTo(to.asStringWithBare()).setType(type);
 	}
 
 	private X findX() {
-		X x = com.sissi.protocol.presence.X.class.cast(this.vCardFields != null ? this.vCardFields.findField(com.sissi.protocol.presence.X.NAME, X.class) : null);
-		return x;
+		return X.class.cast(this.fields != null ? this.fields.findField(X.NAME, X.class) : null);
 	}
 
 	public Presence setType(Type type) {
@@ -94,7 +99,7 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		this.delay = delay;
 		return this;
 	}
-
+	
 	@XmlTransient
 	public String getTypeAsText() {
 		return this.getType();
@@ -112,8 +117,8 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 
 	@XmlTransient
 	public String getAvatorAsText() {
-		X x = null;
-		XVCardPhoto xp = (x = this.findX()) != null ? Fields.class.cast(x).findField(XVCardPhoto.NAME, XVCardPhoto.class) : null;
+		X x = this.findX();
+		XVCardPhoto xp = x != null ? Fields.class.cast(x).findField(XVCardPhoto.NAME, XVCardPhoto.class) : null;
 		return xp != null ? xp.getValue() : null;
 	}
 
@@ -139,7 +144,7 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 
 	@XmlElements({ @XmlElement(name = "x", type = X.class) })
 	public List<Field<?>> getFields() {
-		return this.vCardFields.getFields();
+		return this.fields.getFields();
 	}
 
 	public Presence clear() {
@@ -147,7 +152,7 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		super.setType((String) null);
 		this.show = null;
 		this.status = null;
-		this.vCardFields = null;
+		this.fields = null;
 		return this;
 	}
 
@@ -176,13 +181,13 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 	@Override
 	public void set(String localName, Object ob) {
 		switch (localName) {
-		case X:
+		case FIELD_X:
 			this.add(Field.class.cast(ob));
 			break;
-		case STATUS:
+		case FIELD_STATUS:
 			this.setStatus((Status) ob);
 			break;
-		case SHOW:
+		case FIELD_SHOW:
 			this.setShow((Show) ob);
 			break;
 		}
@@ -190,24 +195,24 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 
 	@Override
 	public Iterator<Field<?>> iterator() {
-		return this.vCardFields.iterator();
+		return this.fields.iterator();
 	}
 
 	@Override
 	public Boolean isEmbed() {
-		return this.vCardFields.isEmbed();
+		return this.fields.isEmbed();
 	}
 
 	@Override
 	public Fields add(Field<?> field) {
-		if (this.vCardFields == null) {
-			this.vCardFields = new ListVCardFields(false);
+		if (this.fields == null) {
+			this.fields = new BeanFields(false);
 		}
-		return this.vCardFields.add(field);
+		return this.fields.add(field);
 	}
 
 	@Override
 	public <T extends Field<?>> T findField(String name, Class<T> clazz) {
-		return this.vCardFields.findField(name, clazz);
+		return this.fields.findField(name, clazz);
 	}
 }

@@ -4,7 +4,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.block.UnBlock;
-import com.sissi.protocol.iq.roster.Item;
+import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.ucenter.BlockContext;
 
 /**
@@ -25,7 +25,7 @@ public class UnBlockProcessor extends ProxyProcessor {
 		return ub.isUnBlockAll() ? writeAndReturn(context) : writeAndReturn(context, ub.getItem());
 	}
 
-	private Boolean writeAndReturn(JIDContext context, Item item) {
+	private Boolean writeAndReturn(JIDContext context, GroupItem item) {
 		this.blockContext.unblock(context.getJid(), super.build(item.getJid()));
 		return true;
 	}

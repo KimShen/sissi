@@ -12,9 +12,13 @@ import com.sissi.read.Mapping.MappingMetadata;
 /**
  * @author kim 2013-10-27
  */
-@MappingMetadata(uri="jabber:client", localName="message")
+@MappingMetadata(uri = Message.XMLNS, localName = Message.NAME)
 @XmlRootElement
 public class Message extends Protocol implements Collector {
+
+	public final static String XMLNS = "jabber:client";
+
+	public final static String NAME = "message";
 
 	private Body body;
 

@@ -22,7 +22,7 @@ public class Challenge implements Element {
 
 	private final static Log LOG = LogFactory.getLog(Challenge.class);
 
-	private final static Base64 base64 = new Base64();
+	private final static Base64 BASE64 = new Base64();
 
 	private byte[] text;
 
@@ -42,7 +42,7 @@ public class Challenge implements Element {
 	@XmlValue
 	public String getChallenge() {
 		try {
-			return base64.encodeToString(this.text);
+			return BASE64.encodeToString(this.text);
 		} catch (Exception e) {
 			if (LOG.isFatalEnabled()) {
 				LOG.fatal(e);
@@ -98,7 +98,7 @@ public class Challenge implements Element {
 	}
 
 	@Override
-	public Element setError(Error error) {
+	public Challenge setError(Error error) {
 		return this;
 	}
 }

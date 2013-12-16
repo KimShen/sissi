@@ -10,8 +10,8 @@ import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
 import com.sissi.ucenter.VCardContext;
+import com.sissi.ucenter.field.Field.FieldParser;
 import com.sissi.ucenter.field.Field.Fields;
-import com.sissi.ucenter.field.FieldParser;
 
 /**
  * @author kim 2013年12月10日

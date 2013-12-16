@@ -8,9 +8,11 @@ import com.sissi.read.Mapping.MappingMetadata;
 /**
  * @author kim 2013-11-1
  */
-@MappingMetadata(uri="jabber:client", localName="body")
+@MappingMetadata(uri = Message.XMLNS, localName = Body.NAME)
 @XmlRootElement
 public class Body {
+
+	public final static String NAME = "body";
 
 	private String text;
 

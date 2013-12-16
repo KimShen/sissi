@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.sissi.protocol.iq.roster.Group;
-import com.sissi.protocol.iq.roster.Item;
+import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster.Subscription;
 import com.sissi.ucenter.RelationContext.RelationRoster;
 
@@ -13,9 +13,9 @@ import com.sissi.ucenter.RelationContext.RelationRoster;
  */
 public class ItemWrapRelation implements RelationRoster {
 
-	private final Item item;
+	private final GroupItem item;
 
-	public ItemWrapRelation(Item item) {
+	public ItemWrapRelation(GroupItem item) {
 		super();
 		this.item = item;
 	}
@@ -33,7 +33,7 @@ public class ItemWrapRelation implements RelationRoster {
 	@Override
 	public String asGroup() {
 		Group group = this.item.getGroup();
-		return group != null ? group.getText() : null;
+		return group != null ? group.getValue() : null;
 	}
 
 	@Override

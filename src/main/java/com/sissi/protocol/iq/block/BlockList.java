@@ -9,35 +9,34 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.roster.Item;
 import com.sissi.read.Mapping.MappingMetadata;
 
 /**
  * @author kim 2013年12月6日
  */
-@MappingMetadata(uri = "urn:xmpp:blocking", localName = "blocklist")
-@XmlRootElement(name = "blocklist")
+@MappingMetadata(uri = Block.XMLNS, localName = BlockList.NAME)
+@XmlRootElement(name = BlockList.NAME)
 public class BlockList extends Protocol {
 
-	private final static String XMLNS = "urn:xmpp:blocking";
+	public final static String NAME = "blocklist";
 
-	private List<Item> item;
+	private List<BlockListItem> item;
 
-	public BlockList add(Item item) {
+	public BlockList add(BlockListItem item) {
 		if (this.item == null) {
-			this.item = new ArrayList<Item>();
+			this.item = new ArrayList<BlockListItem>();
 		}
 		this.item.add(item);
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = "item", type = Item.class) })
-	public List<Item> getItem() {
+	@XmlElements({ @XmlElement(name = "item", type = BlockListItem.class) })
+	public List<BlockListItem> getItem() {
 		return item;
 	}
 
 	@XmlAttribute
 	public String getXmlns() {
-		return XMLNS;
+		return Block.XMLNS;
 	}
 }

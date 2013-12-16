@@ -6,7 +6,7 @@ import com.sissi.protocol.iq.vcard.field.Binval;
 import com.sissi.protocol.iq.vcard.field.Photo;
 import com.sissi.protocol.iq.vcard.field.Type;
 import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.field.FieldParser;
+import com.sissi.ucenter.field.Field.FieldParser;
 
 /**
  * @author kim 2013年12月12日

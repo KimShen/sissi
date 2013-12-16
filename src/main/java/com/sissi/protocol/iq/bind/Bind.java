@@ -6,19 +6,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.Stream;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
 
 /**
  * @author Kim.shen 2013-10-20
  */
-@MappingMetadata(uri = "urn:ietf:params:xml:ns:xmpp-bind", localName = "bind")
-@XmlType(namespace = Stream.NAMESPACE)
+@MappingMetadata(uri = Bind.XMLNS, localName = Bind.NAME)
+@XmlType(namespace = Bind.XMLNS)
 @XmlRootElement
 public class Bind extends Protocol implements Collector {
 
-	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-bind";
+	public final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-bind";
+
+	public final static String NAME = "bind";
 
 	private String jid;
 

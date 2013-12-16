@@ -1,13 +1,11 @@
 package com.sissi.pipeline.in.iq.register;
 
-import java.util.List;
-
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Protocol.Type;
 import com.sissi.protocol.iq.register.Register;
-import com.sissi.ucenter.field.Field;
+import com.sissi.ucenter.field.Field.Fields;
 
 /**
  * 
@@ -15,9 +13,9 @@ import com.sissi.ucenter.field.Field;
  */
 public class RegisterFieldsProcessor implements Input {
 
-	private final List<Field<?>> fields;
+	private final Fields fields;
 
-	public RegisterFieldsProcessor(List<Field<?>> fields) {
+	public RegisterFieldsProcessor(Fields fields) {
 		super();
 		this.fields = fields;
 	}

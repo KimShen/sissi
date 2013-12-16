@@ -1,4 +1,4 @@
-package com.sissi.ucenter.vcard;
+package com.sissi.ucenter.field.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,30 +8,31 @@ import com.sissi.ucenter.field.Field;
 /**
  * @author kim 2013年12月11日
  */
-public class GenericityVCardField<T> implements Field<T> {
+public class BeanField<T> implements Field<T> {
 
 	private List<Field<?>> children;
+
+	private Boolean isEmbed;
 
 	private String name;
 
 	private T value;
 
-	public GenericityVCardField() {
-
+	public BeanField() {
+		this(false);
 	}
 
-	public GenericityVCardField(String name, T value) {
+	public BeanField(Boolean isEmbed) {
 		super();
-		this.name = name;
-		this.value = value;
+		this.isEmbed = isEmbed;
 	}
 
-	public GenericityVCardField<T> setName(String name) {
+	public BeanField<T> setName(String name) {
 		this.name = name;
 		return this;
 	}
 
-	public GenericityVCardField<T> setValue(T value) {
+	public BeanField<T> setValue(T value) {
 		this.value = value;
 		return this;
 	}
@@ -46,7 +47,7 @@ public class GenericityVCardField<T> implements Field<T> {
 		return this.value;
 	}
 
-	public GenericityVCardField<T> add(Field<?> field) {
+	public BeanField<T> add(Field<?> field) {
 		if (this.children == null) {
 			this.children = new ArrayList<Field<?>>();
 		}
@@ -56,7 +57,7 @@ public class GenericityVCardField<T> implements Field<T> {
 
 	@Override
 	public Fields getChildren() {
-		return null;
+		return this.hasChild() ? new BeanFields(this.isEmbed, this.children) : null;
 	}
 
 	@Override

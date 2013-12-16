@@ -1,4 +1,4 @@
-package com.sissi.ucenter.vcard;
+package com.sissi.ucenter.field.impl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,41 +10,41 @@ import com.sissi.ucenter.field.Field.Fields;
 /**
  * @author kim 2013年12月11日
  */
-public class ListVCardFields implements Fields {
+public class BeanFields implements Fields {
 
 	private final static ArrayList<Field<?>> EMPTY = new ArrayList<Field<?>>();
 
 	private Boolean isEmbed;
 
-	private List<Field<?>> field;
+	private List<Field<?>> fields;
 
-	public ListVCardFields(Boolean isEmbed) {
+	public BeanFields(Boolean isEmbed) {
 		super();
 		this.isEmbed = isEmbed;
 	}
 
-	public ListVCardFields(Boolean isEmbed, List<Field<?>> field) {
+	public BeanFields(Boolean isEmbed, List<Field<?>> field) {
 		super();
 		this.isEmbed = isEmbed;
-		this.field = field;
+		this.fields = field;
 	}
 
-	public ListVCardFields add(Field<?> field) {
-		if (this.field == null) {
-			this.field = new ArrayList<Field<?>>();
+	public BeanFields add(Field<?> field) {
+		if (this.fields == null) {
+			this.fields = new ArrayList<Field<?>>();
 		}
-		this.field.add(field);
+		this.fields.add(field);
 		return this;
 	}
 
-	public ListVCardFields add(Fields fields) {
+	public BeanFields add(Fields fields) {
 		for (Field<?> each : fields) {
 			this.add(each);
 		}
 		return this;
 	}
 
-	public ListVCardFields add(List<Field<?>> fields) {
+	public BeanFields add(List<Field<?>> fields) {
 		for (Field<?> each : fields) {
 			this.add(each);
 		}
@@ -52,17 +52,17 @@ public class ListVCardFields implements Fields {
 	}
 
 	public List<Field<?>> getFields() {
-		return this.field != null ? this.field : EMPTY;
+		return this.fields;
 	}
 
 	@Override
 	public Iterator<Field<?>> iterator() {
-		return this.field != null ? this.field.iterator() : EMPTY.iterator();
+		return this.fields != null ? this.fields.iterator() : EMPTY.iterator();
 	}
 
 	@Override
 	public Boolean isEmbed() {
-		return isEmbed;
+		return this.isEmbed;
 	}
 
 	@Override
@@ -73,10 +73,5 @@ public class ListVCardFields implements Fields {
 			}
 		}
 		return null;
-	}
-
-	public interface Xmlns {
-
-		public String getXmlns();
 	}
 }

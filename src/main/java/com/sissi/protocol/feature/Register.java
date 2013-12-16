@@ -4,12 +4,11 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Feature;
-import com.sissi.protocol.Stream;
 
 /**
  * @author kim 2013年12月4日
  */
-@XmlRootElement(namespace = Stream.NAMESPACE)
+@XmlRootElement
 public class Register implements Feature {
 
 	public final static Register FEATURE = new Register();

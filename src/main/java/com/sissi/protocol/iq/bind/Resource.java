@@ -8,9 +8,11 @@ import com.sissi.read.Mapping.MappingMetadata;
 /**
  * @author kim 2013-10-30
  */
-@MappingMetadata(uri = "urn:ietf:params:xml:ns:xmpp-bind", localName = "resource")
+@MappingMetadata(uri = Bind.XMLNS, localName = Resource.NAME)
 @XmlRootElement
 public class Resource extends Protocol {
+
+	public final static String NAME = "resource";
 
 	private String text;
 

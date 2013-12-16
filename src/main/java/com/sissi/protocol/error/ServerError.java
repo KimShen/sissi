@@ -9,14 +9,15 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Error;
-import com.sissi.protocol.Protocol.Type;
 import com.sissi.protocol.error.detail.NotAcceptable;
 
 /**
  * @author kim 2013年12月4日
  */
-@XmlRootElement(name = "error")
+@XmlRootElement(name = ServerError.NAME)
 public class ServerError implements Error {
+
+	public final static String NAME = "error";
 
 	private String code;
 
@@ -34,20 +35,25 @@ public class ServerError implements Error {
 		this.details = error.getDetails();
 	}
 
-	public ServerError(String code, Type type) {
-		this.type = type.toString();
-		this.code = code;
-	}
-
 	@XmlAttribute
 	public String getCode() {
 		return this.code;
+	}
+
+	public ServerError setCode(String code) {
+		this.code = code;
+		return this;
 	}
 
 	@Override
 	@XmlAttribute
 	public String getType() {
 		return this.type;
+	}
+
+	public ServerError setType(String type) {
+		this.type = type;
+		return this;
 	}
 
 	public ServerError add(Detail detail) {

@@ -2,7 +2,7 @@ package com.sissi.pipeline.in.iq.roster;
 
 import com.sissi.pipeline.in.iq.IQActionMatcher;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.roster.Item.Action;
+import com.sissi.protocol.iq.roster.GroupItem.Action;
 import com.sissi.protocol.iq.roster.Roster;
 
 /**

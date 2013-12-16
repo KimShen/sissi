@@ -27,9 +27,11 @@ public class SAXHandler extends DefaultHandler {
 	private final static String ROOT = "stream";
 	
 	private final static String TEXT = "text";
+	
+	private final static Map<Class<?>, MethodFinder> CACHED_METHOD = new HashMap<Class<?>, MethodFinder>();
 
 	private final static Log LOG = LogFactory.getLog(SAXHandler.class);
-
+	
 	@SuppressWarnings("serial")
 	private final Set<String> rootNode = new HashSet<String>() {
 		{
@@ -37,8 +39,6 @@ public class SAXHandler extends DefaultHandler {
 		}
 	};
 	
-	private final Map<Class<?>, MethodFinder> cachedMethod = new HashMap<Class<?>, MethodFinder>();
-
 	private Mapping mapping;
 
 	private LinkedList<Object> stack;
@@ -66,17 +66,18 @@ public class SAXHandler extends DefaultHandler {
 			return true;
 		} catch (Exception e) {
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(e);
+				LOG.debug(e + " on  " + ob.getClass() + " method " + key + " and value " + value);
+				e.printStackTrace();
 			}
 			return false;
 		}
 	}
 
 	private MethodFinder find4Cached(Object ob) {
-		MethodFinder finder = this.cachedMethod.get(ob.getClass());
+		MethodFinder finder = CACHED_METHOD.get(ob.getClass());
 		if (finder == null) {
 			LOG.debug("Create MethodFinder for " + ob.getClass());
-			this.cachedMethod.put(ob.getClass(), (finder = new MethodFinder()));
+			CACHED_METHOD.put(ob.getClass(), (finder = new MethodFinder()));
 		}
 		return finder;
 	}

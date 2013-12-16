@@ -10,14 +10,17 @@ import com.sissi.read.Mapping.MappingMetadata;
 /**
  * @author kim 2013年11月26日
  */
-@MappingMetadata(uri = "urn:ietf:params:xml:ns:xmpp-sasl", localName = "response")
+@MappingMetadata(uri = Auth.XMLNS, localName = Response.NAME)
 @XmlRootElement
 public class Response extends Protocol {
 
+	public final static String NAME = "response";
+
 	private String text;
 
-	public void setText(String text) {
+	public Response setText(String text) {
 		this.text = text;
+		return this;
 	}
 
 	public byte[] getResponse() {

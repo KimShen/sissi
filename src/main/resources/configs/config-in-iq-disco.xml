@@ -17,7 +17,7 @@
 	<bean id="disco.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.ClassMatcher">
-				<constructor-arg value="com.sissi.protocol.iq.disco.DiscoInfo" />
+				<constructor-arg value="com.sissi.protocol.iq.disco.Info" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="disco.pro.info.chained" />

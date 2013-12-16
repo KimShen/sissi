@@ -6,7 +6,7 @@ import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Protocol.Type;
 import com.sissi.protocol.iq.IQ;
-import com.sissi.protocol.iq.roster.Item;
+import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.ucenter.RelationContext.Relation;
 import com.sissi.ucenter.RelationContext.RelationRoster;
@@ -25,6 +25,6 @@ public class PresenceRosterUnSubscribed2MasterItemProcessor extends ProxyProcess
 
 	private Protocol prepare(JID master, JID slave, Protocol protocol) {
 		Relation relation = super.ourRelation(master, slave);
-		return new IQ().add(new Roster().add(new Item(slave.asStringWithBare(), relation.getName(), Roster.Subscription.NONE.toString(), RelationRoster.class.cast(relation).asGroup()))).setTo(master).setType(Type.SET);
+		return new IQ().add(new Roster().add(new GroupItem(slave.asStringWithBare(), relation.getName(), Roster.Subscription.NONE.toString(), RelationRoster.class.cast(relation).asGroup()))).setTo(master).setType(Type.SET);
 	}
 }

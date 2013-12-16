@@ -15,8 +15,8 @@ import com.sissi.read.Mapping.MappingMetadata;
 /**
  * @author kim 2013-10-31
  */
-@MappingMetadata(uri = "jabber:iq:roster", localName = "query")
-@XmlRootElement(name = "query")
+@MappingMetadata(uri = Roster.XMLNS, localName = Roster.NAME)
+@XmlRootElement(name = Roster.NAME)
 public class Roster extends Protocol implements Collector {
 
 	public static enum Subscription {
@@ -41,15 +41,17 @@ public class Roster extends Protocol implements Collector {
 		}
 	}
 
-	private final static String XMLNS = "jabber:iq:roster";
+	public final static String XMLNS = "jabber:iq:roster";
 
-	private List<Item> item;
+	public final static String NAME = "query";
+
+	private List<GroupItem> item;
 
 	public Roster() {
 		super();
 	}
 
-	public Roster(Item item) {
+	public Roster(GroupItem item) {
 		this.add(item);
 	}
 
@@ -58,26 +60,26 @@ public class Roster extends Protocol implements Collector {
 		return XMLNS;
 	}
 
-	public Roster add(Item item) {
+	public Roster add(GroupItem item) {
 		if (this.item == null) {
-			this.item = new ArrayList<Item>();
+			this.item = new ArrayList<GroupItem>();
 		}
 		this.item.add(item);
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = "item", type = Item.class) })
-	public List<Item> getItem() {
+	@XmlElements({ @XmlElement(name = "item", type = GroupItem.class) })
+	public List<GroupItem> getItem() {
 		return item;
 	}
 
-	public Item getFirstItem() {
+	public GroupItem getFirstItem() {
 		return this.item != null && !this.item.isEmpty() ? this.item.get(0) : null;
 	}
 
 	@Override
 	public void set(String localName, Object protocol) {
-		this.add(Item.class.cast(protocol));
+		this.add(GroupItem.class.cast(protocol));
 	}
 
 	public Roster clear() {

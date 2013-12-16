@@ -13,6 +13,7 @@
 	<import resource="config-in-auth.xml" />
 	<import resource="config-in-base.xml" />
 	<import resource="config-in-iq.xml" />
+	<import resource="config-in-iq-si.xml" />
 	<import resource="config-in-iq-bind.xml" />
 	<import resource="config-in-iq-block.xml" />
 	<import resource="config-in-iq-roster.xml" />

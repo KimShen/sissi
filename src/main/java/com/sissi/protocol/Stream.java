@@ -20,13 +20,15 @@ import com.sissi.write.WithOutClose;
 /**
  * @author Kim.shen 2013-10-16
  */
-@MappingMetadata(uri = "http://etherx.jabber.org/streams", localName = "stream")
-@XmlRootElement(namespace = Stream.NAMESPACE)
+@MappingMetadata(uri = Stream.XMLNS, localName = Stream.NAME)
+@XmlRootElement(namespace = Stream.XMLNS)
 public class Stream extends Protocol implements WithOutClose {
 
-	public final static String NAMESPACE = "http://etherx.jabber.org/streams";
+	public final static String XMLNS = "http://etherx.jabber.org/streams";
 
-	private final static String XMLNS = "jabber:client";
+	public final static String NAME = "stream";
+
+	private final static String SUB_XMLNS = "jabber:client";
 
 	private final static String VERSION = "1.0";
 
@@ -37,11 +39,6 @@ public class Stream extends Protocol implements WithOutClose {
 	public Stream() {
 		super();
 		this.isUsing.set(false);
-	}
-
-	public Stream(String id) {
-		this();
-		super.setId(id);
 	}
 
 	public Stream consume() {
@@ -55,7 +52,7 @@ public class Stream extends Protocol implements WithOutClose {
 
 	@XmlAttribute
 	public String getXmlns() {
-		return XMLNS;
+		return SUB_XMLNS;
 	}
 
 	@XmlAttribute
@@ -71,7 +68,7 @@ public class Stream extends Protocol implements WithOutClose {
 		return this;
 	}
 
-	@XmlElementWrapper(namespace = Stream.NAMESPACE, name = "features")
+	@XmlElementWrapper(namespace = Stream.XMLNS, name = "features")
 	@XmlElements({ @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "register", type = Register.class) })
 	public List<Feature> getFeatures() {
 		return features;

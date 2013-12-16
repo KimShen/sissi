@@ -8,11 +8,13 @@ import com.sissi.read.Mapping.MappingMetadata;
 /**
  * @author kim 2013-11-20
  */
-@MappingMetadata(uri = "jabber:iq:roster", localName = "group")
+@MappingMetadata(uri = Roster.XMLNS, localName = Group.NAME)
 @XmlRootElement
 public class Group {
 
-	private String text;
+	public final static String NAME = "group";
+
+	private String value;
 
 	public Group() {
 		super();
@@ -20,15 +22,16 @@ public class Group {
 
 	public Group(String text) {
 		super();
-		this.text = text;
+		this.value = text;
 	}
 
 	@XmlValue
-	public String getText() {
-		return text;
+	public String getValue() {
+		return value;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public Group setText(String text) {
+		this.value = text;
+		return this;
 	}
 }

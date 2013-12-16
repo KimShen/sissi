@@ -39,9 +39,9 @@ abstract public class Protocol implements Element {
 
 	private String type;
 
-	private ServerError error;
-
 	private Protocol parent;
+	
+	private ServerError error;
 
 	@XmlTransient
 	public Protocol getParent() {
@@ -51,10 +51,6 @@ abstract public class Protocol implements Element {
 	public Protocol setParent(Protocol parent) {
 		this.parent = parent;
 		return this;
-	}
-
-	public Boolean hasParent() {
-		return this.parent != null;
 	}
 
 	@XmlAttribute
@@ -124,11 +120,6 @@ abstract public class Protocol implements Element {
 	}
 
 	public Protocol reply() {
-		this.exchange().setId(this.getId());
-		return this;
-	}
-
-	private Protocol exchange() {
 		final String tempFrom = this.getFrom();
 		this.setFrom(this.getTo());
 		this.setTo(tempFrom);

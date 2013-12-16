@@ -10,21 +10,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.disco.feature.Blocking;
+import com.sissi.protocol.iq.disco.feature.Si;
 import com.sissi.protocol.iq.disco.feature.VCard;
 import com.sissi.read.Mapping.MappingMetadata;
 
 /**
  * @author kim 2013年12月5日
  */
-@MappingMetadata(uri = "http://jabber.org/protocol/disco#info", localName = "query")
-@XmlRootElement(name = "query")
-public class DiscoInfo extends Protocol {
+@MappingMetadata(uri = Info.XMLNS, localName = Info.NAME)
+@XmlRootElement(name = Info.NAME)
+public class Info extends Protocol {
 
-	private final static String XMLNS = "http://jabber.org/protocol/disco#info";
+	public final static String XMLNS = "http://jabber.org/protocol/disco#info";
+
+	public final static String NAME = "query";
 
 	private List<Feature> feature;
 
-	public DiscoInfo add(Feature feature) {
+	public Info add(Feature feature) {
 		if (this.feature == null) {
 			this.feature = new ArrayList<Feature>();
 		}
@@ -32,7 +35,7 @@ public class DiscoInfo extends Protocol {
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = "feature", type = Blocking.class),@XmlElement(name = "feature", type = VCard.class)  })
+	@XmlElements({ @XmlElement(name = "feature", type = Blocking.class), @XmlElement(name = "feature", type = VCard.class), @XmlElement(name = "feature", type = Si.class) })
 	public List<Feature> getFeature() {
 		return feature;
 	}

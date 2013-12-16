@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.roster.Item;
+import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.read.Collector;
 
 /**
@@ -12,12 +12,12 @@ import com.sissi.read.Collector;
  */
 public class Block extends Protocol implements Collector {
 
-	private final static String XMLNS = "urn:xmpp:blocking";
+	public final static String XMLNS = "urn:xmpp:blocking";
 
-	private Item item;
+	private GroupItem item;
 
 	@XmlElement
-	public Item getItem() {
+	public GroupItem getItem() {
 		return item;
 	}
 
@@ -28,6 +28,6 @@ public class Block extends Protocol implements Collector {
 
 	@Override
 	public void set(String localName, Object ob) {
-		this.item = Item.class.cast(ob);
+		this.item = GroupItem.class.cast(ob);
 	}
 }

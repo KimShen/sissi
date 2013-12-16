@@ -7,31 +7,32 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.presence.x.XVCardPhoto;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Field.Fields;
-import com.sissi.ucenter.vcard.ListVCardFields;
-import com.sissi.ucenter.vcard.ListVCardFields.Xmlns;
+import com.sissi.ucenter.field.impl.BeanFields;
 
 /**
  * @author kim 2013年12月13日
  */
-@MappingMetadata(uri = "vcard-temp:x:update", localName = "x")
-@XmlRootElement(name = "x")
+@MappingMetadata(uri = X.XMLNS, localName = X.NAME)
+@XmlType(namespace = X.XMLNS)
+@XmlRootElement
 public class X implements Fields, Field<String>, Collector {
 
-	public final static String NAME = X.class.getSimpleName();
+	public final static String XMLNS = "vcard-temp:x:update";
 
-	private String xmlns;
+	public final static String NAME = "x";
 
-	private final ListVCardFields vCardFields = new ListVCardFields(false);
+	private final BeanFields vCardFields = new BeanFields(false);
 
 	@XmlAttribute
 	public String getXmlns() {
-		return xmlns;
+		return XMLNS;
 	}
 
 	@Override
@@ -77,7 +78,6 @@ public class X implements Fields, Field<String>, Collector {
 	@Override
 	public X add(Field<?> field) {
 		this.vCardFields.add(field);
-		this.xmlns = Xmlns.class.isAssignableFrom(field.getClass()) ? Xmlns.class.cast(field).getXmlns() : null;
 		return this;
 	}
 

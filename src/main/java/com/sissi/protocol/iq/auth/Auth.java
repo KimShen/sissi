@@ -5,18 +5,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.Stream;
 import com.sissi.read.Mapping.MappingMetadata;
 
 /**
  * @author Kim.shen 2013-10-16
  */
-@MappingMetadata(uri="urn:ietf:params:xml:ns:xmpp-sasl", localName="auth")
-@XmlType(namespace = Stream.NAMESPACE)
+@MappingMetadata(uri = Auth.XMLNS, localName = Auth.NAME)
+@XmlType(namespace = Auth.XMLNS)
 @XmlRootElement
 public class Auth extends Protocol {
 
-	private final static String XMLNS = "http://jabber.org/features/iq-auth";
+	public final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
+
+	public final static String NAME = "auth";
 
 	private String mechanism;
 

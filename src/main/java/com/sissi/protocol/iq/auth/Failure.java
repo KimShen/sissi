@@ -13,14 +13,12 @@ public class Failure extends Protocol {
 
 	public final static Failure INSTANCE = new Failure();
 
-	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
-
 	private Failure() {
 
 	}
 
 	@XmlAttribute
 	public String getXmlns() {
-		return XMLNS;
+		return Auth.XMLNS;
 	}
 }

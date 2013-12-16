@@ -6,32 +6,34 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sissi.protocol.iq.vcard.VCard;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
 import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.vcard.ListVCardFields;
+import com.sissi.ucenter.field.impl.BeanFields;
 
 /**
  * @author kim 2013年12月5日
  */
-@MappingMetadata(uri = "vcard-temp", localName = "PHOTO")
-@XmlRootElement(name = "PHOTO")
+@MappingMetadata(uri = VCard.XMLNS, localName = Photo.NAME)
+@XmlRootElement(name = Photo.NAME)
 public class Photo implements Field<String>, Collector {
 
-	public final static String NAME = Photo.class.getSimpleName().toLowerCase();
+	public final static String NAME = "PHOTO";
 
-	private ListVCardFields vCardFields = new ListVCardFields(false);
+	private final BeanFields fields;
 
 	public Photo() {
-
+		this.fields = new BeanFields(false);
 	}
 
 	public Photo(String type, String binval) {
-		this.vCardFields.add(new Type(type)).add(new Binval(binval));
+		this();
+		this.fields.add(new Type(type)).add(new Binval(binval));
 	}
 
 	public void set(String localName, Object ob) {
-		this.vCardFields.add(Field.class.cast(ob));
+		this.fields.add(Field.class.cast(ob));
 	}
 
 	@Override
@@ -41,7 +43,7 @@ public class Photo implements Field<String>, Collector {
 
 	@XmlElements({ @XmlElement(name = "TYPE", type = Type.class), @XmlElement(name = "BINVAL", type = Binval.class) })
 	public List<Field<?>> getFields() {
-		return this.vCardFields.getFields();
+		return this.fields.getFields();
 	}
 
 	@Override
@@ -51,7 +53,7 @@ public class Photo implements Field<String>, Collector {
 
 	@Override
 	public Fields getChildren() {
-		return this.vCardFields;
+		return this.fields;
 	}
 
 	@Override

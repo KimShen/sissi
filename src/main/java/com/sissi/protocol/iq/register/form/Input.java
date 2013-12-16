@@ -4,21 +4,22 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.protocol.iq.register.form.Form.Type;
 import com.sissi.ucenter.field.Field;
 
 /**
  * @author kim 2013年12月4日
  */
-@XmlRootElement(name = "field")
+@XmlRootElement(name = Input.NAME)
 public class Input implements Field<String> {
+
+	public final static String NAME = "field";
 
 	private String var;
 
 	private String type;
 
 	private String name;
-	
+
 	private String value;
 
 	private Required required;
@@ -45,11 +46,6 @@ public class Input implements Field<String> {
 		return this.var;
 	}
 
-	@XmlElement
-	public Required getRequired() {
-		return this.required;
-	}
-
 	@XmlAttribute
 	public String getType() {
 		return this.type;
@@ -58,6 +54,11 @@ public class Input implements Field<String> {
 	@Override
 	public String getValue() {
 		return this.value;
+	}
+
+	@XmlElement
+	public Required getRequired() {
+		return this.required;
 	}
 
 	@Override

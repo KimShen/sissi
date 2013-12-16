@@ -10,27 +10,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.Stream;
 import com.sissi.protocol.iq.vcard.field.Photo;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Field.Fields;
-import com.sissi.ucenter.vcard.ListVCardFields;
+import com.sissi.ucenter.field.impl.BeanFields;
 
 /**
  * @author kim 2013年12月5日
  */
-@MappingMetadata(uri = "vcard-temp", localName = "vCard")
-@XmlType(namespace = Stream.NAMESPACE)
-@XmlRootElement(name = "vCard")
+@MappingMetadata(uri = VCard.XMLNS, localName = VCard.NAME)
+@XmlType(namespace = VCard.XMLNS)
+@XmlRootElement(name = VCard.NAME)
 public class VCard extends Protocol implements Fields, Collector {
 
-	private final static String XMLNS = "vcard-temp";
+	public final static String XMLNS = "vcard-temp";
 
-	private final ListVCardFields vCardFields = new ListVCardFields(false);
+	public final static String NAME = "vCard";
+
+	private final BeanFields fields;
 
 	public VCard() {
+		this.fields = new BeanFields(false);
 	}
 
 	@XmlAttribute
@@ -40,36 +42,36 @@ public class VCard extends Protocol implements Fields, Collector {
 
 	@XmlElements({ @XmlElement(name = "PHOTO", type = Photo.class) })
 	public List<Field<?>> getFields() {
-		return this.vCardFields.getFields();
+		return this.fields.getFields();
 	}
 
 	public VCard add(Field<?> field) {
-		this.vCardFields.add(field);
+		this.fields.add(field);
 		return this;
 	}
 
 	@Override
 	public void set(String localName, Object ob) {
-		this.vCardFields.add(Field.class.cast(ob));
+		this.fields.add(Field.class.cast(ob));
 	}
 
 	public Fields addField(Field<?> field) {
-		this.vCardFields.add(field);
+		this.fields.add(field);
 		return this;
 	}
 
 	@Override
 	public Iterator<Field<?>> iterator() {
-		return this.vCardFields.iterator();
+		return this.fields.iterator();
 	}
 
 	@Override
 	public Boolean isEmbed() {
-		return this.vCardFields.isEmbed();
+		return this.fields.isEmbed();
 	}
 
 	@Override
 	public <T extends Field<?>> T findField(String name, Class<T> clazz) {
-		return this.vCardFields.findField(name, clazz);
+		return this.fields.findField(name, clazz);
 	}
 }
