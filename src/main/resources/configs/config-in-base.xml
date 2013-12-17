@@ -22,6 +22,7 @@
 				<ref bean="auth.condition" />
 				<ref bean="auth.condition.digest" />
 				<ref bean="stream.condition" />
+				<ref bean="starttls.condition" />
 			</util:list>
 		</constructor-arg>
 	</bean>

@@ -5,9 +5,11 @@ import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 import com.sissi.protocol.feature.Bind;
+import com.sissi.protocol.feature.Compression;
 import com.sissi.protocol.feature.Mechanisms;
 import com.sissi.protocol.feature.Register;
 import com.sissi.protocol.feature.Session;
+import com.sissi.protocol.feature.Starttls;
 
 /**
  * @author kim 2013-10-24
@@ -21,7 +23,7 @@ public class StreamOpenProcessor implements Input {
 	}
 
 	private Stream buildLoginMethod(Stream stream) {
-		stream.addFeature(Mechanisms.FEATURE).addFeature(Register.FEATURE);
+		stream.addFeature(Mechanisms.FEATURE).addFeature(Register.FEATURE).addFeature(Compression.FEATURE).addFeature(Starttls.FEATURE);
 		return stream;
 	}
 

@@ -11,9 +11,11 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.feature.Bind;
+import com.sissi.protocol.feature.Compression;
 import com.sissi.protocol.feature.Mechanisms;
 import com.sissi.protocol.feature.Register;
 import com.sissi.protocol.feature.Session;
+import com.sissi.protocol.feature.Starttls;
 import com.sissi.read.Mapping.MappingMetadata;
 import com.sissi.write.WithOutClose;
 
@@ -69,7 +71,7 @@ public class Stream extends Protocol implements WithOutClose {
 	}
 
 	@XmlElementWrapper(namespace = Stream.XMLNS, name = "features")
-	@XmlElements({ @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "register", type = Register.class) })
+	@XmlElements({ @XmlElement(name = "starttls", type = Starttls.class), @XmlElement(name = "compression", type = Compression.class), @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "mechanisms", type = Mechanisms.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "register", type = Register.class) })
 	public List<Feature> getFeatures() {
 		return features;
 	}
