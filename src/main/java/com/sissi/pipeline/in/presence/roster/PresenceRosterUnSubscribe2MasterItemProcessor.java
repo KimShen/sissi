@@ -18,7 +18,7 @@ public class PresenceRosterUnSubscribe2MasterItemProcessor extends ProxyProcesso
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.offer(context.getJid(), this.prepare(context.getJid(), super.build(protocol.getTo()), protocol));
+		super.broadcast(context.getJid(), this.prepare(context.getJid(), super.build(protocol.getTo()), protocol));
 		return true;
 	}
 

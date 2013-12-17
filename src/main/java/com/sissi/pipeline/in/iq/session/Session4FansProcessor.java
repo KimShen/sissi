@@ -19,6 +19,6 @@ public class Session4FansProcessor extends ProxyProcessor {
 	}
 
 	private void fromMyFans(JIDContext context, JID from) {
-		super.offer(context.getJid().getBare(), from, context.getJid(), super.findOne(from).getStatus());
+		super.broadcast(context.getJid().getBare(), from, context.getJid(), super.findOne(from).getStatus());
 	}
 }

@@ -13,7 +13,7 @@ public class PresenceRosterSubscribed2MasterPresenceProcessor extends ProxyProce
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		JID master = super.build(protocol.getTo());
-		super.offer(master, context.getJid(), master, context.getStatus());
+		super.broadcast(master, context.getJid(), master, context.getStatus());
 		return true;
 	}
 }

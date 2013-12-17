@@ -10,7 +10,7 @@ import com.sissi.ucenter.RelationContext.Relation;
 /**
  * @author kim 2013-11-18
  */
-public class MessageValidateProcessor extends ProxyProcessor {
+public class MessageRelationProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

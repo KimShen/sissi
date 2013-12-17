@@ -15,7 +15,7 @@ public class RosterSet2FansPresenceProcessor extends ProxyProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		JID slave = super.build(Roster.class.cast(protocol).getFirstItem().getJid());
-		super.offer(slave, context.getJid(), slave, new Presence().setType(Presence.Type.SUBSCRIBE));
+		super.broadcast(slave, context.getJid(), slave, new Presence().setType(Presence.Type.SUBSCRIBE));
 		return true;
 	}
 }

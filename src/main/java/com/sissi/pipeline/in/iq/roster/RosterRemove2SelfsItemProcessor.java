@@ -8,7 +8,7 @@ import com.sissi.protocol.iq.roster.GroupItem;
 public class RosterRemove2SelfsItemProcessor extends Roster2SelfsItemProcessor {
 
 	@Override
-	protected String build() {
+	protected String getSubscription() {
 		return GroupItem.Action.REMOVE.toString();
 	}
 }

@@ -52,7 +52,7 @@ public class IQ extends Protocol implements Collector {
 		return this.protocols != null ? this.protocols : EMPTY_CHILDREN;
 	}
 
-	public IQ clear() {
+	public IQ close() {
 		this.protocols = null;
 		return this;
 	}

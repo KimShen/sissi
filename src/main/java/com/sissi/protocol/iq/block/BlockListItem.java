@@ -19,4 +19,9 @@ public class BlockListItem extends Item {
 	public BlockListItem(String jid, String name, String subscription, String group) {
 		super(jid, name, subscription);
 	}
+	
+	public BlockListItem setJid(String jid){
+		super.setJid(jid);
+		return this;
+	}
 }

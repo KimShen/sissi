@@ -42,7 +42,7 @@ public class MongoVCardContext extends MongoFieldContext implements VCardContext
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Fields> T fill(JID jid, T fields) {
+	public <T extends Fields> T get(JID jid, T fields) {
 		DBObject query = BasicDBObjectBuilder.start("username", jid.getUser()).get();
 		this.log.debug("Query: " + query);
 		Map<String, Object> entity = this.config.collection().findOne(query).toMap();

@@ -8,7 +8,7 @@ import com.sissi.protocol.iq.roster.Roster;
 public class RosterSet2SelfsItemProcessor extends Roster2SelfsItemProcessor {
 
 	@Override
-	protected String build() {
+	protected String getSubscription() {
 		return Roster.Subscription.NONE.toString();
 	}
 }

@@ -15,7 +15,7 @@ public class VCardGet2FansProcessor extends VCardGetProcessor {
 	}
 
 	@Override
-	protected VCard fill(JIDContext context, Protocol protocol) {
-		return super.vcardContext.fill(super.build(protocol.getParent().getTo()), VCard.class.cast(protocol));
+	protected VCard get(JIDContext context, Protocol protocol) {
+		return super.vcardContext.get(super.build(protocol.getParent().getTo()), VCard.class.cast(protocol));
 	}
 }

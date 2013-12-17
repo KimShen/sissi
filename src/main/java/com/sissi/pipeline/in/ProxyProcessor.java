@@ -57,8 +57,8 @@ abstract public class ProxyProcessor implements Input {
 		return this.jidBuilder.build(username, resource);
 	}
 
-	public ProxyProcessor ban(JIDContext context) {
-		this.addressing.ban(context);
+	public ProxyProcessor close(JIDContext context) {
+		this.addressing.close(context.getJid());
 		return this;
 	}
 
@@ -75,13 +75,13 @@ abstract public class ProxyProcessor implements Input {
 		return this.addressing.findOne(jid);
 	}
 
-	public ProxyProcessor offer(JID jid, JID from, JID to, Status status) {
-		this.presenceQueue.offer(jid, from, to, status);
+	public ProxyProcessor broadcast(JID jid, JID from, JID to, Status status) {
+		this.presenceQueue.broadcast(jid, from, to, status);
 		return this;
 	}
 
-	public ProxyProcessor offer(JID jid, Protocol protocol) {
-		this.protocolQueue.offer(jid, protocol);
+	public ProxyProcessor broadcast(JID jid, Protocol protocol) {
+		this.protocolQueue.broadcast(jid, protocol);
 		return this;
 	}
 

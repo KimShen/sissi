@@ -9,7 +9,7 @@ import com.sissi.protocol.Protocol;
  */
 public interface PresenceBroadcast {
 
-	public PresenceBroadcast offer(JID jid, JID from, JID to, Status status);
+	public PresenceBroadcast broadcast(JID jid, JID from, JID to, Status status);
 
 	public interface PresenceBuilder {
 

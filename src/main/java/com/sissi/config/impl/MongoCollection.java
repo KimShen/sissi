@@ -54,6 +54,6 @@ public class MongoCollection implements MongoConfig {
 			return null;
 		}
 		Object value = db.get(key);
-		return value != null ? (Boolean) value : Boolean.FALSE;
+		return value != null ? Boolean.class.cast(value) : Boolean.FALSE;
 	}
 }

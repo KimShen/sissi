@@ -10,5 +10,5 @@ public interface VCardContext {
 
 	public VCardContext set(JID jid, Fields fields);
 
-	public <T extends Fields> T fill(JID jid, T fields);
+	public <T extends Fields> T get(JID jid, T fields);
 }

@@ -13,7 +13,7 @@ public class PresenceRosterSubscribeProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.offer(super.build(protocol.getTo()), context.getJid(), super.build(protocol.getTo()), Presence.class.cast(protocol).setFrom(context.getJid()).setType(Type.SUBSCRIBE));
+		super.broadcast(super.build(protocol.getTo()), context.getJid(), super.build(protocol.getTo()), Presence.class.cast(protocol).setFrom(context.getJid()).setType(Type.SUBSCRIBE));
 		return false;
 	}
 }

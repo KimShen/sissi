@@ -19,15 +19,14 @@ public class DelayMessage extends DelayProtocol {
 
 	@Override
 	public Map<String, Object> write(Element element) {
-		Message message = Message.class.cast(element);
-		Map<String, Object> entity = super.based(message);
-		entity.put("body", message.getBody().getText());
+		Map<String, Object> entity = super.based(element);
+		entity.put("body", Message.class.cast(element).getBody().getText());
 		return entity;
 	}
 
 	@Override
 	public Message read(Map<String, Object> element) {
-		Message message = (Message) super.based(element, new Message());
+		Message message = Message.class.cast(super.based(element, new Message()));
 		return message.setBody(new Body(element.get("body").toString())).setDelay(new Delay(super.hit, message.getFrom(), element.get("delay").toString()));
 	}
 

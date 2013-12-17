@@ -13,7 +13,7 @@ public class PresenceStatus2SelfProcessor extends ProxyProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		Presence presence = Presence.class.cast(protocol);
-		context.getStatus().asAvator(presence.getAvatorAsText()).asType(presence.getTypeAsText()).asShow(presence.getShowAsText()).asStatus(presence.getStatusAsText());
+		context.getStatus().setStatus(presence.getTypeAsText(), presence.getShowAsText(), presence.getStatusAsText(), presence.getAvatorAsText());
 		return true;
 	}
 }

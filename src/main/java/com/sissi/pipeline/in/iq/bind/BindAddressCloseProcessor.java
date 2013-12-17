@@ -7,12 +7,11 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013-10-29
  */
-public class BindAddressProcessor extends ProxyProcessor {
+public class BindAddressCloseProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.ban(context).join(context);
-		context.setBinding(true);
+		super.close(context);
 		return true;
 	}
 }

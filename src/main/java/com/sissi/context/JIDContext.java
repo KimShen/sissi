@@ -12,9 +12,9 @@ public interface JIDContext {
 	public JIDContext setJid(JID jid);
 
 	public JID getJid();
-	
+
 	public JIDContext setAuth(Boolean canAccess);
-	
+
 	public Boolean isAuth();
 
 	public JIDContext setBinding(Boolean isBinding);
@@ -40,30 +40,31 @@ public interface JIDContext {
 
 		public <T> T find(String key, Class<T> clazz);
 	}
-	
+
 	public interface Status {
 
-		public String getTypeAsText();
-
-		public String getShowAsText();
-
-		public String getStatusAsText();
+		public Status setStatus(String type, String show, String status, String avator);
 		
-		public String getAvatorAsText();
+		public StatusClauses getStatus();
 
-		public Status asType(String type);
+		public Status close();
+	}
 
-		public Status asShow(String show);
-
-		public Status asStatus(String status);
+	public interface StatusClauses {
 		
-		public Status asAvator(String avator);
+		public final static String KEY_TYPE = "type";
+		
+		public final static String KEY_SHOW = "show";
+		
+		public final static String KEY_STATUS = "status";
+		
+		public final static String KEY_AVATOR = "avator";
+		
+		public String find(String key);
+	}
 
-		public Status clear();
+	public interface StatusBuilder {
 
-		public interface StatusBuilder {
-
-			public Status build(JIDContext context);
-		}
+		public Status build(JIDContext context);
 	}
 }

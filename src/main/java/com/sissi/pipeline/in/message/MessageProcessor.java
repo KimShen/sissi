@@ -11,7 +11,7 @@ public class MessageProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.protocolQueue.offer(super.build(protocol.getTo()), protocol.setFrom(context.getJid()));
+		super.protocolQueue.broadcast(super.build(protocol.getTo()), protocol.setFrom(context.getJid()));
 		return false;
 	}
 }

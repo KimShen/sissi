@@ -18,8 +18,8 @@ public class ToSelfProtocolQueue implements ProtocolBraodcast {
 	}
 
 	@Override
-	public ToSelfProtocolQueue offer(JID jid, Protocol protocol) {
-		this.addressing.find(jid).write(protocol);
+	public ToSelfProtocolQueue broadcast(JID jid, Protocol protocol) {
+		this.addressing.find(jid, true).write(protocol);
 		return this;
 	}
 }

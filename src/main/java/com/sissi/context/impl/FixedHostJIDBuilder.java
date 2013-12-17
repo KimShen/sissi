@@ -12,7 +12,7 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 
 	private final static String CONNECT_AT = "@";
 
-	private final static String CONNECT_SLASH = "/";
+	private final static String CONNECT_RESOURCE = "/";
 
 	private final None none = new None();
 
@@ -87,10 +87,9 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 			super();
 			int startHost = jid.indexOf(FixedHostJIDBuilder.CONNECT_AT);
 			this.user = startHost == -1 ? null : jid.substring(0, startHost);
-			int startResource = jid.indexOf(FixedHostJIDBuilder.CONNECT_SLASH);
+			int startResource = jid.indexOf(FixedHostJIDBuilder.CONNECT_RESOURCE);
 			this.host = startResource == -1 ? jid.substring(startHost != -1 ? startHost + 1 : 0) : jid.substring(startHost + 1, startResource);
 			this.resource = startResource == -1 ? null : jid.substring(startResource + 1);
-			this.copy2NoneResourceClone();
 		}
 
 		private User(String user, String resource) {
@@ -98,13 +97,13 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 			this.user = user;
 			this.host = FixedHostJIDBuilder.this.host;
 			this.resource = resource;
-			this.copy2NoneResourceClone();
 		}
 
-		private void copy2NoneResourceClone() {
+		private User copy2NoneResourceClone() {
 			this.bareUser = new User();
 			this.bareUser.user = this.user;
 			this.bareUser.host = this.host;
+			return this.bareUser;
 		}
 
 		public String getUser() {
@@ -126,15 +125,15 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 		}
 
 		public JID getBare() {
-			return this.bareUser != null ? this.bareUser : this;
+			return this.bareUser != null ? this.bareUser : this.copy2NoneResourceClone();
 		}
 
 		public String asString() {
-			return this.asStringWithBare() + (this.resource != null ? FixedHostJIDBuilder.CONNECT_SLASH + this.resource : "");
+			return this.asStringWithBare() + (this.resource != null ? FixedHostJIDBuilder.CONNECT_RESOURCE + this.resource : "");
 		}
 
 		public String asStringWithBare() {
-			return (this.user != null ? this.user + "@" : "") + this.host;
+			return (this.user != null ? this.user + FixedHostJIDBuilder.CONNECT_AT : "") + this.host;
 		}
 	}
 }

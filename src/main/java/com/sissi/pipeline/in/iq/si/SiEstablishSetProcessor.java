@@ -11,7 +11,7 @@ public class SiEstablishSetProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.offer(super.build(protocol.getParent().getTo()), protocol.getParent().setFrom(context.getJid().getBare()));
+		super.broadcast(super.build(protocol.getParent().getTo()), protocol.getParent().setFrom(context.getJid().asStringWithBare()));
 		return true;
 	}
 }

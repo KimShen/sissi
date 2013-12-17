@@ -12,7 +12,7 @@ import com.sissi.protocol.Element;
 public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private final RuntimeException NOT_SUPPORT = new RuntimeException("MultiContexts not support this funciton");
 
 	@Override
@@ -67,7 +67,9 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	public Boolean close() {
 		boolean allClose = true;
 		for (JIDContext each : this) {
-			allClose = each.close();
+			if (!each.close()) {
+				allClose = false;
+			}
 		}
 		return allClose;
 	}

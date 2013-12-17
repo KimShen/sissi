@@ -32,8 +32,8 @@ public abstract class DelayProtocol implements DelayElement {
 	protected Map<String, Object> based(Element element) {
 		Map<String, Object> entity = new HashMap<String, Object>();
 		entity.put("id", element.getId());
-		entity.put("from", this.jidBuilder.build(element.getFrom()).asStringWithBare());
-		entity.put("to", this.jidBuilder.build(element.getTo()).asStringWithBare());
+		entity.put("from", element.getFrom());
+		entity.put("to", element.getTo());
 		entity.put("type", element.getType());
 		entity.put("delay", DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
 		entity.put("class", element.getClass().getSimpleName());

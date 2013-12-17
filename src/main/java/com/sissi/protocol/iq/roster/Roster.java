@@ -82,8 +82,8 @@ public class Roster extends Protocol implements Collector {
 		this.add(GroupItem.class.cast(protocol));
 	}
 
-	public Roster clear() {
-		super.clear();
+	public Roster close() {
+		super.close();
 		this.item = null;
 		return this;
 	}

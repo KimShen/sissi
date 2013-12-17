@@ -13,7 +13,7 @@ public class Roster2SelfsPresenceProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.offer(context.getJid(), super.build(Roster.class.cast(protocol).getFirstItem().getJid()), context.getJid(), new Presence().setType(Presence.Type.UNAVAILABLE));
+		super.broadcast(context.getJid(), super.build(Roster.class.cast(protocol).getFirstItem().getJid()), context.getJid(), new Presence().setType(Presence.Type.UNAVAILABLE));
 		return true;
 	}
 }

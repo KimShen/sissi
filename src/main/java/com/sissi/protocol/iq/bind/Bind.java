@@ -62,8 +62,8 @@ public class Bind extends Protocol implements Collector {
 		return this.resource != null && this.resource.hasResource();
 	}
 
-	public Bind clear() {
-		super.clear();
+	public Bind close() {
+		super.close();
 		this.jid = null;
 		this.resource = null;
 		return this;

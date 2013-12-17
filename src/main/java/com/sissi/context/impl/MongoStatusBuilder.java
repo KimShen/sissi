@@ -10,7 +10,8 @@ import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContext.Status;
-import com.sissi.context.JIDContext.Status.StatusBuilder;
+import com.sissi.context.JIDContext.StatusBuilder;
+import com.sissi.context.JIDContext.StatusClauses;
 
 /**
  * @author kim 2013-11-21
@@ -33,27 +34,27 @@ public class MongoStatusBuilder implements StatusBuilder {
 		return new MongoStatus(context);
 	}
 
-	private String get(JIDContext context, String key) {
+	private DBObject get(JIDContext context) {
 		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).get();
-		DBObject filter = BasicDBObjectBuilder.start(key, "1").get();
 		this.log.debug("Query: " + query);
-		this.log.debug("Filter: " + filter);
-		DBCursor cursor = this.config.collection().find(query, filter).sort(DEFAULT_SORTER).limit(1);
-		return this.config.asString(cursor.hasNext() ? cursor.next() : null, key);
+		DBCursor cursor = this.config.collection().find(query).sort(DEFAULT_SORTER).limit(1);
+		return cursor.hasNext() ? cursor.next() : null;
 	}
 
-	private void set(JIDContext context, String key, String value) {
+	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
 		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).get();
-		DBObject upsert = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(key, value).add("priority", context.getPriority()).get()).get();
+		DBObject upsert = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add("type", type).add("show", show).add("status", status).add("avator", avator).add("priority", context.getPriority()).get()).get();
 		this.log.debug("Query: " + query);
 		this.log.debug("Upsert: " + upsert);
 		this.config.collection().update(query, upsert, true, false);
+		return this;
 	}
 
-	private void remove(JIDContext context) {
+	private MongoStatusBuilder remove(JIDContext context) {
 		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).get();
 		this.log.debug("Query: " + query);
 		this.config.collection().remove(query);
+		return this;
 	}
 
 	private class MongoStatus implements Status {
@@ -65,53 +66,36 @@ public class MongoStatusBuilder implements StatusBuilder {
 			this.context = context;
 		}
 
-		@Override
-		public String getTypeAsText() {
-			return MongoStatusBuilder.this.get(this.context, "type");
-		}
-
-		@Override
-		public String getShowAsText() {
-			return MongoStatusBuilder.this.get(this.context, "show");
-		}
-
-		@Override
-		public String getStatusAsText() {
-			return MongoStatusBuilder.this.get(this.context, "status");
-		}
-
-		@Override
-		public String getAvatorAsText() {
-			return MongoStatusBuilder.this.get(this.context, "avator");
-		}
-
-		@Override
-		public Status asType(String type) {
-			MongoStatusBuilder.this.set(this.context, "type", type);
-			return this;
-		}
-
-		@Override
-		public Status asShow(String show) {
-			MongoStatusBuilder.this.set(this.context, "show", show);
-			return this;
-		}
-
-		@Override
-		public Status asStatus(String status) {
-			MongoStatusBuilder.this.set(this.context, "status", status);
-			return this;
-		}
-
-		@Override
-		public Status asAvator(String avator) {
-			MongoStatusBuilder.this.set(this.context, "avator", avator);
-			return this;
-		}
-
-		public Status clear() {
+		public Status close() {
 			MongoStatusBuilder.this.remove(this.context);
+			this.context = null;
 			return this;
+		}
+
+		@Override
+		public Status setStatus(String type, String show, String status, String avator) {
+			MongoStatusBuilder.this.set(this.context, type, show, status, avator);
+			return this;
+		}
+
+		@Override
+		public StatusClauses getStatus() {
+			return new MongoClauses(MongoStatusBuilder.this.get(this.context));
+		}
+	}
+
+	private class MongoClauses implements StatusClauses {
+
+		private DBObject status;
+
+		public MongoClauses(DBObject status) {
+			super();
+			this.status = status;
+		}
+
+		@Override
+		public String find(String key) {
+			return MongoStatusBuilder.this.config.asString(this.status, key);
 		}
 	}
 }

@@ -1,17 +1,18 @@
-package com.sissi.pipeline.in.presence.status;
+package com.sissi.pipeline.in.iq.bind;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 
 /**
- * @author kim 2013-11-18
+ * @author kim 2013-10-29
  */
-public class PresenceStatus2FansProcessor extends ProxyProcessor {
+public class BindAddressJoinProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.broadcast(context.getJid(), protocol.setFrom(context.getJid().getBare()));
+		super.join(context);
+		context.setBinding(true);
 		return true;
 	}
 }

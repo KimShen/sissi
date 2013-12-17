@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
+import com.sissi.context.JIDContext.StatusClauses;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.protocol.presence.x.XVCardPhoto;
@@ -24,7 +25,7 @@ import com.sissi.ucenter.field.impl.BeanFields;
 @MappingMetadata(uri = Presence.XMLNS, localName = Presence.NAME)
 @XmlRootElement
 public class Presence extends Protocol implements com.sissi.context.JIDContext.Status, Fields, Collector {
-	
+
 	public final static String XMLNS = "jabber:client";
 
 	public final static String NAME = "presence";
@@ -71,9 +72,9 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		this.fields = new BeanFields(false);
 	}
 
-	public Presence(JID from, JID to, String show, String status, String type, String avator) {
+	public Presence(String from, String to, String show, String status, String type, String avator) {
 		this();
-		this.asShow(show != null ? show : null).asStatus(status != null ? status : null).asAvator(avator != null ? avator : null).setFrom(from.asStringWithBare()).setTo(to.asStringWithBare()).setType(type);
+		this.setShow(show != null ? show : null).setStatus(status != null ? status : null).setAvator(avator != null ? avator : null).setFrom(from).setTo(to).setType(type);
 	}
 
 	private X findX() {
@@ -99,7 +100,7 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		this.delay = delay;
 		return this;
 	}
-	
+
 	@XmlTransient
 	public String getTypeAsText() {
 		return this.getType();
@@ -132,13 +133,18 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		return this;
 	}
 
-	@XmlTransient
-	public Status getStatus() {
-		return status;
+	public Presence setShow(String show) {
+		this.show = new Show(show);
+		return this;
 	}
 
 	public Presence setStatus(Status status) {
 		this.status = status;
+		return this;
+	}
+
+	public Presence setStatus(String status) {
+		this.status = new Status(status);
 		return this;
 	}
 
@@ -147,8 +153,8 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		return this.fields.getFields();
 	}
 
-	public Presence clear() {
-		super.clear();
+	public Presence close() {
+		super.close();
 		super.setType((String) null);
 		this.show = null;
 		this.status = null;
@@ -156,24 +162,7 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		return this;
 	}
 
-	@Override
-	public Presence asShow(String show) {
-		this.setShow(show != null ? new Show(show) : null);
-		return this;
-	}
-
-	@Override
-	public Presence asStatus(String status) {
-		this.setStatus(new Status(status != null ? status : null));
-		return this;
-	}
-
-	@Override
-	public Presence asType(String type) {
-		return this.setType(Type.parse(type));
-	}
-
-	public Presence asAvator(String type) {
+	public Presence setAvator(String type) {
 		this.add(new X().add(new XVCardPhoto(type)));
 		return this;
 	}
@@ -214,5 +203,34 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 	@Override
 	public <T extends Field<?>> T findField(String name, Class<T> clazz) {
 		return this.fields.findField(name, clazz);
+	}
+
+	@Override
+	public Presence setStatus(String type, String show, String status, String avator) {
+		this.setShow(show).setStatus(status).setAvator(avator).setType(type);
+		return null;
+	}
+
+	@Override
+	public StatusClauses getStatus() {
+		return new PresenceClauses();
+	}
+
+	private class PresenceClauses implements StatusClauses {
+
+		@Override
+		public String find(String key) {
+			switch (key) {
+			case StatusClauses.KEY_TYPE:
+				return Presence.this.getType();
+			case StatusClauses.KEY_SHOW:
+				return Presence.this.getShowAsText();
+			case StatusClauses.KEY_STATUS:
+				return Presence.this.getStatusAsText();
+			case StatusClauses.KEY_AVATOR:
+				return Presence.this.getAvatorAsText();
+			}
+			return null;
+		}
 	}
 }

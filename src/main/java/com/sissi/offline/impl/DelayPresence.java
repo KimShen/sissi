@@ -19,7 +19,7 @@ public class DelayPresence extends DelayProtocol {
 
 	@Override
 	public Map<String, Object> write(Element element) {
-		return super.based(Presence.class.cast(element));
+		return super.based(element);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class DelayPresence extends DelayProtocol {
 	}
 
 	public Boolean isSupport(Element element) {
-		return Presence.class.isAssignableFrom(element.getClass()) && this.isNotStatus(element);
+		return Presence.class.isAssignableFrom(element.getClass()) && this.isAcceptStatus(element);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class DelayPresence extends DelayProtocol {
 		return Presence.class.getSimpleName().equals(storage.get("class"));
 	}
 
-	private boolean isNotStatus(Element element) {
+	private boolean isAcceptStatus(Element element) {
 		Type type = Presence.Type.parse(element.getType());
 		return type != Presence.Type.ONLINE && type != Presence.Type.UNAVAILABLE;
 	}

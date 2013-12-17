@@ -13,7 +13,7 @@ public class UnBlock2FansPresenceProcessor extends ProxyProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		JIDContext contacter = super.findOne(super.build(UnBlock.class.cast(protocol).getItem().getJid()));
-		super.offer(contacter.getJid(), context.getJid(), contacter.getJid(), context.getStatus());
+		super.broadcast(contacter.getJid(), context.getJid(), contacter.getJid(), context.getStatus());
 		return true;
 	}
 

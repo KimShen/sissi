@@ -5,9 +5,10 @@ import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContext.JIDContextBuilder;
 import com.sissi.context.JIDContext.JIDContextParam;
 import com.sissi.context.JIDContext.Status;
+import com.sissi.context.JIDContext.StatusClauses;
 import com.sissi.offline.DelayElementBox;
 import com.sissi.protocol.Element;
-import com.sissi.protocol.presence.Presence;
+import com.sissi.protocol.presence.Presence.Type;
 
 /**
  * @author kim 2013-11-19
@@ -104,47 +105,36 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		}
 
-		@Override
-		public String getTypeAsText() {
-			return Presence.Type.UNAVAILABLE.toString();
+		public Status close() {
+			return this;
 		}
 
 		@Override
-		public String getShowAsText() {
+		public Status setStatus(String type, String show, String status, String avator) {
+			return this;
+		}
+
+		@Override
+		public StatusClauses getStatus() {
+			return EmptyClauses.EMPTY;
+		}
+	}
+
+	private static class EmptyClauses implements StatusClauses {
+
+		private final static StatusClauses EMPTY = new EmptyClauses();
+
+		private EmptyClauses() {
+
+		}
+
+		@Override
+		public String find(String key) {
+			switch (key) {
+			case StatusClauses.KEY_TYPE:
+				return Type.UNAVAILABLE.toString();
+			}
 			return null;
-		}
-
-		@Override
-		public String getStatusAsText() {
-			return null;
-		}
-		
-		@Override
-		public String getAvatorAsText() {
-			return null;
-		}
-
-		@Override
-		public Status asType(String type) {
-			return this;
-		}
-
-		@Override
-		public Status asShow(String show) {
-			return this;
-		}
-
-		@Override
-		public Status asStatus(String status) {
-			return this;
-		}
-		
-		public Status asAvator(String avator) {
-			return this;
-		}
-
-		public Status clear() {
-			return this;
 		}
 	}
 }

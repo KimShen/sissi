@@ -26,8 +26,8 @@ public class ToFansProtocolQueue implements ProtocolBraodcast {
 	}
 
 	@Override
-	public ToFansProtocolQueue offer(JID jid, Protocol protocol) {
-		for (String each : this.relationContext.whoSubscribedMe(jid.getBare())) {
+	public ToFansProtocolQueue broadcast(JID jid, Protocol protocol) {
+		for (String each : this.relationContext.whoSubscribedMe(jid)) {
 			this.addressing.find(this.jidBuilder.build(each)).write(protocol);
 		}
 		return this;

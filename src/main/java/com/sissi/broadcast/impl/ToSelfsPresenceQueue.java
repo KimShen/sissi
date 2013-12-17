@@ -1,9 +1,10 @@
-package com.sissi.broadcast.impl;
+  package com.sissi.broadcast.impl;
 
 import com.sissi.addressing.Addressing;
 import com.sissi.broadcast.PresenceBroadcast;
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext.Status;
+import com.sissi.context.JIDContext.StatusClauses;
 import com.sissi.protocol.presence.Presence;
 
 /**
@@ -18,8 +19,8 @@ public class ToSelfsPresenceQueue extends ToSelfsProtocolQueue implements Presen
 		this.presenceBuilder = new DefaultPresenceBuilder();
 	}
 
-	public ToSelfsPresenceQueue offer(JID jid, JID from, JID to, Status status) {
-		super.offer(jid.getBare(), this.presenceBuilder.build(from.getBare(), to.getBare(), status));
+	public ToSelfsPresenceQueue broadcast(JID jid, JID from, JID to, Status status) {
+		super.broadcast(jid, this.presenceBuilder.build(from, to, status));
 		return this;
 	}
 
@@ -27,11 +28,12 @@ public class ToSelfsPresenceQueue extends ToSelfsProtocolQueue implements Presen
 
 		@Override
 		public Presence build(JID from, JID to, Status status) {
-			return Presence.class.isAssignableFrom(status.getClass()) ? (Presence) Presence.class.cast(status).setFrom(from.getBare()).setTo(to.getBare()) : this.newOne(from.getBare(), to.getBare(), status);
+			return Presence.class.isAssignableFrom(status.getClass()) ? (Presence) Presence.class.cast(status).setFrom(from.asStringWithBare()).setTo(to.asStringWithBare()) : this.newOne(from.asStringWithBare(), to.asStringWithBare(), status);
 		}
 
-		private Presence newOne(JID from, JID to, Status status) {
-			return new Presence(from.getBare(), to.getBare(), status.getShowAsText(), status.getStatusAsText(), status.getTypeAsText(), status.getAvatorAsText());
+		private Presence newOne(String from, String to, Status status) {
+			StatusClauses clauses = status.getStatus();
+			return new Presence(from, to, clauses.find(StatusClauses.KEY_SHOW), clauses.find(StatusClauses.KEY_STATUS), clauses.find(StatusClauses.KEY_TYPE), clauses.find(StatusClauses.KEY_AVATOR));
 		}
 	}
 }

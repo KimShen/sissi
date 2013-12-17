@@ -12,10 +12,10 @@ abstract class Roster2SelfsItemProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		Roster.class.cast(protocol).getFirstItem().setSubscription(this.build());
-		super.offer(context.getJid(), protocol.getParent());
+		Roster.class.cast(protocol).getFirstItem().setSubscription(this.getSubscription());
+		super.broadcast(context.getJid(), protocol.getParent());
 		return true;
 	}
 
-	abstract protected String build();
+	abstract protected String getSubscription();
 }

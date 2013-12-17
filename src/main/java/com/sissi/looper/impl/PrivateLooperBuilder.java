@@ -24,15 +24,15 @@ public class PrivateLooperBuilder implements LooperBuilder {
 
 	private final Runner runner;
 
+	private final Integer threads;
+
 	private final Interval interval;
 
-	private final Integer threadNum;
-
-	public PrivateLooperBuilder(Runner runner, Interval interval, Integer threadNum) {
+	public PrivateLooperBuilder(Runner runner, Interval interval, Integer threads) {
 		super();
 		this.runner = runner;
 		this.interval = interval;
-		this.threadNum = threadNum;
+		this.threads = threads;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class PrivateLooperBuilder implements LooperBuilder {
 		@Override
 		public void start() {
 			this.state.set(true);
-			PrivateLooperBuilder.this.runner.executor(PrivateLooperBuilder.this.threadNum, this);
+			PrivateLooperBuilder.this.runner.executor(PrivateLooperBuilder.this.threads, this);
 		}
 
 		@Override

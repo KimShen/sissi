@@ -52,8 +52,8 @@ public class MongoAddressing implements Addressing {
 		runner.executor(GC_THREAD, new GC(interval));
 	}
 
-	public Addressing ban(JIDContext context) {
-		for (JIDContext current : this.find(context.getJid(), true, false)) {
+	public Addressing close(JID jid) {
+		for (JIDContext current : this.find(jid, true, false)) {
 			if (current.close()) {
 				this.leave(current);
 			}
@@ -85,20 +85,20 @@ public class MongoAddressing implements Addressing {
 		return this.find(jid, false);
 	}
 
+	public JIDContexts find(JID jid, Boolean usingResource) {
+		return this.find(jid, usingResource, true);
+	}
+	
 	@Override
 	public JIDContext findOne(JID jid) {
 		DBObject query = this.buildQueryWithSmartResource(jid, false);
 		this.log.debug("Query: " + query);
 		DBObject entity = this.config.collection().findOne(query, DEFAULT_FILTER);
-		return entity != null ? this.contexts.get(new Long(entity.get("index").toString())) : this.contextBuilder.build(jid, MongoAddressing.NOTHING);
-	}
-
-	private JIDContexts find(JID jid, Boolean usingResource) {
-		return this.find(jid, usingResource, true);
+		return entity != null ? this.contexts.get(Long.class.cast(entity.get("index"))) : this.contextBuilder.build(jid, MongoAddressing.NOTHING);
 	}
 
 	private JIDContexts find(JID jid, Boolean usingResource, Boolean usingOffline) {
-		DBObject query = this.buildQueryWithSmartResource(jid, true);
+		DBObject query = this.buildQueryWithSmartResource(jid, usingResource);
 		this.log.debug("Query: " + query);
 		return new MongoUserContexts(jid, usingOffline, this.config.collection().find(query, DEFAULT_FILTER).sort(DEFAULT_SORTER));
 	}
@@ -124,7 +124,7 @@ public class MongoAddressing implements Addressing {
 
 		private MongoUserContexts(JID jid, Boolean usingOffline, DBCursor cursor) {
 			while (cursor.hasNext()) {
-				Long index = new Long(cursor.next().get("index").toString());
+				Long index = Long.class.cast(cursor.next().get("index"));
 				JIDContext context = MongoAddressing.this.contexts.get(index);
 				if (context != null) {
 					this.add(context);
@@ -175,7 +175,7 @@ public class MongoAddressing implements Addressing {
 		}
 	}
 
-	public static class NothingJIDContextParam implements JIDContextParam {
+	private static class NothingJIDContextParam implements JIDContextParam {
 
 		private NothingJIDContextParam() {
 		}

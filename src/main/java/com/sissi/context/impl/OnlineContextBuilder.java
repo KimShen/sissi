@@ -7,7 +7,7 @@ import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContext.JIDContextBuilder;
 import com.sissi.context.JIDContext.JIDContextParam;
-import com.sissi.context.JIDContext.Status.StatusBuilder;
+import com.sissi.context.JIDContext.StatusBuilder;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 
@@ -99,6 +99,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		@Override
 		public Boolean close() {
 			this.output.close();
+			this.onlineStatus.close();
+			this.onlineStatus = null;
 			return true;
 		}
 

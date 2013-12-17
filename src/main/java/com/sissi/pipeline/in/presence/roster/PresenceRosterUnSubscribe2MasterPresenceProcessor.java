@@ -13,7 +13,7 @@ public class PresenceRosterUnSubscribe2MasterPresenceProcessor extends ProxyProc
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.offer(context.getJid(), super.build(protocol.getTo()), context.getJid(), new Presence().setType(Type.UNAVAILABLE));
+		super.broadcast(context.getJid(), super.build(protocol.getTo()), context.getJid(), new Presence().setType(Type.UNAVAILABLE));
 		return true;
 	}
 }
