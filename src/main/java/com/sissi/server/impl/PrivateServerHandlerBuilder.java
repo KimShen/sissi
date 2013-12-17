@@ -1,6 +1,7 @@
 package com.sissi.server.impl;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.AttributeKey;
@@ -80,7 +81,8 @@ public class PrivateServerHandlerBuilder {
 		return new PrivateServerHandler();
 	}
 
-	private class PrivateServerHandler extends ChannelInboundHandlerAdapter {
+	@Sharable
+	class PrivateServerHandler extends ChannelInboundHandlerAdapter {
 
 		private final PipedInputStream inPipe = new PipedInputStream();
 		
@@ -138,7 +140,8 @@ public class PrivateServerHandlerBuilder {
 		}
 
 		private void createContextAndJoinGroup(final ChannelHandlerContext ctx) {
-			ctx.attr(CONTEXT).set(PrivateServerHandlerBuilder.this.jidContextBuilder.build(null, new UserContextParam(PrivateServerHandlerBuilder.this.outputBuilder.build(new NetworkTransfer(ctx)))));
+			NetworkTLS networkTLS = new NetworkTLS(ctx);
+			ctx.attr(CONTEXT).set(PrivateServerHandlerBuilder.this.jidContextBuilder.build(null, new UserContextParam(PrivateServerHandlerBuilder.this.outputBuilder.build(new NetworkTransfer(networkTLS, ctx)), networkTLS)));
 		}
 
 		private byte[] copyToBytes(ByteBuf byteBuf) {

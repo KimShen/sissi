@@ -25,6 +25,10 @@ public interface JIDContext {
 
 	public Integer getPriority();
 
+	public JIDContext setStarttls();
+	
+	public Boolean isStarttls();
+	
 	public Status getStatus();
 
 	public Boolean close();
@@ -44,22 +48,22 @@ public interface JIDContext {
 	public interface Status {
 
 		public Status setStatus(String type, String show, String status, String avator);
-		
+
 		public StatusClauses getStatus();
 
 		public Status close();
 	}
 
 	public interface StatusClauses {
-		
+
 		public final static String KEY_TYPE = "type";
-		
+
 		public final static String KEY_SHOW = "show";
-		
+
 		public final static String KEY_STATUS = "status";
-		
+
 		public final static String KEY_AVATOR = "avator";
-		
+
 		public String find(String key);
 	}
 

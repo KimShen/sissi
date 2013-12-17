@@ -10,11 +10,14 @@ import com.sissi.context.JIDContext.JIDContextParam;
 import com.sissi.context.JIDContext.StatusBuilder;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
+import com.sissi.server.ServerTLS;
 
 /**
  * @author kim 2013-11-19
  */
 public class OnlineContextBuilder implements JIDContextBuilder {
+
+	public final static String KEY_TLS = "TLS";
 
 	public final static String KEY_OUTPUT = "OUTPUT";
 
@@ -29,7 +32,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
-		UserContext context = new UserContext(param.find(KEY_OUTPUT, Output.class));
+		UserContext context = new UserContext(param.find(KEY_OUTPUT, Output.class), param.find(KEY_TLS, ServerTLS.class));
 		context.onlineStatus = this.onlineStatusBuilder.build(context);
 		return context;
 	}
@@ -40,9 +43,11 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final AtomicBoolean isAuth = new AtomicBoolean();
 
+		private final Long index;
+
 		private final Output output;
 
-		private final Long index;
+		private final ServerTLS serverTLS;
 
 		private Status onlineStatus;
 
@@ -50,10 +55,11 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private JID jid;
 
-		public UserContext(Output output) {
+		public UserContext(Output output, ServerTLS serverTLS) {
 			super();
-			this.output = output;
 			this.priority = 0;
+			this.output = output;
+			this.serverTLS = serverTLS;
 			this.index = OnlineContextBuilder.this.indexes.incrementAndGet();
 		}
 
@@ -97,6 +103,17 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
+		public JIDContext setStarttls() {
+			this.serverTLS.starttls();
+			return this;
+		}
+
+		@Override
+		public Boolean isStarttls() {
+			return this.serverTLS.isStarttls();
+		}
+
+		@Override
 		public Boolean close() {
 			this.output.close();
 			this.onlineStatus.close();
@@ -125,14 +142,23 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final Output output;
 
-		public UserContextParam(Output output) {
+		private final ServerTLS serverTLS;
+
+		public UserContextParam(Output output, ServerTLS serverTLS) {
 			super();
 			this.output = output;
+			this.serverTLS = serverTLS;
 		}
 
 		@Override
 		public <T> T find(String key, Class<T> clazz) {
-			return OnlineContextBuilder.KEY_OUTPUT.equals(key) ? clazz.cast(output) : null;
+			switch (key) {
+			case OnlineContextBuilder.KEY_OUTPUT:
+				return clazz.cast(this.output);
+			case OnlineContextBuilder.KEY_TLS:
+				return clazz.cast(this.serverTLS);
+			}
+			return null;
 		}
 	}
 }

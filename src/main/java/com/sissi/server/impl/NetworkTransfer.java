@@ -2,6 +2,8 @@ package com.sissi.server.impl;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 
 import com.sissi.write.Writer.Transfer;
 
@@ -10,10 +12,13 @@ import com.sissi.write.Writer.Transfer;
  */
 public class NetworkTransfer implements Transfer {
 
+	private final GenericFutureListener<Future<Void>> futureListener;
+
 	private final ChannelHandlerContext context;
 
-	public NetworkTransfer(ChannelHandlerContext context) {
+	public NetworkTransfer(GenericFutureListener<Future<Void>> futureListener, ChannelHandlerContext context) {
 		super();
+		this.futureListener = futureListener;
 		this.context = context;
 	}
 
@@ -23,7 +28,7 @@ public class NetworkTransfer implements Transfer {
 
 	@Override
 	public Transfer transfer(ByteBuf bytebuf) {
-		this.context.writeAndFlush(bytebuf).addListener(FailLogGenericFutureListener.INSTANCE);
+		this.context.writeAndFlush(bytebuf).addListener(this.futureListener).addListener(FailLogGenericFutureListener.INSTANCE);
 		return this;
 	}
 

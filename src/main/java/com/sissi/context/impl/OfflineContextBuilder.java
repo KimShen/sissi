@@ -77,6 +77,16 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
+		public JIDContext setStarttls() {
+			return this;
+		}
+
+		@Override
+		public Boolean isStarttls() {
+			return false;
+		}
+		
+		@Override
 		public Boolean close() {
 			return false;
 		}

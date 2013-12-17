@@ -14,12 +14,12 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sissi.server.ServerLoopGroup;
-import com.sissi.server.ServerStart;
+import com.sissi.server.ServerStarter;
 
 /**
  * @author kim 2013-11-19
  */
-public class MainServerStart implements ServerStart {
+public class MainServerStarter implements ServerStarter {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -31,7 +31,7 @@ public class MainServerStart implements ServerStart {
 
 	private final Integer port;
 
-	public MainServerStart(ChannelInitializer<SocketChannel> channelInitializer, ServerLoopGroup serverLoopGroup, Integer port) {
+	public MainServerStarter(ChannelInitializer<SocketChannel> channelInitializer, ServerLoopGroup serverLoopGroup, Integer port) {
 		super();
 		this.channelInitializer = channelInitializer;
 		this.serverLoopGroup = serverLoopGroup;
@@ -39,7 +39,7 @@ public class MainServerStart implements ServerStart {
 	}
 
 	@Override
-	public MainServerStart start() {
+	public MainServerStarter start() {
 		try {
 			bootstrap.group(serverLoopGroup.boss(), serverLoopGroup.event()).channel(NioServerSocketChannel.class).childHandler(this.channelInitializer);
 			bootstrap.bind(this.port).addListener(new FailShutdownGenericFutureListener());
@@ -51,7 +51,7 @@ public class MainServerStart implements ServerStart {
 	}
 
 	@Override
-	public MainServerStart stop() {
+	public MainServerStarter stop() {
 		this.closeAll();
 		return this;
 	}
@@ -65,7 +65,7 @@ public class MainServerStart implements ServerStart {
 
 		public void operationComplete(Future<Void> future) throws Exception {
 			if (!future.isSuccess()) {
-				MainServerStart.this.closeAll();
+				MainServerStarter.this.closeAll();
 				future.cause().printStackTrace();
 			}
 		}
@@ -78,7 +78,7 @@ public class MainServerStart implements ServerStart {
 		@SuppressWarnings("resource")
 		public static void main(String[] args) throws Exception {
 			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(PREFIX + "configs" + File.separatorChar + "config-loading.xml");
-			ServerStart start = context.getBean(ServerStart.class);
+			ServerStarter start = context.getBean(ServerStarter.class);
 			start.start();
 		}
 	}

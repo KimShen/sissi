@@ -100,4 +100,14 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	public Status getStatus() {
 		throw NOT_SUPPORT;
 	}
+
+	@Override
+	public JIDContext setStarttls() {
+		return this;
+	}
+
+	@Override
+	public Boolean isStarttls() {
+		throw NOT_SUPPORT;
+	}
 }

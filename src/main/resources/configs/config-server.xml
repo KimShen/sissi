@@ -39,7 +39,7 @@
 	<bean id="server.pipeline" class="com.sissi.server.impl.PrivateServerHandlerChannelInitializer">
 		<constructor-arg ref="builder.server.handler" />
 	</bean>
-	<bean id="server.start" class="com.sissi.server.impl.MainServerStart">
+	<bean id="server.start" class="com.sissi.server.impl.MainServerStarter">
 		<constructor-arg value="${global.port}" />
 		<constructor-arg ref="server.loop" />
 		<constructor-arg ref="server.pipeline" />

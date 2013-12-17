@@ -12,6 +12,7 @@ public class StarttlsProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
+		context.setStarttls();
 		context.write(Proceed.PROCEED);
 		return true;
 	}
