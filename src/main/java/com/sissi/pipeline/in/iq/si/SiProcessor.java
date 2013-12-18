@@ -7,7 +7,7 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013年12月13日
  */
-public class SiEstablishSetProcessor extends ProxyProcessor {
+public class SiProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

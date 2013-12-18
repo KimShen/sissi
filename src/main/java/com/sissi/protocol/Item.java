@@ -13,17 +13,14 @@ abstract public class Item {
 
 	private String name;
 
-	private String subscription;
-
 	public Item() {
 		super();
 	}
 
-	public Item(String jid, String name, String subscription) {
+	public Item(String jid, String name) {
 		super();
 		this.jid = jid;
 		this.name = name;
-		this.subscription = subscription;
 	}
 
 	@XmlAttribute
@@ -43,16 +40,6 @@ abstract public class Item {
 
 	public Item setName(String name) {
 		this.name = name;
-		return this;
-	}
-
-	@XmlAttribute
-	public String getSubscription() {
-		return this.subscription;
-	}
-
-	public Item setSubscription(String subscription) {
-		this.subscription = subscription;
 		return this;
 	}
 }

@@ -14,13 +14,31 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="disco.condition" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="disco.pro.items" class="com.sissi.pipeline.in.iq.disco.DiscoItemsProcessor" />
+	<bean id="disco.pro.items.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="disco.pro.items" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="disco.info.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.ClassMatcher">
 				<constructor-arg value="com.sissi.protocol.iq.disco.Info" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="disco.pro.info.chained" />
+	</bean>
+
+	<bean id="disco.items.condition" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.ClassMatcher">
+				<constructor-arg value="com.sissi.protocol.iq.disco.Items" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="disco.pro.items.chained" />
 	</bean>
 
 </beans>

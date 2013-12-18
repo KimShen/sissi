@@ -21,6 +21,7 @@
 	<import resource="config-in-iq-disco.xml" />
 	<import resource="config-in-iq-session.xml" />
 	<import resource="config-in-iq-register.xml" />
+	<import resource="config-in-iq-bytestreams.xml" />
 	<import resource="config-in-stream.xml" />
 	<import resource="config-in-message.xml" />
 	<import resource="config-in-presence.xml" />

@@ -1,0 +1,87 @@
+
+INFO - Read on a@3ti.us/kim的MacBook Air:
+
+INFO - Read on b@3ti.us/MacBook Air:
+<iq type='get' id='purple406bb859' to='a@3ti.us/(null)'>
+	<query xmlns='http://jabber.org/protocol/disco#info' />
+</iq>
+INFO - Write on b@3ti.us/MacBook Air
+<iq from="a@3ti.us/(null)" id="purple406bb859" to="b@3ti.us/MacBook Air" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+	<query xmlns="http://jabber.org/protocol/disco#info" id="4a0234bc-61db-4331-ba7d-eed97e212b17">
+		<feature var="http://jabber.org/protocol/bytestreams" />
+		<feature var="http://jabber.org/protocol/si/profile/file-transfer" />
+		<feature var="http://jabber.org/protocol/si" />
+		<feature var="vcard-temp" />
+		<feature var="urn:xmpp:blocking" />
+	</query>
+</iq>
+INFO - Read on b@3ti.us/MacBook Air:
+<iq type='set' id='purple406bb85a' to='a@3ti.us/(null)'>
+	<si xmlns='http://jabber.org/protocol/si' id='purple406bb85b' profile='http://jabber.org/protocol/si/profile/file-transfer'>
+		<file xmlns='http://jabber.org/protocol/si/profile/file-transfer' name='127_1374172099416.jpg' size='47789' />
+		<feature xmlns='http://jabber.org/protocol/feature-neg'>
+			<x xmlns='jabber:x:data' type='form'>
+				<field var='stream-method' type='list-single'>
+					<option>
+						<value>http://jabber.org/protocol/bytestreams</value>
+					</option>
+					<option>
+						<value>http://jabber.org/protocol/ibb</value>
+					</option>
+				</field>
+			</x>
+		</feature>
+	</si>
+</iq>
+INFO - Write on a@3ti.us/kim的MacBook Air
+<iq from="b@3ti.us" id="purple406bb85a" to="a@3ti.us" type="set" xmlns:stream="http://etherx.jabber.org/streams">
+	<si profile="http://jabber.org/protocol/si/profile/file-transfer" xmlns="http://jabber.org/protocol/si" id="purple406bb85b">
+		<feature xmlns="http://jabber.org/protocol/feature-neg">
+			<x type="form" xmlns="jabber:x:data">
+				<field type="list-single" var="stream-method">
+					<option>
+						<value>http://jabber.org/protocol/bytestreams</value>
+					</option>
+					<option>
+						<value>http://jabber.org/protocol/ibb</value>
+					</option>
+				</field>
+			</x>
+		</feature>
+		<file name="127_1374172099416.jpg" size="47789" xmlns="http://jabber.org/protocol/si/profile/file-transfer" />
+	</si>
+</iq>
+INFO - Read on a@3ti.us/kim的MacBook Air:
+<iq id="purple406bb85a" to="b@3ti.us" type="result">
+	<si xmlns="http://jabber.org/protocol/si">
+		<feature xmlns='http://jabber.org/protocol/feature-neg'>
+			<x xmlns='jabber:x:data' type='submit'>
+				<field var='stream-method'>
+					<value>http://jabber.org/protocol/bytestreams</value>
+				</field>
+			</x>
+		</feature>
+	</si>
+</iq>
+
+INFO - Write on b@3ti.us/MacBook Air
+<iq from="a@3ti.us" id="purple406bb85a" to="b@3ti.us" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+	<si xmlns="http://jabber.org/protocol/si" id="9dcba64d-5d71-445b-a73e-3a768a26ba3d">
+		<feature xmlns="http://jabber.org/protocol/feature-neg">
+			<x type="submit" xmlns="jabber:x:data">
+				<field var="stream-method">
+					<value>http://jabber.org/protocol/bytestreams</value>
+				</field>
+			</x>
+		</feature>
+	</si>
+</iq>
+INFO - Read on b@3ti.us/MacBook Air:
+<iq type='set' id='purple406bb85c' to='a@3ti.us/(null)'>
+	<query xmlns='http://jabber.org/protocol/bytestreams' sid='purple406bb85b'>
+		<streamhost jid='b@3ti.us/MacBook Air' host='192.168.3.4' port='54425' />
+		<streamhost jid='b@3ti.us/MacBook Air' host='192.168.2.61' port='54425' />
+	</query>
+</iq>
+INFO - Write on b@3ti.us/MacBook Air
+<iq from="a@3ti.us/(null)" id="purple406bb85c" type="result" xmlns:stream="http://etherx.jabber.org/streams" />

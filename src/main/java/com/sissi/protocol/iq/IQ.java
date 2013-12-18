@@ -12,10 +12,13 @@ import com.sissi.protocol.iq.bind.Bind;
 import com.sissi.protocol.iq.block.BlockList;
 import com.sissi.protocol.iq.block.Blocked;
 import com.sissi.protocol.iq.block.UnBlock;
+import com.sissi.protocol.iq.bytestreams.Bytestreams;
 import com.sissi.protocol.iq.disco.Info;
+import com.sissi.protocol.iq.disco.Items;
 import com.sissi.protocol.iq.register.Register;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.protocol.iq.session.Session;
+import com.sissi.protocol.iq.si.Si;
 import com.sissi.protocol.iq.vcard.VCard;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping.MappingMetadata;
@@ -35,7 +38,7 @@ public class IQ extends Protocol implements Collector {
 
 	private List<Protocol> protocols;
 
-	@XmlElements({ @XmlElement(name = "vCard", type = VCard.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "query", type = Roster.class), @XmlElement(name = "query", type = Register.class), @XmlElement(name = "query", type = Info.class), @XmlElement(name = "block", type = Blocked.class), @XmlElement(name = "unblock", type = UnBlock.class), @XmlElement(name = "blocklist", type = BlockList.class) })
+	@XmlElements({ @XmlElement(name = "si", type = Si.class), @XmlElement(name = "vCard", type = VCard.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "query", type = Roster.class), @XmlElement(name = "query", type = Register.class), @XmlElement(name = "query", type = Info.class), @XmlElement(name = "query", type = Items.class), @XmlElement(name = "query", type = Bytestreams.class), @XmlElement(name = "block", type = Blocked.class), @XmlElement(name = "unblock", type = UnBlock.class), @XmlElement(name = "blocklist", type = BlockList.class) })
 	public List<Protocol> getProtocols() {
 		return protocols;
 	}
