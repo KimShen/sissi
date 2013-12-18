@@ -14,6 +14,8 @@ public class StarttlsProcessor implements Input {
 	public Boolean input(JIDContext context, Protocol protocol) {
 		context.setStarttls();
 		context.write(Proceed.PROCEED);
+		// TODO support Failure
+		// context.write(Failure.FAILURE);
 		return true;
 	}
 }

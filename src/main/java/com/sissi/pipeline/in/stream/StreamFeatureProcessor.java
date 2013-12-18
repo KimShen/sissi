@@ -30,5 +30,6 @@ public class StreamFeatureProcessor implements Input {
 
 	private Protocol buildBindingFeature(Stream stream) {
 		return stream.addFeature(Session.FEATURE).addFeature(Bind.FEATURE);
+
 	}
 }
