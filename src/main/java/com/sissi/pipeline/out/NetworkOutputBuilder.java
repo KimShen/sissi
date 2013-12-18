@@ -6,10 +6,10 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.commons.IOUtils;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Output;
 import com.sissi.pipeline.Output.OutputBuilder;

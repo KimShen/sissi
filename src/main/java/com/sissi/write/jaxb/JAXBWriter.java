@@ -17,11 +17,11 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.LineIterator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.commons.IOUtils;
+import com.sissi.commons.LineIterator;
 import com.sissi.commons.ScanUtil;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.Element;

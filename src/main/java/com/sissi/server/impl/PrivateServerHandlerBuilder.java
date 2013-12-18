@@ -18,11 +18,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.addressing.Addressing;
+import com.sissi.commons.IOUtils;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContext.JIDContextBuilder;
 import com.sissi.context.impl.OnlineContextBuilder.UserContextParam;
@@ -33,6 +33,7 @@ import com.sissi.pipeline.Input.InputFinder;
 import com.sissi.pipeline.Output.OutputBuilder;
 import com.sissi.read.Reader;
 import com.sissi.server.ServerCloser;
+import com.sissi.server.ServerTlsBuilder;
 
 /**
  * @author kim 2013年12月1日
@@ -63,9 +64,11 @@ public class PrivateServerHandlerBuilder {
 
 	private final OutputBuilder outputBuilder;
 
+	private final ServerTlsBuilder serverTlsContext;
+
 	private final JIDContextBuilder jidContextBuilder;
 
-	public PrivateServerHandlerBuilder(Reader reader, InputFinder finder, Addressing addressing, ServerCloser serverCloser, FeederBuilder feederBuilder, LooperBuilder looperBuilder, OutputBuilder outputBuilder, JIDContextBuilder jidContextBuilder) {
+	public PrivateServerHandlerBuilder(Reader reader, InputFinder finder, Addressing addressing, ServerCloser serverCloser, FeederBuilder feederBuilder, LooperBuilder looperBuilder, OutputBuilder outputBuilder, ServerTlsBuilder serverTlsContext, JIDContextBuilder jidContextBuilder) {
 		super();
 		this.reader = reader;
 		this.finder = finder;
@@ -74,6 +77,7 @@ public class PrivateServerHandlerBuilder {
 		this.feederBuilder = feederBuilder;
 		this.looperBuilder = looperBuilder;
 		this.outputBuilder = outputBuilder;
+		this.serverTlsContext = serverTlsContext;
 		this.jidContextBuilder = jidContextBuilder;
 	}
 
@@ -85,7 +89,7 @@ public class PrivateServerHandlerBuilder {
 	class PrivateServerHandler extends ChannelInboundHandlerAdapter {
 
 		private final PipedInputStream inPipe = new PipedInputStream();
-		
+
 		private final InputStream input = new BufferedInputStream(inPipe);
 
 		private final OutputStream output = new BufferedOutputStream(new PipedOutputStream(inPipe));
@@ -140,7 +144,7 @@ public class PrivateServerHandlerBuilder {
 		}
 
 		private void createContextAndJoinGroup(final ChannelHandlerContext ctx) {
-			NetworkTLS networkTLS = new NetworkTLS(ctx);
+			NetworkTls networkTLS = new NetworkTls(PrivateServerHandlerBuilder.this.serverTlsContext, ctx);
 			ctx.attr(CONTEXT).set(PrivateServerHandlerBuilder.this.jidContextBuilder.build(null, new UserContextParam(PrivateServerHandlerBuilder.this.outputBuilder.build(new NetworkTransfer(networkTLS, ctx)), networkTLS)));
 		}
 

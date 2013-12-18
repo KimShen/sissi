@@ -24,11 +24,27 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="builder.tls" class="com.sissi.server.impl.CertificateTlsBuilder">
+		<constructor-arg index="0">
+			<bean class="com.sissi.server.impl.CertificateTlsBuilder$Certificate">
+				<constructor-arg index="0" value="${tls.key.file}" />
+				<constructor-arg index="1" value="${tls.key.password}" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg index="1">
+			<bean class="com.sissi.server.impl.CertificateTlsBuilder$Certificate">
+				<constructor-arg index="0" value="${tls.trust.file}" />
+				<constructor-arg index="1" value="${tls.trust.password}" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
 	<bean id="builder.server.handler" class="com.sissi.server.impl.PrivateServerHandlerBuilder">
 		<constructor-arg ref="reader" />
 		<constructor-arg ref="addressing" />
 		<constructor-arg ref="finder.input" />
 		<constructor-arg ref="closer.chained" />
+		<constructor-arg ref="builder.tls" />
 		<constructor-arg ref="builder.output" />
 		<constructor-arg ref="builder.feeder" />
 		<constructor-arg ref="builder.looper" />

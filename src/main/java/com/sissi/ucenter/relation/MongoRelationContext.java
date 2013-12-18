@@ -1,12 +1,13 @@
 package com.sissi.ucenter.relation;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -25,11 +26,19 @@ public class MongoRelationContext implements RelationContext {
 
 	private final static DBObject FILTER_SLAVE = BasicDBObjectBuilder.start("slave", 1).get();
 
+	private final static List<DBObject> QUERY_STATE;
+
+	static {
+		QUERY_STATE = new ArrayList<DBObject>();
+		QUERY_STATE.add(BasicDBObjectBuilder.start().add("state", Roster.Subscription.TO.toString()).get());
+		QUERY_STATE.add(BasicDBObjectBuilder.start().add("state", Roster.Subscription.BOTH.toString()).get());
+	}
+
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private MongoConfig config;
+	private final MongoConfig config;
 
-	private JIDBuilder builder;
+	private final JIDBuilder builder;
 
 	public MongoRelationContext(MongoConfig config, JIDBuilder builder) {
 		super();
@@ -85,13 +94,13 @@ public class MongoRelationContext implements RelationContext {
 
 	@Override
 	public Set<String> whoSubscribedMe(JID from) {
-		DBObject query = BasicDBObjectBuilder.start().add("slave", from.asStringWithBare()).add("$or", Lists.newArrayList(BasicDBObjectBuilder.start().add("state", Roster.Subscription.TO.toString()).get(), BasicDBObjectBuilder.start().add("state", Roster.Subscription.BOTH.toString()).get())).get();
+		DBObject query = BasicDBObjectBuilder.start().add("slave", from.asStringWithBare()).add("$or", QUERY_STATE).get();
 		this.log.debug("Query is: " + query);
 		return new JIDs(this.config.collection().find(query, FILTER_MASTER), "master");
 	}
 
 	public Set<String> iSubscribedWho(JID from) {
-		DBObject query = BasicDBObjectBuilder.start("master", from.asStringWithBare()).add("$or", Lists.newArrayList(BasicDBObjectBuilder.start("state", Roster.Subscription.TO.toString()).get(), BasicDBObjectBuilder.start("state", Roster.Subscription.BOTH.toString()).get())).get();
+		DBObject query = BasicDBObjectBuilder.start("master", from.asStringWithBare()).add("$or", QUERY_STATE).get();
 		this.log.debug("Query is: " + query);
 		return new JIDs(this.config.collection().find(query, FILTER_SLAVE), "slave");
 	}

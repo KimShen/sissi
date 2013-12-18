@@ -47,6 +47,23 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	@Override
+	public JIDContext setStarttls() {
+		for (JIDContext each : this) {
+			each.setStarttls();
+		}
+		return this;
+	}
+
+	@Override
+	public Boolean isStarttls() {
+		boolean isStarttls = true;
+		for (JIDContext each : this) {
+			isStarttls = each.isStarttls();
+		}
+		return isStarttls;
+	}
+
+	@Override
 	public Boolean isAuth() {
 		boolean isAuth = true;
 		for (JIDContext each : this) {
@@ -98,16 +115,6 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	@Override
 	public Status getStatus() {
-		throw NOT_SUPPORT;
-	}
-
-	@Override
-	public JIDContext setStarttls() {
-		return this;
-	}
-
-	@Override
-	public Boolean isStarttls() {
 		throw NOT_SUPPORT;
 	}
 }

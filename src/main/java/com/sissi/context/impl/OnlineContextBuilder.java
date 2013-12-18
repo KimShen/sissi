@@ -10,7 +10,7 @@ import com.sissi.context.JIDContext.JIDContextParam;
 import com.sissi.context.JIDContext.StatusBuilder;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
-import com.sissi.server.ServerTLS;
+import com.sissi.server.ServerTls;
 
 /**
  * @author kim 2013-11-19
@@ -32,8 +32,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
-		UserContext context = new UserContext(param.find(KEY_OUTPUT, Output.class), param.find(KEY_TLS, ServerTLS.class));
-		context.onlineStatus = this.onlineStatusBuilder.build(context);
+		UserContext context = new UserContext(param);
+		context.status = this.onlineStatusBuilder.build(context);
 		return context;
 	}
 
@@ -47,19 +47,19 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final Output output;
 
-		private final ServerTLS serverTLS;
-
-		private Status onlineStatus;
+		private final ServerTls serverTLS;
 
 		private Integer priority;
+		
+		private Status status;
 
 		private JID jid;
 
-		public UserContext(Output output, ServerTLS serverTLS) {
+		public UserContext(JIDContextParam param) {
 			super();
 			this.priority = 0;
-			this.output = output;
-			this.serverTLS = serverTLS;
+			this.output = param.find(KEY_OUTPUT, Output.class);
+			this.serverTLS = param.find(KEY_TLS, ServerTls.class);
 			this.index = OnlineContextBuilder.this.indexes.incrementAndGet();
 		}
 
@@ -110,20 +110,20 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public Boolean isStarttls() {
-			return this.serverTLS.isStarttls();
+			return this.serverTLS.isUsing();
 		}
 
 		@Override
 		public Boolean close() {
 			this.output.close();
-			this.onlineStatus.close();
-			this.onlineStatus = null;
+			this.status.close();
+			this.status = null;
 			return true;
 		}
 
 		@Override
 		public Status getStatus() {
-			return this.onlineStatus;
+			return this.status;
 		}
 
 		@Override
@@ -142,9 +142,9 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final Output output;
 
-		private final ServerTLS serverTLS;
+		private final ServerTls serverTLS;
 
-		public UserContextParam(Output output, ServerTLS serverTLS) {
+		public UserContextParam(Output output, ServerTls serverTLS) {
 			super();
 			this.output = output;
 			this.serverTLS = serverTLS;
