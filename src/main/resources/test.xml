@@ -1,87 +1,565 @@
 
-INFO - Read on a@3ti.us/kim的MacBook Air:
+log4j:WARN No appenders could be found for logger (org.springframework.core.env.StandardEnvironment).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+INFO - All
+classes in JAXB Context: [class com.sissi.protocol.error.detail.NotAcceptable, class com.sissi.protocol.error.ServerError, class com.sissi.protocol.feature.Bind, class com.sissi.protocol.feature.Mechanisms, class com.sissi.protocol.feature.Register,
+class com.sissi.protocol.feature.Session, class com.sissi.protocol.iq.auth.Auth, class com.sissi.protocol.iq.auth.Challenge, class com.sissi.protocol.iq.auth.Failure, class com.sissi.protocol.iq.auth.Response, class
+com.sissi.protocol.iq.auth.Success, class com.sissi.protocol.iq.bind.Bind, class com.sissi.protocol.iq.bind.Resource, class com.sissi.protocol.iq.block.Blocked, class com.sissi.protocol.iq.block.BlockList, class
+com.sissi.protocol.iq.block.BlockListItem, class com.sissi.protocol.iq.block.UnBlock, class com.sissi.protocol.iq.bytestreams.Bytestreams, class com.sissi.protocol.iq.bytestreams.Streamhost, class com.sissi.protocol.iq.bytestreams.StreamhostUsed,
+class com.sissi.protocol.iq.data.XData, class com.sissi.protocol.iq.data.XField, class com.sissi.protocol.iq.data.XOption, class com.sissi.protocol.iq.data.XValue, class com.sissi.protocol.iq.disco.feature.Blocking, class
+com.sissi.protocol.iq.disco.feature.Bytestreams, class com.sissi.protocol.iq.disco.feature.ItemClause, class com.sissi.protocol.iq.disco.feature.Si, class com.sissi.protocol.iq.disco.feature.SiFileTransfer, class
+com.sissi.protocol.iq.disco.feature.VCard, class com.sissi.protocol.iq.disco.Info, class com.sissi.protocol.iq.disco.Items, class com.sissi.protocol.iq.IQ, class com.sissi.protocol.iq.register.form.Input, class
+com.sissi.protocol.iq.register.form.Instructions, class com.sissi.protocol.iq.register.form.Required, class com.sissi.protocol.iq.register.form.Select, class com.sissi.protocol.iq.register.form.Title, class com.sissi.protocol.iq.register.Register,
+class com.sissi.protocol.iq.register.simple.Password, class com.sissi.protocol.iq.register.simple.Username, class com.sissi.protocol.iq.roster.Group, class com.sissi.protocol.iq.roster.GroupItem, class com.sissi.protocol.iq.roster.Roster, class
+com.sissi.protocol.iq.session.Session, class com.sissi.protocol.iq.si.Feature, class com.sissi.protocol.iq.si.Field, class com.sissi.protocol.iq.si.File, class com.sissi.protocol.iq.si.Si, class com.sissi.protocol.iq.vcard.field.Binval, class
+com.sissi.protocol.iq.vcard.field.Photo, class com.sissi.protocol.iq.vcard.field.Type, class com.sissi.protocol.iq.vcard.VCard, class com.sissi.protocol.message.Body, class com.sissi.protocol.message.Message, class
+com.sissi.protocol.presence.Presence, class com.sissi.protocol.presence.Show, class com.sissi.protocol.presence.Status, class com.sissi.protocol.presence.x.XVCardPhoto, class com.sissi.protocol.presence.X, class com.sissi.protocol.starttls.Failure,
+class com.sissi.protocol.starttls.Proceed, class com.sissi.protocol.Stream]
+INFO - Read on N/A: <?xml version='1.0' ?>
+<stream:stream to='3ti.us' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams' version='1.0'>
+	INFO - Write on N/A
+	<stream:stream xmlns:stream="http://etherx.jabber.org/streams" version="1.0" xmlns="jabber:client" from="3ti.us">
+		<stream:features>
+			<mechanisms xmlns="urn:ietf:params:xml:ns:xmpp-sasl">
+				<mechanism>DIGEST-MD5</mechanism>
+				<mechanism>PLAIN</mechanism>
+			</mechanisms>
+			<register xmlns="http://jabber.org/features/iq-register" />
+			<starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+			<compression xmlns="http://jabber.org/features/compress">
+				<method>zlib</method>
+			</compression>
+		</stream:features>
+		INFO - Read on N/A:
+		<starttls xmlns='urn:ietf:params:xml:ns:xmpp-tls' />
+		INFO - Write on N/A
+		<proceed xmlns="urn:ietf:params:xml:ns:xmpp-tls" xmlns:stream="http://etherx.jabber.org/streams" />
+		INFO - Read on N/A:
+		<stream:stream to='3ti.us' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams' version='1.0'>
+			INFO - Write on N/A
+			<stream:stream xmlns:stream="http://etherx.jabber.org/streams" version="1.0" xmlns="jabber:client" from="3ti.us">
+				<stream:features>
+					<mechanisms xmlns="urn:ietf:params:xml:ns:xmpp-sasl">
+						<mechanism>DIGEST-MD5</mechanism>
+						<mechanism>PLAIN</mechanism>
+					</mechanisms>
+					<register xmlns="http://jabber.org/features/iq-register" />
+				</stream:features>
+				INFO - Read on N/A:
+				<auth xmlns='urn:ietf:params:xml:ns:xmpp-sasl' mechanism='DIGEST-MD5' xmlns:ga='http://www.google.com/talk/protocol/auth' ga:client-uses-full-bind-result='true' />
+				INFO - Write on N/A
+				<challenge xmlns="urn:ietf:params:xml:ns:xmpp-sasl" xmlns:stream="http://etherx.jabber.org/streams">cmVhbG09IjN0aS51cyIsbm9uY2U9ImhkSC9FZTRnNkFaWTArWWlEVGxRMGVDeWlOR1hRNit5a0NXVVFZeTUiLHFvcD0iYXV0aCIsY2hhcnNldD11dGYtOCxhbGdvcml0aG09bWQ1LXNlc3M=</challenge>
+				INFO - Read on N/A:
+				<response xmlns='urn:ietf:params:xml:ns:xmpp-sasl'>dXNlcm5hbWU9ImIiLHJlYWxtPSIzdGkudXMiLG5vbmNlPSJoZEgvRWU0ZzZBWlkwK1lpRFRsUTBlQ3lpTkdYUTYreWtDV1VRWXk1Iixjbm9uY2U9ImM2ZGExZWIyMTM4NzUzNTA5MWIyY2QxNTRhIixuYz0wMDAwMDAwMSxxb3A9YXV0aCxkaWdlc3QtdXJpPSJ4bXBwLzN0aS51cyIscmVzcG9uc2U9NjVhZGZiY2YxNWFjNDlhNGUxNDcwMTE3MDc0ZDFlMGEsY2hhcnNldD11dGYtOA==
+				</response>
+				INFO - Write on b@3ti.us
+				<success xmlns="urn:ietf:params:xml:ns:xmpp-sasl" xmlns:stream="http://etherx.jabber.org/streams" />
+				INFO - Read on b@3ti.us:
+				<stream:stream to='3ti.us' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams' version='1.0'>
+					INFO - Write on b@3ti.us
+					<stream:stream xmlns:stream="http://etherx.jabber.org/streams" version="1.0" xmlns="jabber:client" from="3ti.us">
+						<stream:features>
+							<session xmlns="urn:ietf:params:xml:ns:xmpp-session" />
+							<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind" />
+						</stream:features>
+						INFO - Read on b@3ti.us:
+						<iq type='set' id='purple99508df1'>
+							<bind xmlns='urn:ietf:params:xml:ns:xmpp-bind'>
+								<resource>MacBook Air</resource>
+							</bind>
+						</iq>
+						INFO - Write on b@3ti.us/MacBook Air
+						<iq id="purple99508df1" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+							<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind">
+								<jid>b@3ti.us/MacBook Air</jid>
+							</bind>
+						</iq>
+						INFO - Read on b@3ti.us/MacBook Air:
+						<iq type='set' id='purple99508df2'>
+							<session xmlns='urn:ietf:params:xml:ns:xmpp-session' />
+						</iq>
+						INFO - Write on b@3ti.us/MacBook Air
+						<iq id="purple99508df2" type="result" xmlns:stream="http://etherx.jabber.org/streams" />
+						INFO - Read on b@3ti.us/MacBook Air:
+						<iq type='get' id='purple99508df3' to='3ti.us'>
+							<query xmlns='http://jabber.org/protocol/disco#items' />
+						</iq>
+						<iq type='get' id='purple99508df4' to='3ti.us'>
+							<query xmlns='http://jabber.org/protocol/disco#info' />
+						</iq>
+						INFO - Write on b@3ti.us/MacBook Air
+						<iq from="3ti.us" id="purple99508df3" to="b@3ti.us" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+							<query xmlns="http://jabber.org/protocol/disco#items">
+								<item jid="proxy.127.0.0.1" name="Socks 5 Bytestreams Proxy" />
+							</query>
+						</iq>
+						INFO - Write on b@3ti.us/MacBook Air
+						<iq from="3ti.us" id="purple99508df4" to="b@3ti.us/MacBook Air" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+							<query xmlns="http://jabber.org/protocol/disco#info">
+								<feature var="http://jabber.org/protocol/bytestreams" />
+								<feature var="http://jabber.org/protocol/si/profile/file-transfer" />
+								<feature var="http://jabber.org/protocol/si" />
+								<feature var="vcard-temp" />
+								<feature var="urn:xmpp:blocking" />
+							</query>
+						</iq>
+						INFO - Write on b@3ti.us/MacBook Air
+						<presence from="a@3ti.us" to="b@3ti.us" type="unavailable" xmlns:stream="http://etherx.jabber.org/streams">
+							<x xmlns="vcard-temp:x:update">
+								<photo />
+							</x>
+						</presence>
+						INFO - Read on b@3ti.us/MacBook Air:
+						<iq type='get' id='purple99508df5' to='proxy.127.0.0.1'>
+							<query xmlns='http://jabber.org/protocol/disco#info' />
+						</iq>
+						<iq type='get' id='purple99508df6'>
+							<vCard xmlns='vcard-temp' />
+						</iq>
+						<iq type='get' id='purple99508df7'>
+							<query xmlns='jabber:iq:roster' />
+						</iq>
+						INFO - Read on b@3ti.us/MacBook Air:
+						<iq type='get' id='purple99508df8'>
+							<blocklist xmlns='urn:xmpp:blocking' />
+						</iq>
+						<iq type='get' id='purple99508df9' to='proxy.127.0.0.1'>
+							<query xmlns='http://jabber.org/protocol/bytestreams' />
+						</iq>
+						INFO - Write on b@3ti.us/MacBook Air
+						<iq from="proxy.127.0.0.1" id="purple99508df5" to="b@3ti.us/MacBook Air" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+							<query xmlns="http://jabber.org/protocol/disco#info">
+								<feature var="http://jabber.org/protocol/bytestreams" />
+								<feature var="http://jabber.org/protocol/si/profile/file-transfer" />
+								<feature var="http://jabber.org/protocol/si" />
+								<feature var="vcard-temp" />
+								<feature var="urn:xmpp:blocking" />
+							</query>
+						</iq>
+						INFO - Read on b@3ti.us/MacBook Air:
+						<iq type='get' id='purple99508dfa' to='a@3ti.us'>
+							<vCard xmlns='vcard-temp' />
+						</iq>
+						INFO - Write on b@3ti.us/MacBook Air
+						<iq id="purple99508df7" to="b@3ti.us" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+							<query xmlns="jabber:iq:roster">
+								<item subscription="to" jid="a@3ti.us" name="">
+									<group>联系人列表</group>
+								</item>
+							</query>
+							<query xmlns="jabber:iq:roster">
+								<item subscription="to" jid="a@3ti.us" name="">
+									<group>联系人列表</group>
+								</item>
+							</query>
+						</iq>
+						INFO - Write on b@3ti.us/MacBook Air
+						<iq id="purple99508df6" to="b@3ti.us" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+							<vCard xmlns="vcard-temp">
+								<PHOTO>
+									<TYPE>image/png</TYPE>
+									<BINVAL>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
+									</BINVAL>
+								</PHOTO>
+							</vCard>
+						</iq>
+						INFO - Write on b@3ti.us/MacBook Air
+						<iq id="purple99508df8" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+							<blocklist xmlns="urn:xmpp:blocking" />
+						</iq>
+						INFO - Write on b@3ti.us/MacBook Air
+						<iq from="proxy.127.0.0.1" id="purple99508df9" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+							<query mode="tcp" xmlns="http://jabber.org/protocol/bytestreams">
+								<streamhost host="127.0.0.1" jid="proxy.127.0.0.1" port="8888" />
+							</query>
+						</iq>
+						INFO - Write on b@3ti.us/MacBook Air
+						<iq from="a@3ti.us" id="purple99508dfa" to="b@3ti.us" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+							<vCard xmlns="vcard-temp">
+								<PHOTO>
+									<TYPE>image/jpeg</TYPE>
+									<BINVAL>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
+									</BINVAL>
+								</PHOTO>
+							</vCard>
+						</iq>
+						INFO - Read on b@3ti.us/MacBook Air:
+						<presence>
+							<c xmlns='http://jabber.org/protocol/caps' node='http://pidgin.im/' hash='sha-1' ver='VUFD6HcFmUT2NxJkBGCiKlZnS3M=' />
+							<x xmlns='vcard-temp:x:update' />
+						</presence>
+						INFO - Read on b@3ti.us/MacBook Air:
+						<presence>
+							<c xmlns='http://jabber.org/protocol/caps' node='http://pidgin.im/' hash='sha-1' ver='VUFD6HcFmUT2NxJkBGCiKlZnS3M=' />
+							<x xmlns='vcard-temp:x:update'>
+								<photo>abf94f52f2345712221b2f224698c5cdc61a80ae</photo>
+							</x>
+						</presence>
+						INFO - Read on N/A: <?xml version="1.0" encoding="UTF-8" ?>
+						<stream:stream to="3ti.us" xmlns="jabber:client" xmlns:stream="http://etherx.jabber.org/streams" version="1.0">
+							INFO - Write on N/A
+							<stream:stream xmlns:stream="http://etherx.jabber.org/streams" version="1.0" xmlns="jabber:client" from="3ti.us">
+								<stream:features>
+									<mechanisms xmlns="urn:ietf:params:xml:ns:xmpp-sasl">
+										<mechanism>DIGEST-MD5</mechanism>
+										<mechanism>PLAIN</mechanism>
+									</mechanisms>
+									<register xmlns="http://jabber.org/features/iq-register" />
+									<starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+									<compression xmlns="http://jabber.org/features/compress">
+										<method>zlib</method>
+									</compression>
+								</stream:features>
+								INFO - Read on N/A:
+								<starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+								INFO - Write on N/A
+								<proceed xmlns="urn:ietf:params:xml:ns:xmpp-tls" xmlns:stream="http://etherx.jabber.org/streams" />
+								INFO - Read on N/A: <?xml version="1.0" encoding="UTF-8" ?>
+								<stream:stream to="3ti.us" xmlns="jabber:client" xmlns:stream="http://etherx.jabber.org/streams" version="1.0">
+									INFO - Write on N/A
+									<stream:stream xmlns:stream="http://etherx.jabber.org/streams" version="1.0" xmlns="jabber:client" from="3ti.us">
+										<stream:features>
+											<mechanisms xmlns="urn:ietf:params:xml:ns:xmpp-sasl">
+												<mechanism>DIGEST-MD5</mechanism>
+												<mechanism>PLAIN</mechanism>
+											</mechanisms>
+											<register xmlns="http://jabber.org/features/iq-register" />
+											<starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+											<compression xmlns="http://jabber.org/features/compress">
+												<method>zlib</method>
+											</compression>
+										</stream:features>
+										INFO - Read on N/A:
+										<starttls xmlns="urn:ietf:params:xml:ns:xmpp-tls" />
+										INFO - Write on N/A
+										<proceed xmlns="urn:ietf:params:xml:ns:xmpp-tls" xmlns:stream="http://etherx.jabber.org/streams" />
+										INFO - Read on N/A:
+										<stream:stream to="3ti.us" xmlns="jabber:client" xmlns:stream="http://etherx.jabber.org/streams" version="1.0">
+											INFO - Write on N/A
+											<stream:stream xmlns:stream="http://etherx.jabber.org/streams" version="1.0" xmlns="jabber:client" from="3ti.us">
+												<stream:features>
+													<mechanisms xmlns="urn:ietf:params:xml:ns:xmpp-sasl">
+														<mechanism>DIGEST-MD5</mechanism>
+														<mechanism>PLAIN</mechanism>
+													</mechanisms>
+													<register xmlns="http://jabber.org/features/iq-register" />
+												</stream:features>
+												INFO - Read on N/A:
+												<auth xmlns="urn:ietf:params:xml:ns:xmpp-sasl" mechanism="DIGEST-MD5" />
+												INFO - Write on N/A
+												<challenge xmlns="urn:ietf:params:xml:ns:xmpp-sasl" xmlns:stream="http://etherx.jabber.org/streams">cmVhbG09IjN0aS51cyIsbm9uY2U9ImtnOVJyK1doTk5BTW81QnZnYi9JQlY5OURqT3RvTW45clgwZCtydEUiLHFvcD0iYXV0aCIsY2hhcnNldD11dGYtOCxhbGdvcml0aG09bWQ1LXNlc3M=</challenge>
+												INFO - Read on N/A:
+												<response xmlns="urn:ietf:params:xml:ns:xmpp-sasl">dXNlcm5hbWU9ImEiLHJlYWxtPSIzdGkudXMiLG5vbmNlPSJrZzlScitXaE5OQU1vNUJ2Z2IvSUJWOTlEak90b01uOXJYMGQrcnRFIixjbm9uY2U9ImxaQ2NiNkFBc0FSL0hrbE1VN3lmTmRTeVRISnFHUHJSTkFMWlRZakVtb289IixuYz0wMDAwMDAwMSxxb3A9YXV0aCxtYXhidWY9NjU1MzYsZGlnZXN0LXVyaT0ieG1wcC8zdGkudXMiLHJlc3BvbnNlPTk1MDI4ODJjNzJmODIwOTBlM2NjNDI0YmUwYzVmM2Jl
+												</response>
+												INFO - Write on a@3ti.us
+												<success xmlns="urn:ietf:params:xml:ns:xmpp-sasl" xmlns:stream="http://etherx.jabber.org/streams" />
+												INFO - Read on a@3ti.us:
+												<stream:stream to="3ti.us" xmlns="jabber:client" xmlns:stream="http://etherx.jabber.org/streams" version="1.0">
+													INFO - Write on a@3ti.us
+													<stream:stream xmlns:stream="http://etherx.jabber.org/streams" version="1.0" xmlns="jabber:client" from="3ti.us">
+														<stream:features>
+															<session xmlns="urn:ietf:params:xml:ns:xmpp-session" />
+															<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind" />
+														</stream:features>
+														INFO - Read on a@3ti.us:
+														<iq type="set" id="iChat_658AA216">
+															<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind">
+																<resource>kim的MacBook Air</resource>
+															</bind>
+														</iq>
 
-INFO - Read on b@3ti.us/MacBook Air:
-<iq type='get' id='purple406bb859' to='a@3ti.us/(null)'>
-	<query xmlns='http://jabber.org/protocol/disco#info' />
-</iq>
-INFO - Write on b@3ti.us/MacBook Air
-<iq from="a@3ti.us/(null)" id="purple406bb859" to="b@3ti.us/MacBook Air" type="result" xmlns:stream="http://etherx.jabber.org/streams">
-	<query xmlns="http://jabber.org/protocol/disco#info" id="4a0234bc-61db-4331-ba7d-eed97e212b17">
-		<feature var="http://jabber.org/protocol/bytestreams" />
-		<feature var="http://jabber.org/protocol/si/profile/file-transfer" />
-		<feature var="http://jabber.org/protocol/si" />
-		<feature var="vcard-temp" />
-		<feature var="urn:xmpp:blocking" />
-	</query>
-</iq>
-INFO - Read on b@3ti.us/MacBook Air:
-<iq type='set' id='purple406bb85a' to='a@3ti.us/(null)'>
-	<si xmlns='http://jabber.org/protocol/si' id='purple406bb85b' profile='http://jabber.org/protocol/si/profile/file-transfer'>
-		<file xmlns='http://jabber.org/protocol/si/profile/file-transfer' name='127_1374172099416.jpg' size='47789' />
-		<feature xmlns='http://jabber.org/protocol/feature-neg'>
-			<x xmlns='jabber:x:data' type='form'>
-				<field var='stream-method' type='list-single'>
-					<option>
-						<value>http://jabber.org/protocol/bytestreams</value>
-					</option>
-					<option>
-						<value>http://jabber.org/protocol/ibb</value>
-					</option>
-				</field>
-			</x>
-		</feature>
-	</si>
-</iq>
-INFO - Write on a@3ti.us/kim的MacBook Air
-<iq from="b@3ti.us" id="purple406bb85a" to="a@3ti.us" type="set" xmlns:stream="http://etherx.jabber.org/streams">
-	<si profile="http://jabber.org/protocol/si/profile/file-transfer" xmlns="http://jabber.org/protocol/si" id="purple406bb85b">
-		<feature xmlns="http://jabber.org/protocol/feature-neg">
-			<x type="form" xmlns="jabber:x:data">
-				<field type="list-single" var="stream-method">
-					<option>
-						<value>http://jabber.org/protocol/bytestreams</value>
-					</option>
-					<option>
-						<value>http://jabber.org/protocol/ibb</value>
-					</option>
-				</field>
-			</x>
-		</feature>
-		<file name="127_1374172099416.jpg" size="47789" xmlns="http://jabber.org/protocol/si/profile/file-transfer" />
-	</si>
-</iq>
-INFO - Read on a@3ti.us/kim的MacBook Air:
-<iq id="purple406bb85a" to="b@3ti.us" type="result">
-	<si xmlns="http://jabber.org/protocol/si">
-		<feature xmlns='http://jabber.org/protocol/feature-neg'>
-			<x xmlns='jabber:x:data' type='submit'>
-				<field var='stream-method'>
-					<value>http://jabber.org/protocol/bytestreams</value>
-				</field>
-			</x>
-		</feature>
-	</si>
-</iq>
+														INFO - Write on a@3ti.us/kim的MacBook Air
+														<iq id="iChat_658AA216" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+															<bind xmlns="urn:ietf:params:xml:ns:xmpp-bind">
+																<jid>a@3ti.us/kim的MacBook Air</jid>
+															</bind>
+														</iq>
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+														<iq type="set" id="iChat_52E4660B" to="3ti.us">
+															<session xmlns="urn:ietf:params:xml:ns:xmpp-session" />
+														</iq>
 
-INFO - Write on b@3ti.us/MacBook Air
-<iq from="a@3ti.us" id="purple406bb85a" to="b@3ti.us" type="result" xmlns:stream="http://etherx.jabber.org/streams">
-	<si xmlns="http://jabber.org/protocol/si" id="9dcba64d-5d71-445b-a73e-3a768a26ba3d">
-		<feature xmlns="http://jabber.org/protocol/feature-neg">
-			<x type="submit" xmlns="jabber:x:data">
-				<field var="stream-method">
-					<value>http://jabber.org/protocol/bytestreams</value>
-				</field>
-			</x>
-		</feature>
-	</si>
-</iq>
-INFO - Read on b@3ti.us/MacBook Air:
-<iq type='set' id='purple406bb85c' to='a@3ti.us/(null)'>
-	<query xmlns='http://jabber.org/protocol/bytestreams' sid='purple406bb85b'>
-		<streamhost jid='b@3ti.us/MacBook Air' host='192.168.3.4' port='54425' />
-		<streamhost jid='b@3ti.us/MacBook Air' host='192.168.2.61' port='54425' />
-	</query>
-</iq>
-INFO - Write on b@3ti.us/MacBook Air
-<iq from="a@3ti.us/(null)" id="purple406bb85c" type="result" xmlns:stream="http://etherx.jabber.org/streams" />
+														INFO - Write on a@3ti.us/kim的MacBook Air
+														<iq from="3ti.us" id="iChat_52E4660B" type="result" xmlns:stream="http://etherx.jabber.org/streams" />
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+														<iq type="get" id="iChat_32B40B1D" to="3ti.us">
+															<query xmlns="http://jabber.org/protocol/disco#items"></query>
+														</iq>
+														<iq type="set" id="iChat_16FE88E9">
+															<query xmlns="jabber:iq:privacy">
+																<list name="invisible">
+																	<item action="deny" order="1">
+																		<presence-out />
+																	</item>
+																</list>
+															</query>
+														</iq>
+
+														INFO - Write on a@3ti.us/kim的MacBook Air
+														<iq from="3ti.us" id="iChat_32B40B1D" to="a@3ti.us" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+															<query xmlns="http://jabber.org/protocol/disco#items">
+																<item jid="proxy.127.0.0.1" name="Socks 5 Bytestreams Proxy" />
+															</query>
+														</iq>
+														INFO - Write on a@3ti.us/kim的MacBook Air
+														<iq id="iChat_16FE88E9" type="result" xmlns:stream="http://etherx.jabber.org/streams" />
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+														<iq type="get" id="iChat_5140735D">
+															<vCard xmlns="vcard-temp" />
+														</iq>
+
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+														<iq type="get" id="iChat_2C249B4D">
+															<query xmlns="jabber:iq:roster"></query>
+														</iq>
+
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+														<iq type="get" id="iChat_634416D0" to="proxy.127.0.0.1">
+															<query xmlns="http://jabber.org/protocol/disco#info"></query>
+														</iq>
+
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+														<presence>
+															<status>网上冲浪</status>
+															<priority>0</priority>
+															<c xmlns="http://jabber.org/protocol/caps" node="http://www.apple.com/ichat/caps" ver="900" ext="ice recauth rdserver maudio audio rdclient mvideo auxvideo rdmuxing avcap avavail video" />
+															<x xmlns="http://jabber.org/protocol/tune" />
+															<x xmlns="vcard-temp:x:update" />
+														</presence>
+
+														INFO - Write on a@3ti.us/kim的MacBook Air
+														<iq id="iChat_5140735D" to="a@3ti.us" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+															<vCard xmlns="vcard-temp">
+																<PHOTO>
+																	<TYPE>image/jpeg</TYPE>
+																	<BINVAL>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
+																	</BINVAL>
+																</PHOTO>
+															</vCard>
+														</iq>
+														INFO - Write on a@3ti.us/kim的MacBook Air
+														<iq id="iChat_2C249B4D" to="a@3ti.us" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+															<query xmlns="jabber:iq:roster">
+																<item subscription="to" jid="b@3ti.us">
+																	<group>好友</group>
+																</item>
+															</query>
+															<query xmlns="jabber:iq:roster">
+																<item subscription="to" jid="b@3ti.us">
+																	<group>好友</group>
+																</item>
+															</query>
+														</iq>
+														INFO - Write on a@3ti.us/kim的MacBook Air
+														<iq from="proxy.127.0.0.1" id="iChat_634416D0" to="a@3ti.us/kim的MacBook Air" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+															<query xmlns="http://jabber.org/protocol/disco#info">
+																<feature var="http://jabber.org/protocol/bytestreams" />
+																<feature var="http://jabber.org/protocol/si/profile/file-transfer" />
+																<feature var="http://jabber.org/protocol/si" />
+																<feature var="vcard-temp" />
+																<feature var="urn:xmpp:blocking" />
+															</query>
+														</iq>
+														INFO - Write on a@3ti.us/kim的MacBook Air
+														<presence from="b@3ti.us" to="a@3ti.us" xmlns:stream="http://etherx.jabber.org/streams">
+															<x xmlns="vcard-temp:x:update">
+																<photo>abf94f52f2345712221b2f224698c5cdc61a80ae</photo>
+															</x>
+														</presence>
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+														<presence>
+															<status>网上冲浪</status>
+															<priority>0</priority>
+															<c xmlns="http://jabber.org/protocol/caps" node="http://www.apple.com/ichat/caps" ver="900" ext="ice recauth rdserver maudio audio rdclient mvideo auxvideo rdmuxing avcap avavail video" />
+															<x xmlns="http://jabber.org/protocol/tune" />
+															<x xmlns="vcard-temp:x:update">
+																<photo>61A2FE108E4918F015EF50F873B5BF8592FF0B4E</photo>
+															</x>
+														</presence>
+
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+														<iq type="get" id="iChat_622343F8" to="b@3ti.us">
+															<query xmlns="http://jabber.org/protocol/disco#info" />
+														</iq>
+
+														INFO - Write on b@3ti.us/MacBook Air
+														<presence from="a@3ti.us" to="b@3ti.us" xmlns:stream="http://etherx.jabber.org/streams">
+															<x xmlns="vcard-temp:x:update" />
+															<status>网上冲浪</status>
+														</presence>
+														INFO - Write on a@3ti.us/kim的MacBook Air
+														<iq from="b@3ti.us" id="iChat_622343F8" to="a@3ti.us/kim的MacBook Air" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+															<query xmlns="http://jabber.org/protocol/disco#info">
+																<feature var="http://jabber.org/protocol/bytestreams" />
+																<feature var="http://jabber.org/protocol/si/profile/file-transfer" />
+																<feature var="http://jabber.org/protocol/si" />
+																<feature var="vcard-temp" />
+																<feature var="urn:xmpp:blocking" />
+															</query>
+														</iq>
+														INFO - Write on b@3ti.us/MacBook Air
+														<presence from="a@3ti.us" to="b@3ti.us" xmlns:stream="http://etherx.jabber.org/streams">
+															<x xmlns="vcard-temp:x:update">
+																<photo>61A2FE108E4918F015EF50F873B5BF8592FF0B4E</photo>
+															</x>
+															<status>网上冲浪</status>
+														</presence>
+														INFO - Read on b@3ti.us/MacBook Air:
+														<iq type='get' id='purple99508dfb' to='a@3ti.us'>
+															<vCard xmlns='vcard-temp' />
+														</iq>
+														INFO - Write on b@3ti.us/MacBook Air
+														<iq from="a@3ti.us" id="purple99508dfb" to="b@3ti.us" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+															<vCard xmlns="vcard-temp">
+																<PHOTO>
+																	<TYPE>image/jpeg</TYPE>
+																	<BINVAL>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
+																	</BINVAL>
+																</PHOTO>
+															</vCard>
+														</iq>
+														INFO - Read on b@3ti.us/MacBook Air:
+														<iq type='get' id='purple99508dfc' to='a@3ti.us/(null)'>
+															<query xmlns='http://jabber.org/protocol/disco#info' />
+														</iq>
+														INFO - Write on b@3ti.us/MacBook Air
+														<iq from="a@3ti.us/(null)" id="purple99508dfc" to="b@3ti.us/MacBook Air" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+															<query xmlns="http://jabber.org/protocol/disco#info">
+																<feature var="http://jabber.org/protocol/bytestreams" />
+																<feature var="http://jabber.org/protocol/si/profile/file-transfer" />
+																<feature var="http://jabber.org/protocol/si" />
+																<feature var="vcard-temp" />
+																<feature var="urn:xmpp:blocking" />
+															</query>
+														</iq>
+														INFO - Read on b@3ti.us/MacBook Air:
+														<iq type='set' id='purple99508dfd' to='a@3ti.us/(null)'>
+															<si xmlns='http://jabber.org/protocol/si' id='purple99508dfe' profile='http://jabber.org/protocol/si/profile/file-transfer'>
+																<file xmlns='http://jabber.org/protocol/si/profile/file-transfer' name='IM.messagestransfer.messagestransfer.messagestransfer.messagestransfer.zip' size='1022' />
+																<feature xmlns='http://jabber.org/protocol/feature-neg'>
+																	<x xmlns='jabber:x:data' type='form'>
+																		<field var='stream-method' type='list-single'>
+																			<option>
+																				<value>http://jabber.org/protocol/bytestreams</value>
+																			</option>
+																			<option>
+																				<value>http://jabber.org/protocol/ibb</value>
+																			</option>
+																		</field>
+																	</x>
+																</feature>
+															</si>
+														</iq>
+														INFO - Write on a@3ti.us/kim的MacBook Air
+														<iq from="b@3ti.us" id="purple99508dfd" to="a@3ti.us" type="set" xmlns:stream="http://etherx.jabber.org/streams">
+															<si profile="http://jabber.org/protocol/si/profile/file-transfer" xmlns="http://jabber.org/protocol/si" id="purple99508dfe">
+																<feature xmlns="http://jabber.org/protocol/feature-neg">
+																	<x type="form" xmlns="jabber:x:data">
+																		<field type="list-single" var="stream-method">
+																			<option>
+																				<value>http://jabber.org/protocol/bytestreams</value>
+																			</option>
+																			<option>
+																				<value>http://jabber.org/protocol/ibb</value>
+																			</option>
+																		</field>
+																	</x>
+																</feature>
+																<file name="IM.messagestransfer.messagestransfer.messagestransfer.messagestransfer.zip" size="1022" xmlns="http://jabber.org/protocol/si/profile/file-transfer" />
+															</si>
+														</iq>
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+														<iq id="purple99508dfd" to="b@3ti.us" type="result">
+															<si xmlns="http://jabber.org/protocol/si">
+																<feature xmlns='http://jabber.org/protocol/feature-neg'>
+																	<x xmlns='jabber:x:data' type='submit'>
+																		<field var='stream-method'>
+																			<value>http://jabber.org/protocol/bytestreams</value>
+																		</field>
+																	</x>
+																</feature>
+															</si>
+														</iq>
+
+														INFO - Write on b@3ti.us/MacBook Air
+														<iq from="a@3ti.us" id="purple99508dfd" to="b@3ti.us" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+															<si xmlns="http://jabber.org/protocol/si">
+																<feature xmlns="http://jabber.org/protocol/feature-neg">
+																	<x type="submit" xmlns="jabber:x:data">
+																		<field var="stream-method">
+																			<value>http://jabber.org/protocol/bytestreams</value>
+																		</field>
+																	</x>
+																</feature>
+															</si>
+														</iq>
+														INFO - Read on b@3ti.us/MacBook Air:
+														<iq type='set' id='purple99508dff' to='a@3ti.us/(null)'>
+															<query xmlns='http://jabber.org/protocol/bytestreams' sid='purple99508dfe'>
+																<streamhost jid='proxy.127.0.0.1' host='127.0.0.1' port='8888' />
+															</query>
+														</iq>
+														INFO - Write on a@3ti.us/kim的MacBook Air
+														<iq from="b@3ti.us" id="purple99508dff" to="a@3ti.us" type="set" xmlns:stream="http://etherx.jabber.org/streams">
+															<query mode="tcp" sid="purple99508dfe" xmlns="http://jabber.org/protocol/bytestreams">
+																<streamhost host="127.0.0.1" jid="proxy.127.0.0.1" port="8888" />
+															</query>
+														</iq>
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+														<iq id="purple99508dff" to="b@3ti.us" type="result">
+															<query xmlns="http://jabber.org/protocol/bytestreams">
+																<streamhost-used jid="proxy.127.0.0.1" />
+															</query>
+														</iq>
+
+														INFO - Write on b@3ti.us/MacBook Air
+														<iq from="a@3ti.us" id="purple99508dff" to="b@3ti.us" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+															<query xmlns="http://jabber.org/protocol/bytestreams">
+																<streamhost-used jid="proxy.127.0.0.1" />
+															</query>
+														</iq>
+														INFO - Read on b@3ti.us/MacBook Air:
+														<iq type='set' id='purple99508e00' to='proxy.127.0.0.1'>
+															<query xmlns='http://jabber.org/protocol/bytestreams' sid='purple99508dfe'>
+																<activate>a@3ti.us/(null)</activate>
+															</query>
+														</iq>
+														INFO - Write on b@3ti.us/MacBook Air
+														<iq from="proxy.127.0.0.1" id="purple99508e00" type="result" xmlns:stream="http://etherx.jabber.org/streams">
+															<query mode="tcp" sid="purple99508dfe" xmlns="http://jabber.org/protocol/bytestreams">
+																<streamhost host="127.0.0.1" jid="proxy.127.0.0.1" port="8888" />
+															</query>
+														</iq>
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+
+														INFO - Read on b@3ti.us/MacBook Air:
+														<iq type='get' id='purple99508e01'>
+															<ping xmlns='urn:xmpp:ping' />
+														</iq>
+														INFO - Write on b@3ti.us/MacBook Air
+														<iq id="purple99508e01" type="result" xmlns:stream="http://etherx.jabber.org/streams" />
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+
+														INFO - Read on b@3ti.us/MacBook Air:
+														<iq type='get' id='purple99508e02'>
+															<ping xmlns='urn:xmpp:ping' />
+														</iq>
+														INFO - Write on b@3ti.us/MacBook Air
+														<iq id="purple99508e02" type="result" xmlns:stream="http://etherx.jabber.org/streams" />
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+
+														INFO - Read on b@3ti.us/MacBook Air:
+														<iq type='get' id='purple99508e03'>
+															<ping xmlns='urn:xmpp:ping' />
+														</iq>
+														INFO - Write on b@3ti.us/MacBook Air
+														<iq id="purple99508e03" type="result" xmlns:stream="http://etherx.jabber.org/streams" />
+														INFO - Read on a@3ti.us/kim的MacBook Air:
+
+														INFO - Read on b@3ti.us/MacBook Air:
+														<iq type='get' id='purple99508e04'>
+															<ping xmlns='urn:xmpp:ping' />
+														</iq>
+														INFO - Write on b@3ti.us/MacBook Air
+														<iq id="purple99508e04" type="result" xmlns:stream="http://etherx.jabber.org/streams" />

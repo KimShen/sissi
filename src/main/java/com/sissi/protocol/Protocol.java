@@ -1,7 +1,5 @@
 package com.sissi.protocol;
 
-import java.util.UUID;
-
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -55,7 +53,7 @@ abstract public class Protocol implements Element {
 
 	@XmlAttribute
 	public String getId() {
-		return this.id != null ? this.id : UUID.randomUUID().toString();
+		return this.id;
 	}
 
 	public Protocol setId(String id) {

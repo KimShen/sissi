@@ -155,7 +155,7 @@ public class MongoAddressing implements Addressing {
 				try {
 					this.gc();
 					long sleep = TimeUnit.MILLISECONDS.convert(this.interval.getInterval(), this.interval.getUnit());
-					MongoAddressing.this.log.info("Next gc after " + sleep + " micrs");
+					MongoAddressing.this.log.debug("Next gc after " + sleep + " micrs");
 					Thread.sleep(sleep);
 				} catch (Exception e) {
 					MongoAddressing.this.log.error(e);

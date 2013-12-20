@@ -42,8 +42,8 @@
 				<ref bean="bind.condition" />
 				<ref bean="session.condition" />
 				<ref bean="register.condition" />
-				<ref bean="disco.info.condition" />
-				<ref bean="disco.items.condition" />
+				<ref bean="disco.condition.info" />
+				<ref bean="disco.condition.items" />
 				<ref bean="bytestreams.pro.condition" />
 				<ref bean="iq.condition.matchall" />
 			</util:list>

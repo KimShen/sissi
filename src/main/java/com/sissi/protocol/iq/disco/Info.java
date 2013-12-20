@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.disco.feature.Blocking;
 import com.sissi.protocol.iq.disco.feature.Bytestreams;
+import com.sissi.protocol.iq.disco.feature.Identity;
 import com.sissi.protocol.iq.disco.feature.Si;
 import com.sissi.protocol.iq.disco.feature.SiFileTransfer;
 import com.sissi.protocol.iq.disco.feature.VCard;
@@ -37,7 +38,7 @@ public class Info extends Protocol {
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = "feature", type = Blocking.class), @XmlElement(name = "feature", type = VCard.class), @XmlElement(name = "feature", type = Si.class), @XmlElement(name = "feature", type = SiFileTransfer.class), @XmlElement(name = "feature", type = Bytestreams.class) })
+	@XmlElements({ @XmlElement(name = "identity", type = Identity.class), @XmlElement(name = "feature", type = Blocking.class), @XmlElement(name = "feature", type = VCard.class), @XmlElement(name = "feature", type = Si.class), @XmlElement(name = "feature", type = SiFileTransfer.class), @XmlElement(name = "feature", type = Bytestreams.class) })
 	public List<Feature> getFeature() {
 		return feature;
 	}
