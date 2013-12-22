@@ -15,12 +15,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sissi.server.ServerLoopGroup;
 import com.sissi.server.ServerStarter;
-import com.sissi.server.exchange.impl.Sock5Server;
 
 /**
  * @author kim 2013-11-19
  */
-public class MainServerStarter implements ServerStarter {
+public class ConfigServerStarter implements ServerStarter {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -32,7 +31,7 @@ public class MainServerStarter implements ServerStarter {
 
 	private final Integer port;
 
-	public MainServerStarter(ChannelInitializer<SocketChannel> channelInitializer, ServerLoopGroup serverLoopGroup, Integer port) {
+	public ConfigServerStarter(ChannelInitializer<SocketChannel> channelInitializer, ServerLoopGroup serverLoopGroup, Integer port) {
 		super();
 		this.channelInitializer = channelInitializer;
 		this.serverLoopGroup = serverLoopGroup;
@@ -40,7 +39,7 @@ public class MainServerStarter implements ServerStarter {
 	}
 
 	@Override
-	public MainServerStarter start() {
+	public ConfigServerStarter start() {
 		try {
 			bootstrap.group(serverLoopGroup.boss(), serverLoopGroup.event()).channel(NioServerSocketChannel.class).childHandler(this.channelInitializer);
 			bootstrap.bind(this.port).addListener(new FailShutdownGenericFutureListener());
@@ -52,7 +51,7 @@ public class MainServerStarter implements ServerStarter {
 	}
 
 	@Override
-	public MainServerStarter stop() {
+	public ConfigServerStarter stop() {
 		this.closeAll();
 		return this;
 	}
@@ -66,7 +65,7 @@ public class MainServerStarter implements ServerStarter {
 
 		public void operationComplete(Future<Void> future) throws Exception {
 			if (!future.isSuccess()) {
-				MainServerStarter.this.closeAll();
+				ConfigServerStarter.this.closeAll();
 				future.cause().printStackTrace();
 			}
 		}
@@ -78,10 +77,11 @@ public class MainServerStarter implements ServerStarter {
 
 		@SuppressWarnings("resource")
 		public static void main(String[] args) throws Exception {
-			Sock5Server.main(null);
 			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(PREFIX + "configs" + File.separatorChar + "config-loading.xml");
-			ServerStarter start = context.getBean(ServerStarter.class);
-			start.start();
+			ServerStarter proxy = context.getBean("server.start.proxy", ServerStarter.class);
+			proxy.start();
+			ServerStarter main = context.getBean("server.start.private", ServerStarter.class);
+			main.start();
 		}
 	}
 }

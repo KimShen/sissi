@@ -1,4 +1,4 @@
-package com.sissi.server.exchange;
+package com.sissi.server;
 
 import java.nio.ByteBuffer;
 
@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
  */
 public interface Exchanger {
 
-	public String getHost();
-
 	public Exchanger write(ByteBuffer bytes);
+	
+	public Exchanger close();
 }
