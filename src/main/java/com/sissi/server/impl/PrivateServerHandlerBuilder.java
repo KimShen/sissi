@@ -1,7 +1,6 @@
 package com.sissi.server.impl;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.AttributeKey;
@@ -85,7 +84,6 @@ public class PrivateServerHandlerBuilder {
 		return new PrivateServerHandler();
 	}
 
-	@Sharable
 	class PrivateServerHandler extends ChannelInboundHandlerAdapter {
 
 		private final PipedInputStream inPipe = new PipedInputStream();

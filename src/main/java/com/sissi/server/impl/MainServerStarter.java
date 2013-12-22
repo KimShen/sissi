@@ -15,6 +15,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sissi.server.ServerLoopGroup;
 import com.sissi.server.ServerStarter;
+import com.sissi.server.exchange.impl.Sock5Server;
 
 /**
  * @author kim 2013-11-19
@@ -77,6 +78,7 @@ public class MainServerStarter implements ServerStarter {
 
 		@SuppressWarnings("resource")
 		public static void main(String[] args) throws Exception {
+			Sock5Server.main(null);
 			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(PREFIX + "configs" + File.separatorChar + "config-loading.xml");
 			ServerStarter start = context.getBean(ServerStarter.class);
 			start.start();
