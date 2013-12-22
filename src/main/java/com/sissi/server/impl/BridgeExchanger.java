@@ -1,4 +1,4 @@
-package com.sissi.server.exchange.impl;
+package com.sissi.server.impl;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -6,19 +6,16 @@ import io.netty.channel.ChannelHandlerContext;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import com.sissi.server.exchange.Exchanger;
+import com.sissi.server.Exchanger;
 
 /**
  * @author kim 2013年12月22日
  */
 public class BridgeExchanger implements Exchanger {
 
-	private final String host;
-
 	private final ChannelHandlerContext context;
 
-	public BridgeExchanger(String host, ChannelHandlerContext context) throws IOException {
-		this.host = host;
+	public BridgeExchanger(ChannelHandlerContext context) throws IOException {
 		this.context = context;
 	}
 
@@ -29,7 +26,8 @@ public class BridgeExchanger implements Exchanger {
 	}
 
 	@Override
-	public String getHost() {
-		return this.host;
+	public Exchanger close() {
+		this.context.close();
+		return this;
 	}
 }

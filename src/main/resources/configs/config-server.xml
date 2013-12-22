@@ -39,7 +39,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="builder.server.handler" class="com.sissi.server.impl.PrivateServerHandlerBuilder">
+	<bean id="builder.handler.private" class="com.sissi.server.impl.PrivateServerHandlerBuilder">
 		<constructor-arg ref="reader" />
 		<constructor-arg ref="addressing" />
 		<constructor-arg ref="finder.input" />
@@ -50,14 +50,33 @@
 		<constructor-arg ref="builder.looper" />
 		<constructor-arg ref="builder.context.online" />
 	</bean>
-
-	<bean id="server.loop" class="com.sissi.server.impl.NioServerLoopGroup" />
-	<bean id="server.pipeline" class="com.sissi.server.impl.PrivateServerHandlerChannelInitializer">
-		<constructor-arg ref="builder.server.handler" />
+	<bean id="builder.handler.proxy" class="com.sissi.server.impl.Socks5ProxyServerHandlerBuilder">
+		<constructor-arg>
+			<bean class="com.sissi.server.impl.BridgeExchangerServerHandler" />
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.server.impl.BridgeExchangerContext" />
+		</constructor-arg>
 	</bean>
-	<bean id="server.start" class="com.sissi.server.impl.MainServerStarter">
-		<constructor-arg value="${global.port}" />
-		<constructor-arg ref="server.loop" />
-		<constructor-arg ref="server.pipeline" />
+
+	<bean id="server.loop.main" class="com.sissi.server.impl.NioServerLoopGroup" />
+	<bean id="server.loop.proxy" class="com.sissi.server.impl.NioServerLoopGroup" />
+
+	<bean id="server.pipeline.private" class="com.sissi.server.impl.PrivateServerHandlerChannelInitializer">
+		<constructor-arg ref="builder.handler.private" />
+	</bean>
+	<bean id="server.pipeline.proxy" class="com.sissi.server.impl.Socks5ProxyServerHandlerChannelInitializer">
+		<constructor-arg ref="builder.handler.proxy" />
+	</bean>
+
+	<bean id="server.start.private" class="com.sissi.server.impl.ConfigServerStarter">
+		<constructor-arg value="${global.private.port}" />
+		<constructor-arg ref="server.loop.main" />
+		<constructor-arg ref="server.pipeline.private" />
+	</bean>
+	<bean id="server.start.proxy" class="com.sissi.server.impl.ConfigServerStarter">
+		<constructor-arg value="${global.proxy.port}" />
+		<constructor-arg ref="server.loop.proxy" />
+		<constructor-arg ref="server.pipeline.proxy" />
 	</bean>
 </beans>

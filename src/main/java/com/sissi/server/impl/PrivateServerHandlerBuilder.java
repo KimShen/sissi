@@ -1,6 +1,7 @@
 package com.sissi.server.impl;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.AttributeKey;
@@ -80,11 +81,11 @@ public class PrivateServerHandlerBuilder {
 		this.jidContextBuilder = jidContextBuilder;
 	}
 
-	public PrivateServerHandler build() throws IOException {
+	public ChannelHandler build() throws IOException {
 		return new PrivateServerHandler();
 	}
 
-	class PrivateServerHandler extends ChannelInboundHandlerAdapter {
+	private class PrivateServerHandler extends ChannelInboundHandlerAdapter {
 
 		private final PipedInputStream inPipe = new PipedInputStream();
 
