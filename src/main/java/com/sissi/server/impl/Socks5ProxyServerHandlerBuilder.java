@@ -69,7 +69,7 @@ public class Socks5ProxyServerHandlerBuilder {
 		}
 
 		private SocksResponse build(Object msg) {
-			return msg.getClass() == SocksInitRequest.class ? new SocksInitResponse(SocksAuthScheme.NO_AUTH) : new SocksCmdResponse(SocksCmdStatus.SUCCESS, SocksAddressType.DOMAIN);
+			return msg.getClass() == SocksInitRequest.class ? new SocksInitResponse(SocksAuthScheme.NO_AUTH) : new SocksCmdResponse(SocksCmdStatus.SUCCESS, SocksAddressType.IPv4);
 		}
 
 		private class BridgeExchangeListener implements GenericFutureListener<Future<Void>> {

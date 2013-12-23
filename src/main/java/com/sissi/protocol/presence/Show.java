@@ -7,7 +7,7 @@ import com.sissi.read.MappingMetadata;
 /**
  * @author kim 2013-11-2
  */
-@MappingMetadata(uri = Presence.NAME, localName = Show.NAME)
+@MappingMetadata(uri = Presence.XMLNS, localName = Show.NAME)
 @XmlRootElement
 public class Show {
 

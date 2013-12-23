@@ -44,7 +44,8 @@
 	<bean id="bytestreams.condition.2server" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToServerMatcher">
-				<constructor-arg value="${global.host}" />
+				<constructor-arg index="0" value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
+				<constructor-arg index="1" value="${global.host}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="bytestreams.pro.2server" />
@@ -52,7 +53,8 @@
 	<bean id="bytestreams.condition.2proxy" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
-				<constructor-arg ref="bytestreams.proxy" />
+				<constructor-arg index="0" value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
+				<constructor-arg index="1" ref="bytestreams.proxy" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="bytestreams.pro.2proxy" />
