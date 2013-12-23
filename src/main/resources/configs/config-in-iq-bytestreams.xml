@@ -9,7 +9,7 @@
 		<constructor-arg index="0" value="${bytestreams.proxy.jid}" />
 		<constructor-arg index="1" value="${bytestreams.proxy.name}" />
 		<constructor-arg index="2" value="${bytestreams.proxy.host}" />
-		<constructor-arg index="3" value="${bytestreams.proxy.port}" />
+		<constructor-arg index="3" value="${global.proxy.port}" />
 	</bean>
 
 	<bean id="bytestreams.pro.2proxy" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ProxyProcessor">
