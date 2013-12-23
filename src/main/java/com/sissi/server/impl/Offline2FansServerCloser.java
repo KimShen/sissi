@@ -12,6 +12,8 @@ import com.sissi.server.ServerCloser;
  */
 public class Offline2FansServerCloser implements ServerCloser {
 
+	private final Integer IS_OFFLINE = 2;
+
 	private final Addressing addressing;
 
 	private final ProtocolBraodcast protocolBraodcast;
@@ -31,6 +33,6 @@ public class Offline2FansServerCloser implements ServerCloser {
 	}
 
 	private boolean hasOther(JIDContext context) {
-		return this.addressing.others(context.getJid()) > 2;
+		return this.addressing.others(context.getJid()) < IS_OFFLINE;
 	}
 }

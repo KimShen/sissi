@@ -12,7 +12,7 @@ public class Bytestreams2FansProcessor extends ProxyProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		JIDContext target = super.addressing.findOne(super.build(protocol.getParent().getTo()));
-		target.write(protocol.getParent().setFrom(context.getJid().asStringWithBare()).setTo(target.getJid().asStringWithBare()));
+		target.write(protocol.getParent().setFrom(context.getJid().getBare()));
 		return true;
 	}
 }
