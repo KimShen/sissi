@@ -67,7 +67,7 @@
 	</bean>
 
 	<bean id="server.start.main" class="com.sissi.server.impl.ConfigedServerStarter">
-		<constructor-arg value="${global.private.port}" />
+		<constructor-arg value="${global.main.port}" />
 		<constructor-arg ref="server.loop.main" />
 		<constructor-arg ref="server.pipeline.main" />
 	</bean>
