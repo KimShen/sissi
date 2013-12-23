@@ -25,50 +25,13 @@ public interface JIDContext {
 
 	public Integer getPriority();
 
-	public JIDContext setStarttls();
-	
-	public Boolean isStarttls();
-	
 	public Status getStatus();
 
+	public JIDContext starttls();
+	
+	public Boolean isTls();
+	
 	public Boolean close();
 
 	public JIDContext write(Element element);
-
-	public interface JIDContextBuilder {
-
-		public JIDContext build(JID jid, JIDContextParam param);
-	}
-
-	public interface JIDContextParam {
-
-		public <T> T find(String key, Class<T> clazz);
-	}
-
-	public interface Status {
-
-		public Status setStatus(String type, String show, String status, String avator);
-
-		public StatusClauses getStatus();
-
-		public Status close();
-	}
-
-	public interface StatusClauses {
-
-		public final static String KEY_TYPE = "type";
-
-		public final static String KEY_SHOW = "show";
-
-		public final static String KEY_STATUS = "status";
-
-		public final static String KEY_AVATOR = "avator";
-
-		public String find(String key);
-	}
-
-	public interface StatusBuilder {
-
-		public Status build(JIDContext context);
-	}
 }

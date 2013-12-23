@@ -20,6 +20,8 @@ public class Mechanisms implements Feature {
 
 	public final static Mechanisms FEATURE = new Mechanisms(DigestAuthCallback.MECHANISM, PlainAuthCallback.MECHANISM);
 
+	public final static String NAME = "mechanisms";
+
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
 
 	private Set<String> mechanism;

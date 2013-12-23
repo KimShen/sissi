@@ -5,9 +5,10 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
-import com.sissi.context.JIDContext.JIDContextBuilder;
-import com.sissi.context.JIDContext.JIDContextParam;
-import com.sissi.context.JIDContext.StatusBuilder;
+import com.sissi.context.JIDContextBuilder;
+import com.sissi.context.JIDContextParam;
+import com.sissi.context.Status;
+import com.sissi.context.StatusBuilder;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 import com.sissi.server.ServerTls;
@@ -23,17 +24,17 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final AtomicLong indexes = new AtomicLong();
 
-	private final StatusBuilder onlineStatusBuilder;
+	private final StatusBuilder statusBuilder;
 
-	public OnlineContextBuilder(StatusBuilder onlineStatusBuilder) {
+	public OnlineContextBuilder(StatusBuilder statusBuilder) {
 		super();
-		this.onlineStatusBuilder = onlineStatusBuilder;
+		this.statusBuilder = statusBuilder;
 	}
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
 		UserContext context = new UserContext(param);
-		context.status = this.onlineStatusBuilder.build(context);
+		context.status = this.statusBuilder.build(context);
 		return context;
 	}
 
@@ -50,7 +51,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		private final ServerTls serverTLS;
 
 		private Integer priority;
-		
+
 		private Status status;
 
 		private JID jid;
@@ -103,20 +104,19 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public JIDContext setStarttls() {
+		public JIDContext starttls() {
 			this.serverTLS.starttls();
 			return this;
 		}
 
-		@Override
-		public Boolean isStarttls() {
-			return this.serverTLS.isUsing();
+		public Boolean isTls() {
+			return this.serverTLS.isTls();
 		}
 
 		@Override
 		public Boolean close() {
 			this.output.close();
-			this.status.close();
+			this.status.clear();
 			this.status = null;
 			return true;
 		}
@@ -135,30 +135,6 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		@Override
 		public Integer getPriority() {
 			return this.priority;
-		}
-	}
-
-	public static class UserContextParam implements JIDContextParam {
-
-		private final Output output;
-
-		private final ServerTls serverTLS;
-
-		public UserContextParam(Output output, ServerTls serverTLS) {
-			super();
-			this.output = output;
-			this.serverTLS = serverTLS;
-		}
-
-		@Override
-		public <T> T find(String key, Class<T> clazz) {
-			switch (key) {
-			case OnlineContextBuilder.KEY_OUTPUT:
-				return clazz.cast(this.output);
-			case OnlineContextBuilder.KEY_TLS:
-				return clazz.cast(this.serverTLS);
-			}
-			return null;
 		}
 	}
 }

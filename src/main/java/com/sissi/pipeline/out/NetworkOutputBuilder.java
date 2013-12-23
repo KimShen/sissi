@@ -12,10 +12,10 @@ import org.apache.commons.logging.LogFactory;
 import com.sissi.commons.IOUtils;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Output;
-import com.sissi.pipeline.Output.OutputBuilder;
+import com.sissi.pipeline.OutputBuilder;
 import com.sissi.protocol.Element;
+import com.sissi.write.Transfer;
 import com.sissi.write.Writer;
-import com.sissi.write.Writer.Transfer;
 
 /**
  * @author kim 2013年12月1日
@@ -61,8 +61,9 @@ public class NetworkOutputBuilder implements OutputBuilder {
 			return false;
 		}
 
-		public void close() {
+		public Output close() {
 			this.transfer.close();
+			return this;
 		}
 
 		private class ByteBufferOutputStream extends OutputStream {

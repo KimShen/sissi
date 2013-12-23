@@ -1,6 +1,6 @@
 package com.sissi.pipeline.in;
 
-import com.sissi.pipeline.Input.InputMatcher;
+import com.sissi.pipeline.InputMatcher;
 import com.sissi.protocol.Protocol;
 
 /**

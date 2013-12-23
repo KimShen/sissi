@@ -1,7 +1,7 @@
 package com.sissi.pipeline.in.iq.block;
 
 import com.sissi.context.JIDContext;
-import com.sissi.context.JIDContext.Status;
+import com.sissi.context.Status;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.block.Block;

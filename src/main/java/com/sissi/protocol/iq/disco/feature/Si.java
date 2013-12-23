@@ -10,8 +10,10 @@ import com.sissi.protocol.iq.disco.Feature;
  */
 @XmlRootElement
 public class Si implements Feature {
-	
+
 	public final static Si FEATURE = new Si();
+
+	public final static String NAME = "feature";
 
 	private final static String VAR = "http://jabber.org/protocol/si";
 

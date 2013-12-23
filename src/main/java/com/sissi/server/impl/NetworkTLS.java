@@ -19,13 +19,13 @@ public class NetworkTls implements ServerTls, GenericFutureListener<Future<Void>
 
 	private final AtomicBoolean isStarttls = new AtomicBoolean();
 
-	private final AtomicBoolean openStarttls = new AtomicBoolean();
+	private final AtomicBoolean prepareStarttls = new AtomicBoolean();
 
 	private final ServerTlsBuilder serverTlsbuilder;
 
 	private final ChannelHandlerContext context;
 
-	private SSLEngine engine;
+	private SslHandler handler;
 
 	public NetworkTls(ServerTlsBuilder serverTlsbuilder, ChannelHandlerContext context) {
 		super();
@@ -34,24 +34,25 @@ public class NetworkTls implements ServerTls, GenericFutureListener<Future<Void>
 	}
 
 	public void operationComplete(Future<Void> future) throws Exception {
-		if (future.isSuccess() && this.openStarttls.get()) {
-			this.context.pipeline().addFirst(new SslHandler(engine));
-			this.isStarttls.compareAndSet(false, true);
-			this.openStarttls.compareAndSet(true, false);
+		if (future.isSuccess() && this.prepareStarttls.get()) {
+			this.context.pipeline().addFirst(this.handler);
+			this.prepareStarttls.compareAndSet(true, false);
 		}
 	}
 
 	@Override
 	public NetworkTls starttls() {
-		if (this.openStarttls.compareAndSet(false, true)) {
-			this.engine = this.serverTlsbuilder.getSSLContext().createSSLEngine();
-			this.engine.setNeedClientAuth(false);
-			this.engine.setUseClientMode(false);
+		if (this.isStarttls.compareAndSet(false, true)) {
+			SSLEngine engine = this.serverTlsbuilder.getSSLContext().createSSLEngine();
+			engine.setNeedClientAuth(false);
+			engine.setUseClientMode(false);
+			this.handler = new SslHandler(engine);
+			this.prepareStarttls.compareAndSet(false, true);
 		}
 		return this;
 	}
 
-	public Boolean isUsing() {
+	public Boolean isTls() {
 		return this.isStarttls.get();
 	}
 }

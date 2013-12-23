@@ -24,13 +24,13 @@ import org.apache.commons.logging.LogFactory;
 import com.sissi.addressing.Addressing;
 import com.sissi.commons.IOUtils;
 import com.sissi.context.JIDContext;
-import com.sissi.context.JIDContext.JIDContextBuilder;
-import com.sissi.context.impl.OnlineContextBuilder.UserContextParam;
-import com.sissi.feed.Feeder.FeederBuilder;
+import com.sissi.context.JIDContextBuilder;
+import com.sissi.context.impl.OnlineContextParam;
+import com.sissi.feed.FeederBuilder;
 import com.sissi.looper.Looper;
-import com.sissi.looper.Looper.LooperBuilder;
-import com.sissi.pipeline.Input.InputFinder;
-import com.sissi.pipeline.Output.OutputBuilder;
+import com.sissi.looper.LooperBuilder;
+import com.sissi.pipeline.InputFinder;
+import com.sissi.pipeline.OutputBuilder;
 import com.sissi.read.Reader;
 import com.sissi.server.ServerCloser;
 import com.sissi.server.ServerTlsBuilder;
@@ -40,13 +40,13 @@ import com.sissi.server.ServerTlsBuilder;
  */
 public class PrivateServerHandlerBuilder {
 
-	private final static String CONTEXT_ATTR = "CONTEXT_ATTR";
+	private final String CONTEXT_ATTR = "CONTEXT_ATTR";
 
-	private final static String CONNECTOR_ATTR = "CONNECTOR_ATTR";
+	private final String CONNECTOR_ATTR = "CONNECTOR_ATTR";
 
-	private final static AttributeKey<JIDContext> CONTEXT = AttributeKey.valueOf(CONTEXT_ATTR);
+	private final AttributeKey<JIDContext> CONTEXT = AttributeKey.valueOf(CONTEXT_ATTR);
 
-	private final static AttributeKey<Looper> CONNECTOR = AttributeKey.valueOf(CONNECTOR_ATTR);
+	private final AttributeKey<Looper> CONNECTOR = AttributeKey.valueOf(CONNECTOR_ATTR);
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -98,16 +98,17 @@ public class PrivateServerHandlerBuilder {
 		}
 
 		public void channelRegistered(final ChannelHandlerContext ctx) {
-			this.createContextAndJoinGroup(ctx);
-			this.createLooperAndStart(ctx);
+			this.createContext(ctx);
+			this.createLooper(ctx);
 		}
 
 		public void channelUnregistered(ChannelHandlerContext ctx) {
-			ctx.attr(CONNECTOR).get().stop();
-			if (ctx.attr(CONTEXT).get().isBinding()) {
-				PrivateServerHandlerBuilder.this.serverCloser.close(ctx.attr(CONTEXT).get());
-				PrivateServerHandlerBuilder.this.addressing.leave(ctx.attr(CONTEXT).get());
+			JIDContext context = ctx.attr(CONTEXT).get();
+			if (context.isBinding()) {
+				PrivateServerHandlerBuilder.this.serverCloser.close(context);
+				PrivateServerHandlerBuilder.this.addressing.leave(context);
 			}
+			ctx.attr(CONNECTOR).get().stop();
 			IOUtils.closeQuietly(this.input);
 		}
 
@@ -131,7 +132,7 @@ public class PrivateServerHandlerBuilder {
 			}
 		}
 
-		private void createLooperAndStart(final ChannelHandlerContext ctx) {
+		private void createLooper(final ChannelHandlerContext ctx) {
 			try {
 				Looper looper = PrivateServerHandlerBuilder.this.looperBuilder.build(PrivateServerHandlerBuilder.this.reader.future(this.input), PrivateServerHandlerBuilder.this.feederBuilder.build(ctx.attr(CONTEXT).get(), PrivateServerHandlerBuilder.this.finder));
 				ctx.attr(CONNECTOR).set(looper);
@@ -142,9 +143,9 @@ public class PrivateServerHandlerBuilder {
 			}
 		}
 
-		private void createContextAndJoinGroup(final ChannelHandlerContext ctx) {
+		private void createContext(final ChannelHandlerContext ctx) {
 			NetworkTls networkTLS = new NetworkTls(PrivateServerHandlerBuilder.this.serverTlsContext, ctx);
-			ctx.attr(CONTEXT).set(PrivateServerHandlerBuilder.this.jidContextBuilder.build(null, new UserContextParam(PrivateServerHandlerBuilder.this.outputBuilder.build(new NetworkTransfer(networkTLS, ctx)), networkTLS)));
+			ctx.attr(CONTEXT).set(PrivateServerHandlerBuilder.this.jidContextBuilder.build(null, new OnlineContextParam(PrivateServerHandlerBuilder.this.outputBuilder.build(new NetworkTransfer(networkTLS, ctx)), networkTLS)));
 		}
 
 		private byte[] copyToBytes(ByteBuf byteBuf) {

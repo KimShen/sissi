@@ -14,7 +14,7 @@ public class BindResourceProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(IQ.class.cast(protocol.getParent().reply().setType(Type.RESULT).close()).add(this.binding(context, Bind.class.cast(protocol))));
+		context.write(IQ.class.cast(protocol.getParent().reply().clear().setType(Type.RESULT)).add(this.binding(context, Bind.class.cast(protocol))));
 		return true;
 	}
 
@@ -22,6 +22,6 @@ public class BindResourceProcessor extends ProxyProcessor {
 		if (bind.hasResource()) {
 			context.getJid().setResource(bind.getResource().getText());
 		}
-		return bind.close().setJid(context.getJid().asString());
+		return bind.clear().setJid(context.getJid().asString());
 	}
 }

@@ -4,15 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.sissi.context.JID;
-import com.sissi.context.JID.JIDBuilder;
+import com.sissi.context.JIDBuilder;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Output;
-import com.sissi.pipeline.Output.OutputBuilder;
+import com.sissi.pipeline.OutputBuilder;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.ucenter.BlockContext;
-import com.sissi.write.Writer.Transfer;
+import com.sissi.write.Transfer;
 
 /**
  * @author kim 2013年12月9日
@@ -64,7 +64,8 @@ abstract class BlockOutputBuilder implements OutputBuilder {
 		}
 
 		@Override
-		public void close() {
+		public Output close() {
+			return this;
 		}
 	}
 }

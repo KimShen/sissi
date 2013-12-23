@@ -7,7 +7,7 @@ import com.sissi.context.JID;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.read.Collector;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 
 /**
  * @author kim 2013-10-27

@@ -13,6 +13,8 @@ public class Register implements Feature {
 
 	public final static Register FEATURE = new Register();
 
+	public final static String NAME = "register";
+
 	private final static String XMLNS = "http://jabber.org/features/iq-register";
 
 	private Register() {

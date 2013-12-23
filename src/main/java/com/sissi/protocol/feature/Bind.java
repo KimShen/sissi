@@ -13,6 +13,8 @@ public class Bind implements Feature {
 
 	public final static Bind FEATURE = new Bind();
 
+	public final static String NAME = "bind";
+
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-bind";
 
 	private Bind() {

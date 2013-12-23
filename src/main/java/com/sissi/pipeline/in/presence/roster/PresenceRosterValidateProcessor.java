@@ -18,10 +18,10 @@ abstract class PresenceRosterValidateProcessor extends ProxyProcessor {
 	}
 
 	private boolean isSubscribed(JID master, JID slave) {
-		return this.hasRelation(super.ourRelation(master, slave));
+		return this.canUpdate(super.ourRelation(master, slave));
 	}
 
-	private boolean hasRelation(Relation relation) {
+	private boolean canUpdate(Relation relation) {
 		return relation != null && Roster.Subscription.NONE.equals(relation.getSubscription());
 	}
 

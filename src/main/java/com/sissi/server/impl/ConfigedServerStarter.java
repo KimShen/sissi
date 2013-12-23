@@ -7,11 +7,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
-import java.io.File;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sissi.server.ServerLoopGroup;
 import com.sissi.server.ServerStarter;
@@ -19,7 +16,7 @@ import com.sissi.server.ServerStarter;
 /**
  * @author kim 2013-11-19
  */
-public class ConfigServerStarter implements ServerStarter {
+public class ConfigedServerStarter implements ServerStarter {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -31,7 +28,7 @@ public class ConfigServerStarter implements ServerStarter {
 
 	private final Integer port;
 
-	public ConfigServerStarter(ChannelInitializer<SocketChannel> channelInitializer, ServerLoopGroup serverLoopGroup, Integer port) {
+	public ConfigedServerStarter(ChannelInitializer<SocketChannel> channelInitializer, ServerLoopGroup serverLoopGroup, Integer port) {
 		super();
 		this.channelInitializer = channelInitializer;
 		this.serverLoopGroup = serverLoopGroup;
@@ -39,7 +36,7 @@ public class ConfigServerStarter implements ServerStarter {
 	}
 
 	@Override
-	public ConfigServerStarter start() {
+	public ConfigedServerStarter start() {
 		try {
 			bootstrap.group(serverLoopGroup.boss(), serverLoopGroup.event()).channel(NioServerSocketChannel.class).childHandler(this.channelInitializer);
 			bootstrap.bind(this.port).addListener(new FailShutdownGenericFutureListener());
@@ -51,7 +48,7 @@ public class ConfigServerStarter implements ServerStarter {
 	}
 
 	@Override
-	public ConfigServerStarter stop() {
+	public ConfigedServerStarter stop() {
 		this.closeAll();
 		return this;
 	}
@@ -65,23 +62,9 @@ public class ConfigServerStarter implements ServerStarter {
 
 		public void operationComplete(Future<Void> future) throws Exception {
 			if (!future.isSuccess()) {
-				ConfigServerStarter.this.closeAll();
+				ConfigedServerStarter.this.closeAll();
 				future.cause().printStackTrace();
 			}
-		}
-	}
-
-	public static class MainServer {
-
-		private final static String PREFIX = "classpath:";
-
-		@SuppressWarnings("resource")
-		public static void main(String[] args) throws Exception {
-			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(PREFIX + "configs" + File.separatorChar + "config-loading.xml");
-			ServerStarter proxy = context.getBean("server.start.proxy", ServerStarter.class);
-			proxy.start();
-			ServerStarter main = context.getBean("server.start.private", ServerStarter.class);
-			main.start();
 		}
 	}
 }

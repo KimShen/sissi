@@ -2,6 +2,7 @@ package com.sissi.pipeline.in.iq;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
+import com.sissi.pipeline.InputFinder;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.IQ;
 

@@ -13,6 +13,8 @@ public class VCard implements Feature {
 
 	public final static VCard FEATURE = new VCard();
 
+	public final static String NAME = "feature";
+
 	private final static String VAR = "vcard-temp";
 
 	private VCard() {

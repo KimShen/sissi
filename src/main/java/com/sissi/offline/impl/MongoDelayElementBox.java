@@ -56,7 +56,7 @@ public class MongoDelayElementBox implements DelayElementBox {
 
 	private class Elements extends ArrayList<Element> {
 
-		private static final long serialVersionUID = 1L;
+		private final static long serialVersionUID = 1L;
 
 		public Elements(DBCursor cursor) {
 			super();

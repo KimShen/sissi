@@ -11,7 +11,9 @@ import com.sissi.protocol.Feature;
 @XmlRootElement
 public class Session implements Feature {
 
-	public static final Session FEATURE = new Session();
+	public final static Session FEATURE = new Session();
+
+	public final static String NAME = "session";
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-session";
 

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.read.Collector;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.impl.BeanFields;
 
@@ -57,7 +57,7 @@ public class XField implements Field<String>, Collector {
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = "option", type = XOption.class), @XmlElement(name = "value", type = XValue.class) })
+	@XmlElements({ @XmlElement(name = XOption.NAME, type = XOption.class), @XmlElement(name = XValue.NAME, type = XValue.class) })
 	public List<Field<?>> getFields() {
 		return this.fields.getFields();
 	}

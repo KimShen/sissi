@@ -13,6 +13,8 @@ public class SiFileTransfer implements Feature {
 
 	public final static SiFileTransfer FEATURE = new SiFileTransfer();
 
+	public final static String NAME = "feature";
+
 	private final static String VAR = "http://jabber.org/protocol/si/profile/file-transfer";
 
 	private SiFileTransfer() {

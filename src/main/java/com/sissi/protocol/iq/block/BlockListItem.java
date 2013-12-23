@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Item;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 
 /**
  * @author kim 2013年12月16日

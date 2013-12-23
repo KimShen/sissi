@@ -13,7 +13,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
-import com.sissi.context.JID.JIDBuilder;
+import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.ucenter.RelationContext;
 
@@ -22,17 +22,11 @@ import com.sissi.ucenter.RelationContext;
  */
 public class MongoRelationContext implements RelationContext {
 
-	private final static DBObject FILTER_MASTER = BasicDBObjectBuilder.start("master", 1).get();
+	private final DBObject FILTER_MASTER = BasicDBObjectBuilder.start("master", 1).get();
 
-	private final static DBObject FILTER_SLAVE = BasicDBObjectBuilder.start("slave", 1).get();
+	private final DBObject FILTER_SLAVE = BasicDBObjectBuilder.start("slave", 1).get();
 
-	private final static List<DBObject> QUERY_STATE;
-
-	static {
-		QUERY_STATE = new ArrayList<DBObject>();
-		QUERY_STATE.add(BasicDBObjectBuilder.start().add("state", Roster.Subscription.TO.toString()).get());
-		QUERY_STATE.add(BasicDBObjectBuilder.start().add("state", Roster.Subscription.BOTH.toString()).get());
-	}
+	private final List<DBObject> QUERY_STATE;
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -44,6 +38,9 @@ public class MongoRelationContext implements RelationContext {
 		super();
 		this.config = config;
 		this.builder = builder;
+		QUERY_STATE = new ArrayList<DBObject>();
+		QUERY_STATE.add(BasicDBObjectBuilder.start().add("state", Roster.Subscription.TO.toString()).get());
+		QUERY_STATE.add(BasicDBObjectBuilder.start().add("state", Roster.Subscription.BOTH.toString()).get());
 	}
 
 	private void updateEntityForQuery(JID from, JID to, DBObject entity) {
@@ -107,7 +104,7 @@ public class MongoRelationContext implements RelationContext {
 
 	private class JIDs extends HashSet<String> {
 
-		private static final long serialVersionUID = 1L;
+		private final static long serialVersionUID = 1L;
 
 		public JIDs(DBCursor cursor, String key) {
 			if (cursor == null) {
@@ -119,9 +116,9 @@ public class MongoRelationContext implements RelationContext {
 		}
 	}
 
-	public class MongoRelations extends HashSet<Relation> {
+	private class MongoRelations extends HashSet<Relation> {
 
-		private static final long serialVersionUID = 1L;
+		private final static long serialVersionUID = 1L;
 
 		public MongoRelations(DBCursor cursor, MongoConfig config) {
 			if (cursor == null) {

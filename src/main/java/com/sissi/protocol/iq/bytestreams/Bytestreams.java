@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.read.Collector;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 
 /**
  * @author kim 2013年12月18日
@@ -53,7 +53,7 @@ public class Bytestreams extends Protocol implements Collector {
 		return sid;
 	}
 
-	@XmlElements({ @XmlElement(name = "streamhost", type = Streamhost.class) })
+	@XmlElements({ @XmlElement(name = Streamhost.NAME, type = Streamhost.class) })
 	public List<Streamhost> getStreamhost() {
 		return streamhosts;
 	}

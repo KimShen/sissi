@@ -13,7 +13,7 @@ import com.sissi.protocol.iq.register.form.Instructions;
 import com.sissi.protocol.iq.register.form.Select;
 import com.sissi.protocol.iq.register.form.Title;
 import com.sissi.read.Collector;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.impl.BeanFields;
 
@@ -68,7 +68,7 @@ public class XData extends BeanFields implements Field<Object>, Collector {
 		return XMLNS;
 	}
 
-	@XmlElements({ @XmlElement(name = "field", type = XField.class), @XmlElement(name = "field", type = Input.class), @XmlElement(name = "field", type = Select.class), @XmlElement(name = "title", type = Title.class), @XmlElement(name = "instructions", type = Instructions.class) })
+	@XmlElements({ @XmlElement(name = XField.NAME, type = XField.class), @XmlElement(name = Input.NAME, type = Input.class), @XmlElement(name = Select.NAME, type = Select.class), @XmlElement(name = Title.NAME, type = Title.class), @XmlElement(name = Instructions.NAME, type = Instructions.class) })
 	public List<Field<?>> getFields() {
 		return super.getFields();
 	}

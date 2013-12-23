@@ -13,6 +13,8 @@ public class Bytestreams implements Feature {
 
 	public final static Bytestreams FEATURE = new Bytestreams();
 
+	public final static String NAME = "feature";
+
 	private final static String VAR = "http://jabber.org/protocol/bytestreams";
 
 	private Bytestreams() {

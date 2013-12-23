@@ -5,18 +5,19 @@ import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Protocol.Type;
 import com.sissi.protocol.iq.bytestreams.Bytestreams;
+import com.sissi.protocol.iq.bytestreams.BytestreamsProxy;
 import com.sissi.protocol.iq.bytestreams.Streamhost;
 
 /**
  * @author kim 2013年12月18日
  */
-public class BytestreamsSearchProcessor implements Input {
-	
+abstract class Bytestreams2RobotProcessor implements Input {
+
 	private BytestreamsProxy bytestreamsProxy;
 
-	public BytestreamsSearchProcessor(BytestreamsProxy proxy) {
+	public Bytestreams2RobotProcessor(BytestreamsProxy bytestreamsProxy) {
 		super();
-		this.bytestreamsProxy = proxy;
+		this.bytestreamsProxy = bytestreamsProxy;
 	}
 
 	@Override

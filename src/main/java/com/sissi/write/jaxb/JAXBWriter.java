@@ -34,9 +34,9 @@ import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
  */
 public class JAXBWriter implements Writer {
 
-	private final static String PACKAGE = "com.sissi.protocol";
+	private final String PACKAGE = "com.sissi.protocol";
 
-	private final static String MAPPING_PROPERTY = "com.sun.xml.bind.namespacePrefixMapper";
+	private final String MAPPING_PROPERTY = "com.sun.xml.bind.namespacePrefixMapper";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 

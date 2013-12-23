@@ -1,11 +1,11 @@
 package com.sissi.pipeline.out;
 
 import com.sissi.context.JID;
-import com.sissi.context.JID.JIDBuilder;
+import com.sissi.context.JIDBuilder;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.Element;
 import com.sissi.ucenter.BlockContext;
-import com.sissi.write.Writer.Transfer;
+import com.sissi.write.Transfer;
 
 /**
  * @author kim 2013年12月6日

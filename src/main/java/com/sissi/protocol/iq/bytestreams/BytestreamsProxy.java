@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.iq.bytestreams;
+package com.sissi.protocol.iq.bytestreams;
 
 /**
  * @author kim 2013年12月18日

@@ -17,13 +17,13 @@ import com.sissi.ucenter.BlockContext;
  */
 public class MongoBlockContext implements BlockContext {
 
-	private final static String FIELD_BLOCK = "blocks";
+	private final String FIELD_BLOCK = "blocks";
 
-	private final static List<String> EMPYT_BLOCKS = new ArrayList<String>();
+	private final List<String> EMPYT_BLOCKS = new ArrayList<String>();
 
-	private final static DBObject FILTER_DEFAULT = BasicDBObjectBuilder.start("_id", 1).get();
+	private final DBObject FILTER_DEFAULT = BasicDBObjectBuilder.start("_id", 1).get();
 
-	private final static DBObject FILTER_BLOCKS = BasicDBObjectBuilder.start(FIELD_BLOCK, 1).get();
+	private final DBObject FILTER_BLOCKS = BasicDBObjectBuilder.start(FIELD_BLOCK, 1).get();
 
 	private final Log log = LogFactory.getLog(this.getClass());
 

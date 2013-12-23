@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Item;
 import com.sissi.read.Collector;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 
 /**
  * @author kim 2013-10-31

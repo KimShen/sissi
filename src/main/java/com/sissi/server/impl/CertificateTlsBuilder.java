@@ -1,7 +1,6 @@
 package com.sissi.server.impl;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.security.KeyStore;
 
 import javax.net.ssl.KeyManager;
@@ -21,9 +20,9 @@ import com.sissi.server.ServerTlsBuilder;
  */
 public class CertificateTlsBuilder implements ServerTlsBuilder {
 
-	private final static String PROTOCOL = "TLS";
+	private final String PROTOCOL = "TLS";
 
-	private final static String KEYSTORE_TYPE = "jks";
+	private final String KEYSTORE_TYPE = "jks";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -74,26 +73,5 @@ public class CertificateTlsBuilder implements ServerTlsBuilder {
 			IOUtils.closeQuietly(certificate);
 		}
 		return factory.getTrustManagers();
-	}
-
-	public static class Certificate {
-
-		private URL file;
-
-		private String password;
-
-		public Certificate(URL file, String password) {
-			super();
-			this.file = file;
-			this.password = password;
-		}
-
-		public URL getFile() {
-			return file;
-		}
-
-		public char[] getPassword() {
-			return password.toCharArray();
-		}
 	}
 }

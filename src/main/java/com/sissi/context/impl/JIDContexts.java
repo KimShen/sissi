@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
+import com.sissi.context.Status;
 import com.sissi.protocol.Element;
 
 /**
@@ -11,7 +12,7 @@ import com.sissi.protocol.Element;
  */
 public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
-	private static final long serialVersionUID = 1L;
+	private final static long serialVersionUID = 1L;
 
 	private final RuntimeException NOT_SUPPORT = new RuntimeException("MultiContexts not support this funciton");
 
@@ -47,27 +48,26 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	@Override
-	public JIDContext setStarttls() {
+	public JIDContext starttls() {
 		for (JIDContext each : this) {
-			each.setStarttls();
+			each.starttls();
 		}
 		return this;
 	}
 
-	@Override
-	public Boolean isStarttls() {
-		boolean isStarttls = true;
+	public Boolean isTls() {
+		boolean isTls = true;
 		for (JIDContext each : this) {
-			isStarttls = each.isStarttls();
+			isTls = each.isTls() ? isTls : false;
 		}
-		return isStarttls;
+		return isTls;
 	}
 
 	@Override
 	public Boolean isAuth() {
 		boolean isAuth = true;
 		for (JIDContext each : this) {
-			isAuth = each.isAuth();
+			isAuth = each.isAuth() ? isAuth : false;
 		}
 		return isAuth;
 	}
@@ -75,7 +75,7 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	public Boolean isBinding() {
 		boolean isBinding = true;
 		for (JIDContext each : this) {
-			isBinding = each.isBinding();
+			isBinding = each.isBinding() ? isBinding : false;
 		}
 		return isBinding;
 	}
@@ -84,9 +84,7 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	public Boolean close() {
 		boolean allClose = true;
 		for (JIDContext each : this) {
-			if (!each.close()) {
-				allClose = false;
-			}
+			allClose = each.close() ? allClose : true;
 		}
 		return allClose;
 	}

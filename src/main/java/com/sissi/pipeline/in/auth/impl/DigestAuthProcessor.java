@@ -15,13 +15,13 @@ import com.sissi.protocol.iq.auth.Success;
 /**
  * @author kim 2013年11月26日
  */
-public class AuthDigestProcessor extends ProxyProcessor {
+public class DigestAuthProcessor extends ProxyProcessor {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final SaslServers saslServers;
 
-	public AuthDigestProcessor(SaslServers saslServers) {
+	public DigestAuthProcessor(SaslServers saslServers) {
 		super();
 		this.saslServers = saslServers;
 	}

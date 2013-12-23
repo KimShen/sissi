@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.read.Collector;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 
 /**
  * @author kim 2013-10-31
@@ -68,7 +68,7 @@ public class Roster extends Protocol implements Collector {
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = "item", type = GroupItem.class) })
+	@XmlElements({ @XmlElement(name = GroupItem.NAME, type = GroupItem.class) })
 	public List<GroupItem> getItem() {
 		return item;
 	}
@@ -82,8 +82,8 @@ public class Roster extends Protocol implements Collector {
 		this.add(GroupItem.class.cast(protocol));
 	}
 
-	public Roster close() {
-		super.close();
+	public Roster clear() {
+		super.clear();
 		this.item = null;
 		return this;
 	}

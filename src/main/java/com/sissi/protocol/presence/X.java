@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.presence.x.XVCardPhoto;
 import com.sissi.read.Collector;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
@@ -40,7 +40,7 @@ public class X implements Fields, Field<String>, Collector {
 		this.add(Field.class.cast(ob));
 	}
 
-	@XmlElements({ @XmlElement(name = "photo", type = XVCardPhoto.class) })
+	@XmlElements({ @XmlElement(name = XVCardPhoto.NAME, type = XVCardPhoto.class) })
 	public List<Field<?>> getFields() {
 		return this.vCardFields.getFields();
 	}

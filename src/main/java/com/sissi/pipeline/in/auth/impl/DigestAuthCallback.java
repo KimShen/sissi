@@ -16,7 +16,7 @@ import javax.security.sasl.Sasl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.context.JID.JIDBuilder;
+import com.sissi.context.JIDBuilder;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.auth.AuthCallback;
 import com.sissi.pipeline.in.auth.SaslServers;
@@ -31,19 +31,19 @@ public class DigestAuthCallback implements AuthCallback {
 
 	public final static String MECHANISM = "DIGEST-MD5";
 
-	public final static String PROTOCOL = "XMPP";
+	public final String PROTOCOL = "XMPP";
 
-	public final static String QOP = "auth";
+	public final String QOP = "auth";
 
 	@SuppressWarnings("serial")
-	private final static Map<String, String> PROPS = new TreeMap<String, String>() {
+	private final Map<String, String> PROPS = new TreeMap<String, String>() {
 		{
 			put(Sasl.QOP, QOP);
 		}
 	};
 
 	@SuppressWarnings("serial")
-	private final Map<Class<? extends Callback>, Handler> handlers = new HashMap<Class<? extends Callback>, Handler>() {
+	private final Map<Class<? extends Callback>, Handler> HANDLERS = new HashMap<Class<? extends Callback>, Handler>() {
 		{
 			put(NameCallback.class, new NameCallbackHandler());
 			put(PasswordCallback.class, new PasswordCallbackHandler());
@@ -58,7 +58,7 @@ public class DigestAuthCallback implements AuthCallback {
 	private final JIDBuilder jidBuilder;
 
 	private final SaslServers saslServers;
-	
+
 	private final AuthAccessor authAccessor;
 
 	public DigestAuthCallback(String host, JIDBuilder jidBuilder, SaslServers saslServers, AuthAccessor authAccessor) {
@@ -99,7 +99,7 @@ public class DigestAuthCallback implements AuthCallback {
 
 		public void handle(final Callback[] callbacks) throws IOException, UnsupportedCallbackException {
 			for (Callback callback : callbacks) {
-				Handler handler = DigestAuthCallback.this.handlers.get(callback.getClass());
+				Handler handler = DigestAuthCallback.this.HANDLERS.get(callback.getClass());
 				if (handler != null) {
 					handler.handler(this.context, callback);
 				}

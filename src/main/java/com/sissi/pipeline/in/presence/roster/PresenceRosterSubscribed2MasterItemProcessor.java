@@ -8,6 +8,7 @@ import com.sissi.protocol.Protocol.Type;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster;
+import com.sissi.ucenter.RelationContext.Relation;
 import com.sissi.ucenter.RelationContext.RelationRoster;
 
 /**
@@ -23,7 +24,7 @@ public class PresenceRosterSubscribed2MasterItemProcessor extends ProxyProcessor
 	}
 
 	private Protocol prepare(JIDContext context, JID jid) {
-		RelationRoster relation = RelationRoster.class.cast(super.ourRelation(jid, context.getJid()));
-		return new IQ().add(new Roster(new GroupItem(context.getJid().asStringWithBare(), relation.getName(), Roster.Subscription.TO.toString(), relation.asGroup()))).setTo(jid).setType(Type.SET);
+		Relation relation = super.ourRelation(jid, context.getJid());
+		return new IQ().add(new Roster(new GroupItem(context.getJid().asStringWithBare(), relation.getName(), Roster.Subscription.TO.toString(), RelationRoster.class.cast(relation).asGroup()))).setTo(jid.getBare()).setType(Type.SET);
 	}
 }

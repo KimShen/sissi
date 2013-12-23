@@ -13,12 +13,12 @@ public class Session4FansProcessor extends ProxyProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		for (String relation : super.iSubscribedWho(context.getJid().getBare())) {
-			this.fromMyFans(context, super.build(relation));
+			this.fromMyFans(context.getJid(), super.build(relation));
 		}
 		return true;
 	}
 
-	private void fromMyFans(JIDContext context, JID from) {
-		super.broadcast(context.getJid().getBare(), from, context.getJid(), super.findOne(from).getStatus());
+	private void fromMyFans(JID to, JID from) {
+		super.broadcast(to, from, to, super.findOne(from).getStatus());
 	}
 }

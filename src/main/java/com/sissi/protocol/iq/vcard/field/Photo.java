@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.iq.vcard.VCard;
 import com.sissi.read.Collector;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.impl.BeanFields;
 
@@ -41,7 +41,7 @@ public class Photo implements Field<String>, Collector {
 		return NAME;
 	}
 
-	@XmlElements({ @XmlElement(name = "TYPE", type = Type.class), @XmlElement(name = "BINVAL", type = Binval.class) })
+	@XmlElements({ @XmlElement(name = Type.NAME, type = Type.class), @XmlElement(name = Binval.NAME, type = Binval.class) })
 	public List<Field<?>> getFields() {
 		return this.fields.getFields();
 	}

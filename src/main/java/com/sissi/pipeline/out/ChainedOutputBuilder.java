@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Output;
-import com.sissi.pipeline.Output.OutputBuilder;
+import com.sissi.pipeline.OutputBuilder;
 import com.sissi.protocol.Element;
-import com.sissi.write.Writer.Transfer;
+import com.sissi.write.Transfer;
 
 /**
  * @author kim 2013年12月6日
@@ -58,10 +58,11 @@ public class ChainedOutputBuilder implements OutputBuilder {
 		}
 
 		@Override
-		public void close() {
+		public Output close() {
 			for (Output output : this.outputs) {
 				output.close();
 			}
+			return this;
 		}
 	}
 }

@@ -140,9 +140,9 @@ public class SAXHandler extends DefaultHandler {
 
 	private static class MethodFinder extends HashMap<String, Method> {
 
-		private static final long serialVersionUID = 1L;
+		private final static long serialVersionUID = 1L;
 
-		private static final Class<?>[] TYPES = new Class[] { String.class };
+		private final static Class<?>[] TYPES = new Class[] { String.class };
 
 		private final Set<String> ignores = new HashSet<String>();
 

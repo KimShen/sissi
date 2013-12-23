@@ -88,7 +88,7 @@ public class Charsets {
      * 
      * @see <a href="http://docs.oracle.com/javase/6/docs/api/java/nio/charset/Charset.html">Standard charsets</a>
      */
-    public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
+    public final static Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
 
     /**
      * <p>
@@ -100,7 +100,7 @@ public class Charsets {
      * 
      * @see <a href="http://docs.oracle.com/javase/6/docs/api/java/nio/charset/Charset.html">Standard charsets</a>
      */
-    public static final Charset US_ASCII = Charset.forName("US-ASCII");
+    public final static Charset US_ASCII = Charset.forName("US-ASCII");
 
     /**
      * <p>
@@ -113,7 +113,7 @@ public class Charsets {
      * 
      * @see <a href="http://docs.oracle.com/javase/6/docs/api/java/nio/charset/Charset.html">Standard charsets</a>
      */
-    public static final Charset UTF_16 = Charset.forName("UTF-16");
+    public final static Charset UTF_16 = Charset.forName("UTF-16");
 
     /**
      * <p>
@@ -125,7 +125,7 @@ public class Charsets {
      * 
      * @see <a href="http://docs.oracle.com/javase/6/docs/api/java/nio/charset/Charset.html">Standard charsets</a>
      */
-    public static final Charset UTF_16BE = Charset.forName("UTF-16BE");
+    public final static Charset UTF_16BE = Charset.forName("UTF-16BE");
 
     /**
      * <p>
@@ -137,7 +137,7 @@ public class Charsets {
      * 
      * @see <a href="http://docs.oracle.com/javase/6/docs/api/java/nio/charset/Charset.html">Standard charsets</a>
      */
-    public static final Charset UTF_16LE = Charset.forName("UTF-16LE");
+    public final static Charset UTF_16LE = Charset.forName("UTF-16LE");
 
     /**
      * <p>
@@ -149,5 +149,5 @@ public class Charsets {
      * 
      * @see <a href="http://docs.oracle.com/javase/6/docs/api/java/nio/charset/Charset.html">Standard charsets</a>
      */
-    public static final Charset UTF_8 = Charset.forName("UTF-8");
+    public final static Charset UTF_8 = Charset.forName("UTF-8");
 }

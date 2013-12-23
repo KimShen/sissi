@@ -35,7 +35,7 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="auth.pro.digest" class="com.sissi.pipeline.in.auth.impl.AuthDigestProcessor" parent="global.pro.proxy">
+	<bean id="auth.pro.digest" class="com.sissi.pipeline.in.auth.impl.DigestAuthProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="auth.sasl" />
 	</bean>
 	<bean id="auth.pro.digest.chained" class="com.sissi.pipeline.in.ChainedProcessor">

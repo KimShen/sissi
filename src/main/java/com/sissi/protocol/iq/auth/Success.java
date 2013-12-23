@@ -11,7 +11,7 @@ import com.sissi.protocol.Protocol;
 @XmlRootElement
 public class Success extends Protocol {
 
-	public static final Success INSTANCE = new Success();
+	public final static Success INSTANCE = new Success();
 
 	private Success() {
 

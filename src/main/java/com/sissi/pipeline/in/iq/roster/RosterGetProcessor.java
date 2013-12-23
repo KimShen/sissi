@@ -17,7 +17,7 @@ public class RosterGetProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(IQ.class.cast(protocol.getParent().reply().setTo(context.getJid().getBare()).setType(Type.RESULT)).add(this.prepare(context, Roster.class.cast(protocol).close())));
+		context.write(IQ.class.cast(protocol.getParent().reply().setType(Type.RESULT)).add(this.prepare(context, Roster.class.cast(protocol).clear())));
 		return false;
 	}
 

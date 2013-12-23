@@ -15,7 +15,7 @@ import com.sissi.protocol.iq.disco.feature.Identity;
 import com.sissi.protocol.iq.disco.feature.Si;
 import com.sissi.protocol.iq.disco.feature.SiFileTransfer;
 import com.sissi.protocol.iq.disco.feature.VCard;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 
 /**
  * @author kim 2013年12月5日
@@ -28,19 +28,19 @@ public class Info extends Protocol {
 
 	public final static String NAME = "query";
 
-	private List<Feature> feature;
+	private List<Clause> clauses;
 
-	public Info add(Feature feature) {
-		if (this.feature == null) {
-			this.feature = new ArrayList<Feature>();
+	public Info add(Clause clause) {
+		if (this.clauses == null) {
+			this.clauses = new ArrayList<Clause>();
 		}
-		this.feature.add(feature);
+		this.clauses.add(clause);
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = "identity", type = Identity.class), @XmlElement(name = "feature", type = Blocking.class), @XmlElement(name = "feature", type = VCard.class), @XmlElement(name = "feature", type = Si.class), @XmlElement(name = "feature", type = SiFileTransfer.class), @XmlElement(name = "feature", type = Bytestreams.class) })
-	public List<Feature> getFeature() {
-		return feature;
+	@XmlElements({ @XmlElement(name = Identity.NAME, type = Identity.class), @XmlElement(name = Blocking.NAME, type = Blocking.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = SiFileTransfer.NAME, type = SiFileTransfer.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class) })
+	public List<Clause> getClause() {
+		return this.clauses;
 	}
 
 	@XmlAttribute

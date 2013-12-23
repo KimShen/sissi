@@ -6,9 +6,9 @@ import com.sissi.addressing.Addressing;
 import com.sissi.broadcast.PresenceBroadcast;
 import com.sissi.broadcast.ProtocolBraodcast;
 import com.sissi.context.JID;
-import com.sissi.context.JID.JIDBuilder;
+import com.sissi.context.JIDBuilder;
 import com.sissi.context.JIDContext;
-import com.sissi.context.JIDContext.Status;
+import com.sissi.context.Status;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.ucenter.RelationContext;
@@ -57,8 +57,8 @@ abstract public class ProxyProcessor implements Input {
 		return this.jidBuilder.build(username, resource);
 	}
 
-	public ProxyProcessor close(JIDContext context) {
-		this.addressing.close(context.getJid());
+	public ProxyProcessor leave(JIDContext context) {
+		this.addressing.leave(context.getJid());
 		return this;
 	}
 

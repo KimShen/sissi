@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 
-import com.sissi.context.JID.JIDBuilder;
+import com.sissi.context.JIDBuilder;
 import com.sissi.offline.DelayElement;
 import com.sissi.protocol.Element;
 

@@ -26,7 +26,7 @@ abstract class RegisterStoreProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return this.registerContext.register(this.filter(Register.class.cast(protocol))) ? true : this.iqProcessor.input(context, IQ.class.cast(protocol.getParent()).close().getParent());
+		return this.registerContext.register(this.filter(Register.class.cast(protocol))) ? true : this.iqProcessor.input(context, IQ.class.cast(protocol.getParent()).clear().getParent());
 	}
 
 	abstract protected Fields filter(Fields fields);

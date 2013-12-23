@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.codec.binary.Base64;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 
 /**
  * @author kim 2013年11月26日

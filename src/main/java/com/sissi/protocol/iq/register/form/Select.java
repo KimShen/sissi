@@ -39,7 +39,7 @@ public class Select extends Input {
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = "option", type = XOption.class) })
+	@XmlElements({ @XmlElement(name = XOption.NAME, type = XOption.class) })
 	public List<XOption> getOption() {
 		return option;
 	}

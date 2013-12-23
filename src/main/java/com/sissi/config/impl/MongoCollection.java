@@ -41,19 +41,17 @@ public class MongoCollection implements MongoConfig {
 		return this.collection;
 	}
 
+	private Object as(DBObject db, String key) {
+		return db != null ? db.get(key) : null;
+	}
+
 	public String asString(DBObject db, String key) {
-		if (db == null) {
-			return null;
-		}
-		Object value = db.get(key);
+		Object value = this.as(db, key);
 		return value != null ? value.toString() : null;
 	}
 
 	public Boolean asBoolean(DBObject db, String key) {
-		if (db == null) {
-			return null;
-		}
-		Object value = db.get(key);
+		Object value = this.as(db, key);
 		return value != null ? Boolean.class.cast(value) : Boolean.FALSE;
 	}
 }

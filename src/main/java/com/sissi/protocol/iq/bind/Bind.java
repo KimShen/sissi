@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.read.Collector;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 
 /**
  * @author Kim.shen 2013-10-20
@@ -62,8 +62,8 @@ public class Bind extends Protocol implements Collector {
 		return this.resource != null && this.resource.hasResource();
 	}
 
-	public Bind close() {
-		super.close();
+	public Bind clear() {
+		super.clear();
 		this.jid = null;
 		this.resource = null;
 		return this;

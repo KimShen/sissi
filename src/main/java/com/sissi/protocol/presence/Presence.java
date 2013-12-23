@@ -9,12 +9,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
-import com.sissi.context.JIDContext.StatusClauses;
+import com.sissi.context.StatusClauses;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.protocol.presence.x.XVCardPhoto;
 import com.sissi.read.Collector;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
@@ -24,24 +24,18 @@ import com.sissi.ucenter.field.impl.BeanFields;
  */
 @MappingMetadata(uri = Presence.XMLNS, localName = Presence.NAME)
 @XmlRootElement
-public class Presence extends Protocol implements com.sissi.context.JIDContext.Status, Fields, Collector {
+public class Presence extends Protocol implements com.sissi.context.Status, Fields, Collector {
 
 	public final static String XMLNS = "jabber:client";
 
 	public final static String NAME = "presence";
 
-	private final static String FIELD_X = "x";
-
-	private final static String FIELD_STATUS = "status";
-
-	private final static String FIELD_SHOW = "show";
-
 	public static enum Type {
 
-		SUBSCRIBE, SUBSCRIBED, UNSUBSCRIBE, UNSUBSCRIBED, UNAVAILABLE, ONLINE;
+		SUBSCRIBE, SUBSCRIBED, UNSUBSCRIBE, UNSUBSCRIBED, UNAVAILABLE, AVAILABLE;
 
 		public String toString() {
-			if (ONLINE == this) {
+			if (AVAILABLE == this) {
 				return null;
 			}
 			return super.toString().toLowerCase();
@@ -53,7 +47,7 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 
 		public static Type parse(String subscribe) {
 			if (subscribe == null) {
-				return ONLINE;
+				return AVAILABLE;
 			}
 			return Type.valueOf(subscribe.toUpperCase());
 		}
@@ -106,12 +100,12 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		return this.getType();
 	}
 
-	@XmlElement(name = "show")
+	@XmlElement(name = Show.NAME)
 	public String getShowAsText() {
 		return this.show != null ? this.show.getText() : null;
 	}
 
-	@XmlElement(name = "status")
+	@XmlElement(name = Status.NAME)
 	public String getStatusAsText() {
 		return this.status != null ? this.status.getText() : null;
 	}
@@ -148,13 +142,13 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = "x", type = X.class) })
+	@XmlElements({ @XmlElement(name = X.NAME, type = X.class) })
 	public List<Field<?>> getFields() {
 		return this.fields.getFields();
 	}
 
-	public Presence close() {
-		super.close();
+	public Presence clear() {
+		super.clear();
 		super.setType((String) null);
 		this.show = null;
 		this.status = null;
@@ -170,13 +164,13 @@ public class Presence extends Protocol implements com.sissi.context.JIDContext.S
 	@Override
 	public void set(String localName, Object ob) {
 		switch (localName) {
-		case FIELD_X:
+		case X.NAME:
 			this.add(Field.class.cast(ob));
 			break;
-		case FIELD_STATUS:
+		case Status.NAME:
 			this.setStatus((Status) ob);
 			break;
-		case FIELD_SHOW:
+		case Show.NAME:
 			this.setShow((Show) ob);
 			break;
 		}

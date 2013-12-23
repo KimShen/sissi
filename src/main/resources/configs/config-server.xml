@@ -14,6 +14,7 @@
 	<bean id="closer.4self" class="com.sissi.server.impl.Offline4SelfsServerCloser" />
 	<bean id="closer.2fans" class="com.sissi.server.impl.Offline2FansServerCloser">
 		<constructor-arg ref="broadcast.protocol.fans" />
+		<constructor-arg ref="addressing" />
 	</bean>
 	<bean id="closer.chained" class="com.sissi.server.impl.ChainedServerCloser">
 		<constructor-arg>
@@ -26,20 +27,20 @@
 
 	<bean id="builder.tls" class="com.sissi.server.impl.CertificateTlsBuilder">
 		<constructor-arg index="0">
-			<bean class="com.sissi.server.impl.CertificateTlsBuilder$Certificate">
+			<bean class="com.sissi.server.impl.Certificate">
 				<constructor-arg index="0" value="${tls.key.file}" />
 				<constructor-arg index="1" value="${tls.key.password}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg index="1">
-			<bean class="com.sissi.server.impl.CertificateTlsBuilder$Certificate">
+			<bean class="com.sissi.server.impl.Certificate">
 				<constructor-arg index="0" value="${tls.trust.file}" />
 				<constructor-arg index="1" value="${tls.trust.password}" />
 			</bean>
 		</constructor-arg>
 	</bean>
 
-	<bean id="builder.handler.private" class="com.sissi.server.impl.PrivateServerHandlerBuilder">
+	<bean id="builder.handler.main" class="com.sissi.server.impl.PrivateServerHandlerBuilder">
 		<constructor-arg ref="reader" />
 		<constructor-arg ref="addressing" />
 		<constructor-arg ref="finder.input" />
@@ -52,31 +53,37 @@
 	</bean>
 	<bean id="builder.handler.proxy" class="com.sissi.server.impl.Socks5ProxyServerHandlerBuilder">
 		<constructor-arg>
-			<bean class="com.sissi.server.impl.BridgeExchangerServerHandler" />
-		</constructor-arg>
-		<constructor-arg>
 			<bean class="com.sissi.server.impl.BridgeExchangerContext" />
 		</constructor-arg>
+		<constructor-arg value="exchanger" />
 	</bean>
 
 	<bean id="server.loop.main" class="com.sissi.server.impl.NioServerLoopGroup" />
 	<bean id="server.loop.proxy" class="com.sissi.server.impl.NioServerLoopGroup" />
 
-	<bean id="server.pipeline.private" class="com.sissi.server.impl.PrivateServerHandlerChannelInitializer">
-		<constructor-arg ref="builder.handler.private" />
+	<bean id="server.pipeline.main" class="com.sissi.server.impl.PrivateServerHandlerChannelInitializer">
+		<constructor-arg ref="builder.handler.main" />
 	</bean>
 	<bean id="server.pipeline.proxy" class="com.sissi.server.impl.Socks5ProxyServerHandlerChannelInitializer">
 		<constructor-arg ref="builder.handler.proxy" />
 	</bean>
 
-	<bean id="server.start.private" class="com.sissi.server.impl.ConfigServerStarter">
+	<bean id="server.start.main" class="com.sissi.server.impl.ConfigedServerStarter">
 		<constructor-arg value="${global.private.port}" />
 		<constructor-arg ref="server.loop.main" />
-		<constructor-arg ref="server.pipeline.private" />
+		<constructor-arg ref="server.pipeline.main" />
 	</bean>
-	<bean id="server.start.proxy" class="com.sissi.server.impl.ConfigServerStarter">
+	<bean id="server.start.proxy" class="com.sissi.server.impl.ConfigedServerStarter">
 		<constructor-arg value="${global.proxy.port}" />
 		<constructor-arg ref="server.loop.proxy" />
 		<constructor-arg ref="server.pipeline.proxy" />
+	</bean>
+	<bean id="server.start" class="com.sissi.server.impl.ChainedServerStarter">
+		<constructor-arg>
+			<util:list>
+				<ref bean="server.start.main" />
+				<ref bean="server.start.proxy" />
+			</util:list>
+		</constructor-arg>
 	</bean>
 </beans>

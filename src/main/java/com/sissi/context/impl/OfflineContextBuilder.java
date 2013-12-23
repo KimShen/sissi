@@ -2,10 +2,10 @@ package com.sissi.context.impl;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
-import com.sissi.context.JIDContext.JIDContextBuilder;
-import com.sissi.context.JIDContext.JIDContextParam;
-import com.sissi.context.JIDContext.Status;
-import com.sissi.context.JIDContext.StatusClauses;
+import com.sissi.context.JIDContextBuilder;
+import com.sissi.context.JIDContextParam;
+import com.sissi.context.Status;
+import com.sissi.context.StatusClauses;
 import com.sissi.offline.DelayElementBox;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.presence.Presence.Type;
@@ -15,7 +15,9 @@ import com.sissi.protocol.presence.Presence.Type;
  */
 public class OfflineContextBuilder implements JIDContextBuilder {
 
-	private final static Integer DEFAULT_PRIORITY = 0;
+	private final Integer DEFAULT_PRIORITY = 0;
+
+	private final Status OFFLINE_STATUS = new OfflineStatus();
 
 	private final DelayElementBox delayElementBox;
 
@@ -71,29 +73,8 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public JIDContext write(Element element) {
-			OfflineContextBuilder.this.delayElementBox.add(element);
-			return this;
-		}
-
-		@Override
-		public JIDContext setStarttls() {
-			return this;
-		}
-
-		@Override
-		public Boolean isStarttls() {
-			return false;
-		}
-		
-		@Override
-		public Boolean close() {
-			return false;
-		}
-
-		@Override
 		public Status getStatus() {
-			return OfflineStatus.OFFLINE;
+			return OFFLINE_STATUS;
 		}
 
 		@Override
@@ -103,19 +84,39 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public Integer getPriority() {
-			return OfflineContextBuilder.DEFAULT_PRIORITY;
+			return DEFAULT_PRIORITY;
+		}
+
+		@Override
+		public JIDContext starttls() {
+			return this;
+		}
+
+		public Boolean isTls() {
+			return false;
+		}
+
+		@Override
+		public Boolean close() {
+			return false;
+		}
+
+		@Override
+		public JIDContext write(Element element) {
+			OfflineContextBuilder.this.delayElementBox.add(element);
+			return this;
 		}
 	}
 
-	private static class OfflineStatus implements Status {
+	private class OfflineStatus implements Status {
 
-		private final static Status OFFLINE = new OfflineStatus();
+		private final StatusClauses EMPTY_CLAUSE = new EmptyClauses();
 
 		private OfflineStatus() {
 
 		}
 
-		public Status close() {
+		public Status clear() {
 			return this;
 		}
 
@@ -126,13 +127,11 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public StatusClauses getStatus() {
-			return EmptyClauses.EMPTY;
+			return EMPTY_CLAUSE;
 		}
 	}
 
-	private static class EmptyClauses implements StatusClauses {
-
-		private final static StatusClauses EMPTY = new EmptyClauses();
+	private class EmptyClauses implements StatusClauses {
 
 		private EmptyClauses() {
 

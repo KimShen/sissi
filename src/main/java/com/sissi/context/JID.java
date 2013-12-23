@@ -9,20 +9,13 @@ public interface JID {
 
 	public String getHost();
 
-	public JID setResource(String resource);
-	
 	public String getResource();
+
+	public JID setResource(String resource);
 
 	public JID getBare();
 
 	public String asString();
 
 	public String asStringWithBare();
-
-	public interface JIDBuilder {
-
-		public JID build(String jid);
-
-		public JID build(String username, String resource);
-	}
 }

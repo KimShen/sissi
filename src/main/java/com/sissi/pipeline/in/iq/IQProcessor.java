@@ -38,6 +38,6 @@ public class IQProcessor implements Input {
 
 	private Protocol prepare(Protocol protocol) {
 		Protocol response = protocol.getParent().reply().setType(this.type);
-		return this.clear ? response.close() : response;
+		return this.clear ? response.clear() : response;
 	}
 }

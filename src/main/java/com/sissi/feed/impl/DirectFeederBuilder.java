@@ -2,8 +2,8 @@ package com.sissi.feed.impl;
 
 import com.sissi.context.JIDContext;
 import com.sissi.feed.Feeder;
-import com.sissi.feed.Feeder.FeederBuilder;
-import com.sissi.pipeline.Input.InputFinder;
+import com.sissi.feed.FeederBuilder;
+import com.sissi.pipeline.InputFinder;
 import com.sissi.protocol.Protocol;
 
 /**

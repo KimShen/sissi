@@ -2,7 +2,7 @@ package com.sissi.offline.impl;
 
 import java.util.Map;
 
-import com.sissi.context.JID.JIDBuilder;
+import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.protocol.presence.Presence;
@@ -25,8 +25,7 @@ public class DelayPresence extends DelayProtocol {
 	@Override
 	public Element read(Map<String, Object> element) {
 		Presence presence = (Presence) super.based(element, new Presence());
-		presence.setDelay(new Delay(super.hit, presence.getFrom(), element.get("delay").toString()));
-		return presence;
+		return presence.setDelay(new Delay(super.hit, presence.getFrom(), element.get("delay").toString()));
 	}
 
 	public Boolean isSupport(Element element) {
@@ -40,6 +39,6 @@ public class DelayPresence extends DelayProtocol {
 
 	private boolean isAcceptStatus(Element element) {
 		Type type = Presence.Type.parse(element.getType());
-		return type != Presence.Type.ONLINE && type != Presence.Type.UNAVAILABLE;
+		return type != Presence.Type.AVAILABLE && type != Presence.Type.UNAVAILABLE;
 	}
 }

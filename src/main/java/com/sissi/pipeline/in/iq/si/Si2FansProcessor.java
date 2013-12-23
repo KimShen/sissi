@@ -7,11 +7,12 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013年12月13日
  */
-public class SiProcessor extends ProxyProcessor {
+public class Si2FansProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.broadcast(super.build(protocol.getParent().getTo()), protocol.getParent().setFrom(context.getJid().asStringWithBare()));
+		JIDContext target = super.addressing.findOne(super.build(protocol.getParent().getTo()));
+		target.write(protocol.getParent());
 		return true;
 	}
 }

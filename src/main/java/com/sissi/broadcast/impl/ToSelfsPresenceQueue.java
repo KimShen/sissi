@@ -2,9 +2,10 @@
 
 import com.sissi.addressing.Addressing;
 import com.sissi.broadcast.PresenceBroadcast;
+import com.sissi.broadcast.PresenceBuilder;
 import com.sissi.context.JID;
-import com.sissi.context.JIDContext.Status;
-import com.sissi.context.JIDContext.StatusClauses;
+import com.sissi.context.Status;
+import com.sissi.context.StatusClauses;
 import com.sissi.protocol.presence.Presence;
 
 /**
@@ -14,6 +15,11 @@ public class ToSelfsPresenceQueue extends ToSelfsProtocolQueue implements Presen
 
 	private final PresenceBuilder presenceBuilder;
 
+	public ToSelfsPresenceQueue(Addressing addressing, PresenceBuilder presenceBuilder) {
+		super(addressing);
+		this.presenceBuilder = presenceBuilder;
+	}
+	
 	public ToSelfsPresenceQueue(Addressing addressing) {
 		super(addressing);
 		this.presenceBuilder = new DefaultPresenceBuilder();

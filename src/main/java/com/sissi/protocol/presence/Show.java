@@ -2,14 +2,16 @@ package com.sissi.protocol.presence;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 
 /**
  * @author kim 2013-11-2
  */
-@MappingMetadata(uri = "jabber:client", localName = "show")
+@MappingMetadata(uri = Presence.NAME, localName = Show.NAME)
 @XmlRootElement
-public class Show{
+public class Show {
+
+	public final static String NAME = "show";
 
 	private String text;
 

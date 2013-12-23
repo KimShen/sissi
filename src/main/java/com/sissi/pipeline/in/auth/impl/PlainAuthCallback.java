@@ -7,7 +7,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.context.JID.JIDBuilder;
+import com.sissi.context.JIDBuilder;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.auth.AuthCallback;
 import com.sissi.protocol.iq.auth.Auth;
@@ -21,7 +21,7 @@ public class PlainAuthCallback implements AuthCallback {
 
 	public final static String MECHANISM = "PLAIN";
 
-	private final static Base64 base64 = new Base64();
+	private final Base64 base64 = new Base64();
 
 	private final Log log = LogFactory.getLog(this.getClass());
 

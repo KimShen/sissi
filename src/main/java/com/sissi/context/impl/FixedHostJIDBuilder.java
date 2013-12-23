@@ -1,20 +1,23 @@
 package com.sissi.context.impl;
 
 import com.sissi.context.JID;
-import com.sissi.context.JID.JIDBuilder;
+import com.sissi.context.JIDBuilder;
 
 /**
  * @author kim 2013-11-12
  */
+/**
+ * @author kim 2013年12月23日
+ */
 public class FixedHostJIDBuilder implements JIDBuilder {
 
-	private final static String NONE_NAME = "NONE";
+	private final String NONE_NAME = "_NA";
 
-	private final static String CONNECT_AT = "@";
+	private final String CONNECT_AT = "@";
 
-	private final static String CONNECT_RESOURCE = "/";
+	private final String CONNECT_RESOURCE = "/";
 
-	private final None none = new None();
+	private final None NONE_USER = new None();
 
 	private final String host;
 
@@ -25,7 +28,7 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 
 	@Override
 	public JID build(String jid) {
-		return jid != null ? new User(jid) : none;
+		return jid != null ? new User(jid) : NONE_USER;
 	}
 
 	public JID build(String username, String resource) {
@@ -34,9 +37,16 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 
 	private class None implements JID {
 
+		private final String toString;
+
+		public None() {
+			super();
+			this.toString = this.getUser() + FixedHostJIDBuilder.this.CONNECT_AT + this.getHost();
+		}
+
 		@Override
 		public String getUser() {
-			return FixedHostJIDBuilder.NONE_NAME;
+			return FixedHostJIDBuilder.this.NONE_NAME;
 		}
 
 		@Override
@@ -60,7 +70,7 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 
 		@Override
 		public String asString() {
-			return this.getUser() + FixedHostJIDBuilder.CONNECT_AT + this.getHost();
+			return this.toString;
 		}
 
 		@Override
@@ -78,18 +88,19 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 		private String resource;
 
 		private User bareUser;
-
+		
 		private User() {
 
 		}
 
 		private User(String jid) {
 			super();
-			int startHost = jid.indexOf(FixedHostJIDBuilder.CONNECT_AT);
-			this.user = startHost == -1 ? null : jid.substring(0, startHost);
-			int startResource = jid.indexOf(FixedHostJIDBuilder.CONNECT_RESOURCE);
-			this.host = startResource == -1 ? jid.substring(startHost != -1 ? startHost + 1 : 0) : jid.substring(startHost + 1, startResource);
-			this.resource = startResource == -1 ? null : jid.substring(startResource + 1);
+			StringBuffer buffer = new StringBuffer(jid);
+			int startHost = buffer.indexOf(FixedHostJIDBuilder.this.CONNECT_AT);
+			this.user = startHost == -1 ? null : buffer.substring(0, startHost);
+			int startResource = buffer.indexOf(FixedHostJIDBuilder.this.CONNECT_RESOURCE);
+			this.host = startResource == -1 ? buffer.substring(startHost != -1 ? startHost + 1 : 0) : buffer.substring(startHost + 1, startResource);
+			this.resource = startResource == -1 ? null : buffer.substring(startResource + 1);
 		}
 
 		private User(String user, String resource) {
@@ -129,11 +140,11 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 		}
 
 		public String asString() {
-			return this.asStringWithBare() + (this.resource != null ? FixedHostJIDBuilder.CONNECT_RESOURCE + this.resource : "");
+			return this.asStringWithBare() + (this.resource != null ? FixedHostJIDBuilder.this.CONNECT_RESOURCE + this.resource : "");
 		}
 
 		public String asStringWithBare() {
-			return (this.user != null ? this.user + FixedHostJIDBuilder.CONNECT_AT : "") + this.host;
+			return (this.user != null ? this.user + FixedHostJIDBuilder.this.CONNECT_AT : "") + this.host;
 		}
 	}
 }

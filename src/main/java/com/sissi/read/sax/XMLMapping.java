@@ -8,13 +8,14 @@ import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.ScanUtil;
 import com.sissi.read.Mapping;
+import com.sissi.read.MappingMetadata;
 
 /**
  * @author kim 2013-10-25
  */
 public class XMLMapping implements Mapping {
 
-	private final static String PACKAGE = "com.sissi.protocol";
+	private final String PACKAGE = "com.sissi.protocol";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 

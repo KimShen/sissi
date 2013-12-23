@@ -13,7 +13,7 @@ import com.sissi.protocol.iq.disco.Items;
 @XmlType(namespace = Items.XMLNS)
 @XmlRootElement(name = Item.NAME)
 public class ItemClause extends Item implements Feature {
-
+	
 	public ItemClause() {
 		super();
 	}

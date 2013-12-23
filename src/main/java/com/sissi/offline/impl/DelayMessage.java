@@ -2,7 +2,7 @@ package com.sissi.offline.impl;
 
 import java.util.Map;
 
-import com.sissi.context.JID.JIDBuilder;
+import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.message.Body;
 import com.sissi.protocol.message.Message;

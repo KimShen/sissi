@@ -9,16 +9,16 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JIDContext;
-import com.sissi.context.JIDContext.Status;
-import com.sissi.context.JIDContext.StatusBuilder;
-import com.sissi.context.JIDContext.StatusClauses;
+import com.sissi.context.Status;
+import com.sissi.context.StatusBuilder;
+import com.sissi.context.StatusClauses;
 
 /**
  * @author kim 2013-11-21
  */
 public class MongoStatusBuilder implements StatusBuilder {
 
-	private final static DBObject DEFAULT_SORTER = new BasicDBObject("priority", 1);
+	private final DBObject DEFAULT_SORTER = new BasicDBObject("priority", 1);
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -35,26 +35,30 @@ public class MongoStatusBuilder implements StatusBuilder {
 	}
 
 	private DBObject get(JIDContext context) {
-		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).get();
-		this.log.debug("Query: " + query);
-		DBCursor cursor = this.config.collection().find(query).sort(DEFAULT_SORTER).limit(1);
+		DBCursor cursor = this.config.collection().find(this.buildQuery(context)).sort(DEFAULT_SORTER).limit(1);
 		return cursor.hasNext() ? cursor.next() : null;
 	}
 
 	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
-		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).get();
-		DBObject upsert = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add("type", type).add("show", show).add("status", status).add("avator", avator).add("priority", context.getPriority()).get()).get();
-		this.log.debug("Query: " + query);
-		this.log.debug("Upsert: " + upsert);
-		this.config.collection().update(query, upsert, true, false);
+		this.config.collection().update(this.buildQuery(context), this.buildUpsert(context, type, show, status, avator), true, false);
 		return this;
 	}
 
 	private MongoStatusBuilder remove(JIDContext context) {
+		this.config.collection().remove(this.buildQuery(context));
+		return this;
+	}
+
+	private DBObject buildQuery(JIDContext context) {
 		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).get();
 		this.log.debug("Query: " + query);
-		this.config.collection().remove(query);
-		return this;
+		return query;
+	}
+
+	private DBObject buildUpsert(JIDContext context, String type, String show, String status, String avator) {
+		DBObject upsert = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add("type", type).add("show", show).add("status", status).add("avator", avator).add("priority", context.getPriority()).get()).get();
+		this.log.debug("Upsert: " + upsert);
+		return upsert;
 	}
 
 	private class MongoStatus implements Status {
@@ -66,7 +70,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 			this.context = context;
 		}
 
-		public Status close() {
+		public Status clear() {
 			MongoStatusBuilder.this.remove(this.context);
 			this.context = null;
 			return this;

@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Error;
+import com.sissi.protocol.ErrorDetail;
 import com.sissi.protocol.error.detail.NotAcceptable;
 
 /**
@@ -23,7 +24,7 @@ public class ServerError implements Error {
 
 	private String type;
 
-	private List<Detail> details;
+	private List<ErrorDetail> details;
 
 	public ServerError() {
 		super();
@@ -56,16 +57,16 @@ public class ServerError implements Error {
 		return this;
 	}
 
-	public ServerError add(Detail detail) {
+	public ServerError add(ErrorDetail detail) {
 		if (this.details == null) {
-			this.details = new ArrayList<Detail>();
+			this.details = new ArrayList<ErrorDetail>();
 		}
 		this.details.add(detail);
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = "not-acceptable", type = NotAcceptable.class) })
-	public List<Detail> getDetails() {
+	@XmlElements({ @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class) })
+	public List<ErrorDetail> getDetails() {
 		return details;
 	}
 }

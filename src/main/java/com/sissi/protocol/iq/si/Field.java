@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.iq.data.XOption;
 import com.sissi.read.Collector;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 
 /**
  * @author kim 2013年12月13日
@@ -29,7 +29,7 @@ public class Field implements Collector {
 
 	private List<XOption> options;
 
-	@XmlElements({ @XmlElement(name = "option", type = XOption.class) })
+	@XmlElements({ @XmlElement(name = XOption.NAME, type = XOption.class) })
 	public List<XOption> getOptions() {
 		return options;
 	}

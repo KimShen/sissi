@@ -11,7 +11,7 @@ public class BindAddressCloseProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.close(context);
+		super.leave(context);
 		return true;
 	}
 }

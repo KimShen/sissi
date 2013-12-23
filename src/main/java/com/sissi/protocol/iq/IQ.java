@@ -21,7 +21,7 @@ import com.sissi.protocol.iq.session.Session;
 import com.sissi.protocol.iq.si.Si;
 import com.sissi.protocol.iq.vcard.VCard;
 import com.sissi.read.Collector;
-import com.sissi.read.Mapping.MappingMetadata;
+import com.sissi.read.MappingMetadata;
 
 /**
  * @author Kim.shen 2013-10-16
@@ -38,7 +38,7 @@ public class IQ extends Protocol implements Collector {
 
 	private List<Protocol> protocols;
 
-	@XmlElements({ @XmlElement(name = "si", type = Si.class), @XmlElement(name = "vCard", type = VCard.class), @XmlElement(name = "bind", type = Bind.class), @XmlElement(name = "session", type = Session.class), @XmlElement(name = "query", type = Roster.class), @XmlElement(name = "query", type = Register.class), @XmlElement(name = "query", type = Info.class), @XmlElement(name = "query", type = Items.class), @XmlElement(name = "query", type = Bytestreams.class), @XmlElement(name = "block", type = Blocked.class), @XmlElement(name = "unblock", type = UnBlock.class), @XmlElement(name = "blocklist", type = BlockList.class) })
+	@XmlElements({ @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = Info.NAME, type = Info.class), @XmlElement(name = Items.NAME, type = Items.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
 	public List<Protocol> getProtocols() {
 		return protocols;
 	}
@@ -55,7 +55,7 @@ public class IQ extends Protocol implements Collector {
 		return this.protocols != null ? this.protocols : EMPTY_CHILDREN;
 	}
 
-	public IQ close() {
+	public IQ clear() {
 		this.protocols = null;
 		return this;
 	}

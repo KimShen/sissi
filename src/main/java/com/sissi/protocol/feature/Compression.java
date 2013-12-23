@@ -6,15 +6,19 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Feature;
 
 /**
  * @author kim 2013年12月17日
  */
+@XmlRootElement
 public class Compression implements Feature {
 
 	public final static Compression FEATURE = new Compression("zlib");
+
+	public final static String NAME = "compression";
 
 	private final static String XMLNS = "http://jabber.org/features/compress";
 

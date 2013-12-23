@@ -1,20 +1,16 @@
 package com.sissi.pipeline.in.iq.block;
 
 import com.sissi.context.JIDContext;
-import com.sissi.pipeline.in.ProxyProcessor;
-import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.block.UnBlock;
+import com.sissi.context.Status;
 
 /**
  * @author kim 2013年12月6日
  */
-public class UnBlock2FansPresenceProcessor extends ProxyProcessor {
+public class UnBlock2FansPresenceProcessor extends Block2FansPresenceProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		JIDContext contacter = super.findOne(super.build(UnBlock.class.cast(protocol).getItem().getJid()));
-		super.broadcast(contacter.getJid(), context.getJid(), contacter.getJid(), context.getStatus());
-		return true;
+	protected Status build(JIDContext context) {
+		return context.getStatus();
 	}
 
 }

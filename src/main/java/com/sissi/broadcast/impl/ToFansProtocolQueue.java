@@ -3,7 +3,7 @@ package com.sissi.broadcast.impl;
 import com.sissi.addressing.Addressing;
 import com.sissi.broadcast.ProtocolBraodcast;
 import com.sissi.context.JID;
-import com.sissi.context.JID.JIDBuilder;
+import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.Protocol;
 import com.sissi.ucenter.RelationContext;
 
@@ -29,7 +29,7 @@ public class ToFansProtocolQueue implements ProtocolBraodcast {
 	public ToFansProtocolQueue broadcast(JID jid, Protocol protocol) {
 		for (String each : this.relationContext.whoSubscribedMe(jid)) {
 			JID to = this.jidBuilder.build(each);
-			this.addressing.find(to).write(protocol.setTo(to.asStringWithBare()));
+			this.addressing.find(to).write(protocol.setTo(to));
 		}
 		return this;
 	}

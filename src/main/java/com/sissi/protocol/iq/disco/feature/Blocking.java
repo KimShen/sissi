@@ -13,6 +13,8 @@ public class Blocking implements Feature {
 
 	public final static Blocking FEATURE = new Blocking();
 
+	public final static String NAME = "feature";
+
 	private final static String VAR = "urn:xmpp:blocking";
 
 	private Blocking() {

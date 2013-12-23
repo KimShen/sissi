@@ -1,6 +1,5 @@
 package com.sissi.pipeline.in;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.sissi.context.JIDContext;
@@ -12,15 +11,9 @@ import com.sissi.protocol.Protocol;
  */
 public class ChainedProcessor implements Input {
 
-	private final static List<Input> EMPTY = new ArrayList<Input>();
-
 	private final Boolean doNext;
 
 	private final List<Input> processors;
-
-	public ChainedProcessor() {
-		this(Boolean.FALSE, EMPTY);
-	}
 
 	public ChainedProcessor(List<Input> processors) {
 		this(Boolean.FALSE, processors);

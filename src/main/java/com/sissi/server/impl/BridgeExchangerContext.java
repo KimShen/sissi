@@ -1,7 +1,7 @@
 package com.sissi.server.impl;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.sissi.server.Exchanger;
 import com.sissi.server.ExchangerContext;
@@ -11,7 +11,7 @@ import com.sissi.server.ExchangerContext;
  */
 public class BridgeExchangerContext implements ExchangerContext {
 
-	private final Map<String, Exchanger> cached = new HashMap<String, Exchanger>();
+	private final Map<String, Exchanger> cached = new ConcurrentHashMap<String, Exchanger>();
 
 	@Override
 	public ExchangerContext set(String host, Exchanger exchanger) {
@@ -25,7 +25,7 @@ public class BridgeExchangerContext implements ExchangerContext {
 	}
 
 	@Override
-	public Boolean contains(String host) {
-		return this.cached.containsKey(host);
+	public Boolean isTarget(String host) {
+		return !this.cached.containsKey(host);
 	}
 }

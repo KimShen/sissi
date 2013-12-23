@@ -5,18 +5,20 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="bytestreams.proxy" class="com.sissi.pipeline.in.iq.bytestreams.BytestreamsProxy">
-		<constructor-arg index="0" value="${bytestreams.proxy.user}" />
+	<bean id="bytestreams.proxy" class="com.sissi.protocol.iq.bytestreams.BytestreamsProxy">
+		<constructor-arg index="0" value="${bytestreams.proxy.jid}" />
 		<constructor-arg index="1" value="${bytestreams.proxy.name}" />
 		<constructor-arg index="2" value="${bytestreams.proxy.host}" />
-		<constructor-arg index="3" value="${global.proxy.port}" />
+		<constructor-arg index="3" value="${bytestreams.proxy.port}" />
 	</bean>
 
-	<bean id="bytestreams.pro.used" class="com.sissi.pipeline.in.iq.bytestreams.BytestreamsUsedProcessor" parent="global.pro.proxy" />
-	<bean id="bytestreams.pro.search" class="com.sissi.pipeline.in.iq.bytestreams.BytestreamsSearchProcessor">
+	<bean id="bytestreams.pro.2proxy" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ProxyProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
-	<bean id="bytestreams.pro.forward" class="com.sissi.pipeline.in.iq.bytestreams.BytestreamsForwardProcessor" parent="global.pro.proxy" />
+	<bean id="bytestreams.pro.2server" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ServerProcessor">
+		<constructor-arg ref="bytestreams.proxy" />
+	</bean>
+	<bean id="bytestreams.pro.2fans" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2FansProcessor" parent="global.pro.proxy" />
 	<bean id="bytestreams.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.iq.bytestreams" />
 	</bean>
@@ -24,10 +26,9 @@
 	<bean id="finder.iq.bytestreams" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="bytestreams.condition.used" />
-				<ref bean="bytestreams.condition.search" />
-				<ref bean="bytestreams.condition.forward" />
-				<ref bean="iq.condition.matchall" />
+				<ref bean="bytestreams.condition.2server" />
+				<ref bean="bytestreams.condition.2proxy" />
+				<ref bean="bytestreams.condition.2fans" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -40,26 +41,26 @@
 		</constructor-arg>
 		<constructor-arg ref="bytestreams.pro.fork" />
 	</bean>
-	<bean id="bytestreams.condition.search" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="bytestreams.condition.2server" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.bytestreams.BytestreamsSearchMatcher">
+			<bean class="com.sissi.pipeline.in.iq.ToServerMatcher">
+				<constructor-arg value="${global.host}" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="bytestreams.pro.2server" />
+	</bean>
+	<bean id="bytestreams.condition.2proxy" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
 				<constructor-arg ref="bytestreams.proxy" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="bytestreams.pro.search" />
+		<constructor-arg ref="bytestreams.pro.2proxy" />
 	</bean>
-	<bean id="bytestreams.condition.forward" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="bytestreams.condition.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.ClassMatcher">
-				<constructor-arg value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
-			</bean>
+			<bean class="com.sissi.pipeline.in.AnyMatcher" />
 		</constructor-arg>
-		<constructor-arg ref="bytestreams.pro.forward" />
-	</bean>
-	<bean id="bytestreams.condition.used" class="com.sissi.pipeline.in.PairCondition">
-		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.bytestreams.BytestreamsUsedMatcher" />
-		</constructor-arg>
-		<constructor-arg ref="bytestreams.pro.used" />
+		<constructor-arg ref="bytestreams.pro.2fans" />
 	</bean>
 </beans>

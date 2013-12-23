@@ -12,7 +12,7 @@ import com.sissi.commons.Interval;
 import com.sissi.commons.Runner;
 import com.sissi.feed.Feeder;
 import com.sissi.looper.Looper;
-import com.sissi.looper.Looper.LooperBuilder;
+import com.sissi.looper.LooperBuilder;
 import com.sissi.protocol.Protocol;
 
 /**
@@ -64,8 +64,8 @@ public class PrivateLooperBuilder implements LooperBuilder {
 					}
 					this.getAndFeed();
 				} catch (Exception e) {
-					if (PrivateLooperBuilder.this.log.isErrorEnabled()) {
-						PrivateLooperBuilder.this.log.error(e);
+					if (PrivateLooperBuilder.this.log.isDebugEnabled()) {
+						PrivateLooperBuilder.this.log.debug(e);
 						e.printStackTrace();
 					}
 				}

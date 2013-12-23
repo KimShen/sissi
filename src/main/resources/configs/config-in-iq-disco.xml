@@ -7,7 +7,7 @@
 
 	<bean id="disco.pro.info.2server" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2ServerProcessor" />
 	<bean id="disco.pro.info.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2ProxyProcessor" />
-	<bean id="disco.pro.info.2fans" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2FansProcessor" />
+	<bean id="disco.pro.info.2fans" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2FansProcessor" parent="global.pro.proxy" />
 	<bean id="disco.pro.info.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.disco.info" />
 	</bean>
@@ -18,7 +18,7 @@
 	<bean id="disco.pro.items.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoItems2ProxyProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
-	<bean id="disco.pro.items.2fans" class="com.sissi.pipeline.in.iq.disco.DiscoItems2FansProcessor" />
+	<bean id="disco.pro.items.2fans" class="com.sissi.pipeline.in.iq.disco.DiscoItems2FansProcessor" parent="global.pro.proxy" />
 	<bean id="disco.pro.items.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.disco.items" />
 	</bean>
@@ -29,7 +29,6 @@
 				<ref bean="disco.condition.info.2server" />
 				<ref bean="disco.condition.info.2proxy" />
 				<ref bean="disco.condition.info.2fans" />
-				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -39,7 +38,6 @@
 				<ref bean="disco.condition.items.2server" />
 				<ref bean="disco.condition.items.2proxy" />
 				<ref bean="disco.condition.items.2fans" />
-				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -63,7 +61,7 @@
 	</bean>
 	<bean id="disco.condition.info.2server" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.disco.Disco2ServerMatcher">
+			<bean class="com.sissi.pipeline.in.iq.ToServerMatcher">
 				<constructor-arg value="${global.host}" />
 			</bean>
 		</constructor-arg>
@@ -71,24 +69,21 @@
 	</bean>
 	<bean id="disco.condition.info.2proxy" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.disco.Disco2ProxyMatcher">
+			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
 				<constructor-arg ref="bytestreams.proxy" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.info.2server" />
+		<constructor-arg ref="disco.pro.info.2proxy" />
 	</bean>
 	<bean id="disco.condition.info.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.disco.Disco2FansMatcher">
-				<constructor-arg value="${global.host}" />
-				<constructor-arg ref="bytestreams.proxy" />
-			</bean>
+			<bean class="com.sissi.pipeline.in.AnyMatcher" />
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.info.2server" />
+		<constructor-arg ref="disco.pro.info.2fans" />
 	</bean>
 	<bean id="disco.condition.items.2server" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.disco.Disco2ServerMatcher">
+			<bean class="com.sissi.pipeline.in.iq.ToServerMatcher">
 				<constructor-arg value="${global.host}" />
 			</bean>
 		</constructor-arg>
@@ -96,19 +91,16 @@
 	</bean>
 	<bean id="disco.condition.items.2proxy" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.disco.Disco2ProxyMatcher">
+			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
 				<constructor-arg ref="bytestreams.proxy" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.items.2server" />
+		<constructor-arg ref="disco.pro.items.2proxy" />
 	</bean>
 	<bean id="disco.condition.items.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.disco.Disco2FansMatcher">
-				<constructor-arg value="${global.host}" />
-				<constructor-arg ref="bytestreams.proxy" />
-			</bean>
+			<bean class="com.sissi.pipeline.in.AnyMatcher" />
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.items.2server" />
+		<constructor-arg ref="disco.pro.items.2fans" />
 	</bean>
 </beans>

@@ -1,8 +1,7 @@
 package com.sissi.broadcast;
 
 import com.sissi.context.JID;
-import com.sissi.context.JIDContext.Status;
-import com.sissi.protocol.Protocol;
+import com.sissi.context.Status;
 
 /**
  * @author kim 2013-11-17
@@ -10,9 +9,4 @@ import com.sissi.protocol.Protocol;
 public interface PresenceBroadcast {
 
 	public PresenceBroadcast broadcast(JID jid, JID from, JID to, Status status);
-
-	public interface PresenceBuilder {
-
-		public Protocol build(JID from, JID to, Status status);
-	}
 }
