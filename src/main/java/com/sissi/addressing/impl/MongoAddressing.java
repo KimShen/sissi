@@ -68,8 +68,8 @@ public class MongoAddressing implements Addressing {
 
 	@Override
 	public Addressing leave(JIDContext context) {
-		this.contexts.remove(context.getIndex());
 		if (context.close()) {
+			this.contexts.remove(context.getIndex());
 			this.config.collection().remove(this.buildQueryWithFullFields(context));
 		}
 		return this;

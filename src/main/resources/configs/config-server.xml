@@ -11,7 +11,6 @@
 		<constructor-arg ref="executor" />
 	</bean>
 
-	<bean id="closer.4self" class="com.sissi.server.impl.Offline4SelfsServerCloser" />
 	<bean id="closer.2fans" class="com.sissi.server.impl.Offline2FansServerCloser">
 		<constructor-arg ref="broadcast.protocol.fans" />
 		<constructor-arg ref="addressing" />
@@ -19,7 +18,6 @@
 	<bean id="closer.chained" class="com.sissi.server.impl.ChainedServerCloser">
 		<constructor-arg>
 			<util:list>
-				<ref bean="closer.4self" />
 				<ref bean="closer.2fans" />
 			</util:list>
 		</constructor-arg>
