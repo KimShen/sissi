@@ -18,6 +18,7 @@ import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 import com.sissi.server.Exchanger;
@@ -46,6 +47,14 @@ public class Socks5ProxyServerHandlerBuilder {
 
 	private class Sock5ProxyServerHandler extends ChannelInboundHandlerAdapter {
 
+		public void channelUnregistered(ChannelHandlerContext ctx) {
+			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close();
+		}
+		
+		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close();
+		}
+
 		public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
 			this.prepareCmd(ctx, msg, ctx.write(this.build(msg))).flush();
 		}
@@ -59,12 +68,14 @@ public class Socks5ProxyServerHandlerBuilder {
 		}
 
 		private ChannelHandlerContext add(SocksCmdRequest cmd, ChannelHandlerContext ctx) throws IOException {
-			Socks5ProxyServerHandlerBuilder.this.exchangerContext.set(cmd.host(), new BridgeExchanger(ctx));
+			Exchanger exchanger = new BridgeExchanger(ctx);
+			Socks5ProxyServerHandlerBuilder.this.exchangerContext.set(cmd.host(), exchanger);
+			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).set(exchanger);
 			return ctx;
 		}
 
 		private ChannelHandlerContext add(Exchanger exchanger, ChannelFuture future, ChannelHandlerContext ctx) throws IOException {
-			future.addListener(new BridgeExchangeListener(ctx, exchanger));
+			future.addListener(new BridgeExchangeListener(ctx, exchanger.initer(new ContextCloseable(ctx))));
 			return ctx;
 		}
 
@@ -101,8 +112,27 @@ public class Socks5ProxyServerHandlerBuilder {
 			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close();
 		}
 
+		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close();
+		}
+
 		public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().write(ByteBuf.class.cast(msg).nioBuffer());
+		}
+	}
+
+	private class ContextCloseable implements Closeable {
+
+		private ChannelHandlerContext ctx;
+
+		public ContextCloseable(ChannelHandlerContext ctx) {
+			super();
+			this.ctx = ctx;
+		}
+
+		@Override
+		public void close() throws IOException {
+			this.ctx.close();
 		}
 	}
 }

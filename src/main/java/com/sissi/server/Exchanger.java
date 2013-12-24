@@ -1,5 +1,6 @@
 package com.sissi.server;
 
+import java.io.Closeable;
 import java.nio.ByteBuffer;
 
 /**
@@ -8,6 +9,8 @@ import java.nio.ByteBuffer;
 public interface Exchanger {
 
 	public Exchanger write(ByteBuffer bytes);
+	
+	public Exchanger initer(Closeable initer);
 	
 	public Exchanger close();
 }

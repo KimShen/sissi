@@ -9,9 +9,10 @@
 		<constructor-arg index="0" value="${bytestreams.proxy.jid}" />
 		<constructor-arg index="1" value="${bytestreams.proxy.name}" />
 		<constructor-arg index="2" value="${bytestreams.proxy.host}" />
-		<constructor-arg index="3" value="${global.proxy.port}" />
+		<constructor-arg index="3" value="${bytestreams.proxy.port}" />
 	</bean>
 
+	<bean id="bytestreams.pro.2activate" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ActivateProcessor" />
 	<bean id="bytestreams.pro.2proxy" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ProxyProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
@@ -26,6 +27,7 @@
 	<bean id="finder.iq.bytestreams" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<ref bean="bytestreams.condition.2activate" />
 				<ref bean="bytestreams.condition.2server" />
 				<ref bean="bytestreams.condition.2proxy" />
 				<ref bean="bytestreams.condition.2fans" />
@@ -40,6 +42,12 @@
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="bytestreams.pro.fork" />
+	</bean>
+	<bean id="bytestreams.condition.2activate" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.bytestreams.BytestreamsActiveMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="bytestreams.pro.2server" />
 	</bean>
 	<bean id="bytestreams.condition.2server" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

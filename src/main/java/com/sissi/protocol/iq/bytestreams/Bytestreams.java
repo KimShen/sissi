@@ -31,7 +31,13 @@ public class Bytestreams extends Protocol implements Collector {
 
 	private String sid;
 
-	private String mode = "tcp";
+	private String mode;
+
+	private Activate activate;
+
+	public Boolean isActivate() {
+		return activate != null;
+	}
 
 	public Bytestreams setSid(String sid) {
 		this.sid = sid;
@@ -79,6 +85,9 @@ public class Bytestreams extends Protocol implements Collector {
 			return;
 		case StreamhostUsed.NAME:
 			this.streamhostUsed = StreamhostUsed.class.cast(ob);
+			return;
+		case Activate.NAME:
+			this.activate = Activate.class.cast(ob);
 			return;
 		}
 	}

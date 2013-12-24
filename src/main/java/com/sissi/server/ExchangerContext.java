@@ -5,9 +5,9 @@ package com.sissi.server;
  */
 public interface ExchangerContext {
 
-	public Exchanger get(String host);
-
 	public ExchangerContext set(String host, Exchanger exchanger);
+	
+	public Exchanger get(String host);
 
 	public Boolean isTarget(String host);
 }
