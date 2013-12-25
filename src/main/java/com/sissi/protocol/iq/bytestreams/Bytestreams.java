@@ -1,6 +1,8 @@
 package com.sissi.protocol.iq.bytestreams;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -74,6 +76,13 @@ public class Bytestreams extends Protocol implements Collector {
 			this.streamhosts = new ArrayList<Streamhost>();
 		}
 		this.streamhosts.add(streamhost);
+		return this;
+	}
+
+	public Bytestreams sort(Comparator<Streamhost> comparator) {
+		if (this.streamhosts != null) {
+			Collections.sort(this.streamhosts, comparator);
+		}
 		return this;
 	}
 

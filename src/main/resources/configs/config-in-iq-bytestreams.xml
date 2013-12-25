@@ -12,6 +12,10 @@
 		<constructor-arg index="3" value="${bytestreams.proxy.port}" />
 	</bean>
 
+	<bean id="bytestreams.comparator" class="com.sissi.protocol.iq.bytestreams.StreamhostComparator">
+		<constructor-arg ref="bytestreams.proxy" />
+	</bean>
+
 	<bean id="bytestreams.pro.2activate" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ActivateProcessor" />
 	<bean id="bytestreams.pro.2proxy" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ProxyProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
@@ -19,7 +23,9 @@
 	<bean id="bytestreams.pro.2server" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ServerProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
-	<bean id="bytestreams.pro.2fans" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2FansProcessor" parent="global.pro.proxy" />
+	<bean id="bytestreams.pro.2fans" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2FansProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="bytestreams.comparator" />
+	</bean>
 	<bean id="bytestreams.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.iq.bytestreams" />
 	</bean>

@@ -7,8 +7,8 @@
 
 	<alias name="ucenter.accessor.rest" alias="ucenter.accessor" />
 	<bean id="ucenter.accessor.rest" class="com.threeti.relation.RestAuthAccessor">
-		<constructor-arg index="0" value="${maven.3ti.url}" />
-		<constructor-arg index="1" value="${maven.3ti.params}" />
+		<constructor-arg index="0" value="${3ti.url}" />
+		<constructor-arg index="1" value="${3ti.params}" />
 		<constructor-arg ref="config.auth" />
 	</bean>
 
