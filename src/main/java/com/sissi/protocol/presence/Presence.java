@@ -78,8 +78,8 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	}
 
 	@XmlTransient
-	public Priority getPriority() {
-		return priority;
+	public Integer getPriority() {
+		return this.priority != null ? Integer.parseInt(this.priority.getText()) : 0;
 	}
 
 	public Presence setType(Type type) {

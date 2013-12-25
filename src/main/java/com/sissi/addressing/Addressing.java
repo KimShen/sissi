@@ -13,6 +13,10 @@ public interface Addressing {
 	public Addressing join(JIDContext context);
 
 	public Addressing leave(JIDContext context);
+	
+	public Addressing promote(JIDContext context);
+	
+	public Addressing activate(JIDContext context);
 
 	public JIDContext find(JID jid);
 

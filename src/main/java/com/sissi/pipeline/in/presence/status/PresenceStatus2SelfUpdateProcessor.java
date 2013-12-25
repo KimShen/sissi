@@ -8,7 +8,7 @@ import com.sissi.protocol.presence.Presence;
 /**
  * @author kim 2013-11-20
  */
-public class PresenceStatus2SelfProcessor extends ProxyProcessor {
+public class PresenceStatus2SelfUpdateProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

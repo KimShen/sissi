@@ -12,7 +12,6 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.addressing.Addressing;
-import com.sissi.addressing.AddressingActivator;
 import com.sissi.commons.Interval;
 import com.sissi.commons.Runner;
 import com.sissi.config.MongoConfig;
@@ -25,7 +24,7 @@ import com.sissi.context.impl.JIDContexts;
 /**
  * @author kim 2013-11-1
  */
-public class MongoAddressing implements Addressing, AddressingActivator {
+public class MongoAddressing implements Addressing {
 
 	private final Integer GC_THREAD = 1;
 
@@ -99,8 +98,13 @@ public class MongoAddressing implements Addressing, AddressingActivator {
 		return entity.hasNext() ? this.contexts.get(Long.class.cast(entity.next().get("index"))) : this.contextBuilder.build(jid, NOTHING);
 	}
 
+	public Addressing promote(JIDContext context) {
+		this.config.collection().update(this.buildQueryWithSmartResource(context.getJid(), true), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(FIELD_PRIORITY, context.getPriority()).get()).get());
+		return this;
+	}
+
 	@Override
-	public AddressingActivator activate(JIDContext context) {
+	public Addressing activate(JIDContext context) {
 		this.config.collection().update(this.buildQueryWithFullFields(context), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(FIELD_CURRENT, new Date().getTime()).get()).get());
 		return this;
 	}

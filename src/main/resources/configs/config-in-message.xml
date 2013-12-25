@@ -7,7 +7,7 @@
 
 	<bean id="message.pro.relation" class="com.sissi.pipeline.in.message.MessageRelationProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.activate" class="com.sissi.pipeline.in.message.MessageActivatorProcessor">
-		<constructor-arg ref="addressing.activator" />
+		<constructor-arg ref="addressing" />
 	</bean>
 	<bean id="message.pro.body" class="com.sissi.pipeline.in.message.MessageNoneBodyProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.2fan" class="com.sissi.pipeline.in.message.Message2FanProcessor" parent="global.pro.proxy" />
