@@ -1,5 +1,6 @@
 package com.sissi.addressing.impl;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -11,6 +12,7 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.addressing.Addressing;
+import com.sissi.addressing.AddressingActivator;
 import com.sissi.commons.Interval;
 import com.sissi.commons.Runner;
 import com.sissi.config.MongoConfig;
@@ -23,17 +25,19 @@ import com.sissi.context.impl.JIDContexts;
 /**
  * @author kim 2013-11-1
  */
-public class MongoAddressing implements Addressing {
+public class MongoAddressing implements Addressing, AddressingActivator {
 
 	private final Integer GC_THREAD = 1;
 
 	private final String FIELD_INDEX = "index";
 
+	private final String FIELD_CURRENT = "current";
+
 	private final String FIELD_PRIORITY = "priority";
 
 	private final DBObject DEFAULT_FILTER = BasicDBObjectBuilder.start(FIELD_INDEX, 1).get();
 
-	private final DBObject DEFAULT_SORTER = BasicDBObjectBuilder.start(FIELD_PRIORITY, 1).get();
+	private final DBObject DEFAULT_SORTER = BasicDBObjectBuilder.start().add(FIELD_PRIORITY, -1).add(FIELD_CURRENT, -1).get();
 
 	private final JIDContextParam NOTHING = new NothingJIDContextParam();
 
@@ -91,8 +95,14 @@ public class MongoAddressing implements Addressing {
 
 	@Override
 	public JIDContext findOne(JID jid) {
-		DBObject entity = this.config.collection().findOne(this.buildQueryWithSmartResource(jid, false), DEFAULT_FILTER);
-		return entity != null ? this.contexts.get(Long.class.cast(entity.get("index"))) : this.contextBuilder.build(jid, NOTHING);
+		DBCursor entity = this.config.collection().find(this.buildQueryWithSmartResource(jid, false), DEFAULT_FILTER).sort(DEFAULT_SORTER).limit(1);
+		return entity.hasNext() ? this.contexts.get(Long.class.cast(entity.next().get("index"))) : this.contextBuilder.build(jid, NOTHING);
+	}
+
+	@Override
+	public AddressingActivator activate(JIDContext context) {
+		this.config.collection().update(this.buildQueryWithFullFields(context), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(FIELD_CURRENT, new Date().getTime()).get()).get());
+		return this;
 	}
 
 	private JIDContexts find(JID jid, Boolean usingResource, Boolean usingOffline) {

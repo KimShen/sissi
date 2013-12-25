@@ -60,6 +60,8 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	private Delay delay;
 
 	private Status status;
+	
+	private Priority priority;
 
 	public Presence() {
 		super();
@@ -73,6 +75,11 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	private X findX() {
 		return X.class.cast(this.fields != null ? this.fields.findField(X.NAME, X.class) : null);
+	}
+
+	@XmlTransient
+	public Priority getPriority() {
+		return priority;
 	}
 
 	public Presence setType(Type type) {
@@ -116,7 +123,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		XVCardPhoto xp = x != null ? Fields.class.cast(x).findField(XVCardPhoto.NAME, XVCardPhoto.class) : null;
 		return xp != null ? xp.getValue() : null;
 	}
-
+	
 	@XmlTransient
 	public Show getShow() {
 		return show;
@@ -166,13 +173,16 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		switch (localName) {
 		case X.NAME:
 			this.add(Field.class.cast(ob));
-			break;
+			return;
 		case Status.NAME:
 			this.setStatus((Status) ob);
-			break;
+			return;
 		case Show.NAME:
 			this.setShow((Show) ob);
-			break;
+			return;
+		case Priority.NAME:
+			this.priority = Priority.class.cast(ob);
+			return;
 		}
 	}
 

@@ -12,6 +12,6 @@ public class Message2FansProcessor extends ProxyProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		super.broadcast(super.build(protocol.getTo()), protocol.setFrom(context.getJid()));
-		return false;
+		return true;
 	}
 }

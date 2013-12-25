@@ -17,6 +17,7 @@
 	</bean>
 
 	<alias name="addressing.mongo" alias="addressing" />
+	<alias name="addressing.mongo" alias="addressing.activator" />
 	<bean id="addressing.mongo" class="com.sissi.addressing.impl.MongoAddressing">
 		<constructor-arg ref="runner" />
 		<constructor-arg ref="config.addressing" />

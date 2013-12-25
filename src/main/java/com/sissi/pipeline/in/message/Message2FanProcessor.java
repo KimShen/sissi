@@ -12,6 +12,6 @@ public class Message2FanProcessor extends ProxyProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		super.addressing.findOne(super.build(protocol.getTo())).write(protocol.setFrom(context.getJid()));
-		return false;
+		return true;
 	}
 }
