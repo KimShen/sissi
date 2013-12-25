@@ -7,11 +7,11 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013-10-24
  */
-public class Message2FansProcessor extends ProxyProcessor {
+public class Message2FanProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.broadcast(super.build(protocol.getTo()), protocol.setFrom(context.getJid()));
+		super.addressing.findOne(super.build(protocol.getTo())).write(protocol.setFrom(context.getJid()));
 		return false;
 	}
 }

@@ -31,7 +31,7 @@ public class DigestAuthProcessor extends ProxyProcessor {
 		try {
 			return !this.isSuccess(context, protocol);
 		} catch (Exception e) {
-			this.log.debug(e);
+			this.log.debug(e.toString());
 			return true;
 		}
 	}

@@ -8,7 +8,7 @@
 	<bean id="config.auth" class="com.sissi.config.impl.MongoCollection">
 		<constructor-arg ref="mongo.client" />
 		<constructor-arg index="1" value="${mongo.db}" />
-		<constructor-arg index="2" value="${mongo.collection.auth}" />
+		<constructor-arg index="2" value="${mongo.collection.user}" />
 	</bean>
 
 	<bean id="config.ucenter.relation.roster" class="com.sissi.config.impl.MongoCollection">

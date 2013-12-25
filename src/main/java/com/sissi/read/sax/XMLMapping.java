@@ -41,7 +41,7 @@ public class XMLMapping implements Mapping {
 		try {
 			return clazz != null ? this.newInstanceAndPutCached(localName, securityURI, clazz) : null;
 		} catch (Exception e) {
-			this.log.error(e);
+			this.log.error(e.toString());
 			return null;
 		}
 	}

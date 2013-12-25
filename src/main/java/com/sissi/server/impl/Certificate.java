@@ -18,7 +18,7 @@ public class Certificate {
 	}
 
 	public URL getFile() {
-		return file;
+		return this.file;
 	}
 
 	public char[] getPassword() {

@@ -155,7 +155,10 @@ public class MongoAddressing implements Addressing {
 					this.gc();
 					Thread.sleep(this.sleep);
 				} catch (Exception e) {
-					MongoAddressing.this.log.error(e);
+					if (MongoAddressing.this.log.isErrorEnabled()) {
+						MongoAddressing.this.log.error(e.toString());
+						e.printStackTrace();
+					}
 				}
 			}
 		}

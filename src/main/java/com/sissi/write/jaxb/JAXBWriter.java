@@ -61,7 +61,7 @@ public class JAXBWriter implements Writer {
 			this.log.info("All classes in JAXB Context: " + clazz);
 			context = JAXBContext.newInstance(clazz.toArray(new Class[] {}));
 		} catch (Exception e) {
-			this.log.error(e);
+			this.log.error(e.toString());
 			throw new RuntimeException("Can't init JAXB context", e);
 		}
 	}

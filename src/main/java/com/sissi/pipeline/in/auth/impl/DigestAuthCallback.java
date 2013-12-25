@@ -76,7 +76,7 @@ public class DigestAuthCallback implements AuthCallback {
 			return true;
 		} catch (Exception e) {
 			if (this.log.isErrorEnabled()) {
-				this.log.error(e);
+				this.log.error(e.toString());
 				e.printStackTrace();
 			}
 			return false;

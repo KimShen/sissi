@@ -6,7 +6,52 @@
 	<packaging>jar</packaging>
 	<name>sissi</name>
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- For compile -->
+		<maven.project.build.sourceEncoding>UTF-8</maven.project.build.sourceEncoding>
+		<maven.project.compile.version>1.7</maven.project.compile.version>
+		<maven.project.spring.version>3.2.4.RELEASE</maven.project.spring.version>
+		<maven.project.entry>com.sissi.server.impl.MainServer</maven.project.entry>
+		<!-- For Server -->
+		<maven.global.main.port>5222</maven.global.main.port>
+		<maven.global.proxy.port>6222</maven.global.proxy.port>
+		<maven.global.host>sissi</maven.global.host>
+		<!-- For Loop -->
+		<maven.looper.thread.num>2</maven.looper.thread.num>
+		<maven.looper.thread.interval>30000</maven.looper.thread.interval>
+		<maven.looper.thread.unit>MILLISECONDS</maven.looper.thread.unit>
+		<!-- For Addressing -->
+		<maven.addressing.thread.interval>3000</maven.addressing.thread.interval>
+		<maven.addressing.thread.unit>MILLISECONDS</maven.addressing.thread.unit>
+		<!-- For Thread -->
+		<maven.executor.core>1000</maven.executor.core>
+		<maven.executor.maximum>1000</maven.executor.maximum>
+		<maven.executor.keep.alive>3000</maven.executor.keep.alive>
+		<maven.executor.unit>SECONDS</maven.executor.unit>
+		<!-- For Log -->
+		<maven.log.level>INFO</maven.log.level>
+		<maven.log.appender>Console</maven.log.appender>
+		<!-- For Mongo -->
+		<maven.mongo.host>localhost</maven.mongo.host>
+		<maven.mongo.port>27017</maven.mongo.port>
+		<maven.mongo.db>sissi</maven.mongo.db>
+		<maven.mongo.collection.log>log</maven.mongo.collection.log>
+		<maven.mongo.collection.offline>offline</maven.mongo.collection.offline>
+		<maven.mongo.collection.addressing>addressing</maven.mongo.collection.addressing>
+		<maven.mongo.collection.presence>presence</maven.mongo.collection.presence>
+		<maven.mongo.collection.roster>roster</maven.mongo.collection.roster>
+		<maven.mongo.collection.user>user</maven.mongo.collection.user>
+		<!-- For Protocol -->
+		<maven.register.invitation.title>Welcome 2 register</maven.register.invitation.title>
+		<maven.register.invitation.instructions>From sissi</maven.register.invitation.instructions>
+		<maven.tls.key.file>tls.store</maven.tls.key.file>
+		<maven.tls.key.password>client</maven.tls.key.password>
+		<maven.tls.trust.file>tls.store</maven.tls.trust.file>
+		<maven.tls.trust.password>client</maven.tls.trust.password>
+		<maven.bytestreams.proxy.jid>proxy.sissi</maven.bytestreams.proxy.jid>
+		<maven.bytestreams.proxy.host>sissi.pw</maven.bytestreams.proxy.host>
+		<maven.bytestreams.proxy.port>${maven.global.proxy.port}</maven.bytestreams.proxy.port>
+		<maven.bytestreams.proxy.name>Socks 5 Bytestreams Proxy</maven.bytestreams.proxy.name>
+		<maven.offline.hit>From sissi offline</maven.offline.hit>
 	</properties>
 	<dependencies>
 		<!-- For Compile -->
@@ -45,32 +90,38 @@
 			<artifactId>mongo-java-driver</artifactId>
 			<version>2.10.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.log4mongo</groupId>
+			<artifactId>log4mongo-java</artifactId>
+			<version>0.7.4</version>
+		</dependency>
 		<!-- For Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>3.2.4.RELEASE</version>
+			<version>${maven.project.spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>3.2.4.RELEASE</version>
+			<version>${maven.project.spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>3.2.4.RELEASE</version>
+			<version>${maven.project.spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>3.2.4.RELEASE</version>
+			<version>${maven.project.spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
 			<version>1.9.1</version>
 		</dependency>
+		<!-- For project -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
@@ -79,14 +130,32 @@
 	</dependencies>
 	<build>
 		<finalName>sissi</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>${maven.tls.key.file}</exclude>
+					<exclude>${maven.tls.trust.file}</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>${maven.tls.key.file}</include>
+					<include>${maven.tls.trust.file}</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.0</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>${maven.project.compile.version}</source>
+					<target>${maven.project.compile.version}</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
@@ -103,9 +172,25 @@
 						<configuration>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.sissi.server.impl.MainServer</mainClass>
+									<mainClass>${maven.project.entry}</mainClass>
 								</transformer>
 							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>${maven.project.entry}</mainClass>
 						</configuration>
 					</execution>
 				</executions>

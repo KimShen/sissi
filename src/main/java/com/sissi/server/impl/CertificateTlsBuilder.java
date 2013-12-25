@@ -44,7 +44,10 @@ public class CertificateTlsBuilder implements ServerTlsBuilder {
 			context.init(this.getKeyManagers(key), this.getTrustManagers(trust), null);
 			return context;
 		} catch (Exception e) {
-			this.log.fatal(e);
+			if (this.log.isFatalEnabled()) {
+				this.log.fatal(e.toString());
+				e.printStackTrace();
+			}
 			return null;
 		}
 	}

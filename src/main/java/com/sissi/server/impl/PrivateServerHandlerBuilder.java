@@ -118,7 +118,7 @@ public class PrivateServerHandlerBuilder {
 				this.output.write(this.copyToBytes(this.logIfNecessary(ctx, (ByteBuf) msg)));
 				this.output.flush();
 			} catch (Exception e) {
-				PrivateServerHandlerBuilder.this.log.fatal(e);
+				PrivateServerHandlerBuilder.this.log.fatal(e.toString());
 			} finally {
 				ReferenceCountUtil.release(msg);
 			}
@@ -138,7 +138,7 @@ public class PrivateServerHandlerBuilder {
 				ctx.attr(CONNECTOR).set(looper);
 				looper.start();
 			} catch (IOException e) {
-				PrivateServerHandlerBuilder.this.log.error(e);
+				PrivateServerHandlerBuilder.this.log.error(e.toString());
 				throw new RuntimeException(e);
 			}
 		}

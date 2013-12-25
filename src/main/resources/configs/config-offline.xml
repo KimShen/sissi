@@ -8,7 +8,7 @@
 	<bean id="config.storage.box" class="com.sissi.config.impl.MongoCollection">
 		<constructor-arg ref="mongo.client" />
 		<constructor-arg index="1" value="${mongo.db}" />
-		<constructor-arg index="2" value="${mongo.collection.offline.storage}" />
+		<constructor-arg index="2" value="${mongo.collection.offline}" />
 	</bean>
 
 	<bean id="storage.message" class="com.sissi.offline.impl.DelayMessage">

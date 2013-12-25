@@ -31,4 +31,5 @@
 	<import resource="config-ucenter.xml" />
 	<import resource="config-server.xml" />
 	<import resource="config-thread.xml" />
+	<import resource="../externals/config-external.xml" />
 </beans>

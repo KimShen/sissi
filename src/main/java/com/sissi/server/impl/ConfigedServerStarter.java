@@ -41,7 +41,7 @@ public class ConfigedServerStarter implements ServerStarter {
 			bootstrap.group(serverLoopGroup.boss(), serverLoopGroup.event()).channel(NioServerSocketChannel.class).childHandler(this.channelInitializer);
 			bootstrap.bind(this.port).addListener(new FailShutdownGenericFutureListener());
 		} catch (Exception e) {
-			this.log.fatal(e);
+			this.log.fatal(e.toString());
 			this.closeAll();
 		}
 		return this;

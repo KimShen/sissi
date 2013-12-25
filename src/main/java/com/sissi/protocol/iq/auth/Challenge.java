@@ -45,7 +45,7 @@ public class Challenge implements Element {
 			return BASE64.encodeToString(this.text);
 		} catch (Exception e) {
 			if (LOG.isFatalEnabled()) {
-				LOG.fatal(e);
+				LOG.fatal(e.toString());
 				e.printStackTrace();
 			}
 			return null;

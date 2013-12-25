@@ -54,7 +54,7 @@ public class NetworkOutputBuilder implements OutputBuilder {
 				output.flush();
 				this.transfer.transfer(byteBuffer);
 			} catch (IOException e) {
-				NetworkOutputBuilder.this.log.error(e);
+				NetworkOutputBuilder.this.log.error(e.toString());
 			} finally {
 				IOUtils.closeQuietly(output);
 			}
