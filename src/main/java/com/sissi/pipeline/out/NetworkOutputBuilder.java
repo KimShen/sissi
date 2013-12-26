@@ -1,6 +1,7 @@
 package com.sissi.pipeline.out;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -47,12 +48,12 @@ public class NetworkOutputBuilder implements OutputBuilder {
 
 		@Override
 		public Boolean output(JIDContext context, Element node) {
-			ByteBuf byteBuffer = this.transfer.allocBuffer();
-			BufferedOutputStream output = new BufferedOutputStream(new ByteBufferOutputStream(byteBuffer));
+			ByteBufferOutputStream output = new ByteBufferOutputStream();
 			try {
-				NetworkOutputBuilder.this.writer.write(context, node, output);
-				output.flush();
-				this.transfer.transfer(byteBuffer);
+				BufferedOutputStream buf = new BufferedOutputStream(output);
+				NetworkOutputBuilder.this.writer.write(context, node, new BufferedOutputStream(output));
+				buf.flush();
+				this.transfer.transfer(output.getBuffer().nioBuffer());
 			} catch (IOException e) {
 				NetworkOutputBuilder.this.log.error(e.toString());
 			} finally {
@@ -68,16 +69,20 @@ public class NetworkOutputBuilder implements OutputBuilder {
 
 		private class ByteBufferOutputStream extends OutputStream {
 
-			private final ByteBuf buffer;
+			private ByteBuf buffer;
 
-			public ByteBufferOutputStream(ByteBuf buffer) {
+			public ByteBufferOutputStream() {
 				super();
-				this.buffer = buffer;
+				this.buffer = Unpooled.buffer();
 			}
 
 			@Override
 			public void write(int b) throws IOException {
 				this.buffer.writeByte(b);
+			}
+
+			public ByteBuf getBuffer() {
+				return buffer;
 			}
 		}
 	}

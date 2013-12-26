@@ -4,13 +4,14 @@
 	<artifactId>sissi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>sissi</name>
+	<name>${maven.project.name}</name>
 	<properties>
 		<!-- For compile -->
 		<maven.project.build.sourceEncoding>UTF-8</maven.project.build.sourceEncoding>
 		<maven.project.compile.version>1.7</maven.project.compile.version>
 		<maven.project.spring.version>3.2.4.RELEASE</maven.project.spring.version>
 		<maven.project.entry>com.sissi.server.impl.MainServer</maven.project.entry>
+		<maven.project.name>sissi</maven.project.name>
 		<!-- For Server -->
 		<maven.global.main.port>5222</maven.global.main.port>
 		<maven.global.proxy.port>6222</maven.global.proxy.port>
@@ -51,6 +52,7 @@
 		<maven.bytestreams.proxy.host>sissi.pw</maven.bytestreams.proxy.host>
 		<maven.bytestreams.proxy.port>${maven.global.proxy.port}</maven.bytestreams.proxy.port>
 		<maven.bytestreams.proxy.name>Socks 5 Bytestreams Proxy</maven.bytestreams.proxy.name>
+		<maven.message.free>false</maven.message.free>
 		<maven.offline.hit>From sissi offline</maven.offline.hit>
 	</properties>
 	<dependencies>
@@ -129,7 +131,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>sissi</finalName>
+		<finalName>${maven.project.name}</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -170,6 +172,7 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
+							<finalName>${maven.project.name}-server</finalName>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<mainClass>${maven.project.entry}</mainClass>
@@ -185,7 +188,7 @@
 				<version>1.2.1</version>
 				<executions>
 					<execution>
-						<phase>package</phase>
+						<phase>install</phase>
 						<goals>
 							<goal>java</goal>
 						</goals>

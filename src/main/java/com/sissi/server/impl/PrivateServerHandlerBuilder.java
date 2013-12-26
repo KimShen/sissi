@@ -103,13 +103,20 @@ public class PrivateServerHandlerBuilder {
 		}
 
 		public void channelUnregistered(ChannelHandlerContext ctx) {
-			JIDContext context = ctx.attr(CONTEXT).get();
-			if (context.isBinding()) {
-				PrivateServerHandlerBuilder.this.serverCloser.close(context);
-				PrivateServerHandlerBuilder.this.addressing.leave(context);
+			try {
+				JIDContext context = ctx.attr(CONTEXT).get();
+				if (context.isBinding()) {
+					PrivateServerHandlerBuilder.this.serverCloser.close(context);
+					PrivateServerHandlerBuilder.this.addressing.leave(context);
+				}
+				ctx.attr(CONNECTOR).get().stop();
+				IOUtils.closeQuietly(this.input);
+			} catch (Exception e) {
+				if (PrivateServerHandlerBuilder.this.log.isErrorEnabled()) {
+					PrivateServerHandlerBuilder.this.log.error(e.toString());
+					e.printStackTrace();
+				}
 			}
-			ctx.attr(CONNECTOR).get().stop();
-			IOUtils.closeQuietly(this.input);
 		}
 
 		@Override
@@ -127,9 +134,7 @@ public class PrivateServerHandlerBuilder {
 		@Override
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 			this.logIfDetail(cause);
-			if (ctx.channel().isOpen()) {
-				ctx.close();
-			}
+			ctx.close();
 		}
 
 		private void createLooper(final ChannelHandlerContext ctx) {

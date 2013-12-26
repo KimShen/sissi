@@ -53,6 +53,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.server.impl.BridgeExchangerContext" />
 		</constructor-arg>
+		<constructor-arg ref="bytestreams.proxy" />
 		<constructor-arg value="exchanger" />
 	</bean>
 

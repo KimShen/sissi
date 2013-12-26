@@ -1,15 +1,14 @@
 package com.sissi.write;
 
-import io.netty.buffer.ByteBuf;
+import java.io.Closeable;
+import java.nio.ByteBuffer;
 
 /**
  * @author kim 2013年12月23日
  */
-public interface Transfer {
+public interface Transfer extends Closeable{
 
-	public ByteBuf allocBuffer();
+	public Transfer transfer(ByteBuffer bytebuf);
 
-	public Transfer transfer(ByteBuf bytebuf);
-
-	public Transfer close();
+	public void close();
 }

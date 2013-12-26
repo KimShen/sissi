@@ -38,7 +38,7 @@ public class Bytestreams extends Protocol implements Collector {
 	private Activate activate;
 
 	public Boolean isActivate() {
-		return activate != null;
+		return this.activate != null;
 	}
 
 	public Bytestreams setSid(String sid) {

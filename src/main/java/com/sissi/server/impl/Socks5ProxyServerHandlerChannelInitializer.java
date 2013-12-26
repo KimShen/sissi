@@ -4,7 +4,6 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.socks.SocksCmdRequestDecoder;
 import io.netty.handler.codec.socks.SocksInitRequestDecoder;
-import io.netty.handler.codec.socks.SocksMessageEncoder;
 
 /**
  * @author kim 2013年12月22日
@@ -23,7 +22,6 @@ public class Socks5ProxyServerHandlerChannelInitializer extends ChannelInitializ
 	protected void initChannel(SocketChannel ch) throws Exception {
 		ch.pipeline().addLast(new SocksInitRequestDecoder());
 		ch.pipeline().addLast(new SocksCmdRequestDecoder());
-		ch.pipeline().addLast(new SocksMessageEncoder());
 		ch.pipeline().addLast(this.serverHandlerBuilder.build());
 	}
 }

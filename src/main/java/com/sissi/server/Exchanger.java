@@ -9,8 +9,10 @@ import java.nio.ByteBuffer;
 public interface Exchanger {
 
 	public Exchanger write(ByteBuffer bytes);
-	
+
 	public Exchanger initer(Closeable initer);
+
+	public Exchanger closeIniter();
 	
-	public Exchanger close();
+	public Exchanger closeTarget();
 }

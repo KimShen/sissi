@@ -12,9 +12,16 @@ import com.sissi.ucenter.RelationContext.Relation;
  */
 public class MessageRelationProcessor extends ProxyProcessor {
 
+	private Boolean isFree;
+
+	public MessageRelationProcessor(Boolean isFree) {
+		super();
+		this.isFree = isFree;
+	}
+
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return this.isSubscribed(context.getJid(), super.build(protocol.getTo()));
+		return this.isSubscribed(context.getJid(), super.build(protocol.getTo())) || this.isFree;
 	}
 
 	private boolean isSubscribed(JID master, JID slave) {
