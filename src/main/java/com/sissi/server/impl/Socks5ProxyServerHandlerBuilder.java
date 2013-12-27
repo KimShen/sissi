@@ -15,6 +15,7 @@ import io.netty.handler.codec.socks.SocksCmdStatus;
 import io.netty.handler.codec.socks.SocksInitRequest;
 import io.netty.handler.codec.socks.SocksInitResponse;
 import io.netty.handler.codec.socks.SocksResponse;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -81,6 +82,10 @@ public class Socks5ProxyServerHandlerBuilder {
 
 	private class Sock5ProxyServerHandler extends ChannelInboundHandlerAdapter {
 
+		public void channelInactive(final ChannelHandlerContext ctx) throws Exception {
+			ctx.close();
+		}
+
 		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
 			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close(ExchangerCloser.INITER);
 		}
@@ -94,6 +99,12 @@ public class Socks5ProxyServerHandlerBuilder {
 
 		public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
 			this.prepareCmd(ctx, msg, ctx.write(this.build(msg))).flush();
+		}
+
+		public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+			if (evt.getClass().isAssignableFrom(IdleStateEvent.class)) {
+				ctx.close();
+			}
 		}
 
 		private ChannelHandlerContext prepareCmd(final ChannelHandlerContext ctx, Object msg, ChannelFuture future) throws IOException {
@@ -143,10 +154,6 @@ public class Socks5ProxyServerHandlerBuilder {
 
 	@Sharable
 	private class BridgeExchangerServerHandler extends ChannelInboundHandlerAdapter {
-
-		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
-			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close(ExchangerCloser.TARGET);
-		}
 
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 			ctx.close();

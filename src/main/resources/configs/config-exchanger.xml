@@ -30,6 +30,9 @@
 	<bean id="server.loop.exchanger" class="com.sissi.server.impl.NioServerLoopGroup" />
 
 	<bean id="server.pipeline.exchanger" class="com.sissi.server.impl.Socks5ProxyServerHandlerChannelInitializer">
+		<constructor-arg index="0" value="${maven.exchanger.idle.read}" />
+		<constructor-arg index="1" value="${maven.exchanger.idle.write}" />
+		<constructor-arg index="2" value="${maven.exchanger.idle.all}" />
 		<constructor-arg ref="builder.handler.exchanger" />
 	</bean>
 

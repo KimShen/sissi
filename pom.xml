@@ -26,6 +26,9 @@
 		<!-- For Exchanger -->
 		<maven.exchanger.thread.interval>3000</maven.exchanger.thread.interval>
 		<maven.exchanger.thread.unit>MILLISECONDS</maven.exchanger.thread.unit>
+		<maven.exchanger.idle.all>30</maven.exchanger.idle.all>
+		<maven.exchanger.idle.read>30</maven.exchanger.idle.read>
+		<maven.exchanger.idle.write>30</maven.exchanger.idle.write>
 		<!-- For Thread -->
 		<maven.executor.core>1000</maven.executor.core>
 		<maven.executor.maximum>1000</maven.executor.maximum>

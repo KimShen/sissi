@@ -36,7 +36,7 @@ public class BridgeExchangerContext implements ExchangerContext {
 	public BridgeExchangerContext(Runner runner, Interval interval, MongoConfig config) {
 		super();
 		this.config = config.clear();
-		runner.executor(GC_THREAD, new GC(interval));
+		runner.executor(GC_THREAD, new LeakGC(interval));
 	}
 
 	@Override
@@ -70,11 +70,11 @@ public class BridgeExchangerContext implements ExchangerContext {
 		return this.config.collection().findOne(this.build(host)) != null;
 	}
 
-	private class GC implements Runnable {
+	private class LeakGC implements Runnable {
 
 		private final Long sleep;
 
-		public GC(Interval interval) {
+		public LeakGC(Interval interval) {
 			super();
 			this.sleep = TimeUnit.MILLISECONDS.convert(interval.getInterval(), interval.getUnit());
 		}
@@ -96,6 +96,7 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 		public void gc() {
 			for (String host : BridgeExchangerContext.this.cached.keySet()) {
+				BridgeExchangerContext.this.exists(host);
 				if (!BridgeExchangerContext.this.exists(host)) {
 					Exchanger leak = BridgeExchangerContext.this.cached.get(host);
 					leak.close(ExchangerCloser.TARGET);
