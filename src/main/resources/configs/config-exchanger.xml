@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="config.exchanger" class="com.sissi.config.impl.MongoCollection">
+		<constructor-arg ref="mongo.client" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.exchanger}" />
+	</bean>
+
+	<bean id="server.exchanger.interval" class="com.sissi.commons.Interval">
+		<constructor-arg value="${exchanger.thread.interval}" />
+		<constructor-arg value="${exchanger.thread.unit}" />
+	</bean>
+
+	<bean id="server.exchanger.context" class="com.sissi.server.impl.BridgeExchangerContext">
+		<constructor-arg ref="runner" />
+		<constructor-arg ref="config.exchanger" />
+		<constructor-arg ref="server.exchanger.interval" />
+	</bean>
+
+	<bean id="builder.handler.exchanger" class="com.sissi.server.impl.Socks5ProxyServerHandlerBuilder">
+		<constructor-arg ref="server.exchanger.context" />
+		<constructor-arg ref="bytestreams.proxy" />
+	</bean>
+
+	<bean id="server.loop.exchanger" class="com.sissi.server.impl.NioServerLoopGroup" />
+
+	<bean id="server.pipeline.exchanger" class="com.sissi.server.impl.Socks5ProxyServerHandlerChannelInitializer">
+		<constructor-arg ref="builder.handler.exchanger" />
+	</bean>
+
+	<bean id="server.start.exchanger" class="com.sissi.server.impl.ConfigedServerStarter">
+		<constructor-arg value="${global.exchanger.port}" />
+		<constructor-arg ref="server.loop.exchanger" />
+		<constructor-arg ref="server.pipeline.exchanger" />
+	</bean>
+
+</beans>

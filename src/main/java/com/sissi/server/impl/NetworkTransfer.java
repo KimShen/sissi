@@ -43,8 +43,10 @@ public class NetworkTransfer implements Transfer {
 
 	@Override
 	public void close() {
-		this.context.close().addListener(FailLogedGenericFutureListener.INSTANCE);
-		this.context = null;
+		if (this.context != null) {
+			this.context.close().addListener(FailLogedGenericFutureListener.INSTANCE);
+			this.context = null;
+		}
 	}
 
 	private static class FailLogedGenericFutureListener implements GenericFutureListener<Future<Void>> {

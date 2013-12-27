@@ -12,7 +12,5 @@ public interface Exchanger {
 
 	public Exchanger initer(Closeable initer);
 
-	public Exchanger closeIniter();
-	
-	public Exchanger closeTarget();
+	public Exchanger close(ExchangerCloser closer);
 }

@@ -4,9 +4,19 @@ import java.io.Closeable;
 import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DBObject;
 import com.sissi.commons.IOUtils;
+import com.sissi.commons.Interval;
+import com.sissi.commons.Runner;
+import com.sissi.config.MongoConfig;
 import com.sissi.server.Exchanger;
+import com.sissi.server.ExchangerCloser;
 import com.sissi.server.ExchangerContext;
 import com.sissi.write.Transfer;
 
@@ -15,23 +25,85 @@ import com.sissi.write.Transfer;
  */
 public class BridgeExchangerContext implements ExchangerContext {
 
-	protected final Map<String, Exchanger> cached = new ConcurrentHashMap<String, Exchanger>();
+	private final Integer GC_THREAD = 1;
+
+	private final Log log = LogFactory.getLog(this.getClass());
+
+	private final Map<String, Exchanger> cached = new ConcurrentHashMap<String, Exchanger>();
+
+	private MongoConfig config;
+
+	public BridgeExchangerContext(Runner runner, Interval interval, MongoConfig config) {
+		super();
+		this.config = config.clear();
+		runner.executor(GC_THREAD, new GC(interval));
+	}
 
 	@Override
 	public Exchanger set(String host, Transfer transfer) {
 		BridgeExchanger exchanger = new BridgeExchanger(host, transfer);
+		this.config.collection().save(this.build(host));
 		this.cached.put(host, exchanger);
 		return exchanger;
 	}
 
 	@Override
 	public Exchanger get(String host) {
+		return this.remove(host);
+	}
+
+	private Exchanger remove(String host) {
+		this.config.collection().remove(this.build(host));
 		return this.cached.remove(host);
 	}
 
 	@Override
 	public Boolean isTarget(String host) {
-		return !this.cached.containsKey(host);
+		return !this.exists(host);
+	}
+
+	private DBObject build(String host) {
+		return BasicDBObjectBuilder.start().add("host", host).get();
+	}
+
+	private Boolean exists(String host) {
+		return this.config.collection().findOne(this.build(host)) != null;
+	}
+
+	private class GC implements Runnable {
+
+		private final Long sleep;
+
+		public GC(Interval interval) {
+			super();
+			this.sleep = TimeUnit.MILLISECONDS.convert(interval.getInterval(), interval.getUnit());
+		}
+
+		@Override
+		public void run() {
+			while (true) {
+				try {
+					this.gc();
+					Thread.sleep(this.sleep);
+				} catch (Exception e) {
+					if (BridgeExchangerContext.this.log.isErrorEnabled()) {
+						BridgeExchangerContext.this.log.error(e.toString());
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
+		public void gc() {
+			for (String host : BridgeExchangerContext.this.cached.keySet()) {
+				if (!BridgeExchangerContext.this.exists(host)) {
+					Exchanger leak = BridgeExchangerContext.this.cached.get(host);
+					leak.close(ExchangerCloser.TARGET);
+					leak.close(ExchangerCloser.INITER);
+					BridgeExchangerContext.this.log.error("Find leak exchanger: " + host);
+				}
+			}
+		}
 	}
 
 	private class BridgeExchanger implements Exchanger {
@@ -59,21 +131,20 @@ public class BridgeExchangerContext implements ExchangerContext {
 		}
 
 		public Exchanger close(Closeable closer) {
-			BridgeExchangerContext.this.cached.remove(this.host);
-			IOUtils.closeQuietly(closer);
+			try {
+				IOUtils.closeQuietly(closer);
+				BridgeExchangerContext.this.remove(this.host);
+			} catch (Exception e) {
+				if (BridgeExchangerContext.this.log.isDebugEnabled()) {
+					BridgeExchangerContext.this.log.debug(e.toString());
+				}
+			}
 			return this;
 		}
 
 		@Override
-		public Exchanger closeIniter() {
-			this.close(this.initer);
-			return this;
-		}
-
-		@Override
-		public Exchanger closeTarget() {
-			this.close(this.target);
-			return this;
+		public Exchanger close(ExchangerCloser closer) {
+			return closer == ExchangerCloser.INITER ? this.close(this.initer) : this.close(this.target);
 		}
 	}
 }

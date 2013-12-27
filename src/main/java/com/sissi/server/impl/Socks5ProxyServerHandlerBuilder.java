@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.sissi.protocol.iq.bytestreams.BytestreamsProxy;
 import com.sissi.server.Exchanger;
+import com.sissi.server.ExchangerCloser;
 import com.sissi.server.ExchangerContext;
 
 /**
@@ -38,6 +39,8 @@ public class Socks5ProxyServerHandlerBuilder {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
+	private final String EXCHANGER = "exchanger";
+
 	private final ExchangerContext exchangerContext;
 
 	private final AttributeKey<Exchanger> exchanger;
@@ -46,10 +49,10 @@ public class Socks5ProxyServerHandlerBuilder {
 
 	private final byte[] cmd;
 
-	public Socks5ProxyServerHandlerBuilder(BytestreamsProxy proxy, ExchangerContext exchangerContext, String exchanger) {
+	public Socks5ProxyServerHandlerBuilder(BytestreamsProxy proxy, ExchangerContext exchangerContext) {
 		super();
 		this.exchangerContext = exchangerContext;
-		this.exchanger = AttributeKey.valueOf(exchanger);
+		this.exchanger = AttributeKey.valueOf(EXCHANGER);
 		this.init = this.prepareStatic(this.buildInit());
 		this.cmd = this.prepareStatic(this.buildCmd(proxy));
 	}
@@ -79,7 +82,7 @@ public class Socks5ProxyServerHandlerBuilder {
 	private class Sock5ProxyServerHandler extends ChannelInboundHandlerAdapter {
 
 		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
-			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().closeIniter();
+			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close(ExchangerCloser.INITER);
 		}
 
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
@@ -142,9 +145,9 @@ public class Socks5ProxyServerHandlerBuilder {
 	private class BridgeExchangerServerHandler extends ChannelInboundHandlerAdapter {
 
 		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
-			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().closeTarget();
+			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close(ExchangerCloser.TARGET);
 		}
-		
+
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 			ctx.close();
 			if (Socks5ProxyServerHandlerBuilder.this.log.isDebugEnabled()) {

@@ -5,6 +5,18 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="config.exchanger" class="com.sissi.config.impl.MongoCollection">
+		<constructor-arg ref="mongo.client" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.exchange}" />
+	</bean>
+
+	<bean id="server.exchanger.interval" class="com.sissi.commons.Interval">
+		<constructor-arg value="${exchanger.thread.interval}" />
+		<constructor-arg value="${exchanger.thread.unit}" />
+	</bean>
+
+
 	<bean id="writer" class="com.sissi.write.jaxb.JAXBWriter" />
 
 	<bean id="reader" class="com.sissi.read.sax.SAXReader">
@@ -49,22 +61,11 @@
 		<constructor-arg ref="builder.looper" />
 		<constructor-arg ref="builder.context.online" />
 	</bean>
-	<bean id="builder.handler.proxy" class="com.sissi.server.impl.Socks5ProxyServerHandlerBuilder">
-		<constructor-arg>
-			<bean class="com.sissi.server.impl.BridgeExchangerContext" />
-		</constructor-arg>
-		<constructor-arg ref="bytestreams.proxy" />
-		<constructor-arg value="exchanger" />
-	</bean>
 
 	<bean id="server.loop.main" class="com.sissi.server.impl.NioServerLoopGroup" />
-	<bean id="server.loop.proxy" class="com.sissi.server.impl.NioServerLoopGroup" />
 
 	<bean id="server.pipeline.main" class="com.sissi.server.impl.PrivateServerHandlerChannelInitializer">
 		<constructor-arg ref="builder.handler.main" />
-	</bean>
-	<bean id="server.pipeline.proxy" class="com.sissi.server.impl.Socks5ProxyServerHandlerChannelInitializer">
-		<constructor-arg ref="builder.handler.proxy" />
 	</bean>
 
 	<bean id="server.start.main" class="com.sissi.server.impl.ConfigedServerStarter">
@@ -72,16 +73,11 @@
 		<constructor-arg ref="server.loop.main" />
 		<constructor-arg ref="server.pipeline.main" />
 	</bean>
-	<bean id="server.start.proxy" class="com.sissi.server.impl.ConfigedServerStarter">
-		<constructor-arg value="${global.proxy.port}" />
-		<constructor-arg ref="server.loop.proxy" />
-		<constructor-arg ref="server.pipeline.proxy" />
-	</bean>
 	<bean id="server.start" class="com.sissi.server.impl.ChainedServerStarter">
 		<constructor-arg>
 			<util:list>
 				<ref bean="server.start.main" />
-				<ref bean="server.start.proxy" />
+				<ref bean="server.start.exchanger" />
 			</util:list>
 		</constructor-arg>
 	</bean>
