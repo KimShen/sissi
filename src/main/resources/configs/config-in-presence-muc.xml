@@ -33,7 +33,19 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-
+	<bean id="presence.pro.muc.leave" class="com.sissi.pipeline.in.presence.muc.PresenceMucLeaveProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.muc.leave.2member" class="com.sissi.pipeline.in.presence.muc.PresenceMucLeave2MemberProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.relation.muc" />
+		<constructor-arg ref="presence.muc.computer" />
+	</bean>
+	<bean id="presence.pro.muc.leave.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.pro.muc.leave" />
+				<ref bean="presence.pro.muc.leave.2member" />
+			</util:list>
+		</constructor-arg>
+	</bean>
 	<bean id="presence.pro.muc.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.presence.muc" />
 	</bean>
@@ -41,6 +53,7 @@
 	<bean id="finder.presence.muc" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<ref bean="presence.condition.muc.leave" />
 				<ref bean="presence.condition.muc.join" />
 			</util:list>
 		</constructor-arg>
@@ -52,12 +65,19 @@
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.muc.fork" />
 	</bean>
-
 	<bean id="presence.condition.muc.join" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.AnyMatcher" />
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.muc.join.chained" />
+	</bean>
+	<bean id="presence.condition.muc.leave" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.presence.muc.PresenceMucActionMatcher">
+				<constructor-arg value="UNAVAILABLE" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="presence.pro.muc.leave.chained" />
 	</bean>
 
 </beans>
