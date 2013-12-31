@@ -12,6 +12,7 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.disco.feature.Blocking;
 import com.sissi.protocol.iq.disco.feature.Bytestreams;
 import com.sissi.protocol.iq.disco.feature.Identity;
+import com.sissi.protocol.iq.disco.feature.Muc;
 import com.sissi.protocol.iq.disco.feature.Si;
 import com.sissi.protocol.iq.disco.feature.SiFileTransfer;
 import com.sissi.protocol.iq.disco.feature.VCard;
@@ -38,7 +39,7 @@ public class Info extends Protocol {
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = Identity.NAME, type = Identity.class), @XmlElement(name = Blocking.NAME, type = Blocking.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = SiFileTransfer.NAME, type = SiFileTransfer.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class) })
+	@XmlElements({ @XmlElement(name = Identity.NAME, type = Identity.class), @XmlElement(name = Blocking.NAME, type = Blocking.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = SiFileTransfer.NAME, type = SiFileTransfer.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Muc.NAME, type = Muc.class) })
 	public List<Clause> getClause() {
 		return this.clauses;
 	}

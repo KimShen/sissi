@@ -11,8 +11,8 @@ import com.sissi.context.JIDContext;
 import com.sissi.context.Status;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
+import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationContext;
-import com.sissi.ucenter.RelationContext.Relation;
 
 /**
  * @author kim 2013-11-16
@@ -107,7 +107,7 @@ abstract public class ProxyProcessor implements Input {
 	public Set<Relation> myRelations(JID from) {
 		return this.relationContext.myRelations(from);
 	}
-
+	
 	public Set<String> whoSubscribedMe(JID from) {
 		return this.relationContext.whoSubscribedMe(from);
 	}

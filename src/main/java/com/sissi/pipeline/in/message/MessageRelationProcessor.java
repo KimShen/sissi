@@ -5,7 +5,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.roster.Roster;
-import com.sissi.ucenter.RelationContext.Relation;
+import com.sissi.ucenter.Relation;
 
 /**
  * @author kim 2013-11-18

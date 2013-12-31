@@ -1,4 +1,4 @@
-package com.sissi.protocol.presence.x;
+package com.sissi.protocol.presence;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;

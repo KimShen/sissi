@@ -11,22 +11,24 @@ import com.sissi.protocol.presence.Presence;
 /**
  * @author kim 2013-11-17
  */
-public class ToSelfsPresenceQueue extends ToSelfsProtocolQueue implements PresenceBroadcast {
+public class ToSelfsPresenceQueue implements PresenceBroadcast {
 
 	private final PresenceBuilder presenceBuilder;
+	
+	private final Addressing addressing;
 
 	public ToSelfsPresenceQueue(Addressing addressing, PresenceBuilder presenceBuilder) {
-		super(addressing);
+		this.addressing = addressing;
 		this.presenceBuilder = presenceBuilder;
 	}
 	
 	public ToSelfsPresenceQueue(Addressing addressing) {
-		super(addressing);
+		this.addressing = addressing;
 		this.presenceBuilder = new DefaultPresenceBuilder();
 	}
 
 	public ToSelfsPresenceQueue broadcast(JID jid, JID from, JID to, Status status) {
-		super.broadcast(jid, this.presenceBuilder.build(from, to, status));
+		this.addressing.find(jid).write(this.presenceBuilder.build(from, to, status));
 		return this;
 	}
 

@@ -13,9 +13,10 @@
 		<maven.project.entry>com.sissi.server.impl.MainServer</maven.project.entry>
 		<maven.project.name>sissi</maven.project.name>
 		<!-- For Server -->
-		<maven.global.host>sissi</maven.global.host>
+		<maven.global.main.host>sissi</maven.global.main.host>
 		<maven.global.main.port>5222</maven.global.main.port>
 		<maven.global.exchanger.port>6222</maven.global.exchanger.port>
+		<maven.global.muc.host>muc.sissi</maven.global.muc.host>
 		<!-- For Loop -->
 		<maven.looper.thread.num>2</maven.looper.thread.num>
 		<maven.looper.thread.interval>30000</maven.looper.thread.interval>
@@ -30,10 +31,10 @@
 		<maven.exchanger.idle.read>30</maven.exchanger.idle.read>
 		<maven.exchanger.idle.write>30</maven.exchanger.idle.write>
 		<!-- For Thread -->
-		<maven.executor.core>1000</maven.executor.core>
-		<maven.executor.maximum>1000</maven.executor.maximum>
 		<maven.executor.keep.alive>3000</maven.executor.keep.alive>
+		<maven.executor.maximum>1000</maven.executor.maximum>
 		<maven.executor.unit>SECONDS</maven.executor.unit>
+		<maven.executor.core>1000</maven.executor.core>
 		<!-- For Log -->
 		<maven.log.level>INFO</maven.log.level>
 		<maven.log.appender>Console</maven.log.appender>
@@ -48,6 +49,7 @@
 		<maven.mongo.collection.presence>presence</maven.mongo.collection.presence>
 		<maven.mongo.collection.roster>roster</maven.mongo.collection.roster>
 		<maven.mongo.collection.user>user</maven.mongo.collection.user>
+		<maven.mongo.collection.muc>muc</maven.mongo.collection.muc>
 		<!-- For Protocol -->
 		<maven.register.invitation.title>Welcome 2 register</maven.register.invitation.title>
 		<maven.register.invitation.instructions>From sissi</maven.register.invitation.instructions>

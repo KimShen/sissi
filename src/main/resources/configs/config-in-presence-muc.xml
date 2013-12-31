@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="presence.muc.computer" class="com.sissi.ucenter.relation.EqualMucComputer" />
+
+	<bean id="presence.pro.muc.join" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoinProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="presence.muc.computer" />
+		<property name="relationContext" ref="ucenter.relation.muc" />
+	</bean>
+	<bean id="presence.pro.muc.join.2self" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="presence.muc.computer" />
+	</bean>
+	<bean id="presence.pro.muc.join.2member" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2MemberProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.relation.muc" />
+		<constructor-arg ref="presence.muc.computer" />
+		<property name="relationContext" ref="ucenter.relation.muc" />
+	</bean>
+	<bean id="presence.pro.muc.join.4member" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin4MemberProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.relation.muc" />
+		<property name="relationContext" ref="ucenter.relation.muc" />
+	</bean>
+	<bean id="presence.pro.muc.join.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.pro.muc.join.4member" />
+				<ref bean="presence.pro.muc.join.2member" />
+				<ref bean="presence.pro.muc.join.2self" />
+				<ref bean="presence.pro.muc.join" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="presence.pro.muc.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.presence.muc" />
+	</bean>
+
+	<bean id="finder.presence.muc" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.condition.muc.join" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="presence.condition.muc" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.presence.muc.PresenceMucMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="presence.pro.muc.fork" />
+	</bean>
+
+	<bean id="presence.condition.muc.join" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.AnyMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="presence.pro.muc.join.chained" />
+	</bean>
+
+</beans>

@@ -59,7 +59,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToServerMatcher">
 				<constructor-arg index="0" value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
-				<constructor-arg index="1" value="${global.host}" />
+				<constructor-arg index="1" value="${global.main.host}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="bytestreams.pro.2server" />

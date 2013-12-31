@@ -6,7 +6,7 @@ import java.util.Map;
 import com.sissi.protocol.iq.roster.Group;
 import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster.Subscription;
-import com.sissi.ucenter.RelationContext.RelationRoster;
+import com.sissi.ucenter.RelationRoster;
 
 /**
  * @author kim 2013-11-6

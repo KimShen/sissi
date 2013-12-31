@@ -13,7 +13,7 @@
 		<constructor-arg ref="ucenter.accessor" />
 	</bean>
 	<bean id="auth.call.digest" class="com.sissi.pipeline.in.auth.impl.DigestAuthCallback">
-		<constructor-arg value="${global.host}" />
+		<constructor-arg value="${global.main.host}" />
 		<constructor-arg ref="auth.sasl" />
 		<constructor-arg ref="builder.jid" />
 		<constructor-arg ref="ucenter.accessor" />

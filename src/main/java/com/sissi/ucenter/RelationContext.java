@@ -1,6 +1,5 @@
 package com.sissi.ucenter;
 
-import java.util.Map;
 import java.util.Set;
 
 import com.sissi.context.JID;
@@ -23,20 +22,4 @@ public interface RelationContext {
 	public Set<String> whoSubscribedMe(JID from);
 
 	public Set<String> iSubscribedWho(JID from);
-
-	public interface Relation {
-
-		public String getJID();
-
-		public String getName();
-
-		public String getSubscription();
-
-		public Map<String, Object> plus();
-	}
-
-	public interface RelationRoster extends Relation {
-
-		public String asGroup();
-	}
 }

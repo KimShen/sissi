@@ -83,7 +83,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToServerMatcher">
 				<constructor-arg index="0" value="com.sissi.protocol.iq.disco.Items" />
-				<constructor-arg index="1" value="${global.host}" />
+				<constructor-arg index="1" value="${global.main.host}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="disco.pro.items.2server" />

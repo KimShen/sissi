@@ -14,7 +14,7 @@ public class Body {
 
 	public final static String NAME = "body";
 
-	private String text;
+	private final StringBuffer text = new StringBuffer();
 
 	public Body() {
 		super();
@@ -22,20 +22,20 @@ public class Body {
 
 	public Body(String text) {
 		super();
-		this.text = text;
+		this.text.append(text);
 	}
 
 	@XmlValue
 	public String getText() {
-		return text;
+		return this.text.toString();
 	}
 
 	public Body setText(String text) {
-		this.text = text;
+		this.text.append(text);
 		return this;
 	}
 
 	public Boolean hasContent() {
-		return this.text != null && !this.text.isEmpty();
+		return this.text.length() > 0;
 	}
 }

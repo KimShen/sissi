@@ -8,6 +8,7 @@ import com.sissi.protocol.iq.disco.Info;
 import com.sissi.protocol.iq.disco.feature.Blocking;
 import com.sissi.protocol.iq.disco.feature.Bytestreams;
 import com.sissi.protocol.iq.disco.feature.Identity;
+import com.sissi.protocol.iq.disco.feature.Muc;
 import com.sissi.protocol.iq.disco.feature.Si;
 import com.sissi.protocol.iq.disco.feature.SiFileTransfer;
 import com.sissi.protocol.iq.disco.feature.VCard;
@@ -19,7 +20,7 @@ abstract class DiscoInfo2RobotProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(Info.class.cast(protocol).add(Identity.FEATURE).add(Bytestreams.FEATURE).add(SiFileTransfer.FEATURE).add(Si.FEATURE).add(VCard.FEATURE).add(Blocking.FEATURE).getParent().reply().setType(Type.RESULT));
+		context.write(Info.class.cast(protocol).add(Identity.FEATURE_PROXY).add(Bytestreams.FEATURE).add(SiFileTransfer.FEATURE).add(Si.FEATURE).add(VCard.FEATURE).add(Blocking.FEATURE).add(Muc.FEATURE).getParent().reply().setType(Type.RESULT));
 		return true;
 	}
 }

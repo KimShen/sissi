@@ -126,8 +126,6 @@ abstract public class Protocol implements Element {
 
 	public Protocol clear() {
 		this.id = null;
-		this.from = null;
-		this.to = null;
 		this.type = null;
 		return this;
 	}

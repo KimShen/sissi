@@ -12,7 +12,6 @@ import com.sissi.context.JID;
 import com.sissi.context.StatusClauses;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.offline.Delay;
-import com.sissi.protocol.presence.x.XVCardPhoto;
 import com.sissi.read.Collector;
 import com.sissi.read.MappingMetadata;
 import com.sissi.ucenter.field.Field;
@@ -60,7 +59,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	private Delay delay;
 
 	private Status status;
-	
+
 	private Priority priority;
 
 	public Presence() {
@@ -73,8 +72,8 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		this.setShow(show != null ? show : null).setStatus(status != null ? status : null).setAvator(avator != null ? avator : null).setFrom(from).setTo(to).setType(type);
 	}
 
-	private X findX() {
-		return X.class.cast(this.fields != null ? this.fields.findField(X.NAME, X.class) : null);
+	private XVCard findX() {
+		return XVCard.class.cast(this.fields != null ? this.fields.findField(XVCard.NAME, XVCard.class) : null);
 	}
 
 	@XmlTransient
@@ -119,11 +118,11 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	@XmlTransient
 	public String getAvatorAsText() {
-		X x = this.findX();
+		XVCard x = this.findX();
 		XVCardPhoto xp = x != null ? Fields.class.cast(x).findField(XVCardPhoto.NAME, XVCardPhoto.class) : null;
 		return xp != null ? xp.getValue() : null;
 	}
-	
+
 	@XmlTransient
 	public Show getShow() {
 		return show;
@@ -149,7 +148,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = X.NAME, type = X.class) })
+	@XmlElements({ @XmlElement(name = XVCard.NAME, type = XVCard.class), @XmlElement(name = XUser.NAME, type = XUser.class) })
 	public List<Field<?>> getFields() {
 		return this.fields.getFields();
 	}
@@ -164,7 +163,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	}
 
 	public Presence setAvator(String type) {
-		this.add(new X().add(new XVCardPhoto(type)));
+		this.add(new XVCard().add(new XVCardPhoto(type)));
 		return this;
 	}
 
@@ -197,11 +196,12 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	}
 
 	@Override
-	public Fields add(Field<?> field) {
+	public Presence add(Field<?> field) {
 		if (this.fields == null) {
 			this.fields = new BeanFields(false);
 		}
-		return this.fields.add(field);
+		this.fields.add(field);
+		return this;
 	}
 
 	@Override

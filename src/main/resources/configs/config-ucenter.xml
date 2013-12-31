@@ -17,6 +17,12 @@
 		<constructor-arg index="2" value="${mongo.collection.roster}" />
 	</bean>
 
+	<bean id="config.ucenter.relation.muc" class="com.sissi.config.impl.MongoCollection">
+		<constructor-arg ref="mongo.client" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.muc}" />
+	</bean>
+
 	<alias name="ucenter.block.mongo" alias="ucenter.block" />
 	<bean id="ucenter.block.mongo" class="com.sissi.ucenter.relation.MongoBlockContext">
 		<constructor-arg ref="config.auth" />
@@ -43,9 +49,13 @@
 	</bean>
 
 	<alias name="ucenter.relation.roster.mongo" alias="ucenter.relation.roster" />
-	<bean id="ucenter.relation.roster.mongo" class="com.sissi.ucenter.relation.MongoRelationContext">
-		<constructor-arg ref="builder.jid" />
+	<bean id="ucenter.relation.roster.mongo" class="com.sissi.ucenter.relation.MongoRelationRosterContext">
 		<constructor-arg ref="config.ucenter.relation.roster" />
+	</bean>
+
+	<alias name="ucenter.relation.muc.mongo" alias="ucenter.relation.muc" />
+	<bean id="ucenter.relation.muc.mongo" class="com.sissi.ucenter.relation.MongoRelationMucContext">
+		<constructor-arg ref="config.ucenter.relation.muc" />
 	</bean>
 
 	<alias name="ucenter.register.mongo" alias="ucenter.register" />

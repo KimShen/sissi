@@ -1,8 +1,10 @@
 package com.sissi.ucenter.relation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -13,14 +15,20 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
-import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.iq.roster.Roster;
+import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationContext;
 
 /**
  * @author kim 2013-11-5
  */
-public class MongoRelationContext implements RelationContext {
+abstract class MongoRelationContext implements RelationContext {
+
+	protected final Map<String, Object> PLUS = new HashMap<String, Object>();
+	
+	protected final Log log = LogFactory.getLog(this.getClass());
+	
+	protected final MongoConfig config;
 
 	private final DBObject FILTER_MASTER = BasicDBObjectBuilder.start("master", 1).get();
 
@@ -28,16 +36,9 @@ public class MongoRelationContext implements RelationContext {
 
 	private final List<DBObject> QUERY_STATE;
 
-	private final Log log = LogFactory.getLog(this.getClass());
-
-	private final MongoConfig config;
-
-	private final JIDBuilder builder;
-
-	public MongoRelationContext(MongoConfig config, JIDBuilder builder) {
+	public MongoRelationContext(MongoConfig config) {
 		super();
 		this.config = config;
-		this.builder = builder;
 		QUERY_STATE = new ArrayList<DBObject>();
 		QUERY_STATE.add(BasicDBObjectBuilder.start().add("state", Roster.Subscription.TO.toString()).get());
 		QUERY_STATE.add(BasicDBObjectBuilder.start().add("state", Roster.Subscription.BOTH.toString()).get());
@@ -52,7 +53,7 @@ public class MongoRelationContext implements RelationContext {
 
 	@Override
 	public RelationContext establish(JID from, Relation relation) {
-		DBObject query = BasicDBObjectBuilder.start().add("master", from.asStringWithBare()).add("slave", this.builder.build(relation.getJID()).asStringWithBare()).get();
+		DBObject query = BasicDBObjectBuilder.start().add("master", from.asStringWithBare()).add("slave", relation.getJID()).get();
 		DBObject entity = BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(relation.plus()).add("name", relation.getName()).add("state", relation.getSubscription()).get()).get();
 		this.log.debug("Query is: " + query);
 		this.log.debug("Entity is: " + entity);
@@ -86,7 +87,7 @@ public class MongoRelationContext implements RelationContext {
 		DBObject query = BasicDBObjectBuilder.start().add("master", from.asStringWithBare()).add("slave", to.asStringWithBare()).get();
 		this.log.debug("Query is: " + query);
 		DBObject db = this.config.collection().findOne(query);
-		return db != null ? new MongoRelation(db, this.config) : null;
+		return db != null ? this.build(db, this.config) : null;
 	}
 
 	@Override
@@ -102,6 +103,8 @@ public class MongoRelationContext implements RelationContext {
 		return new JIDs(this.config.collection().find(query, FILTER_SLAVE), "slave");
 	}
 
+	abstract protected Relation build(DBObject db, MongoConfig config);
+
 	private class JIDs extends HashSet<String> {
 
 		private final static long serialVersionUID = 1L;
@@ -116,7 +119,7 @@ public class MongoRelationContext implements RelationContext {
 		}
 	}
 
-	private class MongoRelations extends HashSet<Relation> {
+	protected class MongoRelations extends HashSet<Relation> {
 
 		private final static long serialVersionUID = 1L;
 
@@ -125,7 +128,7 @@ public class MongoRelationContext implements RelationContext {
 				return;
 			}
 			while (cursor.hasNext()) {
-				this.add(new MongoRelation(cursor.next(), config));
+				this.add(MongoRelationContext.this.build(cursor.next(), config));
 			}
 		}
 	}

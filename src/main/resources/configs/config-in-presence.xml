@@ -84,6 +84,7 @@
 	<bean id="finder.presence" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<ref bean="presence.condition.muc" />
 				<ref bean="presence.condition.status" />
 				<ref bean="presence.condition.roster" />
 			</util:list>

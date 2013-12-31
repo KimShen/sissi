@@ -10,8 +10,8 @@ import com.sissi.protocol.Protocol.Type;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster;
-import com.sissi.ucenter.RelationContext.Relation;
-import com.sissi.ucenter.RelationContext.RelationRoster;
+import com.sissi.ucenter.Relation;
+import com.sissi.ucenter.RelationRoster;
 
 /**
  * @author kim 2013-11-18

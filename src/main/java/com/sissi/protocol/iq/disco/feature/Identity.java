@@ -11,15 +11,28 @@ import com.sissi.protocol.iq.disco.Clause;
 @XmlRootElement
 public class Identity implements Clause {
 
-	public final static Identity FEATURE = new Identity();
+	public final static Identity FEATURE_MUC = new Identity("Macbeth Chat Service", "text", "conference");
+
+	public final static Identity FEATURE_PROXY = new Identity("SOCKS5 Bytestreams Service", "bytestreams", "proxy");
 
 	public final static String NAME = "identity";
 
-	private final String category = "proxy";
+	private String category;
 
-	private final String type = "bytestreams";
+	private String type;
 
-	private final String name = "SOCKS5 Bytestreams Service";
+	private String name;
+
+	public Identity() {
+		super();
+	}
+
+	public Identity(String name, String type, String category) {
+		super();
+		this.category = category;
+		this.type = type;
+		this.name = name;
+	}
 
 	@XmlAttribute
 	public String getCategory() {
