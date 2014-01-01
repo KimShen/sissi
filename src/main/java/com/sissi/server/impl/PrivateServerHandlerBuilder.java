@@ -149,7 +149,7 @@ public class PrivateServerHandlerBuilder {
 		}
 
 		private void createContext(final ChannelHandlerContext ctx) {
-			NetworkTls networkTLS = new NetworkTls(PrivateServerHandlerBuilder.this.serverTlsContext, ctx);
+			NetworkTls2 networkTLS = new NetworkTls2(PrivateServerHandlerBuilder.this.serverTlsContext, ctx);
 			ctx.attr(CONTEXT).set(PrivateServerHandlerBuilder.this.jidContextBuilder.build(null, new OnlineContextParam(PrivateServerHandlerBuilder.this.outputBuilder.build(new NetworkTransfer(networkTLS, ctx)), networkTLS)));
 		}
 
