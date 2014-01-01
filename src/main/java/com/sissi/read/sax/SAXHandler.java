@@ -12,6 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.sissi.read.Collector;
@@ -25,20 +26,20 @@ public class SAXHandler extends DefaultHandler {
 	private final static Integer ONLY_ROOT = 1;
 
 	private final static String ROOT = "stream";
-	
+
 	private final static String TEXT = "text";
-	
+
 	private final static Map<Class<?>, MethodFinder> CACHED_METHOD = new HashMap<Class<?>, MethodFinder>();
 
 	private final static Log LOG = LogFactory.getLog(SAXHandler.class);
-	
+
 	@SuppressWarnings("serial")
 	private final Set<String> rootNode = new HashSet<String>() {
 		{
 			add(ROOT);
 		}
 	};
-	
+
 	private Mapping mapping;
 
 	private LinkedList<Object> stack;
@@ -136,6 +137,9 @@ public class SAXHandler extends DefaultHandler {
 				this.propertyCopy(this.stack.getFirst(), TEXT, text);
 			}
 		}
+	}
+
+	public void fatalError(SAXParseException e) throws SAXException {
 	}
 
 	private static class MethodFinder extends HashMap<String, Method> {

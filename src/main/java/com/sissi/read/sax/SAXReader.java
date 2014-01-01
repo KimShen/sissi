@@ -28,23 +28,24 @@ public class SAXReader implements Reader {
 
 	private final Mapping mapping;
 
-	public SAXReader() {
+	public SAXReader() throws Exception {
 		this(new XMLMapping(), Executors.newSingleThreadExecutor());
 	}
 
-	public SAXReader(Mapping mapping) {
+	public SAXReader(Mapping mapping) throws Exception {
 		this(mapping, Executors.newSingleThreadExecutor());
 	}
 
-	public SAXReader(Executor executor) {
+	public SAXReader(Executor executor) throws Exception {
 		this(new XMLMapping(), executor);
 	}
 
-	public SAXReader(Mapping mapping, Executor executor) {
+	public SAXReader(Mapping mapping, Executor executor) throws Exception {
 		super();
 		this.mapping = mapping;
 		this.executor = executor;
 		this.factory = SAXParserFactory.newInstance();
+		this.factory.setFeature("http://apache.org/xml/features/continue-after-fatal-error", true);
 		this.factory.setNamespaceAware(true);
 	}
 
