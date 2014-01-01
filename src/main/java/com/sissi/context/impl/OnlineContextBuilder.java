@@ -11,7 +11,7 @@ import com.sissi.context.Status;
 import com.sissi.context.StatusBuilder;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
-import com.sissi.server.ServerTls;
+import com.sissi.server.ServerTls2;
 
 /**
  * @author kim 2013-11-19
@@ -48,7 +48,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final Output output;
 
-		private final ServerTls serverTLS;
+		private final ServerTls2 serverTLS;
 
 		private Integer priority;
 
@@ -60,7 +60,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			super();
 			this.priority = 0;
 			this.output = param.find(KEY_OUTPUT, Output.class);
-			this.serverTLS = param.find(KEY_TLS, ServerTls.class);
+			this.serverTLS = param.find(KEY_TLS, ServerTls2.class);
 			this.index = OnlineContextBuilder.this.indexes.incrementAndGet();
 		}
 
