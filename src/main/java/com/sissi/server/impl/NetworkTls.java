@@ -22,7 +22,7 @@ public class NetworkTls implements ServerTls, GenericFutureListener<Future<Void>
 	private final AtomicBoolean prepareStarttls = new AtomicBoolean();
 
 	private final ServerTlsBuilder serverTlsbuilder;
-
+    
 	private final ChannelHandlerContext context;
 
 	private SslHandler handler;
@@ -55,4 +55,5 @@ public class NetworkTls implements ServerTls, GenericFutureListener<Future<Void>
 	public Boolean isTls() {
 		return this.isStarttls.get();
 	}
+	
 }

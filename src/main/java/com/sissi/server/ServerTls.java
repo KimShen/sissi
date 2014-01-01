@@ -8,6 +8,7 @@ import com.sissi.server.impl.NetworkTls;
 public interface ServerTls {
 
 	public NetworkTls starttls();
+	 
+	public Boolean isTls();  
 	
-	public Boolean isTls();
 }
