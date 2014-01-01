@@ -14,5 +14,5 @@ public class PresenceRosterUnSubscribedProcessor extends ProxyProcessor {
 	public Boolean input(JIDContext context, Protocol protocol) {
 		super.update(super.build(protocol.getTo()), context.getJid(), Roster.Subscription.NONE.toString());
 		return true;
-	}
+	} 
 }

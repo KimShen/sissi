@@ -2,7 +2,7 @@ package com.sissi.context.impl;
 
 import com.sissi.context.JIDContextParam;
 import com.sissi.pipeline.Output;
-import com.sissi.server.ServerTls;
+import com.sissi.server.ServerTls2;
 
 /**
  * @author kim 2013年12月23日
@@ -11,9 +11,9 @@ public class OnlineContextParam implements JIDContextParam {
 
 	private final Output output;
 
-	private final ServerTls serverTLS;
+	private final ServerTls2 serverTLS;
 
-	public OnlineContextParam(Output output, ServerTls serverTLS) {
+	public OnlineContextParam(Output output, ServerTls2 serverTLS) {
 		super();
 		this.output = output;
 		this.serverTLS = serverTLS;
