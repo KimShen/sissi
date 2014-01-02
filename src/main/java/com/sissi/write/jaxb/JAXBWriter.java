@@ -25,6 +25,7 @@ import com.sissi.commons.LineIterator;
 import com.sissi.commons.ScanUtil;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.Element;
+import com.sissi.write.WithFull;
 import com.sissi.write.WithJustClose;
 import com.sissi.write.WithOutClose;
 import com.sissi.write.Writer;
@@ -71,7 +72,7 @@ public class JAXBWriter implements Writer {
 		BufferedOutputStream bufferOut = new BufferedOutputStream(output);
 		try {
 			try {
-				return this.isFragment(element) ? this.writeWithFragement(context, element, bufferOut) : this.writeWithFull(context, element, bufferOut);
+				return this.isFragment(element.getClass()) ? this.writeWithFragement(context, element, bufferOut) : this.writeWithFull(context, element, bufferOut);
 			} catch (Exception e) {
 				if (this.log.isErrorEnabled()) {
 					this.log.error(e);
@@ -100,8 +101,8 @@ public class JAXBWriter implements Writer {
 		return element;
 	}
 
-	private Boolean isFragment(Element element) {
-		return WithOutClose.class.isAssignableFrom(element.getClass()) || WithJustClose.class.isAssignableFrom(element.getClass());
+	private Boolean isFragment(Class<? extends Element> element) {
+		return !WithFull.class.isAssignableFrom(element) && (WithOutClose.class.isAssignableFrom(element) || WithJustClose.class.isAssignableFrom(element));
 	}
 
 	private Element writeWithFragement(JIDContext context, Element element, OutputStream output) throws Exception {

@@ -8,7 +8,7 @@ import com.sissi.protocol.Stream;
 /**
  * @author kim 2014年1月2日
  */
-public class StreamContextLangProcessor implements Input {
+public class StreamXmlnsLangProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

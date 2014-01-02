@@ -95,6 +95,14 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		}
 		return allClose;
 	}
+	
+	public Boolean closePrepare(){
+		boolean allClose = true;
+		for (JIDContext each : this) {
+			allClose = each.closePrepare() ? allClose : true;
+		}
+		return allClose;
+	}
 
 	public JIDContext reset() {
 		for (JIDContext each : this) {

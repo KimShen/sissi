@@ -107,6 +107,10 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return false;
 		}
 
+		public Boolean closePrepare() {
+			return false;
+		}
+
 		@Override
 		public Boolean close() {
 			return false;

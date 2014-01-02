@@ -47,6 +47,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final AtomicBoolean isAuth = new AtomicBoolean();
 
+		private final AtomicBoolean isPrepareClose = new AtomicBoolean();
+
 		private final Long index;
 
 		private final Output output;
@@ -104,7 +106,9 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public JIDContext write(Element node) {
-			this.output.output(this, node);
+			if (!this.isPrepareClose.get()) {
+				this.output.output(this, node);
+			}
 			return this;
 		}
 
@@ -153,9 +157,15 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public Boolean close() {
-			this.output.close();
+			this.closePrepare();
 			this.status.clear();
 			this.status = null;
+			this.output.close();
+			return true;
+		}
+
+		public Boolean closePrepare() {
+			this.isPrepareClose.set(true);
 			return true;
 		}
 	}

@@ -38,6 +38,8 @@ public interface JIDContext {
 	public JIDContext reset();
 	
 	public Boolean close();
+	
+	public Boolean closePrepare();
 
 	public JIDContext write(Element element);
 }

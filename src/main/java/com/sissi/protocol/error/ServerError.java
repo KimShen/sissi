@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.sissi.protocol.Error;
 import com.sissi.protocol.ErrorDetail;
 import com.sissi.protocol.Protocol.Type;
+import com.sissi.protocol.error.detail.InvaildNamespace;
 import com.sissi.protocol.error.detail.NotAcceptable;
 import com.sissi.protocol.error.detail.NotAuthorized;
 
@@ -72,7 +73,7 @@ public class ServerError implements Error {
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class) })
+	@XmlElements({ @XmlElement(name = InvaildNamespace.NAME, type = InvaildNamespace.class), @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class) })
 	public List<ErrorDetail> getDetails() {
 		return details;
 	}
