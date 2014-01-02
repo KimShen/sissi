@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="message.pro.relation" class="com.sissi.pipeline.in.message.MessageRelationProcessor" parent="global.pro.proxy">
-		<constructor-arg value="${message.free}" />
+		<constructor-arg value="${message.relation}" />
 	</bean>
 	<bean id="message.pro.activate" class="com.sissi.pipeline.in.message.MessageActivatorProcessor">
 		<constructor-arg ref="addressing" />

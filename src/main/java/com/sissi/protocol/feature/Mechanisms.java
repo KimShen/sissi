@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.sissi.pipeline.in.auth.impl.DigestAuthCallback;
 import com.sissi.pipeline.in.auth.impl.PlainAuthCallback;
 import com.sissi.protocol.Feature;
+import com.sissi.protocol.Required;
 
 /**
  * @author Kim.shen 2013-10-19
@@ -41,6 +42,12 @@ public class Mechanisms implements Feature {
 	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;
+	}
+
+	@Override
+	@XmlElement
+	public Required getRequired() {
+		return Required.REQUIRED;
 	}
 
 	@XmlElements({ @XmlElement(name = "mechanism", type = String.class) })

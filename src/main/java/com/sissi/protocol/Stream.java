@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.feature.Bind;
-import com.sissi.protocol.feature.Compression;
 import com.sissi.protocol.feature.Mechanisms;
 import com.sissi.protocol.feature.Register;
 import com.sissi.protocol.feature.Session;
@@ -38,6 +37,8 @@ public class Stream extends Protocol implements WithOutClose {
 
 	private List<Feature> features;
 
+	private String lang;
+
 	public Stream() {
 		super();
 		this.isUsing.set(false);
@@ -62,6 +63,16 @@ public class Stream extends Protocol implements WithOutClose {
 		return VERSION;
 	}
 
+	@XmlAttribute(name = "xml:lang")
+	public String getLang() {
+		return this.lang;
+	}
+
+	public Stream setLang(String lang) {
+		this.lang = lang;
+		return this;
+	}
+
 	public Stream addFeature(Feature feature) {
 		if (this.features == null) {
 			this.features = new ArrayList<Feature>();
@@ -71,7 +82,7 @@ public class Stream extends Protocol implements WithOutClose {
 	}
 
 	@XmlElementWrapper(namespace = Stream.XMLNS, name = "features")
-	@XmlElements({ @XmlElement(name = Starttls.NAME, type = Starttls.class), @XmlElement(name = Compression.NAME, type = Compression.class), @XmlElement(name = Mechanisms.NAME, type = Mechanisms.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Register.NAME, type = Register.class) })
+	@XmlElements({ @XmlElement(name = Starttls.NAME, type = Starttls.class), @XmlElement(name = Mechanisms.NAME, type = Mechanisms.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Register.NAME, type = Register.class) })
 	public List<Feature> getFeatures() {
 		return features;
 	}

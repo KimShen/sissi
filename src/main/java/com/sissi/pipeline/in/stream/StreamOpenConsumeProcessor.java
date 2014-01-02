@@ -6,13 +6,14 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 
 /**
- * @author kim 2013年12月18日
+ * @author kim 2013年12月3日
  */
-public class StreamOpenProcessor implements Input {
+public class StreamOpenConsumeProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(Stream.class.cast(protocol).setLang(context.getLang()).reply());
+		Stream.class.cast(protocol).consume();
 		return true;
 	}
+
 }

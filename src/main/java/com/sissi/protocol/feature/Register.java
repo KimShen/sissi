@@ -1,9 +1,11 @@
 package com.sissi.protocol.feature;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Feature;
+import com.sissi.protocol.Required;
 
 /**
  * @author kim 2013年12月4日
@@ -19,6 +21,12 @@ public class Register implements Feature {
 
 	private Register() {
 
+	}
+
+	@Override
+	@XmlElement
+	public Required getRequired() {
+		return null;
 	}
 
 	@XmlAttribute

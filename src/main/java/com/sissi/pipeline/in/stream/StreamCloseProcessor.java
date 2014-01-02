@@ -4,6 +4,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
+import com.sissi.protocol.StreamCloser;
 
 /**
  * @author kim 2013-10-24
@@ -12,6 +13,11 @@ public class StreamCloseProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return Stream.class.cast(protocol).isUsing() ? false : true;
+		return Stream.class.cast(protocol).isUsing() ? this.close(context) : true;
+	}
+
+	private Boolean close(JIDContext context) {
+		context.write(StreamCloser.CLOSER);
+		return false;
 	}
 }

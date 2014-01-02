@@ -39,6 +39,13 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return this;
 	}
 
+	public JIDContext setLang(String lang) {
+		for (JIDContext each : this) {
+			each.setLang(lang);
+		}
+		return this;
+	}
+
 	@Override
 	public JIDContext setJid(JID jid) {
 		for (JIDContext each : this) {
@@ -89,6 +96,13 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return allClose;
 	}
 
+	public JIDContext reset() {
+		for (JIDContext each : this) {
+			each.reset();
+		}
+		return this;
+	}
+
 	@Override
 	public JIDContext write(Element node) {
 		for (JIDContext each : this) {
@@ -108,6 +122,10 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	@Override
 	public Integer getPriority() {
+		throw NOT_SUPPORT;
+	}
+
+	public String getLang() {
 		throw NOT_SUPPORT;
 	}
 

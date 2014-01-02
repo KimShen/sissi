@@ -25,6 +25,7 @@ import com.sissi.commons.LineIterator;
 import com.sissi.commons.ScanUtil;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.Element;
+import com.sissi.write.WithJustClose;
 import com.sissi.write.WithOutClose;
 import com.sissi.write.Writer;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
@@ -69,57 +70,66 @@ public class JAXBWriter implements Writer {
 	public Element write(JIDContext context, Element element, OutputStream output) throws IOException {
 		BufferedOutputStream bufferOut = new BufferedOutputStream(output);
 		try {
-			if (WithOutClose.class.isAssignableFrom(element.getClass())) {
-				this.writeWithOutClose(context, element, bufferOut);
-			} else {
-				this.writeWithFull(context, element, bufferOut);
+			try {
+				return this.isFragment(element) ? this.writeWithFragement(context, element, bufferOut) : this.writeWithFull(context, element, bufferOut);
+			} catch (Exception e) {
+				if (this.log.isErrorEnabled()) {
+					this.log.error(e);
+					e.printStackTrace();
+				}
+				return null;
 			}
 		} finally {
 			bufferOut.close();
 		}
+	}
+
+	public Element writeWithFull(JIDContext context, Element element, OutputStream output) throws Exception {
+		Marshaller marshaller = this.generateMarshaller(false, true);
+		if (this.log.isInfoEnabled()) {
+			StringBufferWriter bufferTemp = new StringBufferWriter(new StringWriter());
+			marshaller.marshal(element, bufferTemp);
+			bufferTemp.flush();
+			String content = bufferTemp.toString();
+			this.log.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + content);
+			output.write(content.getBytes("UTF-8"));
+		} else {
+			marshaller.marshal(element, output);
+		}
+		output.flush();
 		return element;
 	}
 
-	public void writeWithFull(JIDContext context, Element element, OutputStream output) throws IOException {
-		try {
-			Marshaller marshaller = this.generateMarshaller(false);
-			if (this.log.isInfoEnabled()) {
-				StringBufferWriter bufferTemp = new StringBufferWriter(new StringWriter());
-				marshaller.marshal(element, bufferTemp);
-				bufferTemp.flush();
-				String content = bufferTemp.toString();
-				this.log.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + content);
-				output.write(content.getBytes("UTF-8"));
-			} else {
-				marshaller.marshal(element, output);
-			}
-			output.flush();
-		} catch (JAXBException e) {
-			if (this.log.isErrorEnabled()) {
-				this.log.error(e);
-				e.printStackTrace();
-			}
-		}
+	private Boolean isFragment(Element element) {
+		return WithOutClose.class.isAssignableFrom(element.getClass()) || WithJustClose.class.isAssignableFrom(element.getClass());
 	}
 
-	private void writeWithOutClose(JIDContext context, Element element, OutputStream output) throws IOException {
-		try {
-			Marshaller marshaller = generateMarshaller(true);
-			LinkedList<String> contents = this.prepareToLines(element, marshaller);
-			contents.removeLast();
-			StringBuffer sb = new StringBuffer();
-			for (String each : contents) {
-				sb.append(each);
-			}
-			this.log.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + sb.toString());
-			output.write(sb.toString().getBytes("UTF-8"));
-			output.flush();
-		} catch (Exception e) {
-			if (this.log.isErrorEnabled()) {
-				this.log.error(e);
-				e.printStackTrace();
-			}
+	private Element writeWithFragement(JIDContext context, Element element, OutputStream output) throws Exception {
+		return WithJustClose.class.isAssignableFrom(element.getClass()) ? this.writeWithJustClose(context, element, output) : this.writeWithOutClose(context, element, output);
+	}
+
+	private Element writeWithJustClose(JIDContext context, Element element, OutputStream output) throws Exception {
+		Marshaller marshaller = this.generateMarshaller(true, false);
+		LinkedList<String> contents = this.prepareToLines(element, marshaller);
+		String content = contents.getLast();
+		this.log.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + content);
+		output.write(content.getBytes("UTF-8"));
+		output.flush();
+		return element;
+	}
+
+	private Element writeWithOutClose(JIDContext context, Element element, OutputStream output) throws Exception {
+		Marshaller marshaller = this.generateMarshaller(true, false);
+		LinkedList<String> contents = this.prepareToLines(element, marshaller);
+		contents.removeLast();
+		StringBuffer sb = new StringBuffer();
+		for (String each : contents) {
+			sb.append(each);
 		}
+		this.log.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + sb.toString());
+		output.write(sb.toString().getBytes("UTF-8"));
+		output.flush();
+		return element;
 	}
 
 	private LinkedList<String> prepareToLines(Element node, Marshaller marshaller) throws JAXBException, IOException {
@@ -133,9 +143,9 @@ public class JAXBWriter implements Writer {
 		return contents;
 	}
 
-	private Marshaller generateMarshaller(Boolean withOutClose) throws JAXBException, PropertyException {
+	private Marshaller generateMarshaller(Boolean withOutClose, Boolean isFragement) throws JAXBException, PropertyException {
 		Marshaller marshaller = context.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
+		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, isFragement);
 		marshaller.setProperty(MAPPING_PROPERTY, mapper);
 		if (withOutClose) {
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);

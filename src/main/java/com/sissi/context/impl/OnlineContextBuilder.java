@@ -26,9 +26,12 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final StatusBuilder statusBuilder;
 
-	public OnlineContextBuilder(StatusBuilder statusBuilder) {
+	private final String lang;
+
+	public OnlineContextBuilder(String lang, StatusBuilder statusBuilder) {
 		super();
 		this.statusBuilder = statusBuilder;
+		this.lang = lang;
 	}
 
 	@Override
@@ -53,6 +56,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		private Integer priority;
 
 		private Status status;
+
+		private String lang;
 
 		private JID jid;
 
@@ -114,14 +119,6 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public Boolean close() {
-			this.output.close();
-			this.status.clear();
-			this.status = null;
-			return true;
-		}
-
-		@Override
 		public Status getStatus() {
 			return this.status;
 		}
@@ -135,6 +132,31 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		@Override
 		public Integer getPriority() {
 			return this.priority;
+		}
+
+		public JIDContext setLang(String lang) {
+			this.lang = lang;
+			return this;
+		}
+
+		public String getLang() {
+			return this.lang != null ? this.lang : OnlineContextBuilder.this.lang;
+		}
+
+		public JIDContext reset() {
+			this.isBinding.set(false);
+			this.isAuth.set(false);
+			this.priority = 0;
+			this.lang = null;
+			return this;
+		}
+
+		@Override
+		public Boolean close() {
+			this.output.close();
+			this.status.clear();
+			this.status = null;
+			return true;
 		}
 	}
 }

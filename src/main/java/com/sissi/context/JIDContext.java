@@ -24,12 +24,18 @@ public interface JIDContext {
 	public JIDContext setPriority(Integer priority);
 
 	public Integer getPriority();
+	
+	public JIDContext setLang(String lang);
+	
+	public String getLang();
 
 	public Status getStatus();
 
 	public JIDContext starttls();
 	
 	public Boolean isTls();
+	
+	public JIDContext reset();
 	
 	public Boolean close();
 

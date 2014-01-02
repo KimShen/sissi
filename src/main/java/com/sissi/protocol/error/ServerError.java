@@ -10,7 +10,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Error;
 import com.sissi.protocol.ErrorDetail;
+import com.sissi.protocol.Protocol.Type;
 import com.sissi.protocol.error.detail.NotAcceptable;
+import com.sissi.protocol.error.detail.NotAuthorized;
 
 /**
  * @author kim 2013年12月4日
@@ -56,6 +58,11 @@ public class ServerError implements Error {
 		this.type = type;
 		return this;
 	}
+	
+	public ServerError setType(Type type) {
+		this.type = type.toString();
+		return this;
+	}
 
 	public ServerError add(ErrorDetail detail) {
 		if (this.details == null) {
@@ -65,7 +72,7 @@ public class ServerError implements Error {
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class) })
+	@XmlElements({ @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class) })
 	public List<ErrorDetail> getDetails() {
 		return details;
 	}

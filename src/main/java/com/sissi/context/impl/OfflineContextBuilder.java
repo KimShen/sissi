@@ -21,9 +21,12 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private final DelayElementBox delayElementBox;
 
-	public OfflineContextBuilder(DelayElementBox delayElementBox) {
+	private final String lang;
+
+	public OfflineContextBuilder(String lang, DelayElementBox delayElementBox) {
 		super();
 		this.delayElementBox = delayElementBox;
+		this.lang = lang;
 	}
 
 	@Override
@@ -87,6 +90,14 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return DEFAULT_PRIORITY;
 		}
 
+		public JIDContext setLang(String lang) {
+			return this;
+		}
+
+		public String getLang() {
+			return OfflineContextBuilder.this.lang;
+		}
+
 		@Override
 		public JIDContext starttls() {
 			return this;
@@ -99,6 +110,10 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		@Override
 		public Boolean close() {
 			return false;
+		}
+
+		public JIDContext reset() {
+			return this;
 		}
 
 		@Override

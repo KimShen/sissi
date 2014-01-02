@@ -5,19 +5,23 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="stream.pro.consume" class="com.sissi.pipeline.in.stream.StreamConsumeProcessor" />
 	<bean id="stream.pro.close" class="com.sissi.pipeline.in.stream.StreamCloseProcessor" />
-	<bean id="stream.pro.feature.starttls" class="com.sissi.pipeline.in.stream.StreamStarttlsProcessor" />
-	<bean id="stream.pro.feature" class="com.sissi.pipeline.in.stream.StreamFeatureProcessor" />
 	<bean id="stream.pro.open" class="com.sissi.pipeline.in.stream.StreamOpenProcessor" />
+	<bean id="stream.pro.open.consume" class="com.sissi.pipeline.in.stream.StreamOpenConsumeProcessor" />
+	<bean id="stream.pro.feature.starttls" class="com.sissi.pipeline.in.stream.StreamFeatureStarttlsProcessor" />
+	<bean id="stream.pro.feature" class="com.sissi.pipeline.in.stream.StreamFeatureProcessor" />
+	<bean id="stream.pro.context.reset" class="com.sissi.pipeline.in.stream.StreamContextResetProcessor" />
+	<bean id="stream.pro.context.lang" class="com.sissi.pipeline.in.stream.StreamContextLangProcessor" />
 	<bean id="stream.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="stream.pro.close" />
 				<ref bean="stream.pro.feature" />
 				<ref bean="stream.pro.feature.starttls" />
+				<ref bean="stream.pro.context.lang" />
+				<ref bean="stream.pro.context.reset" />
 				<ref bean="stream.pro.open" />
-				<ref bean="stream.pro.consume" />
+				<ref bean="stream.pro.open.consume" />
 			</util:list>
 		</constructor-arg>
 	</bean>

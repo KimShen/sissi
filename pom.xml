@@ -17,6 +17,7 @@
 		<maven.global.main.port>5222</maven.global.main.port>
 		<maven.global.exchanger.port>6222</maven.global.exchanger.port>
 		<maven.global.muc.host>muc.sissi</maven.global.muc.host>
+		<maven.global.lang>zh_CN</maven.global.lang>
 		<!-- For Loop -->
 		<maven.looper.thread.num>2</maven.looper.thread.num>
 		<maven.looper.thread.interval>30000</maven.looper.thread.interval>
@@ -61,8 +62,8 @@
 		<maven.bytestreams.proxy.host>sissi.pw</maven.bytestreams.proxy.host>
 		<maven.bytestreams.proxy.port>${maven.global.exchanger.port}</maven.bytestreams.proxy.port>
 		<maven.bytestreams.proxy.name>Socks 5 Bytestreams Proxy</maven.bytestreams.proxy.name>
-		<maven.message.free>false</maven.message.free>
-		<maven.offline.hit>From sissi offline</maven.offline.hit>
+		<maven.message.relation>false</maven.message.relation>
+		<maven.offline>From sissi offline</maven.offline>
 	</properties>
 	<dependencies>
 		<!-- For Compile -->

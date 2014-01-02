@@ -6,4 +6,6 @@ package com.sissi.protocol;
 public interface Feature {
 
 	public String getXmlns();
+	
+	public Required getRequired();
 }

@@ -40,11 +40,13 @@ public class SAXHandler extends DefaultHandler {
 		}
 	};
 
-	private Mapping mapping;
+	private final Mapping mapping;
 
-	private LinkedList<Object> stack;
+	private final LinkedList<Object> stack;
 
-	private SAXFuture future;
+	private final Map<String, String> xmlns;
+
+	private final SAXFuture future;
 
 	private Object current;
 
@@ -53,6 +55,7 @@ public class SAXHandler extends DefaultHandler {
 		this.mapping = mapping;
 		this.future = future;
 		this.stack = new LinkedList<Object>();
+		this.xmlns = new HashMap<String, String>();
 	}
 
 	private void propertyCopy(Attributes attributes, Object element) {
@@ -93,16 +96,20 @@ public class SAXHandler extends DefaultHandler {
 		}
 	}
 
-	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-		LOG.debug("Process uri: " + uri + " localName: " + localName);
-		if (this.generateNode(attributes, uri != null ? uri : null, localName)) {
-			this.propertyCopy(attributes, this.stack.getFirst());
+	private Object newElement(String uri, String localName) {
+		return this.current = this.mapping.newInstance(uri, localName);
+	}
+
+	private void xmlnCopy() {
+		for (String xmln : this.xmlns.keySet()) {
+			this.propertyCopy(this.current, xmln, this.xmlns.get(xmln));
 		}
 	}
 
 	private boolean generateNode(Attributes attributes, String uri, String localName) {
 		this.newRoot2Reset(localName);
-		this.current = this.mapping.newInstance(uri, localName);
+		this.newElement(uri, localName);
+		this.xmlnCopy();
 		if (this.current != null) {
 			if (this.stack.isEmpty()) {
 				this.propertyCopy(attributes, this.current);
@@ -117,6 +124,19 @@ public class SAXHandler extends DefaultHandler {
 			this.stack.addFirst(this.current);
 		}
 		return this.current != null;
+	}
+
+	public void startPrefixMapping(String prefix, String uri) throws SAXException {
+		if (prefix != null && !prefix.isEmpty()) {
+			this.xmlns.put(prefix, uri);
+		}
+	}
+
+	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+		LOG.debug("Process uri: " + uri + " localName: " + localName);
+		if (this.generateNode(attributes, uri != null ? uri : null, localName)) {
+			this.propertyCopy(attributes, this.stack.getFirst());
+		}
 	}
 
 	public void endElement(String uri, String localName, String qName) throws SAXException {
