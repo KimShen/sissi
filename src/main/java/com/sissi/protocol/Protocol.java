@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
-import com.sissi.protocol.error.ServerError;
+import com.sissi.protocol.error.ElementlError;
 
 /**
  * @author kim 2013-10-24
@@ -38,8 +38,8 @@ abstract public class Protocol implements Element {
 	private String type;
 
 	private Protocol parent;
-	
-	private ServerError error;
+
+	private ElementlError error;
 
 	@XmlTransient
 	public Protocol getParent() {
@@ -107,13 +107,13 @@ abstract public class Protocol implements Element {
 	}
 
 	@XmlElement
-	public ServerError getError() {
+	public ElementlError getError() {
 		return this.error;
 	}
 
 	public Protocol setError(Error error) {
 		this.setType(Type.ERROR);
-		this.error = new ServerError(error);
+		this.error = new ElementlError(error);
 		return this;
 	}
 

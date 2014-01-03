@@ -6,7 +6,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Error;
 import com.sissi.protocol.ErrorDetail;
@@ -16,10 +15,9 @@ import com.sissi.protocol.error.detail.NotAcceptable;
 import com.sissi.protocol.error.detail.NotAuthorized;
 
 /**
- * @author kim 2013年12月4日
+ * @author kim 2014年1月3日
  */
-@XmlRootElement(name = ServerError.NAME)
-public class ServerError implements Error {
+abstract public class ServerError implements Error {
 
 	public final static String NAME = "error";
 
@@ -59,7 +57,7 @@ public class ServerError implements Error {
 		this.type = type;
 		return this;
 	}
-	
+
 	public ServerError setType(Type type) {
 		this.type = type.toString();
 		return this;
