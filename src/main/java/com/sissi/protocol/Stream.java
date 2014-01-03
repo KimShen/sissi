@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.feature.Bind;
 import com.sissi.protocol.feature.Mechanisms;
 import com.sissi.protocol.feature.Register;
@@ -99,6 +100,11 @@ public class Stream extends Protocol implements WithOutClose {
 	@XmlElements({ @XmlElement(name = Starttls.NAME, type = Starttls.class), @XmlElement(name = Mechanisms.NAME, type = Mechanisms.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Register.NAME, type = Register.class) })
 	public List<Feature> getFeatures() {
 		return features;
+	}
+
+	@XmlElement(namespace = Stream.XMLNS, name = ServerError.NAME)
+	public ServerError getError() {
+		return super.getError();
 	}
 
 	public static Stream closeGracefully() {

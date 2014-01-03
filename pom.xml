@@ -168,7 +168,7 @@
 				<configuration>
 					<source>${maven.project.compile.version}</source>
 					<target>${maven.project.compile.version}</target>
-					<encoding>UTF-8</encoding>
+					<encoding>${maven.project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 			<plugin>

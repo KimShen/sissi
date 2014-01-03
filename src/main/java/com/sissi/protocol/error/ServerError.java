@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Error;
 import com.sissi.protocol.ErrorDetail;
@@ -17,7 +18,8 @@ import com.sissi.protocol.error.detail.NotAuthorized;
 /**
  * @author kim 2014年1月3日
  */
-abstract public class ServerError implements Error {
+@XmlRootElement(name = ServerError.NAME)
+public class ServerError implements Error {
 
 	public final static String NAME = "error";
 
