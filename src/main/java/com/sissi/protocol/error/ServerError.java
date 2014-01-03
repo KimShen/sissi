@@ -11,9 +11,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.sissi.protocol.Error;
 import com.sissi.protocol.ErrorDetail;
 import com.sissi.protocol.Protocol.Type;
-import com.sissi.protocol.error.detail.InvaildNamespace;
-import com.sissi.protocol.error.detail.NotAcceptable;
-import com.sissi.protocol.error.detail.NotAuthorized;
+import com.sissi.protocol.error.element.NotAcceptable;
+import com.sissi.protocol.error.stream.BadFormat;
+import com.sissi.protocol.error.stream.BadNamespacePrefix;
+import com.sissi.protocol.error.stream.Conflict;
+import com.sissi.protocol.error.stream.HostUnknown;
+import com.sissi.protocol.error.stream.InvaildNamespace;
+import com.sissi.protocol.error.stream.NotAuthorized;
 
 /**
  * @author kim 2014年1月3日
@@ -27,16 +31,12 @@ public class ServerError implements Error {
 
 	private String type;
 
+	private ServerErrorText text;
+
 	private List<ErrorDetail> details;
 
 	public ServerError() {
 		super();
-	}
-
-	public ServerError(Error error) {
-		this.type = error.getType();
-		this.code = error.getCode();
-		this.details = error.getDetails();
 	}
 
 	@XmlAttribute
@@ -73,8 +73,60 @@ public class ServerError implements Error {
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = InvaildNamespace.NAME, type = InvaildNamespace.class), @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class) })
+	public ServerError add(ErrorDetail detail, String lang, String text) {
+		this.add(detail);
+		this.text = new ServerErrorText(lang, text);
+		return this;
+	}
+
+	@Override
+	@XmlElement(name = ServerErrorText.NAME)
+	public ServerErrorText getText() {
+		return this.text;
+	}
+
+	@XmlElements({ @XmlElement(name = Conflict.NAME, type = Conflict.class), @XmlElement(name = BadNamespacePrefix.NAME, type = BadNamespacePrefix.class), @XmlElement(name = BadFormat.NAME, type = BadFormat.class), @XmlElement(name = HostUnknown.NAME, type = HostUnknown.class), @XmlElement(name = InvaildNamespace.NAME, type = InvaildNamespace.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class), @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class) })
 	public List<ErrorDetail> getDetails() {
 		return details;
+	}
+
+	@Override
+	public String getId() {
+		return null;
+	}
+
+	@Override
+	public ServerError setId(String id) {
+		return this;
+	}
+
+	@Override
+	public String getFrom() {
+		return null;
+	}
+
+	@Override
+	public ServerError setFrom(String from) {
+		return this;
+	}
+
+	@Override
+	public String getTo() {
+		return null;
+	}
+
+	@Override
+	public ServerError setTo(String to) {
+		return this;
+	}
+
+	@Override
+	public ServerError getError() {
+		return null;
+	}
+
+	@Override
+	public ServerError setError(Error error) {
+		return this;
 	}
 }

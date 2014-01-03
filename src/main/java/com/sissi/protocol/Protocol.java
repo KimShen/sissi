@@ -113,7 +113,7 @@ abstract public class Protocol implements Element {
 
 	public Protocol setError(Error error) {
 		this.setType(Type.ERROR);
-		this.error = new ServerError(error);
+		this.error = ServerError.class.cast(error);
 		return this;
 	}
 

@@ -57,6 +57,14 @@ abstract public class ProxyProcessor implements Input {
 		return this.jidBuilder.build(username, resource);
 	}
 
+	public Integer others(JIDContext context) {
+		return this.addressing.others(context.getJid());
+	}
+
+	public Integer others(JIDContext context, Boolean usingResource) {
+		return this.addressing.others(context.getJid(), usingResource);
+	}
+
 	public ProxyProcessor leave(JIDContext context) {
 		this.addressing.leave(context.getJid());
 		return this;
@@ -107,7 +115,7 @@ abstract public class ProxyProcessor implements Input {
 	public Set<Relation> myRelations(JID from) {
 		return this.relationContext.myRelations(from);
 	}
-	
+
 	public Set<String> whoSubscribedMe(JID from) {
 		return this.relationContext.whoSubscribedMe(from);
 	}

@@ -5,7 +5,7 @@ import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Protocol.Type;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.detail.NotAuthorized;
+import com.sissi.protocol.error.stream.NotAuthorized;
 
 /**
  * @author kim 2014年1月2日
@@ -18,7 +18,10 @@ public class BindedProcessor implements Input {
 	}
 
 	private Boolean notAuthorized(JIDContext context, Protocol protocol) {
-		context.write(protocol.getParent().reply().setError(new ServerError().add(NotAuthorized.DETAIL).setType(Type.CANCEL)));
+		//TODO 
+		//using Steam error
+//		context.write(protocol.getParent().reply().setError(new ServerError().add(NotAuthorized.DETAIL).setType(Type.CANCEL)));
+//		context.close();
 		return false;
 	}
 

@@ -84,7 +84,7 @@ public class Stream extends Protocol implements WithOutClose {
 		return this;
 	}
 
-	public Boolean isValid() {
+	public Boolean isValidXmlns() {
 		return this.stream != null && this.stream.equals(Stream.XMLNS);
 	}
 

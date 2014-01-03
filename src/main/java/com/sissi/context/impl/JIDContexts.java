@@ -1,5 +1,6 @@
 package com.sissi.context.impl;
 
+import java.net.SocketAddress;
 import java.util.ArrayList;
 
 import com.sissi.context.JID;
@@ -95,8 +96,8 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		}
 		return allClose;
 	}
-	
-	public Boolean closePrepare(){
+
+	public Boolean closePrepare() {
 		boolean allClose = true;
 		for (JIDContext each : this) {
 			allClose = each.closePrepare() ? allClose : true;
@@ -139,6 +140,10 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	@Override
 	public Status getStatus() {
+		throw NOT_SUPPORT;
+	}
+
+	public SocketAddress getAddress() {
 		throw NOT_SUPPORT;
 	}
 }

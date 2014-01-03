@@ -25,4 +25,6 @@ public interface Addressing {
 	public JIDContext findOne(JID jid);
 
 	public Integer others(JID jid);
+	
+	public Integer others(JID jid, Boolean usingResource);
 }

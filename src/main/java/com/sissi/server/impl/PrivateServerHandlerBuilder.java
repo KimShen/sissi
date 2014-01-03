@@ -25,11 +25,13 @@ import com.sissi.addressing.Addressing;
 import com.sissi.commons.IOUtils;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContextBuilder;
-import com.sissi.context.impl.OnlineContextParam;
+import com.sissi.context.JIDContextParam;
+import com.sissi.context.impl.OnlineContextBuilder;
 import com.sissi.feed.FeederBuilder;
 import com.sissi.looper.Looper;
 import com.sissi.looper.LooperBuilder;
 import com.sissi.pipeline.InputFinder;
+import com.sissi.pipeline.Output;
 import com.sissi.pipeline.OutputBuilder;
 import com.sissi.read.Reader;
 import com.sissi.server.ServerCloser;
@@ -149,8 +151,7 @@ public class PrivateServerHandlerBuilder {
 		}
 
 		private void createContext(final ChannelHandlerContext ctx) {
-			NetworkTls networkTLS = new NetworkTls(PrivateServerHandlerBuilder.this.serverTlsContext, ctx);
-			ctx.attr(CONTEXT).set(PrivateServerHandlerBuilder.this.jidContextBuilder.build(null, new OnlineContextParam(PrivateServerHandlerBuilder.this.outputBuilder.build(new NetworkTransfer(networkTLS, ctx)), networkTLS)));
+			ctx.attr(CONTEXT).set(PrivateServerHandlerBuilder.this.jidContextBuilder.build(null, new NettyProxyContextParam(ctx)));
 		}
 
 		private byte[] copyToBytes(ByteBuf byteBuf) {
@@ -174,6 +175,35 @@ public class PrivateServerHandlerBuilder {
 				cause.printStackTrace(new PrintWriter(trace));
 				PrivateServerHandlerBuilder.this.log.info(trace.toString());
 			}
+		}
+	}
+
+	private class NettyProxyContextParam implements JIDContextParam {
+
+		private final ChannelHandlerContext ctx;
+
+		private final NetworkTls serverTls;
+
+		private final Output output;
+
+		public NettyProxyContextParam(ChannelHandlerContext ctx) {
+			super();
+			this.ctx = ctx;
+			this.serverTls = new NetworkTls(PrivateServerHandlerBuilder.this.serverTlsContext, ctx);
+			this.output = PrivateServerHandlerBuilder.this.outputBuilder.build(new NetworkTransfer(this.serverTls, ctx));
+		}
+
+		@Override
+		public <T> T find(String key, Class<T> clazz) {
+			switch (key) {
+			case OnlineContextBuilder.KEY_OUTPUT:
+				return clazz.cast(this.output);
+			case OnlineContextBuilder.KEY_TLS:
+				return clazz.cast(this.serverTls);
+			case OnlineContextBuilder.KEY_ADDRESS:
+				return clazz.cast(this.ctx.channel().remoteAddress());
+			}
+			return null;
 		}
 	}
 }

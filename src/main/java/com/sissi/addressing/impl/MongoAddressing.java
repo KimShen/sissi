@@ -79,7 +79,11 @@ public class MongoAddressing implements Addressing {
 	}
 
 	public Integer others(JID jid) {
-		return this.find(jid, false, false).size();
+		return this.others(jid, false);
+	}
+
+	public Integer others(JID jid, Boolean usingResource) {
+		return this.find(jid, usingResource, false).size();
 	}
 
 	@Override
@@ -114,7 +118,7 @@ public class MongoAddressing implements Addressing {
 	}
 
 	private DBObject buildQueryWithFullFields(JIDContext context) {
-		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).add(FIELD_PRIORITY, context.getPriority()).add("index", context.getIndex()).get();
+		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).add("index", context.getIndex()).add("address", context.getAddress().toString()).add(FIELD_PRIORITY, context.getPriority()).get();
 		this.log.debug("Query: " + query);
 		return query;
 	}

@@ -1,5 +1,9 @@
 package com.sissi.context.impl;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContextBuilder;
@@ -19,11 +23,15 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private final Status OFFLINE_STATUS = new OfflineStatus();
 
+	private final JIDContext OFFLINE_CONTEXT = new OfflineContext();
+
+	private final SocketAddress OFFLINE_ADDRESS = new InetSocketAddress(InetAddress.getByName("0.0.0.0"), 0);
+
 	private final DelayElementBox delayElementBox;
 
 	private final String lang;
 
-	public OfflineContextBuilder(String lang, DelayElementBox delayElementBox) {
+	public OfflineContextBuilder(String lang, DelayElementBox delayElementBox) throws Exception {
 		super();
 		this.delayElementBox = delayElementBox;
 		this.lang = lang;
@@ -31,17 +39,12 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
-		return new OfflineContext(jid);
+		return OFFLINE_CONTEXT;
 	}
 
 	private class OfflineContext implements JIDContext {
 
-		private final JID jid;
-
-		public OfflineContext(JID jid) {
-			super();
-			this.jid = jid;
-		}
+		private final JID jid = OfflineJID.OFFLINE;
 
 		public Long getIndex() {
 			return null;
@@ -96,6 +99,10 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		public String getLang() {
 			return OfflineContextBuilder.this.lang;
+		}
+
+		public SocketAddress getAddress() {
+			return OfflineContextBuilder.this.OFFLINE_ADDRESS;
 		}
 
 		@Override

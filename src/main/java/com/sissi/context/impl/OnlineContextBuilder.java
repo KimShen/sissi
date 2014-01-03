@@ -1,5 +1,6 @@
 package com.sissi.context.impl;
 
+import java.net.SocketAddress;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -21,6 +22,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 	public final static String KEY_TLS = "TLS";
 
 	public final static String KEY_OUTPUT = "OUTPUT";
+
+	public final static String KEY_ADDRESS = "ADDRESS";
 
 	private final AtomicLong indexes = new AtomicLong();
 
@@ -55,18 +58,21 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final ServerTls serverTLS;
 
+		private final SocketAddress address;
+
+		private JID jid = OfflineJID.OFFLINE;
+
 		private Integer priority;
 
 		private Status status;
 
 		private String lang;
 
-		private JID jid;
-
 		public UserContext(JIDContextParam param) {
 			super();
 			this.priority = 0;
 			this.output = param.find(KEY_OUTPUT, Output.class);
+			this.address = param.find(KEY_ADDRESS, SocketAddress.class);
 			this.serverTLS = param.find(KEY_TLS, ServerTls.class);
 			this.index = OnlineContextBuilder.this.indexes.incrementAndGet();
 		}
@@ -138,6 +144,11 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			return this.priority;
 		}
 
+		@Override
+		public SocketAddress getAddress() {
+			return this.address;
+		}
+
 		public JIDContext setLang(String lang) {
 			this.lang = lang;
 			return this;
@@ -157,15 +168,17 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public Boolean close() {
-			this.closePrepare();
-			this.status.clear();
-			this.status = null;
-			this.output.close();
+			if (!this.isPrepareClose.get()) {
+				this.closePrepare();
+				this.output.close();
+			}
 			return true;
 		}
 
 		public Boolean closePrepare() {
 			this.isPrepareClose.set(true);
+			this.status.clear();
+			this.status = null;
 			return true;
 		}
 	}

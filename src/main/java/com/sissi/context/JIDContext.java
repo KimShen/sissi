@@ -1,5 +1,7 @@
 package com.sissi.context;
 
+import java.net.SocketAddress;
+
 import com.sissi.protocol.Element;
 
 /**
@@ -28,7 +30,9 @@ public interface JIDContext {
 	public JIDContext setLang(String lang);
 	
 	public String getLang();
-
+	
+	public SocketAddress getAddress();
+	
 	public Status getStatus();
 
 	public JIDContext starttls();
