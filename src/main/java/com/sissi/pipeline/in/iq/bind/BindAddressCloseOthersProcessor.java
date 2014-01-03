@@ -7,7 +7,7 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013-10-29
  */
-public class BindAddressCloseProcessor extends ProxyProcessor {
+public class BindAddressCloseOthersProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

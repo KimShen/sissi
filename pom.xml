@@ -17,6 +17,9 @@
 		<maven.global.main.port>5222</maven.global.main.port>
 		<maven.global.exchanger.port>6222</maven.global.exchanger.port>
 		<maven.global.muc.host>muc.sissi</maven.global.muc.host>
+		<maven.global.idle.all>3000</maven.global.idle.all>
+		<maven.global.idle.read>3000</maven.global.idle.read>
+		<maven.global.idle.write>3000</maven.global.idle.write>
 		<maven.global.lang>zh_CN</maven.global.lang>
 		<!-- For Loop -->
 		<maven.looper.thread.num>2</maven.looper.thread.num>
@@ -28,9 +31,9 @@
 		<!-- For Exchanger -->
 		<maven.exchanger.thread.interval>3000</maven.exchanger.thread.interval>
 		<maven.exchanger.thread.unit>MILLISECONDS</maven.exchanger.thread.unit>
-		<maven.exchanger.idle.all>30</maven.exchanger.idle.all>
-		<maven.exchanger.idle.read>30</maven.exchanger.idle.read>
-		<maven.exchanger.idle.write>30</maven.exchanger.idle.write>
+		<maven.exchanger.idle.all>3000</maven.exchanger.idle.all>
+		<maven.exchanger.idle.read>3000</maven.exchanger.idle.read>
+		<maven.exchanger.idle.write>3000</maven.exchanger.idle.write>
 		<!-- For Thread -->
 		<maven.executor.keep.alive>3000</maven.executor.keep.alive>
 		<maven.executor.maximum>1000</maven.executor.maximum>

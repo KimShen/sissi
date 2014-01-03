@@ -65,6 +65,9 @@
 	<bean id="server.loop.main" class="com.sissi.server.impl.NioServerLoopGroup" />
 
 	<bean id="server.pipeline.main" class="com.sissi.server.impl.PrivateServerHandlerChannelInitializer">
+		<constructor-arg index="0" value="${global.idle.read}" />
+		<constructor-arg index="1" value="${global.idle.write}" />
+		<constructor-arg index="2" value="${global.idle.all}" />
 		<constructor-arg ref="builder.handler.main" />
 	</bean>
 

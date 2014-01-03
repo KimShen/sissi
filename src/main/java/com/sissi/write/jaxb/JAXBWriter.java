@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -26,8 +28,9 @@ import com.sissi.commons.ScanUtil;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.Element;
 import com.sissi.write.WithFull;
-import com.sissi.write.WithJustClose;
-import com.sissi.write.WithOutClose;
+import com.sissi.write.WithOnlyLast;
+import com.sissi.write.WithOutFirst;
+import com.sissi.write.WithOutLast;
 import com.sissi.write.Writer;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
@@ -39,6 +42,8 @@ public class JAXBWriter implements Writer {
 	private final String PACKAGE = "com.sissi.protocol";
 
 	private final String MAPPING_PROPERTY = "com.sun.xml.bind.namespacePrefixMapper";
+
+	private final Map<Class<? extends Element>, Boolean> isFragment = new HashMap<Class<? extends Element>, Boolean>();
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -102,14 +107,27 @@ public class JAXBWriter implements Writer {
 	}
 
 	private Boolean isFragment(Class<? extends Element> element) {
-		return !WithFull.class.isAssignableFrom(element) && (WithOutClose.class.isAssignableFrom(element) || WithJustClose.class.isAssignableFrom(element));
+		Boolean isFragment = this.isFragment.get(element);
+		if (isFragment == null) {
+			isFragment = !WithFull.class.isAssignableFrom(element) && (WithOnlyLast.class.isAssignableFrom(element) || this.isWithOut(element));
+			this.isFragment.put(element, isFragment);
+		}
+		return isFragment;
+	}
+
+	private Boolean isWithOut(Class<? extends Element> element) {
+		return WithOutFirst.class.isAssignableFrom(element) || WithOutLast.class.isAssignableFrom(element);
 	}
 
 	private Element writeWithFragement(JIDContext context, Element element, OutputStream output) throws Exception {
-		return WithJustClose.class.isAssignableFrom(element.getClass()) ? this.writeWithJustClose(context, element, output) : this.writeWithOutClose(context, element, output);
+		return WithOnlyLast.class.isAssignableFrom(element.getClass()) ? this.writeWithOnlyLast(context, element, output) : this.writeWithOut(context, element, output);
 	}
 
-	private Element writeWithJustClose(JIDContext context, Element element, OutputStream output) throws Exception {
+	private Element writeWithOut(JIDContext context, Element element, OutputStream output) throws Exception {
+		return WithOutFirst.class.isAssignableFrom(element.getClass()) ? this.writeWithOutFirst(context, element, output) : this.writeWithOutLast(context, element, output);
+	}
+
+	private Element writeWithOnlyLast(JIDContext context, Element element, OutputStream output) throws Exception {
 		Marshaller marshaller = this.generateMarshaller(true, false);
 		LinkedList<String> contents = this.prepareToLines(element, marshaller);
 		String content = contents.getLast();
@@ -119,8 +137,22 @@ public class JAXBWriter implements Writer {
 		return element;
 	}
 
-	private Element writeWithOutClose(JIDContext context, Element element, OutputStream output) throws Exception {
-		Marshaller marshaller = this.generateMarshaller(true, false);
+	private Element writeWithOutFirst(JIDContext context, Element element, OutputStream output) throws Exception {
+		Marshaller marshaller = this.generateMarshaller(true, true);
+		LinkedList<String> contents = this.prepareToLines(element, marshaller);
+		contents.removeFirst();
+		StringBuffer sb = new StringBuffer();
+		for (String each : contents) {
+			sb.append(each);
+		}
+		this.log.info("Write on " + (context.getJid() != null ? context.getJid().asString() : "N/A") + " " + sb.toString());
+		output.write(sb.toString().getBytes("UTF-8"));
+		output.flush();
+		return element;
+	}
+
+	private Element writeWithOutLast(JIDContext context, Element element, OutputStream output) throws Exception {
+		Marshaller marshaller = this.generateMarshaller(true, true);
 		LinkedList<String> contents = this.prepareToLines(element, marshaller);
 		contents.removeLast();
 		StringBuffer sb = new StringBuffer();
@@ -139,7 +171,10 @@ public class JAXBWriter implements Writer {
 		LineIterator iterator = IOUtils.lineIterator(new ByteArrayInputStream(prepare.toByteArray()), "UTF-8");
 		LinkedList<String> contents = new LinkedList<String>();
 		while (iterator.hasNext()) {
-			contents.add(iterator.next().trim());
+			String each = iterator.next().trim();
+			if (!each.isEmpty()) {
+				contents.add(each);
+			}
 		}
 		return contents;
 	}

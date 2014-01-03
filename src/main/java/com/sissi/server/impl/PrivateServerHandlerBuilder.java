@@ -1,9 +1,11 @@
 package com.sissi.server.impl;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.AttributeKey;
 import io.netty.util.ReferenceCountUtil;
 
@@ -41,6 +43,8 @@ import com.sissi.server.ServerTlsBuilder;
  * @author kim 2013年12月1日
  */
 public class PrivateServerHandlerBuilder {
+
+	private final byte[] WHITESPACE_PING = new byte[0];
 
 	private final String CONTEXT_ATTR = "CONTEXT_ATTR";
 
@@ -130,6 +134,13 @@ public class PrivateServerHandlerBuilder {
 				PrivateServerHandlerBuilder.this.log.fatal(e.toString());
 			} finally {
 				ReferenceCountUtil.release(msg);
+			}
+		}
+
+		public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+			if (evt.getClass().isAssignableFrom(IdleStateEvent.class)) {
+				ctx.writeAndFlush(Unpooled.wrappedBuffer(WHITESPACE_PING));
+				PrivateServerHandlerBuilder.this.log.debug("Write on " + ctx.attr(CONTEXT).get().getJid().asString() + " WHITESPACE_PING");
 			}
 		}
 

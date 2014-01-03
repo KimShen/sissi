@@ -3,6 +3,7 @@ package com.sissi.pipeline.in.iq.bind;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
+import com.sissi.protocol.Stream;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.stream.Conflict;
 
@@ -17,7 +18,8 @@ public class BindAddressCloseCurrentProcessor extends ProxyProcessor {
 	}
 
 	private Boolean close(JIDContext context, Protocol protocol) {
-		context.write(new ServerError().add(Conflict.DETAIL).setFrom(protocol.getTo()).setTo(protocol.getFrom()));
+		context.write(Stream.closeSuddenly(new ServerError().add(Conflict.DETAIL).setFrom(protocol.getTo()).setTo(protocol.getFrom())));
+		context.close();
 		return false;
 	}
 }

@@ -19,15 +19,16 @@ import com.sissi.protocol.feature.Session;
 import com.sissi.protocol.feature.Starttls;
 import com.sissi.read.MappingMetadata;
 import com.sissi.write.WithFull;
-import com.sissi.write.WithJustClose;
-import com.sissi.write.WithOutClose;
+import com.sissi.write.WithOnlyLast;
+import com.sissi.write.WithOutFirst;
+import com.sissi.write.WithOutLast;
 
 /**
  * @author Kim.shen 2013-10-16
  */
 @MappingMetadata(uri = Stream.XMLNS, localName = Stream.NAME)
 @XmlRootElement(namespace = Stream.XMLNS)
-public class Stream extends Protocol implements WithOutClose {
+public class Stream extends Protocol implements WithOutLast {
 
 	public final static String XMLNS = "http://etherx.jabber.org/streams";
 
@@ -114,10 +115,14 @@ public class Stream extends Protocol implements WithOutClose {
 	public static Stream closeForcible(Error error) {
 		return new CloseForcible(error);
 	}
+	
+	public static Stream closeSuddenly(Error error) {
+		return new CloseSuddenly(error);
+	}
 
 	@XmlType(namespace = CloseGracefully.XMLNS)
 	@XmlRootElement(name = Stream.NAME)
-	private static class CloseGracefully extends Stream implements WithJustClose {
+	private static class CloseGracefully extends Stream implements WithOnlyLast {
 
 		private final static CloseGracefully CLOSE = new CloseGracefully();
 
@@ -143,6 +148,20 @@ public class Stream extends Protocol implements WithOutClose {
 		}
 
 		private CloseForcible(Error error) {
+			super.setError(error);
+		}
+	}
+	
+	@XmlType(namespace = CloseSuddenly.XMLNS)
+	@XmlRootElement(name = Stream.NAME)
+	private static class CloseSuddenly extends Stream implements WithOutFirst {
+
+		public final static String XMLNS = "http://etherx.jabber.org/streams/closeForcible";
+
+		private CloseSuddenly() {
+		}
+
+		private CloseSuddenly(Error error) {
 			super.setError(error);
 		}
 	}
