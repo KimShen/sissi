@@ -19,9 +19,9 @@
 	<bean id="stream.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="stream.pro.close" />
 				<ref bean="stream.pro.check.to" />
 				<ref bean="stream.pro.check.xmlns" />
-				<ref bean="stream.pro.close" />
 				<ref bean="stream.pro.feature" />
 				<ref bean="stream.pro.feature.starttls" />
 				<ref bean="stream.pro.open.reset" />

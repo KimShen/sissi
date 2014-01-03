@@ -27,6 +27,7 @@ import com.sissi.protocol.error.stream.PolicyViolation;
 import com.sissi.protocol.error.stream.Reset;
 import com.sissi.protocol.error.stream.ResourceConstraint;
 import com.sissi.protocol.error.stream.RestrictedXml;
+import com.sissi.protocol.error.stream.SeeOtherHost;
 
 /**
  * @author kim 2014年1月3日
@@ -94,7 +95,7 @@ public class ServerError implements Error {
 		return this.text;
 	}
 
-	@XmlElements({ @XmlElement(name = RestrictedXml.NAME, type = RestrictedXml.class), @XmlElement(name = ResourceConstraint.NAME, type = ResourceConstraint.class), @XmlElement(name = Reset.NAME, type = Reset.class), @XmlElement(name = PolicyViolation.NAME, type = PolicyViolation.class), @XmlElement(name = NotWellFormed.NAME, type = NotWellFormed.class), @XmlElement(name = InvalidXml.NAME, type = InvalidXml.class), @XmlElement(name = InvalidFrom.NAME, type = InvalidFrom.class), @XmlElement(name = InternalServerError.NAME, type = InternalServerError.class), @XmlElement(name = Conflict.NAME, type = Conflict.class), @XmlElement(name = BadNamespacePrefix.NAME, type = BadNamespacePrefix.class), @XmlElement(name = BadFormat.NAME, type = BadFormat.class), @XmlElement(name = HostGone.NAME, type = HostGone.class), @XmlElement(name = HostUnknown.NAME, type = HostUnknown.class), @XmlElement(name = InvaildNamespace.NAME, type = InvaildNamespace.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class), @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class) })
+	@XmlElements({ @XmlElement(name = SeeOtherHost.NAME, type = SeeOtherHost.class), @XmlElement(name = RestrictedXml.NAME, type = RestrictedXml.class), @XmlElement(name = ResourceConstraint.NAME, type = ResourceConstraint.class), @XmlElement(name = Reset.NAME, type = Reset.class), @XmlElement(name = PolicyViolation.NAME, type = PolicyViolation.class), @XmlElement(name = NotWellFormed.NAME, type = NotWellFormed.class), @XmlElement(name = InvalidXml.NAME, type = InvalidXml.class), @XmlElement(name = InvalidFrom.NAME, type = InvalidFrom.class), @XmlElement(name = InternalServerError.NAME, type = InternalServerError.class), @XmlElement(name = Conflict.NAME, type = Conflict.class), @XmlElement(name = BadNamespacePrefix.NAME, type = BadNamespacePrefix.class), @XmlElement(name = BadFormat.NAME, type = BadFormat.class), @XmlElement(name = HostGone.NAME, type = HostGone.class), @XmlElement(name = HostUnknown.NAME, type = HostUnknown.class), @XmlElement(name = InvaildNamespace.NAME, type = InvaildNamespace.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class), @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class) })
 	public List<ErrorDetail> getDetails() {
 		return details;
 	}

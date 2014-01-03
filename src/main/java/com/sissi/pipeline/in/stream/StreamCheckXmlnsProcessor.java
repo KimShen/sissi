@@ -13,7 +13,7 @@ public class StreamCheckXmlnsProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return Stream.class.cast(protocol).isValidXmlns() ? true : this.close(context, protocol);
+		return Stream.class.cast(protocol).isValid() ? true : this.close(context, protocol);
 	}
 
 	private Boolean close(JIDContext context, Protocol protocol) {

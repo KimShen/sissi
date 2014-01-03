@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.feature.Bind;
@@ -85,7 +84,7 @@ public class Stream extends Protocol implements WithOutLast {
 		return this;
 	}
 
-	public Boolean isValidXmlns() {
+	public Boolean isValid() {
 		return this.stream != null && this.stream.equals(Stream.XMLNS);
 	}
 
@@ -100,7 +99,7 @@ public class Stream extends Protocol implements WithOutLast {
 	@XmlElementWrapper(namespace = Stream.XMLNS, name = "features")
 	@XmlElements({ @XmlElement(name = Starttls.NAME, type = Starttls.class), @XmlElement(name = Mechanisms.NAME, type = Mechanisms.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Register.NAME, type = Register.class) })
 	public List<Feature> getFeatures() {
-		return features;
+		return this.features;
 	}
 
 	@XmlElement(namespace = Stream.XMLNS, name = ServerError.NAME)
@@ -115,34 +114,27 @@ public class Stream extends Protocol implements WithOutLast {
 	public static Stream closeForcible(Error error) {
 		return new CloseForcible(error);
 	}
-	
+
 	public static Stream closeSuddenly(Error error) {
 		return new CloseSuddenly(error);
 	}
 
-	@XmlType(namespace = CloseGracefully.XMLNS)
-	@XmlRootElement(name = Stream.NAME)
-	private static class CloseGracefully extends Stream implements WithOnlyLast {
+	public static class CloseGracefully extends Stream implements WithOnlyLast {
 
 		private final static CloseGracefully CLOSE = new CloseGracefully();
-
-		public final static String XMLNS = "http://etherx.jabber.org/streams/closeGracefully";
+		
+		private final List<Feature> EMPTY = new ArrayList<Feature>();
 
 		private CloseGracefully() {
 
 		}
 
-		@XmlElement
-		public String getPlaceholder() {
-			return "";
+		public List<Feature> getFeatures() {
+			return EMPTY;
 		}
 	}
 
-	@XmlType(namespace = CloseForcible.XMLNS)
-	@XmlRootElement(name = Stream.NAME)
-	private static class CloseForcible extends Stream implements WithFull {
-
-		public final static String XMLNS = "http://etherx.jabber.org/streams/closeForcible";
+	public static class CloseForcible extends Stream implements WithFull {
 
 		private CloseForcible() {
 		}
@@ -151,12 +143,8 @@ public class Stream extends Protocol implements WithOutLast {
 			super.setError(error);
 		}
 	}
-	
-	@XmlType(namespace = CloseSuddenly.XMLNS)
-	@XmlRootElement(name = Stream.NAME)
-	private static class CloseSuddenly extends Stream implements WithOutFirst {
 
-		public final static String XMLNS = "http://etherx.jabber.org/streams/closeForcible";
+	public static class CloseSuddenly extends Stream implements WithOutFirst {
 
 		private CloseSuddenly() {
 		}
