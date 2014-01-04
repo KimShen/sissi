@@ -31,10 +31,13 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final String lang;
 
-	public OnlineContextBuilder(String lang, StatusBuilder statusBuilder) {
+	private final String domain;
+
+	public OnlineContextBuilder(String lang, String domain, StatusBuilder statusBuilder) {
 		super();
 		this.statusBuilder = statusBuilder;
 		this.lang = lang;
+		this.domain = domain;
 	}
 
 	@Override
@@ -65,6 +68,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		private Integer priority;
 
 		private Status status;
+
+		private String domain;
 
 		private String lang;
 
@@ -119,13 +124,12 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public JIDContext starttls() {
-			this.serverTLS.starttls();
-			return this;
+		public Boolean startTls() {
+			return this.serverTLS.startTls(this.getDomain());
 		}
 
 		public Boolean isTls() {
-			return this.serverTLS.isTls();
+			return this.serverTLS.isTls(this.getDomain());
 		}
 
 		@Override
@@ -154,15 +158,25 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			return this;
 		}
 
+		public JIDContext setDomain(String domain) {
+			this.domain = domain;
+			return this;
+		}
+
 		public String getLang() {
 			return this.lang != null ? this.lang : OnlineContextBuilder.this.lang;
+		}
+
+		public String getDomain() {
+			return this.domain != null ? this.domain : OnlineContextBuilder.this.domain;
 		}
 
 		public JIDContext reset() {
 			this.isBinding.set(false);
 			this.isAuth.set(false);
-			this.priority = 0;
+			this.jid = OfflineJID.OFFLINE;
 			this.lang = null;
+			this.priority = 0;
 			return this;
 		}
 

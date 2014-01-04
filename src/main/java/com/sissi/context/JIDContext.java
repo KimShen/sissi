@@ -26,23 +26,27 @@ public interface JIDContext {
 	public JIDContext setPriority(Integer priority);
 
 	public Integer getPriority();
-	
+
+	public JIDContext setDomain(String domain);
+
+	public String getDomain();
+
 	public JIDContext setLang(String lang);
-	
+
 	public String getLang();
-	
+
 	public SocketAddress getAddress();
-	
+
 	public Status getStatus();
 
-	public JIDContext starttls();
-	
+	public Boolean startTls();
+
 	public Boolean isTls();
-	
+
 	public JIDContext reset();
-	
+
 	public Boolean close();
-	
+
 	public Boolean closePrepare();
 
 	public JIDContext write(Element element);

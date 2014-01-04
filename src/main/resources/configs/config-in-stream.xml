@@ -7,11 +7,13 @@
 
 	<bean id="stream.pro.close" class="com.sissi.pipeline.in.stream.StreamCloseProcessor" />
 	<bean id="stream.pro.open" class="com.sissi.pipeline.in.stream.StreamOpenProcessor" />
-	<bean id="stream.pro.open.lang" class="com.sissi.pipeline.in.stream.StreamOpenLangProcessor" />
-	<bean id="stream.pro.open.reset" class="com.sissi.pipeline.in.stream.StreamOpenResetProcessor" />
+	<bean id="stream.pro.context.lang" class="com.sissi.pipeline.in.stream.StreamContextLangProcessor" />
+	<bean id="stream.pro.context.domain" class="com.sissi.pipeline.in.stream.StreamContextDomainProcessor" />
+	<bean id="stream.pro.context.reset" class="com.sissi.pipeline.in.stream.StreamContextResetProcessor" />
 	<bean id="stream.pro.open.consume" class="com.sissi.pipeline.in.stream.StreamOpenConsumeProcessor" />
 	<bean id="stream.pro.feature.starttls" class="com.sissi.pipeline.in.stream.StreamFeatureStarttlsProcessor" />
-	<bean id="stream.pro.feature" class="com.sissi.pipeline.in.stream.StreamFeatureProcessor" />
+	<bean id="stream.pro.feature.binding" class="com.sissi.pipeline.in.stream.StreamFeatureBindingProcessor" />
+	<bean id="stream.pro.feature.auth" class="com.sissi.pipeline.in.stream.StreamFeatureAuthProcessor" />
 	<bean id="stream.pro.check.to" class="com.sissi.pipeline.in.stream.StreamCheckToProcessor">
 		<constructor-arg value="${global.main.host}" />
 	</bean>
@@ -26,10 +28,12 @@
 				<ref bean="stream.pro.check.to" />
 				<ref bean="stream.pro.check.xmlns" />
 				<ref bean="stream.pro.check.version" />
-				<ref bean="stream.pro.feature" />
+				<ref bean="stream.pro.feature.auth" />
+				<ref bean="stream.pro.feature.binding" />
 				<ref bean="stream.pro.feature.starttls" />
-				<ref bean="stream.pro.open.reset" />
-				<ref bean="stream.pro.open.lang" />
+				<ref bean="stream.pro.context.reset" />
+				<ref bean="stream.pro.context.lang" />
+				<ref bean="stream.pro.context.domain" />
 				<ref bean="stream.pro.open" />
 				<ref bean="stream.pro.open.consume" />
 			</util:list>

@@ -31,10 +31,13 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private final String lang;
 
-	public OfflineContextBuilder(String lang, DelayElementBox delayElementBox) throws Exception {
+	private final String host;
+
+	public OfflineContextBuilder(String lang, String host, DelayElementBox delayElementBox) throws Exception {
 		super();
 		this.delayElementBox = delayElementBox;
 		this.lang = lang;
+		this.host = host;
 	}
 
 	@Override
@@ -93,6 +96,10 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return DEFAULT_PRIORITY;
 		}
 
+		public JIDContext setDomain(String domain) {
+			return this;
+		}
+
 		public JIDContext setLang(String lang) {
 			return this;
 		}
@@ -101,13 +108,17 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return OfflineContextBuilder.this.lang;
 		}
 
+		public String getDomain() {
+			return OfflineContextBuilder.this.host;
+		}
+
 		public SocketAddress getAddress() {
 			return OfflineContextBuilder.this.OFFLINE_ADDRESS;
 		}
 
 		@Override
-		public JIDContext starttls() {
-			return this;
+		public Boolean startTls() {
+			return false;
 		}
 
 		public Boolean isTls() {

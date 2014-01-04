@@ -16,7 +16,6 @@
 		<constructor-arg value="${exchanger.thread.unit}" />
 	</bean>
 
-
 	<bean id="writer" class="com.sissi.write.jaxb.JAXBWriter" />
 
 	<bean id="reader" class="com.sissi.read.sax.SAXReader">

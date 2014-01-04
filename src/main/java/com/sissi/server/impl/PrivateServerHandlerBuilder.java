@@ -193,14 +193,14 @@ public class PrivateServerHandlerBuilder {
 
 		private final ChannelHandlerContext ctx;
 
-		private final NetworkTls serverTls;
+		private final FixDomainServerTls serverTls;
 
 		private final Output output;
 
 		public NettyProxyContextParam(ChannelHandlerContext ctx) {
 			super();
 			this.ctx = ctx;
-			this.serverTls = new NetworkTls(PrivateServerHandlerBuilder.this.serverTlsContext, ctx);
+			this.serverTls = new FixDomainServerTls(PrivateServerHandlerBuilder.this.serverTlsContext, ctx);
 			this.output = PrivateServerHandlerBuilder.this.outputBuilder.build(new NetworkTransfer(this.serverTls, ctx));
 		}
 

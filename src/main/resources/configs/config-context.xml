@@ -17,10 +17,12 @@
 	<bean id="builder.context.online" class="com.sissi.context.impl.OnlineContextBuilder">
 		<constructor-arg ref="builder.status" />
 		<constructor-arg value="${global.lang}" />
+		<constructor-arg value="${global.main.host}" />
 	</bean>
 	<bean id="builder.context.offline" class="com.sissi.context.impl.OfflineContextBuilder">
 		<constructor-arg ref="storage.box" />
 		<constructor-arg value="${global.lang}" />
+		<constructor-arg value="${global.main.host}" />
 	</bean>
 	
 	<bean id="builder.status" class="com.sissi.context.impl.MongoStatusBuilder">

@@ -40,6 +40,13 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return this;
 	}
 
+	public JIDContext setDomain(String domain) {
+		for (JIDContext each : this) {
+			each.setDomain(domain);
+		}
+		return this;
+	}
+
 	public JIDContext setLang(String lang) {
 		for (JIDContext each : this) {
 			each.setLang(lang);
@@ -56,11 +63,12 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	@Override
-	public JIDContext starttls() {
+	public Boolean startTls() {
+		boolean startTls = true;
 		for (JIDContext each : this) {
-			each.starttls();
+			startTls = each.startTls() ? startTls : false;
 		}
-		return this;
+		return startTls;
 	}
 
 	public Boolean isTls() {
@@ -135,6 +143,10 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	public String getLang() {
+		throw NOT_SUPPORT;
+	}
+	
+	public String getDomain() {
 		throw NOT_SUPPORT;
 	}
 

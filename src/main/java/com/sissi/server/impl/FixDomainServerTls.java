@@ -9,25 +9,30 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.net.ssl.SSLEngine;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.sissi.server.ServerTls;
 import com.sissi.server.ServerTlsBuilder;
 
 /**
  * @author kim 2013年12月17日
  */
-public class NetworkTls implements ServerTls, GenericFutureListener<Future<Void>> {
+public class FixDomainServerTls implements ServerTls, GenericFutureListener<Future<Void>> {
+
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final AtomicBoolean isStarttls = new AtomicBoolean();
 
 	private final AtomicBoolean prepareStarttls = new AtomicBoolean();
 
 	private final ServerTlsBuilder serverTlsbuilder;
-    
+
 	private final ChannelHandlerContext context;
 
 	private SslHandler handler;
 
-	public NetworkTls(ServerTlsBuilder serverTlsbuilder, ChannelHandlerContext context) {
+	public FixDomainServerTls(ServerTlsBuilder serverTlsbuilder, ChannelHandlerContext context) {
 		super();
 		this.context = context;
 		this.serverTlsbuilder = serverTlsbuilder;
@@ -41,7 +46,29 @@ public class NetworkTls implements ServerTls, GenericFutureListener<Future<Void>
 	}
 
 	@Override
-	public NetworkTls starttls() {
+	public Boolean startTls(String domain) {
+		try {
+			return this.prepareSSL();
+		} catch (Exception e) {
+			if (this.log.isErrorEnabled()) {
+				this.log.error(e.toString());
+				e.printStackTrace();
+			}
+			return this.rollbackSSL();
+		}
+	}
+
+	public Boolean isTls(String domain) {
+		return this.isStarttls.get();
+	}
+
+	private Boolean rollbackSSL() {
+		this.isStarttls.set(false);
+		this.prepareStarttls.set(false);
+		return false;
+	}
+
+	private Boolean prepareSSL() {
 		if (this.isStarttls.compareAndSet(false, true)) {
 			SSLEngine engine = this.serverTlsbuilder.getSSLContext().createSSLEngine();
 			engine.setNeedClientAuth(false);
@@ -49,11 +76,6 @@ public class NetworkTls implements ServerTls, GenericFutureListener<Future<Void>
 			this.handler = new SslHandler(engine);
 			this.prepareStarttls.compareAndSet(false, true);
 		}
-		return this;
+		return true;
 	}
-
-	public Boolean isTls() {
-		return this.isStarttls.get();
-	}
-	
 }
