@@ -20,6 +20,7 @@
 		<maven.global.idle.all>3000</maven.global.idle.all>
 		<maven.global.idle.read>3000</maven.global.idle.read>
 		<maven.global.idle.write>3000</maven.global.idle.write>
+		<maven.global.version>1.0</maven.global.version>
 		<maven.global.lang>zh_CN</maven.global.lang>
 		<!-- For Loop -->
 		<maven.looper.thread.num>2</maven.looper.thread.num>
