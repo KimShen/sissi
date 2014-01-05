@@ -60,9 +60,7 @@ public class SAXReader implements Reader {
 		}
 	}
 
-	private static class ParseRunnable implements Runnable {
-
-		private final static Log LOG = LogFactory.getLog(ParseRunnable.class);
+	private class ParseRunnable implements Runnable {
 
 		private final SAXParser parser;
 
@@ -81,8 +79,8 @@ public class SAXReader implements Reader {
 			try {
 				this.parser.parse(this.stream, this.handler);
 			} catch (Exception e) {
-				if (LOG.isDebugEnabled()) {
-					LOG.debug(e.toString());
+				if (SAXReader.this.log.isDebugEnabled()) {
+					SAXReader.this.log.debug(e.toString());
 					e.printStackTrace();
 				}
 			}

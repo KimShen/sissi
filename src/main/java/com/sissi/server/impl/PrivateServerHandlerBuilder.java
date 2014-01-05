@@ -12,8 +12,6 @@ import io.netty.util.ReferenceCountUtil;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintWriter;
@@ -95,9 +93,11 @@ public class PrivateServerHandlerBuilder {
 
 		private final PipedInputStream inPipe = new PipedInputStream();
 
-		private final InputStream input = new BufferedInputStream(inPipe);
+		private final PipedOutputStream outPipe = new PipedOutputStream(inPipe);
 
-		private final OutputStream output = new BufferedOutputStream(new PipedOutputStream(inPipe));
+		private final BufferedInputStream input = new BufferedInputStream(inPipe);
+
+		private final BufferedOutputStream output = new BufferedOutputStream(outPipe);
 
 		public PrivateServerHandler() throws IOException {
 			super();
@@ -116,7 +116,8 @@ public class PrivateServerHandlerBuilder {
 					PrivateServerHandlerBuilder.this.addressing.leave(context);
 				}
 				ctx.attr(CONNECTOR).get().stop();
-				IOUtils.closeQuietly(this.input);
+				IOUtils.closeQuietly(this.inPipe);
+				IOUtils.closeQuietly(this.outPipe);
 			} catch (Exception e) {
 				if (PrivateServerHandlerBuilder.this.log.isErrorEnabled()) {
 					PrivateServerHandlerBuilder.this.log.error(e.toString());

@@ -72,6 +72,11 @@
 	<dependencies>
 		<!-- For Compile -->
 		<dependency>
+	<groupId>commons-io</groupId>
+	<artifactId>commons-io</artifactId>
+	<version>20030203.000550</version>
+</dependency>
+		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
 			<version>4.0.13.Final</version>
