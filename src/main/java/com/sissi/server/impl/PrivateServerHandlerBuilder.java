@@ -116,8 +116,7 @@ public class PrivateServerHandlerBuilder {
 					PrivateServerHandlerBuilder.this.addressing.leave(context);
 				}
 				ctx.attr(CONNECTOR).get().stop();
-				IOUtils.closeQuietly(this.inPipe);
-				IOUtils.closeQuietly(this.outPipe);
+				this.closeParser();
 			} catch (Exception e) {
 				if (PrivateServerHandlerBuilder.this.log.isErrorEnabled()) {
 					PrivateServerHandlerBuilder.this.log.error(e.toString());
@@ -149,6 +148,13 @@ public class PrivateServerHandlerBuilder {
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 			this.logIfDetail(cause);
 			ctx.close();
+		}
+
+		private void closeParser() throws IOException {
+			this.output.write(-1);
+			this.output.flush();
+			IOUtils.closeQuietly(this.output);
+			IOUtils.closeQuietly(this.outPipe);
 		}
 
 		private void createLooper(final ChannelHandlerContext ctx) {
