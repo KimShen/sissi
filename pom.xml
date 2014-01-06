@@ -67,15 +67,11 @@
 		<maven.bytestreams.proxy.port>${maven.global.exchanger.port}</maven.bytestreams.proxy.port>
 		<maven.bytestreams.proxy.name>Socks 5 Bytestreams Proxy</maven.bytestreams.proxy.name>
 		<maven.message.relation>false</maven.message.relation>
-		<maven.offline>From sissi offline</maven.offline>
+		<maven.offline.title>From sissi offline</maven.offline.title>
+		<maven.auth.retry>2</maven.auth.retry>
 	</properties>
 	<dependencies>
 		<!-- For Compile -->
-		<dependency>
-	<groupId>commons-io</groupId>
-	<artifactId>commons-io</artifactId>
-	<version>20030203.000550</version>
-</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>

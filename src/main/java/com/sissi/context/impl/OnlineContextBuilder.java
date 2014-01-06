@@ -2,6 +2,7 @@ package com.sissi.context.impl;
 
 import java.net.SocketAddress;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.sissi.context.JID;
@@ -29,13 +30,16 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final StatusBuilder statusBuilder;
 
+	private final Integer authRetry;
+
 	private final String lang;
 
 	private final String domain;
 
-	public OnlineContextBuilder(String lang, String domain, StatusBuilder statusBuilder) {
+	public OnlineContextBuilder(Integer authRetry, String lang, String domain, StatusBuilder statusBuilder) {
 		super();
 		this.statusBuilder = statusBuilder;
+		this.authRetry = authRetry;
 		this.lang = lang;
 		this.domain = domain;
 	}
@@ -49,9 +53,11 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private class UserContext implements JIDContext {
 
-		private final AtomicBoolean isBinding = new AtomicBoolean();
+		private final AtomicInteger auth = new AtomicInteger();
 
 		private final AtomicBoolean isAuth = new AtomicBoolean();
+
+		private final AtomicBoolean isBinding = new AtomicBoolean();
 
 		private final AtomicBoolean isPrepareClose = new AtomicBoolean();
 
@@ -104,6 +110,15 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public UserContext setAuth(Boolean canAccess) {
 			this.isAuth.set(canAccess);
 			return this;
+		}
+
+		public JIDContext setAuthFailed() {
+			this.auth.incrementAndGet();
+			return this;
+		}
+
+		public Boolean isAuthRetry() {
+			return OnlineContextBuilder.this.authRetry >= this.auth.get();
 		}
 
 		public UserContext setJid(JID jid) {
@@ -174,7 +189,6 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public JIDContext reset() {
 			this.isBinding.set(false);
 			this.isAuth.set(false);
-			this.jid = OfflineJID.OFFLINE;
 			this.lang = null;
 			this.priority = 0;
 			return this;

@@ -88,6 +88,14 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return isAuth;
 	}
 
+	public JIDContext setAuthFailed() {
+		return this;
+	}
+
+	public Boolean isAuthRetry() {
+		return false;
+	}
+
 	public Boolean isBinding() {
 		boolean isBinding = true;
 		for (JIDContext each : this) {
@@ -145,7 +153,7 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	public String getLang() {
 		throw NOT_SUPPORT;
 	}
-	
+
 	public String getDomain() {
 		throw NOT_SUPPORT;
 	}

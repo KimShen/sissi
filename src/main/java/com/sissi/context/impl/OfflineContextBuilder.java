@@ -63,6 +63,14 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return false;
 		}
 
+		public JIDContext setAuthFailed() {
+			return this;
+		}
+
+		public Boolean isAuthRetry() {
+			return false;
+		}
+
 		public Boolean isBinding() {
 			return false;
 		}

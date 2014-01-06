@@ -16,8 +16,12 @@ public interface JIDContext {
 	public JID getJid();
 
 	public JIDContext setAuth(Boolean canAccess);
-
+	
+	public JIDContext setAuthFailed();
+	
 	public Boolean isAuth();
+	
+	public Boolean isAuthRetry();
 
 	public JIDContext setBinding(Boolean isBinding);
 
