@@ -18,7 +18,7 @@ public class NotAuthorized implements ErrorDetail {
 
 	public final static String NAME = "not-authorized";
 
-	private NotAuthorized() {
+	public NotAuthorized() {
 
 	}
 

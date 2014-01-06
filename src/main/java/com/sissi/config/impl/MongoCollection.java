@@ -3,6 +3,7 @@ package com.sissi.config.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
@@ -12,6 +13,8 @@ import com.sissi.config.MongoConfig;
  * @author kim 2013-11-15
  */
 public class MongoCollection implements MongoConfig {
+	
+	private final DBObject REMOVE = BasicDBObjectBuilder.start().get();
 
 	private final Map<String, String> configs = new HashMap<String, String>();
 
@@ -33,7 +36,7 @@ public class MongoCollection implements MongoConfig {
 	}
 
 	public MongoConfig clear() {
-		this.collection().drop();
+		this.collection().remove(REMOVE);
 		return this;
 	}
 
