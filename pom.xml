@@ -66,9 +66,10 @@
 		<maven.bytestreams.proxy.host>sissi.pw</maven.bytestreams.proxy.host>
 		<maven.bytestreams.proxy.port>${maven.global.exchanger.port}</maven.bytestreams.proxy.port>
 		<maven.bytestreams.proxy.name>Socks 5 Bytestreams Proxy</maven.bytestreams.proxy.name>
-		<maven.message.relation>false</maven.message.relation>
-		<maven.offline.title>From sissi offline</maven.offline.title>
 		<maven.auth.retry>2</maven.auth.retry>
+		<maven.offline.title>From sissi offline</maven.offline.title>
+		<maven.resource.limit>10</maven.resource.limit>
+		<maven.message.relation>false</maven.message.relation>
 	</properties>
 	<dependencies>
 		<!-- For Compile -->

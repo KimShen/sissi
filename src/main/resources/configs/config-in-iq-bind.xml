@@ -6,12 +6,16 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="bind.pro.resource" class="com.sissi.pipeline.in.iq.bind.BindResourceProcessor" parent="global.pro.proxy" />
+	<bean id="bind.pro.resource.limit" class="com.sissi.pipeline.in.iq.bind.BindResourceLimitProcessor" parent="global.pro.proxy">
+		<constructor-arg value="${resource.limit}" />
+	</bean>
 	<bean id="bind.pro.addressing.close.others" class="com.sissi.pipeline.in.iq.bind.BindAddressCloseOthersProcessor" parent="global.pro.proxy" />
 	<bean id="bind.pro.addressing.close.current" class="com.sissi.pipeline.in.iq.bind.BindAddressCloseCurrentProcessor" parent="global.pro.proxy" />
 	<bean id="bind.pro.addressing.join" class="com.sissi.pipeline.in.iq.bind.BindAddressJoinProcessor" parent="global.pro.proxy" />
 	<bean id="bind.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="bind.pro.resource.limit" />
 				<ref bean="bind.pro.resource" />
 				<ref bean="bind.pro.addressing.close.current" />
 				<ref bean="bind.pro.addressing.join" />

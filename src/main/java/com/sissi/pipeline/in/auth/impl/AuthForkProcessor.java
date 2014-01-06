@@ -29,7 +29,7 @@ public class AuthForkProcessor extends ProxyProcessor {
 				return !ac.auth(context, auth);
 			}
 		}
-		context.write(Failure.INSTANCE_ENCRYPTIONREQUIRED);
+		context.write(Failure.INSTANCE_INVALIDMECHANISM);
 		return false;
 	}
 }

@@ -16,15 +16,20 @@ import com.sissi.protocol.iq.auth.error.Aborted;
 import com.sissi.protocol.iq.auth.error.AccountDisabled;
 import com.sissi.protocol.iq.auth.error.CredentialsExpired;
 import com.sissi.protocol.iq.auth.error.EncryptionRequired;
+import com.sissi.protocol.iq.auth.error.IncorrectEncoding;
+import com.sissi.protocol.iq.auth.error.InvalidMechanism;
+import com.sissi.protocol.iq.auth.error.MalformedRequest;
+import com.sissi.protocol.iq.auth.error.MechanismTooWeak;
 import com.sissi.protocol.iq.auth.error.NotAuthorized;
+import com.sissi.protocol.iq.auth.error.TemporaryAuthFailure;
 
 /**
  * @author Kim.shen 2013-10-19
  */
 @XmlRootElement
 public class Failure extends Protocol implements Error {
-	
-	public final static Failure INSTANCE_ENCRYPTIONREQUIRED = new Failure().add(EncryptionRequired.DETAIL);
+
+	public final static Failure INSTANCE_INVALIDMECHANISM = new Failure().add(InvalidMechanism.DETAIL);
 
 	public final static Failure INSTANCE_NOTAUTHORIZED = new Failure().add(NotAuthorized.DETAIL);
 
@@ -68,7 +73,7 @@ public class Failure extends Protocol implements Error {
 		return this.text;
 	}
 
-	@XmlElements({ @XmlElement(name = EncryptionRequired.NAME, type = EncryptionRequired.class), @XmlElement(name = CredentialsExpired.NAME, type = CredentialsExpired.class), @XmlElement(name = AccountDisabled.NAME, type = AccountDisabled.class), @XmlElement(name = Aborted.NAME, type = Aborted.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class) })
+	@XmlElements({ @XmlElement(name = TemporaryAuthFailure.NAME, type = TemporaryAuthFailure.class), @XmlElement(name = MechanismTooWeak.NAME, type = MechanismTooWeak.class), @XmlElement(name = MalformedRequest.NAME, type = MalformedRequest.class), @XmlElement(name = InvalidMechanism.NAME, type = InvalidMechanism.class), @XmlElement(name = IncorrectEncoding.NAME, type = IncorrectEncoding.class), @XmlElement(name = EncryptionRequired.NAME, type = EncryptionRequired.class), @XmlElement(name = CredentialsExpired.NAME, type = CredentialsExpired.class), @XmlElement(name = AccountDisabled.NAME, type = AccountDisabled.class), @XmlElement(name = Aborted.NAME, type = Aborted.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class) })
 	public List<ErrorDetail> getDetails() {
 		return details;
 	}

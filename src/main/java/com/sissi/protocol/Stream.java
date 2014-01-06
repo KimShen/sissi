@@ -2,6 +2,7 @@ package com.sissi.protocol;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -57,6 +58,10 @@ public class Stream extends Protocol implements WithOutLast {
 
 	public Boolean isUsing() {
 		return this.isUsing.get();
+	}
+
+	public String getId() {
+		return super.getId() != null ? super.getId() : UUID.randomUUID().toString();
 	}
 
 	@XmlAttribute
@@ -122,7 +127,7 @@ public class Stream extends Protocol implements WithOutLast {
 	public static class CloseGracefully extends Stream implements WithOnlyLast {
 
 		private final static CloseGracefully CLOSE = new CloseGracefully();
-		
+
 		private final List<Feature> EMPTY = new ArrayList<Feature>();
 
 		private CloseGracefully() {

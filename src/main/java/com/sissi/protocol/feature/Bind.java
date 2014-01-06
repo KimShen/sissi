@@ -31,6 +31,6 @@ public class Bind implements Feature {
 	@Override
 	@XmlElement
 	public Required getRequired() {
-		return Required.REQUIRED;
+		return null;
 	}
 }
