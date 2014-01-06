@@ -1,7 +1,6 @@
 package com.sissi.protocol;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
@@ -14,7 +13,7 @@ abstract public class Protocol implements Element {
 
 	public static enum Type {
 
-		SET, GET, RESULT, ERROR, CANCEL;
+		SET, GET, RESULT, ERROR, CANCEL, WAIT;
 
 		public String toString() {
 			return super.toString().toLowerCase();
@@ -106,7 +105,6 @@ abstract public class Protocol implements Element {
 		return this;
 	}
 
-	@XmlElement
 	public ServerError getError() {
 		return this.error;
 	}
