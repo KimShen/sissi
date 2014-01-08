@@ -23,10 +23,18 @@
 	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
 		<constructor-arg ref="finder.iq" />
 	</bean>
+
 	<bean id="iq.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="iq.pro.fork" />
+				<bean class="com.sissi.pipeline.in.ChainedProcessor">
+					<constructor-arg>
+						<util:list>
+							<ref bean="iq.pro.fork" />
+							<ref bean="pong.pro" />
+						</util:list>
+					</constructor-arg>
+				</bean>
 			</util:list>
 		</constructor-arg>
 	</bean>

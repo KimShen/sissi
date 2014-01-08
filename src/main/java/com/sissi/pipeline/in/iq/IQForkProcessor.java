@@ -12,7 +12,7 @@ import com.sissi.protocol.iq.IQ;
 public class IQForkProcessor implements Input {
 
 	private final InputFinder finder;
-	
+
 	public IQForkProcessor(InputFinder finder) {
 		super();
 		this.finder = finder;
@@ -23,7 +23,6 @@ public class IQForkProcessor implements Input {
 		for (Protocol sub : IQ.class.cast(protocol).listChildren()) {
 			return this.finder.find(sub).input(context, sub);
 		}
-		context.pong(protocol.getId());
-		return false;
+		return true;
 	}
 }

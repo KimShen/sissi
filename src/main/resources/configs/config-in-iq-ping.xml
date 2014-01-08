@@ -5,13 +5,6 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="iq.pro.pong" class="com.sissi.pipeline.in.iq.ping.PongProcessor"/>
-	
-	<bean id="pong.condition" class="com.sissi.pipeline.in.PairCondition">
-		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.AnyMatcher" />
-		</constructor-arg>
-		<constructor-arg ref="iq.pro.pong" />
-	</bean>
+	<bean id="pong.pro" class="com.sissi.pipeline.in.iq.ping.PongProcessor"/>
 	
 </beans>

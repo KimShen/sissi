@@ -212,7 +212,6 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		public Boolean closeTimeout() {
 			if (this.ping.get() != PONG) {
-				System.out.println(this.ping.get());
 				this.close();
 			}
 			return true;
