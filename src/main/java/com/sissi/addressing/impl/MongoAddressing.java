@@ -72,8 +72,7 @@ public class MongoAddressing implements Addressing {
 	@Override
 	public Addressing leave(JIDContext context) {
 		if (context.close()) {
-			this.contexts.remove(context.getIndex());
-			this.config.collection().remove(this.buildQueryWithFullFields(context));
+			this.config.collection().remove(this.buildQueryWithFullFields(this.contexts.remove(context.getIndex())));
 		}
 		return this;
 	}
@@ -118,7 +117,7 @@ public class MongoAddressing implements Addressing {
 	}
 
 	private DBObject buildQueryWithFullFields(JIDContext context) {
-		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).add("index", context.getIndex()).add("address", context.getAddress().toString()).add(FIELD_PRIORITY, context.getPriority()).get();
+		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).add("index", context.getIndex()).add("address", context.getAddress().toString()).get();
 		this.log.debug("Query: " + query);
 		return query;
 	}

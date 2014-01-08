@@ -13,6 +13,7 @@ import com.sissi.context.Status;
 import com.sissi.context.StatusBuilder;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
+import com.sissi.server.ServerHeart;
 import com.sissi.server.ServerTls;
 
 /**
@@ -30,15 +31,18 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final StatusBuilder statusBuilder;
 
+	private final ServerHeart serverHeart;
+
 	private final Integer authRetry;
 
 	private final String lang;
 
 	private final String domain;
 
-	public OnlineContextBuilder(Integer authRetry, String lang, String domain, StatusBuilder statusBuilder) {
+	public OnlineContextBuilder(Integer authRetry, String lang, String domain, StatusBuilder statusBuilder, ServerHeart serverHeart) {
 		super();
 		this.statusBuilder = statusBuilder;
+		this.serverHeart = serverHeart;
 		this.authRetry = authRetry;
 		this.lang = lang;
 		this.domain = domain;
@@ -52,6 +56,10 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 	}
 
 	private class UserContext implements JIDContext {
+
+		private final Long PONG = -1L;
+
+		private final AtomicLong ping = new AtomicLong(PONG);
 
 		private final AtomicInteger auth = new AtomicInteger();
 
@@ -102,11 +110,6 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public Boolean isAuth() {
-			return this.isAuth.get();
-		}
-
-		@Override
 		public UserContext setAuth(Boolean canAccess) {
 			this.isAuth.set(canAccess);
 			return this;
@@ -115,6 +118,11 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public JIDContext setAuthFailed() {
 			this.auth.incrementAndGet();
 			return this;
+		}
+
+		@Override
+		public Boolean isAuth() {
+			return this.isAuth.get();
 		}
 
 		public Boolean isAuthRetry() {
@@ -128,14 +136,6 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		public JID getJid() {
 			return this.jid;
-		}
-
-		@Override
-		public JIDContext write(Element node) {
-			if (!this.isPrepareClose.get()) {
-				this.output.output(this, node);
-			}
-			return this;
 		}
 
 		@Override
@@ -208,6 +208,36 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			this.status.clear();
 			this.status = null;
 			return true;
+		}
+
+		public Boolean closeTimeout() {
+			if (this.ping.get() != PONG) {
+				System.out.println(this.ping.get());
+				this.close();
+			}
+			return true;
+		}
+
+		@Override
+		public JIDContext ping() {
+			this.ping.set(OnlineContextBuilder.this.serverHeart.ping(this));
+			return this;
+		}
+
+		@Override
+		public JIDContext pong(String eid) {
+			if (this.ping.get() == Long.valueOf(eid)) {
+				this.ping.set(PONG);
+			}
+			return this;
+		}
+
+		@Override
+		public JIDContext write(Element node) {
+			if (!this.isPrepareClose.get()) {
+				this.output.output(this, node);
+			}
+			return this;
 		}
 	}
 }

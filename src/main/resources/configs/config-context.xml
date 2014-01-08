@@ -16,6 +16,7 @@
 	</bean>
 	<bean id="builder.context.online" class="com.sissi.context.impl.OnlineContextBuilder">
 		<constructor-arg ref="builder.status" />
+		<constructor-arg ref="server.heart"/>
 		<constructor-arg index="0" value="${auth.retry}" />
 		<constructor-arg index="1" value="${global.lang}" />
 		<constructor-arg index="2" value="${global.main.host}" />

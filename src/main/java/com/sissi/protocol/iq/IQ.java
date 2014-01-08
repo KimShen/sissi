@@ -16,6 +16,7 @@ import com.sissi.protocol.iq.block.UnBlock;
 import com.sissi.protocol.iq.bytestreams.Bytestreams;
 import com.sissi.protocol.iq.disco.Info;
 import com.sissi.protocol.iq.disco.Items;
+import com.sissi.protocol.iq.ping.Ping;
 import com.sissi.protocol.iq.register.Register;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.protocol.iq.session.Session;
@@ -39,7 +40,7 @@ public class IQ extends Protocol implements Collector {
 
 	private List<Protocol> protocols;
 
-	@XmlElements({ @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = Info.NAME, type = Info.class), @XmlElement(name = Items.NAME, type = Items.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
+	@XmlElements({ @XmlElement(name = Ping.NAME, type = Ping.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = Info.NAME, type = Info.class), @XmlElement(name = Items.NAME, type = Items.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
 	public List<Protocol> getProtocols() {
 		return protocols;
 	}
@@ -60,7 +61,7 @@ public class IQ extends Protocol implements Collector {
 	public ServerError getError() {
 		return super.getError();
 	}
-	
+
 	public IQ clear() {
 		this.protocols = null;
 		return this;

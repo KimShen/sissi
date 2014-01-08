@@ -137,12 +137,24 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return false;
 		}
 
+		public Boolean closeTimeout() {
+			return false;
+		}
+
 		@Override
 		public Boolean close() {
 			return false;
 		}
 
 		public JIDContext reset() {
+			return this;
+		}
+
+		public JIDContext ping() {
+			return this;
+		}
+
+		public JIDContext pong(String eid) {
 			return this;
 		}
 

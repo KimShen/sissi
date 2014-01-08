@@ -17,9 +17,11 @@
 		<maven.global.main.port>5222</maven.global.main.port>
 		<maven.global.exchanger.port>6222</maven.global.exchanger.port>
 		<maven.global.muc.host>muc.sissi</maven.global.muc.host>
-		<maven.global.idle.all>3000</maven.global.idle.all>
-		<maven.global.idle.read>3000</maven.global.idle.read>
-		<maven.global.idle.write>3000</maven.global.idle.write>
+		<maven.global.idle.all>15</maven.global.idle.all>
+		<maven.global.idle.read>15</maven.global.idle.read>
+		<maven.global.idle.write>15</maven.global.idle.write>
+		<maven.global.heart.thread.interval>3000</maven.global.heart.thread.interval>
+		<maven.global.heart.thread.unit>MILLISECONDS</maven.global.heart.thread.unit>
 		<maven.global.version>1.0</maven.global.version>
 		<maven.global.lang>zh_CN</maven.global.lang>
 		<!-- For Loop -->
@@ -32,9 +34,9 @@
 		<!-- For Exchanger -->
 		<maven.exchanger.thread.interval>3000</maven.exchanger.thread.interval>
 		<maven.exchanger.thread.unit>MILLISECONDS</maven.exchanger.thread.unit>
-		<maven.exchanger.idle.all>3000</maven.exchanger.idle.all>
-		<maven.exchanger.idle.read>3000</maven.exchanger.idle.read>
-		<maven.exchanger.idle.write>3000</maven.exchanger.idle.write>
+		<maven.exchanger.idle.all>15</maven.exchanger.idle.all>
+		<maven.exchanger.idle.read>15</maven.exchanger.idle.read>
+		<maven.exchanger.idle.write>15</maven.exchanger.idle.write>
 		<!-- For Thread -->
 		<maven.executor.keep.alive>3000</maven.executor.keep.alive>
 		<maven.executor.maximum>1000</maven.executor.maximum>
@@ -149,7 +151,7 @@
 	<build>
 		<finalName>${maven.project.name}</finalName>
 		<resources>
-			<resource>
+			<resource> 
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<excludes>

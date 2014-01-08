@@ -59,6 +59,11 @@ abstract public class Protocol implements Element {
 		this.id = id;
 		return this;
 	}
+	
+	public Protocol setId(Long id) {
+		this.id = String.valueOf(id);
+		return this;
+	}
 
 	@XmlAttribute
 	public String getFrom() {

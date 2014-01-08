@@ -1,10 +1,10 @@
 package com.sissi.server.impl;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.AttributeKey;
 import io.netty.util.ReferenceCountUtil;
@@ -41,8 +41,6 @@ import com.sissi.server.ServerTlsBuilder;
  * @author kim 2013年12月1日
  */
 public class PrivateServerHandlerBuilder {
-
-	private final byte[] WHITESPACE_PING = new byte[0];
 
 	private final String CONTEXT_ATTR = "CONTEXT_ATTR";
 
@@ -138,16 +136,19 @@ public class PrivateServerHandlerBuilder {
 		}
 
 		public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-			if (evt.getClass().isAssignableFrom(IdleStateEvent.class)) {
-				ctx.writeAndFlush(Unpooled.wrappedBuffer(WHITESPACE_PING));
-				PrivateServerHandlerBuilder.this.log.debug("Write on " + ctx.attr(CONTEXT).get().getJid().asString() + " WHITESPACE_PING");
-			}
+			this.ping(ctx, evt);
 		}
 
 		@Override
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 			this.logIfDetail(cause);
 			ctx.close();
+		}
+		
+		private void ping(ChannelHandlerContext ctx, Object evt) {
+			if (evt.getClass().isAssignableFrom(IdleStateEvent.class) && IdleStateEvent.class.cast(evt).state() == IdleState.READER_IDLE) {
+				ctx.attr(CONTEXT).get().ping();
+			}
 		}
 
 		private void closeParser() throws IOException {

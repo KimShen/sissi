@@ -52,6 +52,12 @@ public interface JIDContext {
 	public Boolean close();
 
 	public Boolean closePrepare();
+	
+	public Boolean closeTimeout();
 
+	public JIDContext ping();
+	
+	public JIDContext pong(String eid);
+	
 	public JIDContext write(Element element);
 }

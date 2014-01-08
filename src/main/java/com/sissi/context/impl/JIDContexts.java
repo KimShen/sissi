@@ -121,9 +121,31 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return allClose;
 	}
 
+	public Boolean closeTimeout() {
+		boolean allClose = true;
+		for (JIDContext each : this) {
+			allClose = each.closeTimeout() ? allClose : true;
+		}
+		return allClose;
+	}
+
 	public JIDContext reset() {
 		for (JIDContext each : this) {
 			each.reset();
+		}
+		return this;
+	}
+
+	public JIDContext ping() {
+		for (JIDContext each : this) {
+			each.ping();
+		}
+		return this;
+	}
+
+	public JIDContext pong(String eid) {
+		for (JIDContext each : this) {
+			each.pong(eid);
 		}
 		return this;
 	}

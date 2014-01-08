@@ -22,7 +22,6 @@
 	</bean>
 	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
 		<constructor-arg ref="finder.iq" />
-		<constructor-arg ref="iq.pro.result.stop" />
 	</bean>
 	<bean id="iq.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -44,12 +43,11 @@
 				<ref bean="register.condition" />
 				<ref bean="disco.condition.info" />
 				<ref bean="disco.condition.items" />
-				<ref bean="bytestreams.pro.condition" />
+				<ref bean="bytestreams.condition" />
 				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>
 	</bean>
-
 	<bean id="iq.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.ClassMatcher">

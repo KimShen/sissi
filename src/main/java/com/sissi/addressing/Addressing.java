@@ -8,14 +8,14 @@ import com.sissi.context.JIDContext;
  */
 public interface Addressing {
 
-	public Addressing leave(JID jid);
-
 	public Addressing join(JIDContext context);
 
+	public Addressing leave(JID jid);
+
 	public Addressing leave(JIDContext context);
-	
+
 	public Addressing promote(JIDContext context);
-	
+
 	public Addressing activate(JIDContext context);
 
 	public JIDContext find(JID jid);
@@ -25,6 +25,6 @@ public interface Addressing {
 	public JIDContext findOne(JID jid);
 
 	public Integer others(JID jid);
-	
+
 	public Integer others(JID jid, Boolean usingResource);
 }
