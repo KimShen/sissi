@@ -229,7 +229,9 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public JIDContext ping() {
-			this.ping.set(OnlineContextBuilder.this.serverHeart.ping(this));
+			if (this.isBinding()) {
+				this.ping.set(OnlineContextBuilder.this.serverHeart.ping(this));
+			}
 			return this;
 		}
 

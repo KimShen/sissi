@@ -66,11 +66,9 @@
 	</bean>
 	<bean id="iq.condition.matchall" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.ClassMatcher">
-				<constructor-arg value="com.sissi.protocol.iq.IQ" />
-			</bean>
+			<bean class="com.sissi.pipeline.in.AnyMatcher" />
 		</constructor-arg>
-		<constructor-arg ref="iq.pro.result.stop" />
+		<constructor-arg ref="iq.pro.result.next" />
 	</bean>
 
 </beans>
