@@ -10,7 +10,7 @@ import com.sissi.protocol.Element;
  */
 public interface DelayElementBox {
 
-	public DelayElementBox add(Element element);
+	public DelayElementBox push(Element element);
 
-	public List<Element> get(JID jid);
+	public List<Element> pull(JID jid);
 }

@@ -12,16 +12,16 @@ import com.sissi.protocol.Error;
 import com.sissi.protocol.ErrorDetail;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.error.ServerErrorText;
-import com.sissi.protocol.iq.auth.error.Aborted;
-import com.sissi.protocol.iq.auth.error.AccountDisabled;
-import com.sissi.protocol.iq.auth.error.CredentialsExpired;
-import com.sissi.protocol.iq.auth.error.EncryptionRequired;
-import com.sissi.protocol.iq.auth.error.IncorrectEncoding;
-import com.sissi.protocol.iq.auth.error.InvalidMechanism;
-import com.sissi.protocol.iq.auth.error.MalformedRequest;
-import com.sissi.protocol.iq.auth.error.MechanismTooWeak;
-import com.sissi.protocol.iq.auth.error.NotAuthorized;
-import com.sissi.protocol.iq.auth.error.TemporaryAuthFailure;
+import com.sissi.protocol.error.element.Aborted;
+import com.sissi.protocol.error.element.AccountDisabled;
+import com.sissi.protocol.error.element.CredentialsExpired;
+import com.sissi.protocol.error.element.EncryptionRequired;
+import com.sissi.protocol.error.element.IncorrectEncoding;
+import com.sissi.protocol.error.element.InvalidMechanism;
+import com.sissi.protocol.error.element.MalformedRequest;
+import com.sissi.protocol.error.element.MechanismTooWeak;
+import com.sissi.protocol.error.element.NotAuthorized;
+import com.sissi.protocol.error.element.TemporaryAuthFailure;
 
 /**
  * @author Kim.shen 2013-10-19

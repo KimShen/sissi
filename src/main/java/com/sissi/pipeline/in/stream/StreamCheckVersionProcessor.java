@@ -14,8 +14,11 @@ public class StreamCheckVersionProcessor implements Input {
 
 	private final String minVersion;
 
-	public StreamCheckVersionProcessor(String minVersion) {
+	private final String domain;
+
+	public StreamCheckVersionProcessor(String domain, String minVersion) {
 		super();
+		this.domain = domain;
 		this.minVersion = minVersion;
 	}
 
@@ -25,8 +28,6 @@ public class StreamCheckVersionProcessor implements Input {
 	}
 
 	private Boolean close(JIDContext context, Protocol protocol) {
-		context.write(Stream.closeForcible(new ServerError().add(UnSupportedVersion.DETAIL)).setFrom(protocol.getTo()).setTo(protocol.getFrom()));
-		context.close();
-		return false;
+		return !context.write(Stream.closeForcible(new ServerError().add(UnSupportedVersion.DETAIL)).setFrom(this.domain).setTo(protocol.getFrom())).close();
 	}
 }

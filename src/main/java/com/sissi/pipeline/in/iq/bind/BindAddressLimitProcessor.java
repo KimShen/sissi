@@ -11,14 +11,14 @@ import com.sissi.protocol.error.element.ResourceConstraint;
 /**
  * @author kim 2014年1月6日
  */
-public class BindResourceLimitProcessor extends ProxyProcessor {
+public class BindAddressLimitProcessor extends ProxyProcessor {
 
 	private Integer resources;
 
-	public BindResourceLimitProcessor(Integer resources) {
+	public BindAddressLimitProcessor(Integer resources) {
 		super();
 		this.resources = resources;
-		
+
 	}
 
 	@Override
@@ -27,9 +27,6 @@ public class BindResourceLimitProcessor extends ProxyProcessor {
 	}
 
 	private Boolean close(JIDContext context, Protocol protocol) {
-		context.write(protocol.getParent().clear().reply().setError(new ServerError().setType(Type.CANCEL.toString()).add(ResourceConstraint.DETAIL)));
-		context.write(Stream.closeGracefully());
-		context.close();
-		return false;
+		return !context.write(protocol.getParent().clear().setFrom(context.getDomain()).setTo(context.getJid().asString()).setError(new ServerError().setType(Type.CANCEL.toString()).add(ResourceConstraint.DETAIL))).write(Stream.closeGracefully()).close();
 	}
 }

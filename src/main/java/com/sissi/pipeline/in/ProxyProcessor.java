@@ -3,8 +3,8 @@ package com.sissi.pipeline.in;
 import java.util.Set;
 
 import com.sissi.addressing.Addressing;
-import com.sissi.broadcast.PresenceBroadcast;
-import com.sissi.broadcast.ProtocolBraodcast;
+import com.sissi.broadcast.BroadcastPresence;
+import com.sissi.broadcast.BraodcastProtocol;
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 import com.sissi.context.JIDContext;
@@ -23,9 +23,9 @@ abstract public class ProxyProcessor implements Input {
 
 	protected Addressing addressing;
 
-	protected PresenceBroadcast presenceQueue;
+	protected BroadcastPresence presenceQueue;
 
-	protected ProtocolBraodcast protocolQueue;
+	protected BraodcastProtocol protocolQueue;
 
 	protected RelationContext relationContext;
 
@@ -41,11 +41,11 @@ abstract public class ProxyProcessor implements Input {
 		this.relationContext = relationContext;
 	}
 
-	public void setPresenceQueue(PresenceBroadcast presenceQueue) {
+	public void setPresenceQueue(BroadcastPresence presenceQueue) {
 		this.presenceQueue = presenceQueue;
 	}
 
-	public void setProtocolQueue(ProtocolBraodcast protocolQueue) {
+	public void setProtocolQueue(BraodcastProtocol protocolQueue) {
 		this.protocolQueue = protocolQueue;
 	}
 

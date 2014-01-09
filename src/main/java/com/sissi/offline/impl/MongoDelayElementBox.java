@@ -34,7 +34,7 @@ public class MongoDelayElementBox implements DelayElementBox {
 	}
 
 	@Override
-	public List<Element> get(JID jid) {
+	public List<Element> pull(JID jid) {
 		DBObject query = BasicDBObjectBuilder.start().add("to", jid.asStringWithBare()).get();
 		this.log.debug("Query: " + query);
 		Elements elements = new Elements(this.config.collection().find(query));
@@ -43,7 +43,7 @@ public class MongoDelayElementBox implements DelayElementBox {
 	}
 
 	@Override
-	public DelayElementBox add(Element element) {
+	public DelayElementBox push(Element element) {
 		for (DelayElement delay : this.elements) {
 			if (delay.isSupport(element)) {
 				DBObject entity = BasicDBObjectBuilder.start(delay.write(element)).get();
@@ -62,9 +62,9 @@ public class MongoDelayElementBox implements DelayElementBox {
 			super();
 			while (cursor.hasNext()) {
 				BasicDBObject each = (BasicDBObject) cursor.next();
-				for (DelayElement blocks : MongoDelayElementBox.this.elements) {
-					if (blocks.isSupport(each)) {
-						this.add(blocks.read(each));
+				for (DelayElement element : MongoDelayElementBox.this.elements) {
+					if (element.isSupport(each)) {
+						this.add(element.read(each));
 					}
 				}
 			}

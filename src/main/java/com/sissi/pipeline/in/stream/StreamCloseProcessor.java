@@ -16,8 +16,6 @@ public class StreamCloseProcessor implements Input {
 	}
 
 	private Boolean close(JIDContext context) {
-		context.write(Stream.closeGracefully());
-		context.closePrepare();
-		return false;
+		return !context.write(Stream.closeGracefully()).closePrepare();
 	}
 }

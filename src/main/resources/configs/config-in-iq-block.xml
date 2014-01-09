@@ -8,7 +8,7 @@
 	<bean id="block.pro.blocked" class="com.sissi.pipeline.in.iq.block.BlockedProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.block" />
 	</bean>
-	<bean id="block.pro.blocked.2selfs.item" class="com.sissi.pipeline.in.iq.block.Blocked2SelfsItemProcessor" parent="global.pro.proxy" />
+	<bean id="block.pro.blocked.2selfs.item" class="com.sissi.pipeline.in.iq.block.Block2SelfsItemProcessor" parent="global.pro.proxy" />
 	<bean id="block.pro.blocked.2selfs.presence" class="com.sissi.pipeline.in.iq.block.Blocked2SelfsPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="block.pro.blocked.2fans.presence" class="com.sissi.pipeline.in.iq.block.Blocked2FansPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="block.pro.blocked.chained" class="com.sissi.pipeline.in.ChainedProcessor">
@@ -24,7 +24,7 @@
 	<bean id="block.pro.unblock" class="com.sissi.pipeline.in.iq.block.UnBlockProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.block" />
 	</bean>
-	<bean id="block.pro.unblock.2selfs.item" class="com.sissi.pipeline.in.iq.block.UnBlock2SelfsItemProcessor" parent="global.pro.proxy" />
+	<bean id="block.pro.unblock.2selfs.item" class="com.sissi.pipeline.in.iq.block.Block2SelfsItemProcessor" parent="global.pro.proxy" />
 	<bean id="block.pro.unblock.2selfs.presence" class="com.sissi.pipeline.in.iq.block.UnBlock2SelfsPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="block.pro.unblock.2fans.presence" class="com.sissi.pipeline.in.iq.block.UnBlock2FansPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="block.pro.unblock.chained" class="com.sissi.pipeline.in.ChainedProcessor">

@@ -2,6 +2,7 @@ package com.sissi.context.impl;
 
 import java.net.SocketAddress;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
@@ -17,19 +18,19 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	private final RuntimeException NOT_SUPPORT = new RuntimeException("MultiContexts not support this funciton");
 
-	@Override
-	public JIDContext setAuth(Boolean canAccess) {
-		for (JIDContext each : this) {
-			each.setAuth(canAccess);
-		}
-		return this;
-	}
-
 	public JIDContext setBinding(Boolean isBinding) {
 		for (JIDContext each : this) {
 			each.setBinding(isBinding);
 		}
 		return this;
+	}
+
+	public Boolean isBinding() {
+		boolean isBinding = true;
+		for (JIDContext each : this) {
+			isBinding = each.isBinding() ? isBinding : false;
+		}
+		return isBinding;
 	}
 
 	@Override
@@ -80,6 +81,18 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	@Override
+	public JIDContext setAuth(Boolean canAccess) {
+		for (JIDContext each : this) {
+			each.setAuth(canAccess);
+		}
+		return this;
+	}
+
+	public JIDContext setAuthFailed() {
+		return this;
+	}
+
+	@Override
 	public Boolean isAuth() {
 		boolean isAuth = true;
 		for (JIDContext each : this) {
@@ -88,20 +101,8 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return isAuth;
 	}
 
-	public JIDContext setAuthFailed() {
-		return this;
-	}
-
 	public Boolean isAuthRetry() {
 		return false;
-	}
-
-	public Boolean isBinding() {
-		boolean isBinding = true;
-		for (JIDContext each : this) {
-			isBinding = each.isBinding() ? isBinding : false;
-		}
-		return isBinding;
 	}
 
 	@Override
@@ -143,9 +144,9 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return this;
 	}
 
-	public JIDContext pong(String eid) {
+	public JIDContext pong(Element node) {
 		for (JIDContext each : this) {
-			each.pong(eid);
+			each.pong(node);
 		}
 		return this;
 	}
@@ -154,6 +155,13 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	public JIDContext write(Element node) {
 		for (JIDContext each : this) {
 			each.write(node);
+		}
+		return this;
+	}
+
+	public JIDContext write(Collection<Element> nodes) {
+		for (Element node : nodes) {
+			this.write(node);
 		}
 		return this;
 	}
@@ -167,11 +175,6 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		throw NOT_SUPPORT;
 	}
 
-	@Override
-	public Integer getPriority() {
-		throw NOT_SUPPORT;
-	}
-
 	public String getLang() {
 		throw NOT_SUPPORT;
 	}
@@ -182,6 +185,11 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	@Override
 	public Status getStatus() {
+		throw NOT_SUPPORT;
+	}
+
+	@Override
+	public Integer getPriority() {
 		throw NOT_SUPPORT;
 	}
 

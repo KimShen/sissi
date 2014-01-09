@@ -11,7 +11,7 @@ import com.sissi.ucenter.VCardContext;
  */
 public class VCardSetProcessor implements Input {
 
-	private VCardContext vcardContext;
+	private final VCardContext vcardContext;
 
 	public VCardSetProcessor(VCardContext vcardContext) {
 		super();

@@ -6,7 +6,7 @@ import com.sissi.context.Status;
 /**
  * @author kim 2013-11-17
  */
-public interface PresenceBroadcast {
+public interface BroadcastPresence {
 
-	public PresenceBroadcast broadcast(JID jid, JID from, JID to, Status status);
+	public BroadcastPresence broadcast(JID jid, JID from, JID to, Status status);
 }

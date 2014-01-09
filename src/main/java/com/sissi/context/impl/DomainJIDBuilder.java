@@ -9,7 +9,7 @@ import com.sissi.context.JIDBuilder;
 /**
  * @author kim 2013年12月23日
  */
-public class FixedHostJIDBuilder implements JIDBuilder {
+public class DomainJIDBuilder implements JIDBuilder {
 
 	private final String NONE_NAME = "_NA";
 
@@ -19,11 +19,11 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 
 	private final None NONE_USER = new None();
 
-	private final String host;
+	private final String domain;
 
-	public FixedHostJIDBuilder(String host) {
+	public DomainJIDBuilder(String domain) {
 		super();
-		this.host = host;
+		this.domain = domain;
 	}
 
 	@Override
@@ -41,17 +41,21 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 
 		public None() {
 			super();
-			this.toString = this.getUser() + FixedHostJIDBuilder.this.CONNECT_AT + this.getHost();
+			this.toString = this.getUser() + DomainJIDBuilder.this.CONNECT_AT + this.getDomain();
 		}
 
 		@Override
 		public String getUser() {
-			return FixedHostJIDBuilder.this.NONE_NAME;
+			return DomainJIDBuilder.this.NONE_NAME;
 		}
 
 		@Override
-		public String getHost() {
-			return FixedHostJIDBuilder.this.host;
+		public String getDomain() {
+			return DomainJIDBuilder.this.domain;
+		}
+		
+		public JID setDomain(String domain) {
+			return this;
 		}
 
 		@Override
@@ -83,7 +87,7 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 
 		private String user;
 
-		private String host;
+		private String domain;
 
 		private String resource;
 
@@ -96,24 +100,23 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 		private User(String jid) {
 			super();
 			StringBuffer buffer = new StringBuffer(jid);
-			int startHost = buffer.indexOf(FixedHostJIDBuilder.this.CONNECT_AT);
+			int startHost = buffer.indexOf(DomainJIDBuilder.this.CONNECT_AT);
 			this.user = startHost == -1 ? null : buffer.substring(0, startHost);
-			int startResource = buffer.indexOf(FixedHostJIDBuilder.this.CONNECT_RESOURCE);
-			this.host = startResource == -1 ? buffer.substring(startHost != -1 ? startHost + 1 : 0) : buffer.substring(startHost + 1, startResource);
+			int startResource = buffer.indexOf(DomainJIDBuilder.this.CONNECT_RESOURCE);
+			this.domain = startResource == -1 ? buffer.substring(startHost != -1 ? startHost + 1 : 0) : buffer.substring(startHost + 1, startResource);
 			this.resource = startResource == -1 ? null : buffer.substring(startResource + 1);
 		}
 
 		private User(String user, String resource) {
 			super();
 			this.user = user;
-			this.host = FixedHostJIDBuilder.this.host;
 			this.resource = resource;
 		}
 
 		private User copy2NoneResourceClone() {
 			this.bareUser = new User();
 			this.bareUser.user = this.user;
-			this.bareUser.host = this.host;
+			this.bareUser.domain = this.domain;
 			return this.bareUser;
 		}
 
@@ -121,10 +124,15 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 			return this.user;
 		}
 
-		public String getHost() {
-			return this.host;
+		public String getDomain() {
+			return this.domain;
 		}
 
+		public JID setDomain(String domain) {
+			this.domain = domain;
+			return this;
+		}
+		
 		public String getResource() {
 			return this.resource;
 		}
@@ -140,11 +148,11 @@ public class FixedHostJIDBuilder implements JIDBuilder {
 		}
 
 		public String asString() {
-			return this.asStringWithBare() + (this.resource != null ? FixedHostJIDBuilder.this.CONNECT_RESOURCE + this.resource : "");
+			return this.asStringWithBare() + (this.resource != null ? DomainJIDBuilder.this.CONNECT_RESOURCE + this.resource : "");
 		}
 
 		public String asStringWithBare() {
-			return (this.user != null ? this.user + FixedHostJIDBuilder.this.CONNECT_AT : "") + this.host;
+			return (this.user != null ? this.user + DomainJIDBuilder.this.CONNECT_AT : "") + this.domain;
 		}
 	}
 }

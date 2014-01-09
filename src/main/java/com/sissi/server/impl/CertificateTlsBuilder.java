@@ -12,7 +12,7 @@ import javax.net.ssl.TrustManagerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.commons.IOUtils;
+import com.sissi.commons.apache.IOUtils;
 import com.sissi.server.ServerTlsBuilder;
 
 /**

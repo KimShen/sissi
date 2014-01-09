@@ -22,7 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.addressing.Addressing;
-import com.sissi.commons.IOUtils;
+import com.sissi.commons.apache.IOUtils;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContextBuilder;
 import com.sissi.context.JIDContextParam;
@@ -217,7 +217,7 @@ public class PrivateServerHandlerBuilder {
 			switch (key) {
 			case OnlineContextBuilder.KEY_OUTPUT:
 				return clazz.cast(this.output);
-			case OnlineContextBuilder.KEY_TLS:
+			case OnlineContextBuilder.KEY_SERVERTLS:
 				return clazz.cast(this.serverTls);
 			case OnlineContextBuilder.KEY_ADDRESS:
 				return clazz.cast(this.ctx.channel().remoteAddress());

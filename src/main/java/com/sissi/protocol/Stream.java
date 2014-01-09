@@ -34,7 +34,7 @@ public class Stream extends Protocol implements WithOutLast {
 
 	public final static String NAME = "stream";
 
-	private final static String SUB_XMLNS = "jabber:client";
+	private final static String CONTENT_XMLNS = "jabber:client";
 
 	private final static String VERSION = "1.0";
 
@@ -66,7 +66,7 @@ public class Stream extends Protocol implements WithOutLast {
 
 	@XmlAttribute
 	public String getXmlns() {
-		return SUB_XMLNS;
+		return CONTENT_XMLNS;
 	}
 
 	@XmlAttribute

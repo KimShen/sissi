@@ -15,7 +15,9 @@ import io.netty.handler.codec.socks.SocksCmdStatus;
 import io.netty.handler.codec.socks.SocksInitRequest;
 import io.netty.handler.codec.socks.SocksInitResponse;
 import io.netty.handler.codec.socks.SocksResponse;
+import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -81,20 +83,17 @@ public class Socks5ProxyServerHandlerBuilder {
 	}
 
 	private class Sock5ProxyServerHandler extends ChannelInboundHandlerAdapter {
-
-		public void channelInactive(final ChannelHandlerContext ctx) throws Exception {
-			ctx.close();
-		}
-
+		
 		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
 			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close(ExchangerCloser.INITER);
 		}
 
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-			ctx.close();
 			if (Socks5ProxyServerHandlerBuilder.this.log.isDebugEnabled()) {
 				Socks5ProxyServerHandlerBuilder.this.log.debug(cause.toString());
+				cause.printStackTrace();
 			}
+			ctx.close();
 		}
 
 		public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -102,7 +101,7 @@ public class Socks5ProxyServerHandlerBuilder {
 		}
 
 		public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-			if (evt.getClass().isAssignableFrom(IdleStateEvent.class)) {
+			if (evt.getClass().isAssignableFrom(IdleStateEvent.class) && IdleStateEvent.class.cast(evt).state() == IdleState.WRITER_IDLE) {
 				ctx.close();
 			}
 		}
@@ -145,6 +144,7 @@ public class Socks5ProxyServerHandlerBuilder {
 			public void operationComplete(Future<Void> future) throws Exception {
 				if (future.isSuccess()) {
 					ctx.flush();
+					ctx.pipeline().remove(IdleStateHandler.class);
 					ctx.pipeline().addFirst(Socks5ProxyServerHandlerBuilder.this.channelHandler);
 					ctx.pipeline().context(BridgeExchangerServerHandler.class).attr(Socks5ProxyServerHandlerBuilder.this.exchanger).set(exchanger);
 				}
@@ -156,10 +156,11 @@ public class Socks5ProxyServerHandlerBuilder {
 	private class BridgeExchangerServerHandler extends ChannelInboundHandlerAdapter {
 
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-			ctx.close();
 			if (Socks5ProxyServerHandlerBuilder.this.log.isDebugEnabled()) {
 				Socks5ProxyServerHandlerBuilder.this.log.debug(cause.toString());
+				cause.printStackTrace();
 			}
+			ctx.close();
 		}
 
 		public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -200,7 +201,7 @@ public class Socks5ProxyServerHandlerBuilder {
 		public void encodeAsByteBuf(ByteBuf buf) {
 			try {
 				this.cmd.encodeAsByteBuf(buf);
-				byte[] proxy = this.proxy.getHost().getBytes("UTF-8");
+				byte[] proxy = this.proxy.getDomain().getBytes("UTF-8");
 				buf.writerIndex(START_DOMAIN).writeByte(proxy.length).writeBytes(proxy).writeByte(0).writeByte(0);
 			} catch (Exception e) {
 				throw new RuntimeException(e);

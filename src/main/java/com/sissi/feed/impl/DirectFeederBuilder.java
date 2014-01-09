@@ -29,8 +29,9 @@ public class DirectFeederBuilder implements FeederBuilder {
 		}
 
 		@Override
-		public void feed(Protocol protocol) {
+		public Feeder feed(Protocol protocol) {
 			this.finder.find(protocol).input(this.context, protocol);
+			return this;
 		}
 	}
 }

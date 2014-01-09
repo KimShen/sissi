@@ -3,6 +3,7 @@ package com.sissi.pipeline.in.auth.impl;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
+import com.sissi.protocol.Stream;
 import com.sissi.protocol.iq.auth.Failure;
 
 /**
@@ -12,10 +13,10 @@ public class AuthAbortProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		if (!context.isBinding()) {
-			context.reset();
-			context.write(Failure.INSTANCE_ABORTED);
-		}
-		return true;
+		return !context.isBinding() ? this.abortedAndClose(context) : true;
+	}
+
+	private Boolean abortedAndClose(JIDContext context) {
+		return !context.reset().write(Failure.INSTANCE_ABORTED).write(Stream.closeGracefully()).close();
 	}
 }

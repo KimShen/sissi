@@ -6,8 +6,8 @@ import com.sissi.read.MappingMetadata;
 /**
  * @author kim 2013年12月24日
  */
-@MappingMetadata(uri = Bytestreams.XMLNS, localName = Activate.NAME)
-public class Activate extends Protocol {
+@MappingMetadata(uri = Bytestreams.XMLNS, localName = StreamhostActivate.NAME)
+public class StreamhostActivate extends Protocol {
 	
 	public final static String NAME = "activate";
 
@@ -17,7 +17,7 @@ public class Activate extends Protocol {
 		return text;
 	}
 
-	public Activate setText(String text) {
+	public StreamhostActivate setText(String text) {
 		this.text = text;
 		return this;
 	}

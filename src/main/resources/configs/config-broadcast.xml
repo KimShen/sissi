@@ -5,18 +5,14 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="broadcast.presence.selfs" class="com.sissi.broadcast.impl.ToSelfsPresenceQueue">
-		<constructor-arg ref="addressing" />
+	<bean id="broadcast" abstract="true">
+		<property name="jidBuilder" ref="builder.jid" />
+		<property name="addressing" ref="addressing" />
+		<property name="relationContext" ref="ucenter.relation.roster" />
 	</bean>
-	<bean id="broadcast.protocol.self" class="com.sissi.broadcast.impl.ToSelfProtocolQueue">
-		<constructor-arg ref="addressing" />
-	</bean>
-	<bean id="broadcast.protocol.selfs" class="com.sissi.broadcast.impl.ToSelfsProtocolQueue">
-		<constructor-arg ref="addressing" />
-	</bean>
-	<bean id="broadcast.protocol.fans" class="com.sissi.broadcast.impl.ToFansProtocolQueue">
-		<constructor-arg ref="addressing" />
-		<constructor-arg ref="builder.jid" />
-		<constructor-arg ref="ucenter.relation.roster" />
-	</bean>
+
+	<bean id="broadcast.presence.selfs" class="com.sissi.broadcast.impl.ToSelfsPresenceQueue" parent="broadcast" />
+	<bean id="broadcast.protocol.self" class="com.sissi.broadcast.impl.ToSelfProtocolQueue" parent="broadcast" />
+	<bean id="broadcast.protocol.selfs" class="com.sissi.broadcast.impl.ToSelfsProtocolQueue" parent="broadcast" />
+	<bean id="broadcast.protocol.fans" class="com.sissi.broadcast.impl.ToFansProtocolQueue" parent="broadcast" />
 </beans>

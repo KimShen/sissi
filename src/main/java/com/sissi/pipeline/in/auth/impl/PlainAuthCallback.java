@@ -38,11 +38,7 @@ public class PlainAuthCallback implements AuthCallback {
 	@Override
 	public Boolean auth(JIDContext context, Auth auth) {
 		AuthCertificate certificate = new AuthCertificate(auth);
-		if (context.setAuth(certificate.getPass().equals(this.authAccessor.access(certificate.getUser()))).isAuth()) {
-			return this.writeSuccessProtocol(context, certificate);
-		} else {
-			return false;
-		}
+		return context.setAuth(certificate.getPass().equals(this.authAccessor.access(certificate.getUser()))).isAuth() ? !this.writeSuccessProtocol(context, certificate) : true;
 	}
 
 	@Override
@@ -51,8 +47,7 @@ public class PlainAuthCallback implements AuthCallback {
 	}
 
 	private boolean writeSuccessProtocol(JIDContext context, AuthCertificate certificate) {
-		context.setJid(this.jidBuilder.build(certificate.getUser(), null));
-		context.write(Success.INSTANCE);
+		context.setJid(this.jidBuilder.build(certificate.getUser(), null)).write(Success.INSTANCE);
 		return true;
 	}
 

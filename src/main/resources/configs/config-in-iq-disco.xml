@@ -5,20 +5,20 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="disco.pro.info.2server" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2ServerProcessor" />
-	<bean id="disco.pro.info.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2ProxyProcessor" />
-	<bean id="disco.pro.info.2fans" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2FansProcessor" parent="global.pro.proxy" />
+	<bean id="disco.pro.info.2server" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2RobotProcessor" />
+	<bean id="disco.pro.info.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2RobotProcessor" />
+	<bean id="disco.pro.info.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy" />
 	<bean id="disco.pro.info.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.disco.info" />
 	</bean>
 
-	<bean id="disco.pro.items.2server" class="com.sissi.pipeline.in.iq.disco.DiscoItems2ServerProcessor">
+	<bean id="disco.pro.items.2server" class="com.sissi.pipeline.in.iq.disco.DiscoItems2RobotProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
-	<bean id="disco.pro.items.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoItems2ProxyProcessor">
+	<bean id="disco.pro.items.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoItems2RobotProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
-	<bean id="disco.pro.items.2fans" class="com.sissi.pipeline.in.iq.disco.DiscoItems2FansProcessor" parent="global.pro.proxy" />
+	<bean id="disco.pro.items.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy" />
 	<bean id="disco.pro.items.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.disco.items" />
 	</bean>
@@ -27,7 +27,8 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="disco.condition.info.2server" />
-				<!-- <ref bean="disco.condition.info.2proxy" /> <ref bean="disco.condition.info.2fans" /> -->
+				<ref bean="disco.condition.info.2proxy" />
+				<ref bean="disco.condition.info.2fans" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -68,7 +69,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
 				<constructor-arg index="0" value="com.sissi.protocol.iq.disco.Info" />
-				<constructor-arg index="1" ref="bytestreams.proxy" />
+				<constructor-arg index="1" value="${bytestreams.proxy.jid}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="disco.pro.info.2proxy" />
@@ -83,7 +84,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToServerMatcher">
 				<constructor-arg index="0" value="com.sissi.protocol.iq.disco.Items" />
-				<constructor-arg index="1" value="${global.main.host}" />
+				<constructor-arg index="1" value="${global.main.domain}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="disco.pro.items.2server" />
@@ -92,7 +93,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
 				<constructor-arg index="0" value="com.sissi.protocol.iq.disco.Items" />
-				<constructor-arg index="1" ref="bytestreams.proxy" />
+				<constructor-arg index="1" value="${bytestreams.proxy.jid}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="disco.pro.items.2proxy" />

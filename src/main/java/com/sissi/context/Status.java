@@ -5,9 +5,9 @@ package com.sissi.context;
  */
 public interface Status {
 
-	public StatusClauses getStatus();
-
 	public Status setStatus(String type, String show, String status, String avator);
-
+	
 	public Status clear();
+	
+	public StatusClauses getStatus();
 }

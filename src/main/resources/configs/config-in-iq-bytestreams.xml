@@ -17,10 +17,10 @@
 	</bean>
 
 	<bean id="bytestreams.pro.2activate" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ActivateProcessor" />
-	<bean id="bytestreams.pro.2proxy" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ProxyProcessor">
+	<bean id="bytestreams.pro.2proxy" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2RobotProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
-	<bean id="bytestreams.pro.2server" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ServerProcessor">
+	<bean id="bytestreams.pro.2server" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2RobotProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
 	<bean id="bytestreams.pro.2fans" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2FansProcessor" parent="global.pro.proxy">
@@ -59,7 +59,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToServerMatcher">
 				<constructor-arg index="0" value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
-				<constructor-arg index="1" value="${global.main.host}" />
+				<constructor-arg index="1" value="${global.main.domain}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="bytestreams.pro.2server" />
@@ -68,7 +68,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
 				<constructor-arg index="0" value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
-				<constructor-arg index="1" ref="bytestreams.proxy" />
+				<constructor-arg index="1" value="${bytestreams.proxy.jid}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="bytestreams.pro.2proxy" />

@@ -5,4 +5,7 @@ package com.sissi.protocol;
  */
 public interface ErrorText {
 
+	public String getText();
+
+	public String getLang();
 }

@@ -1,4 +1,4 @@
-package com.sissi.protocol.iq.auth.error;
+package com.sissi.protocol.error.element;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;

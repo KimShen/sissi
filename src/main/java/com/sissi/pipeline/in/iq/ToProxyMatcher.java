@@ -2,21 +2,24 @@ package com.sissi.pipeline.in.iq;
 
 import com.sissi.pipeline.in.ClassMatcher;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.bytestreams.BytestreamsProxy;
 
 /**
  * @author kim 2013年12月18日
  */
 public class ToProxyMatcher extends ClassMatcher {
 
-	private BytestreamsProxy proxy;
+	private String jid;
 
-	public ToProxyMatcher(Class<? extends Protocol> clazz, BytestreamsProxy proxy) {
+	public ToProxyMatcher(Class<? extends Protocol> clazz, String jid) {
 		super(clazz);
-		this.proxy = proxy;
+		this.jid = jid;
+	}
+
+	public String getJid() {
+		return jid;
 	}
 
 	public Boolean match(Protocol protocol) {
-		return super.match(protocol) && (this.proxy.getJid().equals(protocol.getParent().getTo()));
+		return super.match(protocol) && (this.getJid().equals(protocol.getParent().getTo()));
 	}
 }

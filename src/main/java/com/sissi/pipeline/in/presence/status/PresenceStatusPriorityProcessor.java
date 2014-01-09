@@ -9,18 +9,18 @@ import com.sissi.protocol.presence.Presence;
 /**
  * @author kim 2013年12月25日
  */
-public class PresenceStatus2SelfPriorityProcessor implements Input {
+public class PresenceStatusPriorityProcessor implements Input {
 
-	private Addressing addressing;
+	private final Addressing addressing;
 
-	public PresenceStatus2SelfPriorityProcessor(Addressing addressing) {
+	public PresenceStatusPriorityProcessor(Addressing addressing) {
 		super();
 		this.addressing = addressing;
 	}
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		this.addressing.promote(context.setPriority(Presence.class.cast(protocol).getPriority()));
+		this.addressing.priority(context.setPriority(Presence.class.cast(protocol).getPriority()));
 		return true;
 	}
 }

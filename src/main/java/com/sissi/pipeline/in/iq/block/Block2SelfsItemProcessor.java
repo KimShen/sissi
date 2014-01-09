@@ -8,7 +8,7 @@ import com.sissi.protocol.Protocol.Type;
 /**
  * @author kim 2013年12月12日
  */
-abstract class Block2SelfsItemProcessor extends ProxyProcessor {
+public class Block2SelfsItemProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

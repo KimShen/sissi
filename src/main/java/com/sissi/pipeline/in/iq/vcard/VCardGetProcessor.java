@@ -12,7 +12,7 @@ import com.sissi.ucenter.VCardContext;
  */
 abstract class VCardGetProcessor extends ProxyProcessor {
 
-	protected VCardContext vcardContext;
+	protected final VCardContext vcardContext;
 
 	public VCardGetProcessor(VCardContext vcardContext) {
 		super();

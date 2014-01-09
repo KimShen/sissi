@@ -84,14 +84,16 @@ public class PrivateLooperBuilder implements LooperBuilder {
 		}
 
 		@Override
-		public void start() {
+		public Looper start() {
 			this.state.set(true);
 			PrivateLooperBuilder.this.runner.executor(PrivateLooperBuilder.this.threads, this);
+			return this;
 		}
 
 		@Override
-		public void stop() {
+		public Looper stop() {
 			this.state.set(false);
+			return this;
 		}
 	}
 }

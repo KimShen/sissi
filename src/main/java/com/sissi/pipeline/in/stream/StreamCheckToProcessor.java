@@ -12,21 +12,21 @@ import com.sissi.protocol.error.stream.HostUnknown;
  */
 public class StreamCheckToProcessor implements Input {
 
-	private final String host;
+	private final String localhost = "127.0.0.1";
 
-	public StreamCheckToProcessor(String host) {
+	private final String domain;
+
+	public StreamCheckToProcessor(String domain) {
 		super();
-		this.host = host;
+		this.domain = domain;
 	}
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return this.host.equals(protocol.getTo()) ? true : this.close(context, protocol);
+		return this.domain.equals(protocol.getTo()) || this.localhost.equals(protocol.getTo()) ? true : this.close(context, protocol);
 	}
 
 	private Boolean close(JIDContext context, Protocol protocol) {
-		context.write(Stream.closeForcible(new ServerError().add(HostUnknown.DETAIL)).setFrom(this.host).setTo(protocol.getFrom()));
-		context.close();
-		return false;
+		return !context.write(Stream.closeForcible(new ServerError().add(HostUnknown.DETAIL)).setFrom(this.domain).setTo(protocol.getFrom())).close();
 	}
 }

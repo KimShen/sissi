@@ -9,31 +9,31 @@ public class BytestreamsProxy {
 
 	private String name;
 
-	private String host;
-
 	private String port;
+	
+	private String domain;
 
-	public BytestreamsProxy(String jid, String name, String host, String port) {
+	public BytestreamsProxy(String jid, String name, String domain, String port) {
 		super();
 		this.jid = jid;
 		this.name = name;
-		this.host = host;
 		this.port = port;
+		this.domain = domain;
 	}
 
 	public String getJid() {
-		return jid;
+		return this.jid;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
-	public String getHost() {
-		return host;
+	public String getDomain() {
+		return this.domain;
 	}
 
 	public String getPort() {
-		return port;
+		return this.port;
 	}
 }

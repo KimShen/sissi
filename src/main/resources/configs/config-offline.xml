@@ -11,15 +11,13 @@
 		<constructor-arg index="2" value="${mongo.collection.offline}" />
 	</bean>
 
-	<bean id="storage.message" class="com.sissi.offline.impl.DelayMessage">
-		<constructor-arg ref="builder.jid" />
-		<constructor-arg value="${offline.title}" />
+	<bean id="storage" abstract="true">
+		<property name="jidBuilder" ref="builder.jid" />
+		<property name="offline" value="${offline.title}" />
 	</bean>
-	<bean id="storage.presence" class="com.sissi.offline.impl.DelayPresence">
-		<constructor-arg ref="builder.jid" />
-		<constructor-arg value="${offline.title}" />
-	</bean>
-	
+	<bean id="storage.message" class="com.sissi.offline.impl.DelayMessage" parent="storage" />
+	<bean id="storage.presence" class="com.sissi.offline.impl.DelayPresence" parent="storage" />
+
 	<bean id="storage.box" class="com.sissi.offline.impl.MongoDelayElementBox">
 		<constructor-arg ref="config.storage.box" />
 		<constructor-arg>

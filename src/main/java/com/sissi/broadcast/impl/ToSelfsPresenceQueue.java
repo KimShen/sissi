@@ -1,7 +1,6 @@
-  package com.sissi.broadcast.impl;
+package com.sissi.broadcast.impl;
 
-import com.sissi.addressing.Addressing;
-import com.sissi.broadcast.PresenceBroadcast;
+import com.sissi.broadcast.BroadcastPresence;
 import com.sissi.broadcast.PresenceBuilder;
 import com.sissi.context.JID;
 import com.sissi.context.Status;
@@ -11,24 +10,20 @@ import com.sissi.protocol.presence.Presence;
 /**
  * @author kim 2013-11-17
  */
-public class ToSelfsPresenceQueue implements PresenceBroadcast {
+public class ToSelfsPresenceQueue extends ToAnyProtocolQueue implements BroadcastPresence {
 
 	private final PresenceBuilder presenceBuilder;
-	
-	private final Addressing addressing;
 
-	public ToSelfsPresenceQueue(Addressing addressing, PresenceBuilder presenceBuilder) {
-		this.addressing = addressing;
+	public ToSelfsPresenceQueue(PresenceBuilder presenceBuilder) {
 		this.presenceBuilder = presenceBuilder;
 	}
-	
-	public ToSelfsPresenceQueue(Addressing addressing) {
-		this.addressing = addressing;
+
+	public ToSelfsPresenceQueue() {
 		this.presenceBuilder = new DefaultPresenceBuilder();
 	}
 
 	public ToSelfsPresenceQueue broadcast(JID jid, JID from, JID to, Status status) {
-		this.addressing.find(jid).write(this.presenceBuilder.build(from, to, status));
+		super.getAddressing().find(jid).write(this.presenceBuilder.build(from, to, status));
 		return this;
 	}
 

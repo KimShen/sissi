@@ -6,7 +6,7 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013-11-18
  */
-public interface ProtocolBraodcast {
+public interface BraodcastProtocol {
 
-	public ProtocolBraodcast broadcast(JID jid, Protocol protocol);
+	public BraodcastProtocol broadcast(JID jid, Protocol protocol);
 }

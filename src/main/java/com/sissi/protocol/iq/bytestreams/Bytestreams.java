@@ -35,7 +35,7 @@ public class Bytestreams extends Protocol implements Collector {
 
 	private String mode;
 
-	private Activate activate;
+	private StreamhostActivate activate;
 
 	public Boolean isActivate() {
 		return this.activate != null;
@@ -95,8 +95,8 @@ public class Bytestreams extends Protocol implements Collector {
 		case StreamhostUsed.NAME:
 			this.streamhostUsed = StreamhostUsed.class.cast(ob);
 			return;
-		case Activate.NAME:
-			this.activate = Activate.class.cast(ob);
+		case StreamhostActivate.NAME:
+			this.activate = StreamhostActivate.class.cast(ob);
 			return;
 		}
 	}

@@ -12,7 +12,7 @@ import com.sissi.ucenter.Relation;
  */
 public class MessageRelationProcessor extends ProxyProcessor {
 
-	private Boolean isFree;
+	private final Boolean isFree;
 
 	public MessageRelationProcessor(Boolean isFree) {
 		super();

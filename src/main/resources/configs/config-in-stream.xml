@@ -15,10 +15,13 @@
 	<bean id="stream.pro.feature.binding" class="com.sissi.pipeline.in.stream.StreamFeatureBindingProcessor" />
 	<bean id="stream.pro.feature.auth" class="com.sissi.pipeline.in.stream.StreamFeatureAuthProcessor" />
 	<bean id="stream.pro.check.to" class="com.sissi.pipeline.in.stream.StreamCheckToProcessor">
-		<constructor-arg value="${global.main.host}" />
+		<constructor-arg value="${global.main.domain}" />
 	</bean>
-	<bean id="stream.pro.check.xmlns" class="com.sissi.pipeline.in.stream.StreamCheckXmlnsProcessor" />
+	<bean id="stream.pro.check.xmlns" class="com.sissi.pipeline.in.stream.StreamCheckXmlnsProcessor">
+		<constructor-arg value="${global.main.domain}" />
+	</bean>
 	<bean id="stream.pro.check.version" class="com.sissi.pipeline.in.stream.StreamCheckVersionProcessor">
+		<constructor-arg value="${global.main.domain}" />
 		<constructor-arg value="${global.version}" />
 	</bean>
 	<bean id="stream.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">

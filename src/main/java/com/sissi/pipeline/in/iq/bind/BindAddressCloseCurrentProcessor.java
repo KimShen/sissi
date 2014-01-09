@@ -18,8 +18,6 @@ public class BindAddressCloseCurrentProcessor extends ProxyProcessor {
 	}
 
 	private Boolean close(JIDContext context, Protocol protocol) {
-		context.write(Stream.closeSuddenly(new ServerError().add(Conflict.DETAIL).setFrom(protocol.getTo()).setTo(protocol.getFrom())));
-		context.close();
-		return false;
+		return !context.write(Stream.closeSuddenly(new ServerError().add(Conflict.DETAIL))).close();
 	}
 }

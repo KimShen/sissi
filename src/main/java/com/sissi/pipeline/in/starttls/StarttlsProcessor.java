@@ -14,13 +14,16 @@ public class StarttlsProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		if (context.startTls()) {
-			context.write(Proceed.PROCEED);
-		} else {
-			context.write(Failure.FAILURE);
-			context.write(Stream.closeGracefully());
-			context.close();
-		}
+		return context.startTls() ? this.writeAndTrue(context) : this.writeAndFalse(context);
+	}
+
+	private Boolean writeAndFalse(JIDContext context) {
+		context.write(Failure.FAILURE).write(Stream.closeGracefully()).close();
+		return false;
+	}
+
+	private Boolean writeAndTrue(JIDContext context) {
+		context.write(Proceed.PROCEED);
 		return true;
 	}
 }

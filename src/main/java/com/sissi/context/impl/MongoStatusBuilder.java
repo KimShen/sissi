@@ -3,11 +3,11 @@ package com.sissi.context.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
+import com.sissi.config.impl.MongoCollection;
 import com.sissi.context.JIDContext;
 import com.sissi.context.Status;
 import com.sissi.context.StatusBuilder;
@@ -17,8 +17,6 @@ import com.sissi.context.StatusClauses;
  * @author kim 2013-11-21
  */
 public class MongoStatusBuilder implements StatusBuilder {
-
-	private final DBObject DEFAULT_SORTER = new BasicDBObject("priority", 1);
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -34,8 +32,13 @@ public class MongoStatusBuilder implements StatusBuilder {
 		return new MongoStatus(context);
 	}
 
+	private MongoStatusBuilder remove(JIDContext context) {
+		this.config.collection().remove(this.buildQuery(context));
+		return this;
+	}
+
 	private DBObject get(JIDContext context) {
-		DBCursor cursor = this.config.collection().find(this.buildQuery(context)).sort(DEFAULT_SORTER).limit(1);
+		DBCursor cursor = this.config.collection().find(this.buildQuery(context)).sort(MongoCollection.DEFAULT_SORTER).limit(1);
 		return cursor.hasNext() ? cursor.next() : null;
 	}
 
@@ -44,19 +47,14 @@ public class MongoStatusBuilder implements StatusBuilder {
 		return this;
 	}
 
-	private MongoStatusBuilder remove(JIDContext context) {
-		this.config.collection().remove(this.buildQuery(context));
-		return this;
-	}
-
 	private DBObject buildQuery(JIDContext context) {
-		DBObject query = BasicDBObjectBuilder.start().add("jid", context.getJid().asStringWithBare()).add("resource", context.getJid().getResource()).get();
+		DBObject query = BasicDBObjectBuilder.start().add(MongoCollection.FIELD_JID, context.getJid().asStringWithBare()).add(MongoCollection.FIELD_RESOURCE, context.getJid().getResource()).get();
 		this.log.debug("Query: " + query);
 		return query;
 	}
 
 	private DBObject buildUpsert(JIDContext context, String type, String show, String status, String avator) {
-		DBObject upsert = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add("type", type).add("show", show).add("status", status).add("avator", avator).add("priority", context.getPriority()).get()).get();
+		DBObject upsert = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add("type", type).add("show", show).add("status", status).add("avator", avator).add(MongoCollection.FIELD_PRIORITY, context.getPriority()).get()).get();
 		this.log.debug("Upsert: " + upsert);
 		return upsert;
 	}

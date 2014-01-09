@@ -1,6 +1,7 @@
 package com.sissi.context;
 
 import java.net.SocketAddress;
+import java.util.Collection;
 
 import com.sissi.protocol.Element;
 
@@ -41,11 +42,11 @@ public interface JIDContext {
 
 	public SocketAddress getAddress();
 
-	public Status getStatus();
-
 	public Boolean startTls();
 
 	public Boolean isTls();
+	
+	public Status getStatus();
 
 	public JIDContext reset();
 
@@ -57,7 +58,9 @@ public interface JIDContext {
 
 	public JIDContext ping();
 	
-	public JIDContext pong(String eid);
+	public JIDContext pong(Element element);
 	
 	public JIDContext write(Element element);
+	
+	public JIDContext write(Collection<Element> elements);
 }

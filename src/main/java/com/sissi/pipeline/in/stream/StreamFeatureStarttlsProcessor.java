@@ -13,9 +13,11 @@ public class StreamFeatureStarttlsProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		if (!context.isTls()) {
-			Stream.class.cast(protocol).addFeature(Starttls.FEATURE);
-		}
+		return !context.isTls() ? this.buildStarttlsFeature(protocol) : true;
+	}
+
+	private Boolean buildStarttlsFeature(Protocol protocol) {
+		Stream.class.cast(protocol).addFeature(Starttls.FEATURE);
 		return true;
 	}
 }

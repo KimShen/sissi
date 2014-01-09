@@ -17,6 +17,7 @@
 	<bean id="message.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="message.pro.relation" />
 				<ref bean="message.pro.body" />
 				<ref bean="message.pro.2fans" />
 				<ref bean="message.pro.activate" />

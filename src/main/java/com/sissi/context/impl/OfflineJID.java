@@ -19,8 +19,12 @@ class OfflineJID implements JID {
 	}
 
 	@Override
-	public String getHost() {
+	public String getDomain() {
 		return "";
+	}
+
+	public JID setDomain(String domain) {
+		return this;
 	}
 
 	@Override

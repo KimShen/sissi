@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sissi.commons;
+package com.sissi.commons.apache;
 
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;

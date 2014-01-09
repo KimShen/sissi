@@ -7,5 +7,5 @@ import com.sissi.protocol.Protocol;
  */
 public interface Feeder {
 
-	public void feed(Protocol protocol);
+	public Feeder feed(Protocol protocol);
 }

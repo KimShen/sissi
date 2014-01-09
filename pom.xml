@@ -13,13 +13,13 @@
 		<maven.project.entry>com.sissi.server.impl.MainServer</maven.project.entry>
 		<maven.project.name>sissi</maven.project.name>
 		<!-- For Server -->
-		<maven.global.main.host>sissi</maven.global.main.host>
+		<maven.global.main.domain>sissi.pw</maven.global.main.domain>
 		<maven.global.main.port>5222</maven.global.main.port>
 		<maven.global.exchanger.port>6222</maven.global.exchanger.port>
 		<maven.global.muc.host>muc.sissi</maven.global.muc.host>
-		<maven.global.idle.all>15</maven.global.idle.all>
-		<maven.global.idle.read>15</maven.global.idle.read>
-		<maven.global.idle.write>15</maven.global.idle.write>
+		<maven.global.idle.all>300</maven.global.idle.all>
+		<maven.global.idle.read>300</maven.global.idle.read>
+		<maven.global.idle.write>300</maven.global.idle.write>
 		<maven.global.heart.thread.interval>3000</maven.global.heart.thread.interval>
 		<maven.global.heart.thread.unit>MILLISECONDS</maven.global.heart.thread.unit>
 		<maven.global.version>1.0</maven.global.version>
@@ -34,9 +34,9 @@
 		<!-- For Exchanger -->
 		<maven.exchanger.thread.interval>3000</maven.exchanger.thread.interval>
 		<maven.exchanger.thread.unit>MILLISECONDS</maven.exchanger.thread.unit>
-		<maven.exchanger.idle.all>15</maven.exchanger.idle.all>
-		<maven.exchanger.idle.read>15</maven.exchanger.idle.read>
-		<maven.exchanger.idle.write>15</maven.exchanger.idle.write>
+		<maven.exchanger.idle.all>300</maven.exchanger.idle.all>
+		<maven.exchanger.idle.read>300</maven.exchanger.idle.read>
+		<maven.exchanger.idle.write>300</maven.exchanger.idle.write>
 		<!-- For Thread -->
 		<maven.executor.keep.alive>3000</maven.executor.keep.alive>
 		<maven.executor.maximum>1000</maven.executor.maximum>

@@ -1,9 +1,13 @@
 package com.sissi.context.impl;
 
 import java.net.SocketAddress;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
@@ -21,13 +25,17 @@ import com.sissi.server.ServerTls;
  */
 public class OnlineContextBuilder implements JIDContextBuilder {
 
-	public final static String KEY_TLS = "TLS";
-
 	public final static String KEY_OUTPUT = "OUTPUT";
 
 	public final static String KEY_ADDRESS = "ADDRESS";
 
+	public final static String KEY_SERVERTLS = "TLS";
+
 	private final AtomicLong indexes = new AtomicLong();
+
+	private final Log log = LogFactory.getLog(this.getClass());
+
+	private final Integer priority = -1;
 
 	private final StatusBuilder statusBuilder;
 
@@ -44,8 +52,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		this.statusBuilder = statusBuilder;
 		this.serverHeart = serverHeart;
 		this.authRetry = authRetry;
-		this.lang = lang;
 		this.domain = domain;
+		this.lang = lang;
 	}
 
 	@Override
@@ -73,7 +81,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final Output output;
 
-		private final ServerTls serverTLS;
+		private final ServerTls serverTls;
 
 		private final SocketAddress address;
 
@@ -89,10 +97,10 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		public UserContext(JIDContextParam param) {
 			super();
-			this.priority = 0;
 			this.output = param.find(KEY_OUTPUT, Output.class);
 			this.address = param.find(KEY_ADDRESS, SocketAddress.class);
-			this.serverTLS = param.find(KEY_TLS, ServerTls.class);
+			this.serverTls = param.find(KEY_SERVERTLS, ServerTls.class);
+			this.priority = OnlineContextBuilder.this.priority;
 			this.index = OnlineContextBuilder.this.indexes.incrementAndGet();
 		}
 
@@ -140,16 +148,11 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public Boolean startTls() {
-			return this.serverTLS.startTls(this.getDomain());
+			return this.serverTls.startTls(this.getDomain());
 		}
 
 		public Boolean isTls() {
-			return this.serverTLS.isTls(this.getDomain());
-		}
-
-		@Override
-		public Status getStatus() {
-			return this.status;
+			return this.serverTls.isTls(this.getDomain());
 		}
 
 		@Override
@@ -164,6 +167,11 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
+		public Status getStatus() {
+			return this.status;
+		}
+
+		@Override
 		public SocketAddress getAddress() {
 			return this.address;
 		}
@@ -173,13 +181,14 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			return this;
 		}
 
-		public JIDContext setDomain(String domain) {
-			this.domain = domain;
-			return this;
-		}
-
 		public String getLang() {
 			return this.lang != null ? this.lang : OnlineContextBuilder.this.lang;
+		}
+
+		public JIDContext setDomain(String domain) {
+			this.domain = domain;
+			this.jid.setDomain(this.domain);
+			return this;
 		}
 
 		public String getDomain() {
@@ -189,30 +198,31 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public JIDContext reset() {
 			this.isBinding.set(false);
 			this.isAuth.set(false);
+			this.priority = OnlineContextBuilder.this.priority;
 			this.lang = null;
-			this.priority = 0;
 			return this;
 		}
 
 		@Override
 		public Boolean close() {
-			if (!this.isPrepareClose.get()) {
-				this.closePrepare();
+			if (this.closePrepare()) {
 				this.output.close();
 			}
-			return true;
-		}
-
-		public Boolean closePrepare() {
-			this.isPrepareClose.set(true);
-			this.status.clear();
-			this.status = null;
 			return true;
 		}
 
 		public Boolean closeTimeout() {
 			if (this.ping.get() != PONG) {
 				this.close();
+			}
+			return true;
+		}
+
+		public Boolean closePrepare() {
+			if (!this.isPrepareClose.get()) {
+				this.isPrepareClose.set(true);
+				this.status.clear();
+				this.status = null;
 			}
 			return true;
 		}
@@ -224,9 +234,13 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public JIDContext pong(String eid) {
-			if (this.ping.get() == Long.valueOf(eid)) {
-				this.ping.set(PONG);
+		public JIDContext pong(Element element) {
+			try {
+				OnlineContextBuilder.this.log.debug("Pong on " + this.getJid().asStringWithBare() + " " + this.ping.get() + " / " + element.getId());
+				if (this.ping.get() == Long.valueOf(element.getId())) {
+					this.ping.set(PONG);
+				}
+			} catch (Exception e) {
 			}
 			return this;
 		}
@@ -235,6 +249,13 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public JIDContext write(Element node) {
 			if (!this.isPrepareClose.get()) {
 				this.output.output(this, node);
+			}
+			return this;
+		}
+
+		public JIDContext write(Collection<Element> elements) {
+			for (Element element : elements) {
+				this.write(element);
 			}
 			return this;
 		}

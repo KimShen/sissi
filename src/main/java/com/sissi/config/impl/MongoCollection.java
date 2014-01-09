@@ -14,6 +14,20 @@ import com.sissi.config.MongoConfig;
  */
 public class MongoCollection implements MongoConfig {
 	
+	public static final String FIELD_JID = "jid";
+
+	public static final String FIELD_INDEX = "index";
+
+	public static final String FIELD_CURRENT = "current";
+
+	public static final String FIELD_PRIORITY = "priority";
+
+	public static final String FIELD_RESOURCE = "resource";
+	
+	public static final DBObject DEFAULT_FILTER = BasicDBObjectBuilder.start(MongoCollection.FIELD_INDEX, 1).get();
+
+	public static final DBObject DEFAULT_SORTER = BasicDBObjectBuilder.start().add(MongoCollection.FIELD_PRIORITY, -1).add(MongoCollection.FIELD_CURRENT, -1).get();
+	
 	private final DBObject REMOVE = BasicDBObjectBuilder.start().get();
 
 	private final Map<String, String> configs = new HashMap<String, String>();

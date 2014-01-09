@@ -11,7 +11,7 @@ import com.sissi.protocol.iq.disco.feature.ItemClause;
 /**
  * @author kim 2013年12月19日
  */
-abstract class DiscoItems2RobotProcessor extends ProxyProcessor {
+public class DiscoItems2RobotProcessor extends ProxyProcessor {
 
 	private BytestreamsProxy bytestreamsProxy;
 

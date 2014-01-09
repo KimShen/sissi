@@ -52,7 +52,7 @@ public class MucWrapRelation implements RelationMuc {
 
 	@Override
 	public String getService() {
-		return this.muc.getHost();
+		return this.muc.getDomain();
 	}
 
 	@Override

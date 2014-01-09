@@ -6,6 +6,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.pipeline.in.auth.AuthCallback;
 import com.sissi.protocol.Protocol;
+import com.sissi.protocol.Stream;
 import com.sissi.protocol.iq.auth.Auth;
 import com.sissi.protocol.iq.auth.Failure;
 
@@ -29,7 +30,6 @@ public class AuthForkProcessor extends ProxyProcessor {
 				return !ac.auth(context, auth);
 			}
 		}
-		context.write(Failure.INSTANCE_INVALIDMECHANISM);
-		return false;
+		return !context.write(Failure.INSTANCE_INVALIDMECHANISM).write(Stream.closeGracefully()).close();
 	}
 }

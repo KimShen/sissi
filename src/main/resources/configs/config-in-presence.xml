@@ -18,10 +18,10 @@
 	<bean id="presence.pro.roster.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.presence.roster" />
 	</bean>
-	<bean id="presence.pro.status.2self.priority" class="com.sissi.pipeline.in.presence.status.PresenceStatus2SelfPriorityProcessor">
+	<bean id="presence.pro.status.2self.priority" class="com.sissi.pipeline.in.presence.status.PresenceStatusPriorityProcessor">
 		<constructor-arg ref="addressing" />
 	</bean>
-	<bean id="presence.pro.status.2self.update" class="com.sissi.pipeline.in.presence.status.PresenceStatus2SelfUpdateProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.2self.update" class="com.sissi.pipeline.in.presence.status.PresenceStatusUpdateProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.2fans" class="com.sissi.pipeline.in.presence.status.PresenceStatus2FansProcessor" parent="global.pro.proxy">
 		<property name="protocolQueue" ref="broadcast.protocol.fans" />
 	</bean>

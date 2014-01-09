@@ -10,7 +10,7 @@ import com.sissi.protocol.Protocol;
  */
 public class MessageActivatorProcessor implements Input {
 
-	private Addressing addressing;
+	private final Addressing addressing;
 
 	public MessageActivatorProcessor(Addressing addressing) {
 		super();
@@ -20,6 +20,6 @@ public class MessageActivatorProcessor implements Input {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		this.addressing.activate(context);
-		return null;
+		return true;
 	}
 }

@@ -1,4 +1,4 @@
-package com.sissi.protocol.iq.auth.error;
+package com.sissi.protocol.error.element;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -9,14 +9,14 @@ import com.sissi.protocol.iq.auth.Auth;
 /**
  * @author kim 2014年1月6日
  */
-@XmlRootElement(name = InvalidMechanism.NAME)
-public class InvalidMechanism implements ErrorDetail {
+@XmlRootElement(name = MalformedRequest.NAME)
+public class MalformedRequest implements ErrorDetail {
 
-	public final static InvalidMechanism DETAIL = new InvalidMechanism();
+	public final static MalformedRequest DETAIL = new MalformedRequest();
 
-	public final static String NAME = "invalid-mechanism";
+	public final static String NAME = "malformed-request";
 
-	private InvalidMechanism() {
+	private MalformedRequest() {
 
 	}
 

@@ -5,8 +5,8 @@ package com.sissi.looper;
  */
 public interface Looper {
 
-	public void start();
+	public Looper start();
 
-	public void stop();
+	public Looper stop();
 
 }

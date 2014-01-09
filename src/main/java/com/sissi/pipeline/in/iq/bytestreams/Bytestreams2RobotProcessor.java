@@ -11,7 +11,7 @@ import com.sissi.protocol.iq.bytestreams.Streamhost;
 /**
  * @author kim 2013年12月18日
  */
-abstract class Bytestreams2RobotProcessor implements Input {
+public class Bytestreams2RobotProcessor implements Input {
 
 	private BytestreamsProxy bytestreamsProxy;
 
@@ -22,7 +22,7 @@ abstract class Bytestreams2RobotProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(Bytestreams.class.cast(protocol).add(new Streamhost(protocol.getParent().getTo(), this.bytestreamsProxy.getHost(), this.bytestreamsProxy.getPort())).getParent().reply().setType(Type.RESULT));
+		context.write(Bytestreams.class.cast(protocol).add(new Streamhost(protocol.getParent().getTo(), this.bytestreamsProxy.getDomain(), this.bytestreamsProxy.getPort())).getParent().reply().setFrom(this.bytestreamsProxy.getJid()).setType(Type.RESULT));
 		return true;
 	}
 }

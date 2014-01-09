@@ -14,7 +14,7 @@ public interface Addressing {
 
 	public Addressing leave(JIDContext context);
 
-	public Addressing promote(JIDContext context);
+	public Addressing priority(JIDContext context);
 
 	public Addressing activate(JIDContext context);
 

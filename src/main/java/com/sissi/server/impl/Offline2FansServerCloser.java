@@ -1,7 +1,7 @@
 package com.sissi.server.impl;
 
 import com.sissi.addressing.Addressing;
-import com.sissi.broadcast.ProtocolBraodcast;
+import com.sissi.broadcast.BraodcastProtocol;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.Presence.Type;
@@ -16,9 +16,9 @@ public class Offline2FansServerCloser implements ServerCloser {
 
 	private final Addressing addressing;
 
-	private final ProtocolBraodcast protocolBraodcast;
+	private final BraodcastProtocol protocolBraodcast;
 
-	public Offline2FansServerCloser(Addressing addressing, ProtocolBraodcast protocolBraodcast) {
+	public Offline2FansServerCloser(Addressing addressing, BraodcastProtocol protocolBraodcast) {
 		super();
 		this.addressing = addressing;
 		this.protocolBraodcast = protocolBraodcast;

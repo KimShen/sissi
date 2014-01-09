@@ -16,11 +16,11 @@ import com.sissi.protocol.iq.disco.feature.VCard;
 /**
  * @author kim 2013年12月18日
  */
-abstract class DiscoInfo2RobotProcessor implements Input {
+public class DiscoInfo2RobotProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(Info.class.cast(protocol).add(Identity.FEATURE_PROXY).add(Bytestreams.FEATURE).add(SiFileTransfer.FEATURE).add(Si.FEATURE).add(VCard.FEATURE).add(Blocking.FEATURE).add(Muc.FEATURE).getParent().reply().setType(Type.RESULT));
+		context.write(Info.class.cast(protocol).add(Identity.FEATURE_PROXY).add(Bytestreams.FEATURE).add(SiFileTransfer.FEATURE).add(Si.FEATURE).add(VCard.FEATURE).add(Blocking.FEATURE).add(Muc.FEATURE).getParent().reply().setTo(context.getJid().asStringWithBare()).setType(Type.RESULT));
 		return true;
 	}
 }

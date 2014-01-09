@@ -22,9 +22,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.commons.IOUtils;
-import com.sissi.commons.LineIterator;
 import com.sissi.commons.ScanUtil;
+import com.sissi.commons.apache.IOUtils;
+import com.sissi.commons.apache.LineIterator;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.Element;
 import com.sissi.write.WithFull;

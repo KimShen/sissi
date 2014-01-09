@@ -13,15 +13,25 @@ import com.sissi.protocol.Element;
 /**
  * @author kim 2013-11-15
  */
-public abstract class DelayProtocol implements DelayElement {
+abstract class DelayProtocol implements DelayElement {
 
-	protected final String hit;
+	private String offline;
 
-	protected final JIDBuilder jidBuilder;
+	private JIDBuilder jidBuilder;
 
-	public DelayProtocol(String hit, JIDBuilder jidBuilder) {
-		super();
-		this.hit = hit;
+	public String getOffline() {
+		return offline;
+	}
+
+	public void setOffline(String offline) {
+		this.offline = offline;
+	}
+
+	public JIDBuilder getJidBuilder() {
+		return jidBuilder;
+	}
+
+	public void setJidBuilder(JIDBuilder jidBuilder) {
 		this.jidBuilder = jidBuilder;
 	}
 
@@ -32,8 +42,8 @@ public abstract class DelayProtocol implements DelayElement {
 	protected Map<String, Object> based(Element element) {
 		Map<String, Object> entity = new HashMap<String, Object>();
 		entity.put("id", element.getId());
-		entity.put("from", element.getFrom());
-		entity.put("to", element.getTo());
+		entity.put("from", this.jidBuilder.build(element.getFrom()).asStringWithBare());
+		entity.put("to", this.jidBuilder.build(element.getTo()).asStringWithBare());
 		entity.put("type", element.getType());
 		entity.put("delay", DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
 		entity.put("class", element.getClass().getSimpleName());

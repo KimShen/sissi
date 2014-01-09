@@ -14,13 +14,11 @@ public class StreamFeatureBindingProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		if (context.isAuth()) {
-			this.buildBindingFeature(Stream.class.cast(protocol));
-		}
-		return true;
+		return context.isAuth() ? this.buildBindingFeature(Stream.class.cast(protocol)) : true;
 	}
 
-	private Protocol buildBindingFeature(Stream stream) {
-		return stream.addFeature(Session.FEATURE).addFeature(Bind.FEATURE);
+	private Boolean buildBindingFeature(Stream stream) {
+		stream.addFeature(Session.FEATURE).addFeature(Bind.FEATURE);
+		return true;
 	}
 }

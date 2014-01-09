@@ -22,7 +22,7 @@ public class RegisterFieldsProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(Register.class.cast(protocol).add(fields).getParent().setType(Type.RESULT));
+		context.write(Register.class.cast(protocol).add(fields).getParent().setFrom(context.getDomain()).setTo(context.getJid().asStringWithBare()).setType(Type.RESULT));
 		return true;
 	}
 }

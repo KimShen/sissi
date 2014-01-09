@@ -7,7 +7,9 @@ public interface JID {
 
 	public String getUser();
 
-	public String getHost();
+	public String getDomain();
+	
+	public JID setDomain(String domain);
 
 	public String getResource();
 

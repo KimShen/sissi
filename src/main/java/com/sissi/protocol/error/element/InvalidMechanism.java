@@ -1,4 +1,4 @@
-package com.sissi.protocol.iq.auth.error;
+package com.sissi.protocol.error.element;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -9,14 +9,14 @@ import com.sissi.protocol.iq.auth.Auth;
 /**
  * @author kim 2014年1月6日
  */
-@XmlRootElement(name = AccountDisabled.NAME)
-public class AccountDisabled implements ErrorDetail {
+@XmlRootElement(name = InvalidMechanism.NAME)
+public class InvalidMechanism implements ErrorDetail {
 
-	public final static AccountDisabled DETAIL = new AccountDisabled();
+	public final static InvalidMechanism DETAIL = new InvalidMechanism();
 
-	public final static String NAME = "account-disabled";
+	public final static String NAME = "invalid-mechanism";
 
-	private AccountDisabled() {
+	private InvalidMechanism() {
 
 	}
 

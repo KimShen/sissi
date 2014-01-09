@@ -11,20 +11,20 @@
 		<constructor-arg index="2" value="${mongo.collection.presence}" />
 	</bean>
 
-	<bean id="builder.jid" class="com.sissi.context.impl.FixedHostJIDBuilder">
-		<constructor-arg value="${global.main.host}" />
+	<bean id="builder.jid" class="com.sissi.context.impl.DomainJIDBuilder">
+		<constructor-arg value="${global.main.domain}" />
 	</bean>
 	<bean id="builder.context.online" class="com.sissi.context.impl.OnlineContextBuilder">
 		<constructor-arg ref="builder.status" />
 		<constructor-arg ref="server.heart"/>
 		<constructor-arg index="0" value="${auth.retry}" />
 		<constructor-arg index="1" value="${global.lang}" />
-		<constructor-arg index="2" value="${global.main.host}" />
+		<constructor-arg index="2" value="${global.main.domain}" />
 	</bean>
 	<bean id="builder.context.offline" class="com.sissi.context.impl.OfflineContextBuilder">
 		<constructor-arg ref="storage.box" />
 		<constructor-arg value="${global.lang}" />
-		<constructor-arg value="${global.main.host}" />
+		<constructor-arg value="${global.main.domain}" />
 	</bean>
 	
 	<bean id="builder.status" class="com.sissi.context.impl.MongoStatusBuilder">

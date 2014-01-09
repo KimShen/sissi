@@ -32,12 +32,12 @@ public class ServerErrorText implements ErrorText {
 
 	@XmlValue
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
 	@XmlAttribute(name = "xml:lang")
 	public String getLang() {
-		return lang;
+		return this.lang;
 	}
 
 	@XmlAttribute

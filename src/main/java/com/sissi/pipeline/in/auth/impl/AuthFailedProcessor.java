@@ -13,11 +13,11 @@ public class AuthFailedProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(Failure.INSTANCE_NOTAUTHORIZED);
-		if (!context.setAuthFailed().isAuthRetry()) {
-			context.write(Stream.closeGracefully());
-			context.close();
-		}
-		return false;
+		return context.write(Failure.INSTANCE_NOTAUTHORIZED).setAuthFailed().isAuthRetry() ? this.failedAndClose(context) : true;
+	}
+	
+
+	private Boolean failedAndClose(JIDContext context) {
+		return !context.reset().write(Stream.closeGracefully()).close();
 	}
 }

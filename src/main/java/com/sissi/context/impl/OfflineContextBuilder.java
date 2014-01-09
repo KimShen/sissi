@@ -3,6 +3,7 @@ package com.sissi.context.impl;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.util.Collection;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
@@ -29,15 +30,15 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private final DelayElementBox delayElementBox;
 
+	private final String domain;
+
 	private final String lang;
 
-	private final String host;
-
-	public OfflineContextBuilder(String lang, String host, DelayElementBox delayElementBox) throws Exception {
+	public OfflineContextBuilder(String lang, String domain, DelayElementBox delayElementBox) throws Exception {
 		super();
 		this.delayElementBox = delayElementBox;
+		this.domain = domain;
 		this.lang = lang;
-		this.host = host;
 	}
 
 	@Override
@@ -117,7 +118,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		public String getDomain() {
-			return OfflineContextBuilder.this.host;
+			return OfflineContextBuilder.this.domain;
 		}
 
 		public SocketAddress getAddress() {
@@ -154,13 +155,20 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return this;
 		}
 
-		public JIDContext pong(String eid) {
+		public JIDContext pong(Element element) {
 			return this;
 		}
 
 		@Override
 		public JIDContext write(Element element) {
-			OfflineContextBuilder.this.delayElementBox.add(element);
+			OfflineContextBuilder.this.delayElementBox.push(element);
+			return this;
+		}
+
+		public JIDContext write(Collection<Element> elements) {
+			for (Element element : elements) {
+				this.write(element);
+			}
 			return this;
 		}
 	}

@@ -53,7 +53,7 @@ public class DigestAuthCallback implements AuthCallback {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private final String host;
+	private final String domain;
 
 	private final JIDBuilder jidBuilder;
 
@@ -61,9 +61,9 @@ public class DigestAuthCallback implements AuthCallback {
 
 	private final AuthAccessor authAccessor;
 
-	public DigestAuthCallback(String host, JIDBuilder jidBuilder, SaslServers saslServers, AuthAccessor authAccessor) {
+	public DigestAuthCallback(String domain, JIDBuilder jidBuilder, SaslServers saslServers, AuthAccessor authAccessor) {
 		super();
-		this.host = host;
+		this.domain = domain;
 		this.jidBuilder = jidBuilder;
 		this.saslServers = saslServers;
 		this.authAccessor = authAccessor;
@@ -72,7 +72,7 @@ public class DigestAuthCallback implements AuthCallback {
 	@Override
 	public Boolean auth(JIDContext context, Auth auth) {
 		try {
-			context.write(new Challenge(this.saslServers.set(context, Sasl.createSaslServer(MECHANISM, PROTOCOL, this.host, PROPS, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
+			context.write(new Challenge(this.saslServers.set(context, Sasl.createSaslServer(MECHANISM, PROTOCOL, this.domain, PROPS, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
 			return true;
 		} catch (Exception e) {
 			if (this.log.isErrorEnabled()) {

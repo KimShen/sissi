@@ -10,7 +10,7 @@ import java.io.OutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.commons.IOUtils;
+import com.sissi.commons.apache.IOUtils;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Output;
 import com.sissi.pipeline.OutputBuilder;
