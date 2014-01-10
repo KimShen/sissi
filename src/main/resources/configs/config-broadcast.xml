@@ -11,6 +11,7 @@
 		<property name="relationContext" ref="ucenter.relation.roster" />
 	</bean>
 
+	<bean id="broadcast.presence.self" class="com.sissi.broadcast.impl.ToSelfPresenceQueue" parent="broadcast" />
 	<bean id="broadcast.presence.selfs" class="com.sissi.broadcast.impl.ToSelfsPresenceQueue" parent="broadcast" />
 	<bean id="broadcast.protocol.self" class="com.sissi.broadcast.impl.ToSelfProtocolQueue" parent="broadcast" />
 	<bean id="broadcast.protocol.selfs" class="com.sissi.broadcast.impl.ToSelfsProtocolQueue" parent="broadcast" />

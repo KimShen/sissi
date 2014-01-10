@@ -20,7 +20,7 @@
 		<maven.global.idle.all>300</maven.global.idle.all>
 		<maven.global.idle.read>300</maven.global.idle.read>
 		<maven.global.idle.write>300</maven.global.idle.write>
-		<maven.global.heart.thread.interval>3000</maven.global.heart.thread.interval>
+		<maven.global.heart.thread.interval>10000</maven.global.heart.thread.interval>
 		<maven.global.heart.thread.unit>MILLISECONDS</maven.global.heart.thread.unit>
 		<maven.global.version>1.0</maven.global.version>
 		<maven.global.lang>zh_CN</maven.global.lang>

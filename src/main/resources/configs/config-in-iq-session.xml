@@ -5,7 +5,9 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="session.pro.4fans" class="com.sissi.pipeline.in.iq.session.Session4FansProcessor" parent="global.pro.proxy" />
+	<bean id="session.pro.4fans" class="com.sissi.pipeline.in.iq.session.Session4FansProcessor" parent="global.pro.proxy">
+		<property name="presenceQueue" ref="broadcast.presence.self" />
+	</bean>
 	<bean id="session.pro.4selfs" class="com.sissi.pipeline.in.iq.session.Session4SelfsProcessor">
 		<constructor-arg ref="storage.box" />
 	</bean>
