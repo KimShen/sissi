@@ -22,6 +22,7 @@
 		<constructor-arg ref="addressing" />
 	</bean>
 	<bean id="presence.pro.status.2self.update" class="com.sissi.pipeline.in.presence.status.PresenceStatusUpdateProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.2selfs" class="com.sissi.pipeline.in.presence.status.PresenceStatus2SelfsProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.2fans" class="com.sissi.pipeline.in.presence.status.PresenceStatus2FansProcessor" parent="global.pro.proxy">
 		<property name="protocolQueue" ref="broadcast.protocol.fans" />
 	</bean>
@@ -30,6 +31,7 @@
 			<util:list>
 				<ref bean="presence.pro.status.2self.priority" />
 				<ref bean="presence.pro.status.2self.update" />
+				<ref bean="presence.pro.status.2selfs" />
 				<ref bean="presence.pro.status.2fans" />
 			</util:list>
 		</constructor-arg>
