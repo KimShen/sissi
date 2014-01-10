@@ -18,17 +18,16 @@ import com.sissi.protocol.feature.Register;
 import com.sissi.protocol.feature.Session;
 import com.sissi.protocol.feature.Starttls;
 import com.sissi.read.MappingMetadata;
-import com.sissi.write.WithFull;
-import com.sissi.write.WithOnlyLast;
-import com.sissi.write.WithOutFirst;
-import com.sissi.write.WithOutLast;
+import com.sissi.write.WriterFragement;
+import com.sissi.write.WriterPart;
 
 /**
  * @author Kim.shen 2013-10-16
  */
 @MappingMetadata(uri = Stream.XMLNS, localName = Stream.NAME)
 @XmlRootElement(namespace = Stream.XMLNS)
-public class Stream extends Protocol implements WithOutLast {
+@WriterFragement(part = WriterPart.WITHOUT_LAST)
+public class Stream extends Protocol {
 
 	public final static String XMLNS = "http://etherx.jabber.org/streams";
 
@@ -124,7 +123,8 @@ public class Stream extends Protocol implements WithOutLast {
 		return new CloseSuddenly(error);
 	}
 
-	public static class CloseGracefully extends Stream implements WithOnlyLast {
+	@WriterFragement(part = WriterPart.WITH_LAST)
+	public static class CloseGracefully extends Stream {
 
 		private final static CloseGracefully CLOSE = new CloseGracefully();
 
@@ -139,7 +139,7 @@ public class Stream extends Protocol implements WithOutLast {
 		}
 	}
 
-	public static class CloseForcible extends Stream implements WithFull {
+	public static class CloseForcible extends Stream {
 
 		private CloseForcible() {
 		}
@@ -149,7 +149,8 @@ public class Stream extends Protocol implements WithOutLast {
 		}
 	}
 
-	public static class CloseSuddenly extends Stream implements WithOutFirst {
+	@WriterFragement(part = WriterPart.WITHOUT_FIRST)
+	public static class CloseSuddenly extends Stream {
 
 		private CloseSuddenly() {
 		}

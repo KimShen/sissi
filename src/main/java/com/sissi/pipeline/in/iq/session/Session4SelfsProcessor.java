@@ -3,7 +3,6 @@ package com.sissi.pipeline.in.iq.session;
 import com.sissi.context.JIDContext;
 import com.sissi.offline.DelayElementBox;
 import com.sissi.pipeline.Input;
-import com.sissi.protocol.Element;
 import com.sissi.protocol.Protocol;
 
 /**
@@ -11,7 +10,7 @@ import com.sissi.protocol.Protocol;
  */
 public class Session4SelfsProcessor implements Input {
 
-	private DelayElementBox delayElementBox;
+	private final DelayElementBox delayElementBox;
 
 	public Session4SelfsProcessor(DelayElementBox delayElementBox) {
 		super();
@@ -20,9 +19,7 @@ public class Session4SelfsProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		for (Element each : delayElementBox.pull(context.getJid())) {
-			context.write(each);
-		}
+		context.write(this.delayElementBox.pull(context.getJid()));
 		return true;
 	}
 }

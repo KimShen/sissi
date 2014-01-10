@@ -26,14 +26,10 @@
 		<constructor-arg ref="broadcast.protocol.fans" />
 		<constructor-arg ref="addressing" />
 	</bean>
-	<bean id="closer.2selfs" class="com.sissi.server.impl.Offline2SelfsServerCloser">
-		<constructor-arg ref="broadcast.protocol.selfs" />
-	</bean>
 	<bean id="closer.chained" class="com.sissi.server.impl.ChainedServerCloser">
 		<constructor-arg>
 			<util:list>
 				<ref bean="closer.2fans" />
-				<ref bean="closer.2selfs" />
 			</util:list>
 		</constructor-arg>
 	</bean>
