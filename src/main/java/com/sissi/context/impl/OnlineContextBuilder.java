@@ -6,9 +6,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContextBuilder;
@@ -33,8 +30,6 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final AtomicLong indexes = new AtomicLong();
 
-	private final Log log = LogFactory.getLog(this.getClass());
-
 	private final Integer priority = -1;
 
 	private final StatusBuilder statusBuilder;
@@ -47,6 +42,16 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final String domain;
 
+	/**
+	 * @param authRetry
+	 *            Auth retry limits
+	 * @param lang
+	 *            Default lang
+	 * @param domain
+	 *            Default domain
+	 * @param statusBuilder
+	 * @param serverHeart
+	 */
 	public OnlineContextBuilder(Integer authRetry, String lang, String domain, StatusBuilder statusBuilder, ServerHeart serverHeart) {
 		super();
 		this.statusBuilder = statusBuilder;
@@ -120,11 +125,9 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		@Override
 		public UserContext setAuth(Boolean canAccess) {
 			this.isAuth.set(canAccess);
-			return this;
-		}
-
-		public JIDContext setAuthFailed() {
-			this.auth.incrementAndGet();
+			if (!canAccess) {
+				this.auth.incrementAndGet();
+			}
 			return this;
 		}
 
@@ -219,8 +222,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		public Boolean closePrepare() {
-			if (!this.isPrepareClose.get()) {
-				this.isPrepareClose.set(true);
+			if (this.isPrepareClose.compareAndSet(false, true)) {
 				this.status.clear();
 				this.status = null;
 			}
@@ -238,7 +240,6 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		@Override
 		public JIDContext pong(Element element) {
 			try {
-				OnlineContextBuilder.this.log.debug("Pong on " + this.getJid().asStringWithBare() + " " + this.ping.get() + " / " + element.getId());
 				if (this.ping.get() == Long.valueOf(element.getId())) {
 					this.ping.set(PONG);
 				}

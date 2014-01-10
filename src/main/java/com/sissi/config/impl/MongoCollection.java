@@ -28,8 +28,8 @@ public class MongoCollection implements MongoConfig {
 
 	public static final DBObject DEFAULT_SORTER = BasicDBObjectBuilder.start().add(MongoCollection.FIELD_PRIORITY, -1).add(MongoCollection.FIELD_CURRENT, -1).get();
 	
-	private final DBObject REMOVE = BasicDBObjectBuilder.start().get();
-
+	private final DBObject DEFAULT_CLEAR = BasicDBObjectBuilder.start().get();
+	
 	private final Map<String, String> configs = new HashMap<String, String>();
 
 	private final DBCollection collection;
@@ -50,16 +50,12 @@ public class MongoCollection implements MongoConfig {
 	}
 
 	public MongoConfig clear() {
-		this.collection().remove(REMOVE);
+		this.collection().remove(DEFAULT_CLEAR);
 		return this;
 	}
 
 	public DBCollection collection() {
 		return this.collection;
-	}
-
-	private Object as(DBObject db, String key) {
-		return db != null ? db.get(key) : null;
 	}
 
 	public String asString(DBObject db, String key) {
@@ -70,5 +66,9 @@ public class MongoCollection implements MongoConfig {
 	public Boolean asBoolean(DBObject db, String key) {
 		Object value = this.as(db, key);
 		return value != null ? Boolean.class.cast(value) : Boolean.FALSE;
+	}
+	
+	private Object as(DBObject db, String key) {
+		return db != null ? db.get(key) : null;
 	}
 }

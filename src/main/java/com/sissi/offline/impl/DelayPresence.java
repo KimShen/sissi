@@ -8,6 +8,7 @@ import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.Presence.Type;
 
 /**
+ * Convert Presence
  * @author kim 2013-11-15
  */
 public class DelayPresence extends DelayProtocol {
@@ -20,7 +21,7 @@ public class DelayPresence extends DelayProtocol {
 	@Override
 	public Element read(Map<String, Object> element) {
 		Presence presence = (Presence) super.based(element, new Presence());
-		return presence.setDelay(new Delay(super.getOffline(), presence.getFrom(), element.get("delay").toString()));
+		return presence.setDelay(new Delay(super.getOffline(), presence.getFrom(), element.get(DELAY).toString()));
 	}
 
 	public Boolean isSupport(Element element) {
@@ -29,7 +30,7 @@ public class DelayPresence extends DelayProtocol {
 
 	@Override
 	public Boolean isSupport(Map<String, Object> storage) {
-		return Presence.class.getSimpleName().equals(storage.get("class"));
+		return Presence.class.getSimpleName().equals(storage.get(CLASS));
 	}
 
 	private boolean isAcceptStatus(Element element) {

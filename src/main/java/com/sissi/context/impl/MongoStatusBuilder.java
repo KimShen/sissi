@@ -54,7 +54,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 	}
 
 	private DBObject buildUpsert(JIDContext context, String type, String show, String status, String avator) {
-		DBObject upsert = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add("type", type).add("show", show).add("status", status).add("avator", avator).add(MongoCollection.FIELD_PRIORITY, context.getPriority()).get()).get();
+		DBObject upsert = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoCollection.FIELD_PRIORITY, context.getPriority()).get()).get();
 		this.log.debug("Upsert: " + upsert);
 		return upsert;
 	}
@@ -68,7 +68,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 			this.context = context;
 		}
 
-		public Status clear() {
+		public MongoStatus clear() {
 			MongoStatusBuilder.this.remove(this.context);
 			this.context = null;
 			return this;
@@ -81,7 +81,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 		}
 
 		@Override
-		public StatusClauses getStatus() {
+		public StatusClauses getStatusClauses() {
 			return new MongoClauses(MongoStatusBuilder.this.get(this.context));
 		}
 	}

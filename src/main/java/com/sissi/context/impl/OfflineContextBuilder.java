@@ -34,6 +34,15 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private final String lang;
 
+	/**
+	 * @param lang
+	 *            Default lang
+	 * @param domain
+	 *            Default domain
+	 * @param delayElementBox
+	 *            Offline operation support
+	 * @throws Exception
+	 */
 	public OfflineContextBuilder(String lang, String domain, DelayElementBox delayElementBox) throws Exception {
 		super();
 		this.delayElementBox = delayElementBox;
@@ -62,10 +71,6 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		@Override
 		public Boolean isAuth() {
 			return false;
-		}
-
-		public JIDContext setAuthFailed() {
-			return this;
 		}
 
 		public Boolean isAuthRetry() {
@@ -191,7 +196,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public StatusClauses getStatus() {
+		public StatusClauses getStatusClauses() {
 			return EMPTY_CLAUSE;
 		}
 	}

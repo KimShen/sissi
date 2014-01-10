@@ -7,7 +7,7 @@ import com.sissi.ucenter.RelationContext;
 /**
  * @author kim 2014年1月8日
  */
-class ToAnyProtocolQueue {
+abstract class ToAnyProtocolQueue {
 
 	private JIDBuilder jidBuilder;
 
@@ -27,15 +27,15 @@ class ToAnyProtocolQueue {
 		this.relationContext = relationContext;
 	}
 
-	public JIDBuilder getJidBuilder() {
+	protected JIDBuilder getJidBuilder() {
 		return jidBuilder;
 	}
 
-	public Addressing getAddressing() {
+	protected Addressing getAddressing() {
 		return addressing;
 	}
 
-	public RelationContext getRelationContext() {
+	protected RelationContext getRelationContext() {
 		return relationContext;
 	}
 }

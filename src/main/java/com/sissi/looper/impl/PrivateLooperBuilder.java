@@ -28,11 +28,17 @@ public class PrivateLooperBuilder implements LooperBuilder {
 
 	private final Interval interval;
 
+	/**
+	 * Open num of "threads" Listener
+	 * @param runner
+	 * @param interval
+	 * @param threads
+	 */
 	public PrivateLooperBuilder(Runner runner, Interval interval, Integer threads) {
 		super();
 		this.runner = runner;
-		this.interval = interval;
 		this.threads = threads;
+		this.interval = interval;
 	}
 
 	@Override

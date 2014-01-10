@@ -12,14 +12,14 @@ import com.sissi.protocol.presence.Presence;
  */
 abstract class ToAnyPresenceQueue extends ToAnyProtocolQueue implements BroadcastPresence {
 
-	private final PresenceBuilder presenceBuilder;
-
-	public ToAnyPresenceQueue(PresenceBuilder presenceBuilder) {
-		this.presenceBuilder = presenceBuilder;
-	}
+	private PresenceBuilder presenceBuilder;
 
 	public ToAnyPresenceQueue() {
 		this.presenceBuilder = new DefaultPresenceBuilder();
+	}
+
+	public void setPresenceBuilder(PresenceBuilder presenceBuilder) {
+		this.presenceBuilder = presenceBuilder;
 	}
 
 	protected PresenceBuilder getPresenceBuilder() {
@@ -36,7 +36,7 @@ abstract class ToAnyPresenceQueue extends ToAnyProtocolQueue implements Broadcas
 		}
 
 		private Presence newOne(String from, String to, Status status) {
-			StatusClauses clauses = status.getStatus();
+			StatusClauses clauses = status.getStatusClauses();
 			return new Presence(from, to, clauses.find(StatusClauses.KEY_SHOW), clauses.find(StatusClauses.KEY_STATUS), clauses.find(StatusClauses.KEY_TYPE), clauses.find(StatusClauses.KEY_AVATOR));
 		}
 	}

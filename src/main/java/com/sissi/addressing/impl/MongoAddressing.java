@@ -28,15 +28,21 @@ import com.sissi.context.impl.JIDContexts;
 public class MongoAddressing implements Addressing {
 
 	private final Integer GC_THREAD = 1;
-	
+
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final JIDContextParam NOTHING = new NothingJIDContextParam();
 
+	/**
+	 * Internal memory mapping
+	 */
 	private final Map<Long, JIDContext> contexts = new ConcurrentHashMap<Long, JIDContext>();
 
 	private final MongoConfig config;
 
+	/**
+	 * Building offline jidContext when non jid online
+	 */
 	private final JIDContextBuilder offlineContextBuilder;
 
 	public MongoAddressing(Runner runner, Interval interval, MongoConfig config, JIDContextBuilder offlineContextBuilder) {
@@ -48,6 +54,9 @@ public class MongoAddressing implements Addressing {
 
 	@Override
 	public Addressing join(JIDContext context) {
+		// 1,Join in memory
+		// 2,Join in db
+		// If exception after step 1, context will be gc
 		this.contexts.put(context.getIndex(), context);
 		this.config.collection().save(this.buildQueryWithNeededFields(context));
 		return this;
@@ -63,6 +72,9 @@ public class MongoAddressing implements Addressing {
 	@Override
 	public Addressing leave(JIDContext context) {
 		if (context.close()) {
+			// 1, Remove from memory
+			// 2, Remove from db
+			// If exception after step 1, context will be gc
 			this.config.collection().remove(this.buildQueryWithNeededFields(this.contexts.remove(context.getIndex())));
 		}
 		return this;
@@ -123,7 +135,7 @@ public class MongoAddressing implements Addressing {
 	}
 
 	private boolean exists(Long index) {
-		return this.config.collection().findOne(BasicDBObjectBuilder.start().add("index", index).get(), MongoCollection.DEFAULT_FILTER) != null;
+		return this.config.collection().findOne(BasicDBObjectBuilder.start().add(MongoCollection.FIELD_INDEX, index).get(), MongoCollection.DEFAULT_FILTER) != null;
 	}
 
 	private class MongoUserContexts extends JIDContexts {
@@ -132,7 +144,7 @@ public class MongoAddressing implements Addressing {
 
 		private MongoUserContexts(JID jid, Boolean usingOffline, DBCursor cursor) {
 			while (cursor.hasNext()) {
-				JIDContext context = MongoAddressing.this.contexts.get(Long.class.cast(cursor.next().get("index")));
+				JIDContext context = MongoAddressing.this.contexts.get(Long.class.cast(cursor.next().get(MongoCollection.FIELD_INDEX)));
 				if (context != null) {
 					this.add(context);
 				}
@@ -151,7 +163,7 @@ public class MongoAddressing implements Addressing {
 
 		private final Long sleep;
 
-		public GC(Interval interval) {
+		private GC(Interval interval) {
 			super();
 			this.sleep = TimeUnit.MILLISECONDS.convert(interval.getInterval(), interval.getUnit());
 		}
@@ -170,7 +182,11 @@ public class MongoAddressing implements Addressing {
 			}
 		}
 
-		public Long gc() {
+		/**
+		 * Context in memory but not in db, will be gc
+		 * @return
+		 */
+		private Long gc() {
 			for (Long index : MongoAddressing.this.contexts.keySet()) {
 				if (!MongoAddressing.this.exists(index)) {
 					JIDContext leak = MongoAddressing.this.contexts.get(index);

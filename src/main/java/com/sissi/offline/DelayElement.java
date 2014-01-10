@@ -9,11 +9,23 @@ import com.sissi.protocol.Element;
  */
 public interface DelayElement {
 
+	/**
+	 * Convert map to element
+	 * 
+	 * @param element
+	 * @return
+	 */
 	public Element read(Map<String, Object> element);
-	
+
+	/**
+	 * Convert element to map
+	 * 
+	 * @param element
+	 * @return
+	 */
 	public Map<String, Object> write(Element element);
 
 	public Boolean isSupport(Map<String, Object> element);
-	
+
 	public Boolean isSupport(Element element);
 }

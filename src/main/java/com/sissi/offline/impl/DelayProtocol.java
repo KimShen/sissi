@@ -15,11 +15,23 @@ import com.sissi.protocol.Element;
  */
 abstract class DelayProtocol implements DelayElement {
 
+	final static String CLASS = "class";
+
+	final static String DELAY = "delay";
+
+	final static String BASE_ID = "id";
+
+	final static String BASE_FROM = "from";
+
+	final static String BASE_TO = "to";
+
+	final static String BASE_TYPE = "type";
+
 	private String offline;
 
 	private JIDBuilder jidBuilder;
 
-	public String getOffline() {
+	protected String getOffline() {
 		return offline;
 	}
 
@@ -27,7 +39,7 @@ abstract class DelayProtocol implements DelayElement {
 		this.offline = offline;
 	}
 
-	public JIDBuilder getJidBuilder() {
+	protected JIDBuilder getJidBuilder() {
 		return jidBuilder;
 	}
 
@@ -36,17 +48,17 @@ abstract class DelayProtocol implements DelayElement {
 	}
 
 	protected Element based(Map<String, Object> storage, Element element) {
-		return element.setId(this.toString(storage, "id")).setFrom(this.toString(storage, "from")).setTo(this.toString(storage, "to")).setType(this.toString(storage, "type"));
+		return element.setId(this.toString(storage, BASE_ID)).setFrom(this.toString(storage, BASE_FROM)).setTo(this.toString(storage, BASE_TO)).setType(this.toString(storage, BASE_TYPE));
 	}
 
 	protected Map<String, Object> based(Element element) {
 		Map<String, Object> entity = new HashMap<String, Object>();
-		entity.put("id", element.getId());
-		entity.put("from", this.jidBuilder.build(element.getFrom()).asStringWithBare());
-		entity.put("to", this.jidBuilder.build(element.getTo()).asStringWithBare());
-		entity.put("type", element.getType());
-		entity.put("delay", DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
-		entity.put("class", element.getClass().getSimpleName());
+		entity.put(BASE_ID, element.getId());
+		entity.put(BASE_FROM, this.jidBuilder.build(element.getFrom()).asStringWithBare());
+		entity.put(BASE_TO, this.jidBuilder.build(element.getTo()).asStringWithBare());
+		entity.put(BASE_TYPE, element.getType());
+		entity.put(DELAY, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
+		entity.put(CLASS, element.getClass().getSimpleName());
 		return entity;
 	}
 

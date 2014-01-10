@@ -35,7 +35,7 @@ public class MongoDelayElementBox implements DelayElementBox {
 
 	@Override
 	public List<Element> pull(JID jid) {
-		DBObject query = BasicDBObjectBuilder.start().add("to", jid.asStringWithBare()).get();
+		DBObject query = BasicDBObjectBuilder.start().add(DelayProtocol.BASE_TO, jid.asStringWithBare()).get();
 		this.log.debug("Query: " + query);
 		Elements elements = new Elements(this.config.collection().find(query));
 		this.config.collection().remove(query);

@@ -216,7 +216,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	}
 
 	@Override
-	public StatusClauses getStatus() {
+	public StatusClauses getStatusClauses() {
 		return new PresenceClauses();
 	}
 

@@ -10,6 +10,7 @@ import com.sissi.context.Status;
 import com.sissi.protocol.Element;
 
 /**
+ * JIDContext group with same jid
  * @author kim 2013-11-21
  */
 public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {

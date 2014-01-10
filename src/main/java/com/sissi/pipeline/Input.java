@@ -4,6 +4,8 @@ import com.sissi.context.JIDContext;
 import com.sissi.protocol.Protocol;
 
 /**
+ * Process input protocol
+ * 
  * @author kim 2013-10-24
  */
 public interface Input {

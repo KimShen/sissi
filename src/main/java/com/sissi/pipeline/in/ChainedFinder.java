@@ -11,6 +11,8 @@ import com.sissi.pipeline.InputFinder;
 import com.sissi.protocol.Protocol;
 
 /**
+ * Chained, if none input match protocol, using NothingProcessor
+ * 
  * @author kim 2013-11-4
  */
 public class ChainedFinder implements InputFinder {

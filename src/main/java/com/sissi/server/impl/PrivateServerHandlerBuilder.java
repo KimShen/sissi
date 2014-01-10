@@ -140,11 +140,12 @@ public class PrivateServerHandlerBuilder {
 		}
 
 		@Override
+		
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 			this.logIfDetail(cause);
 			ctx.close();
 		}
-		
+
 		private void ping(ChannelHandlerContext ctx, Object evt) {
 			if (evt.getClass().isAssignableFrom(IdleStateEvent.class) && IdleStateEvent.class.cast(evt).state() == IdleState.READER_IDLE) {
 				ctx.attr(CONTEXT).get().ping();

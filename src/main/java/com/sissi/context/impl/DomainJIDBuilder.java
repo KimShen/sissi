@@ -4,9 +4,6 @@ import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 
 /**
- * @author kim 2013-11-12
- */
-/**
  * @author kim 2013年12月23日
  */
 public class DomainJIDBuilder implements JIDBuilder {
@@ -19,6 +16,9 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 	private final None NONE_USER = new None();
 
+	/**
+	 * Default domain
+	 */
 	private final String domain;
 
 	public DomainJIDBuilder(String domain) {
@@ -53,7 +53,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 		public String getDomain() {
 			return DomainJIDBuilder.this.domain;
 		}
-		
+
 		public JID setDomain(String domain) {
 			return this;
 		}
@@ -92,7 +92,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 		private String resource;
 
 		private User bareUser;
-		
+
 		private User() {
 
 		}
@@ -132,7 +132,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 			this.domain = domain;
 			return this;
 		}
-		
+
 		public String getResource() {
 			return this.resource;
 		}

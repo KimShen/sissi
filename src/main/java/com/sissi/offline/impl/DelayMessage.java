@@ -8,21 +8,24 @@ import com.sissi.protocol.message.Message;
 import com.sissi.protocol.offline.Delay;
 
 /**
+ * Convert message
  * @author kim 2013-11-15
  */
 public class DelayMessage extends DelayProtocol {
 
+	private final String BODY = "body";
+
 	@Override
 	public Map<String, Object> write(Element element) {
 		Map<String, Object> entity = super.based(element);
-		entity.put("body", Message.class.cast(element).getBody().getText());
+		entity.put(BODY, Message.class.cast(element).getBody().getText());
 		return entity;
 	}
 
 	@Override
 	public Message read(Map<String, Object> element) {
 		Message message = Message.class.cast(super.based(element, new Message()));
-		return message.setBody(new Body(element.get("body").toString())).setDelay(new Delay(super.getOffline(), message.getFrom(), element.get("delay").toString()));
+		return message.setBody(new Body(element.get(BODY).toString())).setDelay(new Delay(super.getOffline(), message.getFrom(), element.get(DELAY).toString()));
 	}
 
 	public Boolean isSupport(Element element) {
@@ -31,6 +34,6 @@ public class DelayMessage extends DelayProtocol {
 
 	@Override
 	public Boolean isSupport(Map<String, Object> element) {
-		return Message.class.getSimpleName().equals(element.get("class"));
+		return Message.class.getSimpleName().equals(element.get(CLASS));
 	}
 }
