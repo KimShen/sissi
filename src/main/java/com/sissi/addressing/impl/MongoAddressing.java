@@ -100,7 +100,11 @@ public class MongoAddressing implements Addressing {
 
 	@Override
 	public JIDContext findOne(JID jid) {
-		DBCursor entity = this.config.collection().find(this.buildQueryWithSmartResource(jid, false), MongoCollection.DEFAULT_FILTER).sort(MongoCollection.DEFAULT_SORTER).limit(1);
+		return this.findOne(jid, false);
+	}
+
+	public JIDContext findOne(JID jid, Boolean usingResource) {
+		DBCursor entity = this.config.collection().find(this.buildQueryWithSmartResource(jid, usingResource), MongoCollection.DEFAULT_FILTER).sort(MongoCollection.DEFAULT_SORTER).limit(1);
 		return entity.hasNext() ? this.contexts.get(Long.class.cast(entity.next().get(MongoCollection.FIELD_INDEX))) : this.offlineContextBuilder.build(jid, NOTHING);
 	}
 
@@ -184,6 +188,7 @@ public class MongoAddressing implements Addressing {
 
 		/**
 		 * Context in memory but not in db, will be gc
+		 * 
 		 * @return
 		 */
 		private Long gc() {

@@ -49,38 +49,42 @@ abstract public class ProxyProcessor implements Input {
 		this.protocolQueue = protocolQueue;
 	}
 
-	public JID build(String jid) {
+	protected JID build(String jid) {
 		return this.jidBuilder.build(jid);
 	}
 
-	public JID build(String username, String resource) {
+	protected JID build(String username, String resource) {
 		return this.jidBuilder.build(username, resource);
 	}
 
-	public Integer others(JIDContext context) {
+	protected Integer others(JIDContext context) {
 		return this.addressing.others(context.getJid());
 	}
 
-	public Integer others(JIDContext context, Boolean usingResource) {
+	protected Integer others(JIDContext context, Boolean usingResource) {
 		return this.addressing.others(context.getJid(), usingResource);
 	}
 
-	public ProxyProcessor leave(JIDContext context) {
+	protected ProxyProcessor leave(JIDContext context) {
 		this.addressing.leave(context.getJid());
 		return this;
 	}
 
-	public ProxyProcessor join(JIDContext context) {
+	protected ProxyProcessor join(JIDContext context) {
 		this.addressing.join(context);
 		return this;
 	}
 
-	public JIDContext find(JID jid) {
+	protected JIDContext find(JID jid) {
 		return this.addressing.find(jid);
 	}
 
-	public JIDContext findOne(JID jid) {
+	protected JIDContext findOne(JID jid) {
 		return this.addressing.findOne(jid);
+	}
+
+	protected JIDContext findOne(JID jid, Boolean usingResource) {
+		return this.addressing.findOne(jid, usingResource);
 	}
 
 	public ProxyProcessor broadcast(JID jid, JID from, JID to, Status status) {
@@ -88,39 +92,39 @@ abstract public class ProxyProcessor implements Input {
 		return this;
 	}
 
-	public ProxyProcessor broadcast(JID jid, Protocol protocol) {
+	protected ProxyProcessor broadcast(JID jid, Protocol protocol) {
 		this.protocolQueue.broadcast(jid, protocol);
 		return this;
 	}
 
-	public ProxyProcessor establish(JID from, Relation relation) {
+	protected ProxyProcessor establish(JID from, Relation relation) {
 		this.relationContext.establish(from, relation);
 		return this;
 	}
 
-	public ProxyProcessor update(JID from, JID to, String state) {
+	protected ProxyProcessor update(JID from, JID to, String state) {
 		this.relationContext.update(from, to, state);
 		return this;
 	}
 
-	public ProxyProcessor remove(JID from, JID to) {
+	protected ProxyProcessor remove(JID from, JID to) {
 		this.relationContext.remove(from, to);
 		return this;
 	}
 
-	public Relation ourRelation(JID from, JID to) {
+	protected Relation ourRelation(JID from, JID to) {
 		return this.relationContext.ourRelation(from, to);
 	}
 
-	public Set<Relation> myRelations(JID from) {
+	protected Set<Relation> myRelations(JID from) {
 		return this.relationContext.myRelations(from);
 	}
 
-	public Set<String> whoSubscribedMe(JID from) {
+	protected Set<String> whoSubscribedMe(JID from) {
 		return this.relationContext.whoSubscribedMe(from);
 	}
 
-	public Set<String> iSubscribedWho(JID from) {
+	protected Set<String> iSubscribedWho(JID from) {
 		return this.relationContext.iSubscribedWho(from);
 	}
 }

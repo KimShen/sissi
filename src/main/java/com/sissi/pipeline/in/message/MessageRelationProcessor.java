@@ -21,7 +21,12 @@ public class MessageRelationProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return this.isSubscribed(context.getJid(), super.build(protocol.getTo())) || this.isFree;
+		JID slave = super.build(protocol.getTo());
+		return this.isFree || this.isSelf(context.getJid(), slave) || this.isSubscribed(context.getJid(), slave);
+	}
+
+	private boolean isSelf(JID master, JID slave) {
+		return master.getUser().equals(slave.getUser());
 	}
 
 	private boolean isSubscribed(JID master, JID slave) {

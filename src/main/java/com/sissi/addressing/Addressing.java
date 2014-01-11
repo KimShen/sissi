@@ -5,6 +5,7 @@ import com.sissi.context.JIDContext;
 
 /**
  * Find context for jid
+ * 
  * @author kim 2013-11-1
  */
 public interface Addressing {
@@ -42,12 +43,14 @@ public interface Addressing {
 	public JIDContext find(JID jid, Boolean usingResource);
 
 	/**
-	 * Find jid with resource
+	 * Find jid without resource
 	 * 
 	 * @param jid
 	 * @return
 	 */
 	public JIDContext findOne(JID jid);
+
+	public JIDContext findOne(JID jid, Boolean usingResource);
 
 	/**
 	 * Online nums without resource
