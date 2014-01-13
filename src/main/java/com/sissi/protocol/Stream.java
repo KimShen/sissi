@@ -41,8 +41,6 @@ public class Stream extends Protocol {
 
 	private List<Feature> features;
 
-	private String lang;
-
 	private String stream;
 
 	public Stream() {
@@ -71,16 +69,6 @@ public class Stream extends Protocol {
 	@XmlAttribute
 	public String getVersion() {
 		return VERSION;
-	}
-
-	@XmlAttribute(name = "xml:lang")
-	public String getLang() {
-		return this.lang;
-	}
-
-	public Stream setLang(String lang) {
-		this.lang = lang;
-		return this;
 	}
 
 	public Stream setStream(String stream) {

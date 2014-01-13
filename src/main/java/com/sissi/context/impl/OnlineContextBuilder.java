@@ -199,9 +199,10 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		public JIDContext reset() {
-			this.isBinding.set(false);
-			this.isAuth.set(false);
 			this.priority = OnlineContextBuilder.this.priority;
+			this.isPrepareClose.set(false);
+			this.ping.set(PONG);
+			this.auth.set(0);
 			this.lang = null;
 			return this;
 		}

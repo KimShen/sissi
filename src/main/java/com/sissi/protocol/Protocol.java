@@ -1,5 +1,8 @@
 package com.sissi.protocol;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -15,6 +18,14 @@ abstract public class Protocol implements Element {
 
 		SET, GET, RESULT, ERROR, CANCEL, WAIT;
 
+		private final static Set<String> values = new HashSet<String>();
+
+		static {
+			for (Type each : Type.values()) {
+				values.add(each.toString().toUpperCase());
+			}
+		}
+
 		public String toString() {
 			return super.toString().toLowerCase();
 		}
@@ -24,7 +35,8 @@ abstract public class Protocol implements Element {
 		}
 
 		public static Type parse(String value) {
-			return Type.valueOf(value.toUpperCase());
+			String type = value != null ? value.toUpperCase() : value;
+			return values.contains(type) ? Type.valueOf(type) : null;
 		}
 	}
 
@@ -35,6 +47,8 @@ abstract public class Protocol implements Element {
 	private String to;
 
 	private String type;
+
+	private String lang;
 
 	private Protocol parent;
 
@@ -59,7 +73,7 @@ abstract public class Protocol implements Element {
 		this.id = id;
 		return this;
 	}
-	
+
 	public Protocol setId(Long id) {
 		this.id = String.valueOf(id);
 		return this;
@@ -107,6 +121,16 @@ abstract public class Protocol implements Element {
 
 	public Protocol setType(Type type) {
 		this.type = type.toString();
+		return this;
+	}
+
+	@XmlAttribute(name = "xml:lang")
+	public String getLang() {
+		return this.lang;
+	}
+
+	public Protocol setLang(String lang) {
+		this.lang = lang;
 		return this;
 	}
 

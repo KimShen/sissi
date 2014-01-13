@@ -3,14 +3,14 @@ package com.sissi.protocol.error.element;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.protocol.ErrorDetail;
+import com.sissi.protocol.error.ElementErrorDetail;
 import com.sissi.protocol.iq.auth.Auth;
 
 /**
  * @author kim 2014年1月6日
  */
 @XmlRootElement(name = InvalidMechanism.NAME)
-public class InvalidMechanism implements ErrorDetail {
+public class InvalidMechanism extends ElementErrorDetail {
 
 	public final static InvalidMechanism DETAIL = new InvalidMechanism();
 

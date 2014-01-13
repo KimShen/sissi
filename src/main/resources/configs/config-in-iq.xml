@@ -23,6 +23,8 @@
 	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
 		<constructor-arg ref="finder.iq" />
 	</bean>
+	<bean id="iq.pro.check.auth" class="com.sissi.pipeline.in.iq.IQCheckAuthProcessor" />
+	<bean id="iq.pro.check.type" class="com.sissi.pipeline.in.iq.IQCheckTypeProcessor" />
 
 	<bean id="iq.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -30,6 +32,8 @@
 				<bean class="com.sissi.pipeline.in.ChainedProcessor">
 					<constructor-arg>
 						<util:list>
+							<ref bean="iq.pro.check.auth" />
+							<ref bean="iq.pro.check.type" />
 							<ref bean="iq.pro.fork" />
 							<ref bean="pong.pro" />
 						</util:list>
