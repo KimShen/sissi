@@ -14,7 +14,7 @@ import com.sissi.protocol.iq.bytestreams.Streamhost;
 public class Bytestreams2FansProcessor extends ProxyProcessor {
 
 	private final Comparator<Streamhost> comparator;
-	
+
 	public Bytestreams2FansProcessor(Comparator<Streamhost> comparator) {
 		super();
 		this.comparator = comparator;
@@ -22,8 +22,8 @@ public class Bytestreams2FansProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		JIDContext target = super.addressing.findOne(super.build(protocol.getParent().getTo()));
-		target.write(Bytestreams.class.cast(protocol).sort(this.comparator).getParent().setFrom(context.getJid().getBare()));
+		JIDContext target = super.addressing.findOne(super.build(protocol.getParent().getTo()), true);
+		target.write(Bytestreams.class.cast(protocol).sort(this.comparator).getParent().setFrom(context.getJid()));
 		return true;
 	}
 }

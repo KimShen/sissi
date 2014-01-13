@@ -12,7 +12,7 @@ public class Block2SelfsItemProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.broadcast(context.getJid(), protocol.getParent().setTo(context.getJid().getBare()).setType(Type.SET));
+		super.broadcast(context.getJid(), protocol.getParent().setTo(context.getJid()).setType(Type.SET));
 		return true;
 	}
 }

@@ -20,7 +20,7 @@ public class DiscoInfo2RobotProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(Info.class.cast(protocol).add(Identity.FEATURE_PROXY).add(Bytestreams.FEATURE).add(SiFileTransfer.FEATURE).add(Si.FEATURE).add(VCard.FEATURE).add(Blocking.FEATURE).add(Muc.FEATURE).getParent().reply().setTo(context.getJid().asStringWithBare()).setType(Type.RESULT));
+		context.write(Info.class.cast(protocol).add(Identity.FEATURE_PROXY).add(Bytestreams.FEATURE).add(SiFileTransfer.FEATURE).add(Si.FEATURE).add(VCard.FEATURE).add(Blocking.FEATURE).add(Muc.FEATURE).getParent().reply().setTo(context.getJid()).setType(Type.RESULT));
 		return true;
 	}
 }

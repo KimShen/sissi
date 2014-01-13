@@ -12,7 +12,7 @@ public class Si2FansProcessor extends ProxyProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		JIDContext target = super.addressing.findOne(super.build(protocol.getParent().getTo()));
-		target.write(protocol.getParent().setFrom(context.getJid().getBare()).setTo(target.getJid().getBare()));
+		target.write(protocol.getParent().setFrom(context.getJid()).setTo(target.getJid()));
 		return true;
 	}
 }

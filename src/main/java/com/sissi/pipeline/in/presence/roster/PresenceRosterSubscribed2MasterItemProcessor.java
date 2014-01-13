@@ -27,6 +27,6 @@ public class PresenceRosterSubscribed2MasterItemProcessor extends ProxyProcessor
 
 	private Protocol prepare(JIDContext context, JID jid) {
 		Relation relation = super.ourRelation(jid, context.getJid());
-		return new IQ().add(new Roster(new GroupItem(context.getJid().asStringWithBare(), relation.getName(), Roster.Subscription.TO.toString(), RelationRoster.class.cast(relation).asGroup()))).setTo(jid.getBare()).setId(UUID.randomUUID().toString()).setType(Type.SET);
+		return new IQ().add(new Roster(new GroupItem(context.getJid().asStringWithBare(), relation.getName(), Roster.Subscription.TO.toString(), RelationRoster.class.cast(relation).asGroup()))).setTo(jid).setId(UUID.randomUUID().toString()).setType(Type.SET);
 	}
 }

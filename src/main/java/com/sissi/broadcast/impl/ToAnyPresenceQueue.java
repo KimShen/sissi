@@ -32,7 +32,7 @@ abstract class ToAnyPresenceQueue extends ToAnyProtocolQueue implements Broadcas
 
 		@Override
 		public Presence build(JID from, JID to, Status status) {
-			return Presence.class.isAssignableFrom(status.getClass()) ? (Presence) Presence.class.cast(status).setFrom(from.asStringWithBare()).setTo(to.asStringWithBare()) : this.newOne(from.asStringWithBare(), to.asStringWithBare(), status);
+			return Presence.class.isAssignableFrom(status.getClass()) ? (Presence) Presence.class.cast(status).setFrom(from.asStringWithBare()).setTo(to.asString()) : this.newOne(from.asStringWithBare(), to.asString(), status);
 		}
 
 		private Presence newOne(String from, String to, Status status) {
