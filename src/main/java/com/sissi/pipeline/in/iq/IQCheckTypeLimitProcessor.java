@@ -10,7 +10,7 @@ import com.sissi.protocol.iq.IQ;
 /**
  * @author kim 2014年1月14日
  */
-public class IQCheckTypeProcessor implements Input {
+public class IQCheckTypeLimitProcessor implements Input {
 
 	private final String ERROR_TEXT = "Please check type";
 
@@ -20,7 +20,7 @@ public class IQCheckTypeProcessor implements Input {
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.reply().setError(new ServerError().add(BadRequest.DETAIL, context.getLang(), ERROR_TEXT)));
+		context.write(protocol.reply().setError(new ServerError().setBy(context.getDomain()).add(BadRequest.DETAIL, context.getLang(), ERROR_TEXT)));
 		return false;
 	}
 }

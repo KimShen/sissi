@@ -41,12 +41,19 @@ public class Failure extends Protocol implements Error {
 
 	private String code;
 
+	private String by;
+
 	public Failure() {
 	}
 
 	public Failure(String code, String lang, String text) {
 		this.code = code;
 		this.text = new ServerErrorText(lang, text);
+	}
+
+	public Failure(String by, String code, String lang, String text) {
+		this(code, lang, text);
+		this.by = by;
 	}
 
 	public Failure add(ErrorDetail detail) {
@@ -63,8 +70,15 @@ public class Failure extends Protocol implements Error {
 	}
 
 	@Override
+	@XmlAttribute
 	public String getCode() {
 		return this.code;
+	}
+
+	@Override
+	@XmlAttribute
+	public String getBy() {
+		return this.by;
 	}
 
 	@Override

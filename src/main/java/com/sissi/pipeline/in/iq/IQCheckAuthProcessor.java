@@ -11,7 +11,7 @@ import com.sissi.protocol.error.element.BadRequest;
  */
 public class IQCheckAuthProcessor implements Input {
 
-	private final String ERROR_TEXT = "Please first auth";
+	private final String ERROR_TEXT = "Please auth first";
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
