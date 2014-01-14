@@ -8,7 +8,7 @@ import com.sissi.protocol.iq.roster.Roster;
 /**
  * @author kim 2013年12月17日
  */
-public class RosterSetNoneLoopProcessor extends ProxyProcessor {
+public class RosterSetCheckLoopProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

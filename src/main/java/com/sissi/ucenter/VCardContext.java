@@ -7,6 +7,8 @@ import com.sissi.ucenter.field.Field.Fields;
  * @author kim 2013年12月10日
  */
 public interface VCardContext {
+	
+	public Boolean exists(JID jid);
 
 	public VCardContext set(JID jid, Fields fields);
 

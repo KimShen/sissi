@@ -30,27 +30,33 @@ public class MongoVCardContext extends MongoFieldContext implements VCardContext
 		this.parser = parser;
 	}
 
+	public Boolean exists(JID jid) {
+		return this.config.collection().findOne(this.buildQuery(jid)) != null;
+	}
+
 	@Override
 	public VCardContext set(JID jid, Fields fields) {
-		DBObject query = BasicDBObjectBuilder.start("username", jid.getUser()).get();
 		DBObject entity = BasicDBObjectBuilder.start("$set", super.getEntities(fields, BasicDBObjectBuilder.start())).get();
-		this.log.debug("Query: " + query);
 		this.log.debug("Entity: " + entity);
-		this.config.collection().update(query, entity);
+		this.config.collection().update(this.buildQuery(jid), entity);
 		return this;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Fields> T get(JID jid, T fields) {
-		DBObject query = BasicDBObjectBuilder.start("username", jid.getUser()).get();
-		this.log.debug("Query: " + query);
-		Map<String, Object> entity = this.config.collection().findOne(query).toMap();
+		Map<String, Object> entity = this.config.collection().findOne(this.buildQuery(jid)).toMap();
 		for (String element : entity.keySet()) {
-			if(this.parser.containsKey(element)){
+			if (this.parser.containsKey(element)) {
 				fields.add(this.parser.get(element).read(entity.get(element)));
 			}
 		}
 		return fields;
+	}
+
+	private DBObject buildQuery(JID jid) {
+		DBObject query = BasicDBObjectBuilder.start("username", jid.getUser()).get();
+		this.log.debug("Query: " + query);
+		return query;
 	}
 }

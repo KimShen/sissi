@@ -10,7 +10,7 @@ import com.sissi.ucenter.Relation;
 /**
  * @author kim 2013-11-18
  */
-abstract class PresenceRosterValidateProcessor extends ProxyProcessor {
+abstract class PresenceRosterCheckValidateProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

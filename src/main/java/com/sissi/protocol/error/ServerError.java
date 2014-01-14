@@ -11,7 +11,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.sissi.protocol.Error;
 import com.sissi.protocol.ErrorDetail;
 import com.sissi.protocol.Protocol.Type;
+import com.sissi.protocol.error.ServerErrorText.Xmlns;
 import com.sissi.protocol.error.element.BadRequest;
+import com.sissi.protocol.error.element.FeatureNotImplemented;
+import com.sissi.protocol.error.element.Forbidden;
+import com.sissi.protocol.error.element.Gone;
+import com.sissi.protocol.error.element.ItemNotFound;
 import com.sissi.protocol.error.element.NotAcceptable;
 import com.sissi.protocol.error.element.NotAllowed;
 import com.sissi.protocol.error.stream.BadFormat;
@@ -102,9 +107,9 @@ public class ServerError implements Error {
 		return this;
 	}
 
-	public ServerError add(ErrorDetail detail, String lang, String text) {
+	public ServerError add(ErrorDetail detail, String lang, String text, Xmlns xmlns) {
 		this.add(detail);
-		this.text = new ServerErrorText(lang, text);
+		this.text = new ServerErrorText(lang, text, xmlns);
 		return this;
 	}
 
@@ -114,8 +119,7 @@ public class ServerError implements Error {
 		return this.text;
 	}
 
-	@XmlElements({ @XmlElement(name = BadRequest.NAME, type = BadRequest.class), @XmlElement(name = NotAllowed.NAME, type = NotAllowed.class), @XmlElement(name = com.sissi.protocol.error.element.ResourceConstraint.NAME, type = com.sissi.protocol.error.element.ResourceConstraint.class), @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class), @XmlElement(name = UnSupportedVersion.NAME, type = UnSupportedVersion.class), @XmlElement(name = UnSupportedStanzaType.NAME, type = UnSupportedStanzaType.class), @XmlElement(name = UnSupportedFeature.NAME, type = UnSupportedFeature.class), @XmlElement(name = UnSupportedEncoding.NAME, type = UnSupportedEncoding.class), @XmlElement(name = SystemShutdown.NAME, type = SystemShutdown.class), @XmlElement(name = SeeOtherHost.NAME, type = SeeOtherHost.class), @XmlElement(name = RestrictedXml.NAME, type = RestrictedXml.class), @XmlElement(name = com.sissi.protocol.error.stream.ResourceConstraint.NAME, type = com.sissi.protocol.error.stream.ResourceConstraint.class), @XmlElement(name = Reset.NAME, type = Reset.class), @XmlElement(name = PolicyViolation.NAME, type = PolicyViolation.class), @XmlElement(name = NotWellFormed.NAME, type = NotWellFormed.class), @XmlElement(name = InvalidXml.NAME, type = InvalidXml.class), @XmlElement(name = InvalidFrom.NAME, type = InvalidFrom.class), @XmlElement(name = InternalServerError.NAME, type = InternalServerError.class), @XmlElement(name = Conflict.NAME, type = Conflict.class),
-			@XmlElement(name = BadNamespacePrefix.NAME, type = BadNamespacePrefix.class), @XmlElement(name = BadFormat.NAME, type = BadFormat.class), @XmlElement(name = HostGone.NAME, type = HostGone.class), @XmlElement(name = HostUnknown.NAME, type = HostUnknown.class), @XmlElement(name = InvaildNamespace.NAME, type = InvaildNamespace.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class), @XmlElement(name = ImproperAddressing.NAME, type = ImproperAddressing.class) })
+	@XmlElements({ @XmlElement(name = ItemNotFound.NAME, type=ItemNotFound.class), @XmlElement(name = com.sissi.protocol.error.element.InternalServerError.NAME, type = com.sissi.protocol.error.element.InternalServerError.class), @XmlElement(name = Gone.NAME, type = Gone.class), @XmlElement(name = Forbidden.NAME, type = Forbidden.class), @XmlElement(name = FeatureNotImplemented.NAME, type = FeatureNotImplemented.class), @XmlElement(name = com.sissi.protocol.error.element.Conflict.NAME, type = com.sissi.protocol.error.element.Conflict.class), @XmlElement(name = BadRequest.NAME, type = BadRequest.class), @XmlElement(name = NotAllowed.NAME, type = NotAllowed.class), @XmlElement(name = com.sissi.protocol.error.element.ResourceConstraint.NAME, type = com.sissi.protocol.error.element.ResourceConstraint.class), @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class), @XmlElement(name = UnSupportedVersion.NAME, type = UnSupportedVersion.class), @XmlElement(name = UnSupportedStanzaType.NAME, type = UnSupportedStanzaType.class), @XmlElement(name = UnSupportedFeature.NAME, type = UnSupportedFeature.class), @XmlElement(name = UnSupportedEncoding.NAME, type = UnSupportedEncoding.class), @XmlElement(name = SystemShutdown.NAME, type = SystemShutdown.class), @XmlElement(name = SeeOtherHost.NAME, type = SeeOtherHost.class), @XmlElement(name = RestrictedXml.NAME, type = RestrictedXml.class), @XmlElement(name = com.sissi.protocol.error.stream.ResourceConstraint.NAME, type = com.sissi.protocol.error.stream.ResourceConstraint.class), @XmlElement(name = Reset.NAME, type = Reset.class), @XmlElement(name = PolicyViolation.NAME, type = PolicyViolation.class), @XmlElement(name = NotWellFormed.NAME, type = NotWellFormed.class), @XmlElement(name = InvalidXml.NAME, type = InvalidXml.class), @XmlElement(name = InvalidFrom.NAME, type = InvalidFrom.class), @XmlElement(name = InternalServerError.NAME, type = InternalServerError.class), @XmlElement(name = Conflict.NAME, type = Conflict.class), @XmlElement(name = BadNamespacePrefix.NAME, type = BadNamespacePrefix.class), @XmlElement(name = BadFormat.NAME, type = BadFormat.class), @XmlElement(name = HostGone.NAME, type = HostGone.class), @XmlElement(name = HostUnknown.NAME, type = HostUnknown.class), @XmlElement(name = InvaildNamespace.NAME, type = InvaildNamespace.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class), @XmlElement(name = ImproperAddressing.NAME, type = ImproperAddressing.class) })
 	public List<ErrorDetail> getDetails() {
 		return details;
 	}

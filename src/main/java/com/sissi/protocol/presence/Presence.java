@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.sissi.context.JID;
 import com.sissi.context.StatusClauses;
 import com.sissi.protocol.Protocol;
+import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.read.Collector;
 import com.sissi.read.MappingMetadata;
@@ -165,6 +166,11 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	public Presence setAvator(String type) {
 		this.add(new XVCard().add(new XVCardPhoto(type)));
 		return this;
+	}
+	
+	@XmlElement
+	public ServerError getError() {
+		return super.getError();
 	}
 
 	@Override

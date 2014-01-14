@@ -74,7 +74,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.AnyMatcher" />
 		</constructor-arg>
-		<constructor-arg ref="iq.pro.result.next" />
+		<constructor-arg ref="iq.pro.error.none" />
 	</bean>
 
 </beans>

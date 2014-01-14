@@ -7,7 +7,7 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013-11-18
  */
-public class PresenceRosterSubscribedValidateProcessor extends PresenceRosterValidateProcessor {
+public class PresenceRosterSubscribedCheckValidateProcessor extends PresenceRosterCheckValidateProcessor {
 
 	@Override
 	protected JID getMaster(JIDContext context, Protocol protocol) {

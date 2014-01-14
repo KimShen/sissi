@@ -4,6 +4,8 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Protocol.Type;
+import com.sissi.protocol.error.ServerError;
+import com.sissi.protocol.error.element.FeatureNotImplemented;
 
 /**
  * @author kim 2013年12月3日
@@ -38,6 +40,7 @@ public class IQProcessor implements Input {
 
 	private Protocol prepare(Protocol protocol) {
 		Protocol response = protocol.getParent().reply().setType(this.type);
+		response = this.type == Type.ERROR ? response.setError(new ServerError().add(FeatureNotImplemented.DETAIL)) : response;
 		return this.clear ? response.clear() : response;
 	}
 }

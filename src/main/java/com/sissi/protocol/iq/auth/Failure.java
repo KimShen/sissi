@@ -12,6 +12,7 @@ import com.sissi.protocol.Error;
 import com.sissi.protocol.ErrorDetail;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.error.ServerErrorText;
+import com.sissi.protocol.error.ServerErrorText.Xmlns;
 import com.sissi.protocol.error.element.Aborted;
 import com.sissi.protocol.error.element.AccountDisabled;
 import com.sissi.protocol.error.element.CredentialsExpired;
@@ -48,7 +49,7 @@ public class Failure extends Protocol implements Error {
 
 	public Failure(String code, String lang, String text) {
 		this.code = code;
-		this.text = new ServerErrorText(lang, text);
+		this.text = new ServerErrorText(lang, text, Xmlns.XMLNS_STREAM);
 	}
 
 	public Failure(String by, String code, String lang, String text) {

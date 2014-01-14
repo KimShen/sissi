@@ -16,7 +16,7 @@ abstract public class Protocol implements Element {
 
 	public static enum Type {
 
-		SET, GET, RESULT, ERROR, CANCEL, WAIT;
+		SET, GET, RESULT, ERROR, CANCEL, WAIT, AUTH, CONTINUE, MODIFY;
 
 		private final static Set<String> values = new HashSet<String>();
 

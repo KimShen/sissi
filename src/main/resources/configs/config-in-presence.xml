@@ -39,11 +39,15 @@
 		</constructor-arg>
 	</bean>
 	<bean id="presence.pro.roster.subscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.roster.subscribe.validate" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeValidateProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.subscribe.check.validate" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeCheckValidateProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.subscribe.check.exists" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeCheckExistsProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.vcard" />
+	</bean>
 	<bean id="presence.pro.roster.subscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.roster.subscribe.validate" />
+				<ref bean="presence.pro.roster.subscribe.check.exists" />
+				<ref bean="presence.pro.roster.subscribe.check.validate" />
 				<ref bean="presence.pro.roster.subscribe" />
 			</util:list>
 		</constructor-arg>
@@ -59,13 +63,13 @@
 		</constructor-arg>
 	</bean>
 	<bean id="presence.pro.roster.subscribed" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.roster.subscribed.validate" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedValidateProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.subscribed.check.validate" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedCheckValidateProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribed.2master.item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribed2MasterItemProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribed.2master.presence" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribed2MasterPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribed.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.roster.subscribed.validate" />
+				<ref bean="presence.pro.roster.subscribed.check.validate" />
 				<ref bean="presence.pro.roster.subscribed" />
 				<ref bean="presence.pro.roster.subscribed.2master.item" />
 				<ref bean="presence.pro.roster.subscribed.2master.presence" />
