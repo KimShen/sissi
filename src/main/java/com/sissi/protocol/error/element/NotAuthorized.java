@@ -1,18 +1,16 @@
 package com.sissi.protocol.error.element;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import com.sissi.protocol.ErrorDetail;
-import com.sissi.protocol.iq.auth.Auth;
+import com.sissi.protocol.error.ElementErrorDetail;
 
 /**
  * @author kim 2013年12月7日
  */
-@XmlType(namespace = Auth.XMLNS)
+@XmlType(namespace = ElementErrorDetail.XMLNS)
 @XmlRootElement(name = NotAuthorized.NAME)
-public class NotAuthorized implements ErrorDetail {
+public class NotAuthorized extends ElementErrorDetail {
 
 	public final static NotAuthorized DETAIL = new NotAuthorized();
 
@@ -20,11 +18,5 @@ public class NotAuthorized implements ErrorDetail {
 
 	public NotAuthorized() {
 
-	}
-
-	@Override
-	@XmlAttribute
-	public String getXmlns() {
-		return Auth.XMLNS;
 	}
 }
