@@ -1,6 +1,7 @@
 package com.sissi.pipeline.in.auth.impl;
 
 import javax.security.sasl.SaslException;
+import javax.security.sasl.SaslServer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,8 +38,12 @@ public class DigestAuthProcessor extends ProxyProcessor {
 	}
 
 	private Boolean isSuccess(JIDContext context, Protocol protocol) throws SaslException {
-		this.saslServers.get(context).evaluateResponse(Response.class.cast(protocol).getResponse());
-		context.setAuth(true).write(Success.INSTANCE);
-		return true;
+		SaslServer sasl = this.saslServers.get(context);
+		try {
+			context.write(new Success(sasl.evaluateResponse(Response.class.cast(protocol).getResponse()))).setAuth(true);
+			return true;
+		} finally {
+			sasl.dispose();
+		}
 	}
 }

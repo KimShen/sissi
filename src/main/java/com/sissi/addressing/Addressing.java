@@ -17,7 +17,7 @@ public interface Addressing {
 	public Addressing leave(JIDContext context);
 
 	/**
-	 * Update priority for context
+	 * Update priority
 	 * 
 	 * @param context
 	 * @return
@@ -25,7 +25,7 @@ public interface Addressing {
 	public Addressing priority(JIDContext context);
 
 	/**
-	 * Update timestamp for context
+	 * The last activated context will be choosed if priority equaled
 	 * 
 	 * @param context
 	 * @return
