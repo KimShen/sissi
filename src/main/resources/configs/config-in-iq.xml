@@ -23,7 +23,13 @@
 	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
 		<constructor-arg ref="finder.iq" />
 	</bean>
-	<bean id="iq.pro.check.auth" class="com.sissi.pipeline.in.iq.IQCheckAuthProcessor" />
+	<bean id="iq.pro.check.auth" class="com.sissi.pipeline.in.iq.IQCheckAuthProcessor">
+		<constructor-arg>
+			<set>
+				<value>com.sissi.protocol.iq.roster.Roster</value>
+			</set>
+		</constructor-arg>
+	</bean>
 	<bean id="iq.pro.check.type.limit" class="com.sissi.pipeline.in.iq.IQCheckTypeLimitProcessor" />
 	<bean id="iq.pro.check.type.content" class="com.sissi.pipeline.in.iq.IQCheckTypeContentProcessor" />
 

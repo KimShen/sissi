@@ -8,6 +8,7 @@
 	<bean id="message.pro.relation" class="com.sissi.pipeline.in.message.MessageRelationProcessor" parent="global.pro.proxy">
 		<constructor-arg value="${message.relation}" />
 	</bean>
+	<bean id="message.pro.validation" class="com.sissi.pipeline.in.message.MessageValidationProcessor" />
 	<bean id="message.pro.activate" class="com.sissi.pipeline.in.message.MessageActivatorProcessor">
 		<constructor-arg ref="addressing" />
 	</bean>
@@ -19,6 +20,7 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="message.pro.relation" />
+				<ref bean="message.pro.validation" />
 				<ref bean="message.pro.body" />
 				<ref bean="message.pro.2self" />
 				<ref bean="message.pro.2fan" />

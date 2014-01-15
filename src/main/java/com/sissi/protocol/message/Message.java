@@ -50,7 +50,7 @@ public class Message extends Protocol implements Collector {
 	public Body getBody() {
 		return this.body;
 	}
-	
+
 	@XmlElement
 	public ServerError getError() {
 		return super.getError();
@@ -59,6 +59,10 @@ public class Message extends Protocol implements Collector {
 	public Message setBody(Body body) {
 		this.body = body;
 		return this;
+	}
+
+	public Boolean isValid() {
+		return this.body != null;
 	}
 
 	public Boolean hasContent() {

@@ -16,7 +16,7 @@
 		<maven.global.main.domain>sissi.pw</maven.global.main.domain>
 		<maven.global.main.port>5222</maven.global.main.port>
 		<maven.global.exchanger.port>6222</maven.global.exchanger.port>
-		<maven.global.muc.host>muc.sissi</maven.global.muc.host>
+		<maven.global.muc.host>muc.sissi.pw</maven.global.muc.host>
 		<maven.global.idle.all>300</maven.global.idle.all>
 		<maven.global.idle.read>300</maven.global.idle.read>
 		<maven.global.idle.write>300</maven.global.idle.write>

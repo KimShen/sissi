@@ -1,5 +1,7 @@
 package com.sissi.pipeline.in.iq;
 
+import java.util.Set;
+
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
@@ -15,9 +17,16 @@ public class IQCheckAuthProcessor implements Input {
 
 	private final String ERROR_TEXT = "Please auth first";
 
+	private final Set<Class<? extends Protocol>> authes;
+
+	public IQCheckAuthProcessor(Set<Class<? extends Protocol>> shouldAuth) {
+		super();
+		this.authes = shouldAuth;
+	}
+
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return context.isAuth() ? true : this.writeAndReturn(context, protocol);
+		return context.isAuth() || !this.authes.contains(protocol.getClass()) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
