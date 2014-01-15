@@ -12,7 +12,7 @@ public class Message2SelfProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		JID to = super.build(protocol.getTo());
+		JID to = protocol.getTo() != null ? super.build(protocol.getTo()) : context.getJid();
 		return context.getJid().getUser().equals(to.getUser()) ? this.writeAndReturn(context, protocol.setFrom(context.getJid())) : true;
 	}
 
