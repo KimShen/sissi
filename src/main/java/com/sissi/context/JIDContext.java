@@ -10,11 +10,6 @@ import com.sissi.protocol.Element;
  */
 public interface JIDContext {
 
-	/**
-	 * Internal index
-	 * 
-	 * @return
-	 */
 	public Long getIndex();
 
 	public JIDContext setJid(JID jid);
@@ -25,11 +20,6 @@ public interface JIDContext {
 
 	public Boolean isAuth();
 
-	/**
-	 * Can retry after auth failed
-	 * 
-	 * @return
-	 */
 	public Boolean isAuthRetry();
 
 	public JIDContext setBinding(Boolean isBinding);
@@ -48,40 +38,20 @@ public interface JIDContext {
 
 	public String getLang();
 
-	/**
-	 * Get socket address
-	 * 
-	 * @return
-	 */
 	public SocketAddress getAddress();
 
-	public Boolean startTls();
+	public Boolean setTls();
 
 	public Boolean isTls();
 
 	public Status getStatus();
 
-	/**
-	 * Clear before reopen XMPP stream
-	 * 
-	 * @return
-	 */
 	public JIDContext reset();
 
 	public Boolean close();
 
-	/**
-	 * Block writing but not close connection
-	 * 
-	 * @return
-	 */
 	public Boolean closePrepare();
 
-	/**
-	 * Close connection if ping failed
-	 * 
-	 * @return
-	 */
 	public Boolean closeTimeout();
 
 	public JIDContext ping();

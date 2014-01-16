@@ -37,13 +37,13 @@ import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
  */
 public class JAXBWriter implements Writer {
 
-	private final String PACKAGE = "com.sissi.protocol";
-
-	private final String MAPPING_PROPERTY = "com.sun.xml.bind.namespacePrefixMapper";
-
 	private final Map<Class<? extends Element>, WriterPart> parts = new HashMap<Class<? extends Element>, WriterPart>();
 
 	private final Log log = LogFactory.getLog(this.getClass());
+
+	private final String mapperProperty = "com.sun.xml.bind.namespacePrefixMapper";
+
+	private final String protocol = "com.sissi.protocol";
 
 	private final JAXBContext context;
 
@@ -58,7 +58,7 @@ public class JAXBWriter implements Writer {
 		this.mapper = mapper;
 		try {
 			List<Class<?>> clazz = new ArrayList<Class<?>>();
-			for (Class<?> each : ScanUtil.getClasses(PACKAGE)) {
+			for (Class<?> each : ScanUtil.getClasses(protocol)) {
 				if (each.getAnnotation(XmlRootElement.class) != null) {
 					clazz.add(each);
 				}
@@ -77,7 +77,7 @@ public class JAXBWriter implements Writer {
 			try {
 				switch (this.getPart(element.getClass())) {
 				case NONE:
-					this.marshallerAll(context, element, bufferOut);
+					this.marshaller(context, element, bufferOut);
 					break;
 				case WITH_LAST:
 					this.marshallerPart(context, WriterPart.WITH_LAST, element, output);
@@ -89,6 +89,7 @@ public class JAXBWriter implements Writer {
 					this.marshallerPart(context, WriterPart.WITHOUT_LAST, element, output);
 					break;
 				}
+				bufferOut.flush();
 				return element;
 			} catch (Exception e) {
 				if (this.log.isErrorEnabled()) {
@@ -98,12 +99,21 @@ public class JAXBWriter implements Writer {
 				return null;
 			}
 		} finally {
-			bufferOut.flush();
-			bufferOut.close();
+			IOUtils.closeQuietly(bufferOut);
+			IOUtils.closeQuietly(output);
 		}
 	}
 
-	public Element marshallerAll(JIDContext context, Element element, OutputStream output) throws Exception {
+	private WriterPart getPart(Class<? extends Element> element) {
+		WriterPart part = this.parts.get(element);
+		if (part == null) {
+			WriterFragement fragement = element.getAnnotation(WriterFragement.class);
+			this.parts.put(element, (part = fragement != null ? fragement.part() : WriterPart.NONE));
+		}
+		return part;
+	}
+
+	public Element marshaller(JIDContext context, Element element, OutputStream output) throws Exception {
 		Marshaller marshaller = this.generateMarshaller(false, true);
 		if (this.log.isInfoEnabled()) {
 			StringBufferWriter bufferTemp = new StringBufferWriter(new StringWriter());
@@ -116,15 +126,6 @@ public class JAXBWriter implements Writer {
 			marshaller.marshal(element, output);
 		}
 		return element;
-	}
-
-	private WriterPart getPart(Class<? extends Element> element) {
-		WriterPart part = this.parts.get(element);
-		if (part == null) {
-			WriterFragement fragement = element.getAnnotation(WriterFragement.class);
-			this.parts.put(element, (part = fragement != null ? fragement.part() : WriterPart.NONE));
-		}
-		return part;
 	}
 
 	private Element marshallerPart(JIDContext context, WriterPart part, Element element, OutputStream output) throws Exception {
@@ -149,17 +150,21 @@ public class JAXBWriter implements Writer {
 		return contents;
 	}
 
+	private void add(LinkedList<String> contents, StringBuffer parts) {
+		for (String content : contents) {
+			parts.append(content);
+		}
+	}
+
 	private Marshaller generateMarshaller(Boolean format, Boolean fragement) throws JAXBException, PropertyException {
 		Marshaller marshaller = context.createMarshaller();
+		marshaller.setProperty(mapperProperty, mapper);
 		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, fragement);
-		marshaller.setProperty(MAPPING_PROPERTY, mapper);
-		if (format) {
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		}
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, format);
 		return marshaller;
 	}
 
-	public String getPart(LinkedList<String> contents, WriterPart part) {
+	private String getPart(LinkedList<String> contents, WriterPart part) {
 		StringBuffer parts = new StringBuffer();
 		switch (part) {
 		case WITH_LAST:
@@ -176,12 +181,6 @@ public class JAXBWriter implements Writer {
 		default:
 		}
 		return parts.toString();
-	}
-
-	private void add(LinkedList<String> contents, StringBuffer parts) {
-		for (String content : contents) {
-			parts.append(content);
-		}
 	}
 
 	private class StringBufferWriter extends BufferedWriter {

@@ -14,10 +14,10 @@ public class StreamFeatureAuthProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return !context.isAuth() ? this.buildLoginFeature(context, Stream.class.cast(protocol)) : true;
+		return !context.isAuth() ? this.buildAuthFeature(Stream.class.cast(protocol)) : true;
 	}
 
-	private Boolean buildLoginFeature(JIDContext context, Stream stream) {
+	private Boolean buildAuthFeature(Stream stream) {
 		stream.addFeature(Mechanisms.FEATURE).addFeature(Register.FEATURE);
 		return true;
 	}

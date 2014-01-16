@@ -15,24 +15,9 @@ public interface JID {
 
 	public JID setResource(String resource);
 
-	/**
-	 * Jid without resource
-	 * 
-	 * @return
-	 */
 	public JID getBare();
 
-	/**
-	 * Jid for string format
-	 * 
-	 * @return
-	 */
 	public String asString();
 
-	/**
-	 * Jid for string format without resource
-	 * 
-	 * @return
-	 */
 	public String asStringWithBare();
 }

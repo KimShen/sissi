@@ -61,10 +61,6 @@ public class Message extends Protocol implements Collector {
 		return this;
 	}
 
-	public Boolean isValid() {
-		return this.body != null;
-	}
-
 	public Boolean hasContent() {
 		return this.body != null && this.body.hasContent();
 	}

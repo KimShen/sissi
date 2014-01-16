@@ -2,7 +2,7 @@ package com.sissi.pipeline.in.iq.roster;
 
 import com.sissi.pipeline.in.iq.IQActionMatcher;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.roster.GroupItem.Action;
+import com.sissi.protocol.iq.roster.GroupAction;
 import com.sissi.protocol.iq.roster.Roster;
 
 /**
@@ -10,19 +10,15 @@ import com.sissi.protocol.iq.roster.Roster;
  */
 public class RosterActionMatcher extends IQActionMatcher {
 
-	private final Action detail;
+	private final GroupAction action;
 
-	public RosterActionMatcher(String type, String detail) {
+	public RosterActionMatcher(String type, String action) {
 		super(Roster.class, type);
-		this.detail = Action.parse(detail);
+		this.action = GroupAction.parse(action);
 	}
 
 	@Override
 	public Boolean match(Protocol protocol) {
-		return super.match(protocol) && this.matchAction(Roster.class.cast(protocol));
-	}
-
-	private boolean matchAction(Roster roster) {
-		return roster.getFirstItem().getAction() == this.detail;
+		return super.match(protocol) && Roster.class.cast(protocol).getFirstItem().getAction() == this.action;
 	}
 }

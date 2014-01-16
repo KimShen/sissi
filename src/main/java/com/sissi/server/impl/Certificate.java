@@ -7,9 +7,9 @@ import java.net.URL;
  */
 public class Certificate {
 
-	private URL file;
+	private final URL file;
 
-	private String password;
+	private final String password;
 
 	public Certificate(URL file, String password) {
 		super();

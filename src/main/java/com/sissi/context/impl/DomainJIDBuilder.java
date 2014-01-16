@@ -8,17 +8,14 @@ import com.sissi.context.JIDBuilder;
  */
 public class DomainJIDBuilder implements JIDBuilder {
 
-	private final String NONE_NAME = "_NA";
+	private final String noneName = "_NA";
 
-	private final String CONNECT_AT = "@";
+	private final String connectAt = "@";
 
-	private final String CONNECT_RESOURCE = "/";
+	private final String connectResource = "/";
 
-	private final None NONE_USER = new None();
+	private final None noneUser = new None();
 
-	/**
-	 * Default domain
-	 */
 	private final String domain;
 
 	public DomainJIDBuilder(String domain) {
@@ -28,7 +25,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 	@Override
 	public JID build(String jid) {
-		return jid != null ? new User(jid) : NONE_USER;
+		return jid != null ? new User(jid) : this.noneUser;
 	}
 
 	public JID build(String username, String resource) {
@@ -41,12 +38,12 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 		public None() {
 			super();
-			this.toString = this.getUser() + DomainJIDBuilder.this.CONNECT_AT + this.getDomain();
+			this.toString = this.getUser() + DomainJIDBuilder.this.connectAt + this.getDomain();
 		}
 
 		@Override
 		public String getUser() {
-			return DomainJIDBuilder.this.NONE_NAME;
+			return DomainJIDBuilder.this.noneName;
 		}
 
 		@Override
@@ -100,9 +97,9 @@ public class DomainJIDBuilder implements JIDBuilder {
 		private User(String jid) {
 			super();
 			StringBuffer buffer = new StringBuffer(jid);
-			int startHost = buffer.indexOf(DomainJIDBuilder.this.CONNECT_AT);
+			int startHost = buffer.indexOf(DomainJIDBuilder.this.connectAt);
 			this.user = startHost == -1 ? null : buffer.substring(0, startHost);
-			int startResource = buffer.indexOf(DomainJIDBuilder.this.CONNECT_RESOURCE);
+			int startResource = buffer.indexOf(DomainJIDBuilder.this.connectResource);
 			this.domain = startResource == -1 ? buffer.substring(startHost != -1 ? startHost + 1 : 0) : buffer.substring(startHost + 1, startResource);
 			this.resource = startResource == -1 ? null : buffer.substring(startResource + 1);
 		}
@@ -148,11 +145,11 @@ public class DomainJIDBuilder implements JIDBuilder {
 		}
 
 		public String asString() {
-			return this.asStringWithBare() + (this.resource != null ? DomainJIDBuilder.this.CONNECT_RESOURCE + this.resource : "");
+			return this.asStringWithBare() + (this.resource != null ? DomainJIDBuilder.this.connectResource + this.resource : "");
 		}
 
 		public String asStringWithBare() {
-			return (this.user != null ? this.user + DomainJIDBuilder.this.CONNECT_AT : "") + this.domain;
+			return (this.user != null ? this.user + DomainJIDBuilder.this.connectAt : "") + this.domain;
 		}
 	}
 }

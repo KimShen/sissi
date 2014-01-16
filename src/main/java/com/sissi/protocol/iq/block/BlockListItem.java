@@ -21,11 +21,6 @@ public class BlockListItem extends Item {
 		super();
 	}
 
-	public BlockListItem(String jid, String name, String subscription, String group) {
-		super(jid, name);
-		this.subscription = subscription;
-	}
-
 	public BlockListItem setJid(String jid) {
 		super.setJid(jid);
 		return this;

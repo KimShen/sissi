@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.sissi.read.Collector;
 import com.sissi.read.MappingMetadata;
 import com.sissi.ucenter.field.Field;
+import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
 
 /**
@@ -44,12 +45,12 @@ public class XField implements Field<String>, Collector {
 	}
 
 	public String getName() {
-		return var;
+		return this.var;
 	}
 
 	@XmlAttribute
 	public String getVar() {
-		return var;
+		return this.var;
 	}
 
 	public XField setVar(String var) {

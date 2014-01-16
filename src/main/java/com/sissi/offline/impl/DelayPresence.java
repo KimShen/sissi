@@ -5,13 +5,16 @@ import java.util.Map;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.protocol.presence.Presence.Type;
+import com.sissi.protocol.presence.PresenceType;
 
 /**
- * Convert Presence
  * @author kim 2013-11-15
  */
 public class DelayPresence extends DelayProtocol {
+
+	public DelayPresence() {
+		super(Presence.class);
+	}
 
 	@Override
 	public Map<String, Object> write(Element element) {
@@ -21,20 +24,15 @@ public class DelayPresence extends DelayProtocol {
 	@Override
 	public Element read(Map<String, Object> element) {
 		Presence presence = (Presence) super.based(element, new Presence());
-		return presence.setDelay(new Delay(super.getOffline(), presence.getFrom(), element.get(DELAY).toString()));
+		return presence.setDelay(new Delay(super.getOffline(), presence.getFrom(), element.get(super.delay).toString()));
 	}
 
 	public Boolean isSupport(Element element) {
-		return Presence.class.isAssignableFrom(element.getClass()) && this.isAcceptStatus(element);
-	}
-
-	@Override
-	public Boolean isSupport(Map<String, Object> storage) {
-		return Presence.class.getSimpleName().equals(storage.get(CLASS));
+		return super.isSupport(element) && this.isAcceptStatus(element);
 	}
 
 	private boolean isAcceptStatus(Element element) {
-		Type type = Presence.Type.parse(element.getType());
-		return type != Presence.Type.AVAILABLE && type != Presence.Type.UNAVAILABLE;
+		PresenceType type = PresenceType.parse(element.getType());
+		return type != PresenceType.AVAILABLE && type != PresenceType.UNAVAILABLE;
 	}
 }

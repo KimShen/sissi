@@ -5,25 +5,23 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="config.storage.box" class="com.sissi.config.impl.MongoCollection">
-		<constructor-arg ref="mongo.client" />
-		<constructor-arg index="1" value="${mongo.db}" />
-		<constructor-arg index="2" value="${mongo.collection.offline}" />
+	<bean id="delay" abstract="true">
+		<property name="jidBuilder" ref="jid" />
+		<property name="offline" value="${pipeline.offline.title}" />
 	</bean>
 
-	<bean id="storage" abstract="true">
-		<property name="jidBuilder" ref="builder.jid" />
-		<property name="offline" value="${offline.title}" />
-	</bean>
-	<bean id="storage.message" class="com.sissi.offline.impl.DelayMessage" parent="storage" />
-	<bean id="storage.presence" class="com.sissi.offline.impl.DelayPresence" parent="storage" />
-
-	<bean id="storage.box" class="com.sissi.offline.impl.MongoDelayElementBox">
-		<constructor-arg ref="config.storage.box" />
+	<bean id="offline" class="com.sissi.offline.impl.MongoDelayElementBox">
+		<constructor-arg>
+			<bean class="com.sissi.config.impl.MongoCollection">
+				<constructor-arg ref="mongo" />
+				<constructor-arg index="1" value="${mongo.db}" />
+				<constructor-arg index="2" value="${mongo.collection.offline}" />
+			</bean>
+		</constructor-arg>
 		<constructor-arg>
 			<util:list>
-				<ref bean="storage.message" />
-				<ref bean="storage.presence" />
+				<bean class="com.sissi.offline.impl.DelayMessage" parent="delay" />
+				<bean class="com.sissi.offline.impl.DelayPresence" parent="delay" />
 			</util:list>
 		</constructor-arg>
 	</bean>

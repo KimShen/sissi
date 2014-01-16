@@ -9,7 +9,7 @@
 		<property name="presenceQueue" ref="broadcast.presence.self" />
 	</bean>
 	<bean id="session.pro.4selfs" class="com.sissi.pipeline.in.iq.session.Session4SelfsProcessor">
-		<constructor-arg ref="storage.box" />
+		<constructor-arg ref="offline" />
 	</bean>
 	<bean id="session.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>

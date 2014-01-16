@@ -5,36 +5,28 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="config.exchanger" class="com.sissi.config.impl.MongoCollection">
-		<constructor-arg ref="mongo.client" />
-		<constructor-arg index="1" value="${mongo.db}" />
-		<constructor-arg index="2" value="${mongo.collection.exchange}" />
-	</bean>
-
-	<bean id="server.exchanger.interval" class="com.sissi.commons.Interval">
-		<constructor-arg value="${exchanger.thread.interval}" />
-		<constructor-arg value="${exchanger.thread.unit}" />
-	</bean>
-
-	<bean id="writer" class="com.sissi.write.jaxb.JAXBWriter" />
-
-	<bean id="reader" class="com.sissi.read.sax.SAXReader">
+	<bean id="server.reader" class="com.sissi.read.sax.SAXReader">
 		<constructor-arg ref="executor" />
+		<constructor-arg>
+			<bean class="com.sissi.resource.impl.MongoResourceMonitor">
+				<constructor-arg ref="monitor" />
+				<constructor-arg value="${monitor.reader}" />
+			</bean>
+		</constructor-arg>
 	</bean>
 
-	<bean id="closer.2fans" class="com.sissi.server.impl.Offline2FansServerCloser">
-		<constructor-arg ref="broadcast.protocol.fans" />
-		<constructor-arg ref="addressing" />
-	</bean>
-	<bean id="closer.chained" class="com.sissi.server.impl.ChainedServerCloser">
+	<bean id="server.closer" class="com.sissi.server.impl.ChainedServerCloser">
 		<constructor-arg>
 			<util:list>
-				<ref bean="closer.2fans" />
+				<bean class="com.sissi.server.impl.Offline2FansServerCloser">
+					<constructor-arg ref="broadcast.protocol.fans" />
+					<constructor-arg ref="addressing" />
+				</bean>
 			</util:list>
 		</constructor-arg>
 	</bean>
 
-	<bean id="builder.tls" class="com.sissi.server.impl.CertificateTlsBuilder">
+	<bean id="server.tls" class="com.sissi.server.impl.CertificateTlsBuilder">
 		<constructor-arg index="0">
 			<bean class="com.sissi.server.impl.Certificate">
 				<constructor-arg index="0" value="${tls.key.file}" />
@@ -49,47 +41,68 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="builder.handler.main" class="com.sissi.server.impl.PrivateServerHandlerBuilder">
-		<constructor-arg ref="reader" />
+	<bean id="server.main.handler" class="com.sissi.server.impl.PrivateServerHandlerBuilder">
+		<constructor-arg ref="server.tls" />
+		<constructor-arg ref="server.reader" />
+		<constructor-arg ref="server.closer" />
+		<constructor-arg ref="output" />
+		<constructor-arg ref="finder" />
+		<constructor-arg ref="feeder" />
+		<constructor-arg ref="looper" />
 		<constructor-arg ref="addressing" />
-		<constructor-arg ref="finder.input" />
-		<constructor-arg ref="closer.chained" />
-		<constructor-arg ref="builder.tls" />
-		<constructor-arg ref="builder.output" />
-		<constructor-arg ref="builder.feeder" />
-		<constructor-arg ref="builder.looper" />
-		<constructor-arg ref="builder.context.online" />
+		<constructor-arg>
+			<bean class="com.sissi.context.impl.OnlineContextBuilder">
+				<constructor-arg ref="status" />
+				<constructor-arg ref="server.heart" />
+				<constructor-arg index="0" value="${pipeline.auth.retry}" />
+				<constructor-arg index="1" value="${global.lang}" />
+				<constructor-arg index="2" value="${global.domain}" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.resource.impl.MongoResourceMonitor">
+				<constructor-arg ref="monitor" />
+				<constructor-arg value="${monitor.main}" />
+			</bean>
+		</constructor-arg>
 	</bean>
-
-	<bean id="server.loop.main" class="com.sissi.server.impl.NioServerLoopGroup" />
 
 	<bean id="server.heart" class="com.sissi.server.impl.PingServerHeart">
 		<constructor-arg ref="runner" />
-		<constructor-arg ref="server.heart.interval" />
+		<constructor-arg>
+			<bean class="com.sissi.commons.Interval">
+				<constructor-arg value="${global.heart.interval}" />
+				<constructor-arg value="${global.heart.unit}" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.resource.impl.MongoResourceMonitor">
+				<constructor-arg ref="monitor" />
+				<constructor-arg value="${monitor.heart}" />
+			</bean>
+		</constructor-arg>
 	</bean>
 
-	<bean id="server.heart.interval" class="com.sissi.commons.Interval">
-		<constructor-arg value="${global.heart.thread.interval}" />
-		<constructor-arg value="${global.heart.thread.unit}" />
+	<bean id="server.main" class="com.sissi.server.impl.NioServerStarter">
+		<constructor-arg value="${global.port.main}" />
+		<constructor-arg>
+			<bean class="com.sissi.server.impl.NioServerLoopGroup" />
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.server.impl.PrivateServerHandlerChannelInitializer">
+				<constructor-arg index="0" value="${global.idle.read}" />
+				<constructor-arg index="1" value="${global.idle.write}" />
+				<constructor-arg index="2" value="${global.idle.all}" />
+				<constructor-arg ref="server.main.handler" />
+			</bean>
+		</constructor-arg>
 	</bean>
 
-	<bean id="server.pipeline.main" class="com.sissi.server.impl.PrivateServerHandlerChannelInitializer">
-		<constructor-arg index="0" value="${global.idle.read}" />
-		<constructor-arg index="1" value="${global.idle.write}" />
-		<constructor-arg index="2" value="${global.idle.all}" />
-		<constructor-arg ref="builder.handler.main" />
-	</bean>
-
-	<bean id="server.start.main" class="com.sissi.server.impl.ConfigedServerStarter">
-		<constructor-arg value="${global.main.port}" />
-		<constructor-arg ref="server.loop.main" />
-		<constructor-arg ref="server.pipeline.main" />
-	</bean>
 	<bean id="server.start" class="com.sissi.server.impl.ChainedServerStarter">
 		<constructor-arg>
 			<util:list>
-				<ref bean="server.start.main" />
-				<ref bean="server.start.exchanger" />
+				<ref bean="server.main" />
+				<ref bean="server.exchanger" />
 			</util:list>
 		</constructor-arg>
 	</bean>

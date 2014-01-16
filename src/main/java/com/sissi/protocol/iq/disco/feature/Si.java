@@ -1,29 +1,17 @@
 package com.sissi.protocol.iq.disco.feature;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import com.sissi.protocol.iq.disco.Feature;
+import com.sissi.protocol.iq.disco.DiscoFeature;
 
 /**
  * @author kim 2013年12月13日
  */
-@XmlRootElement
-public class Si implements Feature {
+public class Si extends DiscoFeature {
 
 	public final static Si FEATURE = new Si();
-
-	public final static String NAME = "feature";
 
 	private final static String VAR = "http://jabber.org/protocol/si";
 
 	private Si() {
-
-	}
-
-	@Override
-	@XmlAttribute
-	public String getVar() {
-		return VAR;
+		super(VAR);
 	}
 }

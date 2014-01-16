@@ -10,7 +10,7 @@ import com.sissi.read.MappingMetadata;
  */
 @MappingMetadata(uri = Register.XMLNS, localName = Password.NAME)
 @XmlRootElement(name = Password.NAME)
-public class Password extends QuickField {
+public class Password extends ValueField {
 
 	public final static Password FIELD = new Password();
 

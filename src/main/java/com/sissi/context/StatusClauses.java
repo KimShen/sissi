@@ -1,8 +1,6 @@
 package com.sissi.context;
 
 /**
- * Find special status
- * 
  * @author kim 2013年12月23日
  */
 public interface StatusClauses {

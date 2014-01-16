@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.field.Field.Fields;
+import com.sissi.ucenter.field.Fields;
 
 /**
  * @author kim 2013年12月11日

@@ -12,38 +12,19 @@ import com.sissi.protocol.ErrorText;
 @XmlRootElement(name = ServerErrorText.NAME)
 public class ServerErrorText implements ErrorText {
 
-	public static enum Xmlns {
-
-		XMLNS_STREAM, XMLNS_STANZAS;
-
-		public String toString() {
-			switch (this) {
-			case XMLNS_STREAM:
-				return ServerErrorText.XMLNS_STREAM;
-			case XMLNS_STANZAS:
-				return ServerErrorText.XMLNS_STANZAS;
-			}
-			return null;
-		}
-	}
-
 	public final static String NAME = "text";
-
-	private final static String XMLNS_STREAM = "urn:ietf:params:xml:ns:xmpp-streams";
-
-	private final static String XMLNS_STANZAS = "urn:ietf:params:xml:ns:xmpp-stanzas";
 
 	private String text;
 
 	private String lang;
 
-	private Xmlns xmlns;
+	private String xmlns;
 
 	public ServerErrorText() {
 
 	}
 
-	public ServerErrorText(String lang, String text, Xmlns xmlns) {
+	public ServerErrorText(String lang, String text, String xmlns) {
 		super();
 		this.lang = lang;
 		this.text = text;
@@ -62,6 +43,6 @@ public class ServerErrorText implements ErrorText {
 
 	@XmlAttribute
 	public String getXmlns() {
-		return this.xmlns.toString();
+		return this.xmlns;
 	}
 }

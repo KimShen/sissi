@@ -34,9 +34,9 @@ public class Bind extends Protocol implements Collector {
 		this.resource = new Resource(resource);
 	}
 
-	@XmlElement(name = "jid")
+	@XmlElement
 	public String getJid() {
-		return jid;
+		return this.jid;
 	}
 
 	public Bind setJid(String jid) {
@@ -71,6 +71,6 @@ public class Bind extends Protocol implements Collector {
 
 	@Override
 	public void set(String localName, Object ob) {
-		this.setResource((Resource) ob);
+		this.setResource(Resource.class.cast(ob));
 	}
 }

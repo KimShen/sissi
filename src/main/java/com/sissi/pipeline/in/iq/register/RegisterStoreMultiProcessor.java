@@ -3,7 +3,7 @@ package com.sissi.pipeline.in.iq.register;
 import com.sissi.pipeline.in.iq.IQProcessor;
 import com.sissi.protocol.iq.data.XData;
 import com.sissi.ucenter.RegisterContext;
-import com.sissi.ucenter.field.Field.Fields;
+import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
 
 /**

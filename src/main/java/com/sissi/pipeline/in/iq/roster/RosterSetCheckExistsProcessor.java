@@ -3,9 +3,9 @@ package com.sissi.pipeline.in.iq.roster;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.Protocol.Type;
+import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.element.ItemNotFound;
+import com.sissi.protocol.error.detail.ItemNotFound;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.ucenter.VCardContext;
 
@@ -27,7 +27,7 @@ public class RosterSetCheckExistsProcessor extends ProxyProcessor {
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.getParent().setFrom(context.getDomain()).setTo(context.getJid()).setError(new ServerError().setType(Type.CANCEL).add(ItemNotFound.DETAIL)));
+		context.write(protocol.getParent().setFrom(context.getDomain()).setTo(context.getJid()).setError(new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL)));
 		return false;
 	}
 }

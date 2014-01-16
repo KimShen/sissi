@@ -13,30 +13,37 @@
 		<maven.project.entry>com.sissi.server.impl.MainServer</maven.project.entry>
 		<maven.project.name>sissi</maven.project.name>
 		<!-- For Server -->
-		<maven.global.main.domain>sissi.pw</maven.global.main.domain>
-		<maven.global.main.port>5222</maven.global.main.port>
-		<maven.global.exchanger.port>6222</maven.global.exchanger.port>
-		<maven.global.muc.host>muc.sissi.pw</maven.global.muc.host>
+		<maven.global.domain>sissi.pw</maven.global.domain>
+		<maven.global.version>1.0</maven.global.version>
+		<maven.global.lang>zh_CN</maven.global.lang>
+		<maven.global.port.main>5222</maven.global.port.main>
+		<maven.global.port.exchanger>6222</maven.global.port.exchanger>
 		<maven.global.idle.all>300</maven.global.idle.all>
 		<maven.global.idle.read>300</maven.global.idle.read>
 		<maven.global.idle.write>300</maven.global.idle.write>
-		<maven.global.heart.thread.interval>10000</maven.global.heart.thread.interval>
-		<maven.global.heart.thread.unit>MILLISECONDS</maven.global.heart.thread.unit>
-		<maven.global.version>1.0</maven.global.version>
-		<maven.global.lang>zh_CN</maven.global.lang>
+		<maven.global.heart.interval>10000</maven.global.heart.interval>
+		<maven.global.heart.unit>MILLISECONDS</maven.global.heart.unit>
 		<!-- For Loop -->
-		<maven.looper.thread.num>2</maven.looper.thread.num>
-		<maven.looper.thread.interval>30000</maven.looper.thread.interval>
-		<maven.looper.thread.unit>MILLISECONDS</maven.looper.thread.unit>
+		<maven.looper.num>2</maven.looper.num>
+		<maven.looper.gc.interval>30000</maven.looper.gc.interval>
+		<maven.looper.gc.unit>MILLISECONDS</maven.looper.gc.unit>
 		<!-- For Addressing -->
-		<maven.addressing.thread.interval>3000</maven.addressing.thread.interval>
-		<maven.addressing.thread.unit>MILLISECONDS</maven.addressing.thread.unit>
+		<maven.addressing.gc.interval>3000</maven.addressing.gc.interval>
+		<maven.addressing.gc.unit>MILLISECONDS</maven.addressing.gc.unit>
 		<!-- For Exchanger -->
-		<maven.exchanger.thread.interval>3000</maven.exchanger.thread.interval>
-		<maven.exchanger.thread.unit>MILLISECONDS</maven.exchanger.thread.unit>
+		<maven.exchanger.gc.interval>3000</maven.exchanger.gc.interval>
+		<maven.exchanger.gc.unit>MILLISECONDS</maven.exchanger.gc.unit>
 		<maven.exchanger.idle.all>300</maven.exchanger.idle.all>
 		<maven.exchanger.idle.read>300</maven.exchanger.idle.read>
 		<maven.exchanger.idle.write>300</maven.exchanger.idle.write>
+		<!-- For Monitor -->
+		<maven.monitor.exchanger.context>exchanger.context</maven.monitor.exchanger.context>
+		<maven.monitor.exchanger>exchanger</maven.monitor.exchanger>
+		<maven.monitor.addressing>addressing</maven.monitor.addressing>
+		<maven.monitor.feeder>feeder</maven.monitor.feeder>
+		<maven.monitor.reader>reader</maven.monitor.reader>
+		<maven.monitor.heart>heart</maven.monitor.heart>
+		<maven.monitor.main>main</maven.monitor.main>
 		<!-- For Thread -->
 		<maven.executor.keep.alive>3000</maven.executor.keep.alive>
 		<maven.executor.maximum>1000</maven.executor.maximum>
@@ -46,32 +53,32 @@
 		<maven.log.level>INFO</maven.log.level>
 		<maven.log.appender>Console</maven.log.appender>
 		<!-- For Mongo -->
-		<maven.mongo.host>localhost</maven.mongo.host>
-		<maven.mongo.port>27017</maven.mongo.port>
 		<maven.mongo.db>sissi</maven.mongo.db>
+		<maven.mongo.port>27017</maven.mongo.port>
+		<maven.mongo.host>localhost</maven.mongo.host>
 		<maven.mongo.collection.log>log</maven.mongo.collection.log>
 		<maven.mongo.collection.offline>offline</maven.mongo.collection.offline>
 		<maven.mongo.collection.addressing>addressing</maven.mongo.collection.addressing>
 		<maven.mongo.collection.exchanger>exchanger</maven.mongo.collection.exchanger>
 		<maven.mongo.collection.presence>presence</maven.mongo.collection.presence>
+		<maven.mongo.collection.monitor>monitor</maven.mongo.collection.monitor>
 		<maven.mongo.collection.roster>roster</maven.mongo.collection.roster>
 		<maven.mongo.collection.user>user</maven.mongo.collection.user>
-		<maven.mongo.collection.muc>muc</maven.mongo.collection.muc>
 		<!-- For Protocol -->
-		<maven.register.invitation.title>Welcome 2 register</maven.register.invitation.title>
-		<maven.register.invitation.instructions>From sissi</maven.register.invitation.instructions>
+		<maven.register.title>Welcome 2 register</maven.register.title>
+		<maven.register.instructions>From sissi</maven.register.instructions>
 		<maven.tls.key.file>tls.store</maven.tls.key.file>
 		<maven.tls.key.password>client</maven.tls.key.password>
 		<maven.tls.trust.file>tls.store</maven.tls.trust.file>
 		<maven.tls.trust.password>client</maven.tls.trust.password>
-		<maven.bytestreams.proxy.jid>proxy.sissi</maven.bytestreams.proxy.jid>
-		<maven.bytestreams.proxy.host>sissi.pw</maven.bytestreams.proxy.host>
-		<maven.bytestreams.proxy.port>${maven.global.exchanger.port}</maven.bytestreams.proxy.port>
-		<maven.bytestreams.proxy.name>Socks 5 Bytestreams Proxy</maven.bytestreams.proxy.name>
-		<maven.auth.retry>2</maven.auth.retry>
-		<maven.offline.title>From sissi offline</maven.offline.title>
-		<maven.resource.limit>3</maven.resource.limit>
-		<maven.message.relation>false</maven.message.relation>
+		<maven.bytestreams.jid>proxy.sissi</maven.bytestreams.jid>
+		<maven.bytestreams.host>sissi.pw</maven.bytestreams.host>
+		<maven.bytestreams.port>${maven.global.port.exchanger}</maven.bytestreams.port>
+		<maven.bytestreams.name>Socks 5 Bytestreams Proxy</maven.bytestreams.name>
+		<maven.pipeline.auth.retry>2</maven.pipeline.auth.retry>
+		<maven.pipeline.offline.title>From sissi offline</maven.pipeline.offline.title>
+		<maven.pipeline.resource.limit>3</maven.pipeline.resource.limit>
+		<maven.pipeline.message.relation>false</maven.pipeline.message.relation>
 	</properties>
 	<dependencies>
 		<!-- For Compile -->
@@ -151,7 +158,7 @@
 	<build>
 		<finalName>${maven.project.name}</finalName>
 		<resources>
-			<resource> 
+			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<excludes>

@@ -37,21 +37,11 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 	private final ServerHeart serverHeart;
 
 	private final Integer authRetry;
+	
+	private final String domain;
 
 	private final String lang;
 
-	private final String domain;
-
-	/**
-	 * @param authRetry
-	 *            Auth retry limits
-	 * @param lang
-	 *            Default lang
-	 * @param domain
-	 *            Default domain
-	 * @param statusBuilder
-	 * @param serverHeart
-	 */
 	public OnlineContextBuilder(Integer authRetry, String lang, String domain, StatusBuilder statusBuilder, ServerHeart serverHeart) {
 		super();
 		this.statusBuilder = statusBuilder;
@@ -74,9 +64,9 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final AtomicLong ping = new AtomicLong(PONG);
 
-		private final AtomicInteger auth = new AtomicInteger();
-
 		private final AtomicBoolean isAuth = new AtomicBoolean();
+		
+		private final AtomicInteger authRetry = new AtomicInteger();
 
 		private final AtomicBoolean isBinding = new AtomicBoolean();
 
@@ -126,7 +116,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public UserContext setAuth(Boolean canAccess) {
 			this.isAuth.set(canAccess);
 			if (!canAccess) {
-				this.auth.incrementAndGet();
+				this.authRetry.incrementAndGet();
 			}
 			return this;
 		}
@@ -137,7 +127,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		public Boolean isAuthRetry() {
-			return OnlineContextBuilder.this.authRetry >= this.auth.get();
+			return OnlineContextBuilder.this.authRetry >= this.authRetry.get();
 		}
 
 		public UserContext setJid(JID jid) {
@@ -150,7 +140,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public Boolean startTls() {
+		public Boolean setTls() {
 			return this.serverTls.startTls(this.getDomain());
 		}
 
@@ -202,7 +192,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			this.priority = OnlineContextBuilder.this.priority;
 			this.isPrepareClose.set(false);
 			this.ping.set(PONG);
-			this.auth.set(0);
+			this.authRetry.set(0);
 			this.lang = null;
 			return this;
 		}

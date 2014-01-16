@@ -4,7 +4,6 @@ import com.sissi.broadcast.BroadcastPresence;
 import com.sissi.broadcast.PresenceBuilder;
 import com.sissi.context.JID;
 import com.sissi.context.Status;
-import com.sissi.context.StatusClauses;
 import com.sissi.protocol.presence.Presence;
 
 /**
@@ -32,12 +31,11 @@ abstract class ToAnyPresenceQueue extends ToAnyProtocolQueue implements Broadcas
 
 		@Override
 		public Presence build(JID from, JID to, Status status) {
-			return Presence.class.isAssignableFrom(status.getClass()) ? (Presence) Presence.class.cast(status).setFrom(from.asStringWithBare()).setTo(to.asString()) : this.newOne(from.asStringWithBare(), to.asString(), status);
+			return Presence.class == status.getClass() ? Presence.class.cast(status).setFrom(from.getBare()).setTo(to) : this.newOne(from.asStringWithBare(), to.asString(), status);
 		}
 
 		private Presence newOne(String from, String to, Status status) {
-			StatusClauses clauses = status.getStatusClauses();
-			return new Presence(from, to, clauses.find(StatusClauses.KEY_SHOW), clauses.find(StatusClauses.KEY_STATUS), clauses.find(StatusClauses.KEY_TYPE), clauses.find(StatusClauses.KEY_AVATOR));
+			return new Presence(from, to, status.getStatusClauses());
 		}
 	}
 }

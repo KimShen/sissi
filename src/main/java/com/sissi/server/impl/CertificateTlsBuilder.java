@@ -20,9 +20,9 @@ import com.sissi.server.ServerTlsBuilder;
  */
 public class CertificateTlsBuilder implements ServerTlsBuilder {
 
-	private final String PROTOCOL = "TLS";
+	private final String protocol = "TLS";
 
-	private final String KEYSTORE_TYPE = "jks";
+	private final String keystore = "jks";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -40,7 +40,7 @@ public class CertificateTlsBuilder implements ServerTlsBuilder {
 
 	private SSLContext build(Certificate key, Certificate trust) {
 		try {
-			SSLContext context = SSLContext.getInstance(PROTOCOL);
+			SSLContext context = SSLContext.getInstance(protocol);
 			context.init(this.getKeyManagers(key), this.getTrustManagers(trust), null);
 			return context;
 		} catch (Exception e) {
@@ -56,7 +56,7 @@ public class CertificateTlsBuilder implements ServerTlsBuilder {
 		KeyManagerFactory factory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 		InputStream certificate = key.getFile().openStream();
 		try {
-			KeyStore ks = KeyStore.getInstance(KEYSTORE_TYPE);
+			KeyStore ks = KeyStore.getInstance(keystore);
 			ks.load(certificate, key.getPassword());
 			factory.init(ks, key.getPassword());
 		} finally {
@@ -69,7 +69,7 @@ public class CertificateTlsBuilder implements ServerTlsBuilder {
 		TrustManagerFactory factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 		InputStream certificate = trust.getFile().openStream();
 		try {
-			KeyStore ks = KeyStore.getInstance(KEYSTORE_TYPE);
+			KeyStore ks = KeyStore.getInstance(keystore);
 			ks.load(certificate, trust.getPassword());
 			factory.init(ks);
 		} finally {

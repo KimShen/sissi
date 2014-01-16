@@ -15,6 +15,7 @@ import com.sissi.protocol.iq.register.form.Title;
 import com.sissi.read.Collector;
 import com.sissi.read.MappingMetadata;
 import com.sissi.ucenter.field.Field;
+import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
 
 /**
@@ -29,7 +30,7 @@ public class XData extends BeanFields implements Field<Object>, Collector {
 
 	public final static String XMLNS = "jabber:x:data";
 
-	public final static String TYPE_FROM = "from";
+	private final static String FORM = "form";
 
 	private String type;
 
@@ -42,9 +43,7 @@ public class XData extends BeanFields implements Field<Object>, Collector {
 	}
 
 	public XData(Boolean isEmbed, List<Field<?>> fields) {
-		super(isEmbed);
-		super.add(fields);
-		this.type = TYPE_FROM;
+		this(isEmbed, FORM, fields);
 	}
 
 	public XData(Boolean isEmbed, String type, List<Field<?>> fields) {
@@ -55,7 +54,7 @@ public class XData extends BeanFields implements Field<Object>, Collector {
 
 	@XmlAttribute
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public XData setType(String type) {

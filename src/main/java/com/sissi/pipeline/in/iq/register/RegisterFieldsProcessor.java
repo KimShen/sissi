@@ -3,9 +3,9 @@ package com.sissi.pipeline.in.iq.register;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.Protocol.Type;
+import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.register.Register;
-import com.sissi.ucenter.field.Field.Fields;
+import com.sissi.ucenter.field.Fields;
 
 /**
  * 
@@ -22,7 +22,7 @@ public class RegisterFieldsProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(Register.class.cast(protocol).add(fields).getParent().setFrom(context.getDomain()).setTo(context.getJid().asStringWithBare()).setType(Type.RESULT));
+		context.write(Register.class.cast(protocol).add(fields).getParent().setFrom(context.getDomain()).setTo(context.getJid()).setType(ProtocolType.RESULT));
 		return true;
 	}
 }

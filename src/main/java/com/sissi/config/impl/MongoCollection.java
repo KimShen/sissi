@@ -13,7 +13,7 @@ import com.sissi.config.MongoConfig;
  * @author kim 2013-11-15
  */
 public class MongoCollection implements MongoConfig {
-	
+
 	public static final String FIELD_JID = "jid";
 
 	public static final String FIELD_INDEX = "index";
@@ -23,25 +23,38 @@ public class MongoCollection implements MongoConfig {
 	public static final String FIELD_PRIORITY = "priority";
 
 	public static final String FIELD_RESOURCE = "resource";
-	
-	public static final DBObject DEFAULT_FILTER = BasicDBObjectBuilder.start(MongoCollection.FIELD_INDEX, 1).get();
 
-	public static final DBObject DEFAULT_SORTER = BasicDBObjectBuilder.start().add(MongoCollection.FIELD_PRIORITY, -1).add(MongoCollection.FIELD_CURRENT, -1).get();
-	
-	private final DBObject DEFAULT_CLEAR = BasicDBObjectBuilder.start().get();
-	
+	public static final String FIELD_BLOCK = "blocks";
+
+	public static final String FIELD_STATE = "state";
+
+	public static final String FIELD_SLAVE = "slave";
+
+	public static final String FIELD_MASTER = "master";
+
+	public static final DBObject FILTER_ID = BasicDBObjectBuilder.start("_id", 1).get();
+
+	public static final DBObject FILTER_INDEX = BasicDBObjectBuilder.start(FIELD_INDEX, 1).get();
+
+	public static final DBObject FILTER_BLOCKS = BasicDBObjectBuilder.start(FIELD_BLOCK, 1).get();
+
+	public static final DBObject FILTER_MASTER = BasicDBObjectBuilder.start("master", 1).get();
+
+	public static final DBObject FILTER_SLAVE = BasicDBObjectBuilder.start("slave", 1).get();
+
+	public static final DBObject DEFAULT_SORTER = BasicDBObjectBuilder.start().add(FIELD_PRIORITY, -1).add(FIELD_CURRENT, -1).get();
+
 	private final Map<String, String> configs = new HashMap<String, String>();
+
+	private final DBObject clear = BasicDBObjectBuilder.start().get();
 
 	private final DBCollection collection;
 
-	private final MongoClient client;
-
 	public MongoCollection(MongoClient client, String db, String collection) {
 		super();
-		this.client = client;
 		this.configs.put(MongoCollection.D_NAME, db);
 		this.configs.put(MongoCollection.C_NAME, collection);
-		this.collection = this.client.getDB(db).getCollection(collection);
+		this.collection = client.getDB(db).getCollection(collection);
 	}
 
 	@Override
@@ -50,7 +63,7 @@ public class MongoCollection implements MongoConfig {
 	}
 
 	public MongoConfig clear() {
-		this.collection().remove(DEFAULT_CLEAR);
+		this.collection().remove(clear);
 		return this;
 	}
 
@@ -67,7 +80,7 @@ public class MongoCollection implements MongoConfig {
 		Object value = this.as(db, key);
 		return value != null ? Boolean.class.cast(value) : Boolean.FALSE;
 	}
-	
+
 	private Object as(DBObject db, String key) {
 		return db != null ? db.get(key) : null;
 	}

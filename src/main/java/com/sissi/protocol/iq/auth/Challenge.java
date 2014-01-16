@@ -6,11 +6,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sissi.protocol.Element;
-import com.sissi.protocol.Error;
 
 /**
  * @author kim 2013-11-25
@@ -19,10 +16,6 @@ import com.sissi.protocol.Error;
 public class Challenge implements Element {
 
 	private final static String XMLNS = "urn:ietf:params:xml:ns:xmpp-sasl";
-
-	private final static Log LOG = LogFactory.getLog(Challenge.class);
-
-	private final static Base64 BASE64 = new Base64();
 
 	private byte[] text;
 
@@ -41,15 +34,7 @@ public class Challenge implements Element {
 
 	@XmlValue
 	public String getChallenge() {
-		try {
-			return BASE64.encodeToString(this.text);
-		} catch (Exception e) {
-			if (LOG.isFatalEnabled()) {
-				LOG.fatal(e.toString());
-				e.printStackTrace();
-			}
-			return null;
-		}
+		return Base64.encodeBase64String(this.text);
 	}
 
 	@XmlTransient
@@ -88,17 +73,6 @@ public class Challenge implements Element {
 
 	@Override
 	public Challenge setType(String type) {
-		return this;
-	}
-
-	@Override
-	@XmlTransient
-	public Error getError() {
-		return null;
-	}
-
-	@Override
-	public Challenge setError(Error error) {
 		return this;
 	}
 }

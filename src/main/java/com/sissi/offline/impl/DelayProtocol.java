@@ -15,24 +15,31 @@ import com.sissi.protocol.Element;
  */
 abstract class DelayProtocol implements DelayElement {
 
-	final static String CLASS = "class";
+	protected final String clazz = "class";
 
-	final static String DELAY = "delay";
+	protected final String delay = "delay";
 
-	final static String BASE_ID = "id";
+	protected final String baseId = "id";
 
-	final static String BASE_FROM = "from";
+	protected final String baseFrom = "from";
 
-	final static String BASE_TO = "to";
+	protected final String baseTo = "to";
 
-	final static String BASE_TYPE = "type";
+	protected final String baseType = "type";
+
+	private final Class<? extends Element> support;
 
 	private String offline;
 
 	private JIDBuilder jidBuilder;
 
+	public DelayProtocol(Class<? extends Element> support) {
+		super();
+		this.support = support;
+	}
+
 	protected String getOffline() {
-		return offline;
+		return this.offline;
 	}
 
 	public void setOffline(String offline) {
@@ -48,18 +55,27 @@ abstract class DelayProtocol implements DelayElement {
 	}
 
 	protected Element based(Map<String, Object> storage, Element element) {
-		return element.setId(this.toString(storage, BASE_ID)).setFrom(this.toString(storage, BASE_FROM)).setTo(this.toString(storage, BASE_TO)).setType(this.toString(storage, BASE_TYPE));
+		return element.setId(this.toString(storage, this.baseId)).setFrom(this.toString(storage, this.baseFrom)).setTo(this.toString(storage, this.baseTo)).setType(this.toString(storage, this.baseType));
 	}
 
 	protected Map<String, Object> based(Element element) {
 		Map<String, Object> entity = new HashMap<String, Object>();
-		entity.put(BASE_ID, element.getId());
-		entity.put(BASE_FROM, this.jidBuilder.build(element.getFrom()).asStringWithBare());
-		entity.put(BASE_TO, this.jidBuilder.build(element.getTo()).asStringWithBare());
-		entity.put(BASE_TYPE, element.getType());
-		entity.put(DELAY, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
-		entity.put(CLASS, element.getClass().getSimpleName());
+		entity.put(this.baseId, element.getId());
+		entity.put(this.baseFrom, this.jidBuilder.build(element.getFrom()).asStringWithBare());
+		entity.put(this.baseTo, this.jidBuilder.build(element.getTo()).asStringWithBare());
+		entity.put(this.baseType, element.getType());
+		entity.put(this.delay, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
+		entity.put(this.clazz, element.getClass().getSimpleName());
 		return entity;
+	}
+
+	@Override
+	public Boolean isSupport(Map<String, Object> storage) {
+		return this.support.getSimpleName().equals(storage.get(clazz));
+	}
+
+	public Boolean isSupport(Element element) {
+		return this.support == element.getClass();
 	}
 
 	protected String toString(Map<String, Object> element, String key) {

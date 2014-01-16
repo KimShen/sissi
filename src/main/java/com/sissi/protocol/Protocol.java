@@ -1,8 +1,5 @@
 package com.sissi.protocol;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -13,32 +10,6 @@ import com.sissi.protocol.error.ServerError;
  * @author kim 2013-10-24
  */
 abstract public class Protocol implements Element {
-
-	public static enum Type {
-
-		SET, GET, RESULT, ERROR, CANCEL, WAIT, AUTH, CONTINUE, MODIFY;
-
-		private final static Set<String> values = new HashSet<String>();
-
-		static {
-			for (Type each : Type.values()) {
-				values.add(each.toString().toUpperCase());
-			}
-		}
-
-		public String toString() {
-			return super.toString().toLowerCase();
-		}
-
-		public Boolean equals(String type) {
-			return this == Type.parse(type);
-		}
-
-		public static Type parse(String value) {
-			String type = value != null ? value.toUpperCase() : value;
-			return values.contains(type) ? Type.valueOf(type) : null;
-		}
-	}
 
 	private String id;
 
@@ -71,11 +42,6 @@ abstract public class Protocol implements Element {
 
 	public Protocol setId(String id) {
 		this.id = id;
-		return this;
-	}
-
-	public Protocol setId(Long id) {
-		this.id = String.valueOf(id);
 		return this;
 	}
 
@@ -119,7 +85,7 @@ abstract public class Protocol implements Element {
 		return this;
 	}
 
-	public Protocol setType(Type type) {
+	public Protocol setType(ProtocolType type) {
 		this.type = type.toString();
 		return this;
 	}
@@ -139,16 +105,14 @@ abstract public class Protocol implements Element {
 	}
 
 	public Protocol setError(Error error) {
-		this.setType(Type.ERROR);
+		this.setType(ProtocolType.ERROR);
 		this.error = ServerError.class.cast(error);
 		return this;
 	}
 
 	public Protocol reply() {
-		final String tempFrom = this.getFrom();
-		this.setFrom(this.getTo());
-		this.setTo(tempFrom);
-		return this;
+		final String iamFrom = this.getFrom();
+		return this.setFrom(this.getTo()).setTo(iamFrom);
 	}
 
 	public Protocol clear() {

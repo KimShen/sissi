@@ -3,16 +3,16 @@ package com.sissi.pipeline.in.iq;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.Protocol.Type;
+import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.element.FeatureNotImplemented;
+import com.sissi.protocol.error.detail.ServiceUnavaliable;
 
 /**
  * @author kim 2013年12月3日
  */
 public class IQProcessor implements Input {
 
-	private final Type type;
+	private final ProtocolType type;
 
 	private final Boolean clear;
 
@@ -27,7 +27,7 @@ public class IQProcessor implements Input {
 	}
 
 	public IQProcessor(String type, Boolean clear, Boolean doNext) {
-		this.type = Type.parse(type);
+		this.type = ProtocolType.parse(type);
 		this.clear = clear;
 		this.doNext = doNext;
 	}
@@ -40,7 +40,7 @@ public class IQProcessor implements Input {
 
 	private Protocol prepare(Protocol protocol) {
 		Protocol response = protocol.getParent().reply().setType(this.type);
-		response = this.type == Type.ERROR ? response.setError(new ServerError().add(FeatureNotImplemented.DETAIL)) : response;
+		response = (this.type == ProtocolType.ERROR) ? response.setError(new ServerError().add(ServiceUnavaliable.DETAIL)) : response;
 		return this.clear ? response.clear() : response;
 	}
 }

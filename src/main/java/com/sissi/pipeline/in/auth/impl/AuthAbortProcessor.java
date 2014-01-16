@@ -13,10 +13,6 @@ public class AuthAbortProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return !context.isBinding() ? this.abortedAndClose(context) : true;
-	}
-
-	private Boolean abortedAndClose(JIDContext context) {
-		return !context.reset().write(Failure.INSTANCE_ABORTED).write(Stream.closeGracefully()).close();
+		return !context.isBinding() ? !context.write(Failure.INSTANCE_ABORTED).write(Stream.close()).close() : true;
 	}
 }

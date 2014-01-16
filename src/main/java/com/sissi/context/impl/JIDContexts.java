@@ -10,14 +10,13 @@ import com.sissi.context.Status;
 import com.sissi.protocol.Element;
 
 /**
- * JIDContext group with same jid
  * @author kim 2013-11-21
  */
 public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	private final static long serialVersionUID = 1L;
 
-	private final RuntimeException NOT_SUPPORT = new RuntimeException("MultiContexts not support this funciton");
+	private final RuntimeException notSupport = new RuntimeException("MultiContexts not support this funciton");
 
 	public JIDContext setBinding(Boolean isBinding) {
 		for (JIDContext each : this) {
@@ -65,10 +64,10 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	@Override
-	public Boolean startTls() {
+	public Boolean setTls() {
 		boolean startTls = true;
 		for (JIDContext each : this) {
-			startTls = each.startTls() ? startTls : false;
+			startTls = each.setTls() ? startTls : false;
 		}
 		return startTls;
 	}
@@ -89,10 +88,6 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return this;
 	}
 
-	public JIDContext setAuthFailed() {
-		return this;
-	}
-
 	@Override
 	public Boolean isAuth() {
 		boolean isAuth = true;
@@ -103,7 +98,11 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	public Boolean isAuthRetry() {
-		return false;
+		boolean isAuthRetry = true;
+		for (JIDContext each : this) {
+			isAuthRetry = each.isAuthRetry() ? isAuthRetry : false;
+		}
+		return isAuthRetry;
 	}
 
 	@Override
@@ -168,33 +167,33 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	public Long getIndex() {
-		throw NOT_SUPPORT;
+		throw notSupport;
 	}
 
 	@Override
 	public JID getJid() {
-		throw NOT_SUPPORT;
+		throw notSupport;
 	}
 
 	public String getLang() {
-		throw NOT_SUPPORT;
+		throw notSupport;
 	}
 
 	public String getDomain() {
-		throw NOT_SUPPORT;
+		throw notSupport;
 	}
 
 	@Override
 	public Status getStatus() {
-		throw NOT_SUPPORT;
+		throw notSupport;
 	}
 
 	@Override
 	public Integer getPriority() {
-		throw NOT_SUPPORT;
+		throw notSupport;
 	}
 
 	public SocketAddress getAddress() {
-		throw NOT_SUPPORT;
+		throw notSupport;
 	}
 }

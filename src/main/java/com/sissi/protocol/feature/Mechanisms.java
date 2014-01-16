@@ -3,21 +3,17 @@ package com.sissi.protocol.feature;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.pipeline.in.auth.impl.DigestAuthCallback;
 import com.sissi.pipeline.in.auth.impl.PlainAuthCallback;
 import com.sissi.protocol.Feature;
-import com.sissi.protocol.Required;
 
 /**
  * @author Kim.shen 2013-10-19
  */
-@XmlRootElement
-public class Mechanisms implements Feature {
+public class Mechanisms extends Feature {
 
 	public final static Mechanisms FEATURE = new Mechanisms(DigestAuthCallback.MECHANISM, PlainAuthCallback.MECHANISM);
 
@@ -28,20 +24,15 @@ public class Mechanisms implements Feature {
 	private Set<String> mechanism;
 
 	private Mechanisms() {
-
+		super(XMLNS);
 	}
 
 	private Mechanisms(String... mechanisms) {
-		super();
+		super(XMLNS);
 		this.mechanism = new HashSet<String>();
 		for (String each : mechanisms) {
 			this.mechanism.add(each);
 		}
-	}
-
-	@XmlAttribute
-	public String getXmlns() {
-		return XMLNS;
 	}
 
 	@Override

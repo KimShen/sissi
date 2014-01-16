@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.sissi.read.Mapping;
 import com.sissi.read.Reader;
+import com.sissi.resource.ResourceMonitor;
 
 /**
  * @author Kim.shen 2013-10-16
@@ -22,28 +23,31 @@ public class SAXReader implements Reader {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
+	private final ResourceMonitor resourceMonitor;
+
 	private final SAXParserFactory factory;
 
 	private final Executor executor;
 
 	private final Mapping mapping;
 
-	public SAXReader() throws Exception {
-		this(new XMLMapping(), Executors.newSingleThreadExecutor());
+	public SAXReader(ResourceMonitor resourceMonitor) throws Exception {
+		this(new XMLMapping(), Executors.newSingleThreadExecutor(), resourceMonitor);
 	}
 
-	public SAXReader(Mapping mapping) throws Exception {
-		this(mapping, Executors.newSingleThreadExecutor());
+	public SAXReader(Mapping mapping, ResourceMonitor resourceMonitor) throws Exception {
+		this(mapping, Executors.newSingleThreadExecutor(), resourceMonitor);
 	}
 
-	public SAXReader(Executor executor) throws Exception {
-		this(new XMLMapping(), executor);
+	public SAXReader(Executor executor, ResourceMonitor resourceMonitor) throws Exception {
+		this(new XMLMapping(), executor, resourceMonitor);
 	}
 
-	public SAXReader(Mapping mapping, Executor executor) throws Exception {
+	public SAXReader(Mapping mapping, Executor executor, ResourceMonitor resourceMonitor) throws Exception {
 		super();
 		this.mapping = mapping;
 		this.executor = executor;
+		this.resourceMonitor = resourceMonitor;
 		this.factory = SAXParserFactory.newInstance();
 		this.factory.setFeature("http://apache.org/xml/features/continue-after-fatal-error", true);
 		this.factory.setNamespaceAware(true);
@@ -77,12 +81,15 @@ public class SAXReader implements Reader {
 
 		public void run() {
 			try {
+				SAXReader.this.resourceMonitor.increment();
 				this.parser.parse(this.stream, this.handler);
 			} catch (Exception e) {
 				if (SAXReader.this.log.isDebugEnabled()) {
 					SAXReader.this.log.debug(e.toString());
 					e.printStackTrace();
 				}
+			} finally {
+				SAXReader.this.resourceMonitor.decrement();
 			}
 		}
 	}

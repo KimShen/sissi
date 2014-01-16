@@ -5,9 +5,7 @@ import com.sissi.context.JID;
 import com.sissi.protocol.Protocol;
 
 /**
- * Broadcast protocol to jids without resource
- * 
- * @author kim 2013-11-18
+ * @author kim 2014年1月15日
  */
 public class ToSelfsProtocolQueue extends ToAnyProtocolQueue implements BroadcastProtocol {
 

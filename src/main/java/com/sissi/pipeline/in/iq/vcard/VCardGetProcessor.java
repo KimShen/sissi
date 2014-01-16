@@ -3,7 +3,7 @@ package com.sissi.pipeline.in.iq.vcard;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.Protocol.Type;
+import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.vcard.VCard;
 import com.sissi.ucenter.VCardContext;
 
@@ -21,7 +21,7 @@ abstract class VCardGetProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(this.get(context, protocol).getParent().reply().setTo(context.getJid()).setType(Type.RESULT));
+		context.write(this.get(context, protocol).getParent().reply().setTo(context.getJid()).setType(ProtocolType.RESULT));
 		return true;
 	}
 

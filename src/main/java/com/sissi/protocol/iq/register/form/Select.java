@@ -23,7 +23,7 @@ public class Select extends Input {
 	}
 
 	public Select(String name, String var, Required required, XOption... options) {
-		super(Type.LIST_SINGLE.toString(), name, var, required);
+		super(InputType.LIST_SINGLE.toString(), name, var, required);
 		if (options != null) {
 			for (XOption each : options) {
 				this.add(each);

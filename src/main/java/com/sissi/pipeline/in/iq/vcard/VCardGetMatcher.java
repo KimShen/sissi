@@ -2,7 +2,6 @@ package com.sissi.pipeline.in.iq.vcard;
 
 import com.sissi.pipeline.in.ClassMatcher;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.vcard.VCard;
 
 /**
@@ -19,6 +18,6 @@ public class VCardGetMatcher extends ClassMatcher {
 
 	@Override
 	public Boolean match(Protocol protocol) {
-		return super.match(protocol) && (IQ.class.cast(protocol.getParent()).getTo() == null) == this.self;
+		return super.match(protocol) && (protocol.getParent().getTo() == null) == this.self;
 	}
 }

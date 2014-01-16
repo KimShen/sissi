@@ -5,10 +5,9 @@ import java.util.Set;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.Protocol.Type;
+import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.ServerErrorText.Xmlns;
-import com.sissi.protocol.error.element.BadRequest;
+import com.sissi.protocol.error.detail.BadRequest;
 
 /**
  * @author kim 2014年1月14日
@@ -26,11 +25,6 @@ public class IQCheckAuthProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return context.isAuth() || !this.authes.contains(protocol.getClass()) ? true : this.writeAndReturn(context, protocol);
-	}
-
-	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.reply().setError(new ServerError().setType(Type.AUTH).add(BadRequest.DETAIL, context.getLang(), ERROR_TEXT, Xmlns.XMLNS_STANZAS)));
-		return false;
+		return (context.isAuth() || !this.authes.contains(protocol.getClass())) ? true : !context.write(protocol.reply().setError(new ServerError().setType(ProtocolType.AUTH).add(BadRequest.DETAIL, context.getLang(), ERROR_TEXT))).close();
 	}
 }

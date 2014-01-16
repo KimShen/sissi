@@ -10,7 +10,7 @@
 		<property name="fileEncoding" value="utf-8" />
 	</bean>
 
-	<bean id="mongo.client" class="com.mongodb.MongoClient">
+	<bean id="mongo" class="com.mongodb.MongoClient">
 		<constructor-arg value="${mongo.host}" />
 	</bean>
 	

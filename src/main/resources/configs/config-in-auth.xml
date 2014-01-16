@@ -5,28 +5,27 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<alias name="auth.sasl.cached" alias="auth.sasl" />
-	<bean id="auth.sasl.cached" class="com.sissi.pipeline.in.auth.impl.CachedSaslServers" />
+	<bean id="auth.sasl" class="com.sissi.pipeline.in.auth.impl.CachedSaslServers" />
 
-	<bean id="auth.call.plain" class="com.sissi.pipeline.in.auth.impl.PlainAuthCallback">
-		<constructor-arg ref="builder.jid" />
-		<constructor-arg ref="ucenter.accessor" />
-	</bean>
-	<bean id="auth.call.digest" class="com.sissi.pipeline.in.auth.impl.DigestAuthCallback">
-		<constructor-arg value="${global.main.domain}" />
-		<constructor-arg ref="auth.sasl" />
-		<constructor-arg ref="builder.jid" />
-		<constructor-arg ref="ucenter.accessor" />
-	</bean>
-	<util:list id="auth.call.chained">
-		<ref bean="auth.call.plain" />
-		<ref bean="auth.call.digest" />
+	<util:list id="auth.callback.chained">
+		<bean class="com.sissi.pipeline.in.auth.impl.PlainAuthCallback">
+			<constructor-arg ref="jid" />
+			<constructor-arg ref="accessor" />
+		</bean>
+		<bean class="com.sissi.pipeline.in.auth.impl.DigestAuthCallback">
+			<constructor-arg value="${global.domain}" />
+			<constructor-arg>
+				<ref bean="auth.sasl" />
+			</constructor-arg>
+			<constructor-arg ref="jid" />
+			<constructor-arg ref="accessor" />
+		</bean>
 	</util:list>
 
 	<bean id="auth.pro.failed" class="com.sissi.pipeline.in.auth.impl.AuthFailedProcessor" />
 	<bean id="auth.pro.abort" class="com.sissi.pipeline.in.auth.impl.AuthAbortProcessor" />
 	<bean id="auth.pro.fork" class="com.sissi.pipeline.in.auth.impl.AuthForkProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="auth.call.chained" />
+		<constructor-arg ref="auth.callback.chained" />
 	</bean>
 	<bean id="auth.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -36,13 +35,13 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="auth.pro.digest" class="com.sissi.pipeline.in.auth.impl.DigestAuthProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="auth.sasl" />
-	</bean>
+
 	<bean id="auth.pro.digest.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="auth.pro.digest" />
+				<bean class="com.sissi.pipeline.in.auth.impl.DigestAuthProcessor" parent="global.pro.proxy">
+					<constructor-arg ref="auth.sasl" />
+				</bean>
 				<ref bean="auth.pro.failed" />
 			</util:list>
 		</constructor-arg>

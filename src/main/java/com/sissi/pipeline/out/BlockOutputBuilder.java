@@ -12,7 +12,6 @@ import com.sissi.protocol.Element;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.ucenter.BlockContext;
-import com.sissi.write.Transfer;
 
 /**
  * @author kim 2013年12月9日
@@ -32,13 +31,6 @@ abstract class BlockOutputBuilder implements OutputBuilder {
 		this.blockSupports.add(Presence.class);
 		this.blockSupports.add(Message.class);
 	}
-
-	@Override
-	public Output build(Transfer transfer) {
-		return this.buildBlock(transfer);
-	}
-
-	abstract protected BlockOutput buildBlock(Transfer transfer);
 
 	abstract protected class BlockOutput implements Output {
 

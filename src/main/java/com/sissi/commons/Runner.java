@@ -2,10 +2,15 @@ package com.sissi.commons;
 
 import java.util.concurrent.Executor;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * @author kim 2013年11月28日
  */
 public class Runner {
+
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final Executor executor;
 
@@ -18,5 +23,6 @@ public class Runner {
 		for (int num = 0; num < threadNum; num++) {
 			this.executor.execute(runnable);
 		}
+		this.log.debug("Executor " + threadNum + " for " + runnable.getClass());
 	}
 }

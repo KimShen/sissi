@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="vcard.pro.set" class="com.sissi.pipeline.in.iq.vcard.VCardSetProcessor">
-		<constructor-arg ref="ucenter.vcard" />
+		<constructor-arg ref="vcard" />
 	</bean>
 	<bean id="vcard.pro.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -17,17 +17,10 @@
 		</constructor-arg>
 	</bean>
 	<bean id="vcard.pro.get.2fans" class="com.sissi.pipeline.in.iq.vcard.VCardGet2FansProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.vcard" />
+		<constructor-arg ref="vcard" />
 	</bean>
 	<bean id="vcard.pro.get.2self" class="com.sissi.pipeline.in.iq.vcard.VCardGet2SelfProcessor">
-		<constructor-arg ref="ucenter.vcard" />
-	</bean>
-	<bean id="vcard.pro.get.chained" class="com.sissi.pipeline.in.ChainedProcessor">
-		<constructor-arg>
-			<util:list>
-				<ref bean="vcard.pro.get.fork" />
-			</util:list>
-		</constructor-arg>
+		<constructor-arg ref="vcard" />
 	</bean>
 	<bean id="vcard.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.vcard" />
@@ -79,7 +72,7 @@
 				<constructor-arg value="GET" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="vcard.pro.get.chained" />
+		<constructor-arg ref="vcard.pro.get.fork" />
 	</bean>
 	<bean id="vcard.condition.get.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

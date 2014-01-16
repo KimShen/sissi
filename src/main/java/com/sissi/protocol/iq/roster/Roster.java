@@ -19,28 +19,6 @@ import com.sissi.read.MappingMetadata;
 @XmlRootElement(name = Roster.NAME)
 public class Roster extends Protocol implements Collector {
 
-	public static enum Subscription {
-
-		TO, BOTH, NONE;
-
-		private final static String REMOVE = "remove";
-
-		public String toString() {
-			return super.toString().toLowerCase();
-		}
-
-		public Boolean equals(String subscribe) {
-			return this == Subscription.parse(subscribe);
-		}
-
-		public static Subscription parse(String subscribe) {
-			if (subscribe == null || subscribe.toLowerCase() == REMOVE) {
-				return NONE;
-			}
-			return Subscription.valueOf(subscribe.toUpperCase());
-		}
-	}
-
 	public final static String XMLNS = "jabber:iq:roster";
 
 	public final static String NAME = "query";

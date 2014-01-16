@@ -6,14 +6,10 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="bytestreams.proxy" class="com.sissi.protocol.iq.bytestreams.BytestreamsProxy">
-		<constructor-arg index="0" value="${bytestreams.proxy.jid}" />
-		<constructor-arg index="1" value="${bytestreams.proxy.name}" />
-		<constructor-arg index="2" value="${bytestreams.proxy.host}" />
-		<constructor-arg index="3" value="${bytestreams.proxy.port}" />
-	</bean>
-
-	<bean id="bytestreams.comparator" class="com.sissi.protocol.iq.bytestreams.StreamhostComparator">
-		<constructor-arg ref="bytestreams.proxy" />
+		<constructor-arg index="0" value="${bytestreams.jid}" />
+		<constructor-arg index="1" value="${bytestreams.name}" />
+		<constructor-arg index="2" value="${bytestreams.host}" />
+		<constructor-arg index="3" value="${bytestreams.port}" />
 	</bean>
 
 	<bean id="bytestreams.pro.2activate" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ActivateProcessor" />
@@ -24,7 +20,11 @@
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
 	<bean id="bytestreams.pro.2fans" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2FansProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="bytestreams.comparator" />
+		<constructor-arg>
+			<bean class="com.sissi.protocol.iq.bytestreams.StreamhostComparator">
+				<constructor-arg ref="bytestreams.proxy" />
+			</bean>
+		</constructor-arg>
 	</bean>
 	<bean id="bytestreams.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.iq.bytestreams" />
@@ -59,7 +59,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToServerMatcher">
 				<constructor-arg index="0" value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
-				<constructor-arg index="1" value="${global.main.domain}" />
+				<constructor-arg index="1" value="${global.domain}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="bytestreams.pro.2server" />
@@ -68,7 +68,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
 				<constructor-arg index="0" value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
-				<constructor-arg index="1" value="${bytestreams.proxy.jid}" />
+				<constructor-arg index="1" value="${bytestreams.jid}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="bytestreams.pro.2proxy" />

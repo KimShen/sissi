@@ -6,27 +6,13 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="roster.pro.get" class="com.sissi.pipeline.in.iq.roster.RosterGetProcessor" parent="global.pro.proxy" />
-	<bean id="roster.pro.get.chained" class="com.sissi.pipeline.in.ChainedProcessor">
-		<constructor-arg>
-			<util:list>
-				<ref bean="roster.pro.get" />
-			</util:list>
-		</constructor-arg>
-	</bean>
 	<bean id="roster.pro.establish.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.iq.roster.establish" />
-	</bean>
-	<bean id="roster.pro.establish.fork.chained" class="com.sissi.pipeline.in.ChainedProcessor">
-		<constructor-arg>
-			<util:list>
-				<ref bean="roster.pro.establish.fork" />
-			</util:list>
-		</constructor-arg>
 	</bean>
 	<bean id="roster.pro.establish.set" class="com.sissi.pipeline.in.iq.roster.RosterSetProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.set.check.loop" class="com.sissi.pipeline.in.iq.roster.RosterSetCheckLoopProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.set.check.exists" class="com.sissi.pipeline.in.iq.roster.RosterSetCheckExistsProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.vcard" />
+		<constructor-arg ref="vcard" />
 	</bean>
 	<bean id="roster.pro.establish.set.2selfs.item" class="com.sissi.pipeline.in.iq.roster.RosterSet2SelfsItemProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.set.2selfs.presence" class="com.sissi.pipeline.in.iq.roster.Roster2SelfsPresenceProcessor" parent="global.pro.proxy" />
@@ -60,13 +46,6 @@
 	<bean id="roster.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.iq.roster" />
 	</bean>
-	<bean id="roster.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
-		<constructor-arg>
-			<util:list>
-				<ref bean="roster.pro.fork" />
-			</util:list>
-		</constructor-arg>
-	</bean>
 
 	<bean id="finder.iq.roster" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
@@ -93,7 +72,7 @@
 				<constructor-arg value="com.sissi.protocol.iq.roster.Roster" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="roster.pro.chained" />
+		<constructor-arg ref="roster.pro.fork" />
 	</bean>
 	<bean id="roster.condition.get" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
@@ -102,7 +81,7 @@
 				<constructor-arg value="GET" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="roster.pro.get.chained" />
+		<constructor-arg ref="roster.pro.get" />
 	</bean>
 	<bean id="roster.condition.establish" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
@@ -111,7 +90,7 @@
 				<constructor-arg value="SET" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="roster.pro.establish.fork.chained" />
+		<constructor-arg ref="roster.pro.establish.fork" />
 	</bean>
 	<bean id="roster.condition.establish.set" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

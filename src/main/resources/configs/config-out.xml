@@ -5,23 +5,21 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="builder.output.block.4fans" class="com.sissi.pipeline.out.Block4FansOutputBuilder">
-		<constructor-arg ref="ucenter.block" />
-		<constructor-arg ref="builder.jid" />
+	<bean id="output.block" abstract="true">
+		<constructor-arg ref="block" />
+		<constructor-arg ref="jid" />
 	</bean>
-	<bean id="builder.output.block.2fans" class="com.sissi.pipeline.out.Block2FansOutputBuilder">
-		<constructor-arg ref="ucenter.block" />
-		<constructor-arg ref="builder.jid" />
-	</bean>
-	<bean id="builder.output.network" class="com.sissi.pipeline.out.NetworkOutputBuilder">
-		<constructor-arg ref="writer" />
-	</bean>
-	<bean id="builder.output" class="com.sissi.pipeline.out.ChainedOutputBuilder">
+
+	<bean id="output" class="com.sissi.pipeline.out.ChainedOutputBuilder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="builder.output.block.2fans" />
-				<ref bean="builder.output.block.4fans" />
-				<ref bean="builder.output.network" />
+				<bean class="com.sissi.pipeline.out.Block4FansOutputBuilder" parent="output.block" />
+				<bean class="com.sissi.pipeline.out.Block2FansOutputBuilder" parent="output.block" />
+				<bean class="com.sissi.pipeline.out.NetworkOutputBuilder">
+					<constructor-arg>
+						<bean class="com.sissi.write.jaxb.JAXBWriter" />
+					</constructor-arg>
+				</bean>
 			</util:list>
 		</constructor-arg>
 	</bean>

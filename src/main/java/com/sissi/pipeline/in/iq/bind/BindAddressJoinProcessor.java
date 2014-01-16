@@ -12,7 +12,6 @@ public class BindAddressJoinProcessor extends ProxyProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		super.join(context);
-		context.setBinding(true);
-		return true;
+		return context.setBinding(true).isBinding();
 	}
 }

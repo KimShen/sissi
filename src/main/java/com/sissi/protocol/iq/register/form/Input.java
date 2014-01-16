@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.ucenter.field.Field;
+import com.sissi.ucenter.field.Fields;
 
 /**
  * @author kim 2013年12月4日
@@ -29,15 +30,19 @@ public class Input implements Field<String> {
 	}
 
 	public Input(String type, String name, String var, Required required) {
-		this.type = Type.parse(type).toString();
+		this.type = InputType.parse(type).toString();
 		this.name = name;
 		this.var = var;
 		this.required = required;
 	}
 
 	@Override
-	@XmlAttribute(name = "label")
 	public String getName() {
+		return this.name;
+	}
+
+	@XmlAttribute(name = "label")
+	public String getLabel() {
 		return this.name;
 	}
 

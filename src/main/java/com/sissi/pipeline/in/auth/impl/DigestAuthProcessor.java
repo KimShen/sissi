@@ -38,12 +38,19 @@ public class DigestAuthProcessor extends ProxyProcessor {
 	}
 
 	private Boolean isSuccess(JIDContext context, Protocol protocol) throws SaslException {
-		SaslServer sasl = this.saslServers.get(context);
+		SaslServer sasl = null;
 		try {
-			context.write(new Success(sasl.evaluateResponse(Response.class.cast(protocol).getResponse()))).setAuth(true);
-			return true;
+			return (sasl = this.saslServers.get(context)) != null ? context.write(new Success(sasl.evaluateResponse(Response.class.cast(protocol).getResponse()))).setAuth(true).isAuth() : false;
 		} finally {
+			this.close(context, sasl);
+		}
+	}
+
+	private void close(JIDContext context, SaslServer sasl) throws SaslException {
+		if (sasl != null && sasl.isComplete()) {
 			sasl.dispose();
+		} else {
+			this.log.warn("SASL can not be free on " + context.getJid().asString());
 		}
 	}
 }

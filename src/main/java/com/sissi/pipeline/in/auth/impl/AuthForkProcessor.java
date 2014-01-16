@@ -27,9 +27,9 @@ public class AuthForkProcessor extends ProxyProcessor {
 		Auth auth = Auth.class.cast(protocol);
 		for (AuthCallback ac : this.authCallbacks) {
 			if (ac.isSupport(auth.getMechanism())) {
-				return !ac.auth(context, auth);
+				return !ac.auth(auth, context);
 			}
 		}
-		return !context.write(Failure.INSTANCE_INVALIDMECHANISM).write(Stream.closeGracefully()).close();
+		return !context.write(Failure.INSTANCE_INVALIDMECHANISM).write(Stream.close()).close();
 	}
 }

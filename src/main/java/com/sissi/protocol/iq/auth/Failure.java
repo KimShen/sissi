@@ -12,17 +12,16 @@ import com.sissi.protocol.Error;
 import com.sissi.protocol.ErrorDetail;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.error.ServerErrorText;
-import com.sissi.protocol.error.ServerErrorText.Xmlns;
-import com.sissi.protocol.error.element.Aborted;
-import com.sissi.protocol.error.element.AccountDisabled;
-import com.sissi.protocol.error.element.CredentialsExpired;
-import com.sissi.protocol.error.element.EncryptionRequired;
-import com.sissi.protocol.error.element.IncorrectEncoding;
-import com.sissi.protocol.error.element.InvalidMechanism;
-import com.sissi.protocol.error.element.MalformedRequest;
-import com.sissi.protocol.error.element.MechanismTooWeak;
-import com.sissi.protocol.error.element.NotAuthorized;
-import com.sissi.protocol.error.element.TemporaryAuthFailure;
+import com.sissi.protocol.error.detail.Aborted;
+import com.sissi.protocol.error.detail.AccountDisabled;
+import com.sissi.protocol.error.detail.CredentialsExpired;
+import com.sissi.protocol.error.detail.EncryptionRequired;
+import com.sissi.protocol.error.detail.IncorrectEncoding;
+import com.sissi.protocol.error.detail.InvalidMechanism;
+import com.sissi.protocol.error.detail.MalformedRequest;
+import com.sissi.protocol.error.detail.MechanismTooWeak;
+import com.sissi.protocol.error.detail.NotAuthorized;
+import com.sissi.protocol.error.detail.TemporaryAuthFailure;
 
 /**
  * @author Kim.shen 2013-10-19
@@ -32,7 +31,7 @@ public class Failure extends Protocol implements Error {
 
 	public final static Failure INSTANCE_INVALIDMECHANISM = new Failure().add(InvalidMechanism.DETAIL);
 
-	public final static Failure INSTANCE_NOTAUTHORIZED = new Failure().add(NotAuthorized.DETAIL);
+	public final static Failure INSTANCE_NOTAUTHORIZED = new Failure().add(NotAuthorized.DETAIL_ELEMENT);
 
 	public final static Failure INSTANCE_ABORTED = new Failure().add(Aborted.DETAIL);
 
@@ -49,7 +48,7 @@ public class Failure extends Protocol implements Error {
 
 	public Failure(String code, String lang, String text) {
 		this.code = code;
-		this.text = new ServerErrorText(lang, text, Xmlns.XMLNS_STREAM);
+		this.text = new ServerErrorText(lang, text, null);
 	}
 
 	public Failure(String by, String code, String lang, String text) {
@@ -90,6 +89,6 @@ public class Failure extends Protocol implements Error {
 
 	@XmlElements({ @XmlElement(name = TemporaryAuthFailure.NAME, type = TemporaryAuthFailure.class), @XmlElement(name = MechanismTooWeak.NAME, type = MechanismTooWeak.class), @XmlElement(name = MalformedRequest.NAME, type = MalformedRequest.class), @XmlElement(name = InvalidMechanism.NAME, type = InvalidMechanism.class), @XmlElement(name = IncorrectEncoding.NAME, type = IncorrectEncoding.class), @XmlElement(name = EncryptionRequired.NAME, type = EncryptionRequired.class), @XmlElement(name = CredentialsExpired.NAME, type = CredentialsExpired.class), @XmlElement(name = AccountDisabled.NAME, type = AccountDisabled.class), @XmlElement(name = Aborted.NAME, type = Aborted.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class) })
 	public List<ErrorDetail> getDetails() {
-		return details;
+		return this.details;
 	}
 }

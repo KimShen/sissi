@@ -27,26 +27,28 @@
 		<constructor-arg>
 			<set>
 				<value>com.sissi.protocol.iq.roster.Roster</value>
+				<value>com.sissi.protocol.iq.ping.Ping</value>
+				<value>com.sissi.protocol.iq.block.Blocked</value>
+				<value>com.sissi.protocol.iq.block.BlockList</value>
+				<value>com.sissi.protocol.iq.block.UnBlock</value>
+				<value>com.sissi.protocol.iq.bytestreams.Bytestreams</value>
+				<value>com.sissi.protocol.iq.disco.DiscoInfo</value>
+				<value>com.sissi.protocol.iq.disco.DiscoItems</value>
+				<value>com.sissi.protocol.iq.si.Si</value>
+				<value>com.sissi.protocol.iq.vcard.VCard</value>
 			</set>
 		</constructor-arg>
 	</bean>
-	<bean id="iq.pro.check.type.limit" class="com.sissi.pipeline.in.iq.IQCheckTypeLimitProcessor" />
-	<bean id="iq.pro.check.type.content" class="com.sissi.pipeline.in.iq.IQCheckTypeContentProcessor" />
-
+	<bean id="iq.pro.check.type" class="com.sissi.pipeline.in.iq.IQCheckTypeProcessor" />
+	<bean id="iq.pro.check.children" class="com.sissi.pipeline.in.iq.IQCheckChildrenProcessor" />
 	<bean id="iq.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<bean class="com.sissi.pipeline.in.ChainedProcessor">
-					<constructor-arg>
-						<util:list>
-							<ref bean="iq.pro.check.auth" />
-							<ref bean="iq.pro.check.type.limit" />
-							<ref bean="iq.pro.check.type.content" />
-							<ref bean="iq.pro.fork" />
-							<ref bean="pong.pro" />
-						</util:list>
-					</constructor-arg>
-				</bean>
+				<ref bean="iq.pro.check.auth" />
+				<ref bean="iq.pro.check.type" />
+				<ref bean="iq.pro.check.children" />
+				<ref bean="iq.pro.fork" />
+				<ref bean="pong.pro" />
 			</util:list>
 		</constructor-arg>
 	</bean>

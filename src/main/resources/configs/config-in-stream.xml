@@ -14,22 +14,22 @@
 	<bean id="stream.pro.feature.starttls" class="com.sissi.pipeline.in.stream.StreamFeatureStarttlsProcessor" />
 	<bean id="stream.pro.feature.binding" class="com.sissi.pipeline.in.stream.StreamFeatureBindingProcessor" />
 	<bean id="stream.pro.feature.auth" class="com.sissi.pipeline.in.stream.StreamFeatureAuthProcessor" />
-	<bean id="stream.pro.check.to" class="com.sissi.pipeline.in.stream.StreamCheckToProcessor">
-		<constructor-arg value="${global.main.domain}" />
+	<bean id="stream.pro.check.domain" class="com.sissi.pipeline.in.stream.StreamCheckDomainProcessor">
+		<constructor-arg value="${global.domain}" />
 	</bean>
 	<bean id="stream.pro.check.xmlns" class="com.sissi.pipeline.in.stream.StreamCheckXmlnsProcessor">
-		<constructor-arg value="${global.main.domain}" />
+		<constructor-arg value="${global.domain}" />
 	</bean>
 	<bean id="stream.pro.check.version" class="com.sissi.pipeline.in.stream.StreamCheckVersionProcessor">
-		<constructor-arg value="${global.main.domain}" />
+		<constructor-arg value="${global.domain}" />
 		<constructor-arg value="${global.version}" />
 	</bean>
 	<bean id="stream.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="stream.pro.close" />
-				<ref bean="stream.pro.check.to" />
 				<ref bean="stream.pro.check.xmlns" />
+				<ref bean="stream.pro.check.domain" />
 				<ref bean="stream.pro.check.version" />
 				<ref bean="stream.pro.feature.auth" />
 				<ref bean="stream.pro.feature.binding" />

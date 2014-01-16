@@ -32,7 +32,7 @@ public class BlockList extends Protocol {
 
 	@XmlElements({ @XmlElement(name = "item", type = BlockListItem.class) })
 	public List<BlockListItem> getItem() {
-		return item;
+		return this.item;
 	}
 
 	@XmlAttribute

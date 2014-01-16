@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlValue;
 import com.sissi.protocol.iq.vcard.VCard;
 import com.sissi.read.MappingMetadata;
 import com.sissi.ucenter.field.Field;
+import com.sissi.ucenter.field.Fields;
 
 /**
  * @author kim 2013年12月10日

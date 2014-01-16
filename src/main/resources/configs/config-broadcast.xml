@@ -6,11 +6,10 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="broadcast.any" abstract="true">
-		<property name="jidBuilder" ref="builder.jid" />
+		<property name="jidBuilder" ref="jid" />
 		<property name="addressing" ref="addressing" />
-		<property name="relationContext" ref="ucenter.relation.roster" />
+		<property name="relationContext" ref="relation.roster" />
 	</bean>
-
 	<bean id="broadcast.presence.self" class="com.sissi.broadcast.impl.ToSelfPresenceQueue" parent="broadcast.any" />
 	<bean id="broadcast.presence.selfs" class="com.sissi.broadcast.impl.ToSelfsPresenceQueue" parent="broadcast.any" />
 	<bean id="broadcast.protocol.self" class="com.sissi.broadcast.impl.ToSelfProtocolQueue" parent="broadcast.any" />

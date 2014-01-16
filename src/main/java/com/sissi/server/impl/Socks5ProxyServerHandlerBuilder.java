@@ -29,6 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.protocol.iq.bytestreams.BytestreamsProxy;
+import com.sissi.resource.ResourceMonitor;
 import com.sissi.server.Exchanger;
 import com.sissi.server.ExchangerCloser;
 import com.sissi.server.ExchangerContext;
@@ -42,20 +43,21 @@ public class Socks5ProxyServerHandlerBuilder {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private final String EXCHANGER = "exchanger";
-
 	private final ExchangerContext exchangerContext;
 
 	private final AttributeKey<Exchanger> exchanger;
+
+	private final ResourceMonitor resourceMonitor;
 
 	private final byte[] init;
 
 	private final byte[] cmd;
 
-	public Socks5ProxyServerHandlerBuilder(BytestreamsProxy proxy, ExchangerContext exchangerContext) {
+	public Socks5ProxyServerHandlerBuilder(BytestreamsProxy proxy, ExchangerContext exchangerContext, ResourceMonitor resourceMonitor) {
 		super();
 		this.exchangerContext = exchangerContext;
-		this.exchanger = AttributeKey.valueOf(EXCHANGER);
+		this.resourceMonitor = resourceMonitor;
+		this.exchanger = AttributeKey.valueOf("exchanger");
 		this.init = this.prepareStatic(this.buildInit());
 		this.cmd = this.prepareStatic(this.buildCmd(proxy));
 	}
@@ -83,9 +85,15 @@ public class Socks5ProxyServerHandlerBuilder {
 	}
 
 	private class Sock5ProxyServerHandler extends ChannelInboundHandlerAdapter {
-		
+
+		public void channelRegistered(final ChannelHandlerContext ctx) throws Exception {
+			super.channelRegistered(ctx);
+			Socks5ProxyServerHandlerBuilder.this.resourceMonitor.increment();
+		}
+
 		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
 			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close(ExchangerCloser.INITER);
+			Socks5ProxyServerHandlerBuilder.this.resourceMonitor.decrement();
 		}
 
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
@@ -101,7 +109,7 @@ public class Socks5ProxyServerHandlerBuilder {
 		}
 
 		public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-			if (evt.getClass().isAssignableFrom(IdleStateEvent.class) && IdleStateEvent.class.cast(evt).state() == IdleState.WRITER_IDLE) {
+			if (evt.getClass() == IdleStateEvent.class && IdleStateEvent.class.cast(evt).state() == IdleState.WRITER_IDLE) {
 				ctx.close();
 			}
 		}

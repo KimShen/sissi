@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.sissi.read.Collector;
 import com.sissi.read.MappingMetadata;
 import com.sissi.ucenter.field.Field;
+import com.sissi.ucenter.field.Fields;
 
 /**
  * @author kim 2013年12月5日
@@ -16,7 +17,7 @@ import com.sissi.ucenter.field.Field;
 public class XOption implements Field<XValue>, Collector {
 
 	public final static String NAME = "option";
-	
+
 	private String name;
 
 	private XValue xValue;
@@ -29,8 +30,12 @@ public class XOption implements Field<XValue>, Collector {
 		this.xValue = new XValue(value);
 	}
 
-	@XmlAttribute(name = "label")
 	public String getName() {
+		return this.name;
+	}
+
+	@XmlAttribute(name = "label")
+	public String getLabel() {
 		return this.name;
 	}
 

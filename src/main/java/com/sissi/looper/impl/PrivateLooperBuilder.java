@@ -1,8 +1,6 @@
 package com.sissi.looper.impl;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.logging.Log;
@@ -14,6 +12,7 @@ import com.sissi.feed.Feeder;
 import com.sissi.looper.Looper;
 import com.sissi.looper.LooperBuilder;
 import com.sissi.protocol.Protocol;
+import com.sissi.resource.ResourceMonitor;
 
 /**
  * @author kim 2013-10-30
@@ -28,17 +27,14 @@ public class PrivateLooperBuilder implements LooperBuilder {
 
 	private final Interval interval;
 
-	/**
-	 * Open num of "threads" Listener
-	 * @param runner
-	 * @param interval
-	 * @param threads
-	 */
-	public PrivateLooperBuilder(Runner runner, Interval interval, Integer threads) {
+	private final ResourceMonitor resourceMonitor;
+
+	public PrivateLooperBuilder(Runner runner, Interval interval, Integer threads, ResourceMonitor resourceMonitor) {
 		super();
 		this.runner = runner;
 		this.threads = threads;
 		this.interval = interval;
+		this.resourceMonitor = resourceMonitor;
 	}
 
 	@Override
@@ -63,22 +59,27 @@ public class PrivateLooperBuilder implements LooperBuilder {
 
 		@Override
 		public void run() {
-			while (true) {
-				try {
-					if (this.prepareStop()) {
-						break;
-					}
-					this.getAndFeed();
-				} catch (Exception e) {
-					if (PrivateLooperBuilder.this.log.isDebugEnabled()) {
-						PrivateLooperBuilder.this.log.debug(e.toString());
-						e.printStackTrace();
+			try {
+				PrivateLooperBuilder.this.resourceMonitor.increment();
+				while (true) {
+					try {
+						if (this.prepareStop()) {
+							break;
+						}
+						this.getAndFeed();
+					} catch (Exception e) {
+						if (PrivateLooperBuilder.this.log.isDebugEnabled()) {
+							PrivateLooperBuilder.this.log.debug(e.toString());
+							e.printStackTrace();
+						}
 					}
 				}
+			} finally {
+				PrivateLooperBuilder.this.resourceMonitor.decrement();
 			}
 		}
 
-		private void getAndFeed() throws InterruptedException, ExecutionException, TimeoutException {
+		private void getAndFeed() throws Exception {
 			Protocol protocol = (Protocol) future.get(PrivateLooperBuilder.this.interval.getInterval(), PrivateLooperBuilder.this.interval.getUnit());
 			if (protocol != null) {
 				this.feeder.feed(protocol);

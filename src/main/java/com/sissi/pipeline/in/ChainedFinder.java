@@ -5,19 +5,20 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.pipeline.InputCondition;
 import com.sissi.pipeline.InputFinder;
 import com.sissi.protocol.Protocol;
 
 /**
- * Chained, if none input match protocol, using NothingProcessor
- * 
  * @author kim 2013-11-4
  */
 public class ChainedFinder implements InputFinder {
 
 	private final Log log = LogFactory.getLog(this.getClass());
+
+	private final Input nothing = new NothingProcessor();
 
 	private final List<InputCondition> conditions;
 
@@ -34,6 +35,21 @@ public class ChainedFinder implements InputFinder {
 				return input;
 			}
 		}
-		return NothingProcessor.NOTHING;
+		return this.nothing;
+	}
+
+	private class NothingProcessor implements Input {
+
+		private final Log log = LogFactory.getLog(this.getClass());
+
+		private NothingProcessor() {
+
+		}
+
+		@Override
+		public Boolean input(JIDContext context, Protocol current) {
+			this.log.warn("Nothing for " + current.getClass() + ", please check");
+			return false;
+		}
 	}
 }

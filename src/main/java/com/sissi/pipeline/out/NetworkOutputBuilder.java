@@ -49,14 +49,14 @@ public class NetworkOutputBuilder implements OutputBuilder {
 		@Override
 		public Boolean output(JIDContext context, Element node) {
 			ByteBufferOutputStream output = new ByteBufferOutputStream();
+			BufferedOutputStream buf = new BufferedOutputStream(output);
 			try {
-				BufferedOutputStream buf = new BufferedOutputStream(output);
-				NetworkOutputBuilder.this.writer.write(context, node, new BufferedOutputStream(output));
-				buf.flush();
+				NetworkOutputBuilder.this.writer.write(context, node, buf);
 				this.transfer.transfer(output.getBuffer().nioBuffer());
 			} catch (IOException e) {
 				NetworkOutputBuilder.this.log.error(e.toString());
 			} finally {
+				IOUtils.closeQuietly(buf);
 				IOUtils.closeQuietly(output);
 			}
 			return false;

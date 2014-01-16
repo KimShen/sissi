@@ -7,7 +7,7 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.register.Register;
 import com.sissi.ucenter.RegisterContext;
-import com.sissi.ucenter.field.Field.Fields;
+import com.sissi.ucenter.field.Fields;
 
 /**
  * @author kim 2013年12月5日

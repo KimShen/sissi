@@ -22,10 +22,10 @@ public class ChainedOutputBuilder implements OutputBuilder {
 	}
 
 	@Override
-	public Output build(Transfer writeable) {
+	public Output build(Transfer transfer) {
 		ChainedOutput output = new ChainedOutput();
 		for (OutputBuilder builder : this.builders) {
-			output.add(builder.build(writeable));
+			output.add(builder.build(transfer));
 		}
 		return output;
 	}

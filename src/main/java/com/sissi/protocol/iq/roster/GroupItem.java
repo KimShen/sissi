@@ -17,19 +17,6 @@ import com.sissi.read.MappingMetadata;
 @XmlRootElement(name = Item.NAME)
 public class GroupItem extends Item implements Collector {
 
-	public static enum Action {
-
-		ADD, REMOVE;
-
-		public static Action parse(String action) {
-			return action == null ? ADD : Action.valueOf(action.toUpperCase());
-		}
-
-		public String toString() {
-			return super.toString().toLowerCase();
-		}
-	}
-
 	private Group group;
 
 	private String subscription;
@@ -63,7 +50,7 @@ public class GroupItem extends Item implements Collector {
 		return this;
 	}
 
-	public Action getAction() {
-		return Action.parse(this.getSubscription());
+	public GroupAction getAction() {
+		return GroupAction.parse(this.getSubscription());
 	}
 }

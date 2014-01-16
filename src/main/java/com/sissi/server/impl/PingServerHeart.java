@@ -11,9 +11,10 @@ import org.apache.commons.logging.LogFactory;
 import com.sissi.commons.Interval;
 import com.sissi.commons.Runner;
 import com.sissi.context.JIDContext;
-import com.sissi.protocol.Protocol.Type;
+import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.ping.Ping;
+import com.sissi.resource.ResourceMonitor;
 import com.sissi.server.ServerHeart;
 
 /**
@@ -21,35 +22,38 @@ import com.sissi.server.ServerHeart;
  */
 public class PingServerHeart implements ServerHeart, Runnable {
 
-	private final Integer GC_THREAD = 1;
-	
+	private final Integer timeoutThreads = 1;
+
 	private final AtomicLong eids = new AtomicLong();
 
-	private final DelayQueue<GC> gcs = new DelayQueue<GC>();
-	
+	private final DelayQueue<PingTimeout> timeouts = new DelayQueue<PingTimeout>();
+
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final Interval interval;
 
-	public PingServerHeart(Runner runner, Interval interval) {
+	private final ResourceMonitor resourceMonitor;
+
+	public PingServerHeart(Runner runner, Interval interval, ResourceMonitor resourceMonitor) {
 		super();
 		this.interval = interval;
-		runner.executor(GC_THREAD, this);
+		this.resourceMonitor = resourceMonitor;
+		runner.executor(this.timeoutThreads, this);
 	}
 
 	@Override
 	public Long ping(JIDContext context) {
 		Long eid = this.eids.incrementAndGet();
-		this.gcs.add(new GC(context, this.interval));
-		context.write(new IQ().add(Ping.PING).setType(Type.GET).setId(eid));
+		this.timeouts.add(new PingTimeout(context));
+		context.write(new IQ().setId(eid).add(Ping.PING).setType(ProtocolType.GET));
 		return eid;
 	}
 
 	@Override
 	public void run() {
-		for (;;) {
+		while (true) {
 			try {
-				this.gcs.take().gc();
+				this.timeouts.take().gc();
 			} catch (Exception e) {
 				if (this.log.isWarnEnabled()) {
 					this.log.warn(e.toString());
@@ -59,19 +63,21 @@ public class PingServerHeart implements ServerHeart, Runnable {
 		}
 	}
 
-	private class GC implements Delayed {
+	private class PingTimeout implements Delayed {
 
 		private final JIDContext context;
 
-		private Long deadline;
+		private final Long deadline;
 
-		public GC(JIDContext context, Interval interval) {
+		public PingTimeout(JIDContext context) {
 			this.context = context;
-			this.deadline = TimeUnit.MILLISECONDS.convert(interval.getInterval(), interval.getUnit()) + System.currentTimeMillis();
+			this.deadline = TimeUnit.MILLISECONDS.convert(PingServerHeart.this.interval.getInterval(), PingServerHeart.this.interval.getUnit()) + System.currentTimeMillis();
+			PingServerHeart.this.resourceMonitor.increment();
 		}
 
-		public GC gc() {
+		public PingTimeout gc() {
 			this.context.closeTimeout();
+			PingServerHeart.this.resourceMonitor.decrement();
 			return this;
 		}
 

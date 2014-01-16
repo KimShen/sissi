@@ -17,13 +17,7 @@ import com.sissi.ucenter.BlockContext;
  */
 public class MongoBlockContext implements BlockContext {
 
-	private final String FIELD_BLOCK = "blocks";
-
 	private final List<String> EMPYT_BLOCKS = new ArrayList<String>();
-
-	private final DBObject FILTER_DEFAULT = BasicDBObjectBuilder.start("_id", 1).get();
-
-	private final DBObject FILTER_BLOCKS = BasicDBObjectBuilder.start(FIELD_BLOCK, 1).get();
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -36,45 +30,45 @@ public class MongoBlockContext implements BlockContext {
 
 	@Override
 	public BlockContext block(JID from, JID to) {
-		DBObject query = BasicDBObjectBuilder.start().add("username", from.getUser()).get();
-		DBObject entity = BasicDBObjectBuilder.start().add("$addToSet", BasicDBObjectBuilder.start().add(FIELD_BLOCK, to.getUser()).get()).get();
-		this.log.debug("Query: " + query);
-		this.log.debug("Entity: " + entity);
-		this.config.collection().update(query, entity);
-		return this;
-	}
-
-	public BlockContext unblock(JID from, JID to) {
-		DBObject query = BasicDBObjectBuilder.start().add("username", from.getUser()).get();
-		DBObject entity = BasicDBObjectBuilder.start().add("$pull", BasicDBObjectBuilder.start().add(FIELD_BLOCK, to.getUser()).get()).get();
-		this.log.debug("Query: " + query);
-		this.log.debug("Entity: " + entity);
-		this.config.collection().update(query, entity);
+		this.config.collection().update(this.buildQuery(from), this.buildEntity("$addToSet", to));
 		return this;
 	}
 
 	public BlockContext unblock(JID from) {
-		DBObject query = BasicDBObjectBuilder.start().add("username", from.getUser()).get();
-		DBObject entity = BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start().add(FIELD_BLOCK, 0).get()).get();
-		this.log.debug("Query: " + query);
+		DBObject entity = BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start().add(MongoCollection.FIELD_BLOCK, 0).get()).get();
 		this.log.debug("Entity: " + entity);
-		this.config.collection().update(query, entity);
+		this.config.collection().update(this.buildQuery(from), entity);
 		return this;
+	}
+
+	public BlockContext unblock(JID from, JID to) {
+		this.config.collection().update(this.buildQuery(from), this.buildEntity("$pull", to));
+		return this;
+	}
+
+	private DBObject buildQuery(JID from) {
+		DBObject query = BasicDBObjectBuilder.start().add("username", from.getUser()).get();
+		this.log.debug("Query: " + query);
+		return query;
+	}
+
+	private DBObject buildEntity(String op, JID to) {
+		DBObject entity = BasicDBObjectBuilder.start().add(op, BasicDBObjectBuilder.start().add(MongoCollection.FIELD_BLOCK, to.getUser()).get()).get();
+		this.log.debug("Entity: " + entity);
+		return entity;
 	}
 
 	@Override
 	public Boolean isBlock(JID from, JID to) {
-		DBObject query = BasicDBObjectBuilder.start().add("username", from.getUser()).add(FIELD_BLOCK, to.getUser()).get();
+		Object query = this.buildQuery(from).put(MongoCollection.FIELD_BLOCK, to.getUser());
 		this.log.debug("Query: " + query);
-		return this.config.collection().findOne(query, FILTER_DEFAULT) != null;
+		return this.config.collection().findOne(query, MongoCollection.FILTER_ID) != null;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> iBlockWho(JID from) {
-		DBObject query = BasicDBObjectBuilder.start("username", from.getUser()).get();
-		this.log.debug("Query is: " + query);
-		List<String> bans = (List<String>) this.config.collection().findOne(query, FILTER_BLOCKS).get(FIELD_BLOCK);
+		List<String> bans = (List<String>) this.config.collection().findOne(this.buildQuery(from), MongoCollection.FILTER_BLOCKS).get(MongoCollection.FIELD_BLOCK);
 		return bans != null ? bans : EMPYT_BLOCKS;
 	}
 }

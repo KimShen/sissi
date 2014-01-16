@@ -4,9 +4,7 @@ import com.sissi.context.JID;
 import com.sissi.context.Status;
 
 /**
- * Broadcast presence to jid with resource 
- * 
- * @author kim 2014年1月10日
+ * @author kim 2014年1月15日
  */
 public class ToSelfPresenceQueue extends ToAnyPresenceQueue {
 

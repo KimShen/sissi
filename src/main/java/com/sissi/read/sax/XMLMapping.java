@@ -15,7 +15,7 @@ import com.sissi.read.MappingMetadata;
  */
 public class XMLMapping implements Mapping {
 
-	private final String PACKAGE = "com.sissi.protocol";
+	private final String loading = "com.sissi.protocol";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -26,7 +26,7 @@ public class XMLMapping implements Mapping {
 	public XMLMapping() {
 		super();
 		Finder finder = new Finder();
-		for (Class<?> each : ScanUtil.getClasses(PACKAGE)) {
+		for (Class<?> each : ScanUtil.getClasses(this.loading)) {
 			MappingMetadata metadata = each.getAnnotation(MappingMetadata.class);
 			if (metadata != null) {
 				this.selector.addFinder(finder.cover(metadata.uri(), metadata.localName(), each));

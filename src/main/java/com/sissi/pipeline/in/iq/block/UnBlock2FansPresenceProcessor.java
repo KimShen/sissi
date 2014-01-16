@@ -12,5 +12,4 @@ public class UnBlock2FansPresenceProcessor extends Block2FansPresenceProcessor {
 	protected Status build(JIDContext context) {
 		return context.getStatus();
 	}
-
 }

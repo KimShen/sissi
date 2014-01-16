@@ -4,7 +4,6 @@ import java.io.Closeable;
 import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,6 +14,8 @@ import com.sissi.commons.Interval;
 import com.sissi.commons.Runner;
 import com.sissi.commons.apache.IOUtils;
 import com.sissi.config.MongoConfig;
+import com.sissi.gc.GC;
+import com.sissi.resource.ResourceMonitor;
 import com.sissi.server.Exchanger;
 import com.sissi.server.ExchangerCloser;
 import com.sissi.server.ExchangerContext;
@@ -25,18 +26,18 @@ import com.sissi.write.Transfer;
  */
 public class BridgeExchangerContext implements ExchangerContext {
 
-	private final Integer GC_THREAD = 1;
+	private final Integer gcThreads = 1;
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final Map<String, Exchanger> cached = new ConcurrentHashMap<String, Exchanger>();
 
-	private MongoConfig config;
+	private final MongoConfig config;
 
-	public BridgeExchangerContext(Runner runner, Interval interval, MongoConfig config) {
+	public BridgeExchangerContext(Runner runner, Interval interval, MongoConfig config, ResourceMonitor resourceMonitor) {
 		super();
 		this.config = config.clear();
-		runner.executor(GC_THREAD, new LeakGC(interval));
+		runner.executor(this.gcThreads, new LeakGC(interval, resourceMonitor));
 	}
 
 	@Override
@@ -70,33 +71,15 @@ public class BridgeExchangerContext implements ExchangerContext {
 		return this.config.collection().findOne(this.build(host)) != null;
 	}
 
-	private class LeakGC implements Runnable {
+	private class LeakGC extends GC {
 
-		private final Long sleep;
-
-		public LeakGC(Interval interval) {
-			super();
-			this.sleep = TimeUnit.MILLISECONDS.convert(interval.getInterval(), interval.getUnit());
+		public LeakGC(Interval interval, ResourceMonitor resourceMonitor) {
+			super(interval, resourceMonitor);
 		}
 
 		@Override
-		public void run() {
-			while (true) {
-				try {
-					this.gc();
-					Thread.sleep(this.sleep);
-				} catch (Exception e) {
-					if (BridgeExchangerContext.this.log.isErrorEnabled()) {
-						BridgeExchangerContext.this.log.error(e.toString());
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-
 		public void gc() {
 			for (String host : BridgeExchangerContext.this.cached.keySet()) {
-				BridgeExchangerContext.this.exists(host);
 				if (!BridgeExchangerContext.this.exists(host)) {
 					Exchanger leak = BridgeExchangerContext.this.cached.get(host);
 					leak.close(ExchangerCloser.TARGET);

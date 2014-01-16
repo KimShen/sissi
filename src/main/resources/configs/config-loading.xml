@@ -7,6 +7,7 @@
 
 	<import resource="config-addressing.xml" />
 	<import resource="config-broadcast.xml" />
+	<import resource="config-monitor.xml" />
 	<import resource="config-context.xml" />
 	<import resource="config-feeder.xml" />
 	<import resource="config-global.xml" />
@@ -26,7 +27,6 @@
 	<import resource="config-in-stream.xml" />
 	<import resource="config-in-message.xml" />
 	<import resource="config-in-presence.xml" />
-	<import resource="config-in-presence-muc.xml" />
 	<import resource="config-in-starttls.xml" />
 	<import resource="config-out.xml" />
 	<import resource="config-offline.xml" />

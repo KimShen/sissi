@@ -7,7 +7,7 @@
 
 	<bean id="bind.pro.resource" class="com.sissi.pipeline.in.iq.bind.BindResourceProcessor" parent="global.pro.proxy" />
 	<bean id="bind.pro.addressing.limit" class="com.sissi.pipeline.in.iq.bind.BindAddressLimitProcessor" parent="global.pro.proxy">
-		<constructor-arg value="${resource.limit}" />
+		<constructor-arg value="${pipeline.resource.limit}" />
 	</bean>
 	<bean id="bind.pro.addressing.close.others" class="com.sissi.pipeline.in.iq.bind.BindAddressCloseOthersProcessor" parent="global.pro.proxy" />
 	<bean id="bind.pro.addressing.close.current" class="com.sissi.pipeline.in.iq.bind.BindAddressCloseCurrentProcessor" parent="global.pro.proxy" />

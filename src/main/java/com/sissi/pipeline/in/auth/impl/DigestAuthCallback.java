@@ -70,7 +70,7 @@ public class DigestAuthCallback implements AuthCallback {
 	}
 
 	@Override
-	public Boolean auth(JIDContext context, Auth auth) {
+	public Boolean auth(Auth auth, JIDContext context) {
 		try {
 			context.write(new Challenge(this.saslServers.set(context, Sasl.createSaslServer(MECHANISM, PROTOCOL, this.domain, PROPS, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
 			return true;

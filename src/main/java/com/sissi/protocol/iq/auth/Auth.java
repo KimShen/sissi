@@ -2,7 +2,6 @@ package com.sissi.protocol.iq.auth;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.read.MappingMetadata;
@@ -11,7 +10,6 @@ import com.sissi.read.MappingMetadata;
  * @author Kim.shen 2013-10-16
  */
 @MappingMetadata(uri = Auth.XMLNS, localName = Auth.NAME)
-@XmlType(namespace = Auth.XMLNS)
 @XmlRootElement
 public class Auth extends Protocol {
 

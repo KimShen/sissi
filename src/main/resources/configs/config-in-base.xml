@@ -6,21 +6,21 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="global.pro.proxy" abstract="true">
-		<property name="jidBuilder" ref="builder.jid" />
+		<property name="jidBuilder" ref="jid" />
 		<property name="addressing" ref="addressing" />
 		<property name="protocolQueue" ref="broadcast.protocol.selfs" />
 		<property name="presenceQueue" ref="broadcast.presence.selfs" />
-		<property name="relationContext" ref="ucenter.relation.roster" />
+		<property name="relationContext" ref="relation.roster" />
 	</bean>
 
-	<bean id="finder.input" class="com.sissi.pipeline.in.ChainedFinder">
+	<bean id="finder" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
 				<ref bean="presence.condition" />
 				<ref bean="message.condition" />
 				<ref bean="iq.condition" />
 				<ref bean="auth.condition" />
-				<ref bean="auth.condition.abort"/>
+				<ref bean="auth.condition.abort" />
 				<ref bean="auth.condition.digest" />
 				<ref bean="stream.condition" />
 				<ref bean="starttls.condition" />

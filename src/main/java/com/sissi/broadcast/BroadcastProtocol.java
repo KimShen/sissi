@@ -8,11 +8,5 @@ import com.sissi.protocol.Protocol;
  */
 public interface BroadcastProtocol {
 
-	/**
-	 * Broadcast protocol 2 jid selfs or fans
-	 * @param jid
-	 * @param protocol
-	 * @return
-	 */
 	public BroadcastProtocol broadcast(JID jid, Protocol protocol);
 }

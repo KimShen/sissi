@@ -5,62 +5,51 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="config.auth" class="com.sissi.config.impl.MongoCollection">
-		<constructor-arg ref="mongo.client" />
+	<bean id="ucenter.config" class="com.sissi.config.impl.MongoCollection">
+		<constructor-arg ref="mongo" />
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.user}" />
 	</bean>
 
-	<bean id="config.ucenter.relation.roster" class="com.sissi.config.impl.MongoCollection">
-		<constructor-arg ref="mongo.client" />
-		<constructor-arg index="1" value="${mongo.db}" />
-		<constructor-arg index="2" value="${mongo.collection.roster}" />
+	<alias name="block.mongo" alias="block" />
+	<bean id="block.mongo" class="com.sissi.ucenter.relation.MongoBlockContext">
+		<constructor-arg ref="ucenter.config" />
 	</bean>
 
-	<bean id="config.ucenter.relation.muc" class="com.sissi.config.impl.MongoCollection">
-		<constructor-arg ref="mongo.client" />
-		<constructor-arg index="1" value="${mongo.db}" />
-		<constructor-arg index="2" value="${mongo.collection.muc}" />
-	</bean>
-
-	<alias name="ucenter.block.mongo" alias="ucenter.block" />
-	<bean id="ucenter.block.mongo" class="com.sissi.ucenter.relation.MongoBlockContext">
-		<constructor-arg ref="config.auth" />
-	</bean>
-
-	<alias name="ucenter.vcard.mongo" alias="ucenter.vcard" />
-	<bean id="ucenter.vcard.mongo" class="com.sissi.ucenter.impl.MongoVCardContext">
-		<constructor-arg ref="config.auth" />
+	<alias name="vcard.mongo" alias="vcard" />
+	<bean id="vcard.mongo" class="com.sissi.ucenter.user.MongoVCardContext">
+		<constructor-arg ref="ucenter.config" />
 		<constructor-arg>
 			<util:map>
 				<entry>
 					<key>
 						<util:constant static-field="com.sissi.protocol.iq.vcard.field.Photo.NAME" />
 					</key>
-					<bean class="com.sissi.ucenter.impl.PhotoFieldParser" />
+					<bean class="com.sissi.ucenter.user.PhotoFieldParser" />
 				</entry>
 			</util:map>
 		</constructor-arg>
 	</bean>
 
-	<alias name="ucenter.accessor.mongo" alias="ucenter.accessor" />
+	<alias name="ucenter.accessor.mongo" alias="accessor" />
 	<bean id="ucenter.accessor.mongo" class="com.sissi.ucenter.relation.MongoAuthAccessor">
-		<constructor-arg ref="config.auth" />
+		<constructor-arg ref="ucenter.config" />
 	</bean>
 
-	<alias name="ucenter.relation.roster.mongo" alias="ucenter.relation.roster" />
-	<bean id="ucenter.relation.roster.mongo" class="com.sissi.ucenter.relation.MongoRelationRosterContext">
-		<constructor-arg ref="config.ucenter.relation.roster" />
-	</bean>
-
-	<alias name="ucenter.relation.muc.mongo" alias="ucenter.relation.muc" />
-	<bean id="ucenter.relation.muc.mongo" class="com.sissi.ucenter.relation.MongoRelationMucContext">
-		<constructor-arg ref="config.ucenter.relation.muc" />
+	<alias name="relation.roster.mongo" alias="relation.roster" />
+	<bean id="relation.roster.mongo" class="com.sissi.ucenter.relation.MongoRelationRosterContext">
+		<constructor-arg>
+			<bean id="config.relation.roster" class="com.sissi.config.impl.MongoCollection">
+				<constructor-arg ref="mongo" />
+				<constructor-arg index="1" value="${mongo.db}" />
+				<constructor-arg index="2" value="${mongo.collection.roster}" />
+			</bean>
+		</constructor-arg>
 	</bean>
 
 	<alias name="ucenter.register.mongo" alias="ucenter.register" />
-	<bean id="ucenter.register.mongo" class="com.sissi.ucenter.impl.MongoRegisterContext">
-		<constructor-arg ref="config.auth" />
+	<bean id="ucenter.register.mongo" class="com.sissi.ucenter.user.MongoRegisterContext">
+		<constructor-arg ref="ucenter.config" />
 	</bean>
 
 	<bean id="uncenter.fields.simple" class="com.sissi.ucenter.field.impl.BeanFields">
@@ -73,65 +62,64 @@
 		</constructor-arg>
 	</bean>
 
-	<!-- For test -->
+	<!-- For Test -->
 	<bean id="uncenter.fields.form" class="com.sissi.ucenter.field.impl.BeanFields">
 		<constructor-arg value="false" />
 		<constructor-arg>
 			<util:list>
-				<ref bean="uncenter.fields.form.detail" />
-			</util:list>
-		</constructor-arg>
-	</bean>
-	<bean id="uncenter.fields.form.detail" class="com.sissi.protocol.iq.data.XData">
-		<constructor-arg value="false" />
-		<constructor-arg value="form" />
-		<constructor-arg>
-			<util:list>
-				<bean class="com.sissi.protocol.iq.register.form.Title">
-					<constructor-arg value="This is my title" />
-				</bean>
-				<bean class="com.sissi.protocol.iq.register.form.Instructions">
-					<constructor-arg value="This is my introduce" />
-				</bean>
-				<bean class="com.sissi.protocol.iq.register.form.Input">
-					<constructor-arg index="0" value="text-single" />
-					<constructor-arg index="1" value="Useranme" />
-					<constructor-arg index="2" value="username" />
-					<constructor-arg>
-						<util:constant static-field="com.sissi.protocol.iq.register.form.Required.FIELD" />
-					</constructor-arg>
-				</bean>
-				<bean class="com.sissi.protocol.iq.register.form.Input">
-					<constructor-arg index="0" value="text-single" />
-					<constructor-arg index="1" value="Password" />
-					<constructor-arg index="2" value="password" />
-					<constructor-arg>
-						<util:constant static-field="com.sissi.protocol.iq.register.form.Required.FIELD" />
-					</constructor-arg>
-				</bean>
-				<bean class="com.sissi.protocol.iq.register.form.Input">
-					<constructor-arg index="0" value="text-single" />
-					<constructor-arg index="1" value="Nickname" />
-					<constructor-arg index="2" value="nickname" />
-					<constructor-arg>
-						<null />
-					</constructor-arg>
-				</bean>
-				<bean class="com.sissi.protocol.iq.register.form.Select">
-					<constructor-arg index="0" value="Gender" />
-					<constructor-arg index="1" value="gender" />
-					<constructor-arg>
-						<null />
-					</constructor-arg>
+				<bean id="uncenter.fields.form.detail" class="com.sissi.protocol.iq.data.XData">
+					<constructor-arg value="false" />
+					<constructor-arg value="form" />
 					<constructor-arg>
 						<util:list>
-							<bean class="com.sissi.protocol.iq.data.XOption">
-								<constructor-arg index="0" value="Male" />
-								<constructor-arg index="1" value="M" />
+							<bean class="com.sissi.protocol.iq.register.form.Title">
+								<constructor-arg value="This is my title" />
 							</bean>
-							<bean class="com.sissi.protocol.iq.data.XOption">
-								<constructor-arg index="0" value="Female" />
-								<constructor-arg index="1" value="F" />
+							<bean class="com.sissi.protocol.iq.register.form.Instructions">
+								<constructor-arg value="This is my introduce" />
+							</bean>
+							<bean class="com.sissi.protocol.iq.register.form.Input">
+								<constructor-arg index="0" value="text-single" />
+								<constructor-arg index="1" value="Useranme" />
+								<constructor-arg index="2" value="username" />
+								<constructor-arg>
+									<util:constant static-field="com.sissi.protocol.iq.register.form.Required.FIELD" />
+								</constructor-arg>
+							</bean>
+							<bean class="com.sissi.protocol.iq.register.form.Input">
+								<constructor-arg index="0" value="text-single" />
+								<constructor-arg index="1" value="Password" />
+								<constructor-arg index="2" value="password" />
+								<constructor-arg>
+									<util:constant static-field="com.sissi.protocol.iq.register.form.Required.FIELD" />
+								</constructor-arg>
+							</bean>
+							<bean class="com.sissi.protocol.iq.register.form.Input">
+								<constructor-arg index="0" value="text-single" />
+								<constructor-arg index="1" value="Nickname" />
+								<constructor-arg index="2" value="nickname" />
+								<constructor-arg>
+									<null />
+								</constructor-arg>
+							</bean>
+							<bean class="com.sissi.protocol.iq.register.form.Select">
+								<constructor-arg index="0" value="Gender" />
+								<constructor-arg index="1" value="gender" />
+								<constructor-arg>
+									<null />
+								</constructor-arg>
+								<constructor-arg>
+									<util:list>
+										<bean class="com.sissi.protocol.iq.data.XOption">
+											<constructor-arg index="0" value="Male" />
+											<constructor-arg index="1" value="M" />
+										</bean>
+										<bean class="com.sissi.protocol.iq.data.XOption">
+											<constructor-arg index="0" value="Female" />
+											<constructor-arg index="1" value="F" />
+										</bean>
+									</util:list>
+								</constructor-arg>
 							</bean>
 						</util:list>
 					</constructor-arg>

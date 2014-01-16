@@ -2,20 +2,27 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	   http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="builder.feeder" class="com.sissi.feed.impl.DirectFeederBuilder" />
+	<bean id="feeder" class="com.sissi.feed.impl.DirectFeederBuilder" />
 
-	<bean id="builder.looper" class="com.sissi.looper.impl.PrivateLooperBuilder">
-		<constructor-arg ref="looper.runner" />
-		<constructor-arg ref="looper.interval" />
-		<constructor-arg value="${looper.thread.num}" />
-	</bean>
-
-	<bean id="looper.runner" class="com.sissi.commons.Runner">
-		<constructor-arg ref="executor" />
-	</bean>
-	<bean id="looper.interval" class="com.sissi.commons.Interval">
-		<constructor-arg value="${looper.thread.interval}" />
-		<constructor-arg value="${looper.thread.unit}" />
+	<bean id="looper" class="com.sissi.looper.impl.PrivateLooperBuilder">
+		<constructor-arg value="${looper.num}" />
+		<constructor-arg>
+			<bean class="com.sissi.commons.Runner">
+				<constructor-arg ref="executor" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.commons.Interval">
+				<constructor-arg value="${looper.gc.interval}" />
+				<constructor-arg value="${looper.gc.unit}" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.sissi.resource.impl.MongoResourceMonitor">
+				<constructor-arg ref="monitor" />
+				<constructor-arg value="${monitor.feeder}" />
+			</bean>
+		</constructor-arg>
 	</bean>
 
 </beans>

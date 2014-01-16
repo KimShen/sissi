@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.sissi.protocol.iq.roster.Group;
 import com.sissi.protocol.iq.roster.GroupItem;
-import com.sissi.protocol.iq.roster.Roster.Subscription;
+import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.ucenter.RelationRoster;
 
 /**
@@ -38,11 +38,7 @@ public class ItemWrapRelation implements RelationRoster {
 
 	@Override
 	public String getSubscription() {
-		return Subscription.parse(this.item.getSubscription()).toString();
-	}
-
-	public Boolean isBlock() {
-		return false;
+		return RosterSubscription.parse(this.item.getSubscription()).toString();
 	}
 
 	public Map<String, Object> plus() {

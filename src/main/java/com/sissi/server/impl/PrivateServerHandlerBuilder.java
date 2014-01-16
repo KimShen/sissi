@@ -34,6 +34,7 @@ import com.sissi.pipeline.InputFinder;
 import com.sissi.pipeline.Output;
 import com.sissi.pipeline.OutputBuilder;
 import com.sissi.read.Reader;
+import com.sissi.resource.ResourceMonitor;
 import com.sissi.server.ServerCloser;
 import com.sissi.server.ServerTlsBuilder;
 
@@ -42,13 +43,9 @@ import com.sissi.server.ServerTlsBuilder;
  */
 public class PrivateServerHandlerBuilder {
 
-	private final String CONTEXT_ATTR = "CONTEXT_ATTR";
+	private final AttributeKey<JIDContext> attrContext = AttributeKey.valueOf("ATTR_CONTEXT");
 
-	private final String CONNECTOR_ATTR = "CONNECTOR_ATTR";
-
-	private final AttributeKey<JIDContext> CONTEXT = AttributeKey.valueOf(CONTEXT_ATTR);
-
-	private final AttributeKey<Looper> CONNECTOR = AttributeKey.valueOf(CONNECTOR_ATTR);
+	private final AttributeKey<Looper> attrConnector = AttributeKey.valueOf("CONNECTOR_ATTR");
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -66,11 +63,13 @@ public class PrivateServerHandlerBuilder {
 
 	private final OutputBuilder outputBuilder;
 
+	private final ResourceMonitor resourceMonitor;
+
 	private final ServerTlsBuilder serverTlsContext;
 
 	private final JIDContextBuilder jidContextBuilder;
 
-	public PrivateServerHandlerBuilder(Reader reader, InputFinder finder, Addressing addressing, ServerCloser serverCloser, FeederBuilder feederBuilder, LooperBuilder looperBuilder, OutputBuilder outputBuilder, ServerTlsBuilder serverTlsContext, JIDContextBuilder jidContextBuilder) {
+	public PrivateServerHandlerBuilder(Reader reader, InputFinder finder, Addressing addressing, ServerCloser serverCloser, FeederBuilder feederBuilder, LooperBuilder looperBuilder, OutputBuilder outputBuilder, ResourceMonitor resourceMonitor, ServerTlsBuilder serverTlsContext, JIDContextBuilder jidContextBuilder) {
 		super();
 		this.reader = reader;
 		this.finder = finder;
@@ -79,6 +78,7 @@ public class PrivateServerHandlerBuilder {
 		this.feederBuilder = feederBuilder;
 		this.looperBuilder = looperBuilder;
 		this.outputBuilder = outputBuilder;
+		this.resourceMonitor = resourceMonitor;
 		this.serverTlsContext = serverTlsContext;
 		this.jidContextBuilder = jidContextBuilder;
 	}
@@ -104,22 +104,25 @@ public class PrivateServerHandlerBuilder {
 		public void channelRegistered(final ChannelHandlerContext ctx) {
 			this.createContext(ctx);
 			this.createLooper(ctx);
+			PrivateServerHandlerBuilder.this.resourceMonitor.increment();
 		}
 
 		public void channelUnregistered(ChannelHandlerContext ctx) {
 			try {
-				JIDContext context = ctx.attr(CONTEXT).get();
+				JIDContext context = ctx.attr(attrContext).get();
 				if (context.isBinding()) {
 					PrivateServerHandlerBuilder.this.serverCloser.close(context);
 					PrivateServerHandlerBuilder.this.addressing.leave(context);
 				}
-				ctx.attr(CONNECTOR).get().stop();
+				ctx.attr(attrConnector).get().stop();
 				this.closeParser();
 			} catch (Exception e) {
 				if (PrivateServerHandlerBuilder.this.log.isErrorEnabled()) {
 					PrivateServerHandlerBuilder.this.log.error(e.toString());
 					e.printStackTrace();
 				}
+			} finally {
+				PrivateServerHandlerBuilder.this.resourceMonitor.decrement();
 			}
 		}
 
@@ -140,15 +143,14 @@ public class PrivateServerHandlerBuilder {
 		}
 
 		@Override
-		
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 			this.logIfDetail(cause);
 			ctx.close();
 		}
 
 		private void ping(ChannelHandlerContext ctx, Object evt) {
-			if (evt.getClass().isAssignableFrom(IdleStateEvent.class) && IdleStateEvent.class.cast(evt).state() == IdleState.READER_IDLE) {
-				ctx.attr(CONTEXT).get().ping();
+			if (evt.getClass() == IdleStateEvent.class && IdleStateEvent.class.cast(evt).state() == IdleState.READER_IDLE) {
+				ctx.attr(PrivateServerHandlerBuilder.this.attrContext).get().ping();
 			}
 		}
 
@@ -161,8 +163,8 @@ public class PrivateServerHandlerBuilder {
 
 		private void createLooper(final ChannelHandlerContext ctx) {
 			try {
-				Looper looper = PrivateServerHandlerBuilder.this.looperBuilder.build(PrivateServerHandlerBuilder.this.reader.future(this.input), PrivateServerHandlerBuilder.this.feederBuilder.build(ctx.attr(CONTEXT).get(), PrivateServerHandlerBuilder.this.finder));
-				ctx.attr(CONNECTOR).set(looper);
+				Looper looper = PrivateServerHandlerBuilder.this.looperBuilder.build(PrivateServerHandlerBuilder.this.reader.future(this.input), PrivateServerHandlerBuilder.this.feederBuilder.build(ctx.attr(attrContext).get(), PrivateServerHandlerBuilder.this.finder));
+				ctx.attr(attrConnector).set(looper);
 				looper.start();
 			} catch (IOException e) {
 				PrivateServerHandlerBuilder.this.log.error(e.toString());
@@ -171,7 +173,7 @@ public class PrivateServerHandlerBuilder {
 		}
 
 		private void createContext(final ChannelHandlerContext ctx) {
-			ctx.attr(CONTEXT).set(PrivateServerHandlerBuilder.this.jidContextBuilder.build(null, new NettyProxyContextParam(ctx)));
+			ctx.attr(attrContext).set(PrivateServerHandlerBuilder.this.jidContextBuilder.build(null, new NettyProxyContextParam(ctx)));
 		}
 
 		private byte[] copyToBytes(ByteBuf byteBuf) {
@@ -182,7 +184,7 @@ public class PrivateServerHandlerBuilder {
 
 		private ByteBuf logIfNecessary(ChannelHandlerContext ctx, ByteBuf byteBuf) {
 			if (PrivateServerHandlerBuilder.this.log.isInfoEnabled()) {
-				JIDContext context = ctx.attr(CONTEXT).get();
+				JIDContext context = ctx.attr(attrContext).get();
 				PrivateServerHandlerBuilder.this.log.info("Read on " + (context != null && context.getJid() != null ? context.getJid().asString() : "N/A") + ": " + byteBuf.toString(Charset.forName("UTF-8")));
 				byteBuf.readerIndex(0);
 			}

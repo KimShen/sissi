@@ -28,15 +28,19 @@ public class Bytestreams extends Protocol implements Collector {
 	public final static String NAME = "query";
 
 	private StreamhostUsed streamhostUsed;
+	
+	private StreamhostActivate activate;
 
 	private List<Streamhost> streamhosts;
 
 	private String sid;
 
 	private String mode;
-
-	private StreamhostActivate activate;
-
+	
+	public Boolean isUsed() {
+		return this.streamhostUsed != null;
+	}
+	
 	public Boolean isActivate() {
 		return this.activate != null;
 	}
@@ -63,10 +67,10 @@ public class Bytestreams extends Protocol implements Collector {
 
 	@XmlElements({ @XmlElement(name = Streamhost.NAME, type = Streamhost.class) })
 	public List<Streamhost> getStreamhost() {
-		return streamhosts;
+		return this.streamhosts;
 	}
 
-	@XmlElement(name = StreamhostUsed.NAME)
+	@XmlElement
 	public StreamhostUsed getStreamhostUsed() {
 		return streamhostUsed;
 	}
@@ -104,9 +108,5 @@ public class Bytestreams extends Protocol implements Collector {
 	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;
-	}
-
-	public Boolean isUsed() {
-		return this.streamhostUsed != null;
 	}
 }

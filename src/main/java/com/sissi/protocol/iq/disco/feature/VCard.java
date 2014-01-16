@@ -1,29 +1,17 @@
 package com.sissi.protocol.iq.disco.feature;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import com.sissi.protocol.iq.disco.Feature;
+import com.sissi.protocol.iq.disco.DiscoFeature;
 
 /**
  * @author kim 2013年12月5日
  */
-@XmlRootElement
-public class VCard implements Feature {
+public class VCard extends DiscoFeature {
 
 	public final static VCard FEATURE = new VCard();
-
-	public final static String NAME = "feature";
 
 	private final static String VAR = "vcard-temp";
 
 	private VCard() {
-
-	}
-
-	@Override
-	@XmlAttribute
-	public String getVar() {
-		return VAR;
+		super(VAR);
 	}
 }

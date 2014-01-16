@@ -13,20 +13,20 @@ import com.sissi.context.Status;
 import com.sissi.context.StatusClauses;
 import com.sissi.offline.DelayElementBox;
 import com.sissi.protocol.Element;
-import com.sissi.protocol.presence.Presence.Type;
+import com.sissi.protocol.presence.PresenceType;
 
 /**
  * @author kim 2013-11-19
  */
 public class OfflineContextBuilder implements JIDContextBuilder {
 
-	private final Integer DEFAULT_PRIORITY = 0;
+	private final Integer defaultPriority = 0;
 
-	private final Status OFFLINE_STATUS = new OfflineStatus();
+	private final Status offlineStatus = new OfflineStatus();
 
-	private final JIDContext OFFLINE_CONTEXT = new OfflineContext();
+	private final JIDContext offlineContext = new OfflineContext();
 
-	private final SocketAddress OFFLINE_ADDRESS = new InetSocketAddress(InetAddress.getByName("0.0.0.0"), 0);
+	private final SocketAddress offlineAddress = new InetSocketAddress(InetAddress.getByName("0.0.0.0"), 0);
 
 	private final DelayElementBox delayElementBox;
 
@@ -34,15 +34,6 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private final String lang;
 
-	/**
-	 * @param lang
-	 *            Default lang
-	 * @param domain
-	 *            Default domain
-	 * @param delayElementBox
-	 *            Offline operation support
-	 * @throws Exception
-	 */
 	public OfflineContextBuilder(String lang, String domain, DelayElementBox delayElementBox) throws Exception {
 		super();
 		this.delayElementBox = delayElementBox;
@@ -52,7 +43,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
-		return OFFLINE_CONTEXT;
+		return this.offlineContext;
 	}
 
 	private class OfflineContext implements JIDContext {
@@ -97,7 +88,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public Status getStatus() {
-			return OFFLINE_STATUS;
+			return OfflineContextBuilder.this.offlineStatus;
 		}
 
 		@Override
@@ -107,7 +98,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public Integer getPriority() {
-			return DEFAULT_PRIORITY;
+			return OfflineContextBuilder.this.defaultPriority;
 		}
 
 		public JIDContext setDomain(String domain) {
@@ -127,11 +118,11 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		public SocketAddress getAddress() {
-			return OfflineContextBuilder.this.OFFLINE_ADDRESS;
+			return OfflineContextBuilder.this.offlineAddress;
 		}
 
 		@Override
-		public Boolean startTls() {
+		public Boolean setTls() {
 			return false;
 		}
 
@@ -180,7 +171,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private class OfflineStatus implements Status {
 
-		private final StatusClauses EMPTY_CLAUSE = new EmptyClauses();
+		private final StatusClauses empty = new EmptyClauses();
 
 		private OfflineStatus() {
 
@@ -191,13 +182,13 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public Status setStatus(String type, String show, String status, String avator) {
+		public Status setStatus(StatusClauses clauses) {
 			return this;
 		}
 
 		@Override
 		public StatusClauses getStatusClauses() {
-			return EMPTY_CLAUSE;
+			return this.empty;
 		}
 	}
 
@@ -211,7 +202,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		public String find(String key) {
 			switch (key) {
 			case StatusClauses.KEY_TYPE:
-				return Type.UNAVAILABLE.toString();
+				return PresenceType.UNAVAILABLE.toString();
 			}
 			return null;
 		}

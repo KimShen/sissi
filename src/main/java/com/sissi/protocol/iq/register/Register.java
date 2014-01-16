@@ -16,7 +16,7 @@ import com.sissi.protocol.iq.register.simple.Username;
 import com.sissi.read.Collector;
 import com.sissi.read.MappingMetadata;
 import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.field.Field.Fields;
+import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
 
 /**

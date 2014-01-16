@@ -17,11 +17,11 @@ public class Block4FansOutputBuilder extends BlockOutputBuilder {
 	}
 
 	@Override
-	protected BlockOutput buildBlock(Transfer writeable) {
-		return new Ban4FansOutput();
+	public BlockOutput build(Transfer transfer)  {
+		return new Block4FansOutput();
 	}
 
-	private class Ban4FansOutput extends BlockOutput {
+	private class Block4FansOutput extends BlockOutput {
 
 		@Override
 		protected JID user(JIDContext context, Element node) {

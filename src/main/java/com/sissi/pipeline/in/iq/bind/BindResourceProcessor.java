@@ -3,7 +3,7 @@ package com.sissi.pipeline.in.iq.bind;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.Protocol.Type;
+import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.bind.Bind;
 
@@ -14,7 +14,7 @@ public class BindResourceProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(IQ.class.cast(protocol.getParent().reply().clear().setType(Type.RESULT)).add(this.binding(context, Bind.class.cast(protocol))));
+		context.write(IQ.class.cast(protocol.getParent().reply().clear().setType(ProtocolType.RESULT)).add(this.binding(context, Bind.class.cast(protocol))));
 		return true;
 	}
 

@@ -6,11 +6,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.sissi.protocol.Element;
-import com.sissi.protocol.Error;
 
 /**
  * @author Kim.shen 2013-10-19
@@ -19,10 +16,6 @@ import com.sissi.protocol.Error;
 public class Success implements Element {
 
 	public final static Success INSTANCE = new Success();
-	
-	private final static Log LOG = LogFactory.getLog(Success.class);
-
-	private final static Base64 BASE64 = new Base64();
 
 	private byte[] rspauth;
 
@@ -42,15 +35,7 @@ public class Success implements Element {
 
 	@XmlValue
 	public String getRspauth() {
-		try {
-			return BASE64.encodeToString(this.rspauth);
-		} catch (Exception e) {
-			if (LOG.isFatalEnabled()) {
-				LOG.fatal(e.toString());
-				e.printStackTrace();
-			}
-			return null;
-		}
+		return Base64.encodeBase64String(this.rspauth);
 	}
 
 	@Override
@@ -94,17 +79,6 @@ public class Success implements Element {
 
 	@Override
 	public Success setType(String type) {
-		return this;
-	}
-
-	@Override
-	@XmlTransient
-	public Error getError() {
-		return null;
-	}
-
-	@Override
-	public Success setError(Error error) {
 		return this;
 	}
 }

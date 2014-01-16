@@ -23,6 +23,8 @@ public class MongoDelayElementBox implements DelayElementBox {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
+	private final String baseTo = "to";
+
 	private final MongoConfig config;
 
 	private final List<DelayElement> elements;
@@ -35,7 +37,7 @@ public class MongoDelayElementBox implements DelayElementBox {
 
 	@Override
 	public List<Element> pull(JID jid) {
-		DBObject query = BasicDBObjectBuilder.start().add(DelayProtocol.BASE_TO, jid.asStringWithBare()).get();
+		DBObject query = BasicDBObjectBuilder.start().add(this.baseTo, jid.asStringWithBare()).get();
 		this.log.debug("Query: " + query);
 		Elements elements = new Elements(this.config.collection().find(query));
 		this.config.collection().remove(query);
@@ -61,7 +63,7 @@ public class MongoDelayElementBox implements DelayElementBox {
 		public Elements(DBCursor cursor) {
 			super();
 			while (cursor.hasNext()) {
-				BasicDBObject each = (BasicDBObject) cursor.next();
+				BasicDBObject each = BasicDBObject.class.cast(cursor.next());
 				for (DelayElement element : MongoDelayElementBox.this.elements) {
 					if (element.isSupport(each)) {
 						this.add(element.read(each));

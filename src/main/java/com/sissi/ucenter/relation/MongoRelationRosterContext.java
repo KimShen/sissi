@@ -17,8 +17,8 @@ public class MongoRelationRosterContext extends MongoRelationContext {
 	}
 
 	@Override
-	protected Relation build(DBObject db, MongoConfig config) {
-		return new MongoRelationRoster(db, config);
+	protected Relation build(DBObject db) {
+		return new MongoRelationRoster(db);
 	}
 
 	private class MongoRelationRoster implements RelationRoster {
@@ -31,12 +31,12 @@ public class MongoRelationRosterContext extends MongoRelationContext {
 
 		private final String subscription;
 
-		public MongoRelationRoster(DBObject db, MongoConfig config) {
+		public MongoRelationRoster(DBObject db) {
 			super();
-			this.jid = config.asString(db, "slave");
-			this.name = config.asString(db, "name");
-			this.group = config.asString(db, "group");
-			this.subscription = config.asString(db, "state");
+			this.jid = MongoRelationRosterContext.super.config.asString(db, "slave");
+			this.name = MongoRelationRosterContext.super.config.asString(db, "name");
+			this.group = MongoRelationRosterContext.super.config.asString(db, "group");
+			this.subscription = MongoRelationRosterContext.super.config.asString(db, "state");
 		}
 
 		public String getJID() {
@@ -56,7 +56,7 @@ public class MongoRelationRosterContext extends MongoRelationContext {
 		}
 
 		public Map<String, Object> plus() {
-			return MongoRelationRosterContext.this.PLUS;
+			return MongoRelationRosterContext.this.plus;
 		}
 	}
 }

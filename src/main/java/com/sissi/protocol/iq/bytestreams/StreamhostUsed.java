@@ -21,7 +21,8 @@ public class StreamhostUsed {
 		return jid;
 	}
 
-	public void setJid(String jid) {
+	public StreamhostUsed setJid(String jid) {
 		this.jid = jid;
+		return this;
 	}
 }

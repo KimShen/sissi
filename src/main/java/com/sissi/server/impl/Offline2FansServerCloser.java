@@ -4,7 +4,7 @@ import com.sissi.addressing.Addressing;
 import com.sissi.broadcast.BroadcastProtocol;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.protocol.presence.Presence.Type;
+import com.sissi.protocol.presence.PresenceType;
 import com.sissi.server.ServerCloser;
 
 /**
@@ -26,13 +26,9 @@ public class Offline2FansServerCloser implements ServerCloser {
 
 	@Override
 	public Offline2FansServerCloser close(JIDContext context) {
-		if (this.hasOther(context)) {
-			this.protocolBraodcast.broadcast(context.getJid(), new Presence().setFrom(context.getJid().getBare()).setType(Type.UNAVAILABLE));
+		if (this.addressing.others(context.getJid()) < IS_OFFLINE) {
+			this.protocolBraodcast.broadcast(context.getJid(), new Presence().setFrom(context.getJid().getBare()).setType(PresenceType.UNAVAILABLE));
 		}
 		return this;
-	}
-
-	private boolean hasOther(JIDContext context) {
-		return this.addressing.others(context.getJid()) < IS_OFFLINE;
 	}
 }

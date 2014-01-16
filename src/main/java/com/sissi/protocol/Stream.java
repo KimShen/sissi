@@ -33,20 +33,15 @@ public class Stream extends Protocol {
 
 	public final static String NAME = "stream";
 
-	private final static String CONTENT_XMLNS = "jabber:client";
+	private final String xmlns = "jabber:client";
 
-	private final static String VERSION = "1.0";
+	private final String version = "1.0";
 
 	private final AtomicBoolean isUsing = new AtomicBoolean();
 
 	private List<Feature> features;
 
 	private String stream;
-
-	public Stream() {
-		super();
-		this.isUsing.set(false);
-	}
 
 	public Stream consume() {
 		this.isUsing.set(true);
@@ -63,12 +58,12 @@ public class Stream extends Protocol {
 
 	@XmlAttribute
 	public String getXmlns() {
-		return CONTENT_XMLNS;
+		return this.xmlns;
 	}
 
 	@XmlAttribute
 	public String getVersion() {
-		return VERSION;
+		return this.version;
 	}
 
 	public Stream setStream(String stream) {
@@ -99,16 +94,16 @@ public class Stream extends Protocol {
 		return super.getError();
 	}
 
-	public static Stream closeGracefully() {
+	public static Stream close() {
 		return CloseGracefully.CLOSE;
 	}
 
-	public static Stream closeForcible(Error error) {
-		return new CloseForcible(error);
+	public static Stream closeWhenOpening(Error error) {
+		return new CloseWhenOpening(error);
 	}
 
-	public static Stream closeSuddenly(Error error) {
-		return new CloseSuddenly(error);
+	public static Stream closeWhenRunning(Error error) {
+		return new CloseWhenRunning(error);
 	}
 
 	@WriterFragement(part = WriterPart.WITH_LAST)
@@ -127,23 +122,23 @@ public class Stream extends Protocol {
 		}
 	}
 
-	public static class CloseForcible extends Stream {
+	public static class CloseWhenOpening extends Stream {
 
-		private CloseForcible() {
+		private CloseWhenOpening() {
 		}
 
-		private CloseForcible(Error error) {
+		private CloseWhenOpening(Error error) {
 			super.setError(error);
 		}
 	}
 
 	@WriterFragement(part = WriterPart.WITHOUT_FIRST)
-	public static class CloseSuddenly extends Stream {
+	public static class CloseWhenRunning extends Stream {
 
-		private CloseSuddenly() {
+		private CloseWhenRunning() {
 		}
 
-		private CloseSuddenly(Error error) {
+		private CloseWhenRunning(Error error) {
 			super.setError(error);
 		}
 	}

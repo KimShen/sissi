@@ -43,7 +43,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 	}
 
 	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
-		this.config.collection().update(this.buildQuery(context), this.buildUpsert(context, type, show, status, avator), true, false);
+		this.config.collection().update(this.buildQuery(context), this.buildEntity(context, type, show, status, avator), true, false);
 		return this;
 	}
 
@@ -53,10 +53,10 @@ public class MongoStatusBuilder implements StatusBuilder {
 		return query;
 	}
 
-	private DBObject buildUpsert(JIDContext context, String type, String show, String status, String avator) {
-		DBObject upsert = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoCollection.FIELD_PRIORITY, context.getPriority()).get()).get();
-		this.log.debug("Upsert: " + upsert);
-		return upsert;
+	private DBObject buildEntity(JIDContext context, String type, String show, String status, String avator) {
+		DBObject entity = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoCollection.FIELD_PRIORITY, context.getPriority()).get()).get();
+		this.log.debug("Entity: " + entity);
+		return entity;
 	}
 
 	private class MongoStatus implements Status {
@@ -74,9 +74,8 @@ public class MongoStatusBuilder implements StatusBuilder {
 			return this;
 		}
 
-		@Override
-		public Status setStatus(String type, String show, String status, String avator) {
-			MongoStatusBuilder.this.set(this.context, type, show, status, avator);
+		public Status setStatus(StatusClauses clauses) {
+			MongoStatusBuilder.this.set(this.context, clauses.find(StatusClauses.KEY_TYPE), clauses.find(StatusClauses.KEY_SHOW), clauses.find(StatusClauses.KEY_STATUS), clauses.find(StatusClauses.KEY_AVATOR));
 			return this;
 		}
 
