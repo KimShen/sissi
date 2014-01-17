@@ -60,6 +60,7 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 	@Override
 	public Boolean isTarget(String host) {
+		System.out.println(host);
 		return !this.exists(host);
 	}
 

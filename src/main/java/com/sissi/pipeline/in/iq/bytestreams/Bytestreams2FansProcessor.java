@@ -22,7 +22,8 @@ public class Bytestreams2FansProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.addressing.findOne(super.build(protocol.getParent().getTo()), true).write(Bytestreams.class.cast(protocol).sort(this.comparator).getParent().setFrom(context.getJid()));
+		JIDContext target = super.addressing.findOne(super.build(protocol.getParent().getTo()));
+		target.write(Bytestreams.class.cast(protocol).sort(this.comparator).getParent().setFrom(context.getJid().getBare()).setTo(target.getJid().getBare()));
 		return true;
 	}
 }
