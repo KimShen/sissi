@@ -9,18 +9,18 @@
 		<constructor-arg value="${pipeline.message.relation}" />
 	</bean>
 	<bean id="message.pro.check.body" class="com.sissi.pipeline.in.message.MessageCheckBodyProcessor" />
-	<bean id="message.pro.activate" class="com.sissi.pipeline.in.message.Message2SelfActivateProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.2fan" class="com.sissi.pipeline.in.message.Message2FanProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.2fans" class="com.sissi.pipeline.in.message.Message2FansProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.2self" class="com.sissi.pipeline.in.message.Message2SelfProcessor" parent="global.pro.proxy" />
+	<bean id="message.pro.2self.activate" class="com.sissi.pipeline.in.message.Message2SelfActivateProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="message.pro.check.relation" />
 				<ref bean="message.pro.check.body" />
 				<ref bean="message.pro.2self" />
+				<ref bean="message.pro.2self.activate" />
 				<ref bean="message.pro.2fan" />
-				<ref bean="message.pro.activate" />
 			</util:list>
 		</constructor-arg>
 	</bean>

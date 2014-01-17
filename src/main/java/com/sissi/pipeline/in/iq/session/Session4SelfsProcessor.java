@@ -13,7 +13,7 @@ public class Session4SelfsProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		Presence presence = new Presence().setTo(context.getJid());
+		Presence presence = new Presence().setTo(context.getJid().getBare());
 		JID other = super.build(context.getJid().asStringWithBare());
 		for(String resource : super.resources(context.getJid())){
 			context.write(presence.setFrom(other.setResource(resource)));
