@@ -11,7 +11,7 @@ public class PresenceStatus2FansProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.broadcast(context.getJid(), protocol.setFrom(context.getJid()));
+		super.broadcast(context.getJid(), protocol.setFrom(context.getJid().getBare()));
 		return true;
 	}
 }

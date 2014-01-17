@@ -1,5 +1,6 @@
 package com.sissi.pipeline.in;
 
+import java.util.List;
 import java.util.Set;
 
 import com.sissi.addressing.Addressing;
@@ -97,6 +98,10 @@ abstract public class ProxyProcessor implements Input {
 		return this;
 	}
 
+	public List<String> resources(JID jid){
+		return this.addressing.resources(jid);
+	}
+	
 	protected ProxyProcessor broadcast(JID jid, JID from, JID to, Status status) {
 		this.presenceQueue.broadcast(jid, from, to, status);
 		return this;

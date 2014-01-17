@@ -1,5 +1,6 @@
 package com.sissi.pipeline.in.iq.roster;
 
+import com.sissi.context.JID;
 import com.sissi.protocol.iq.roster.RosterSubscription;
 
 /**
@@ -8,7 +9,11 @@ import com.sissi.protocol.iq.roster.RosterSubscription;
 public class RosterSet2SelfsItemProcessor extends Roster2SelfsItemProcessor {
 
 	@Override
-	protected String getSubscription() {
-		return RosterSubscription.NONE.toString();
+	protected String getSubscription(JID master, JID slave) {
+		return super.ourRelation(master, slave).getSubscription();
+	}
+
+	protected Boolean getNextWhenThisSubscription(String subscription) {
+		return RosterSubscription.parse(subscription) == RosterSubscription.NONE;
 	}
 }

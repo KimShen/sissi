@@ -1,5 +1,6 @@
 package com.sissi.pipeline.in.iq.roster;
 
+import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
@@ -12,10 +13,14 @@ abstract class Roster2SelfsItemProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		Roster.class.cast(protocol).getFirstItem().setSubscription(this.getSubscription());
+		Roster roster = Roster.class.cast(protocol);
+		String subscription = this.getSubscription(context.getJid(), super.build(roster.getFirstItem().getJid()));
+		roster.getFirstItem().setSubscription(this.getSubscription(context.getJid(), super.build(roster.getFirstItem().getJid())));
 		super.broadcast(context.getJid(), protocol.getParent());
-		return true;
+		return this.getNextWhenThisSubscription(subscription);
 	}
 
-	abstract protected String getSubscription();
+	abstract protected Boolean getNextWhenThisSubscription(String subscription);
+
+	abstract protected String getSubscription(JID master, JID slave);
 }

@@ -1,5 +1,7 @@
 package com.sissi.addressing;
 
+import java.util.List;
+
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 
@@ -29,4 +31,6 @@ public interface Addressing {
 	public Integer others(JID jid);
 
 	public Integer others(JID jid, Boolean usingResource);
+	
+	public List<String> resources(JID jid);
 }

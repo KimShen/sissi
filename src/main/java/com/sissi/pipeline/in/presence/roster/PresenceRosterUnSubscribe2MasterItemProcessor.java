@@ -11,7 +11,7 @@ public class PresenceRosterUnSubscribe2MasterItemProcessor extends PresenceRoste
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.broadcast(context.getJid(), super.prepare(context.getJid(), super.build(protocol.getTo()), RosterSubscription.NONE));
+		super.broadcast(context.getJid(), super.prepare(context.getJid().getBare(), super.build(protocol.getTo()), RosterSubscription.NONE));
 		return true;
 	}
 }

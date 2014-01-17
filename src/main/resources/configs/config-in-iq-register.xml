@@ -10,7 +10,7 @@
 		<constructor-arg ref="ucenter.register" />
 	</bean>
 	<bean id="register.pro.fields" class="com.sissi.pipeline.in.iq.register.RegisterFieldsProcessor">
-		<constructor-arg ref="uncenter.fields.simple" />
+		<constructor-arg ref="uncenter.fields.form" />
 	</bean>
 	<bean id="register.pro.store.simple" class="com.sissi.pipeline.in.iq.register.RegisterStoreSimpleProcessor" parent="register.pro.store" />
 	<bean id="register.pro.store.multi" class="com.sissi.pipeline.in.iq.register.RegisterStoreMultiProcessor" parent="register.pro.store" />

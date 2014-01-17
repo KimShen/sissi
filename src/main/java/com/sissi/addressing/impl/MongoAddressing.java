@@ -1,6 +1,8 @@
 package com.sissi.addressing.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -108,6 +110,10 @@ public class MongoAddressing implements Addressing {
 		return this;
 	}
 
+	public List<String> resources(JID jid) {
+		return new Resources(this.config.collection().find(BasicDBObjectBuilder.start(MongoCollection.FIELD_JID, jid.asStringWithBare()).get(), BasicDBObjectBuilder.start(MongoCollection.FIELD_RESOURCE, jid.asStringWithBare()).get()));
+	}
+
 	private JIDContexts find(JID jid, Boolean usingResource, Boolean usingOffline) {
 		return new MongoUserContexts(jid, usingOffline, this.config.collection().find(this.buildQueryWithSmartResource(jid, usingResource), MongoCollection.FILTER_INDEX).sort(MongoCollection.DEFAULT_SORTER));
 	}
@@ -131,6 +137,17 @@ public class MongoAddressing implements Addressing {
 		return this.config.collection().findOne(BasicDBObjectBuilder.start().add(MongoCollection.FIELD_INDEX, index).get(), MongoCollection.FILTER_INDEX) != null;
 	}
 
+	private class Resources extends ArrayList<String> {
+
+		private final static long serialVersionUID = 1L;
+
+		private Resources(DBCursor cursor) {
+			while (cursor.hasNext()) {
+				super.add(cursor.next().get(MongoCollection.FIELD_RESOURCE).toString());
+			}
+		}
+	}
+
 	private class MongoUserContexts extends JIDContexts {
 
 		private final static long serialVersionUID = 1L;
@@ -139,7 +156,7 @@ public class MongoAddressing implements Addressing {
 			while (cursor.hasNext()) {
 				JIDContext context = MongoAddressing.this.contexts.get(Long.class.cast(cursor.next().get(MongoCollection.FIELD_INDEX)));
 				if (context != null) {
-					this.add(context);
+					super.add(context);
 				}
 			}
 			this.usingOffline(jid, usingOffline);

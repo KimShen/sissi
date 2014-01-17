@@ -18,9 +18,9 @@
 		<maven.global.lang>zh_CN</maven.global.lang>
 		<maven.global.port.main>5222</maven.global.port.main>
 		<maven.global.port.exchanger>6222</maven.global.port.exchanger>
-		<maven.global.idle.all>300</maven.global.idle.all>
-		<maven.global.idle.read>300</maven.global.idle.read>
-		<maven.global.idle.write>300</maven.global.idle.write>
+		<maven.global.idle.all>60</maven.global.idle.all>
+		<maven.global.idle.read>60</maven.global.idle.read>
+		<maven.global.idle.write>60</maven.global.idle.write>
 		<maven.global.heart.interval>10000</maven.global.heart.interval>
 		<maven.global.heart.unit>MILLISECONDS</maven.global.heart.unit>
 		<!-- For Loop -->

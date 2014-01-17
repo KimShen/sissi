@@ -10,7 +10,7 @@ public enum RosterSubscription {
 	private final static String REMOVE = "remove";
 
 	public String toString() {
-		return super.toString().toLowerCase();
+		return this != NONE ? super.toString().toLowerCase() : "none";
 	}
 
 	public Boolean equals(String subscribe) {

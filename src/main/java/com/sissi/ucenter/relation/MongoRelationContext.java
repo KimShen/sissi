@@ -55,7 +55,7 @@ abstract class MongoRelationContext implements RelationContext {
 
 	@Override
 	public RelationContext establish(JID from, Relation relation) {
-		DBObject entity = BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(relation.plus()).add(MongoCollection.FIELD_STATE, relation.getSubscription()).add("name", relation.getName()).get()).get();
+		DBObject entity = BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(relation.plus()).add("name", relation.getName()).get()).get();
 		this.log.debug("Entity is: " + entity);
 		this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.getJID()), entity, true, true);
 		return this;
@@ -82,7 +82,7 @@ abstract class MongoRelationContext implements RelationContext {
 	@Override
 	public Relation ourRelation(JID from, JID to) {
 		DBObject db = this.config.collection().findOne(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()));
-		return db != null ? this.build(db) : null;
+		return db != null ? this.build(db) : new NoneRelation(to);
 	}
 
 	@Override
@@ -95,6 +95,36 @@ abstract class MongoRelationContext implements RelationContext {
 	}
 
 	abstract protected Relation build(DBObject db);
+
+	private class NoneRelation implements Relation {
+
+		private JID jid;
+
+		public NoneRelation(JID jid) {
+			super();
+			this.jid = jid;
+		}
+
+		@Override
+		public String getJID() {
+			return this.jid.asStringWithBare();
+		}
+
+		@Override
+		public String getName() {
+			return null;
+		}
+
+		@Override
+		public String getSubscription() {
+			return RosterSubscription.NONE.toString();
+		}
+
+		@Override
+		public Map<String, Object> plus() {
+			return null;
+		}
+	}
 
 	private class JIDs extends HashSet<String> {
 
