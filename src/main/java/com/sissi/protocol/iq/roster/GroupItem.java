@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -31,7 +32,7 @@ public class GroupItem extends Item implements Collector {
 	public GroupItem(String jid, String name, String subscription, String[] groups) {
 		super(jid, name);
 		this.subscription = subscription;
-		if (this.groups != null) {
+		if (groups != null) {
 			for (String group : groups) {
 				this.add(new Group(group));
 			}
@@ -46,7 +47,7 @@ public class GroupItem extends Item implements Collector {
 		return this;
 	}
 
-	@XmlElement
+	@XmlElements({ @XmlElement(name = Group.NAME, type = Group.class) })
 	public Set<Group> getGroup() {
 		return this.groups;
 	}
