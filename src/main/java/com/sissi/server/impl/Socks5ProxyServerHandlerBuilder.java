@@ -29,7 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.protocol.iq.bytestreams.BytestreamsProxy;
-import com.sissi.resource.ResourceMonitor;
+import com.sissi.resource.ResourceCounter;
 import com.sissi.server.Exchanger;
 import com.sissi.server.ExchangerCloser;
 import com.sissi.server.ExchangerContext;
@@ -47,16 +47,16 @@ public class Socks5ProxyServerHandlerBuilder {
 
 	private final AttributeKey<Exchanger> exchanger;
 
-	private final ResourceMonitor resourceMonitor;
+	private final ResourceCounter resourceCounter;
 
 	private final byte[] init;
 
 	private final byte[] cmd;
 
-	public Socks5ProxyServerHandlerBuilder(BytestreamsProxy proxy, ExchangerContext exchangerContext, ResourceMonitor resourceMonitor) {
+	public Socks5ProxyServerHandlerBuilder(BytestreamsProxy proxy, ExchangerContext exchangerContext, ResourceCounter resourceCounter) {
 		super();
 		this.exchangerContext = exchangerContext;
-		this.resourceMonitor = resourceMonitor;
+		this.resourceCounter = resourceCounter;
 		this.exchanger = AttributeKey.valueOf("exchanger");
 		this.init = this.prepareStatic(this.buildInit());
 		this.cmd = this.prepareStatic(this.buildCmd(proxy));
@@ -88,12 +88,12 @@ public class Socks5ProxyServerHandlerBuilder {
 
 		public void channelRegistered(final ChannelHandlerContext ctx) throws Exception {
 			super.channelRegistered(ctx);
-			Socks5ProxyServerHandlerBuilder.this.resourceMonitor.increment();
+			Socks5ProxyServerHandlerBuilder.this.resourceCounter.increment();
 		}
 
 		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
 			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close(ExchangerCloser.INITER);
-			Socks5ProxyServerHandlerBuilder.this.resourceMonitor.decrement();
+			Socks5ProxyServerHandlerBuilder.this.resourceCounter.decrement();
 		}
 
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
@@ -162,6 +162,11 @@ public class Socks5ProxyServerHandlerBuilder {
 
 	@Sharable
 	private class BridgeExchangerServerHandler extends ChannelInboundHandlerAdapter {
+
+		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
+			super.channelUnregistered(ctx);
+			Socks5ProxyServerHandlerBuilder.this.resourceCounter.decrement();
+		}
 
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 			if (Socks5ProxyServerHandlerBuilder.this.log.isDebugEnabled()) {

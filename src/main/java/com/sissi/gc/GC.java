@@ -6,33 +6,36 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.Interval;
-import com.sissi.resource.ResourceMonitor;
+import com.sissi.resource.ResourceCounter;
 
 /**
  * @author kim 2014年1月15日
  */
 abstract public class GC implements Runnable {
-	
+
 	private final static Log LOG = LogFactory.getLog(GC.class);
 
 	private final Long sleep;
 
-	private final ResourceMonitor resourceMonitor;
+	private final ResourceCounter resourceCounter;
 
-	protected GC(Interval interval, ResourceMonitor resourceMonitor) {
+	protected GC(Interval interval, ResourceCounter resourceCounter) {
 		super();
-		this.sleep = TimeUnit.MILLISECONDS.convert(interval.getInterval(), interval.getUnit());
-		this.resourceMonitor = resourceMonitor;
+		this.sleep = interval.convert(TimeUnit.MILLISECONDS);
+		this.resourceCounter = resourceCounter;
 	}
 
 	@Override
 	public void run() {
 		try {
-			this.resourceMonitor.increment();
+			this.resourceCounter.increment();
 			while (true) {
 				try {
-					this.gc();
-					Thread.sleep(this.sleep);
+					if (this.gc()) {
+						Thread.sleep(this.sleep);
+					} else {
+						break;
+					}
 				} catch (Exception e) {
 					if (LOG.isErrorEnabled()) {
 						LOG.error(e.toString());
@@ -41,9 +44,9 @@ abstract public class GC implements Runnable {
 				}
 			}
 		} finally {
-			this.resourceMonitor.decrement();
+			this.resourceCounter.decrement();
 		}
 	}
 
-	abstract protected void gc();
+	abstract protected Boolean gc();
 }

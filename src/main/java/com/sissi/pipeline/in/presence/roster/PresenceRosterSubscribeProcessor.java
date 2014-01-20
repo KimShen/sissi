@@ -13,6 +13,7 @@ public class PresenceRosterSubscribeProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
+		// must using bare jid
 		super.broadcast(super.build(protocol.getTo()), context.getJid().getBare(), Presence.class.cast(protocol).setType(PresenceType.SUBSCRIBE));
 		return false;
 	}

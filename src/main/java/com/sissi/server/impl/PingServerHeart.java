@@ -14,7 +14,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.ping.Ping;
-import com.sissi.resource.ResourceMonitor;
+import com.sissi.resource.ResourceCounter;
 import com.sissi.server.ServerHeart;
 
 /**
@@ -26,18 +26,18 @@ public class PingServerHeart implements ServerHeart, Runnable {
 
 	private final AtomicLong eids = new AtomicLong();
 
-	private final DelayQueue<PingTimeout> timeouts = new DelayQueue<PingTimeout>();
-
 	private final Log log = LogFactory.getLog(this.getClass());
+
+	private final DelayQueue<PingTimeout> timeouts = new DelayQueue<PingTimeout>();
 
 	private final Interval interval;
 
-	private final ResourceMonitor resourceMonitor;
+	private final ResourceCounter resourceCounter;
 
-	public PingServerHeart(Runner runner, Interval interval, ResourceMonitor resourceMonitor) {
+	public PingServerHeart(Runner runner, Interval interval, ResourceCounter resourceCounter) {
 		super();
 		this.interval = interval;
-		this.resourceMonitor = resourceMonitor;
+		this.resourceCounter = resourceCounter;
 		runner.executor(this.timeoutThreads, this);
 	}
 
@@ -71,18 +71,18 @@ public class PingServerHeart implements ServerHeart, Runnable {
 
 		public PingTimeout(JIDContext context) {
 			this.context = context;
-			this.deadline = TimeUnit.MILLISECONDS.convert(PingServerHeart.this.interval.getInterval(), PingServerHeart.this.interval.getUnit()) + System.currentTimeMillis();
-			PingServerHeart.this.resourceMonitor.increment();
+			this.deadline = PingServerHeart.this.interval.convert(TimeUnit.MILLISECONDS) + System.currentTimeMillis();
+			PingServerHeart.this.resourceCounter.increment();
 		}
 
 		public PingTimeout gc() {
 			this.context.closeTimeout();
-			PingServerHeart.this.resourceMonitor.decrement();
+			PingServerHeart.this.resourceCounter.decrement();
 			return this;
 		}
 
 		public long getDelay(TimeUnit unit) {
-			return unit.convert(deadline - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+			return unit.convert(this.deadline - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
 		}
 
 		public int compareTo(Delayed o) {

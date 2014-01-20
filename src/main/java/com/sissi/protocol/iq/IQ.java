@@ -83,7 +83,7 @@ public class IQ extends Protocol implements Collector {
 		this.add(Protocol.class.cast(ob));
 	}
 
-	public Boolean isValid() {
+	public Boolean isValidAction() {
 		return ProtocolType.parse(this.getType()) != null;
 	}
 }

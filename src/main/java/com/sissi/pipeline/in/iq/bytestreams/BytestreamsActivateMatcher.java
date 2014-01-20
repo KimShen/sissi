@@ -7,9 +7,9 @@ import com.sissi.protocol.iq.bytestreams.Bytestreams;
 /**
  * @author kim 2013年12月24日
  */
-public class BytestreamsActiveMatcher extends ClassMatcher {
+public class BytestreamsActivateMatcher extends ClassMatcher {
 
-	public BytestreamsActiveMatcher() {
+	public BytestreamsActivateMatcher() {
 		super(Bytestreams.class);
 	}
 

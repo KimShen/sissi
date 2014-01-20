@@ -9,6 +9,7 @@ import com.sissi.context.Status;
 public class ToSelfPresenceQueue extends ToAnyPresenceQueue {
 
 	public ToSelfPresenceQueue broadcast(JID jid, JID from, Status status) {
+		// find resource of jid and write presnece, if context can not be found it will write all of its resource (MongoAddressing)
 		super.getAddressing().findOne(jid, true).write(super.getPresenceBuilder().build(from, status));
 		return this;
 	}

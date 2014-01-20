@@ -66,13 +66,13 @@ abstract public class ProxyProcessor implements Input {
 		return this.addressing.others(context.getJid(), usingResource);
 	}
 
-	protected ProxyProcessor leave(JID jid) {
-		this.addressing.leave(jid);
+	protected ProxyProcessor join(JIDContext context) {
+		this.addressing.join(context);
 		return this;
 	}
 
-	protected ProxyProcessor leave(JID jid, Boolean usingResource) {
-		this.addressing.leave(jid, usingResource);
+	protected ProxyProcessor leave(JID jid) {
+		this.addressing.leave(jid);
 		return this;
 	}
 
@@ -81,8 +81,8 @@ abstract public class ProxyProcessor implements Input {
 		return this;
 	}
 
-	protected ProxyProcessor join(JIDContext context) {
-		this.addressing.join(context);
+	protected ProxyProcessor leave(JID jid, Boolean usingResource) {
+		this.addressing.leave(jid, usingResource);
 		return this;
 	}
 

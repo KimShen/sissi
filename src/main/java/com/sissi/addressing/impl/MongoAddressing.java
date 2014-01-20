@@ -22,7 +22,7 @@ import com.sissi.context.JIDContextBuilder;
 import com.sissi.context.JIDContextParam;
 import com.sissi.context.impl.JIDContexts;
 import com.sissi.gc.GC;
-import com.sissi.resource.ResourceMonitor;
+import com.sissi.resource.ResourceCounter;
 
 /**
  * @author kim 2013-11-1
@@ -41,11 +41,11 @@ public class MongoAddressing implements Addressing {
 
 	private final JIDContextBuilder offlineContextBuilder;
 
-	public MongoAddressing(Runner runner, Interval interval, MongoConfig config, ResourceMonitor resourceMonitor, JIDContextBuilder offlineContextBuilder) {
+	public MongoAddressing(Runner runner, Interval interval, MongoConfig config, ResourceCounter resourceCounter, JIDContextBuilder offlineContextBuilder) {
 		super();
 		this.config = config.clear();
 		this.offlineContextBuilder = offlineContextBuilder;
-		runner.executor(this.gcThreads, new JIDContextGC(interval, resourceMonitor));
+		runner.executor(this.gcThreads, new JIDContextGC(interval, resourceCounter));
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public class MongoAddressing implements Addressing {
 	}
 
 	private DBObject buildQueryWithNecessaryFields(JIDContext context) {
-		DBObject query = BasicDBObjectBuilder.start().add(MongoCollection.FIELD_JID, context.getJid().asStringWithBare()).add(MongoCollection.FIELD_RESOURCE, context.getJid().getResource()).add(MongoCollection.FIELD_INDEX, context.getIndex()).get();
+		DBObject query = BasicDBObjectBuilder.start().add(MongoCollection.FIELD_JID, context.getJid().asStringWithBare()).add(MongoCollection.FIELD_RESOURCE, context.getJid().getResource()).add(MongoCollection.FIELD_INDEX, context.getIndex()).add(MongoCollection.FIELD_ADDRESS, context.getAddress().toString()).get();
 		this.log.debug("Query: " + query);
 		return query;
 	}
@@ -178,12 +178,12 @@ public class MongoAddressing implements Addressing {
 
 	private class JIDContextGC extends GC {
 
-		protected JIDContextGC(Interval interval, ResourceMonitor resourceMonitor) {
-			super(interval, resourceMonitor);
+		protected JIDContextGC(Interval interval, ResourceCounter resourceCounter) {
+			super(interval, resourceCounter);
 		}
 
 		@Override
-		public void gc() {
+		public Boolean gc() {
 			for (Long index : MongoAddressing.this.contexts.keySet()) {
 				if (!MongoAddressing.this.exists(index)) {
 					JIDContext leak = MongoAddressing.this.contexts.get(index);
@@ -191,6 +191,7 @@ public class MongoAddressing implements Addressing {
 					MongoAddressing.this.log.error("Find leak context: " + leak.getJid().asString());
 				}
 			}
+			return true;
 		}
 	}
 

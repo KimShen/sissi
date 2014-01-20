@@ -127,12 +127,13 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	}
 
 	@Override
-	public Presence setStatus(StatusClauses clauses) {
+	public Presence setClauses(StatusClauses clauses) {
 		return this.copyFromClauses(clauses);
 	}
 
 	@Override
-	public StatusClauses getStatusClauses() {
+	@XmlTransient
+	public StatusClauses getClauses() {
 		return new PresenceClauses();
 	}
 

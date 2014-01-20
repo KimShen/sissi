@@ -25,7 +25,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 	@Override
 	public JID build(String jid) {
-		return jid != null ? new User(jid) : this.noneUser;
+		return (jid != null && !jid.isEmpty()) ? new User(jid) : this.noneUser;
 	}
 
 	public JID build(String username, String resource) {

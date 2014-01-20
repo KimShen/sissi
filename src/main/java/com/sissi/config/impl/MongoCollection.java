@@ -14,9 +14,13 @@ import com.sissi.config.MongoConfig;
  */
 public class MongoCollection implements MongoConfig {
 
+	public static final String FIELD_ID = "_id";
+
 	public static final String FIELD_JID = "jid";
 
 	public static final String FIELD_INDEX = "index";
+
+	public static final String FIELD_ADDRESS = "address";
 
 	public static final String FIELD_PRIORITY = "priority";
 
@@ -30,7 +34,7 @@ public class MongoCollection implements MongoConfig {
 
 	public static final String FIELD_MASTER = "master";
 
-	public static final DBObject FILTER_ID = BasicDBObjectBuilder.start("_id", 1).get();
+	public static final DBObject FILTER_ID = BasicDBObjectBuilder.start(FIELD_ID, 1).get();
 
 	public static final DBObject FILTER_INDEX = BasicDBObjectBuilder.start(FIELD_INDEX, 1).get();
 

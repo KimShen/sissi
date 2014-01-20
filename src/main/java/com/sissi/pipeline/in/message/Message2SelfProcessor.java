@@ -11,7 +11,7 @@ public class Message2SelfProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		// Send to selfs it "to" is null
+		// to selfs if "to" is null
 		return context.getJid().getUser().equals((protocol.getTo() != null ? super.build(protocol.getTo()) : context.getJid()).getUser()) ? this.writeAndReturn(context, protocol.setFrom(context.getJid())) : true;
 	}
 

@@ -11,6 +11,7 @@ public class ToSelfProtocolQueue extends ToAnyProtocolQueue implements Broadcast
 
 	@Override
 	public ToSelfProtocolQueue broadcast(JID jid, Protocol protocol) {
+		// find resource of jid and write presnece, if context can not be found it will write all of its resource (MongoAddressing)
 		super.getAddressing().findOne(jid, true).write(protocol);
 		return this;
 	}

@@ -11,6 +11,7 @@ public class ToFansProtocolQueue extends ToAnyProtocolQueue implements Broadcast
 
 	@Override
 	public ToFansProtocolQueue broadcast(JID jid, Protocol protocol) {
+		// find who subscribed me and write protocol to all of its resource
 		for (String each : super.getRelationContext().whoSubscribedMe(jid)) {
 			super.getAddressing().find(super.getJidBuilder().build(each)).write(protocol);
 		}

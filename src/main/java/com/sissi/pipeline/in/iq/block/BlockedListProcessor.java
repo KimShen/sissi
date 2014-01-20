@@ -24,7 +24,7 @@ public class BlockedListProcessor extends ProxyProcessor {
 	public Boolean input(JIDContext context, Protocol protocol) {
 		BlockList list = BlockList.class.cast(protocol);
 		for (String each : this.blockContext.iBlockWho(context.getJid())) {
-			list.add(new BlockListItem().setJid(super.build(each, null).asStringWithBare()));
+			list.add(new BlockListItem().setJid(super.build(each, null).setDomain(context.getDomain()).asStringWithBare()));
 		}
 		context.write(list.getParent().setFrom(context.getDomain()).setType(ProtocolType.RESULT));
 		return true;

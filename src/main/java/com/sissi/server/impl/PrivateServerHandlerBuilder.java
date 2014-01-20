@@ -34,7 +34,7 @@ import com.sissi.pipeline.InputFinder;
 import com.sissi.pipeline.Output;
 import com.sissi.pipeline.OutputBuilder;
 import com.sissi.read.Reader;
-import com.sissi.resource.ResourceMonitor;
+import com.sissi.resource.ResourceCounter;
 import com.sissi.server.ServerCloser;
 import com.sissi.server.ServerTlsBuilder;
 
@@ -63,13 +63,13 @@ public class PrivateServerHandlerBuilder {
 
 	private final OutputBuilder outputBuilder;
 
-	private final ResourceMonitor resourceMonitor;
+	private final ResourceCounter resourceCounter;
 
 	private final ServerTlsBuilder serverTlsContext;
 
 	private final JIDContextBuilder jidContextBuilder;
 
-	public PrivateServerHandlerBuilder(Reader reader, InputFinder finder, Addressing addressing, ServerCloser serverCloser, FeederBuilder feederBuilder, LooperBuilder looperBuilder, OutputBuilder outputBuilder, ResourceMonitor resourceMonitor, ServerTlsBuilder serverTlsContext, JIDContextBuilder jidContextBuilder) {
+	public PrivateServerHandlerBuilder(Reader reader, InputFinder finder, Addressing addressing, ServerCloser serverCloser, FeederBuilder feederBuilder, LooperBuilder looperBuilder, OutputBuilder outputBuilder, ResourceCounter resourceCounter, ServerTlsBuilder serverTlsContext, JIDContextBuilder jidContextBuilder) {
 		super();
 		this.reader = reader;
 		this.finder = finder;
@@ -78,7 +78,7 @@ public class PrivateServerHandlerBuilder {
 		this.feederBuilder = feederBuilder;
 		this.looperBuilder = looperBuilder;
 		this.outputBuilder = outputBuilder;
-		this.resourceMonitor = resourceMonitor;
+		this.resourceCounter = resourceCounter;
 		this.serverTlsContext = serverTlsContext;
 		this.jidContextBuilder = jidContextBuilder;
 	}
@@ -104,25 +104,24 @@ public class PrivateServerHandlerBuilder {
 		public void channelRegistered(final ChannelHandlerContext ctx) {
 			this.createContext(ctx);
 			this.createLooper(ctx);
-			PrivateServerHandlerBuilder.this.resourceMonitor.increment();
+			PrivateServerHandlerBuilder.this.resourceCounter.increment();
 		}
 
 		public void channelUnregistered(ChannelHandlerContext ctx) {
 			try {
-				JIDContext context = ctx.attr(attrContext).get();
+				JIDContext context = ctx.attr(PrivateServerHandlerBuilder.this.attrContext).get();
 				if (context.isBinding()) {
 					PrivateServerHandlerBuilder.this.serverCloser.close(context);
 					PrivateServerHandlerBuilder.this.addressing.leave(context);
 				}
-				ctx.attr(attrConnector).get().stop();
+				ctx.attr(PrivateServerHandlerBuilder.this.attrConnector).get().stop();
 				this.closeParser();
+				PrivateServerHandlerBuilder.this.resourceCounter.decrement();
 			} catch (Exception e) {
 				if (PrivateServerHandlerBuilder.this.log.isErrorEnabled()) {
 					PrivateServerHandlerBuilder.this.log.error(e.toString());
 					e.printStackTrace();
 				}
-			} finally {
-				PrivateServerHandlerBuilder.this.resourceMonitor.decrement();
 			}
 		}
 

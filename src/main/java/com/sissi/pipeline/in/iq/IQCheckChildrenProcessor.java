@@ -22,7 +22,7 @@ public class IQCheckChildrenProcessor implements Input {
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.reply().setError(new ServerError().setType(ProtocolType.CANCEL).setBy(context.getDomain()).add(BadRequest.DETAIL, context.getLang(), this.text)));
+		context.write(protocol.reply().setError(new ServerError().setType(ProtocolType.CANCEL).add(BadRequest.DETAIL, context.getLang(), this.text)));
 		return false;
 	}
 }

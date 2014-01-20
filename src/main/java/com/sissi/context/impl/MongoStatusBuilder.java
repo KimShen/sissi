@@ -32,7 +32,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 	}
 
 	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
-		this.config.collection().update(this.buildQuery(context), this.buildEntity("$set", context, type, show, status, avator), true, false);
+		this.config.collection().update(this.buildQuery(context), this.buildEntity("$set", context, type, show, status, avator));
 		return this;
 	}
 
@@ -41,7 +41,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 	}
 
 	private MongoStatusBuilder clear(JIDContext context) {
-		this.config.collection().update(this.buildQuery(context), this.buildEntity("$unset", context, null, null, null, null), true, false);
+		this.config.collection().update(this.buildQuery(context), this.buildEntity("$unset", context, null, null, null, null));
 		return this;
 	}
 
@@ -68,24 +68,25 @@ public class MongoStatusBuilder implements StatusBuilder {
 
 		public MongoStatus clear() {
 			MongoStatusBuilder.this.clear(this.context);
+			// clear the reference to avoid gc failed
 			this.context = null;
 			return this;
 		}
 
-		public Status setStatus(StatusClauses clauses) {
+		public Status setClauses(StatusClauses clauses) {
 			MongoStatusBuilder.this.set(this.context, clauses.find(StatusClauses.KEY_TYPE), clauses.find(StatusClauses.KEY_SHOW), clauses.find(StatusClauses.KEY_STATUS), clauses.find(StatusClauses.KEY_AVATOR));
 			return this;
 		}
 
 		@Override
-		public StatusClauses getStatusClauses() {
+		public StatusClauses getClauses() {
 			return new MongoClauses(MongoStatusBuilder.this.get(this.context));
 		}
 	}
 
 	private class MongoClauses implements StatusClauses {
 
-		private DBObject status;
+		private final DBObject status;
 
 		public MongoClauses(DBObject status) {
 			super();

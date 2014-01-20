@@ -8,7 +8,7 @@
 	<bean id="bytestreams.proxy" class="com.sissi.protocol.iq.bytestreams.BytestreamsProxy">
 		<constructor-arg index="0" value="${bytestreams.jid}" />
 		<constructor-arg index="1" value="${bytestreams.name}" />
-		<constructor-arg index="2" value="192.168.1.20" />
+		<constructor-arg index="2" value="192.168.3.67" />
 		<constructor-arg index="3" value="${bytestreams.port}" />
 	</bean>
 
@@ -19,23 +19,13 @@
 	<bean id="bytestreams.pro.2server" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2RobotProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
-	<bean id="bytestreams.pro.2fans.streamused" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2FansProcessor" parent="global.pro.proxy">
+	<bean id="bytestreams.pro.2fans" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2FansProcessor" parent="global.pro.proxy">
 		<constructor-arg>
 			<bean class="com.sissi.protocol.iq.bytestreams.StreamhostComparator">
 				<constructor-arg ref="bytestreams.proxy" />
 			</bean>
 		</constructor-arg>
 	</bean>
-	<bean id="bytestreams.pro.2self.activate" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2SelfActivateProcessor" parent="global.pro.proxy" />
-	<bean id="bytestreams.pro.2fans" class="com.sissi.pipeline.in.ChainedProcessor">
-		<constructor-arg>
-			<util:list>
-				<ref bean="bytestreams.pro.2fans.streamused" />
-				<ref bean="bytestreams.pro.2self.activate" />
-			</util:list>
-		</constructor-arg>
-	</bean>
-	
 	<bean id="bytestreams.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.iq.bytestreams" />
 	</bean>
@@ -43,7 +33,6 @@
 	<bean id="finder.iq.bytestreams" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="bytestreams.condition.2activate" />
 				<ref bean="bytestreams.condition.2server" />
 				<ref bean="bytestreams.condition.2proxy" />
 				<ref bean="bytestreams.condition.2fans" />
@@ -58,12 +47,6 @@
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="bytestreams.pro.fork" />
-	</bean>
-	<bean id="bytestreams.condition.2activate" class="com.sissi.pipeline.in.PairCondition">
-		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.bytestreams.BytestreamsActiveMatcher" />
-		</constructor-arg>
-		<constructor-arg ref="bytestreams.pro.2activate" />
 	</bean>
 	<bean id="bytestreams.condition.2server" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

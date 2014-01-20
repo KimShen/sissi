@@ -11,17 +11,17 @@ import com.sissi.protocol.iq.IQ;
 /**
  * @author kim 2014年1月14日
  */
-public class IQCheckTypeProcessor implements Input {
+public class IQCheckActionProcessor implements Input {
 
 	private final String text = "Please check type";
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return IQ.class.cast(protocol).isValid() ? true : this.writeAndReturn(context, protocol);
+		return IQ.class.cast(protocol).isValidAction() ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.reply().setError(new ServerError().setType(ProtocolType.MODIFY).setBy(context.getDomain()).add(BadRequest.DETAIL, context.getLang(), this.text)));
+		context.write(protocol.reply().setError(new ServerError().setType(ProtocolType.MODIFY).add(BadRequest.DETAIL, context.getLang(), this.text)));
 		return false;
 	}
 }

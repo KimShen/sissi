@@ -31,19 +31,19 @@ public class DigestAuthCallback implements AuthCallback {
 
 	public final static String MECHANISM = "DIGEST-MD5";
 
-	private final String PROTOCOL = "XMPP";
+	private final String protocol = "XMPP";
 
-	private final String QOP = "auth";
+	private final String qop = "auth";
 
 	@SuppressWarnings("serial")
-	private final Map<String, String> PROPS = new TreeMap<String, String>() {
+	private final Map<String, String> props = new TreeMap<String, String>() {
 		{
-			put(Sasl.QOP, QOP);
+			put(Sasl.QOP, qop);
 		}
 	};
 
 	@SuppressWarnings("serial")
-	private final Map<Class<? extends Callback>, Handler> HANDLERS = new HashMap<Class<? extends Callback>, Handler>() {
+	private final Map<Class<? extends Callback>, Handler> handlers = new HashMap<Class<? extends Callback>, Handler>() {
 		{
 			put(NameCallback.class, new NameCallbackHandler());
 			put(PasswordCallback.class, new PasswordCallbackHandler());
@@ -69,7 +69,7 @@ public class DigestAuthCallback implements AuthCallback {
 	@Override
 	public Boolean auth(Auth auth, JIDContext context) {
 		try {
-			context.write(new Challenge(this.saslServers.set(context, Sasl.createSaslServer(MECHANISM, PROTOCOL, context.getDomain(), PROPS, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
+			context.write(new Challenge(this.saslServers.set(context, Sasl.createSaslServer(MECHANISM, this.protocol, context.getDomain(), this.props, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
 			return true;
 		} catch (Exception e) {
 			if (this.log.isErrorEnabled()) {
@@ -96,7 +96,7 @@ public class DigestAuthCallback implements AuthCallback {
 
 		public void handle(final Callback[] callbacks) throws IOException, UnsupportedCallbackException {
 			for (Callback callback : callbacks) {
-				Handler handler = DigestAuthCallback.this.HANDLERS.get(callback.getClass());
+				Handler handler = DigestAuthCallback.this.handlers.get(callback.getClass());
 				if (handler != null) {
 					handler.handler(this.context, callback);
 				}

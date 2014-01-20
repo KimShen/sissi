@@ -1,6 +1,7 @@
 package com.sissi.offline.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -12,14 +13,16 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
+import com.sissi.context.JIDContext;
 import com.sissi.offline.DelayElement;
 import com.sissi.offline.DelayElementBox;
+import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 
 /**
  * @author kim 2013-11-15
  */
-public class MongoDelayElementBox implements DelayElementBox {
+public class MongoDelayElementBox implements DelayElementBox, Output {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -36,7 +39,7 @@ public class MongoDelayElementBox implements DelayElementBox {
 	}
 
 	@Override
-	public List<Element> pull(JID jid) {
+	public Collection<Element> pull(JID jid) {
 		DBObject query = BasicDBObjectBuilder.start(this.to, jid.asStringWithBare()).get();
 		this.log.debug("Query: " + query);
 		Elements elements = new Elements(this.config.collection().find(query));
@@ -53,6 +56,17 @@ public class MongoDelayElementBox implements DelayElementBox {
 				this.config.collection().save(entity);
 			}
 		}
+		return this;
+	}
+
+	@Override
+	public Boolean output(JIDContext context, Element element) {
+		this.push(element);
+		return true;
+	}
+
+	@Override
+	public Output close() {
 		return this;
 	}
 

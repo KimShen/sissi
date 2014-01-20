@@ -33,17 +33,17 @@
 		<!-- For Exchanger -->
 		<maven.exchanger.gc.interval>3000</maven.exchanger.gc.interval>
 		<maven.exchanger.gc.unit>MILLISECONDS</maven.exchanger.gc.unit>
-		<maven.exchanger.idle.all>300</maven.exchanger.idle.all>
-		<maven.exchanger.idle.read>300</maven.exchanger.idle.read>
-		<maven.exchanger.idle.write>300</maven.exchanger.idle.write>
+		<maven.exchanger.idle.all>30</maven.exchanger.idle.all>
+		<maven.exchanger.idle.read>30</maven.exchanger.idle.read>
+		<maven.exchanger.idle.write>30</maven.exchanger.idle.write>
 		<!-- For Monitor -->
-		<maven.monitor.exchanger.context>exchanger.context</maven.monitor.exchanger.context>
-		<maven.monitor.exchanger>exchanger</maven.monitor.exchanger>
-		<maven.monitor.addressing>addressing</maven.monitor.addressing>
-		<maven.monitor.feeder>feeder</maven.monitor.feeder>
-		<maven.monitor.reader>reader</maven.monitor.reader>
-		<maven.monitor.heart>heart</maven.monitor.heart>
-		<maven.monitor.main>main</maven.monitor.main>
+		<maven.counter.exchanger>exchanger</maven.counter.exchanger>
+		<maven.counter.addressing>addressing</maven.counter.addressing>
+		<maven.counter.feeder>feeder</maven.counter.feeder>
+		<maven.counter.reader>reader</maven.counter.reader>
+		<maven.counter.socks>socks</maven.counter.socks>
+		<maven.counter.heart>heart</maven.counter.heart>
+		<maven.counter.main>main</maven.counter.main>
 		<!-- For Thread -->
 		<maven.executor.keep.alive>3000</maven.executor.keep.alive>
 		<maven.executor.maximum>1000</maven.executor.maximum>
@@ -60,7 +60,7 @@
 		<maven.mongo.collection.offline>offline</maven.mongo.collection.offline>
 		<maven.mongo.collection.addressing>addressing</maven.mongo.collection.addressing>
 		<maven.mongo.collection.exchanger>exchanger</maven.mongo.collection.exchanger>
-		<maven.mongo.collection.monitor>monitor</maven.mongo.collection.monitor>
+		<maven.mongo.collection.counter>counter</maven.mongo.collection.counter>
 		<maven.mongo.collection.roster>roster</maven.mongo.collection.roster>
 		<maven.mongo.collection.user>user</maven.mongo.collection.user>
 		<!-- For Protocol -->

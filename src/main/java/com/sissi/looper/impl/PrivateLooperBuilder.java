@@ -12,7 +12,7 @@ import com.sissi.feed.Feeder;
 import com.sissi.looper.Looper;
 import com.sissi.looper.LooperBuilder;
 import com.sissi.protocol.Protocol;
-import com.sissi.resource.ResourceMonitor;
+import com.sissi.resource.ResourceCounter;
 
 /**
  * @author kim 2013-10-30
@@ -27,14 +27,14 @@ public class PrivateLooperBuilder implements LooperBuilder {
 
 	private final Interval interval;
 
-	private final ResourceMonitor resourceMonitor;
+	private final ResourceCounter resourceCounter;
 
-	public PrivateLooperBuilder(Runner runner, Interval interval, Integer threads, ResourceMonitor resourceMonitor) {
+	public PrivateLooperBuilder(Runner runner, Interval interval, Integer threads, ResourceCounter resourceCounter) {
 		super();
 		this.runner = runner;
 		this.threads = threads;
 		this.interval = interval;
-		this.resourceMonitor = resourceMonitor;
+		this.resourceCounter = resourceCounter;
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class PrivateLooperBuilder implements LooperBuilder {
 		@Override
 		public void run() {
 			try {
-				PrivateLooperBuilder.this.resourceMonitor.increment();
+				PrivateLooperBuilder.this.resourceCounter.increment();
 				while (true) {
 					try {
 						if (this.prepareStop()) {
@@ -75,7 +75,7 @@ public class PrivateLooperBuilder implements LooperBuilder {
 					}
 				}
 			} finally {
-				PrivateLooperBuilder.this.resourceMonitor.decrement();
+				PrivateLooperBuilder.this.resourceCounter.decrement();
 			}
 		}
 

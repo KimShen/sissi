@@ -8,9 +8,9 @@
 	<bean id="server.reader" class="com.sissi.read.sax.SAXReader">
 		<constructor-arg ref="executor" />
 		<constructor-arg>
-			<bean class="com.sissi.resource.impl.MongoResourceMonitor">
-				<constructor-arg ref="monitor" />
-				<constructor-arg value="${monitor.reader}" />
+			<bean class="com.sissi.resource.impl.MongoResourceCounter">
+				<constructor-arg ref="counter" />
+				<constructor-arg value="${counter.reader}" />
 			</bean>
 		</constructor-arg>
 	</bean>
@@ -18,10 +18,10 @@
 	<bean id="server.closer" class="com.sissi.server.impl.ChainedServerCloser">
 		<constructor-arg>
 			<util:list>
-				<bean class="com.sissi.server.impl.Offline2FansServerCloser">
+				<bean class="com.sissi.server.impl.BroadcastServerCloser">
 					<constructor-arg ref="broadcast.protocol.fans" />
 				</bean>
-				<bean class="com.sissi.server.impl.Offline2SelfsServerCloser">
+				<bean class="com.sissi.server.impl.BroadcastServerCloser">
 					<constructor-arg ref="broadcast.protocol.selfs" />
 				</bean>
 			</util:list>
@@ -47,14 +47,15 @@
 		<constructor-arg ref="server.tls" />
 		<constructor-arg ref="server.reader" />
 		<constructor-arg ref="server.closer" />
+		<constructor-arg ref="addressing" />
 		<constructor-arg ref="output" />
 		<constructor-arg ref="finder" />
 		<constructor-arg ref="feeder" />
 		<constructor-arg ref="looper" />
-		<constructor-arg ref="addressing" />
 		<constructor-arg>
 			<bean class="com.sissi.context.impl.OnlineContextBuilder">
 				<constructor-arg ref="status" />
+				<constructor-arg ref="offline" />
 				<constructor-arg ref="server.heart" />
 				<constructor-arg index="0" value="${pipeline.auth.retry}" />
 				<constructor-arg index="1" value="${global.lang}" />
@@ -62,9 +63,9 @@
 			</bean>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.resource.impl.MongoResourceMonitor">
-				<constructor-arg ref="monitor" />
-				<constructor-arg value="${monitor.main}" />
+			<bean class="com.sissi.resource.impl.MongoResourceCounter">
+				<constructor-arg ref="counter" />
+				<constructor-arg value="${counter.main}" />
 			</bean>
 		</constructor-arg>
 	</bean>
@@ -78,9 +79,9 @@
 			</bean>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.resource.impl.MongoResourceMonitor">
-				<constructor-arg ref="monitor" />
-				<constructor-arg value="${monitor.heart}" />
+			<bean class="com.sissi.resource.impl.MongoResourceCounter">
+				<constructor-arg ref="counter" />
+				<constructor-arg value="${counter.heart}" />
 			</bean>
 		</constructor-arg>
 	</bean>

@@ -27,6 +27,7 @@ public class AuthForkProcessor extends ProxyProcessor {
 		Auth auth = Auth.class.cast(protocol);
 		for (AuthCallback ac : this.authCallbacks) {
 			if (ac.isSupport(auth.getMechanism())) {
+				// if auth success it will return true, and pipeline should be stop
 				return !ac.auth(auth, context);
 			}
 		}

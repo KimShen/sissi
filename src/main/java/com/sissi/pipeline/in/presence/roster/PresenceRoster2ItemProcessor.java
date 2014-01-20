@@ -14,7 +14,7 @@ import com.sissi.ucenter.RelationRoster;
 /**
  * @author kim 2014年1月16日
  */
-abstract class PresenceRoster2MasterItemProcessor extends ProxyProcessor {
+abstract class PresenceRoster2ItemProcessor extends ProxyProcessor {
 
 	protected Protocol prepare(JID master, JID slave, RosterSubscription subscription) {
 		Relation relation = super.ourRelation(master, slave);

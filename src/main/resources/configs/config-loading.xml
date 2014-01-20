@@ -7,7 +7,7 @@
 
 	<import resource="config-addressing.xml" />
 	<import resource="config-broadcast.xml" />
-	<import resource="config-monitor.xml" />
+	<import resource="config-counter.xml" />
 	<import resource="config-context.xml" />
 	<import resource="config-feeder.xml" />
 	<import resource="config-global.xml" />

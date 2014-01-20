@@ -30,6 +30,7 @@ public class DigestAuthProcessor extends ProxyProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		try {
+			// if auth success it will return true, and pipeline should be stop
 			return !this.isSuccess(context, protocol);
 		} catch (Exception e) {
 			this.log.debug(e.toString());

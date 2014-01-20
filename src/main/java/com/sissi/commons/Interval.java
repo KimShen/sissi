@@ -17,6 +17,10 @@ public class Interval {
 		this.unit = unit;
 	}
 
+	public Long convert(TimeUnit unit) {
+		return unit.convert(this.interval, this.unit);
+	}
+
 	public Long getInterval() {
 		return interval;
 	}

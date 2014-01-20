@@ -1,6 +1,6 @@
 package com.sissi.offline;
 
-import java.util.List;
+import java.util.Collection;
 
 import com.sissi.context.JID;
 import com.sissi.protocol.Element;
@@ -12,5 +12,5 @@ public interface DelayElementBox {
 
 	public DelayElementBox push(Element element);
 
-	public List<Element> pull(JID jid);
+	public Collection<Element> pull(JID jid);
 }

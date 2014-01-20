@@ -7,19 +7,19 @@ import com.sissi.protocol.presence.PresenceType;
 import com.sissi.server.ServerCloser;
 
 /**
- * @author kim 2014年1月16日
+ * @author kim 2013-11-20
  */
-public class Offline2SelfsServerCloser implements ServerCloser {
+public class BroadcastServerCloser implements ServerCloser {
 
 	private final BroadcastProtocol protocolBraodcast;
 
-	public Offline2SelfsServerCloser(BroadcastProtocol protocolBraodcast) {
+	public BroadcastServerCloser(BroadcastProtocol protocolBraodcast) {
 		super();
 		this.protocolBraodcast = protocolBraodcast;
 	}
 
 	@Override
-	public Offline2SelfsServerCloser close(JIDContext context) {
+	public BroadcastServerCloser close(JIDContext context) {
 		this.protocolBraodcast.broadcast(context.getJid(), new Presence().setFrom(context.getJid()).setType(PresenceType.UNAVAILABLE));
 		return this;
 	}

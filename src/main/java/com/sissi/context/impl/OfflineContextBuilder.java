@@ -11,7 +11,7 @@ import com.sissi.context.JIDContextBuilder;
 import com.sissi.context.JIDContextParam;
 import com.sissi.context.Status;
 import com.sissi.context.StatusClauses;
-import com.sissi.offline.DelayElementBox;
+import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.presence.PresenceType;
 
@@ -29,16 +29,16 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 	private final SocketAddress address = new InetSocketAddress(InetAddress.getByName("0.0.0.0"), 0);
 
 	private final String lang;
-	
-	private final String domain;
-	
-	private final DelayElementBox delayElementBox;
 
-	public OfflineContextBuilder(String lang, String domain, DelayElementBox delayElementBox) throws Exception {
+	private final String domain;
+
+	private final Output output;
+
+	public OfflineContextBuilder(String lang, String domain, Output output) throws Exception {
 		super();
 		this.lang = lang;
 		this.domain = domain;
-		this.delayElementBox = delayElementBox;
+		this.output = output;
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public JIDContext write(Element element) {
-			OfflineContextBuilder.this.delayElementBox.push(element);
+			OfflineContextBuilder.this.output.output(this, element);
 			return this;
 		}
 
@@ -182,12 +182,12 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public Status setStatus(StatusClauses clauses) {
+		public Status setClauses(StatusClauses clauses) {
 			return this;
 		}
 
 		@Override
-		public StatusClauses getStatusClauses() {
+		public StatusClauses getClauses() {
 			return this.empty;
 		}
 	}

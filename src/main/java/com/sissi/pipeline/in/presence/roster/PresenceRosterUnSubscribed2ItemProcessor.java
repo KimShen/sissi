@@ -8,7 +8,7 @@ import com.sissi.protocol.iq.roster.RosterSubscription;
 /**
  * @author kim 2013-11-18
  */
-public class PresenceRosterUnSubscribed2MasterItemProcessor extends PresenceRoster2MasterItemProcessor {
+public class PresenceRosterUnSubscribed2ItemProcessor extends PresenceRoster2ItemProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

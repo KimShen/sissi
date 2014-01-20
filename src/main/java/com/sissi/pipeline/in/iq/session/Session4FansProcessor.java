@@ -14,9 +14,10 @@ public class Session4FansProcessor extends ProxyProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		for (String relation : super.iSubscribedWho(context.getJid().getBare())) {
+			// Get presence from all resources of jid who subscribed me
 			JID from = super.build(relation);
 			for (String resource : super.resources(from)) {
-				context.write(new Presence(from.setResource(resource), super.findOne(from, true).getStatus().getStatusClauses()));
+				context.write(new Presence(from.setResource(resource), super.findOne(from, true).getStatus().getClauses()));
 			}
 		}
 		return true;

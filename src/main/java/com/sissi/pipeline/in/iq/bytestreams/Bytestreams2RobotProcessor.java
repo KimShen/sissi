@@ -13,7 +13,7 @@ import com.sissi.protocol.iq.bytestreams.Streamhost;
  */
 public class Bytestreams2RobotProcessor implements Input {
 
-	private BytestreamsProxy bytestreamsProxy;
+	private final BytestreamsProxy bytestreamsProxy;
 
 	public Bytestreams2RobotProcessor(BytestreamsProxy bytestreamsProxy) {
 		super();

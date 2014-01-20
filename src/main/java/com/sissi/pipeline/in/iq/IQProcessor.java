@@ -4,13 +4,11 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
-import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.detail.ServiceUnavaliable;
 
 /**
  * @author kim 2013年12月3日
  */
-public class IQProcessor implements Input {
+abstract public class IQProcessor implements Input {
 
 	private final ProtocolType type;
 
@@ -34,13 +32,10 @@ public class IQProcessor implements Input {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(this.prepare(protocol));
+		Protocol response = this.prepare(protocol.getParent().reply().setType(this.type));
+		context.write(this.clear ? response.clear() : response);
 		return this.doNext;
 	}
 
-	private Protocol prepare(Protocol protocol) {
-		Protocol response = protocol.getParent().reply().setType(this.type);
-		response = (this.type == ProtocolType.ERROR) ? response.setError(new ServerError().add(ServiceUnavaliable.DETAIL)) : response;
-		return this.clear ? response.clear() : response;
-	}
+	abstract protected Protocol prepare(Protocol response);
 }

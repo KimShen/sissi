@@ -60,7 +60,8 @@ public class MongoBlockContext implements BlockContext {
 
 	@Override
 	public Boolean isBlock(JID from, JID to) {
-		Object query = this.buildQuery(from).put(MongoCollection.FIELD_BLOCK, to.getUser());
+		DBObject query = this.buildQuery(from);
+		query.put(MongoCollection.FIELD_BLOCK, to.getUser());
 		this.log.debug("Query: " + query);
 		return this.config.collection().findOne(query, MongoCollection.FILTER_ID) != null;
 	}

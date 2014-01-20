@@ -18,9 +18,9 @@
 			</bean>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.resource.impl.MongoResourceMonitor">
-				<constructor-arg ref="monitor" />
-				<constructor-arg value="${monitor.feeder}" />
+			<bean class="com.sissi.resource.impl.MongoResourceCounter">
+				<constructor-arg ref="counter" />
+				<constructor-arg value="${counter.feeder}" />
 			</bean>
 		</constructor-arg>
 	</bean>

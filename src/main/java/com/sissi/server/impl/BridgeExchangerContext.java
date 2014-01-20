@@ -15,7 +15,7 @@ import com.sissi.commons.Runner;
 import com.sissi.commons.apache.IOUtils;
 import com.sissi.config.MongoConfig;
 import com.sissi.gc.GC;
-import com.sissi.resource.ResourceMonitor;
+import com.sissi.resource.ResourceCounter;
 import com.sissi.server.Exchanger;
 import com.sissi.server.ExchangerCloser;
 import com.sissi.server.ExchangerContext;
@@ -34,10 +34,10 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 	private final MongoConfig config;
 
-	public BridgeExchangerContext(Runner runner, Interval interval, MongoConfig config, ResourceMonitor resourceMonitor) {
+	public BridgeExchangerContext(Runner runner, Interval interval, MongoConfig config, ResourceCounter resourceCounter) {
 		super();
 		this.config = config.clear();
-		runner.executor(this.gcThreads, new LeakGC(interval, resourceMonitor));
+		runner.executor(this.gcThreads, new LeakGC(interval, resourceCounter));
 	}
 
 	@Override
@@ -60,7 +60,6 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 	@Override
 	public Boolean isTarget(String host) {
-		System.out.println(host);
 		return !this.exists(host);
 	}
 
@@ -74,12 +73,12 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 	private class LeakGC extends GC {
 
-		public LeakGC(Interval interval, ResourceMonitor resourceMonitor) {
-			super(interval, resourceMonitor);
+		public LeakGC(Interval interval, ResourceCounter resourceCounter) {
+			super(interval, resourceCounter);
 		}
 
 		@Override
-		public void gc() {
+		public Boolean gc() {
 			for (String host : BridgeExchangerContext.this.cached.keySet()) {
 				if (!BridgeExchangerContext.this.exists(host)) {
 					Exchanger leak = BridgeExchangerContext.this.cached.get(host);
@@ -88,6 +87,7 @@ public class BridgeExchangerContext implements ExchangerContext {
 					BridgeExchangerContext.this.log.error("Find leak exchanger: " + host);
 				}
 			}
+			return true;
 		}
 	}
 

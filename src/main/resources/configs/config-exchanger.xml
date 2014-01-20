@@ -21,9 +21,9 @@
 			</bean>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.resource.impl.MongoResourceMonitor">
-				<constructor-arg ref="monitor" />
-				<constructor-arg value="${monitor.exchanger.context}" />
+			<bean class="com.sissi.resource.impl.MongoResourceCounter">
+				<constructor-arg ref="counter" />
+				<constructor-arg value="${counter.exchanger}" />
 			</bean>
 		</constructor-arg>
 	</bean>
@@ -39,9 +39,9 @@
 				<constructor-arg ref="server.exchanger.context" />
 				<constructor-arg ref="bytestreams.proxy" />
 				<constructor-arg>
-					<bean class="com.sissi.resource.impl.MongoResourceMonitor">
-						<constructor-arg ref="monitor" />
-						<constructor-arg value="${monitor.exchanger}" />
+					<bean class="com.sissi.resource.impl.MongoResourceCounter">
+						<constructor-arg ref="counter" />
+						<constructor-arg value="${counter.socks}" />
 					</bean>
 				</constructor-arg>
 			</bean>

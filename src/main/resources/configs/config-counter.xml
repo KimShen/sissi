@@ -5,10 +5,10 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="monitor" class="com.sissi.config.impl.MongoCollection">
+	<bean id="counter" class="com.sissi.config.impl.MongoCollection">
 		<constructor-arg ref="mongo" />
 		<constructor-arg index="1" value="${mongo.db}" />
-		<constructor-arg index="2" value="${mongo.collection.monitor}" />
+		<constructor-arg index="2" value="${mongo.collection.counter}" />
 	</bean>
 
 </beans>

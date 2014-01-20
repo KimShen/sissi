@@ -12,7 +12,7 @@ public class PresenceStatusUpdateProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.getStatus().setStatus(Presence.class.cast(protocol).getStatusClauses());
+		context.getStatus().setClauses(Presence.class.cast(protocol).getClauses());
 		return true;
 	}
 }

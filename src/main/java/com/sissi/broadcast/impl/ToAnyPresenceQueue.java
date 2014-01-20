@@ -35,7 +35,7 @@ abstract class ToAnyPresenceQueue extends ToAnyProtocolQueue implements Broadcas
 		}
 
 		private Presence newOne(JID from, Status status) {
-			return new Presence(from, status.getStatusClauses());
+			return new Presence(from, status.getClauses());
 		}
 	}
 }

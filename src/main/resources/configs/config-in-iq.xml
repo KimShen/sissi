@@ -5,19 +5,13 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="iq.pro.result.stop" class="com.sissi.pipeline.in.iq.IQProcessor">
-		<constructor-arg value="result" />
-	</bean>
-	<bean id="iq.pro.result.next" class="com.sissi.pipeline.in.iq.IQProcessor">
-		<constructor-arg value="result" />
+	<bean id="iq.pro.result.stop" class="com.sissi.pipeline.in.iq.IQResultProcessor" />
+	<bean id="iq.pro.result.next" class="com.sissi.pipeline.in.iq.IQResultProcessor">
 		<constructor-arg value="true" />
 		<constructor-arg value="true" />
 	</bean>
-	<bean id="iq.pro.error.clear" class="com.sissi.pipeline.in.iq.IQProcessor">
-		<constructor-arg value="error" />
-	</bean>
-	<bean id="iq.pro.error.none" class="com.sissi.pipeline.in.iq.IQProcessor">
-		<constructor-arg value="error" />
+	<bean id="iq.pro.error.clear" class="com.sissi.pipeline.in.iq.IQErrorProcessor" />
+	<bean id="iq.pro.error.none" class="com.sissi.pipeline.in.iq.IQErrorProcessor">
 		<constructor-arg value="false" />
 	</bean>
 	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
@@ -39,13 +33,13 @@
 			</set>
 		</constructor-arg>
 	</bean>
-	<bean id="iq.pro.check.type" class="com.sissi.pipeline.in.iq.IQCheckTypeProcessor" />
+	<bean id="iq.pro.check.action" class="com.sissi.pipeline.in.iq.IQCheckActionProcessor" />
 	<bean id="iq.pro.check.children" class="com.sissi.pipeline.in.iq.IQCheckChildrenProcessor" />
 	<bean id="iq.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="iq.pro.check.auth" />
-				<ref bean="iq.pro.check.type" />
+				<ref bean="iq.pro.check.action" />
 				<ref bean="iq.pro.check.children" />
 				<ref bean="iq.pro.fork" />
 				<ref bean="pong.pro" />
