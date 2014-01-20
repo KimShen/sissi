@@ -1,8 +1,7 @@
 package com.sissi.addressing.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -51,16 +50,19 @@ public class MongoAddressing implements Addressing {
 
 	@Override
 	public Addressing join(JIDContext context) {
+		// frirst memory then mongo
 		this.contexts.put(context.getIndex(), context);
 		this.config.collection().save(this.buildQueryWithNecessaryFields(context));
 		return this;
 	}
 
 	public Addressing leave(JID jid) {
+		// with resource
 		return this.leave(jid, true);
 	}
 
 	public Addressing leave(JID jid, Boolean usingResource) {
+		// without offline
 		for (JIDContext current : this.find(jid, usingResource, false)) {
 			this.leave(current);
 		}
@@ -70,12 +72,14 @@ public class MongoAddressing implements Addressing {
 	@Override
 	public Addressing leave(JIDContext context) {
 		if (context.close()) {
+			// first memory then db
 			this.config.collection().remove(this.buildQueryWithNecessaryFields(this.contexts.remove(context.getIndex())));
 		}
 		return this;
 	}
 
 	public Integer others(JID jid) {
+		// without resource
 		return this.others(jid, false);
 	}
 
@@ -85,22 +89,26 @@ public class MongoAddressing implements Addressing {
 
 	@Override
 	public JIDContexts find(JID jid) {
+		// without resource
 		return this.find(jid, false);
 	}
 
 	@Override
 	public JIDContexts find(JID jid, Boolean usingResource) {
+		// with offline
 		return this.find(jid, usingResource, true);
 	}
 
 	@Override
 	public JIDContext findOne(JID jid) {
+		// without resource
 		return this.findOne(jid, false);
 	}
 
 	public JIDContext findOne(JID jid, Boolean usingResource) {
-		DBCursor entity = this.config.collection().find(this.buildQueryWithSmartResource(jid, usingResource), MongoCollection.FILTER_INDEX).sort(MongoCollection.SORT_DEFAULT).limit(1);
-		return entity.hasNext() ? this.contexts.get(Long.class.cast(entity.next().get(MongoCollection.FIELD_INDEX))) : this.find(jid);
+		// first find one with resource, if not found then using find all(without resource)
+		DBObject entity = this.config.collection().findOne(this.buildQueryWithSmartResource(jid, usingResource), MongoCollection.FILTER_INDEX);
+		return entity != null ? this.contexts.get(Long.class.cast(entity.get(MongoCollection.FIELD_INDEX))) : this.find(jid);
 	}
 
 	public Addressing priority(JIDContext context) {
@@ -108,13 +116,7 @@ public class MongoAddressing implements Addressing {
 		return this;
 	}
 
-	@Override
-	public Addressing activate(JIDContext context) {
-		this.config.collection().update(this.buildQueryWithSmartResource(context.getJid(), true), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(MongoCollection.FIELD_CURRENT, new Date().getTime()).get()).get());
-		return this;
-	}
-
-	public List<String> resources(JID jid) {
+	public Collection<String> resources(JID jid) {
 		return new Resources(this.config.collection().find(BasicDBObjectBuilder.start(MongoCollection.FIELD_JID, jid.asStringWithBare()).get(), BasicDBObjectBuilder.start(MongoCollection.FIELD_RESOURCE, jid.asStringWithBare()).get()));
 	}
 
@@ -129,6 +131,7 @@ public class MongoAddressing implements Addressing {
 	}
 
 	private DBObject buildQueryWithSmartResource(JID jid, Boolean usingResource) {
+		// with resource if jid has resource and "usingResource" is true
 		DBObject query = BasicDBObjectBuilder.start(MongoCollection.FIELD_JID, jid.asStringWithBare()).get();
 		if (usingResource && jid.getResource() != null) {
 			query.put("resource", jid.getResource());

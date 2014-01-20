@@ -1,6 +1,6 @@
 package com.sissi.pipeline.in;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 import com.sissi.addressing.Addressing;
@@ -103,12 +103,7 @@ abstract public class ProxyProcessor implements Input {
 		return this;
 	}
 
-	public ProxyProcessor activate(JIDContext context) {
-		this.addressing.activate(context);
-		return this;
-	}
-
-	public List<String> resources(JID jid) {
+	public Collection<String> resources(JID jid) {
 		return this.addressing.resources(jid);
 	}
 

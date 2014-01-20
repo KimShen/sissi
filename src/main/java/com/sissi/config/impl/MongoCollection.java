@@ -18,8 +18,6 @@ public class MongoCollection implements MongoConfig {
 
 	public static final String FIELD_INDEX = "index";
 
-	public static final String FIELD_CURRENT = "current";
-
 	public static final String FIELD_PRIORITY = "priority";
 
 	public static final String FIELD_RESOURCE = "resource";
@@ -42,7 +40,7 @@ public class MongoCollection implements MongoConfig {
 
 	public static final DBObject FILTER_SLAVE = BasicDBObjectBuilder.start(FIELD_SLAVE, 1).get();
 
-	public static final DBObject SORT_DEFAULT = BasicDBObjectBuilder.start().add(FIELD_PRIORITY, -1).add(FIELD_CURRENT, -1).get();
+	public static final DBObject SORT_DEFAULT = BasicDBObjectBuilder.start().add(FIELD_PRIORITY, -1).get();
 
 	private static final DBObject CLEAR = BasicDBObjectBuilder.start().get();
 

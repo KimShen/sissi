@@ -1,6 +1,6 @@
 package com.sissi.addressing;
 
-import java.util.List;
+import java.util.Collection;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
@@ -14,11 +14,9 @@ public interface Addressing {
 
 	public Addressing leave(JID jid);
 	
-	public Addressing leave(JID jid, Boolean usingResource);
-
 	public Addressing leave(JIDContext context);
-
-	public Addressing activate(JIDContext context);
+	
+	public Addressing leave(JID jid, Boolean usingResource);
 
 	public Addressing priority(JIDContext context);
 
@@ -34,5 +32,5 @@ public interface Addressing {
 
 	public Integer others(JID jid, Boolean usingResource);
 	
-	public List<String> resources(JID jid);
+	public Collection<String> resources(JID jid);
 }
