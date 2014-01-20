@@ -23,7 +23,7 @@ public class RosterGetProcessor extends ProxyProcessor {
 
 	private Roster prepare(JIDContext context, Roster roster) {
 		for (Relation each : super.myRelations(context.getJid())) {
-			roster.add(new GroupItem(each.getJID(), each.getName(), each.getSubscription(), RelationRoster.class.cast(each).asGroup()));
+			roster.add(new GroupItem(each.getJID(), each.getName(), each.getSubscription(), RelationRoster.class.cast(each).asGroups()));
 		}
 		return roster;
 	}

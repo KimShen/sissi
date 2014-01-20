@@ -48,7 +48,7 @@ public class Roster extends Protocol implements Collector {
 
 	@XmlElements({ @XmlElement(name = GroupItem.NAME, type = GroupItem.class) })
 	public List<GroupItem> getItem() {
-		return item;
+		return this.item;
 	}
 
 	public GroupItem getFirstItem() {

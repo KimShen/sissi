@@ -70,7 +70,6 @@ public class SAXHandler extends DefaultHandler {
 			return true;
 		} catch (Exception e) {
 			if (LOG.isDebugEnabled()) {
-				LOG.debug(e + " on  " + ob.getClass() + " method " + key + " and value " + value);
 				e.printStackTrace();
 			}
 			return false;

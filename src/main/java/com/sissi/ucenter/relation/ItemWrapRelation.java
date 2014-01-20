@@ -1,7 +1,9 @@
 package com.sissi.ucenter.relation;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.iq.roster.Group;
@@ -35,9 +37,16 @@ public class ItemWrapRelation implements RelationRoster {
 	}
 
 	@Override
-	public String asGroup() {
-		Group group = this.item.getGroup();
-		return group != null ? group.getValue() : null;
+	public String[] asGroups() {
+		if (this.item.getGroup() != null) {
+			Set<String> groups = new HashSet<String>();
+			for (Group group : this.item.getGroup()) {
+				groups.add(group.getValue());
+			}
+			return groups.toArray(new String[]{});
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -47,7 +56,7 @@ public class ItemWrapRelation implements RelationRoster {
 
 	public Map<String, Object> plus() {
 		Map<String, Object> plus = new HashMap<String, Object>();
-		plus.put("group", this.asGroup());
+		plus.put("groups", this.asGroups());
 		return plus;
 	}
 }

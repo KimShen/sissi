@@ -18,6 +18,6 @@ abstract class PresenceRoster2ItemProcessor extends ProxyProcessor {
 
 	protected Protocol prepare(JID master, JID slave, RosterSubscription subscription) {
 		Relation relation = super.ourRelation(master, slave);
-		return new IQ().add(new Roster(new GroupItem(slave.asStringWithBare(), relation.getName(), subscription.toString(), RelationRoster.class.cast(relation).asGroup()))).setType(ProtocolType.SET);
+		return new IQ().add(new Roster(new GroupItem(slave.asStringWithBare(), relation.getName(), subscription.toString(), RelationRoster.class.cast(relation).asGroups()))).setType(ProtocolType.SET);
 	}
 }

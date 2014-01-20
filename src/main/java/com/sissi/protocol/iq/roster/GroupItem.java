@@ -1,5 +1,8 @@
 package com.sissi.protocol.iq.roster;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -17,7 +20,7 @@ import com.sissi.read.MappingMetadata;
 @XmlRootElement(name = Item.NAME)
 public class GroupItem extends Item implements Collector {
 
-	private Group group;
+	private Set<Group> groups;
 
 	private String subscription;
 
@@ -25,19 +28,31 @@ public class GroupItem extends Item implements Collector {
 		super();
 	}
 
-	public GroupItem(String jid, String name, String subscription, String group) {
+	public GroupItem(String jid, String name, String subscription, String[] groups) {
 		super(jid, name);
 		this.subscription = subscription;
-		this.group = group != null ? new Group(group) : null;
+		if (this.groups != null) {
+			for (String group : groups) {
+				this.add(new Group(group));
+			}
+		}
+	}
+
+	private GroupItem add(Group group) {
+		if (this.groups == null) {
+			this.groups = new HashSet<Group>();
+		}
+		this.groups.add(group);
+		return this;
 	}
 
 	@XmlElement
-	public Group getGroup() {
-		return group;
+	public Set<Group> getGroup() {
+		return this.groups;
 	}
 
 	public void set(String localname, Object ob) {
-		this.group = Group.class.cast(ob);
+		this.add(Group.class.cast(ob));
 	}
 
 	@XmlAttribute

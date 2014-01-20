@@ -84,8 +84,8 @@ public class SAXReader implements Reader {
 				SAXReader.this.resourceCounter.increment();
 				this.parser.parse(this.stream, this.handler);
 			} catch (Exception e) {
-				if (SAXReader.this.log.isDebugEnabled()) {
-					SAXReader.this.log.debug(e.toString());
+				if (SAXReader.this.log.isErrorEnabled()) {
+					SAXReader.this.log.error(e.toString());
 					e.printStackTrace();
 				}
 			} finally {

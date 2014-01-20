@@ -2,6 +2,7 @@ package com.sissi.ucenter.relation;
 
 import java.util.Map;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.ucenter.Relation;
@@ -27,16 +28,16 @@ public class MongoRelationRosterContext extends MongoRelationContext {
 
 		private final String name;
 
-		private final String group;
-
 		private final String subscription;
+		
+		private final String[] groups;
 
 		public MongoRelationRoster(DBObject db) {
 			super();
 			this.jid = MongoRelationRosterContext.super.config.asString(db, "slave");
 			this.name = MongoRelationRosterContext.super.config.asString(db, "name");
-			this.group = MongoRelationRosterContext.super.config.asString(db, "group");
 			this.subscription = MongoRelationRosterContext.super.config.asString(db, "state");
+			this.groups = BasicDBList.class.cast(db.get("groups")).toArray(new String[]{});
 		}
 
 		public String getJID() {
@@ -47,8 +48,8 @@ public class MongoRelationRosterContext extends MongoRelationContext {
 			return this.name;
 		}
 
-		public String asGroup() {
-			return this.group;
+		public String[] asGroups() {
+			return this.groups;
 		}
 
 		public String getSubscription() {

@@ -127,7 +127,7 @@ abstract class MongoRelationContext implements RelationContext {
 		}
 
 		@Override
-		public String asGroup() {
+		public String[] asGroups() {
 			return null;
 		}
 	}
