@@ -20,7 +20,6 @@
 			<util:list>
 				<bean class="com.sissi.server.impl.Offline2FansServerCloser">
 					<constructor-arg ref="broadcast.protocol.fans" />
-					<constructor-arg ref="addressing" />
 				</bean>
 				<bean class="com.sissi.server.impl.Offline2SelfsServerCloser">
 					<constructor-arg ref="broadcast.protocol.selfs" />

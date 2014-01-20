@@ -20,7 +20,7 @@ public class Offline2SelfsServerCloser implements ServerCloser {
 
 	@Override
 	public Offline2SelfsServerCloser close(JIDContext context) {
-		this.protocolBraodcast.broadcast(context.getJid(), new Presence().setFrom(context.getJid()).setTo(context.getJid().getBare()).setType(PresenceType.UNAVAILABLE));
+		this.protocolBraodcast.broadcast(context.getJid(), new Presence().setFrom(context.getJid()).setType(PresenceType.UNAVAILABLE));
 		return this;
 	}
 }

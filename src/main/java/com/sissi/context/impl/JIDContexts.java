@@ -16,7 +16,7 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	private final static long serialVersionUID = 1L;
 
-	private final RuntimeException notSupport = new RuntimeException("MultiContexts not support this funciton");
+	private final static RuntimeException NOT_SUPPORT = new RuntimeException("MultiContexts not support this function");
 
 	public JIDContext setBinding(Boolean isBinding) {
 		for (JIDContext each : this) {
@@ -167,33 +167,33 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	public Long getIndex() {
-		throw notSupport;
+		throw NOT_SUPPORT;
 	}
 
 	@Override
 	public JID getJid() {
-		throw notSupport;
+		throw NOT_SUPPORT;
 	}
 
 	public String getLang() {
-		throw notSupport;
+		throw NOT_SUPPORT;
 	}
 
 	public String getDomain() {
-		throw notSupport;
+		throw NOT_SUPPORT;
 	}
 
 	@Override
 	public Status getStatus() {
-		throw notSupport;
+		throw NOT_SUPPORT;
 	}
 
 	@Override
 	public Integer getPriority() {
-		throw notSupport;
+		throw NOT_SUPPORT;
 	}
 
 	public SocketAddress getAddress() {
-		throw notSupport;
+		throw NOT_SUPPORT;
 	}
 }

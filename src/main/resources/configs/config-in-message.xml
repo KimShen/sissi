@@ -10,7 +10,6 @@
 	</bean>
 	<bean id="message.pro.check.body" class="com.sissi.pipeline.in.message.MessageCheckBodyProcessor" />
 	<bean id="message.pro.2fan" class="com.sissi.pipeline.in.message.Message2FanProcessor" parent="global.pro.proxy" />
-	<bean id="message.pro.2fans" class="com.sissi.pipeline.in.message.Message2FansProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.2self" class="com.sissi.pipeline.in.message.Message2SelfProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.2self.activate" class="com.sissi.pipeline.in.message.Message2SelfActivateProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">

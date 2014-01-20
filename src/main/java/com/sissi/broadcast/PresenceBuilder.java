@@ -9,5 +9,5 @@ import com.sissi.protocol.Protocol;
  */
 public interface PresenceBuilder {
 
-	public Protocol build(JID from, JID to, Status status);
+	public Protocol build(JID from, Status status);
 }

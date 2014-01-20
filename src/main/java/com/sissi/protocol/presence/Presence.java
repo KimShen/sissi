@@ -45,9 +45,9 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		this.fields = new BeanFields(false);
 	}
 
-	public Presence(String from, String to, StatusClauses clauses) {
+	public Presence(JID from, StatusClauses clauses) {
 		this();
-		this.copyFromClauses(clauses).setFrom(from).setTo(to);
+		this.copyFromClauses(clauses).setFrom(from);
 	}
 
 	private Presence copyFromClauses(StatusClauses clauses) {

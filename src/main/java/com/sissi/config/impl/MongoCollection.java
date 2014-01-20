@@ -38,15 +38,15 @@ public class MongoCollection implements MongoConfig {
 
 	public static final DBObject FILTER_BLOCKS = BasicDBObjectBuilder.start(FIELD_BLOCK, 1).get();
 
-	public static final DBObject FILTER_MASTER = BasicDBObjectBuilder.start("master", 1).get();
+	public static final DBObject FILTER_MASTER = BasicDBObjectBuilder.start(FIELD_MASTER, 1).get();
 
-	public static final DBObject FILTER_SLAVE = BasicDBObjectBuilder.start("slave", 1).get();
+	public static final DBObject FILTER_SLAVE = BasicDBObjectBuilder.start(FIELD_SLAVE, 1).get();
 
-	public static final DBObject DEFAULT_SORTER = BasicDBObjectBuilder.start().add(FIELD_PRIORITY, -1).add(FIELD_CURRENT, -1).get();
+	public static final DBObject SORT_DEFAULT = BasicDBObjectBuilder.start().add(FIELD_PRIORITY, -1).add(FIELD_CURRENT, -1).get();
+
+	private static final DBObject CLEAR = BasicDBObjectBuilder.start().get();
 
 	private final Map<String, String> configs = new HashMap<String, String>();
-
-	private final DBObject clear = BasicDBObjectBuilder.start().get();
 
 	private final DBCollection collection;
 
@@ -63,7 +63,7 @@ public class MongoCollection implements MongoConfig {
 	}
 
 	public MongoConfig clear() {
-		this.collection().remove(clear);
+		this.collection().remove(CLEAR);
 		return this;
 	}
 

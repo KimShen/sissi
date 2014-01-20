@@ -13,6 +13,8 @@ public interface Addressing {
 	public Addressing join(JIDContext context);
 
 	public Addressing leave(JID jid);
+	
+	public Addressing leave(JID jid, Boolean usingResource);
 
 	public Addressing leave(JIDContext context);
 

@@ -60,7 +60,6 @@
 		<maven.mongo.collection.offline>offline</maven.mongo.collection.offline>
 		<maven.mongo.collection.addressing>addressing</maven.mongo.collection.addressing>
 		<maven.mongo.collection.exchanger>exchanger</maven.mongo.collection.exchanger>
-		<maven.mongo.collection.presence>presence</maven.mongo.collection.presence>
 		<maven.mongo.collection.monitor>monitor</maven.mongo.collection.monitor>
 		<maven.mongo.collection.roster>roster</maven.mongo.collection.roster>
 		<maven.mongo.collection.user>user</maven.mongo.collection.user>

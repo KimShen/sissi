@@ -8,7 +8,7 @@ import com.sissi.protocol.Protocol;
  */
 public class ToProxyMatcher extends ClassMatcher {
 
-	private String jid;
+	private final String jid;
 
 	public ToProxyMatcher(Class<? extends Protocol> clazz, String jid) {
 		super(clazz);
@@ -16,7 +16,7 @@ public class ToProxyMatcher extends ClassMatcher {
 	}
 
 	public String getJid() {
-		return jid;
+		return this.jid;
 	}
 
 	public Boolean match(Protocol protocol) {

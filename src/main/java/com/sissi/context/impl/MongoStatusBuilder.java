@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.mongodb.BasicDBObjectBuilder;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoCollection;
@@ -32,18 +31,17 @@ public class MongoStatusBuilder implements StatusBuilder {
 		return new MongoStatus(context);
 	}
 
-	private MongoStatusBuilder remove(JIDContext context) {
-		this.config.collection().remove(this.buildQuery(context));
+	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
+		this.config.collection().update(this.buildQuery(context), this.buildEntity("$set", context, type, show, status, avator), true, false);
 		return this;
 	}
 
 	private DBObject get(JIDContext context) {
-		DBCursor cursor = this.config.collection().find(this.buildQuery(context)).sort(MongoCollection.DEFAULT_SORTER).limit(1);
-		return cursor.hasNext() ? cursor.next() : null;
+		return this.config.collection().findOne(this.buildQuery(context));
 	}
 
-	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
-		this.config.collection().update(this.buildQuery(context), this.buildEntity(context, type, show, status, avator), true, false);
+	private MongoStatusBuilder clear(JIDContext context) {
+		this.config.collection().update(this.buildQuery(context), this.buildEntity("$unset", context, null, null, null, null), true, false);
 		return this;
 	}
 
@@ -53,8 +51,8 @@ public class MongoStatusBuilder implements StatusBuilder {
 		return query;
 	}
 
-	private DBObject buildEntity(JIDContext context, String type, String show, String status, String avator) {
-		DBObject entity = BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoCollection.FIELD_PRIORITY, context.getPriority()).get()).get();
+	private DBObject buildEntity(String op, JIDContext context, String type, String show, String status, String avator) {
+		DBObject entity = BasicDBObjectBuilder.start().add(op, BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoCollection.FIELD_PRIORITY, context.getPriority()).get()).get();
 		this.log.debug("Entity: " + entity);
 		return entity;
 	}
@@ -69,7 +67,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 		}
 
 		public MongoStatus clear() {
-			MongoStatusBuilder.this.remove(this.context);
+			MongoStatusBuilder.this.clear(this.context);
 			this.context = null;
 			return this;
 		}

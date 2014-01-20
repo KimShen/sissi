@@ -28,11 +28,12 @@ public class MessageCheckRelationProcessor extends ProxyProcessor {
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.getParent().reply().setTo(context.getJid()).setError(new ServerError().setType(ProtocolType.CANCEL).add(SubscriptionRequired.DETAIL)));
+		context.write(protocol.getParent().reply().setError(new ServerError().setType(ProtocolType.CANCEL).add(SubscriptionRequired.DETAIL)));
 		return false;
 	}
 
 	private Boolean isPass(JIDContext context, JID slave) {
+		// 1,Free 2,To Self 3,Has relation
 		return this.isFree || context.getJid().getUser().equals(slave.getUser()) || this.hasRelation(super.ourRelation(context.getJid(), slave));
 	}
 

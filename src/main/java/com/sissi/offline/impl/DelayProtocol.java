@@ -15,17 +15,17 @@ import com.sissi.protocol.Element;
  */
 abstract class DelayProtocol implements DelayElement {
 
-	protected final String clazz = "class";
+	protected final static String FIELD_CLASS = "class";
 
-	protected final String delay = "delay";
+	protected final static String FIELD_DELAY = "delay";
 
-	protected final String baseId = "id";
+	protected final static String FIELD_FROM = "from";
 
-	protected final String baseFrom = "from";
+	protected final static String FIELD_TYPE = "type";
 
-	protected final String baseTo = "to";
+	protected final static String FIELD_TO = "to";
 
-	protected final String baseType = "type";
+	protected final static String FIELD_ID = "id";
 
 	private final Class<? extends Element> support;
 
@@ -55,23 +55,23 @@ abstract class DelayProtocol implements DelayElement {
 	}
 
 	protected Element based(Map<String, Object> storage, Element element) {
-		return element.setId(this.toString(storage, this.baseId)).setFrom(this.toString(storage, this.baseFrom)).setTo(this.toString(storage, this.baseTo)).setType(this.toString(storage, this.baseType));
+		return element.setId(this.toString(storage, FIELD_ID)).setFrom(this.toString(storage, FIELD_FROM)).setTo(this.toString(storage, FIELD_TO)).setType(this.toString(storage, FIELD_TYPE));
 	}
 
 	protected Map<String, Object> based(Element element) {
 		Map<String, Object> entity = new HashMap<String, Object>();
-		entity.put(this.baseId, element.getId());
-		entity.put(this.baseFrom, this.jidBuilder.build(element.getFrom()).asStringWithBare());
-		entity.put(this.baseTo, this.jidBuilder.build(element.getTo()).asStringWithBare());
-		entity.put(this.baseType, element.getType());
-		entity.put(this.delay, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
-		entity.put(this.clazz, element.getClass().getSimpleName());
+		entity.put(FIELD_ID, element.getId());
+		entity.put(FIELD_FROM, this.jidBuilder.build(element.getFrom()).asStringWithBare());
+		entity.put(FIELD_TO, this.jidBuilder.build(element.getTo()).asStringWithBare());
+		entity.put(FIELD_TYPE, element.getType());
+		entity.put(FIELD_DELAY, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
+		entity.put(FIELD_CLASS, element.getClass().getSimpleName());
 		return entity;
 	}
 
 	@Override
 	public Boolean isSupport(Map<String, Object> storage) {
-		return this.support.getSimpleName().equals(storage.get(clazz));
+		return this.support.getSimpleName().equals(storage.get(FIELD_CLASS));
 	}
 
 	public Boolean isSupport(Element element) {

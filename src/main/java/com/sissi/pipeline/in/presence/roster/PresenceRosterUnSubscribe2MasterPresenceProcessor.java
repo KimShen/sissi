@@ -1,5 +1,6 @@
 package com.sissi.pipeline.in.presence.roster;
 
+import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
@@ -13,7 +14,10 @@ public class PresenceRosterUnSubscribe2MasterPresenceProcessor extends ProxyProc
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.broadcast(context.getJid(), super.build(protocol.getTo()), context.getJid(), new Presence().setType(PresenceType.UNAVAILABLE));
+		JID from = super.build(protocol.getTo());
+		for (String resource : super.resources(from)) {
+			context.write(new Presence().setFrom(from.setResource(resource)).setType(PresenceType.UNAVAILABLE));
+		}
 		return true;
 	}
 }

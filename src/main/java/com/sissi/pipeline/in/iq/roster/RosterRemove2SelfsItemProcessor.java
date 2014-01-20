@@ -9,11 +9,11 @@ import com.sissi.protocol.iq.roster.GroupAction;
 public class RosterRemove2SelfsItemProcessor extends Roster2SelfsItemProcessor {
 
 	@Override
-	protected String getSubscription(JID master, JID slave) {
+	protected String subscription(JID master, JID slave) {
 		return GroupAction.REMOVE.toString();
 	}
 
-	protected Boolean getNextWhenThisSubscription(String subscription) {
+	protected Boolean isNext(String subscription) {
 		return true;
 	}
 }

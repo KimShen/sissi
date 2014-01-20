@@ -12,8 +12,10 @@ import com.sissi.protocol.error.detail.Conflict;
  */
 public class BindAddressCloseCurrentProcessor extends ProxyProcessor {
 
+	private final Integer nobody = 0;
+
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return super.others(context, true) == 0 ? true : !context.write(Stream.closeWhenRunning(new ServerError().add(Conflict.DETAIL_ELEMENT))).close();
+		return super.others(context, true) == this.nobody ? true : !context.write(Stream.closeWhenRunning(new ServerError().add(Conflict.DETAIL_ELEMENT))).close();
 	}
 }

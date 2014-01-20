@@ -14,14 +14,15 @@ abstract class PresenceRosterCheckRelationProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return this.canUpdate(super.ourRelation(this.getMaster(context, protocol), this.getSlave(context, protocol)));
+		JID to = super.build(protocol.getTo());
+		return this.canUpdate(super.ourRelation(this.getMaster(context.getJid(), to), this.getSlave(context.getJid(), to)));
 	}
 
 	private boolean canUpdate(Relation relation) {
-		return relation != null && RosterSubscription.NONE.equals(relation.getSubscription());
+		return RosterSubscription.NONE.equals(relation.getSubscription());
 	}
 
-	abstract protected JID getMaster(JIDContext context, Protocol protocol);
+	abstract protected JID getMaster(JID current, JID to);
 
-	abstract protected JID getSlave(JIDContext context, Protocol protocol);
+	abstract protected JID getSlave(JID current, JID to);
 }

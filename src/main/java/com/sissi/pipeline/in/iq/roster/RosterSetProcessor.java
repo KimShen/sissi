@@ -13,7 +13,7 @@ public class RosterSetProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.establish(context.getJid(), new ItemWrapRelation(Roster.class.cast(protocol).getFirstItem()));
+		super.establish(context.getJid(), new ItemWrapRelation(super.jidBuilder, Roster.class.cast(protocol).getFirstItem()));
 		return true;
 	}
 }

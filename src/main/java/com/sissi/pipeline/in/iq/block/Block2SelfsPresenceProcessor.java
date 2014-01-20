@@ -14,7 +14,7 @@ abstract class Block2SelfsPresenceProcessor extends ProxyProcessor {
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
 		JIDContext contacter = super.findOne(super.build(Block.class.cast(protocol).getItem().getJid()));
-		super.broadcast(context.getJid(), contacter.getJid(), context.getJid().getBare(), this.build(contacter));
+		super.broadcast(context.getJid(), contacter.getJid(), this.build(contacter));
 		return true;
 	}
 

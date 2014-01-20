@@ -36,16 +36,16 @@ abstract class BlockOutputBuilder implements OutputBuilder {
 
 		@Override
 		public Boolean output(JIDContext context, Element node) {
-			JID contacter = this.contacter(context, node);
+			JID contacter = this.contacter(context.getJid(), node);
 			if (this.isEmpty(context.getJid(), contacter) || !BlockOutputBuilder.this.blockSupports.contains(node.getClass())) {
 				return true;
 			}
-			return !BlockOutputBuilder.this.context.isBlock(this.user(context, node), contacter);
+			return !BlockOutputBuilder.this.context.isBlock(this.user(context.getJid(), node), contacter);
 		}
 
-		abstract protected JID user(JIDContext context, Element node);
+		abstract protected JID user(JID current, Element node);
 
-		abstract protected JID contacter(JIDContext context, Element node);
+		abstract protected JID contacter(JID current, Element node);
 
 		private Boolean isEmpty(JID jid) {
 			return (jid == null || jid.getUser() == null);

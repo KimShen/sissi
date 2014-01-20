@@ -6,6 +6,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContextBuilder;
@@ -28,16 +31,20 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	public final static String KEY_SERVERTLS = "TLS";
 
+	private final static Long PONG = -1L;
+
+	private final Log log = LogFactory.getLog(this.getClass());
+
 	private final AtomicLong indexes = new AtomicLong();
 
-	private final Integer priority = -1;
+	private final Integer priority = 0;
 
 	private final StatusBuilder statusBuilder;
 
 	private final ServerHeart serverHeart;
 
 	private final Integer authRetry;
-	
+
 	private final String domain;
 
 	private final String lang;
@@ -60,17 +67,15 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private class UserContext implements JIDContext {
 
-		private final Long PONG = -1L;
-
-		private final AtomicLong ping = new AtomicLong(PONG);
+		private final AtomicLong ping = new AtomicLong(OnlineContextBuilder.PONG);
 
 		private final AtomicBoolean isAuth = new AtomicBoolean();
-		
-		private final AtomicInteger authRetry = new AtomicInteger();
 
 		private final AtomicBoolean isBinding = new AtomicBoolean();
 
 		private final AtomicBoolean isPrepareClose = new AtomicBoolean();
+
+		private final AtomicInteger authRetry = new AtomicInteger();
 
 		private final Long index;
 
@@ -190,10 +195,10 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		public JIDContext reset() {
 			this.priority = OnlineContextBuilder.this.priority;
+			this.lang = OnlineContextBuilder.this.lang;
+			this.ping.set(OnlineContextBuilder.PONG);
 			this.isPrepareClose.set(false);
-			this.ping.set(PONG);
 			this.authRetry.set(0);
-			this.lang = null;
 			return this;
 		}
 
@@ -222,9 +227,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public JIDContext ping() {
-			if (this.isBinding()) {
-				this.ping.set(OnlineContextBuilder.this.serverHeart.ping(this));
-			}
+			this.ping.set(OnlineContextBuilder.this.serverHeart.ping(this));
 			return this;
 		}
 
@@ -242,14 +245,21 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		@Override
 		public JIDContext write(Element node) {
 			if (!this.isPrepareClose.get()) {
-				this.output.output(this, node);
+				this.output.output(this, node.setTo(this.getJid().asString()));
 			}
 			return this;
 		}
 
 		public JIDContext write(Collection<Element> elements) {
 			for (Element element : elements) {
-				this.write(element);
+				try {
+					this.write(element);
+				} catch (Exception e) {
+					if(OnlineContextBuilder.this.log.isWarnEnabled()){
+						OnlineContextBuilder.this.log.warn(e.toString());
+						e.printStackTrace();
+					}
+				}
 			}
 			return this;
 		}

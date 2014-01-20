@@ -19,6 +19,7 @@ import com.sissi.context.JID;
 import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationContext;
+import com.sissi.ucenter.RelationRoster;
 
 /**
  * @author kim 2013-11-5
@@ -96,7 +97,7 @@ abstract class MongoRelationContext implements RelationContext {
 
 	abstract protected Relation build(DBObject db);
 
-	private class NoneRelation implements Relation {
+	private class NoneRelation implements Relation, RelationRoster {
 
 		private JID jid;
 
@@ -122,6 +123,11 @@ abstract class MongoRelationContext implements RelationContext {
 
 		@Override
 		public Map<String, Object> plus() {
+			return null;
+		}
+
+		@Override
+		public String asGroup() {
 			return null;
 		}
 	}

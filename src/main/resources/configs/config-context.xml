@@ -14,7 +14,7 @@
 			<bean class="com.sissi.config.impl.MongoCollection">
 				<constructor-arg ref="mongo" />
 				<constructor-arg index="1" value="${mongo.db}" />
-				<constructor-arg index="2" value="${mongo.collection.presence}" />
+				<constructor-arg index="2" value="${mongo.collection.addressing}" />
 			</bean>
 		</constructor-arg>
 	</bean>

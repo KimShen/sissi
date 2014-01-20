@@ -11,7 +11,7 @@ public class ToSelfProtocolQueue extends ToAnyProtocolQueue implements Broadcast
 
 	@Override
 	public ToSelfProtocolQueue broadcast(JID jid, Protocol protocol) {
-		super.getAddressing().find(jid, true).write(protocol.setTo(jid));
+		super.getAddressing().findOne(jid, true).write(protocol);
 		return this;
 	}
 }

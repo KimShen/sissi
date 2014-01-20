@@ -11,7 +11,7 @@ public class ToSelfsProtocolQueue extends ToAnyProtocolQueue implements Broadcas
 
 	@Override
 	public ToSelfsProtocolQueue broadcast(JID jid, Protocol protocol) {
-		super.getAddressing().find(jid).write(protocol.setTo(jid));
+		super.getAddressing().find(jid).write(protocol);
 		return this;
 	}
 }

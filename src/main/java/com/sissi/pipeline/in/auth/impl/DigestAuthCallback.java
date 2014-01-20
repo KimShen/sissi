@@ -31,9 +31,9 @@ public class DigestAuthCallback implements AuthCallback {
 
 	public final static String MECHANISM = "DIGEST-MD5";
 
-	public final String PROTOCOL = "XMPP";
+	private final String PROTOCOL = "XMPP";
 
-	public final String QOP = "auth";
+	private final String QOP = "auth";
 
 	@SuppressWarnings("serial")
 	private final Map<String, String> PROPS = new TreeMap<String, String>() {
@@ -53,17 +53,14 @@ public class DigestAuthCallback implements AuthCallback {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private final String domain;
-
 	private final JIDBuilder jidBuilder;
 
 	private final SaslServers saslServers;
 
 	private final AuthAccessor authAccessor;
 
-	public DigestAuthCallback(String domain, JIDBuilder jidBuilder, SaslServers saslServers, AuthAccessor authAccessor) {
+	public DigestAuthCallback(JIDBuilder jidBuilder, SaslServers saslServers, AuthAccessor authAccessor) {
 		super();
-		this.domain = domain;
 		this.jidBuilder = jidBuilder;
 		this.saslServers = saslServers;
 		this.authAccessor = authAccessor;
@@ -72,7 +69,7 @@ public class DigestAuthCallback implements AuthCallback {
 	@Override
 	public Boolean auth(Auth auth, JIDContext context) {
 		try {
-			context.write(new Challenge(this.saslServers.set(context, Sasl.createSaslServer(MECHANISM, PROTOCOL, this.domain, PROPS, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
+			context.write(new Challenge(this.saslServers.set(context, Sasl.createSaslServer(MECHANISM, PROTOCOL, context.getDomain(), PROPS, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
 			return true;
 		} catch (Exception e) {
 			if (this.log.isErrorEnabled()) {

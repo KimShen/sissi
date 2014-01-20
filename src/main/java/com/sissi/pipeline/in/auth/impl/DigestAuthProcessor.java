@@ -47,7 +47,7 @@ public class DigestAuthProcessor extends ProxyProcessor {
 	}
 
 	private void close(JIDContext context, SaslServer sasl) throws SaslException {
-		if (sasl != null && sasl.isComplete()) {
+		if (sasl != null) {
 			sasl.dispose();
 		} else {
 			this.log.warn("SASL can not be free on " + context.getJid().asString());

@@ -3,6 +3,7 @@ package com.sissi.ucenter.relation;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.iq.roster.Group;
 import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.RosterSubscription;
@@ -15,14 +16,17 @@ public class ItemWrapRelation implements RelationRoster {
 
 	private final GroupItem item;
 
-	public ItemWrapRelation(GroupItem item) {
+	private final JIDBuilder jidBuilder;
+
+	public ItemWrapRelation(JIDBuilder jidBuilder, GroupItem item) {
 		super();
 		this.item = item;
+		this.jidBuilder = jidBuilder;
 	}
 
 	@Override
 	public String getJID() {
-		return this.item.getJid();
+		return this.jidBuilder.build(this.item.getJid()).asStringWithBare();
 	}
 
 	@Override

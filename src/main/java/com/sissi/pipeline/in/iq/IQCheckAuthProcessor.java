@@ -14,17 +14,17 @@ import com.sissi.protocol.error.detail.BadRequest;
  */
 public class IQCheckAuthProcessor implements Input {
 
-	private final String ERROR_TEXT = "Please auth first";
+	private final String text = "Please auth first";
 
 	private final Set<Class<? extends Protocol>> authes;
 
-	public IQCheckAuthProcessor(Set<Class<? extends Protocol>> shouldAuth) {
+	public IQCheckAuthProcessor(Set<Class<? extends Protocol>> authes) {
 		super();
-		this.authes = shouldAuth;
+		this.authes = authes;
 	}
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return (context.isAuth() || !this.authes.contains(protocol.getClass())) ? true : !context.write(protocol.reply().setError(new ServerError().setType(ProtocolType.AUTH).add(BadRequest.DETAIL, context.getLang(), ERROR_TEXT))).close();
+		return (context.isAuth() || !this.authes.contains(protocol.getClass())) ? true : !context.write(protocol.reply().setError(new ServerError().setType(ProtocolType.AUTH).add(BadRequest.DETAIL, context.getLang(), this.text))).close();
 	}
 }

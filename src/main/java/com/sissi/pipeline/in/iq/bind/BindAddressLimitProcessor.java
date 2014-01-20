@@ -13,16 +13,15 @@ import com.sissi.protocol.error.detail.ResourceConstraint;
  */
 public class BindAddressLimitProcessor extends ProxyProcessor {
 
-	private Integer resources;
+	private final Integer resources;
 
 	public BindAddressLimitProcessor(Integer resources) {
 		super();
 		this.resources = resources;
-
 	}
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		return super.others(context) < this.resources ? true : context.write(protocol.getParent().clear().setFrom(context.getDomain()).setTo(context.getJid().asString()).setError(new ServerError().setType(ProtocolType.CANCEL).add(ResourceConstraint.DETAIL_ELEMENT))).write(Stream.close()).close();
+		return super.others(context) < this.resources ? true : context.write(protocol.getParent().clear().setFrom(context.getDomain()).setError(new ServerError().setType(ProtocolType.CANCEL).add(ResourceConstraint.DETAIL_ELEMENT))).write(Stream.close()).close();
 	}
 }

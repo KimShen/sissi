@@ -8,5 +8,5 @@ import com.sissi.context.Status;
  */
 public interface BroadcastPresence {
 
-	public BroadcastPresence broadcast(JID jid, JID from, JID to, Status status);
+	public BroadcastPresence broadcast(JID jid, JID from, Status status);
 }

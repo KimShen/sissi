@@ -8,8 +8,8 @@ import com.sissi.context.Status;
  */
 public class ToSelfsPresenceQueue extends ToAnyPresenceQueue {
 
-	public ToSelfsPresenceQueue broadcast(JID jid, JID from, JID to, Status status) {
-		super.getAddressing().find(jid).write(super.getPresenceBuilder().build(from, to, status));
+	public ToSelfsPresenceQueue broadcast(JID jid, JID from, Status status) {
+		super.getAddressing().find(jid).write(super.getPresenceBuilder().build(from, status));
 		return this;
 	}
 }

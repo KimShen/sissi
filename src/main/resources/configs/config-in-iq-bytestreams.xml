@@ -8,7 +8,7 @@
 	<bean id="bytestreams.proxy" class="com.sissi.protocol.iq.bytestreams.BytestreamsProxy">
 		<constructor-arg index="0" value="${bytestreams.jid}" />
 		<constructor-arg index="1" value="${bytestreams.name}" />
-		<constructor-arg index="2" value="${bytestreams.host}" />
+		<constructor-arg index="2" value="192.168.1.20" />
 		<constructor-arg index="3" value="${bytestreams.port}" />
 	</bean>
 

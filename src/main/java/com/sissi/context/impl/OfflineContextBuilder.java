@@ -20,30 +20,30 @@ import com.sissi.protocol.presence.PresenceType;
  */
 public class OfflineContextBuilder implements JIDContextBuilder {
 
-	private final Integer defaultPriority = 0;
+	private final Integer priority = 0;
 
-	private final Status offlineStatus = new OfflineStatus();
+	private final Status status = new OfflineStatus();
 
-	private final JIDContext offlineContext = new OfflineContext();
+	private final JIDContext context = new OfflineContext();
 
-	private final SocketAddress offlineAddress = new InetSocketAddress(InetAddress.getByName("0.0.0.0"), 0);
-
-	private final DelayElementBox delayElementBox;
-
-	private final String domain;
+	private final SocketAddress address = new InetSocketAddress(InetAddress.getByName("0.0.0.0"), 0);
 
 	private final String lang;
+	
+	private final String domain;
+	
+	private final DelayElementBox delayElementBox;
 
 	public OfflineContextBuilder(String lang, String domain, DelayElementBox delayElementBox) throws Exception {
 		super();
-		this.delayElementBox = delayElementBox;
-		this.domain = domain;
 		this.lang = lang;
+		this.domain = domain;
+		this.delayElementBox = delayElementBox;
 	}
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
-		return this.offlineContext;
+		return this.context;
 	}
 
 	private class OfflineContext implements JIDContext {
@@ -88,7 +88,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public Status getStatus() {
-			return OfflineContextBuilder.this.offlineStatus;
+			return OfflineContextBuilder.this.status;
 		}
 
 		@Override
@@ -98,7 +98,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public Integer getPriority() {
-			return OfflineContextBuilder.this.defaultPriority;
+			return OfflineContextBuilder.this.priority;
 		}
 
 		public JIDContext setDomain(String domain) {
@@ -118,7 +118,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		public SocketAddress getAddress() {
-			return OfflineContextBuilder.this.offlineAddress;
+			return OfflineContextBuilder.this.address;
 		}
 
 		@Override

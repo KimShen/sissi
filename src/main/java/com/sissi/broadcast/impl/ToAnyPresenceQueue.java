@@ -25,17 +25,17 @@ abstract class ToAnyPresenceQueue extends ToAnyProtocolQueue implements Broadcas
 		return this.presenceBuilder;
 	}
 
-	abstract public ToAnyPresenceQueue broadcast(JID jid, JID from, JID to, Status status);
+	abstract public ToAnyPresenceQueue broadcast(JID jid, JID from, Status status);
 
 	private class DefaultPresenceBuilder implements PresenceBuilder {
 
 		@Override
-		public Presence build(JID from, JID to, Status status) {
-			return Presence.class == status.getClass() ? Presence.class.cast(status).setFrom(from.getBare()).setTo(to) : this.newOne(from.asStringWithBare(), to.asString(), status);
+		public Presence build(JID from, Status status) {
+			return Presence.class == status.getClass() ? Presence.class.cast(status).setFrom(from) : this.newOne(from, status);
 		}
 
-		private Presence newOne(String from, String to, Status status) {
-			return new Presence(from, to, status.getStatusClauses());
+		private Presence newOne(JID from, Status status) {
+			return new Presence(from, status.getStatusClauses());
 		}
 	}
 }

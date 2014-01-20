@@ -5,10 +5,10 @@ package com.sissi.protocol.iq.roster;
  */
 public enum GroupAction {
 
-	ADD, REMOVE;
+	SET, REMOVE;
 
 	public static GroupAction parse(String action) {
-		return action == null ? ADD : GroupAction.valueOf(action.toUpperCase());
+		return action == null ? SET : GroupAction.valueOf(action.toUpperCase());
 	}
 
 	public String toString() {

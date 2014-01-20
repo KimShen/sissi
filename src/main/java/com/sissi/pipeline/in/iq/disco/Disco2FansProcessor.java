@@ -11,7 +11,7 @@ public class Disco2FansProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.addressing.findOne(super.build(protocol.getParent().getTo())).write(protocol.getParent().setFrom(context.getJid()));
+		super.addressing.findOne(super.build(protocol.getParent().getTo()), true).write(protocol.getParent().setFrom(context.getJid()));
 		return true;
 	}
 }

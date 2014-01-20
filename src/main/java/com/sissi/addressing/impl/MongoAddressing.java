@@ -57,7 +57,11 @@ public class MongoAddressing implements Addressing {
 	}
 
 	public Addressing leave(JID jid) {
-		for (JIDContext current : this.find(jid, true, false)) {
+		return this.leave(jid, true);
+	}
+
+	public Addressing leave(JID jid, Boolean usingResource) {
+		for (JIDContext current : this.find(jid, usingResource, false)) {
 			this.leave(current);
 		}
 		return this;
@@ -95,8 +99,8 @@ public class MongoAddressing implements Addressing {
 	}
 
 	public JIDContext findOne(JID jid, Boolean usingResource) {
-		DBCursor entity = this.config.collection().find(this.buildQueryWithSmartResource(jid, usingResource), MongoCollection.FILTER_INDEX).sort(MongoCollection.DEFAULT_SORTER).limit(1);
-		return entity.hasNext() ? this.contexts.get(Long.class.cast(entity.next().get(MongoCollection.FIELD_INDEX))) : this.offlineContextBuilder.build(jid, this.nothing);
+		DBCursor entity = this.config.collection().find(this.buildQueryWithSmartResource(jid, usingResource), MongoCollection.FILTER_INDEX).sort(MongoCollection.SORT_DEFAULT).limit(1);
+		return entity.hasNext() ? this.contexts.get(Long.class.cast(entity.next().get(MongoCollection.FIELD_INDEX))) : this.find(jid);
 	}
 
 	public Addressing priority(JIDContext context) {
@@ -106,7 +110,7 @@ public class MongoAddressing implements Addressing {
 
 	@Override
 	public Addressing activate(JIDContext context) {
-		this.config.collection().update(this.buildQueryWithNecessaryFields(context), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(MongoCollection.FIELD_CURRENT, new Date().getTime()).get()).get());
+		this.config.collection().update(this.buildQueryWithSmartResource(context.getJid(), true), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(MongoCollection.FIELD_CURRENT, new Date().getTime()).get()).get());
 		return this;
 	}
 
@@ -115,7 +119,7 @@ public class MongoAddressing implements Addressing {
 	}
 
 	private JIDContexts find(JID jid, Boolean usingResource, Boolean usingOffline) {
-		return new MongoUserContexts(jid, usingOffline, this.config.collection().find(this.buildQueryWithSmartResource(jid, usingResource), MongoCollection.FILTER_INDEX).sort(MongoCollection.DEFAULT_SORTER));
+		return new MongoUserContexts(jid, usingOffline, this.config.collection().find(this.buildQueryWithSmartResource(jid, usingResource), MongoCollection.FILTER_INDEX).sort(MongoCollection.SORT_DEFAULT));
 	}
 
 	private DBObject buildQueryWithNecessaryFields(JIDContext context) {
@@ -125,7 +129,7 @@ public class MongoAddressing implements Addressing {
 	}
 
 	private DBObject buildQueryWithSmartResource(JID jid, Boolean usingResource) {
-		DBObject query = BasicDBObjectBuilder.start().add(MongoCollection.FIELD_JID, jid.asStringWithBare()).get();
+		DBObject query = BasicDBObjectBuilder.start(MongoCollection.FIELD_JID, jid.asStringWithBare()).get();
 		if (usingResource && jid.getResource() != null) {
 			query.put("resource", jid.getResource());
 		}
@@ -134,7 +138,7 @@ public class MongoAddressing implements Addressing {
 	}
 
 	private boolean exists(Long index) {
-		return this.config.collection().findOne(BasicDBObjectBuilder.start().add(MongoCollection.FIELD_INDEX, index).get(), MongoCollection.FILTER_INDEX) != null;
+		return this.config.collection().findOne(BasicDBObjectBuilder.start(MongoCollection.FIELD_INDEX, index).get(), MongoCollection.FILTER_INDEX) != null;
 	}
 
 	private class Resources extends ArrayList<String> {
@@ -180,7 +184,7 @@ public class MongoAddressing implements Addressing {
 			for (Long index : MongoAddressing.this.contexts.keySet()) {
 				if (!MongoAddressing.this.exists(index)) {
 					JIDContext leak = MongoAddressing.this.contexts.get(index);
-					MongoAddressing.this.leave(MongoAddressing.this.contexts.get(index));
+					MongoAddressing.this.leave(leak);
 					MongoAddressing.this.log.error("Find leak context: " + leak.getJid().asString());
 				}
 			}

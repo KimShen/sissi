@@ -28,7 +28,7 @@ public class DelayMessage extends DelayProtocol {
 	@Override
 	public Message read(Map<String, Object> element) {
 		Message message = Message.class.cast(super.based(element, new Message()));
-		return message.setBody(new Body(element.get(this.body).toString())).setDelay(new Delay(super.getOffline(), message.getFrom(), element.get(super.delay).toString()));
+		return message.setBody(new Body(element.get(this.body).toString())).setDelay(new Delay(super.getOffline(), message.getFrom(), element.get(FIELD_DELAY).toString()));
 	}
 
 	public Boolean isSupport(Element element) {

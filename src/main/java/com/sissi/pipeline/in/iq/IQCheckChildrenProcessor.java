@@ -13,7 +13,7 @@ import com.sissi.protocol.iq.IQ;
  */
 public class IQCheckChildrenProcessor implements Input {
 
-	private final String ERROR_TEXT = "SET/GET must one sub element";
+	private final String text = "SET/GET must one sub element";
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
@@ -22,7 +22,7 @@ public class IQCheckChildrenProcessor implements Input {
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.reply().setError(new ServerError().setType(ProtocolType.CANCEL).setBy(context.getDomain()).add(BadRequest.DETAIL, context.getLang(), ERROR_TEXT)));
+		context.write(protocol.reply().setError(new ServerError().setType(ProtocolType.CANCEL).setBy(context.getDomain()).add(BadRequest.DETAIL, context.getLang(), this.text)));
 		return false;
 	}
 }

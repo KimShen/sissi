@@ -13,7 +13,7 @@ import com.sissi.resource.ResourceMonitor;
  */
 abstract public class GC implements Runnable {
 	
-	private final static Log log = LogFactory.getLog(GC.class);
+	private final static Log LOG = LogFactory.getLog(GC.class);
 
 	private final Long sleep;
 
@@ -25,10 +25,6 @@ abstract public class GC implements Runnable {
 		this.resourceMonitor = resourceMonitor;
 	}
 
-	protected Long getSleep() {
-		return sleep;
-	}
-
 	@Override
 	public void run() {
 		try {
@@ -36,10 +32,10 @@ abstract public class GC implements Runnable {
 			while (true) {
 				try {
 					this.gc();
-					Thread.sleep(this.getSleep());
+					Thread.sleep(this.sleep);
 				} catch (Exception e) {
-					if (log.isErrorEnabled()) {
-						log.error(e.toString());
+					if (LOG.isErrorEnabled()) {
+						LOG.error(e.toString());
 						e.printStackTrace();
 					}
 				}

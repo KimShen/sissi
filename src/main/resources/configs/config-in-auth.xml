@@ -13,7 +13,6 @@
 			<constructor-arg ref="accessor" />
 		</bean>
 		<bean class="com.sissi.pipeline.in.auth.impl.DigestAuthCallback">
-			<constructor-arg value="${global.domain}" />
 			<constructor-arg>
 				<ref bean="auth.sasl" />
 			</constructor-arg>

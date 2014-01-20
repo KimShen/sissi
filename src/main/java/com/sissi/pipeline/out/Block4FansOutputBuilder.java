@@ -2,7 +2,6 @@ package com.sissi.pipeline.out;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
-import com.sissi.context.JIDContext;
 import com.sissi.protocol.Element;
 import com.sissi.ucenter.BlockContext;
 import com.sissi.write.Transfer;
@@ -17,19 +16,19 @@ public class Block4FansOutputBuilder extends BlockOutputBuilder {
 	}
 
 	@Override
-	public BlockOutput build(Transfer transfer)  {
+	public BlockOutput build(Transfer transfer) {
 		return new Block4FansOutput();
 	}
 
 	private class Block4FansOutput extends BlockOutput {
 
 		@Override
-		protected JID user(JIDContext context, Element node) {
-			return context.getJid();
+		protected JID user(JID current, Element node) {
+			return current;
 		}
 
 		@Override
-		protected JID contacter(JIDContext context, Element node) {
+		protected JID contacter(JID current, Element node) {
 			return Block4FansOutputBuilder.super.jidBuilder.build(node.getFrom());
 		}
 	}

@@ -7,11 +7,11 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2013-11-18
  */
-public class PresenceStatus2FansProcessor extends ProxyProcessor {
+public class PresenceStatusProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.broadcast(context.getJid(), protocol.setFrom(context.getJid().getBare()));
+		super.broadcast(context.getJid(), protocol.setFrom(context.getJid()));
 		return true;
 	}
 }

@@ -14,7 +14,7 @@ import com.sissi.ucenter.BlockContext;
 public class BlockedListProcessor extends ProxyProcessor {
 
 	private final BlockContext blockContext;
-	
+
 	public BlockedListProcessor(BlockContext blockContext) {
 		super();
 		this.blockContext = blockContext;
@@ -26,7 +26,7 @@ public class BlockedListProcessor extends ProxyProcessor {
 		for (String each : this.blockContext.iBlockWho(context.getJid())) {
 			list.add(new BlockListItem().setJid(super.build(each, null).asStringWithBare()));
 		}
-		context.write(list.getParent().setFrom(context.getDomain()).setTo(context.getJid()).setType(ProtocolType.RESULT));
+		context.write(list.getParent().setFrom(context.getDomain()).setType(ProtocolType.RESULT));
 		return true;
 	}
 }

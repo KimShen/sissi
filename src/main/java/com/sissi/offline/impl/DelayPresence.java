@@ -24,7 +24,7 @@ public class DelayPresence extends DelayProtocol {
 	@Override
 	public Element read(Map<String, Object> element) {
 		Presence presence = (Presence) super.based(element, new Presence());
-		return presence.setDelay(new Delay(super.getOffline(), presence.getFrom(), element.get(super.delay).toString()));
+		return presence.setDelay(new Delay(super.getOffline(), presence.getFrom(), element.get(FIELD_DELAY).toString()));
 	}
 
 	public Boolean isSupport(Element element) {

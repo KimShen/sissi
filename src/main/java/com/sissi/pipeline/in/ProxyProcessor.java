@@ -66,8 +66,18 @@ abstract public class ProxyProcessor implements Input {
 		return this.addressing.others(context.getJid(), usingResource);
 	}
 
+	protected ProxyProcessor leave(JID jid) {
+		this.addressing.leave(jid);
+		return this;
+	}
+
+	protected ProxyProcessor leave(JID jid, Boolean usingResource) {
+		this.addressing.leave(jid, usingResource);
+		return this;
+	}
+
 	protected ProxyProcessor leave(JIDContext context) {
-		this.addressing.leave(context.getJid());
+		this.addressing.leave(context);
 		return this;
 	}
 
@@ -98,12 +108,12 @@ abstract public class ProxyProcessor implements Input {
 		return this;
 	}
 
-	public List<String> resources(JID jid){
+	public List<String> resources(JID jid) {
 		return this.addressing.resources(jid);
 	}
-	
-	protected ProxyProcessor broadcast(JID jid, JID from, JID to, Status status) {
-		this.presenceQueue.broadcast(jid, from, to, status);
+
+	protected ProxyProcessor broadcast(JID jid, JID from, Status status) {
+		this.presenceQueue.broadcast(jid, from, status);
 		return this;
 	}
 

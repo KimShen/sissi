@@ -4,6 +4,7 @@ import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
+import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster;
 
 /**
@@ -13,14 +14,13 @@ abstract class Roster2SelfsItemProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		Roster roster = Roster.class.cast(protocol);
-		String subscription = this.getSubscription(context.getJid(), super.build(roster.getFirstItem().getJid()));
-		roster.getFirstItem().setSubscription(this.getSubscription(context.getJid(), super.build(roster.getFirstItem().getJid())));
+		GroupItem item  = Roster.class.cast(protocol).getFirstItem();
+		item.setSubscription(this.subscription(context.getJid(), super.build(item.getJid()))).setJid(super.build(item.getJid()).asStringWithBare());
 		super.broadcast(context.getJid(), protocol.getParent());
-		return this.getNextWhenThisSubscription(subscription);
+		return this.isNext(item.getSubscription());
 	}
 
-	abstract protected Boolean getNextWhenThisSubscription(String subscription);
+	abstract protected String subscription(JID master, JID slave);
 
-	abstract protected String getSubscription(JID master, JID slave);
+	abstract protected Boolean isNext(String subscription);
 }

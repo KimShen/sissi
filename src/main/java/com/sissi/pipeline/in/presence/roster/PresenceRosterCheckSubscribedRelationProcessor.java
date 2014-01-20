@@ -1,8 +1,6 @@
 package com.sissi.pipeline.in.presence.roster;
 
 import com.sissi.context.JID;
-import com.sissi.context.JIDContext;
-import com.sissi.protocol.Protocol;
 
 /**
  * @author kim 2013-11-18
@@ -10,12 +8,12 @@ import com.sissi.protocol.Protocol;
 public class PresenceRosterCheckSubscribedRelationProcessor extends PresenceRosterCheckRelationProcessor {
 
 	@Override
-	protected JID getMaster(JIDContext context, Protocol protocol) {
-		return super.build(protocol.getTo());
+	protected JID getMaster(JID context, JID to) {
+		return to;
 	}
 
 	@Override
-	protected JID getSlave(JIDContext context, Protocol protocol) {
-		return context.getJid();
+	protected JID getSlave(JID context, JID to) {
+		return context;
 	}
 }
