@@ -11,6 +11,7 @@
 	</bean>
 	<bean id="roster.pro.establish.set" class="com.sissi.pipeline.in.iq.roster.RosterSetProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.set.check.loop" class="com.sissi.pipeline.in.iq.roster.RosterSetCheckLoopProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.set.check.single" class="com.sissi.pipeline.in.iq.roster.RosterSetCheckSingleProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.set.check.exists" class="com.sissi.pipeline.in.iq.roster.RosterSetCheckExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
 	</bean>
@@ -20,6 +21,7 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="roster.pro.establish.set.check.loop" />
+				<ref bean="roster.pro.establish.set.check.single" />
 				<ref bean="roster.pro.establish.set.check.exists" />
 				<ref bean="roster.pro.establish.set" />
 				<ref bean="roster.pro.establish.set.2selfs.item" />
