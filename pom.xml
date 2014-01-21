@@ -76,6 +76,7 @@
 		<maven.bytestreams.name>Socks 5 Bytestreams Proxy</maven.bytestreams.name>
 		<maven.pipeline.auth.retry>2</maven.pipeline.auth.retry>
 		<maven.pipeline.roster.name>10</maven.pipeline.roster.name>
+		<maven.pipeline.roster.group>10</maven.pipeline.roster.group>
 		<maven.pipeline.resource.limit>3</maven.pipeline.resource.limit>
 		<maven.pipeline.message.relation>false</maven.pipeline.message.relation>
 		<maven.pipeline.offline.title>From sissi offline</maven.pipeline.offline.title>

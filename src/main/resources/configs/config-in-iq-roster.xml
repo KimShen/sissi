@@ -14,6 +14,9 @@
 	<bean id="roster.pro.establish.set.trim.name" class="com.sissi.pipeline.in.iq.roster.RosterSetTrimNameProcessor">
 		<constructor-arg value="${pipeline.roster.name}" />
 	</bean>
+	<bean id="roster.pro.establish.set.trim.group" class="com.sissi.pipeline.in.iq.roster.RosterSetTrimGroupProcessor">
+		<constructor-arg value="${pipeline.roster.group}" />
+	</bean>
 	<bean id="roster.pro.establish.set.check.loop" class="com.sissi.pipeline.in.iq.roster.RosterSetCheckLoopProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.set.check.exists" class="com.sissi.pipeline.in.iq.roster.RosterSetCheckExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
@@ -27,6 +30,7 @@
 				<ref bean="roster.pro.establish.set.check.exists" />
 				<ref bean="roster.pro.establish.set.trim.item" />
 				<ref bean="roster.pro.establish.set.trim.name" />
+				<ref bean="roster.pro.establish.set.trim.group" />
 				<ref bean="roster.pro.establish.set" />
 				<ref bean="roster.pro.establish.set.2selfs.item" />
 				<ref bean="roster.pro.establish.set.2fans.presence" />

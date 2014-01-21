@@ -16,6 +16,8 @@ public class Group {
 
 	private String value;
 
+	private GroupItem item;
+
 	public Group() {
 		super();
 	}
@@ -25,13 +27,33 @@ public class Group {
 		this.value = text;
 	}
 
+	Group setItem(GroupItem item) {
+		this.item = item;
+		return this;
+	}
+
 	@XmlValue
 	public String getValue() {
-		return value;
+		return this.value == null || this.value.isEmpty() ? null : this.value;
 	}
 
 	public Group setText(String text) {
 		this.value = text;
+		this.shouldIgnore();
 		return this;
+	}
+
+	public Group trimName(Integer length) {
+		if (this.getValue() != null && this.getValue().length() > length) {
+			this.value = this.value.substring(0, length);
+		}
+		return this;
+	}
+
+	private void shouldIgnore() {
+		if (this.item != null && this.getValue() == null) {
+			this.item.getGroup().remove(this);
+		}
+		this.item = null;
 	}
 }

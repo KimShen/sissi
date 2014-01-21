@@ -43,13 +43,13 @@ public class GroupItem extends Item implements Collector {
 		if (this.groups == null) {
 			this.groups = new HashSet<Group>();
 		}
-		this.groups.add(group);
+		this.groups.add(group.setItem(this));
 		return this;
 	}
 
 	@XmlElements({ @XmlElement(name = Group.NAME, type = Group.class) })
 	public Set<Group> getGroup() {
-		return this.groups;
+		return this.groups == null || this.groups.isEmpty() ? null : this.groups;
 	}
 
 	public void set(String localname, Object ob) {
@@ -70,9 +70,18 @@ public class GroupItem extends Item implements Collector {
 		return GroupAction.parse(this.getSubscription());
 	}
 
-	public Item trimName(Integer length) {
-		if (super.getName() != null) {
+	public GroupItem trimName(Integer length) {
+		if (super.getName() != null && super.getName().length() > length) {
 			super.setName(super.getName().substring(0, length));
+		}
+		return this;
+	}
+
+	public GroupItem trimGroup(Integer length) {
+		if (this.groups != null) {
+			for (Group group : this.groups) {
+				group.trimName(length);
+			}
 		}
 		return this;
 	}
