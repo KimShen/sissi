@@ -8,7 +8,7 @@ import com.sissi.protocol.iq.roster.RosterSubscription;
 /**
  * @author kim 2013-11-17
  */
-public class PresenceRosterUnSubscribedProcessorA extends ProxyProcessor {
+public class PresenceRosterUnSubscribedProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
