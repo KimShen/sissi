@@ -5,14 +5,20 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="presence.pro.binding" class="com.sissi.pipeline.in.presence.PresenceCheckBindingProcessor" />
+	<bean id="presence.pro.check.binding" class="com.sissi.pipeline.in.presence.PresenceCheckBindingProcessor" />
+	<bean id="presence.pro.check.exists" class="com.sissi.pipeline.in.presence.PresenceCheckExistsProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="vcard" />
+	</bean>
+	<bean id="presence.pro.check.loop" class="com.sissi.pipeline.in.presence.PresenceCheckLoopProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.presence" />
 	</bean>
 	<bean id="presence.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.binding" />
+				<ref bean="presence.pro.check.binding" />
+				<ref bean="presence.pro.check.exists" />
+				<ref bean="presence.pro.check.loop" />
 				<ref bean="presence.pro.fork" />
 			</util:list>
 		</constructor-arg>

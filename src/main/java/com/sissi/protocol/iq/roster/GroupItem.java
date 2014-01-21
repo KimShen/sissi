@@ -69,4 +69,11 @@ public class GroupItem extends Item implements Collector {
 	public GroupAction getAction() {
 		return GroupAction.parse(this.getSubscription());
 	}
+
+	public Item trimName(Integer length) {
+		if (super.getName() != null) {
+			super.setName(super.getName().substring(0, length));
+		}
+		return this;
+	}
 }

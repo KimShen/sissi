@@ -59,6 +59,7 @@
 	<bean id="finder.iq" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<ref bean="ping.condition" />
 				<ref bean="roster.condition" />
 				<ref bean="vcard.condition" />
 				<ref bean="si.condition" />

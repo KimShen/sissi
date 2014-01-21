@@ -27,7 +27,8 @@ public class RosterSetCheckExistsProcessor extends ProxyProcessor {
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.getParent().reply().setFrom(context.getDomain()).setError(new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL)));
+		// Can not add from
+		context.write(protocol.getParent().reply().setError(new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL)));
 		return false;
 	}
 }

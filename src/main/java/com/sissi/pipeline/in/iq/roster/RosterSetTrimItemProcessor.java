@@ -1,0 +1,20 @@
+package com.sissi.pipeline.in.iq.roster;
+
+import com.sissi.context.JIDContext;
+import com.sissi.pipeline.Input;
+import com.sissi.protocol.Protocol;
+import com.sissi.protocol.iq.roster.Roster;
+
+/**
+ * @author kim 2014年1月21日
+ */
+public class RosterSetTrimItemProcessor implements Input {
+
+	private final Integer items = 1;
+
+	@Override
+	public Boolean input(JIDContext context, Protocol protocol) {
+		Roster.class.cast(protocol).trimItem(items);
+		return true;
+	}
+}

@@ -35,7 +35,7 @@ abstract public class Item {
 
 	@XmlAttribute
 	public String getName() {
-		return name;
+		return this.name == null || this.name.isEmpty() ? null : this.name;
 	}
 
 	public Item setName(String name) {

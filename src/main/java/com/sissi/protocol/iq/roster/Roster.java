@@ -65,4 +65,13 @@ public class Roster extends Protocol implements Collector {
 		this.item = null;
 		return this;
 	}
+
+	public Roster trimItem(Integer item) {
+		if (this.item != null && this.item.size() > item) {
+			GroupItem need = this.getFirstItem();
+			this.item.clear();
+			this.item.add(need);
+		}
+		return this;
+	}
 }
