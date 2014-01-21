@@ -80,6 +80,21 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return isTls;
 	}
 
+	public JIDContext setPresence() {
+		for (JIDContext each : this) {
+			each.setPresence();
+		}
+		return this;
+	}
+
+	public Boolean isPresence() {
+		boolean isPresence = true;
+		for (JIDContext each : this) {
+			isPresence = each.isPresence() ? isPresence : false;
+		}
+		return isPresence;
+	}
+
 	@Override
 	public JIDContext setAuth(Boolean canAccess) {
 		for (JIDContext each : this) {

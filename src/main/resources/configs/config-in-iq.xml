@@ -14,9 +14,6 @@
 	<bean id="iq.pro.error.none" class="com.sissi.pipeline.in.iq.IQErrorProcessor">
 		<constructor-arg value="false" />
 	</bean>
-	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
-		<constructor-arg ref="finder.iq" />
-	</bean>
 	<bean id="iq.pro.check.auth" class="com.sissi.pipeline.in.iq.IQCheckAuthProcessor">
 		<constructor-arg>
 			<set>
@@ -35,6 +32,19 @@
 	</bean>
 	<bean id="iq.pro.check.action" class="com.sissi.pipeline.in.iq.IQCheckActionProcessor" />
 	<bean id="iq.pro.check.children" class="com.sissi.pipeline.in.iq.IQCheckChildrenProcessor" />
+	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
+		<constructor-arg ref="finder.iq" />
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.ChainedProcessor">
+				<constructor-arg>
+					<util:list>
+						<ref bean="pong.pro" />
+						<ref bean="iq.pro.result.stop" />
+					</util:list>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+	</bean>
 	<bean id="iq.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
@@ -42,7 +52,6 @@
 				<ref bean="iq.pro.check.action" />
 				<ref bean="iq.pro.check.children" />
 				<ref bean="iq.pro.fork" />
-				<ref bean="pong.pro" />
 			</util:list>
 		</constructor-arg>
 	</bean>

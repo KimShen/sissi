@@ -43,7 +43,11 @@ public interface JIDContext {
 	public Boolean setTls();
 
 	public Boolean isTls();
-
+	
+	public JIDContext setPresence();
+	
+	public Boolean isPresence();
+	
 	public Status getStatus();
 
 	public JIDContext reset();

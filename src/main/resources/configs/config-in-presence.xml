@@ -5,17 +5,25 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="presence.pro.check.binding" class="com.sissi.pipeline.in.presence.PresenceCheckBindingProcessor" />
+	<bean id="presence.pro.binding" class="com.sissi.pipeline.in.presence.PresenceCheckBindingProcessor" />
 	<bean id="presence.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.presence" />
 	</bean>
 	<bean id="presence.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.check.binding" />
+				<ref bean="presence.pro.binding" />
 				<ref bean="presence.pro.fork" />
 			</util:list>
 		</constructor-arg>
+	</bean>
+
+	<bean id="presence.pro.status.init.4fans" class="com.sissi.pipeline.in.presence.status.PresenceInit4FansProcessor" parent="global.pro.proxy">
+		<property name="presenceQueue" ref="broadcast.presence.self" />
+	</bean>
+	<bean id="presence.pro.status.init.4selfs" class="com.sissi.pipeline.in.presence.status.PresenceInit4SelfsProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.init.4offline" class="com.sissi.pipeline.in.presence.status.PresenceInit4OfflineProcessor">
+		<constructor-arg ref="offline" />
 	</bean>
 	<bean id="presence.pro.status.2self.priority" class="com.sissi.pipeline.in.presence.status.PresenceStatusPriorityProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.2self.update" class="com.sissi.pipeline.in.presence.status.PresenceStatusUpdateProcessor" parent="global.pro.proxy" />
@@ -26,6 +34,9 @@
 	<bean id="presence.pro.status.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="presence.pro.status.init.4fans" />
+				<ref bean="presence.pro.status.init.4selfs" />
+				<ref bean="presence.pro.status.init.4offline" />
 				<ref bean="presence.pro.status.2self.priority" />
 				<ref bean="presence.pro.status.2self.update" />
 				<ref bean="presence.pro.status.2selfs" />

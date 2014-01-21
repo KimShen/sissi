@@ -129,6 +129,14 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		public Boolean isTls() {
 			return false;
 		}
+		
+		public JIDContext setPresence(){
+			return this;
+		}
+		
+		public Boolean isPresence(){
+			return false;
+		}
 
 		public Boolean closePrepare() {
 			return false;

@@ -5,31 +5,13 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="session.pro.4fans" class="com.sissi.pipeline.in.iq.session.Session4FansProcessor" parent="global.pro.proxy">
-		<property name="presenceQueue" ref="broadcast.presence.self" />
-	</bean>
-	<bean id="session.pro.4selfs" class="com.sissi.pipeline.in.iq.session.Session4SelfsProcessor" parent="global.pro.proxy" />
-	<bean id="session.pro.4offline" class="com.sissi.pipeline.in.iq.session.Session4OfflineProcessor">
-		<constructor-arg ref="offline" />
-	</bean>
-	<bean id="session.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
-		<constructor-arg>
-			<util:list>
-				<ref bean="iq.pro.result.next" />
-				<ref bean="session.pro.4fans" />
-				<ref bean="session.pro.4selfs" />
-				<ref bean="session.pro.4offline" />
-			</util:list>
-		</constructor-arg>
-	</bean>
-
 	<bean id="session.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.ClassMatcher">
 				<constructor-arg value="com.sissi.protocol.iq.session.Session" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="session.pro.chained" />
+		<constructor-arg ref="iq.pro.result.next" />
 	</bean>
 
 </beans>

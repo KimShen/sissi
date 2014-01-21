@@ -75,6 +75,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final AtomicBoolean isPrepareClose = new AtomicBoolean();
 
+		private final AtomicBoolean isPresence = new AtomicBoolean();
+
 		private final AtomicBoolean isBinding = new AtomicBoolean();
 
 		private final AtomicInteger authRetry = new AtomicInteger();
@@ -158,6 +160,15 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			return this.serverTls.isTls(this.getDomain());
 		}
 
+		public JIDContext setPresence() {
+			this.isPresence.set(true);
+			return this;
+		}
+
+		public Boolean isPresence() {
+			return this.isPresence.get();
+		}
+
 		@Override
 		public JIDContext setPriority(Integer priority) {
 			this.priority = priority;
@@ -203,6 +214,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			this.lang = OnlineContextBuilder.this.lang;
 			this.ping.set(OnlineContextBuilder.PONG);
 			this.isPrepareClose.set(false);
+			this.isPresence.set(false);
 			this.authRetry.set(0);
 			return this;
 		}
