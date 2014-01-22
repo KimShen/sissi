@@ -21,6 +21,8 @@ public class PrivateLooperBuilder implements LooperBuilder {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
+	private final String resource = PrivateLooper.class.getSimpleName();
+
 	private final Runner runner;
 
 	private final Integer threads;
@@ -60,7 +62,7 @@ public class PrivateLooperBuilder implements LooperBuilder {
 		@Override
 		public void run() {
 			try {
-				PrivateLooperBuilder.this.resourceCounter.increment();
+				PrivateLooperBuilder.this.resourceCounter.increment(PrivateLooperBuilder.this.resource);
 				while (true) {
 					try {
 						if (this.prepareStop()) {
@@ -75,7 +77,7 @@ public class PrivateLooperBuilder implements LooperBuilder {
 					}
 				}
 			} finally {
-				PrivateLooperBuilder.this.resourceCounter.decrement();
+				PrivateLooperBuilder.this.resourceCounter.decrement(PrivateLooperBuilder.this.resource);
 			}
 		}
 

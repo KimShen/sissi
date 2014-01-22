@@ -1,6 +1,5 @@
 package com.sissi.config;
 
-import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 
 /**
@@ -8,13 +7,13 @@ import com.mongodb.DBObject;
  */
 public interface MongoConfig extends Config {
 
-	public final static String D_NAME = "DB_NAME";
+	public final static String D_NAME = "D_NAME";
 
-	public final static String C_NAME = "CL_NAME";
+	public final static String C_NAME = "C_NAME";
 
 	public MongoConfig clear();
 
-	public DBCollection collection();
+	public MongoCollection collection();
 
 	public String asString(DBObject db, String key);
 	

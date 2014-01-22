@@ -43,6 +43,8 @@ public class Socks5ProxyServerHandlerBuilder {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
+	private final String resource = Sock5ProxyServerHandler.class.getSimpleName();
+
 	private final ExchangerContext exchangerContext;
 
 	private final AttributeKey<Exchanger> exchanger;
@@ -88,12 +90,12 @@ public class Socks5ProxyServerHandlerBuilder {
 
 		public void channelRegistered(final ChannelHandlerContext ctx) throws Exception {
 			super.channelRegistered(ctx);
-			Socks5ProxyServerHandlerBuilder.this.resourceCounter.increment();
+			Socks5ProxyServerHandlerBuilder.this.resourceCounter.increment(Socks5ProxyServerHandlerBuilder.this.resource);
 		}
 
 		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
 			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close(ExchangerCloser.INITER);
-			Socks5ProxyServerHandlerBuilder.this.resourceCounter.decrement();
+			Socks5ProxyServerHandlerBuilder.this.resourceCounter.decrement(Socks5ProxyServerHandlerBuilder.this.resource);
 		}
 
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
@@ -165,7 +167,7 @@ public class Socks5ProxyServerHandlerBuilder {
 
 		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
 			super.channelUnregistered(ctx);
-			Socks5ProxyServerHandlerBuilder.this.resourceCounter.decrement();
+			Socks5ProxyServerHandlerBuilder.this.resourceCounter.decrement(Socks5ProxyServerHandlerBuilder.this.resource);
 		}
 
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

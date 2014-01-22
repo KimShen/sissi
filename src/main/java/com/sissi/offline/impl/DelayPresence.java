@@ -28,11 +28,6 @@ public class DelayPresence extends DelayProtocol {
 	}
 
 	public Boolean isSupport(Element element) {
-		return super.isSupport(element) && this.isAcceptStatus(element);
-	}
-
-	private boolean isAcceptStatus(Element element) {
-		PresenceType type = PresenceType.parse(element.getType());
-		return type != PresenceType.AVAILABLE && type != PresenceType.UNAVAILABLE;
+		return super.isSupport(element) && !PresenceType.parse(element.getType()).in(PresenceType.AVAILABLE, PresenceType.UNAVAILABLE);
 	}
 }

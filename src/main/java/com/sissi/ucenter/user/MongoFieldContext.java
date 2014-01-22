@@ -1,8 +1,5 @@
 package com.sissi.ucenter.user;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.sissi.ucenter.field.Field;
@@ -13,8 +10,6 @@ import com.sissi.ucenter.field.Fields;
  */
 abstract class MongoFieldContext {
 
-	private final Log log = LogFactory.getLog(this.getClass());
-
 	protected DBObject getEntities(Fields fields, BasicDBObjectBuilder builder) {
 		for (Field<?> field : fields) {
 			if (field.hasChild()) {
@@ -23,9 +18,7 @@ abstract class MongoFieldContext {
 				builder.add(field.getName(), field.getValue());
 			}
 		}
-		DBObject entity = builder.get();
-		this.log.debug("Entity: " + entity);
-		return entity;
+		return builder.get();
 	}
 
 	private void embedOrNot(BasicDBObjectBuilder builder, Field<?> field) {

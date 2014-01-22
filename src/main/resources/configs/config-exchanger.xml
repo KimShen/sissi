@@ -7,8 +7,9 @@
 
 	<bean id="server.exchanger.context" class="com.sissi.server.impl.BridgeExchangerContext">
 		<constructor-arg ref="runner" />
+		<constructor-arg ref="counter" />
 		<constructor-arg>
-			<bean class="com.sissi.config.impl.MongoCollection">
+			<bean class="com.sissi.config.impl.MongoProxyConfig">
 				<constructor-arg ref="mongo" />
 				<constructor-arg index="1" value="${mongo.db}" />
 				<constructor-arg index="2" value="${mongo.collection.exchanger}" />
@@ -18,12 +19,6 @@
 			<bean class="com.sissi.commons.Interval">
 				<constructor-arg value="${exchanger.gc.interval}" />
 				<constructor-arg value="${exchanger.gc.unit}" />
-			</bean>
-		</constructor-arg>
-		<constructor-arg>
-			<bean class="com.sissi.resource.impl.MongoResourceCounter">
-				<constructor-arg ref="counter" />
-				<constructor-arg value="${counter.exchanger}" />
 			</bean>
 		</constructor-arg>
 	</bean>
@@ -38,12 +33,7 @@
 			<bean class="com.sissi.server.impl.Socks5ProxyServerHandlerBuilder">
 				<constructor-arg ref="server.exchanger.context" />
 				<constructor-arg ref="bytestreams.proxy" />
-				<constructor-arg>
-					<bean class="com.sissi.resource.impl.MongoResourceCounter">
-						<constructor-arg ref="counter" />
-						<constructor-arg value="${counter.socks}" />
-					</bean>
-				</constructor-arg>
+				<constructor-arg ref="counter" />
 			</bean>
 		</constructor-arg>
 	</bean>

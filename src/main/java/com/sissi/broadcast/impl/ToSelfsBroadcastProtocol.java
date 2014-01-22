@@ -7,10 +7,10 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2014年1月15日
  */
-public class ToSelfsProtocolQueue extends ToAnyProtocolQueue implements BroadcastProtocol {
+public class ToSelfsBroadcastProtocol extends ToAnyBroadcastProtocol implements BroadcastProtocol {
 
 	@Override
-	public ToSelfsProtocolQueue broadcast(JID jid, Protocol protocol) {
+	public ToSelfsBroadcastProtocol broadcast(JID jid, Protocol protocol) {
 		super.getAddressing().find(jid).write(protocol);
 		return this;
 	}

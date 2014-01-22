@@ -18,6 +18,15 @@ public enum PresenceType {
 		return this == PresenceType.parse(type);
 	}
 
+	public Boolean in(PresenceType... types) {
+		for (PresenceType type : types) {
+			if (this == type) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static PresenceType parse(String subscribe) {
 		if (subscribe == null) {
 			return AVAILABLE;

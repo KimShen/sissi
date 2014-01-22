@@ -1,18 +1,16 @@
 package com.sissi.ucenter.relation;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteConcern;
 import com.sissi.config.MongoConfig;
-import com.sissi.config.impl.MongoCollection;
 import com.sissi.context.JID;
 import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.ucenter.Relation;
@@ -24,11 +22,31 @@ import com.sissi.ucenter.RelationRoster;
  */
 abstract class MongoRelationContext implements RelationContext {
 
-	private final DBObject[] states = new DBObject[] { BasicDBObjectBuilder.start(MongoCollection.FIELD_STATE, 1).get(), BasicDBObjectBuilder.start(MongoCollection.FIELD_STATE, 3).get() };
+	protected final String slave = "slave";
 
-	protected final Map<String, Object> plus = new HashMap<String, Object>();
+	protected final String master = "master";
 
-	protected final Log log = LogFactory.getLog(this.getClass());
+	protected final String state = "state";
+
+	protected final String nick = "nick";
+
+	private final DBObject filterMaster = BasicDBObjectBuilder.start(master, 1).get();
+
+	private final DBObject filterSlave = BasicDBObjectBuilder.start(slave, 1).get();
+
+	private final DBObject entityState = BasicDBObjectBuilder.start(this.state, 0).get();
+
+	private final DBObject entityEstablishTo = BasicDBObjectBuilder.start("or", 1).get();
+
+	private final DBObject entityEstablishFrom = BasicDBObjectBuilder.start("or", 2).get();
+
+	private final DBObject entityBrokeTo = BasicDBObjectBuilder.start("and", 1).get();
+
+	private final DBObject entityBrokeFrom = BasicDBObjectBuilder.start("and", 2).get();
+
+	private final DBObject[] entityStates = new DBObject[] { BasicDBObjectBuilder.start(this.state, 1).get(), BasicDBObjectBuilder.start(this.state, 3).get() };
+
+	protected final Map<String, Object> plus = Collections.unmodifiableMap(new HashMap<String, Object>());
 
 	protected final MongoConfig config;
 
@@ -37,55 +55,39 @@ abstract class MongoRelationContext implements RelationContext {
 	public MongoRelationContext(MongoConfig config) {
 		super();
 		this.config = config;
-		this.update = new HashMap<String, RelationUpdate>();
-		this.update.put(RosterSubscription.TO.toString(), new RelationUpdate(MongoCollection.ENTITY_ESTABLISH_FROM, MongoCollection.ENTITY_ESTABLISH_TO));
-		this.update.put(RosterSubscription.NONE.toString(), new RelationUpdate(MongoCollection.ENTITY_BROKE_TO, MongoCollection.ENTITY_BROKE_FROM));
+		Map<String, RelationUpdate> update = new HashMap<String, RelationUpdate>();
+		update.put(RosterSubscription.TO.toString(), new RelationUpdate(this.entityEstablishFrom, this.entityEstablishTo));
+		update.put(RosterSubscription.NONE.toString(), new RelationUpdate(this.entityBrokeTo, this.entityBrokeFrom));
+		this.update = Collections.unmodifiableMap(update);
 	}
 
 	private DBObject buildQuery(String master, String slave) {
-		DBObject query = BasicDBObjectBuilder.start().add(MongoCollection.FIELD_MASTER, master).add(MongoCollection.FIELD_SLAVE, slave).get();
-		this.log.debug("Query is: " + query);
-		return query;
+		return BasicDBObjectBuilder.start().add(this.master, master).add(this.slave, slave).get();
 	}
 
-	private DBObject buildStatesQuery(String role, JID jid) {
-		DBObject query = BasicDBObjectBuilder.start().add(role, jid.asStringWithBare()).get();
-		query.put("$or", this.states);
-		this.log.debug("Query is: " + query);
+	private DBObject buildQueryLimitStates(String role, String jid) {
+		DBObject query = BasicDBObjectBuilder.start().add(role, jid).get();
+		query.put("$or", this.entityStates);
 		return query;
-	}
-
-	private RelationContext update(DBObject query, DBObject entity) {
-		this.log.debug("Query is: " + query);
-		this.log.debug("Entity is: " + entity);
-		this.config.collection().update(query, entity, true, false);
-		return this;
 	}
 
 	@Override
 	public RelationContext establish(JID from, Relation relation) {
-		this.update(this.buildQuery(from.asStringWithBare(), relation.getJID()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(MongoCollection.FIELD_NICK, relation.getName()).get()).add("$setOnInsert", MongoCollection.ENTITY_STATE).get());
-		this.update(this.buildQuery(relation.getJID(), from.asStringWithBare()), BasicDBObjectBuilder.start().add("$setOnInsert", MongoCollection.ENTITY_STATE).get());
+		this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.getJID()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(this.nick, relation.getName()).get()).add("$setOnInsert", this.entityState).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(relation.getJID(), from.asStringWithBare()), BasicDBObjectBuilder.start("$setOnInsert", this.entityState).get(), true, false, WriteConcern.SAFE);
 		return this;
 	}
 
 	@Override
 	public RelationContext update(JID from, JID to, String state) {
-		this.update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(MongoCollection.FIELD_STATE, this.update.get(state).getTo()).get()).get());
-		this.update(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(MongoCollection.FIELD_STATE, this.update.get(state).getFrom()).get()).get());
-		return this;
-	}
-
-	public RelationContext remove(JID from, JID to) {
-		this.update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(MongoCollection.FIELD_STATE, MongoCollection.ENTITY_BROKE_FROM).get()).get());
-		this.update(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(MongoCollection.FIELD_STATE, MongoCollection.ENTITY_BROKE_TO).get()).get());
+		this.config.collection().update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(this.state, this.update.get(state).getTo()).get()).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(this.state, this.update.get(state).getFrom()).get()).get(), true, false, WriteConcern.SAFE);
 		return this;
 	}
 
 	@Override
 	public Set<Relation> myRelations(JID from) {
-		DBObject query = BasicDBObjectBuilder.start(MongoCollection.FIELD_MASTER, from.asStringWithBare()).get();
-		return new MongoRelations(this.config.collection().find(query));
+		return new MongoRelations(this.config.collection().find(BasicDBObjectBuilder.start(this.master, from.asStringWithBare()).get()));
 	}
 
 	@Override
@@ -96,20 +98,20 @@ abstract class MongoRelationContext implements RelationContext {
 
 	@Override
 	public Set<String> whoSubscribedMe(JID from) {
-		return new JIDs(this.config.collection().find(this.buildStatesQuery(MongoCollection.FIELD_SLAVE, from), MongoCollection.FILTER_MASTER), MongoCollection.FIELD_MASTER);
+		return new JIDs(this.config.collection().find(this.buildQueryLimitStates(this.slave, from.asStringWithBare()), this.filterMaster), this.master);
 	}
 
 	public Set<String> iSubscribedWho(JID from) {
-		return new JIDs(this.config.collection().find(this.buildStatesQuery(MongoCollection.FIELD_MASTER, from), MongoCollection.FILTER_SLAVE), MongoCollection.FIELD_SLAVE);
+		return new JIDs(this.config.collection().find(this.buildQueryLimitStates(this.master, from.asStringWithBare()), this.filterSlave), this.slave);
 	}
 
 	abstract protected Relation build(DBObject db);
 
 	private class RelationUpdate {
 
-		private DBObject from;
+		private final DBObject from;
 
-		private DBObject to;
+		private final DBObject to;
 
 		public RelationUpdate(DBObject from, DBObject to) {
 			super();
@@ -128,7 +130,7 @@ abstract class MongoRelationContext implements RelationContext {
 
 	private class NoneRelation implements Relation, RelationRoster {
 
-		private JID jid;
+		private final JID jid;
 
 		public NoneRelation(JID jid) {
 			super();

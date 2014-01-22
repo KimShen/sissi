@@ -9,11 +9,11 @@ import com.sissi.protocol.presence.Presence;
 /**
  * @author kim 2014年1月10日
  */
-abstract class ToAnyPresenceQueue extends ToAnyProtocolQueue implements BroadcastPresence {
+abstract class ToAnyBroadcastPresence extends ToAnyBroadcastProtocol implements BroadcastPresence {
 
 	private PresenceBuilder presenceBuilder;
 
-	public ToAnyPresenceQueue() {
+	public ToAnyBroadcastPresence() {
 		this.presenceBuilder = new DefaultPresenceBuilder();
 	}
 
@@ -25,7 +25,7 @@ abstract class ToAnyPresenceQueue extends ToAnyProtocolQueue implements Broadcas
 		return this.presenceBuilder;
 	}
 
-	abstract public ToAnyPresenceQueue broadcast(JID jid, JID from, Status status);
+	abstract public ToAnyBroadcastPresence broadcast(JID jid, JID from, Status status);
 
 	private class DefaultPresenceBuilder implements PresenceBuilder {
 

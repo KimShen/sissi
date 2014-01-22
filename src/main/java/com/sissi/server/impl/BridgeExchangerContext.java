@@ -74,7 +74,7 @@ public class BridgeExchangerContext implements ExchangerContext {
 	private class LeakGC extends GC {
 
 		public LeakGC(Interval interval, ResourceCounter resourceCounter) {
-			super(interval, resourceCounter);
+			super(interval, LeakGC.class, resourceCounter);
 		}
 
 		@Override

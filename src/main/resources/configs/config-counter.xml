@@ -5,10 +5,14 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="counter" class="com.sissi.config.impl.MongoCollection">
-		<constructor-arg ref="mongo" />
-		<constructor-arg index="1" value="${mongo.db}" />
-		<constructor-arg index="2" value="${mongo.collection.counter}" />
+	<bean id="counter" class="com.sissi.resource.impl.MongoResourceCounter">
+		<constructor-arg>
+			<bean class="com.sissi.config.impl.MongoProxyConfig">
+				<constructor-arg ref="mongo" />
+				<constructor-arg index="1" value="${mongo.db}" />
+				<constructor-arg index="2" value="${mongo.collection.counter}" />
+			</bean>
+		</constructor-arg>
 	</bean>
 
 </beans>

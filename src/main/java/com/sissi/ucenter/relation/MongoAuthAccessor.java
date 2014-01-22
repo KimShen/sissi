@@ -1,11 +1,9 @@
 package com.sissi.ucenter.relation;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
-import com.sissi.config.impl.MongoCollection;
+import com.sissi.config.MongoConfig;
+import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.ucenter.AuthAccessor;
 
 /**
@@ -13,21 +11,18 @@ import com.sissi.ucenter.AuthAccessor;
  */
 public class MongoAuthAccessor implements AuthAccessor {
 
-	private final Log log = LogFactory.getLog(this.getClass());
+	private final String password = "password";
 
-	private final MongoCollection config;
+	private final MongoConfig config;
 
-	public MongoAuthAccessor(MongoCollection config) {
+	public MongoAuthAccessor(MongoConfig config) {
 		super();
 		this.config = config;
 	}
 
 	@Override
 	public String access(String username) {
-		DBObject query = BasicDBObjectBuilder.start().add("username", username).get();
-		this.log.debug("Query: " + query);
-		DBObject entity = this.config.collection().findOne(query);
-		this.log.debug("User for: " + username + " is " + entity);
-		return entity != null ? entity.get("password").toString() : null;
+		DBObject entity = this.config.collection().findOne(BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_USERNAME, username).get());
+		return entity != null ? entity.get(this.password).toString() : null;
 	}
 }

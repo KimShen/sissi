@@ -47,6 +47,8 @@ public class PrivateServerHandlerBuilder {
 
 	private final AttributeKey<Looper> attrConnector = AttributeKey.valueOf("CONNECTOR_ATTR");
 
+	private final String resource = PrivateServerHandler.class.getSimpleName();
+
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final Reader reader;
@@ -104,7 +106,7 @@ public class PrivateServerHandlerBuilder {
 		public void channelRegistered(final ChannelHandlerContext ctx) {
 			this.createContext(ctx);
 			this.createLooper(ctx);
-			PrivateServerHandlerBuilder.this.resourceCounter.increment();
+			PrivateServerHandlerBuilder.this.resourceCounter.increment(PrivateServerHandlerBuilder.this.resource);
 		}
 
 		public void channelUnregistered(ChannelHandlerContext ctx) {
@@ -116,7 +118,7 @@ public class PrivateServerHandlerBuilder {
 				}
 				ctx.attr(PrivateServerHandlerBuilder.this.attrConnector).get().stop();
 				this.closeParser();
-				PrivateServerHandlerBuilder.this.resourceCounter.decrement();
+				PrivateServerHandlerBuilder.this.resourceCounter.decrement(PrivateServerHandlerBuilder.this.resource);
 			} catch (Exception e) {
 				if (PrivateServerHandlerBuilder.this.log.isErrorEnabled()) {
 					PrivateServerHandlerBuilder.this.log.error(e.toString());

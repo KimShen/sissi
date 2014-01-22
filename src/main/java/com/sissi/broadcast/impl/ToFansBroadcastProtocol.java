@@ -7,11 +7,10 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2014年1月15日
  */
-public class ToFansProtocolQueue extends ToAnyProtocolQueue implements BroadcastProtocol {
+public class ToFansBroadcastProtocol extends ToAnyBroadcastProtocol implements BroadcastProtocol {
 
 	@Override
-	public ToFansProtocolQueue broadcast(JID jid, Protocol protocol) {
-		// find who subscribed me and write protocol to all of its resource
+	public ToFansBroadcastProtocol broadcast(JID jid, Protocol protocol) {
 		for (String each : super.getRelationContext().whoSubscribedMe(jid)) {
 			super.getAddressing().find(super.getJidBuilder().build(each)).write(protocol);
 		}

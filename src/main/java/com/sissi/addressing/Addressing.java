@@ -17,7 +17,7 @@ public interface Addressing {
 	public Addressing leave(JIDContext context);
 	
 	public Addressing leave(JID jid, Boolean usingResource);
-
+	
 	public Addressing priority(JIDContext context);
 
 	public JIDContext find(JID jid);

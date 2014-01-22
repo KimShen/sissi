@@ -5,7 +5,7 @@ package com.sissi.resource;
  */
 public interface ResourceCounter {
 
-	public ResourceCounter increment();
+	public ResourceCounter increment(String resource);
 
-	public ResourceCounter decrement();
+	public ResourceCounter decrement(String resource);
 }

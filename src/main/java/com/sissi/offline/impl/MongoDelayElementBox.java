@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
@@ -24,8 +21,6 @@ import com.sissi.protocol.Element;
  */
 public class MongoDelayElementBox implements DelayElementBox, Output {
 
-	private final Log log = LogFactory.getLog(this.getClass());
-
 	private final String to = "to";
 
 	private final MongoConfig config;
@@ -41,7 +36,6 @@ public class MongoDelayElementBox implements DelayElementBox, Output {
 	@Override
 	public Collection<Element> pull(JID jid) {
 		DBObject query = BasicDBObjectBuilder.start(this.to, jid.asStringWithBare()).get();
-		this.log.debug("Query: " + query);
 		Elements elements = new Elements(this.config.collection().find(query));
 		this.config.collection().remove(query);
 		return elements;
@@ -51,9 +45,7 @@ public class MongoDelayElementBox implements DelayElementBox, Output {
 	public DelayElementBox push(Element element) {
 		for (DelayElement delay : this.elements) {
 			if (delay.isSupport(element)) {
-				DBObject entity = BasicDBObjectBuilder.start(delay.write(element)).get();
-				this.log.info("Entity: " + entity);
-				this.config.collection().save(entity);
+				this.config.collection().save(BasicDBObjectBuilder.start(delay.write(element)).get());
 			}
 		}
 		return this;

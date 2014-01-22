@@ -15,7 +15,7 @@ import com.sissi.addressing.Addressing;
 import com.sissi.commons.Interval;
 import com.sissi.commons.Runner;
 import com.sissi.config.MongoConfig;
-import com.sissi.config.impl.MongoCollection;
+import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContextBuilder;
@@ -29,7 +29,15 @@ import com.sissi.resource.ResourceCounter;
  */
 public class MongoAddressing implements Addressing {
 
-	private final Integer gcThreads = 1;
+	private final Integer gc = 1;
+
+	private final String index = "index";
+
+	private final String address = "address";
+
+	private final DBObject filter = BasicDBObjectBuilder.start(this.index, 1).get();
+
+	private final DBObject sort = BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_PRIORITY, -1).get();
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -45,12 +53,12 @@ public class MongoAddressing implements Addressing {
 		super();
 		this.config = config.clear();
 		this.offlineContextBuilder = offlineContextBuilder;
-		runner.executor(this.gcThreads, new JIDContextGC(interval, resourceCounter));
+		runner.executor(this.gc, new JIDContextGC(interval, resourceCounter));
 	}
 
 	@Override
 	public Addressing join(JIDContext context) {
-		// frirst memory then mongo
+		// frist memory then db
 		this.contexts.put(context.getIndex(), context);
 		this.config.collection().save(this.buildQueryWithNecessaryFields(context));
 		return this;
@@ -107,41 +115,38 @@ public class MongoAddressing implements Addressing {
 
 	public JIDContext findOne(JID jid, Boolean usingResource) {
 		// first find one with resource, if not found then using find all(without resource)
-		DBObject entity = this.config.collection().findOne(this.buildQueryWithSmartResource(jid, usingResource), MongoCollection.FILTER_INDEX);
-		return entity != null ? this.contexts.get(Long.class.cast(entity.get(MongoCollection.FIELD_INDEX))) : this.find(jid);
+		DBObject entity = this.config.collection().findOne(this.buildQueryWithSmartResource(jid, usingResource), this.filter);
+		return entity != null ? this.contexts.get(Long.class.cast(entity.get(this.index))) : this.find(jid);
 	}
 
 	public Addressing priority(JIDContext context) {
-		this.config.collection().update(this.buildQueryWithSmartResource(context.getJid(), true), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(MongoCollection.FIELD_PRIORITY, context.getPriority()).get()).get());
+		this.config.collection().update(this.buildQueryWithSmartResource(context.getJid(), true), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_PRIORITY, context.getPriority()).get()).get());
 		return this;
 	}
 
 	public Collection<String> resources(JID jid) {
-		return new Resources(this.config.collection().find(BasicDBObjectBuilder.start(MongoCollection.FIELD_JID, jid.asStringWithBare()).get(), BasicDBObjectBuilder.start(MongoCollection.FIELD_RESOURCE, jid.asStringWithBare()).get()));
+		return new Resources(this.config.collection().find(BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_JID, jid.asStringWithBare()).get(), BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_RESOURCE, jid.asStringWithBare()).get()));
 	}
 
 	private JIDContexts find(JID jid, Boolean usingResource, Boolean usingOffline) {
-		return new MongoUserContexts(jid, usingOffline, this.config.collection().find(this.buildQueryWithSmartResource(jid, usingResource), MongoCollection.FILTER_INDEX).sort(MongoCollection.SORT_DEFAULT));
+		return new MongoUserContexts(jid, usingOffline, this.config.collection().find(this.buildQueryWithSmartResource(jid, usingResource), this.filter).sort(this.sort));
 	}
 
 	private DBObject buildQueryWithNecessaryFields(JIDContext context) {
-		DBObject query = BasicDBObjectBuilder.start().add(MongoCollection.FIELD_JID, context.getJid().asStringWithBare()).add(MongoCollection.FIELD_RESOURCE, context.getJid().getResource()).add(MongoCollection.FIELD_INDEX, context.getIndex()).add(MongoCollection.FIELD_ADDRESS, context.getAddress().toString()).get();
-		this.log.debug("Query: " + query);
-		return query;
+		return BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, context.getJid().asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, context.getJid().getResource()).add(this.index, context.getIndex()).add(this.address, context.getAddress().toString()).get();
 	}
 
 	private DBObject buildQueryWithSmartResource(JID jid, Boolean usingResource) {
 		// with resource if jid has resource and "usingResource" is true
-		DBObject query = BasicDBObjectBuilder.start(MongoCollection.FIELD_JID, jid.asStringWithBare()).get();
+		DBObject query = BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_JID, jid.asStringWithBare()).get();
 		if (usingResource && jid.getResource() != null) {
 			query.put("resource", jid.getResource());
 		}
-		this.log.debug("Query: " + query);
 		return query;
 	}
 
 	private boolean exists(Long index) {
-		return this.config.collection().findOne(BasicDBObjectBuilder.start(MongoCollection.FIELD_INDEX, index).get(), MongoCollection.FILTER_INDEX) != null;
+		return this.config.collection().findOne(BasicDBObjectBuilder.start(this.index, index).get(), MongoAddressing.this.filter) != null;
 	}
 
 	private class Resources extends ArrayList<String> {
@@ -150,7 +155,7 @@ public class MongoAddressing implements Addressing {
 
 		private Resources(DBCursor cursor) {
 			while (cursor.hasNext()) {
-				super.add(cursor.next().get(MongoCollection.FIELD_RESOURCE).toString());
+				super.add(cursor.next().get(MongoProxyConfig.FIELD_RESOURCE).toString());
 			}
 		}
 	}
@@ -161,7 +166,7 @@ public class MongoAddressing implements Addressing {
 
 		private MongoUserContexts(JID jid, Boolean usingOffline, DBCursor cursor) {
 			while (cursor.hasNext()) {
-				JIDContext context = MongoAddressing.this.contexts.get(Long.class.cast(cursor.next().get(MongoCollection.FIELD_INDEX)));
+				JIDContext context = MongoAddressing.this.contexts.get(Long.class.cast(cursor.next().get(MongoAddressing.this.index)));
 				if (context != null) {
 					super.add(context);
 				}
@@ -179,7 +184,7 @@ public class MongoAddressing implements Addressing {
 	private class JIDContextGC extends GC {
 
 		protected JIDContextGC(Interval interval, ResourceCounter resourceCounter) {
-			super(interval, resourceCounter);
+			super(interval, JIDContextGC.class, resourceCounter);
 		}
 
 		@Override

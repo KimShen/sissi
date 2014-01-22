@@ -7,7 +7,7 @@ import com.sissi.ucenter.RelationContext;
 /**
  * @author kim 2014年1月8日
  */
-abstract class ToAnyProtocolQueue {
+abstract class ToAnyBroadcastProtocol {
 
 	private JIDBuilder jidBuilder;
 

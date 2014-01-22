@@ -5,7 +5,7 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="ucenter.config" class="com.sissi.config.impl.MongoCollection">
+	<bean id="ucenter.config" class="com.sissi.config.impl.MongoProxyConfig">
 		<constructor-arg ref="mongo" />
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.user}" />
@@ -39,7 +39,7 @@
 	<alias name="relation.roster.mongo" alias="relation.roster" />
 	<bean id="relation.roster.mongo" class="com.sissi.ucenter.relation.MongoRelationRosterContext">
 		<constructor-arg>
-			<bean id="config.relation.roster" class="com.sissi.config.impl.MongoCollection">
+			<bean id="config.relation.roster" class="com.sissi.config.impl.MongoProxyConfig">
 				<constructor-arg ref="mongo" />
 				<constructor-arg index="1" value="${mongo.db}" />
 				<constructor-arg index="2" value="${mongo.collection.roster}" />

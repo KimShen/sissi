@@ -89,7 +89,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final SocketAddress address;
 
-		private JID jid = OfflineJID.OFFLINE;
+		private JID jid = OfflineJID.JID;
 
 		private Integer priority;
 
@@ -138,7 +138,6 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		public Boolean isAuthRetry() {
-			// whether allow auth retry, true if allow
 			return OnlineContextBuilder.this.authRetry >= this.authRetry.get();
 		}
 

@@ -23,6 +23,8 @@ public class SAXReader implements Reader {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
+	private final String resource = ParseRunnable.class.getSimpleName();
+
 	private final ResourceCounter resourceCounter;
 
 	private final SAXParserFactory factory;
@@ -81,7 +83,7 @@ public class SAXReader implements Reader {
 
 		public void run() {
 			try {
-				SAXReader.this.resourceCounter.increment();
+				SAXReader.this.resourceCounter.increment(SAXReader.this.resource);
 				this.parser.parse(this.stream, this.handler);
 			} catch (Exception e) {
 				if (SAXReader.this.log.isDebugEnabled()) {
@@ -89,7 +91,7 @@ public class SAXReader implements Reader {
 					e.printStackTrace();
 				}
 			} finally {
-				SAXReader.this.resourceCounter.decrement();
+				SAXReader.this.resourceCounter.decrement(SAXReader.this.resource);
 			}
 		}
 	}

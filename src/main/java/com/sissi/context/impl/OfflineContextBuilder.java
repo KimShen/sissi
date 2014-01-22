@@ -48,7 +48,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private class OfflineContext implements JIDContext {
 
-		private final JID jid = OfflineJID.OFFLINE;
+		private final JID jid = OfflineJID.JID;
 
 		public Long getIndex() {
 			return null;

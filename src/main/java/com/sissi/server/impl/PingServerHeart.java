@@ -28,6 +28,8 @@ public class PingServerHeart implements ServerHeart, Runnable {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
+	private final String resource = PingTimeout.class.getSimpleName();
+
 	private final DelayQueue<PingTimeout> timeouts = new DelayQueue<PingTimeout>();
 
 	private final Interval interval;
@@ -72,12 +74,12 @@ public class PingServerHeart implements ServerHeart, Runnable {
 		public PingTimeout(JIDContext context) {
 			this.context = context;
 			this.deadline = PingServerHeart.this.interval.convert(TimeUnit.MILLISECONDS) + System.currentTimeMillis();
-			PingServerHeart.this.resourceCounter.increment();
+			PingServerHeart.this.resourceCounter.increment(PingServerHeart.this.resource);
 		}
 
 		public PingTimeout gc() {
 			this.context.closeTimeout();
-			PingServerHeart.this.resourceCounter.decrement();
+			PingServerHeart.this.resourceCounter.decrement(PingServerHeart.this.resource);
 			return this;
 		}
 

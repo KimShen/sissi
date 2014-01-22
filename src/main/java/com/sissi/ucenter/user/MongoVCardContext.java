@@ -1,13 +1,12 @@
 package com.sissi.ucenter.user;
 
+import java.util.Collections;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
+import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
 import com.sissi.ucenter.VCardContext;
 import com.sissi.ucenter.field.FieldParser;
@@ -18,8 +17,6 @@ import com.sissi.ucenter.field.Fields;
  */
 public class MongoVCardContext extends MongoFieldContext implements VCardContext {
 
-	private final Log log = LogFactory.getLog(this.getClass());
-
 	private final MongoConfig config;
 
 	private final Map<String, FieldParser<Object>> parser;
@@ -27,7 +24,7 @@ public class MongoVCardContext extends MongoFieldContext implements VCardContext
 	public MongoVCardContext(MongoConfig config, Map<String, FieldParser<Object>> parser) {
 		super();
 		this.config = config;
-		this.parser = parser;
+		this.parser = Collections.unmodifiableMap(parser);
 	}
 
 	public Boolean exists(JID jid) {
@@ -53,8 +50,6 @@ public class MongoVCardContext extends MongoFieldContext implements VCardContext
 	}
 
 	private DBObject buildQuery(JID jid) {
-		DBObject query = BasicDBObjectBuilder.start("username", jid.getUser()).get();
-		this.log.debug("Query: " + query);
-		return query;
+		return BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_USERNAME, jid.getUser()).get();
 	}
 }

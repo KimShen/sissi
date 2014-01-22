@@ -11,7 +11,7 @@
 
 	<bean id="status" class="com.sissi.context.impl.MongoStatusBuilder">
 		<constructor-arg>
-			<bean class="com.sissi.config.impl.MongoCollection">
+			<bean class="com.sissi.config.impl.MongoProxyConfig">
 				<constructor-arg ref="mongo" />
 				<constructor-arg index="1" value="${mongo.db}" />
 				<constructor-arg index="2" value="${mongo.collection.addressing}" />

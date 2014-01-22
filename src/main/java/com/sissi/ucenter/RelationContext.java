@@ -13,8 +13,6 @@ public interface RelationContext {
 
 	public RelationContext update(JID from, JID to, String state);
 
-	public RelationContext remove(JID from, JID to);
-
 	public Relation ourRelation(JID from, JID to);
 
 	public Set<Relation> myRelations(JID from);

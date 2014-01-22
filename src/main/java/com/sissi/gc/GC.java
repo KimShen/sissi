@@ -17,18 +17,21 @@ abstract public class GC implements Runnable {
 
 	private final Long sleep;
 
+	private final String resource;
+
 	private final ResourceCounter resourceCounter;
 
-	protected GC(Interval interval, ResourceCounter resourceCounter) {
+	protected GC(Interval interval, Class<? extends GC> resource, ResourceCounter resourceCounter) {
 		super();
 		this.sleep = interval.convert(TimeUnit.MILLISECONDS);
+		this.resource = resource.getSimpleName();
 		this.resourceCounter = resourceCounter;
 	}
 
 	@Override
 	public void run() {
 		try {
-			this.resourceCounter.increment();
+			this.resourceCounter.increment(this.resource);
 			while (true) {
 				try {
 					if (this.gc()) {
@@ -44,7 +47,7 @@ abstract public class GC implements Runnable {
 				}
 			}
 		} finally {
-			this.resourceCounter.decrement();
+			this.resourceCounter.decrement(this.resource);
 		}
 	}
 

@@ -36,14 +36,6 @@
 		<maven.exchanger.idle.all>30</maven.exchanger.idle.all>
 		<maven.exchanger.idle.read>30</maven.exchanger.idle.read>
 		<maven.exchanger.idle.write>30</maven.exchanger.idle.write>
-		<!-- For Monitor -->
-		<maven.counter.exchanger>exchanger</maven.counter.exchanger>
-		<maven.counter.addressing>addressing</maven.counter.addressing>
-		<maven.counter.feeder>feeder</maven.counter.feeder>
-		<maven.counter.reader>reader</maven.counter.reader>
-		<maven.counter.socks>socks</maven.counter.socks>
-		<maven.counter.heart>heart</maven.counter.heart>
-		<maven.counter.main>main</maven.counter.main>
 		<!-- For Thread -->
 		<maven.executor.keep.alive>3000</maven.executor.keep.alive>
 		<maven.executor.maximum>1000</maven.executor.maximum>

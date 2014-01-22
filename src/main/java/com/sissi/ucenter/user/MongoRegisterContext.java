@@ -22,8 +22,7 @@ public class MongoRegisterContext extends MongoFieldContext implements RegisterC
 	@Override
 	public Boolean register(Fields fields) {
 		try {
-			this.config.collection().save(super.getEntities(fields, BasicDBObjectBuilder.start()), WriteConcern.SAFE);
-			return true;
+			return this.config.collection().save(super.getEntities(fields, BasicDBObjectBuilder.start()), WriteConcern.SAFE).getN() > 0;
 		} catch (MongoException e) {
 			return false;
 		}

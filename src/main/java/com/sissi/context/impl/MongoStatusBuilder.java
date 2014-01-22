@@ -6,7 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
-import com.sissi.config.impl.MongoCollection;
+import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JIDContext;
 import com.sissi.context.Status;
 import com.sissi.context.StatusBuilder;
@@ -36,23 +36,23 @@ public class MongoStatusBuilder implements StatusBuilder {
 		return this;
 	}
 
-	private DBObject get(JIDContext context) {
-		return this.config.collection().findOne(this.buildQuery(context));
-	}
-
 	private MongoStatusBuilder clear(JIDContext context) {
 		this.config.collection().update(this.buildQuery(context), this.buildEntity("$unset", context, null, null, null, null));
 		return this;
 	}
+	
+	private DBObject get(JIDContext context) {
+		return this.config.collection().findOne(this.buildQuery(context));
+	}
 
 	private DBObject buildQuery(JIDContext context) {
-		DBObject query = BasicDBObjectBuilder.start().add(MongoCollection.FIELD_JID, context.getJid().asStringWithBare()).add(MongoCollection.FIELD_RESOURCE, context.getJid().getResource()).get();
+		DBObject query = BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, context.getJid().asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, context.getJid().getResource()).get();
 		this.log.debug("Query: " + query);
 		return query;
 	}
 
 	private DBObject buildEntity(String op, JIDContext context, String type, String show, String status, String avator) {
-		DBObject entity = BasicDBObjectBuilder.start().add(op, BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoCollection.FIELD_PRIORITY, context.getPriority()).get()).get();
+		DBObject entity = BasicDBObjectBuilder.start().add(op, BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoProxyConfig.FIELD_PRIORITY, context.getPriority()).get()).get();
 		this.log.debug("Entity: " + entity);
 		return entity;
 	}

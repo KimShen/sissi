@@ -7,7 +7,7 @@ import com.sissi.context.JID;
  */
 class OfflineJID implements JID {
 
-	public final static JID OFFLINE = new OfflineJID();
+	public final static JID JID = new OfflineJID();
 
 	private OfflineJID() {
 

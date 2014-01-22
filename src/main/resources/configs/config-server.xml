@@ -7,12 +7,7 @@
 
 	<bean id="server.reader" class="com.sissi.read.sax.SAXReader">
 		<constructor-arg ref="executor" />
-		<constructor-arg>
-			<bean class="com.sissi.resource.impl.MongoResourceCounter">
-				<constructor-arg ref="counter" />
-				<constructor-arg value="${counter.reader}" />
-			</bean>
-		</constructor-arg>
+		<constructor-arg ref="counter" />
 	</bean>
 
 	<bean id="server.closer" class="com.sissi.server.impl.ChainedServerCloser">
@@ -52,6 +47,7 @@
 		<constructor-arg ref="finder" />
 		<constructor-arg ref="feeder" />
 		<constructor-arg ref="looper" />
+		<constructor-arg ref="counter" />
 		<constructor-arg>
 			<bean class="com.sissi.context.impl.OnlineContextBuilder">
 				<constructor-arg ref="status" />
@@ -62,26 +58,15 @@
 				<constructor-arg index="2" value="${global.domain}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg>
-			<bean class="com.sissi.resource.impl.MongoResourceCounter">
-				<constructor-arg ref="counter" />
-				<constructor-arg value="${counter.main}" />
-			</bean>
-		</constructor-arg>
 	</bean>
 
 	<bean id="server.heart" class="com.sissi.server.impl.PingServerHeart">
 		<constructor-arg ref="runner" />
+		<constructor-arg ref="counter" />
 		<constructor-arg>
 			<bean class="com.sissi.commons.Interval">
 				<constructor-arg value="${global.heart.interval}" />
 				<constructor-arg value="${global.heart.unit}" />
-			</bean>
-		</constructor-arg>
-		<constructor-arg>
-			<bean class="com.sissi.resource.impl.MongoResourceCounter">
-				<constructor-arg ref="counter" />
-				<constructor-arg value="${counter.heart}" />
 			</bean>
 		</constructor-arg>
 	</bean>

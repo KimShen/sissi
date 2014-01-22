@@ -14,7 +14,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 	private final String connectResource = "/";
 
-	private final None noneUser = new None();
+	private final None none = new None();
 
 	private final String domain;
 
@@ -25,7 +25,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 	@Override
 	public JID build(String jid) {
-		return (jid != null && !jid.isEmpty()) ? new User(jid) : this.noneUser;
+		return (jid != null && !jid.isEmpty()) ? new User(jid) : this.none;
 	}
 
 	public JID build(String username, String resource) {

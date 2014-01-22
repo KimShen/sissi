@@ -6,6 +6,7 @@
 
 	<bean id="looper" class="com.sissi.looper.impl.PrivateLooperBuilder">
 		<constructor-arg value="${looper.num}" />
+		<constructor-arg ref="counter" />
 		<constructor-arg>
 			<bean class="com.sissi.commons.Runner">
 				<constructor-arg ref="executor" />
@@ -15,12 +16,6 @@
 			<bean class="com.sissi.commons.Interval">
 				<constructor-arg value="${looper.gc.interval}" />
 				<constructor-arg value="${looper.gc.unit}" />
-			</bean>
-		</constructor-arg>
-		<constructor-arg>
-			<bean class="com.sissi.resource.impl.MongoResourceCounter">
-				<constructor-arg ref="counter" />
-				<constructor-arg value="${counter.feeder}" />
 			</bean>
 		</constructor-arg>
 	</bean>
