@@ -1,16 +1,26 @@
 package com.sissi.protocol.iq.roster;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author kim 2014年1月16日
  */
 public enum RosterSubscription {
 
-	TO, BOTH, NONE;
+	TO, FROM, BOTH, NONE, REMOVE;
 
-	private final static String REMOVE = "remove";
+	private static Map<Integer, RosterSubscription> MAPPING = new HashMap<Integer, RosterSubscription>();
+
+	static {
+		MAPPING.put(0, NONE);
+		MAPPING.put(1, TO);
+		MAPPING.put(2, FROM);
+		MAPPING.put(3, BOTH);
+	}
 
 	public String toString() {
-		return this != NONE ? super.toString().toLowerCase() : "none";
+		return super.toString().toLowerCase();
 	}
 
 	public Boolean equals(String subscribe) {
@@ -18,9 +28,11 @@ public enum RosterSubscription {
 	}
 
 	public static RosterSubscription parse(String subscribe) {
-		if (subscribe == null || subscribe.toLowerCase() == REMOVE) {
-			return NONE;
-		}
-		return RosterSubscription.valueOf(subscribe.toUpperCase());
+		return (subscribe == null || subscribe.toUpperCase().equals(REMOVE.name())) ? NONE : RosterSubscription.valueOf(subscribe.toUpperCase());
+	}
+
+	public static String toString(Integer num) {
+		RosterSubscription sub = MAPPING.get(num);
+		return sub != null ? sub.toString() : NONE.toString();
 	}
 }

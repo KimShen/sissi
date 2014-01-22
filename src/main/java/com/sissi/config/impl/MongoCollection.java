@@ -18,6 +18,8 @@ public class MongoCollection implements MongoConfig {
 
 	public static final String FIELD_JID = "jid";
 
+	public static final String FIELD_NICK = "nick";
+
 	public static final String FIELD_INDEX = "index";
 
 	public static final String FIELD_ADDRESS = "address";
@@ -33,6 +35,16 @@ public class MongoCollection implements MongoConfig {
 	public static final String FIELD_SLAVE = "slave";
 
 	public static final String FIELD_MASTER = "master";
+
+	public static final DBObject ENTITY_STATE = BasicDBObjectBuilder.start(MongoCollection.FIELD_STATE, 0).get();
+
+	public static final DBObject ENTITY_ESTABLISH_TO = BasicDBObjectBuilder.start("or", 1).get();
+
+	public static final DBObject ENTITY_ESTABLISH_FROM = BasicDBObjectBuilder.start("or", 2).get();
+
+	public static final DBObject ENTITY_BROKE_TO = BasicDBObjectBuilder.start("and", 1).get();
+	
+	public static final DBObject ENTITY_BROKE_FROM = BasicDBObjectBuilder.start("and", 2).get();
 
 	public static final DBObject FILTER_ID = BasicDBObjectBuilder.start(FIELD_ID, 1).get();
 
@@ -76,6 +88,11 @@ public class MongoCollection implements MongoConfig {
 	public String asString(DBObject db, String key) {
 		Object value = this.as(db, key);
 		return value != null ? value.toString() : null;
+	}
+
+	public Integer asInteger(DBObject db, String key) {
+		Object value = this.as(db, key);
+		return value != null ? Integer.parseInt(value.toString()) : null;
 	}
 
 	public Boolean asBoolean(DBObject db, String key) {

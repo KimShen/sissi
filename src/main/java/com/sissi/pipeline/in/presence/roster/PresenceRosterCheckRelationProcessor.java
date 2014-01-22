@@ -19,7 +19,7 @@ abstract class PresenceRosterCheckRelationProcessor extends ProxyProcessor {
 	}
 
 	private boolean canUpdate(Relation relation) {
-		return RosterSubscription.NONE.equals(relation.getSubscription());
+		return RosterSubscription.NONE.equals(relation.getSubscription()) || RosterSubscription.FROM.equals(relation.getSubscription());
 	}
 
 	abstract protected JID getMaster(JID current, JID to);

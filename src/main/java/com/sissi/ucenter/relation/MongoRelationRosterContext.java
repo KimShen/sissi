@@ -5,6 +5,8 @@ import java.util.Map;
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
+import com.sissi.config.impl.MongoCollection;
+import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationRoster;
 
@@ -28,16 +30,16 @@ public class MongoRelationRosterContext extends MongoRelationContext {
 
 		private final String name;
 
-		private final String subscription;
-		
-		private final String[] groups;
+		private final Integer subscription;
+
+		private String[] groups;
 
 		public MongoRelationRoster(DBObject db) {
 			super();
-			this.jid = MongoRelationRosterContext.super.config.asString(db, "slave");
-			this.name = MongoRelationRosterContext.super.config.asString(db, "name");
-			this.subscription = MongoRelationRosterContext.super.config.asString(db, "state");
-			this.groups = BasicDBList.class.cast(db.get("groups")).toArray(new String[]{});
+			this.jid = MongoRelationRosterContext.super.config.asString(db, MongoCollection.FIELD_SLAVE);
+			this.name = MongoRelationRosterContext.super.config.asString(db, MongoCollection.FIELD_NICK);
+			this.subscription = MongoRelationRosterContext.super.config.asInteger(db, MongoCollection.FIELD_STATE);
+			this.groups = BasicDBList.class.cast(db.get("groups")).toArray(new String[] {});
 		}
 
 		public String getJID() {
@@ -53,7 +55,7 @@ public class MongoRelationRosterContext extends MongoRelationContext {
 		}
 
 		public String getSubscription() {
-			return this.subscription;
+			return RosterSubscription.toString(this.subscription);
 		}
 
 		public Map<String, Object> plus() {
