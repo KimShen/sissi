@@ -29,7 +29,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	public final static String XMLNS = "jabber:client";
 
 	public final static String NAME = "presence";
-
+	
 	private Delay delay;
 
 	private BeanFields fields;

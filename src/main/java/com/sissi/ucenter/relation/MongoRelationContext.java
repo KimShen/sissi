@@ -179,7 +179,7 @@ abstract class MongoRelationContext implements RelationContext {
 
 		@Override
 		public Map<String, Object> plus() {
-			return null;
+			return MongoRelationContext.this.plus;
 		}
 
 		@Override

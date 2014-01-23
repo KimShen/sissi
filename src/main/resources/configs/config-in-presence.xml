@@ -51,12 +51,16 @@
 		</constructor-arg>
 	</bean>
 	<bean id="presence.pro.roster.subscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.subscribe.2item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2ItemProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.subscribe.2presence" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2PresenceProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe.check.relation" class="com.sissi.pipeline.in.presence.roster.PresenceRosterCheckSubscribeRelationProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="presence.pro.roster.subscribe.check.relation" />
+				<ref bean="presence.pro.roster.subscribe.2presence" />
 				<ref bean="presence.pro.roster.subscribe" />
+				<ref bean="presence.pro.roster.subscribe.2item" />
 			</util:list>
 		</constructor-arg>
 	</bean>

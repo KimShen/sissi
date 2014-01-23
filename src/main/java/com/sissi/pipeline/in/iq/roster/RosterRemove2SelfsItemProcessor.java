@@ -13,6 +13,11 @@ public class RosterRemove2SelfsItemProcessor extends Roster2SelfsItemProcessor {
 		return GroupAction.REMOVE.toString();
 	}
 
+	@Override
+	protected Boolean isAsk() {
+		return false;
+	}
+
 	protected Boolean isNext(String subscription) {
 		return true;
 	}

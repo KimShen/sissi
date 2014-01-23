@@ -18,12 +18,14 @@ abstract class Roster2SelfsItemProcessor extends ProxyProcessor {
 		JID to = super.build(item.getJid());
 		// synchronize subscription from db
 		// convert jid to bare jid (if necessary)
-		item.setSubscription(this.subscription(context.getJid(), to)).setJid(to.asStringWithBare());
+		item.setAsk(this.isAsk()).setSubscription(this.subscription(context.getJid(), to)).setJid(to.asStringWithBare());
 		super.broadcast(context.getJid(), protocol.getParent());
 		return this.isNext(item.getSubscription());
 	}
 
 	abstract protected String subscription(JID master, JID slave);
 
+	abstract protected Boolean isAsk();
+	
 	abstract protected Boolean isNext(String subscription);
 }

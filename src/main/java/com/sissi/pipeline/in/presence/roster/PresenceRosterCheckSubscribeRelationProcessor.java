@@ -7,6 +7,10 @@ import com.sissi.context.JID;
  */
 public class PresenceRosterCheckSubscribeRelationProcessor extends PresenceRosterCheckRelationProcessor {
 
+	protected Boolean shouldActivate() {
+		return false;
+	}
+
 	@Override
 	protected JID getMaster(JID context, JID to) {
 		return context;

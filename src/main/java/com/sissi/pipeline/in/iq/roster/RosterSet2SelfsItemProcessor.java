@@ -13,6 +13,11 @@ public class RosterSet2SelfsItemProcessor extends Roster2SelfsItemProcessor {
 		return super.ourRelation(master, slave).getSubscription();
 	}
 
+	@Override
+	protected Boolean isAsk() {
+		return true;
+	}
+
 	protected Boolean isNext(String subscription) {
 		return RosterSubscription.parse(subscription) == RosterSubscription.NONE;
 	}
