@@ -36,15 +36,21 @@
 		<constructor-arg ref="ucenter.config" />
 	</bean>
 
+	<bean id="relation.roster.inductor" class="com.sissi.ucenter.relation.ResearchRelationInductor">
+		<constructor-arg ref="broadcast.protocol.selfs" />
+		<property name="relationContext" ref="relation.roster" />
+	</bean>
+
 	<alias name="relation.roster.mongo" alias="relation.roster" />
 	<bean id="relation.roster.mongo" class="com.sissi.ucenter.relation.MongoRelationRosterContext">
 		<constructor-arg>
-			<bean id="config.relation.roster" class="com.sissi.config.impl.MongoProxyConfig">
+			<bean class="com.sissi.config.impl.MongoProxyConfig">
 				<constructor-arg ref="mongo" />
 				<constructor-arg index="1" value="${mongo.db}" />
 				<constructor-arg index="2" value="${mongo.collection.roster}" />
 			</bean>
 		</constructor-arg>
+		<property name="relationInductor" ref="relation.roster.inductor" />
 	</bean>
 
 	<alias name="ucenter.register.mongo" alias="ucenter.register" />

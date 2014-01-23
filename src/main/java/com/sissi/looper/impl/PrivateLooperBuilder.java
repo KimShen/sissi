@@ -70,8 +70,8 @@ public class PrivateLooperBuilder implements LooperBuilder {
 						}
 						this.getAndFeed();
 					} catch (Exception e) {
-						if (PrivateLooperBuilder.this.log.isDebugEnabled()) {
-							PrivateLooperBuilder.this.log.debug(e.toString());
+						if (PrivateLooperBuilder.this.log.isWarnEnabled()) {
+							PrivateLooperBuilder.this.log.warn(e.toString());
 							e.printStackTrace();
 						}
 					}

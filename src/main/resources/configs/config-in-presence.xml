@@ -62,11 +62,13 @@
 	</bean>
 	<bean id="presence.pro.roster.unsubscribed" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribedProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.unsubscribed.2item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribed2ItemProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.unsubscribed.2presence" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribed2PresenceProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.unsubscribed.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="presence.pro.roster.unsubscribed" />
 				<ref bean="presence.pro.roster.unsubscribed.2item" />
+				<ref bean="presence.pro.roster.unsubscribed.2presence" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -90,9 +92,9 @@
 	<bean id="presence.pro.roster.unsubscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="presence.pro.roster.unsubscribe" />
 				<ref bean="presence.pro.roster.unsubscribe.2item" />
 				<ref bean="presence.pro.roster.unsubscribe.2presence" />
-				<ref bean="presence.pro.roster.unsubscribe" />
 			</util:list>
 		</constructor-arg>
 	</bean>

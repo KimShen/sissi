@@ -8,11 +8,12 @@ import java.util.Map;
  */
 public enum RosterSubscription {
 
-	TO, FROM, BOTH, NONE, REMOVE;
+	REMOVE, TO, FROM, BOTH, NONE;
 
 	private static Map<Integer, RosterSubscription> MAPPING = new HashMap<Integer, RosterSubscription>();
 
 	static {
+		MAPPING.put(-1, REMOVE);
 		MAPPING.put(0, NONE);
 		MAPPING.put(1, TO);
 		MAPPING.put(2, FROM);

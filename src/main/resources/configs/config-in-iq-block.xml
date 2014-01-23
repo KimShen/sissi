@@ -50,7 +50,6 @@
 				<ref bean="block.condition.list" />
 				<ref bean="block.condition.blocked" />
 				<ref bean="block.condition.unblock" />
-				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>
 	</bean>

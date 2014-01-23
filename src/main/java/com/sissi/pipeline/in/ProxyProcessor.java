@@ -127,6 +127,11 @@ abstract public class ProxyProcessor implements Input {
 		return this;
 	}
 
+	protected ProxyProcessor remove(JID from, JID to) {
+		this.relationContext.remove(from, to);
+		return this;
+	}
+
 	protected Relation ourRelation(JID from, JID to) {
 		return this.relationContext.ourRelation(from, to);
 	}

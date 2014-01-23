@@ -34,7 +34,6 @@
 			<util:list>
 				<ref bean="vcard.condition.get" />
 				<ref bean="vcard.condition.set" />
-				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -43,7 +42,6 @@
 			<util:list>
 				<ref bean="vcard.condition.get.2fans" />
 				<ref bean="vcard.condition.get.2self" />
-				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>
 	</bean>

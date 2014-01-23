@@ -2,7 +2,6 @@ package com.sissi.ucenter.user;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.MongoException;
-import com.mongodb.WriteConcern;
 import com.sissi.config.MongoConfig;
 import com.sissi.ucenter.RegisterContext;
 import com.sissi.ucenter.field.Fields;
@@ -22,7 +21,7 @@ public class MongoRegisterContext extends MongoFieldContext implements RegisterC
 	@Override
 	public Boolean register(Fields fields) {
 		try {
-			return this.config.collection().save(super.getEntities(fields, BasicDBObjectBuilder.start()), WriteConcern.SAFE).getN() > 0;
+			return this.config.collection().save(super.getEntities(fields, BasicDBObjectBuilder.start())).getError() == null;
 		} catch (MongoException e) {
 			return false;
 		}

@@ -144,7 +144,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	@XmlElements({ @XmlElement(name = XVCard.NAME, type = XVCard.class) })
 	public List<Field<?>> getFields() {
-		return this.fields.getFields();
+		return this.fields != null ? this.fields.getFields() : null;
 	}
 
 	public Presence clear() {

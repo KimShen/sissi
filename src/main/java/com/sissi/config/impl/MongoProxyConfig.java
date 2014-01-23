@@ -103,18 +103,18 @@ public class MongoProxyConfig implements MongoConfig {
 
 		@Override
 		public WriteResult update(DBObject query, DBObject entity) {
-			LOG.debug("Update: " + query);
+			LOG.debug("Update: " + query + " / " + entity);
 			return MongoProxyConfig.this.collection.update(query, entity);
 		}
 
 		@Override
 		public WriteResult update(DBObject query, DBObject entity, Boolean upsert, Boolean batch) {
-			LOG.debug("Update: " + query);
+			LOG.debug("Update: " + query + " / " + entity);
 			return MongoProxyConfig.this.collection.update(query, entity, upsert, batch);
 		}
 
 		public WriteResult update(DBObject query, DBObject entity, Boolean upsert, Boolean batch, WriteConcern concern) {
-			LOG.debug("Update: " + query);
+			LOG.debug("Update: " + query + " / " + entity);
 			return MongoProxyConfig.this.collection.update(query, entity, upsert, batch, concern);
 		}
 

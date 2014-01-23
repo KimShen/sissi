@@ -15,12 +15,12 @@ class OfflineJID implements JID {
 
 	@Override
 	public String getUser() {
-		return "";
+		return null;
 	}
 
 	@Override
 	public String getDomain() {
-		return "";
+		return null;
 	}
 
 	public JID setDomain(String domain) {
@@ -29,7 +29,7 @@ class OfflineJID implements JID {
 
 	@Override
 	public String getResource() {
-		return "";
+		return null;
 	}
 
 	@Override
@@ -44,11 +44,11 @@ class OfflineJID implements JID {
 
 	@Override
 	public String asString() {
-		return "";
+		return null;
 	}
 
 	@Override
 	public String asStringWithBare() {
-		return "";
+		return null;
 	}
 }

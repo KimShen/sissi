@@ -43,7 +43,7 @@ public class ItemWrapRelation implements RelationRoster {
 			for (Group group : this.item.getGroup()) {
 				groups.add(group.getValue());
 			}
-			return groups.toArray(new String[]{});
+			return groups.toArray(new String[] {});
 		} else {
 			return null;
 		}
@@ -52,6 +52,10 @@ public class ItemWrapRelation implements RelationRoster {
 	@Override
 	public String getSubscription() {
 		return RosterSubscription.parse(this.item.getSubscription()).toString();
+	}
+
+	public Boolean isActivate() {
+		return false;
 	}
 
 	public Map<String, Object> plus() {

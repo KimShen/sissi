@@ -58,7 +58,6 @@
 			<util:list>
 				<ref bean="roster.condition.get" />
 				<ref bean="roster.condition.establish" />
-				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -67,7 +66,6 @@
 			<util:list>
 				<ref bean="roster.condition.establish.set" />
 				<ref bean="roster.condition.establish.remove" />
-				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>
 	</bean>

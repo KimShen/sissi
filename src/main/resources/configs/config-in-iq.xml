@@ -70,7 +70,6 @@
 				<ref bean="disco.condition.info" />
 				<ref bean="disco.condition.items" />
 				<ref bean="bytestreams.condition" />
-				<ref bean="iq.condition.matchall" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -82,7 +81,13 @@
 		</constructor-arg>
 		<constructor-arg ref="iq.pro.chained" />
 	</bean>
-	<bean id="iq.condition.matchall" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="iq.condition.result" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.AnyMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="iq.pro.result.stop" />
+	</bean>
+	<bean id="iq.condition.error" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.AnyMatcher" />
 		</constructor-arg>
