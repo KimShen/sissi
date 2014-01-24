@@ -17,6 +17,10 @@ public interface JID {
 
 	public JID getBare();
 
+	public Boolean isValid();
+
+	public Boolean isValid(Boolean includeDomain);
+
 	public String asString();
 
 	public String asStringWithBare();

@@ -55,6 +55,7 @@
 
 	<alias name="ucenter.register.mongo" alias="ucenter.register" />
 	<bean id="ucenter.register.mongo" class="com.sissi.ucenter.user.MongoRegisterContext">
+		<constructor-arg ref="jid" />
 		<constructor-arg ref="ucenter.config" />
 	</bean>
 

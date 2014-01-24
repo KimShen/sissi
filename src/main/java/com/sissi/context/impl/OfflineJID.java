@@ -42,6 +42,14 @@ class OfflineJID implements JID {
 		return this;
 	}
 
+	public Boolean isValid() {
+		return true;
+	}
+
+	public Boolean isValid(Boolean includeDomain) {
+		return true;
+	}
+
 	@Override
 	public String asString() {
 		return null;

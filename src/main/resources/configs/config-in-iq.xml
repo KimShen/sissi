@@ -51,6 +51,7 @@
 				<ref bean="iq.pro.check.auth" />
 				<ref bean="iq.pro.check.action" />
 				<ref bean="iq.pro.check.children" />
+				<ref bean="global.pro.check" />
 				<ref bean="iq.pro.fork" />
 			</util:list>
 		</constructor-arg>

@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="si.pro" class="com.sissi.pipeline.in.iq.si.Si2FansProcessor" parent="global.pro.proxy" />
-	
+
 	<bean id="si.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.ClassMatcher">

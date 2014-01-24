@@ -12,6 +12,7 @@
 		<property name="presenceQueue" ref="broadcast.presence.selfs" />
 		<property name="relationContext" ref="relation.roster" />
 	</bean>
+	<bean id="global.pro.check" class="com.sissi.pipeline.in.CheckJIDMalformedProcessor" parent="global.pro.proxy" />
 
 	<bean id="finder" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
@@ -27,4 +28,5 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+
 </beans>

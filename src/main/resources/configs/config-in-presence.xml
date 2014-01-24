@@ -17,6 +17,7 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="presence.pro.check.binding" />
+				<ref bean="global.pro.check" />
 				<ref bean="presence.pro.check.exists" />
 				<ref bean="presence.pro.check.loop" />
 				<ref bean="presence.pro.fork" />
