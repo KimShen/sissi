@@ -2,6 +2,7 @@ package com.sissi.offline.impl;
 
 import java.util.Map;
 
+import com.mongodb.BasicDBObjectBuilder;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.message.Body;
 import com.sissi.protocol.message.Message;
@@ -16,6 +17,11 @@ public class DelayMessage extends DelayProtocol {
 
 	public DelayMessage() {
 		super(Message.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> query(Element element) {
+		return BasicDBObjectBuilder.start(DelayProtocol.FIELD_ID, element.getId()).get().toMap();
 	}
 
 	@Override

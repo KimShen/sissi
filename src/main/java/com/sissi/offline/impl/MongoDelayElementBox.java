@@ -60,7 +60,7 @@ public class MongoDelayElementBox implements DelayElementBox, Output {
 	private DelayElementBox doPush(Element element) {
 		for (DelayElement delay : this.elements) {
 			if (delay.isSupport(element)) {
-				this.config.collection().save(BasicDBObjectBuilder.start(delay.write(element)).get());
+				this.config.collection().update(BasicDBObjectBuilder.start(delay.query(element)).get(), BasicDBObjectBuilder.start(delay.write(element)).get(), true, false);
 			}
 		}
 		return this;

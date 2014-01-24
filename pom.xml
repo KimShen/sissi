@@ -18,7 +18,7 @@
 		<maven.global.lang>zh_CN</maven.global.lang>
 		<maven.global.port.main>5222</maven.global.port.main>
 		<maven.global.port.exchanger>6222</maven.global.port.exchanger>
-		<maven.global.jid>30</maven.global.jid>
+		<maven.global.jid>100</maven.global.jid>
 		<maven.global.idle.all>60</maven.global.idle.all>
 		<maven.global.idle.read>60</maven.global.idle.read>
 		<maven.global.idle.write>60</maven.global.idle.write>

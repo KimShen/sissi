@@ -11,6 +11,8 @@ public interface DelayElement {
 
 	public Element read(Map<String, Object> element);
 
+	public Map<String, Object> query(Element element);
+	
 	public Map<String, Object> write(Element element);
 
 	public Boolean isSupport(Map<String, Object> element);

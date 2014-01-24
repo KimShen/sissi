@@ -2,6 +2,7 @@ package com.sissi.offline.impl;
 
 import java.util.Map;
 
+import com.mongodb.BasicDBObjectBuilder;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.protocol.presence.Presence;
@@ -16,6 +17,11 @@ public class DelayPresence extends DelayProtocol {
 		super(Presence.class);
 	}
 
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> query(Element element) {
+		return BasicDBObjectBuilder.start().add(DelayProtocol.FIELD_FROM, element.getFrom()).add(DelayProtocol.FIELD_TO, element.getTo()).add(DelayProtocol.FIELD_TYPE, element.getType()).get().toMap();
+	}
+	
 	@Override
 	public Map<String, Object> write(Element element) {
 		return super.based(element);
