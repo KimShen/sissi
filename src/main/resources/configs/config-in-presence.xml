@@ -55,12 +55,12 @@
 	<bean id="presence.pro.roster.subscribe.check.relation" class="com.sissi.pipeline.in.presence.roster.PresenceRosterCheckSubscribeRelationProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe.2item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2ItemProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe.2presence.route" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2PresenceRouteProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.roster.subscribe.2presence.reply.selfs" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2PresenceReplyBySelfsProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.subscribe.2presence.reply" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2PresenceReplyProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<!-- Using check with none reply  -->
-				<ref bean="presence.pro.roster.subscribe.2presence.reply.selfs" />
+				<ref bean="presence.pro.roster.subscribe.2presence.reply" />
 				<ref bean="presence.pro.roster.subscribe.2presence.route" />
 				<ref bean="presence.pro.roster.subscribe" />
 				<ref bean="presence.pro.roster.subscribe.2item" />

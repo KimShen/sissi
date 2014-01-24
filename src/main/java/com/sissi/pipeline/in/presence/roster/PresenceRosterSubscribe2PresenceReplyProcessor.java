@@ -10,7 +10,7 @@ import com.sissi.protocol.presence.PresenceType;
 /**
  * @author kim 2014年1月24日
  */
-public class PresenceRosterSubscribe2PresenceReplyBySelfsProcessor extends PresenceRoster2ItemProcessor {
+public class PresenceRosterSubscribe2PresenceReplyProcessor extends PresenceRoster2ItemProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
