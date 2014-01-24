@@ -11,6 +11,8 @@
 	</bean>
 
 	<bean id="offline" class="com.sissi.offline.impl.MongoDelayElementBox">
+		<constructor-arg ref="jid" />
+		<constructor-arg ref="vcard" />
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
 				<constructor-arg ref="mongo" />
