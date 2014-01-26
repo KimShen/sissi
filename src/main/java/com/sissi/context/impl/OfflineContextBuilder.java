@@ -10,10 +10,8 @@ import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContextBuilder;
 import com.sissi.context.JIDContextParam;
 import com.sissi.context.Status;
-import com.sissi.context.StatusClauses;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
-import com.sissi.protocol.presence.PresenceType;
 
 /**
  * @author kim 2013-11-19
@@ -22,7 +20,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private final Integer priority = 0;
 
-	private final Status status = new OfflineStatus();
+	private final Status status = OfflineStatus.STATUS;
 
 	private final JIDContext context = new OfflineContext();
 
@@ -129,12 +127,12 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		public Boolean isTls() {
 			return false;
 		}
-		
-		public JIDContext setPresence(){
+
+		public JIDContext setPresence() {
 			return this;
 		}
-		
-		public Boolean isPresence(){
+
+		public Boolean isPresence() {
 			return false;
 		}
 
@@ -177,42 +175,4 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 	}
 
-	private class OfflineStatus implements Status {
-
-		private final StatusClauses empty = new EmptyClauses();
-
-		private OfflineStatus() {
-
-		}
-
-		public Status clear() {
-			return this;
-		}
-
-		@Override
-		public Status setClauses(StatusClauses clauses) {
-			return this;
-		}
-
-		@Override
-		public StatusClauses getClauses() {
-			return this.empty;
-		}
-	}
-
-	private class EmptyClauses implements StatusClauses {
-
-		private EmptyClauses() {
-
-		}
-
-		@Override
-		public String find(String key) {
-			switch (key) {
-			case StatusClauses.KEY_TYPE:
-				return PresenceType.UNAVAILABLE.toString();
-			}
-			return null;
-		}
-	}
 }

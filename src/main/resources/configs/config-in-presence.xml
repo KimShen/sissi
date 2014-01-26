@@ -97,7 +97,8 @@
 	</bean>
 	<bean id="presence.pro.roster.unsubscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribeProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.unsubscribe.2item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2ItemProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.roster.unsubscribe.2presence" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2PresenceProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.unsubscribe.2presence.selfs" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2PresenceSelfsProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.unsubscribe.2presence.fans" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2PresenceFansProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.unsubscribe.check" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribeCheckRelationProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.unsubscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -105,7 +106,8 @@
 				<ref bean="presence.pro.roster.unsubscribe.check" />
 				<ref bean="presence.pro.roster.unsubscribe" />
 				<ref bean="presence.pro.roster.unsubscribe.2item" />
-				<ref bean="presence.pro.roster.unsubscribe.2presence" />
+				<ref bean="presence.pro.roster.unsubscribe.2presence.selfs" />
+				<ref bean="presence.pro.roster.unsubscribe.2presence.fans" />
 			</util:list>
 		</constructor-arg>
 	</bean>

@@ -42,7 +42,6 @@ public class GroupItem extends Item implements Collector {
 				this.add(new Group(group));
 			}
 		}
-
 	}
 
 	private GroupItem add(Group group) {
@@ -69,7 +68,7 @@ public class GroupItem extends Item implements Collector {
 
 	@XmlAttribute
 	public String getAsk() {
-		return this.ask;
+		return RosterSubscription.parse(this.getSubscription()).in(RosterSubscription.NONE, RosterSubscription.FROM) ? this.ask : null;
 	}
 
 	@XmlAttribute

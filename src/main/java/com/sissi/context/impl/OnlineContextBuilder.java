@@ -240,7 +240,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 					this.output = OnlineContextBuilder.this.output;
 					this.status.clear();
 					// clear the reference to avoid gc failed
-					this.status = null;
+					this.status = OfflineStatus.STATUS;
 				}
 				return true;
 			} catch (Exception e) {
