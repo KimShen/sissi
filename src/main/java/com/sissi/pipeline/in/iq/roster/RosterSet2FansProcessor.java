@@ -10,7 +10,7 @@ import com.sissi.protocol.presence.PresenceType;
 /**
  * @author kim 2013-10-31
  */
-public class RosterSet2FansPresenceProcessor extends ProxyProcessor {
+public class RosterSet2FansProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

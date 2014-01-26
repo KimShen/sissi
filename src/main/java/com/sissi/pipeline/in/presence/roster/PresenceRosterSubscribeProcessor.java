@@ -5,6 +5,7 @@ import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.ucenter.Relation;
+import com.sissi.ucenter.RelationRoster;
 import com.sissi.ucenter.relation.PresenceWrapRelation;
 
 /**
@@ -14,11 +15,11 @@ public class PresenceRosterSubscribeProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		Relation relation = super.ourRelation(context.getJid(), super.build(protocol.getTo()));
-		return relation.isActivate() ? false : this.writeAndReturn(context, Presence.class.cast(protocol), relation);
+		RelationRoster relation = RelationRoster.class.cast(super.ourRelation(context.getJid(), super.build(protocol.getTo())));
+		return relation.isAsk() ? true : this.establishAndReturn(context, Presence.class.cast(protocol), relation);
 	}
 
-	private Boolean writeAndReturn(JIDContext context, Presence presence, Relation relation) {
+	private Boolean establishAndReturn(JIDContext context, Presence presence, Relation relation) {
 		super.establish(context.getJid(), new PresenceWrapRelation(super.jidBuilder, presence, relation));
 		return true;
 	}

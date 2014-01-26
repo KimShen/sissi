@@ -1,8 +1,10 @@
 package com.sissi.ucenter.relation;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.sissi.context.JIDBuilder;
+import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.ucenter.Relation;
 
@@ -10,12 +12,12 @@ import com.sissi.ucenter.Relation;
  * @author kim 2014年1月23日
  */
 public class PresenceWrapRelation implements Relation {
-	
+
 	private final JIDBuilder jidBuilder;
 
-	private Presence presence;
+	private final Presence presence;
 
-	private Relation current;
+	private final Relation current;
 
 	public PresenceWrapRelation(JIDBuilder jidBuilder, Presence presence, Relation current) {
 		super();
@@ -38,6 +40,10 @@ public class PresenceWrapRelation implements Relation {
 	public String getSubscription() {
 		return this.current.getSubscription();
 	}
+	
+	public Boolean in(String... subscriptions){
+		return RosterSubscription.parse(this.current.getSubscription()).in(subscriptions);
+	}
 
 	@Override
 	public Boolean isActivate() {
@@ -46,6 +52,8 @@ public class PresenceWrapRelation implements Relation {
 
 	@Override
 	public Map<String, Object> plus() {
-		return this.current.plus();
+		Map<String, Object> plus = new HashMap<String, Object>();
+		plus.put("ask", true);
+		return plus;
 	}
 }

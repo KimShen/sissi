@@ -30,6 +30,8 @@ public class MongoRelationRosterContext extends MongoRelationContext {
 		private final String jid;
 
 		private final String name;
+		
+		private final Boolean ask;
 
 		private final Boolean activate;
 
@@ -41,6 +43,7 @@ public class MongoRelationRosterContext extends MongoRelationContext {
 			super();
 			this.jid = MongoRelationRosterContext.super.config.asString(db, MongoRelationRosterContext.super.slave);
 			this.name = MongoRelationRosterContext.super.config.asString(db, MongoRelationRosterContext.super.nick);
+			this.ask = MongoRelationRosterContext.super.config.asBoolean(db, MongoRelationRosterContext.super.ask);
 			this.activate = MongoRelationRosterContext.super.config.asBoolean(db, MongoRelationRosterContext.super.activate);
 			this.subscription = MongoRelationRosterContext.super.config.asInteger(db, MongoRelationRosterContext.super.state);
 			BasicDBList group = BasicDBList.class.cast(db.get(MongoRelationRosterContext.this.groups));
@@ -55,12 +58,21 @@ public class MongoRelationRosterContext extends MongoRelationContext {
 			return this.name;
 		}
 
+		@Override
+		public Boolean isAsk() {
+			return this.ask;
+		}
+		
 		public String[] asGroups() {
 			return this.groups;
 		}
 
 		public String getSubscription() {
 			return RosterSubscription.toString(this.subscription);
+		}
+		
+		public Boolean in(String... subscriptions){
+			return RosterSubscription.parse(this.getSubscription()).in(subscriptions);
 		}
 
 		public Boolean isActivate() {

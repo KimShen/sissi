@@ -6,5 +6,7 @@ package com.sissi.ucenter;
  */
 public interface RelationRoster extends Relation {
 
+	public Boolean isAsk();
+	
 	public String[] asGroups();
 }

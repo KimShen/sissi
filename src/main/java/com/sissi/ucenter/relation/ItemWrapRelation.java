@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.iq.roster.Group;
 import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.RosterSubscription;
@@ -16,24 +15,29 @@ import com.sissi.ucenter.RelationRoster;
  */
 public class ItemWrapRelation implements RelationRoster {
 
+	private final RelationRoster relation;
+
 	private final GroupItem item;
 
-	private final JIDBuilder jidBuilder;
-
-	public ItemWrapRelation(JIDBuilder jidBuilder, GroupItem item) {
+	public ItemWrapRelation(RelationRoster relation, GroupItem item) {
 		super();
+		this.relation = relation;
 		this.item = item;
-		this.jidBuilder = jidBuilder;
 	}
 
 	@Override
 	public String getJID() {
-		return this.jidBuilder.build(this.item.getJid()).asStringWithBare();
+		return this.item.getJid();
 	}
 
 	@Override
 	public String getName() {
 		return this.item.getName();
+	}
+
+	@Override
+	public Boolean isAsk() {
+		return this.relation.isActivate() ? this.relation.isAsk() : true;
 	}
 
 	@Override
@@ -51,16 +55,21 @@ public class ItemWrapRelation implements RelationRoster {
 
 	@Override
 	public String getSubscription() {
-		return RosterSubscription.parse(this.item.getSubscription()).toString();
+		return RosterSubscription.parse(this.relation.getSubscription()).toString();
+	}
+
+	public Boolean in(String... subscriptions) {
+		return RosterSubscription.parse(this.relation.getSubscription()).in(subscriptions);
 	}
 
 	public Boolean isActivate() {
-		return false;
+		return this.relation.isActivate();
 	}
 
 	public Map<String, Object> plus() {
 		Map<String, Object> plus = new HashMap<String, Object>();
 		plus.put("groups", this.asGroups());
+		plus.put("ask", this.isAsk());
 		return plus;
 	}
 }

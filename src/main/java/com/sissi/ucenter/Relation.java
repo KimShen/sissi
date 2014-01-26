@@ -13,6 +13,8 @@ public interface Relation {
 
 	public String getSubscription();
 
+	public Boolean in(String... subscriptions);
+
 	public Boolean isActivate();
 
 	public Map<String, Object> plus();

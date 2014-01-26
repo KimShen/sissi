@@ -7,7 +7,6 @@ import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster;
-import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationRoster;
 
 /**
@@ -17,8 +16,7 @@ public class PresenceRosterSubscribe2ItemProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		Relation relation = super.ourRelation(context.getJid(), super.build(protocol.getTo()));
-		super.broadcast(context.getJid(), new IQ().add(new Roster(new GroupItem(relation.getJID(), relation.getName(), true, relation.getSubscription(), RelationRoster.class.cast(relation).asGroups()))).setType(ProtocolType.SET));
+		super.broadcast(context.getJid(), new IQ().add(new Roster(new GroupItem(RelationRoster.class.cast(super.ourRelation(context.getJid(), super.build(protocol.getTo())))))).setType(ProtocolType.SET));
 		return true;
 	}
 }

@@ -28,6 +28,24 @@ public enum RosterSubscription {
 		return this == RosterSubscription.parse(subscribe);
 	}
 
+	public Boolean in(RosterSubscription... subscriptions) {
+		for (RosterSubscription subscription : subscriptions) {
+			if (this == subscription) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public Boolean in(String... subscriptions) {
+		for (String subscription : subscriptions) {
+			if (this == RosterSubscription.parse(subscription)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static RosterSubscription parse(String subscribe) {
 		return (subscribe == null || subscribe.toUpperCase().equals(REMOVE.name())) ? NONE : RosterSubscription.valueOf(subscribe.toUpperCase());
 	}

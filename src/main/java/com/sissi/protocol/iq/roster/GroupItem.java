@@ -13,6 +13,7 @@ import com.sissi.protocol.Item;
 import com.sissi.protocol.presence.PresenceType;
 import com.sissi.read.Collector;
 import com.sissi.read.MappingMetadata;
+import com.sissi.ucenter.RelationRoster;
 
 /**
  * @author kim 2013-10-31
@@ -32,25 +33,16 @@ public class GroupItem extends Item implements Collector {
 		super();
 	}
 
-	public GroupItem(String jid, String name, String subscription, String[] groups) {
-		super(jid, name);
-		this.subscription = subscription;
-		if (groups != null) {
-			for (String group : groups) {
+	public GroupItem(RelationRoster roster) {
+		super(roster.getJID(), roster.getName());
+		this.setAsk(roster.isAsk());
+		this.subscription = roster.getSubscription();
+		if (roster.asGroups() != null) {
+			for (String group : roster.asGroups()) {
 				this.add(new Group(group));
 			}
 		}
-	}
 
-	public GroupItem(String jid, String name, Boolean ask, String subscription, String[] groups) {
-		super(jid, name);
-		this.setAsk(ask);
-		this.subscription = subscription;
-		if (groups != null) {
-			for (String group : groups) {
-				this.add(new Group(group));
-			}
-		}
 	}
 
 	private GroupItem add(Group group) {
@@ -77,7 +69,7 @@ public class GroupItem extends Item implements Collector {
 
 	@XmlAttribute
 	public String getAsk() {
-		return RosterSubscription.NONE.equals(this.subscription) ? this.ask : null;
+		return this.ask;
 	}
 
 	@XmlAttribute

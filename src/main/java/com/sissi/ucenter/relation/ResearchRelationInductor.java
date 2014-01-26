@@ -7,7 +7,6 @@ import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.protocol.iq.roster.RosterSubscription;
-import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationContext;
 import com.sissi.ucenter.RelationInductor;
 import com.sissi.ucenter.RelationRoster;
@@ -32,15 +31,15 @@ public class ResearchRelationInductor implements RelationInductor {
 
 	@Override
 	public RelationInductor update(JID master, JID slave) {
-		Relation relation = this.relationContext.ourRelation(master, slave);
+		RelationRoster relation = RelationRoster.class.cast(this.relationContext.ourRelation(master, slave));
 		if (relation.isActivate()) {
-			this.broadcastProtocol.broadcast(master, new IQ().add(new Roster(new GroupItem(relation.getJID(), relation.getName(), relation.getSubscription(), RelationRoster.class.cast(relation).asGroups()))).setType(ProtocolType.SET));
+			this.broadcastProtocol.broadcast(master, new IQ().add(new Roster(new GroupItem(relation))).setType(ProtocolType.SET));
 		}
 		return this;
 	}
 
 	public RelationInductor remove(JID master, JID slave) {
-		this.broadcastProtocol.broadcast(master, new IQ().add(new Roster(new GroupItem(slave.asStringWithBare(), null, RosterSubscription.REMOVE.toString(), null))).setType(ProtocolType.SET));
+		this.broadcastProtocol.broadcast(master, new IQ().add(new Roster(new GroupItem(RelationRoster.class.cast(this.relationContext.ourRelation(master, slave))).setSubscription(RosterSubscription.REMOVE.toString()))).setType(ProtocolType.SET));
 		return this;
 	}
 }

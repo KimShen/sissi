@@ -23,13 +23,15 @@ import com.sissi.ucenter.RelationRoster;
  */
 abstract class MongoRelationContext implements RelationContext {
 
-	protected final String slave = "slave";
+	protected final String ask = "ask";
 
-	protected final String master = "master";
+	protected final String nick = "nick";
 
 	protected final String state = "state";
 
-	protected final String nick = "nick";
+	protected final String slave = "slave";
+
+	protected final String master = "master";
 
 	protected final String activate = "activate";
 
@@ -48,8 +50,6 @@ abstract class MongoRelationContext implements RelationContext {
 	private final DBObject entityBrokeTo = BasicDBObjectBuilder.start("and", 1).get();
 
 	private final DBObject entityBrokeFrom = BasicDBObjectBuilder.start("and", 2).get();
-
-	private final DBObject[] entityStates4Relations = new DBObject[] { BasicDBObjectBuilder.start(this.state, 1).get(), BasicDBObjectBuilder.start(this.state, 2).get(), BasicDBObjectBuilder.start(this.state, 3).get() };
 
 	private final DBObject[] entityStates4Subscribed = new DBObject[] { BasicDBObjectBuilder.start(this.state, 1).get(), BasicDBObjectBuilder.start(this.state, 3).get() };
 
@@ -78,8 +78,12 @@ abstract class MongoRelationContext implements RelationContext {
 		return BasicDBObjectBuilder.start().add(this.master, master).add(this.slave, slave).get();
 	}
 
-	private DBObject buildQueryLimitStates(String role, String jid, DBObject[] status) {
-		DBObject query = BasicDBObjectBuilder.start().add(role, jid).add(this.activate, true).get();
+	private DBObject buildQueryRole(String role, String jid) {
+		return BasicDBObjectBuilder.start().add(role, jid).add(this.activate, true).get();
+	}
+
+	private DBObject buildQueryStates(String role, String jid, DBObject[] status) {
+		DBObject query = this.buildQueryRole(role, jid);
 		query.put("$or", status);
 		return query;
 	}
@@ -93,7 +97,7 @@ abstract class MongoRelationContext implements RelationContext {
 
 	@Override
 	public RelationContext update(JID from, JID to, String state) {
-		this.config.collection().update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(this.state, this.update.get(state).getTo()).get()).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start(this.ask, true).get()).add("$bit", BasicDBObjectBuilder.start().add(this.state, this.update.get(state).getTo()).get()).get(), true, false, WriteConcern.SAFE);
 		this.config.collection().update(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(this.state, this.update.get(state).getFrom()).get()).get(), true, false, WriteConcern.SAFE);
 		this.relationInductor.update(to, from);
 		return this;
@@ -108,7 +112,7 @@ abstract class MongoRelationContext implements RelationContext {
 
 	@Override
 	public Set<Relation> myRelations(JID from) {
-		return new MongoRelations(this.config.collection().find(this.buildQueryLimitStates(this.master, from.asStringWithBare(), this.entityStates4Relations)));
+		return new MongoRelations(this.config.collection().find(this.buildQueryRole(this.master, from.asStringWithBare())));
 	}
 
 	@Override
@@ -119,11 +123,11 @@ abstract class MongoRelationContext implements RelationContext {
 
 	@Override
 	public Set<String> whoSubscribedMe(JID from) {
-		return new JIDs(this.config.collection().find(this.buildQueryLimitStates(this.slave, from.asStringWithBare(), this.entityStates4Subscribed), this.filterMaster), this.master);
+		return new JIDs(this.config.collection().find(this.buildQueryStates(this.slave, from.asStringWithBare(), this.entityStates4Subscribed), this.filterMaster), this.master);
 	}
 
 	public Set<String> iSubscribedWho(JID from) {
-		return new JIDs(this.config.collection().find(this.buildQueryLimitStates(this.master, from.asStringWithBare(), this.entityStates4Subscribed), this.filterSlave), this.slave);
+		return new JIDs(this.config.collection().find(this.buildQueryStates(this.master, from.asStringWithBare(), this.entityStates4Subscribed), this.filterSlave), this.slave);
 	}
 
 	abstract protected Relation build(DBObject db);
@@ -173,7 +177,16 @@ abstract class MongoRelationContext implements RelationContext {
 			return RosterSubscription.NONE.toString();
 		}
 
+		public Boolean in(String... subscriptions) {
+			return false;
+		}
+
 		public Boolean isActivate() {
+			return false;
+		}
+
+		@Override
+		public Boolean isAsk() {
 			return false;
 		}
 

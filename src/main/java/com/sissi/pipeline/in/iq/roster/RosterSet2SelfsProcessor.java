@@ -6,7 +6,7 @@ import com.sissi.protocol.iq.roster.RosterSubscription;
 /**
  * @author kim 2013-10-31
  */
-public class RosterSet2SelfsItemProcessor extends Roster2SelfsItemProcessor {
+public class RosterSet2SelfsProcessor extends Roster2SelfsItemProcessor {
 
 	@Override
 	protected String subscription(JID master, JID slave) {
