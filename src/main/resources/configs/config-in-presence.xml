@@ -58,8 +58,6 @@
 	<bean id="presence.pro.roster.subscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<!-- Using check when not using reply -->
-				<!-- <ref bean="presence.pro.roster.subscribe.check.relation"/> -->
 				<ref bean="presence.pro.roster.subscribe.2presence.reply" />
 				<ref bean="presence.pro.roster.subscribe.2presence.route" />
 				<ref bean="presence.pro.roster.subscribe" />

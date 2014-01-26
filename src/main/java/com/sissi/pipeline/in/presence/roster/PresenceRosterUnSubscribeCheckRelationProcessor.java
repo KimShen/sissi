@@ -10,7 +10,7 @@ import com.sissi.protocol.iq.roster.RosterSubscription;
  */
 public class PresenceRosterUnSubscribeCheckRelationProcessor extends ProxyProcessor {
 
-	private final String[] relations = new String[] { RosterSubscription.FROM.toString(), RosterSubscription.BOTH.toString() };
+	private final String[] relations = new String[] { RosterSubscription.TO.toString(), RosterSubscription.BOTH.toString() };
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
