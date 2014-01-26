@@ -19,6 +19,7 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
+import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -107,7 +108,11 @@ public class Socks5ProxyServerHandlerBuilder {
 		}
 
 		public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
-			this.prepareCmd(ctx, msg, ctx.write(this.build(msg))).flush();
+			try {
+				this.prepareCmd(ctx, msg, ctx.write(this.build(msg))).flush();
+			} finally {
+				ReferenceCountUtil.release(msg);
+			}
 		}
 
 		public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
@@ -179,7 +184,11 @@ public class Socks5ProxyServerHandlerBuilder {
 		}
 
 		public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().write(ByteBuf.class.cast(msg).nioBuffer());
+			try {
+				ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().write(ByteBuf.class.cast(msg).nioBuffer());
+			} finally {
+				ReferenceCountUtil.release(msg);
+			}
 		}
 	}
 
