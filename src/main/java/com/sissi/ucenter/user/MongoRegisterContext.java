@@ -4,7 +4,6 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.MongoException;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JIDBuilder;
-import com.sissi.protocol.iq.data.XField;
 import com.sissi.protocol.iq.data.XValue;
 import com.sissi.protocol.iq.register.simple.Username;
 import com.sissi.ucenter.RegisterContext;
@@ -36,12 +35,20 @@ public class MongoRegisterContext extends MongoFieldContext implements RegisterC
 	}
 
 	private Boolean valid(Fields fields) {
-		for (Field<?> field : fields.findField(Username.NAME, XField.class).getChildren()) {
+		Field<?> register = fields.findField(Username.NAME, Field.class);
+		return register.hasChild() ? this.validUsername(this.extractUsername(register)) : this.validUsername(String.class.cast(register.getValue()));
+	}
+
+	private Boolean validUsername(String username) {
+		return username != null && !username.isEmpty() && this.jidBuilder.build(username, null).isValid(false);
+	}
+	
+	private String extractUsername(Field<?> register) {
+		for (Field<?> field : register.getChildren()) {
 			if (field.getClass() == XValue.class) {
-				String username = String.class.cast(field.getValue());
-				return !username.isEmpty() && this.jidBuilder.build(username, null).isValid(false);
+				return String.class.cast(field.getValue());
 			}
 		}
-		return false;
+		return null;
 	}
 }
