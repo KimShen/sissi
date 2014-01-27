@@ -68,8 +68,10 @@ public class ItemWrapRelation implements RelationRoster {
 
 	public Map<String, Object> plus() {
 		Map<String, Object> plus = new HashMap<String, Object>();
+		if (this.isAsk()) {
+			plus.put("ask", this.isAsk());
+		}
 		plus.put("groups", this.asGroups());
-		plus.put("ask", this.isAsk());
 		return plus;
 	}
 }

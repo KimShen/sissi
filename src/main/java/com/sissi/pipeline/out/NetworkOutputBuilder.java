@@ -1,7 +1,8 @@
 package com.sissi.pipeline.out;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.util.ReferenceCountUtil;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import com.sissi.pipeline.Output;
 import com.sissi.pipeline.OutputBuilder;
 import com.sissi.protocol.Element;
 import com.sissi.write.Transfer;
+import com.sissi.write.TransferBuffer;
 import com.sissi.write.Writer;
 
 /**
@@ -48,11 +50,11 @@ public class NetworkOutputBuilder implements OutputBuilder {
 
 		@Override
 		public Boolean output(JIDContext context, Element node) {
-			ByteBufferOutputStream output = new ByteBufferOutputStream();
+			ByteBufOutputTransferBuffer output = new ByteBufOutputTransferBuffer();
 			BufferedOutputStream buf = new BufferedOutputStream(output);
 			try {
 				NetworkOutputBuilder.this.writer.write(context, node, buf);
-				this.transfer.transfer(output.getBuffer().nioBuffer());
+				this.transfer.transfer(output);
 			} catch (IOException e) {
 				NetworkOutputBuilder.this.log.error(e.toString());
 			} finally {
@@ -67,13 +69,13 @@ public class NetworkOutputBuilder implements OutputBuilder {
 			return this;
 		}
 
-		private class ByteBufferOutputStream extends OutputStream {
+		private class ByteBufOutputTransferBuffer extends OutputStream implements TransferBuffer {
 
-			private ByteBuf buffer;
+			private final ByteBuf buffer;
 
-			public ByteBufferOutputStream() {
+			public ByteBufOutputTransferBuffer() {
 				super();
-				this.buffer = Unpooled.buffer();
+				this.buffer = PooledByteBufAllocator.DEFAULT.buffer();
 			}
 
 			@Override
@@ -82,7 +84,15 @@ public class NetworkOutputBuilder implements OutputBuilder {
 			}
 
 			public ByteBuf getBuffer() {
-				return buffer;
+				return this.buffer;
+			}
+
+			@Override
+			public TransferBuffer release() {
+				if (this.buffer.refCnt() > 0) {
+					ReferenceCountUtil.release(this.buffer);
+				}
+				return this;
 			}
 		}
 	}

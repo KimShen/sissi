@@ -6,13 +6,13 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
 
 /**
- * @author kim 2013年12月25日
+ * @author kim 2013-11-20
  */
-public class PresenceStatusPriorityProcessor extends ProxyProcessor {
+public class PresenceOnlineUpdateProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		super.priority(context.setPriority(Presence.class.cast(protocol).getPriority()));
+		context.getStatus().setClauses(Presence.class.cast(protocol).getClauses());
 		return true;
 	}
 }

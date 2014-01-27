@@ -11,7 +11,7 @@ import com.sissi.ucenter.RelationRoster;
  */
 public class PresenceRosterUnSubscribedCheckRelationProcessor extends ProxyProcessor {
 
-	private final String[] relations = new String[] { RosterSubscription.FROM.toString(), RosterSubscription.BOTH.toString() };
+	private final String[] relations = new String[] { RosterSubscription.TO.toString(), RosterSubscription.BOTH.toString() };
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {

@@ -1,14 +1,15 @@
 package com.sissi.server;
 
 import java.io.Closeable;
-import java.nio.ByteBuffer;
+
+import com.sissi.write.TransferBuffer;
 
 /**
  * @author kim 2013年12月22日
  */
 public interface Exchanger {
 
-	public Exchanger write(ByteBuffer bytes);
+	public Exchanger write(TransferBuffer buffer);
 
 	public Exchanger initer(Closeable initer);
 

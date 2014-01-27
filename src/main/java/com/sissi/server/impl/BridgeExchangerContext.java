@@ -1,7 +1,6 @@
 package com.sissi.server.impl;
 
 import java.io.Closeable;
-import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,6 +19,7 @@ import com.sissi.server.Exchanger;
 import com.sissi.server.ExchangerCloser;
 import com.sissi.server.ExchangerContext;
 import com.sissi.write.Transfer;
+import com.sissi.write.TransferBuffer;
 
 /**
  * @author kim 2013年12月22日
@@ -110,8 +110,8 @@ public class BridgeExchangerContext implements ExchangerContext {
 		}
 
 		@Override
-		public Exchanger write(ByteBuffer bytes) {
-			this.target.transfer(bytes);
+		public Exchanger write(TransferBuffer buffer) {
+			this.target.transfer(buffer);
 			return this;
 		}
 

@@ -29,7 +29,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	public final static String XMLNS = "jabber:client";
 
 	public final static String NAME = "presence";
-	
+
 	private Delay delay;
 
 	private BeanFields fields;
@@ -45,12 +45,17 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		this.fields = new BeanFields(false);
 	}
 
-	public Presence(JID from, StatusClauses clauses) {
+	public Presence(JID from, String type) {
 		this();
-		this.copyFromClauses(clauses).setFrom(from);
+		this.setFrom(from).setType(type);
 	}
 
-	private Presence copyFromClauses(StatusClauses clauses) {
+	public Presence(JID from, StatusClauses clauses) {
+		this();
+		this.copyClauses(clauses).setFrom(from);
+	}
+
+	private Presence copyClauses(StatusClauses clauses) {
 		this.setShow(clauses.find(StatusClauses.KEY_SHOW)).setStatus(clauses.find(StatusClauses.KEY_STATUS)).setAvator(clauses.find(StatusClauses.KEY_AVATOR)).setType(clauses.find(StatusClauses.KEY_TYPE));
 		return this;
 	}
@@ -128,7 +133,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	@Override
 	public Presence setClauses(StatusClauses clauses) {
-		return this.copyFromClauses(clauses);
+		return this.copyClauses(clauses);
 	}
 
 	@Override

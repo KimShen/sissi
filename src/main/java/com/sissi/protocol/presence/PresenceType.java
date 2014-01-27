@@ -5,7 +5,7 @@ package com.sissi.protocol.presence;
  */
 public enum PresenceType {
 
-	SUBSCRIBE, SUBSCRIBED, UNSUBSCRIBE, UNSUBSCRIBED, UNAVAILABLE, AVAILABLE;
+	PROBE, SUBSCRIBE, SUBSCRIBED, UNSUBSCRIBE, UNSUBSCRIBED, UNAVAILABLE, AVAILABLE;
 
 	public String toString() {
 		if (AVAILABLE == this) {

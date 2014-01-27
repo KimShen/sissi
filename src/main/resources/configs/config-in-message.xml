@@ -15,8 +15,8 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="global.pro.check" />
-				<ref bean="message.pro.check.relation" />
 				<ref bean="message.pro.check.body" />
+				<ref bean="message.pro.check.relation" />
 				<ref bean="message.pro.2self" />
 				<ref bean="message.pro.2fan" />
 			</util:list>

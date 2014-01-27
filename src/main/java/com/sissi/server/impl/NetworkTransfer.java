@@ -1,23 +1,25 @@
 package com.sissi.server.impl;
 
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.nio.ByteBuffer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.write.Transfer;
+import com.sissi.write.TransferBuffer;
 
 /**
  * @author kim 2013年12月1日
  */
 public class NetworkTransfer implements Transfer {
+
+	private final static Log log = LogFactory.getLog(NetworkTransfer.class);
 
 	private final GenericFutureListener<Future<Void>> futureListener;
 
@@ -25,7 +27,7 @@ public class NetworkTransfer implements Transfer {
 
 	public NetworkTransfer(ChannelHandlerContext context) {
 		super();
-		this.futureListener = FailLogedGenericFutureListener.INSTANCE;
+		this.futureListener = FailLogedGenericFutureListener.FUTURE;
 		this.context = context;
 	}
 
@@ -36,22 +38,41 @@ public class NetworkTransfer implements Transfer {
 	}
 
 	@Override
-	public Transfer transfer(ByteBuffer bytebuf) {
-		this.context.writeAndFlush(Unpooled.wrappedBuffer(bytebuf)).addListener(this.futureListener);
+	public Transfer transfer(TransferBuffer buffer) {
+		this.context.writeAndFlush(ByteBuf.class.cast(buffer.getBuffer())).addListener(new ReleaseGenericFutureListener(buffer)).addListener(this.futureListener);
 		return this;
 	}
 
 	@Override
 	public void close() {
 		if (this.context != null) {
-			this.context.close().addListener(FailLogedGenericFutureListener.INSTANCE);
+			this.context.close().addListener(FailLogedGenericFutureListener.FUTURE);
 			this.context = null;
+		}
+	}
+
+	private class ReleaseGenericFutureListener implements GenericFutureListener<Future<Void>> {
+
+		private final TransferBuffer transferBuffer;
+
+		public ReleaseGenericFutureListener(TransferBuffer transferBuffer) {
+			super();
+			this.transferBuffer = transferBuffer;
+		}
+
+		public void operationComplete(Future<Void> future) throws Exception {
+			try {
+				
+				this.transferBuffer.release();
+			} catch (Exception e) {
+				NetworkTransfer.log.error("Memory leak: " + e.toString());
+			}
 		}
 	}
 
 	private static class FailLogedGenericFutureListener implements GenericFutureListener<Future<Void>> {
 
-		public final static GenericFutureListener<Future<Void>> INSTANCE = new FailLogedGenericFutureListener();
+		private final static GenericFutureListener<Future<Void>> FUTURE = new FailLogedGenericFutureListener();
 
 		private final Log log = LogFactory.getLog(this.getClass());
 

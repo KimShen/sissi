@@ -167,7 +167,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public Boolean isPresence() {
 			return this.isPresence.get();
 		}
-
+		
 		@Override
 		public JIDContext setPriority(Integer priority) {
 			this.priority = priority;

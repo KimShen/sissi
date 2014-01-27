@@ -34,6 +34,7 @@ import com.sissi.resource.ResourceCounter;
 import com.sissi.server.Exchanger;
 import com.sissi.server.ExchangerCloser;
 import com.sissi.server.ExchangerContext;
+import com.sissi.write.TransferBuffer;
 
 /**
  * @author kim 2013年12月22日
@@ -185,9 +186,10 @@ public class Socks5ProxyServerHandlerBuilder {
 
 		public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 			try {
-				ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().write(ByteBuf.class.cast(msg).nioBuffer());
-			} finally {
+				ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().write(new ByteBufWrapTransferBuffer(ByteBuf.class.cast(msg)));
+			} catch (Exception e) {
 				ReferenceCountUtil.release(msg);
+				throw e;
 			}
 		}
 	}
@@ -204,6 +206,29 @@ public class Socks5ProxyServerHandlerBuilder {
 		@Override
 		public void close() throws IOException {
 			this.ctx.close();
+		}
+	}
+
+	private class ByteBufWrapTransferBuffer implements TransferBuffer {
+
+		private final ByteBuf buffer;
+
+		public ByteBufWrapTransferBuffer(ByteBuf buffer) {
+			super();
+			this.buffer = buffer;
+		}
+
+		@Override
+		public Object getBuffer() {
+			return this.buffer;
+		}
+
+		@Override
+		public TransferBuffer release() {
+			if (this.buffer.refCnt() > 0) {
+				ReferenceCountUtil.release(this.buffer);
+			}
+			return this;
 		}
 	}
 

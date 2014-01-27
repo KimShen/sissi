@@ -24,33 +24,45 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-
-	<bean id="presence.pro.status.init.4fans" class="com.sissi.pipeline.in.presence.status.PresenceInit4FansProcessor" parent="global.pro.proxy">
-		<property name="presenceQueue" ref="broadcast.presence.self" />
-	</bean>
-	<bean id="presence.pro.status.init.4selfs" class="com.sissi.pipeline.in.presence.status.PresenceInit4SelfsProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.status.init.4offline" class="com.sissi.pipeline.in.presence.status.PresenceInit4OfflineProcessor">
-		<constructor-arg ref="offline" />
-	</bean>
-	<bean id="presence.pro.status.2self.priority" class="com.sissi.pipeline.in.presence.status.PresenceStatusPriorityProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.status.2self.update" class="com.sissi.pipeline.in.presence.status.PresenceStatusUpdateProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.status.2selfs" class="com.sissi.pipeline.in.presence.status.PresenceStatusProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.status.2fans" class="com.sissi.pipeline.in.presence.status.PresenceStatusProcessor" parent="global.pro.proxy">
-		<property name="protocolQueue" ref="broadcast.protocol.fans" />
-	</bean>
-	<bean id="presence.pro.status.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+	<bean id="presence.pro.probe.relation" class="com.sissi.pipeline.in.presence.probe.PresenceProbeRelationProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.probe.status.offline" class="com.sissi.pipeline.in.presence.probe.PresenceProbeOfflineStatusProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.probe.status.online" class="com.sissi.pipeline.in.presence.probe.PresenceProbeOnlineStatusProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.probe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.status.init.4fans" />
-				<ref bean="presence.pro.status.init.4selfs" />
-				<ref bean="presence.pro.status.init.4offline" />
-				<ref bean="presence.pro.status.2self.priority" />
-				<ref bean="presence.pro.status.2self.update" />
-				<ref bean="presence.pro.status.2selfs" />
-				<ref bean="presence.pro.status.2fans" />
+				<ref bean="presence.pro.probe.relation" />
+				<ref bean="presence.pro.probe.status.offline" />
+				<ref bean="presence.pro.probe.status.online" />
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="presence.pro.status.available.init.4fans" class="com.sissi.pipeline.in.presence.status.PresenceInit4FansProcessor" parent="global.pro.proxy">
+		<property name="presenceQueue" ref="broadcast.presence.self" />
+	</bean>
+	<bean id="presence.pro.status.available.init.4selfs" class="com.sissi.pipeline.in.presence.status.PresenceInit4SelfsProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.available.init.4offline" class="com.sissi.pipeline.in.presence.status.PresenceInit4OfflineProcessor">
+		<constructor-arg ref="offline" />
+	</bean>
+	<bean id="presence.pro.status.available.2self.priority" class="com.sissi.pipeline.in.presence.status.PresenceOnlinePriorityProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.available.2self.update" class="com.sissi.pipeline.in.presence.status.PresenceOnlineUpdateProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.available.2selfs" class="com.sissi.pipeline.in.presence.status.PresenceOnlineProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.available.2fans" class="com.sissi.pipeline.in.presence.status.PresenceOnlineProcessor" parent="global.pro.proxy">
+		<property name="protocolQueue" ref="broadcast.protocol.fans" />
+	</bean>
+	<bean id="presence.pro.status.available.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.pro.status.available.init.4fans" />
+				<ref bean="presence.pro.status.available.init.4selfs" />
+				<ref bean="presence.pro.status.available.init.4offline" />
+				<ref bean="presence.pro.status.available.2self.priority" />
+				<ref bean="presence.pro.status.available.2self.update" />
+				<ref bean="presence.pro.status.available.2selfs" />
+				<ref bean="presence.pro.status.available.2fans" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="presence.pro.status.unavailable" class="com.sissi.pipeline.in.presence.status.PresenceLeaveProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe.2item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2ItemProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe.2presence.route" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2PresenceRouteProcessor" parent="global.pro.proxy" />
@@ -112,12 +124,24 @@
 	<bean id="presence.pro.roster.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.presence.roster" />
 	</bean>
+	<bean id="presence.pro.status.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.presence.status" />
+	</bean>
 
 	<bean id="finder.presence" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<ref bean="presence.condition.probe" />
 				<ref bean="presence.condition.status" />
 				<ref bean="presence.condition.roster" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="finder.presence.status" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.condition.status.available" />
+				<ref bean="presence.condition.status.unavailable" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -140,11 +164,42 @@
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.chained" />
 	</bean>
+	<bean id="presence.condition.probe" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.presence.probe.PresenceProbeMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="presence.pro.probe.chained" />
+	</bean>
 	<bean id="presence.condition.status" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.presence.status.PresenceStatusMatcher" />
+			<bean class="com.sissi.pipeline.in.presence.status.PresenceActionMatcher">
+				<constructor-arg>
+					<array>
+						<null />
+						<value>UNAVAILABLE</value>
+					</array>
+				</constructor-arg>
+			</bean>
 		</constructor-arg>
-		<constructor-arg ref="presence.pro.status.chained" />
+		<constructor-arg ref="presence.pro.status.fork" />
+	</bean>
+	<bean id="presence.condition.status.available" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.presence.status.PresenceActionMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="presence.pro.status.available.chained" />
+	</bean>
+	<bean id="presence.condition.status.unavailable" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.presence.status.PresenceActionMatcher">
+				<constructor-arg>
+					<array>
+						<value>UNAVAILABLE</value>
+					</array>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="presence.pro.status.unavailable" />
 	</bean>
 	<bean id="presence.condition.roster" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
