@@ -10,8 +10,11 @@ import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContextBuilder;
 import com.sissi.context.JIDContextParam;
 import com.sissi.context.Status;
+import com.sissi.context.StatusClauses;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
+import com.sissi.protocol.presence.PresenceType;
+import com.sissi.ucenter.SignatureContext;
 
 /**
  * @author kim 2013-11-19
@@ -26,6 +29,8 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private final SocketAddress address = new InetSocketAddress(InetAddress.getByName("0.0.0.0"), 0);
 
+	private final SignatureContext signatureContext;
+
 	private final String lang;
 
 	private final String domain;
@@ -37,16 +42,37 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		this.lang = lang;
 		this.domain = domain;
 		this.output = output;
+		this.signatureContext = null;
+	}
+
+	public OfflineContextBuilder(String lang, String domain, Output output, SignatureContext signatureContext) throws Exception {
+		super();
+		this.lang = lang;
+		this.domain = domain;
+		this.output = output;
+		this.signatureContext = signatureContext;
 	}
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
-		return this.context;
+		return this.signatureContext != null ? new OfflineContext(new SignatureClauses(this.signatureContext.signature(jid))) : this.context;
 	}
 
 	private class OfflineContext implements JIDContext {
 
 		private final JID jid = OfflineJID.JID;
+
+		private final Status status;
+
+		public OfflineContext() {
+			super();
+			this.status = OfflineContextBuilder.this.status;
+		}
+
+		public OfflineContext(StatusClauses statusClauses) {
+			super();
+			this.status = new OfflineStatus(statusClauses);
+		}
 
 		public Long getIndex() {
 			return null;
@@ -86,7 +112,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public Status getStatus() {
-			return OfflineContextBuilder.this.status;
+			return this.status;
 		}
 
 		@Override
@@ -175,4 +201,23 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 	}
 
+	private class SignatureClauses implements StatusClauses {
+
+		private final String signature;
+
+		private SignatureClauses(String signature) {
+			this.signature = signature;
+		}
+
+		@Override
+		public String find(String key) {
+			switch (key) {
+			case StatusClauses.KEY_TYPE:
+				return PresenceType.UNAVAILABLE.toString();
+			case StatusClauses.KEY_STATUS:
+				return this.signature;
+			}
+			return null;
+		}
+	}
 }

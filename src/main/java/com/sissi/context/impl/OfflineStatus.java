@@ -8,13 +8,17 @@ import com.sissi.protocol.presence.PresenceType;
  * @author kim 2014年1月26日
  */
 public class OfflineStatus implements Status {
-	
+
 	public final static OfflineStatus STATUS = new OfflineStatus();
 
-	private final StatusClauses empty = new EmptyClauses();
+	private final StatusClauses status;
 
-	private OfflineStatus() {
+	public OfflineStatus() {
+		this.status = new EmptyClauses();
+	}
 
+	public OfflineStatus(StatusClauses status) {
+		this.status = status;
 	}
 
 	public Status clear() {
@@ -28,7 +32,7 @@ public class OfflineStatus implements Status {
 
 	@Override
 	public StatusClauses getClauses() {
-		return this.empty;
+		return this.status;
 	}
 
 	private class EmptyClauses implements StatusClauses {

@@ -17,6 +17,7 @@
 		</constructor-arg>
 		<constructor-arg>
 			<bean class="com.sissi.context.impl.OfflineContextBuilder">
+				<constructor-arg ref="vcard" />
 				<constructor-arg ref="offline" />
 				<constructor-arg value="${global.lang}" />
 				<constructor-arg value="${global.domain}" />

@@ -16,7 +16,6 @@ import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationContext;
 import com.sissi.ucenter.RelationInductor;
-import com.sissi.ucenter.RelationRoster;
 
 /**
  * @author kim 2013-11-5
@@ -150,54 +149,6 @@ abstract class MongoRelationContext implements RelationContext {
 
 		public DBObject getTo() {
 			return to;
-		}
-	}
-
-	private class NoneRelation implements Relation, RelationRoster {
-
-		private final JID jid;
-
-		public NoneRelation(JID jid) {
-			super();
-			this.jid = jid;
-		}
-
-		@Override
-		public String getJID() {
-			return this.jid.asStringWithBare();
-		}
-
-		@Override
-		public String getName() {
-			return null;
-		}
-
-		@Override
-		public String getSubscription() {
-			return RosterSubscription.NONE.toString();
-		}
-
-		public Boolean in(String... subscriptions) {
-			return false;
-		}
-
-		public Boolean isActivate() {
-			return false;
-		}
-
-		@Override
-		public Boolean isAsk() {
-			return false;
-		}
-
-		@Override
-		public Map<String, Object> plus() {
-			return MongoRelationContext.this.plus;
-		}
-
-		@Override
-		public String[] asGroups() {
-			return null;
 		}
 	}
 

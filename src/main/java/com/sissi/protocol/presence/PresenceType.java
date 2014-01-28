@@ -27,10 +27,14 @@ public enum PresenceType {
 		return false;
 	}
 
-	public static PresenceType parse(String subscribe) {
-		if (subscribe == null) {
+	public static PresenceType parse(String type) {
+		if (type == null) {
 			return AVAILABLE;
 		}
-		return PresenceType.valueOf(subscribe.toUpperCase());
+		try {
+			return PresenceType.valueOf(type.toUpperCase());
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

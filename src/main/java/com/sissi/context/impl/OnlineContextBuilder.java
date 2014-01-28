@@ -167,10 +167,10 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public Boolean isPresence() {
 			return this.isPresence.get();
 		}
-		
+
 		@Override
 		public JIDContext setPriority(Integer priority) {
-			this.priority = priority;
+			this.priority = priority < -128 ? -128 : priority > 127 ? 127 : priority;
 			return this;
 		}
 

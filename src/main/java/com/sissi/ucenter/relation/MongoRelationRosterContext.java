@@ -80,7 +80,7 @@ public class MongoRelationRosterContext extends MongoRelationContext {
 		}
 
 		public Map<String, Object> plus() {
-			return MongoRelationRosterContext.this.plus;
+			return MongoRelationRosterContext.super.plus;
 		}
 	}
 }

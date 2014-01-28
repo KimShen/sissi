@@ -10,6 +10,7 @@
 		<constructor-arg ref="vcard" />
 	</bean>
 	<bean id="presence.pro.check.loop" class="com.sissi.pipeline.in.presence.PresenceCheckLoopProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.check.type" class="com.sissi.pipeline.in.presence.PresenceCheckTypeProcessor" />
 	<bean id="presence.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.presence" />
 	</bean>
@@ -18,6 +19,7 @@
 			<util:list>
 				<ref bean="presence.pro.check.binding" />
 				<ref bean="global.pro.check" />
+				<ref bean="presence.pro.check.type" />
 				<ref bean="presence.pro.check.exists" />
 				<ref bean="presence.pro.check.loop" />
 				<ref bean="presence.pro.fork" />
@@ -36,7 +38,18 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="presence.pro.status.direct" class="com.sissi.pipeline.in.presence.status.PresenceDirectedProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.direct.route" class="com.sissi.pipeline.in.presence.status.PresenceDirectedRouteProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.direct.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.pro.status.direct" />
+				<ref bean="presence.pro.status.direct.route" />
+			</util:list>
+		</constructor-arg>
+	</bean>
 	<bean id="presence.pro.status.available.init.4fans" class="com.sissi.pipeline.in.presence.status.PresenceInit4FansProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="vcard" />
 		<property name="presenceQueue" ref="broadcast.presence.self" />
 	</bean>
 	<bean id="presence.pro.status.available.init.4selfs" class="com.sissi.pipeline.in.presence.status.PresenceInit4SelfsProcessor" parent="global.pro.proxy" />
@@ -62,7 +75,18 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.status.unavailable" class="com.sissi.pipeline.in.presence.status.PresenceLeaveProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.unavailable.signature" class="com.sissi.pipeline.in.presence.status.PresenceLeaveSignatureProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="vcard" />
+	</bean>
+	<bean id="presence.pro.status.unavailable.close" class="com.sissi.pipeline.in.presence.status.PresenceLeaveCloseProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.unavailable.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.pro.status.unavailable.signature" />
+				<ref bean="presence.pro.status.unavailable.close" />
+			</util:list>
+		</constructor-arg>
+	</bean>
 	<bean id="presence.pro.roster.subscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe.2item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2ItemProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe.2presence.route" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2PresenceRouteProcessor" parent="global.pro.proxy" />
@@ -133,6 +157,7 @@
 			<util:list>
 				<ref bean="presence.condition.probe" />
 				<ref bean="presence.condition.status" />
+				<ref bean="presence.condition.status.directed" />
 				<ref bean="presence.condition.roster" />
 			</util:list>
 		</constructor-arg>
@@ -175,7 +200,7 @@
 			<bean class="com.sissi.pipeline.in.presence.status.PresenceActionMatcher">
 				<constructor-arg>
 					<array>
-						<null />
+						<value>AVAILABLE</value>
 						<value>UNAVAILABLE</value>
 					</array>
 				</constructor-arg>
@@ -183,9 +208,29 @@
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.status.fork" />
 	</bean>
+	<bean id="presence.condition.status.directed" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.presence.status.PresenceActionMatcher">
+				<constructor-arg value="true" />
+				<constructor-arg>
+					<array>
+						<value>AVAILABLE</value>
+						<value>UNAVAILABLE</value>
+					</array>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="presence.pro.status.direct.chained" />
+	</bean>
 	<bean id="presence.condition.status.available" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.presence.status.PresenceActionMatcher" />
+			<bean class="com.sissi.pipeline.in.presence.status.PresenceActionMatcher">
+				<constructor-arg>
+					<array>
+						<value>AVAILABLE</value>
+					</array>
+				</constructor-arg>
+			</bean>
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.status.available.chained" />
 	</bean>
@@ -199,7 +244,7 @@
 				</constructor-arg>
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="presence.pro.status.unavailable" />
+		<constructor-arg ref="presence.pro.status.unavailable.chained" />
 	</bean>
 	<bean id="presence.condition.roster" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

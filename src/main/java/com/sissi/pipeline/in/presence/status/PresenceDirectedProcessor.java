@@ -5,13 +5,12 @@ import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 
 /**
- * @author kim 2014年1月27日
+ * @author kim 2014年1月28日
  */
-public class PresenceLeaveProcessor extends ProxyProcessor {
+public class PresenceDirectedProcessor extends ProxyProcessor {
 
 	@Override
 	public Boolean input(JIDContext context, Protocol protocol) {
-		context.close();
 		return true;
 	}
 }

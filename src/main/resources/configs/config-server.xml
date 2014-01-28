@@ -14,9 +14,11 @@
 		<constructor-arg>
 			<util:list>
 				<bean class="com.sissi.server.impl.BroadcastServerCloser">
+					<constructor-arg ref="vcard" />
 					<constructor-arg ref="broadcast.protocol.fans" />
 				</bean>
 				<bean class="com.sissi.server.impl.BroadcastServerCloser">
+					<constructor-arg ref="vcard" />
 					<constructor-arg ref="broadcast.protocol.selfs" />
 				</bean>
 			</util:list>

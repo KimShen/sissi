@@ -8,6 +8,7 @@ import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
+import com.sissi.ucenter.SignatureContext;
 import com.sissi.ucenter.VCardContext;
 import com.sissi.ucenter.field.FieldParser;
 import com.sissi.ucenter.field.Fields;
@@ -15,7 +16,11 @@ import com.sissi.ucenter.field.Fields;
 /**
  * @author kim 2013年12月10日
  */
-public class MongoVCardContext extends MongoFieldContext implements VCardContext {
+public class MongoVCardContext extends MongoFieldContext implements VCardContext, SignatureContext {
+
+	private final String signature = "signature";
+
+	private final DBObject filter = BasicDBObjectBuilder.start(this.signature, 1).get();
 
 	private final MongoConfig config;
 
@@ -29,6 +34,17 @@ public class MongoVCardContext extends MongoFieldContext implements VCardContext
 
 	public Boolean exists(JID jid) {
 		return this.config.collection().findOne(this.buildQuery(jid)) != null;
+	}
+
+	@Override
+	public MongoVCardContext signature(JID jid, String signature) {
+		this.config.collection().update(this.buildQuery(jid), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(this.signature, signature).get()).get());
+		return this;
+	}
+
+	@Override
+	public String signature(JID jid) {
+		return this.config.asString(this.config.collection().findOne(this.buildQuery(jid), this.filter), this.signature);
 	}
 
 	@Override
