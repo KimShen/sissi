@@ -14,7 +14,7 @@
 	<bean id="message.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="global.pro.check" />
+				<ref bean="global.pro.check.chained" />
 				<ref bean="message.pro.check.body" />
 				<ref bean="message.pro.check.relation" />
 				<ref bean="message.pro.2self" />

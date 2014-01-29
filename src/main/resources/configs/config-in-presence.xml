@@ -18,7 +18,7 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="presence.pro.check.binding" />
-				<ref bean="global.pro.check" />
+				<ref bean="global.pro.check.jid.format" />
 				<ref bean="presence.pro.check.type" />
 				<ref bean="presence.pro.check.exists" />
 				<ref bean="presence.pro.check.loop" />

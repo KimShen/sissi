@@ -1,5 +1,7 @@
 package com.sissi.protocol.message;
 
+import java.util.UUID;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -24,6 +26,10 @@ public class Message extends Protocol implements Collector {
 	private Body body;
 
 	private Delay delay;
+
+	private Thread thread;
+
+	private Subject subject;
 
 	public Message() {
 		super();
@@ -52,8 +58,28 @@ public class Message extends Protocol implements Collector {
 	}
 
 	@XmlElement
+	public Thread getThread() {
+		return this.thread != null && this.thread.hasContent() ? this.thread : new Thread(UUID.randomUUID().toString());
+	}
+
+	@XmlElement
+	public Subject getSubject() {
+		return this.subject;
+	}
+
+	@XmlElement
 	public ServerError getError() {
 		return super.getError();
+	}
+
+	public Message setSubject(Subject subject) {
+		this.subject = subject;
+		return this;
+	}
+
+	public Message setThread(Thread thread) {
+		this.thread = thread;
+		return this;
 	}
 
 	public Message setBody(Body body) {
@@ -67,6 +93,16 @@ public class Message extends Protocol implements Collector {
 
 	@Override
 	public void set(String localName, Object ob) {
-		this.setBody(Body.class.cast(ob));
+		switch (localName) {
+		case Body.NAME:
+			this.setBody(Body.class.cast(ob));
+			return;
+		case Thread.NAME:
+			this.setThread(Thread.class.cast(ob));
+			return;
+		case Subject.NAME:
+			this.setSubject(Subject.class.cast(ob));
+			return;
+		}
 	}
 }

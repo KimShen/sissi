@@ -12,7 +12,23 @@
 		<property name="presenceQueue" ref="broadcast.presence.selfs" />
 		<property name="relationContext" ref="relation.roster" />
 	</bean>
-	<bean id="global.pro.check" class="com.sissi.pipeline.in.CheckJIDMalformedProcessor" parent="global.pro.proxy" />
+	<bean id="global.pro.check.loop" class="com.sissi.pipeline.in.CheckLoopProcessor" />
+	<bean id="global.pro.check.jid.format" class="com.sissi.pipeline.in.CheckJIDMalformedProcessor" parent="global.pro.proxy" />
+	<bean id="global.pro.check.jid.exists" class="com.sissi.pipeline.in.CheckJIDExistsProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="vcard" />
+		<constructor-arg index="1" value="${global.domain}" />
+		<constructor-arg index="2" value="${bytestreams.jid}" />
+	</bean>
+	<bean id="global.pro.check.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg value="true" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="global.pro.check.loop" />
+				<ref bean="global.pro.check.jid.format" />
+				<ref bean="global.pro.check.jid.exists" />
+			</util:list>
+		</constructor-arg>
+	</bean>
 
 	<bean id="finder" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>

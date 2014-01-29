@@ -18,6 +18,6 @@ public class CheckJIDMalformedProcessor extends ProxyProcessor {
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
 		context.write(protocol.getParent().clear().reply().setError(new ServerError().setType(ProtocolType.MODIFY).add(JIDMalformed.DETAIL)));
-		return true;
+		return false;
 	}
 }
