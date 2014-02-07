@@ -31,12 +31,11 @@ public class Register extends Protocol implements Fields, Collector {
 
 	public final static String NAME = "query";
 
-	private final BeanFields fields;
+	private final BeanFields fields = new BeanFields(true);
 
 	private String instructions;
 
 	public Register() {
-		this.fields = new BeanFields(true);
 	}
 
 	public Register(String instructions) {

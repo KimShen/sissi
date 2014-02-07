@@ -62,7 +62,7 @@ public class Stream extends Protocol {
 	}
 
 	public boolean version(String version) {
-		return version.compareTo(this.version) < 0;
+		return version.compareTo(this.version) >= 0;
 	}
 
 	@XmlAttribute

@@ -31,7 +31,6 @@
 		</constructor-arg>
 	</bean>
 	<bean id="iq.pro.check.action" class="com.sissi.pipeline.in.iq.IQCheckActionProcessor" />
-	<bean id="iq.pro.check.children" class="com.sissi.pipeline.in.iq.IQCheckChildrenProcessor" />
 	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
 		<constructor-arg ref="finder.iq" />
 		<constructor-arg>
@@ -51,7 +50,6 @@
 				<ref bean="global.pro.check.chained" />
 				<ref bean="iq.pro.check.auth" />
 				<ref bean="iq.pro.check.action" />
-				<ref bean="iq.pro.check.children" />
 				<ref bean="iq.pro.fork" />
 			</util:list>
 		</constructor-arg>

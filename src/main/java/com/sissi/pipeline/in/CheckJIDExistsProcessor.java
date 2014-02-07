@@ -15,6 +15,8 @@ import com.sissi.ucenter.VCardContext;
 public class CheckJIDExistsProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ServiceUnavaliable.DETAIL);
+	
+	private final String localhost = "127.0.0.1";
 
 	private final VCardContext vcardContext;
 
@@ -38,7 +40,7 @@ public class CheckJIDExistsProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return !protocol.to() || protocol.to(this.domain) || protocol.to(this.proxy) || this.presenceIgnore && protocol.clazz(Presence.class) || this.vcardContext.exists(protocol.getTo()) ? true : this.writeAndReturn(context, protocol);
+		return !protocol.to() || protocol.to(this.localhost) || protocol.to(this.domain) || protocol.to(this.proxy) || this.presenceIgnore && protocol.clazz(Presence.class) || this.vcardContext.exists(protocol.getTo()) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {

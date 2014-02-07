@@ -164,7 +164,7 @@ public class MongoAddressing implements Addressing {
 		}
 
 		public boolean isEmpty() {
-			return this.moreThan(1);
+			return this.resources == null || this.resources.length == 0;
 		}
 
 		public boolean moreThan(Integer counter) {

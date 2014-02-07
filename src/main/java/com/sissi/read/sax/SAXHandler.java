@@ -74,8 +74,7 @@ public class SAXHandler extends DefaultHandler {
 
 	private boolean propertyCopy(Object ob, String key, Object value) {
 		try {
-			this.find4Cached(ob).invoke(ob, key, value);
-			return true;
+			return this.find4Cached(ob).invoke(ob, key, value);
 		} catch (Exception e) {
 			if (log.isDebugEnabled()) {
 				log.debug(e.toString());
@@ -169,12 +168,13 @@ public class SAXHandler extends DefaultHandler {
 
 		private final Set<String> ignores = new HashSet<String>();
 
-		public void invoke(Object ob, String key, Object value) throws Exception {
+		public boolean invoke(Object ob, String key, Object value) throws Exception {
 			if (this.ignores.contains(key)) {
-				return;
+				return false;
 			}
 			this.cacheMethod(ob, key, this.get(key)).invoke(ob, value);
 			log.debug("Copy " + key + " / " + value + " on " + ob.getClass());
+			return true;
 		}
 
 		private Method cacheMethod(Object ob, String key, Method method) throws NoSuchMethodException {

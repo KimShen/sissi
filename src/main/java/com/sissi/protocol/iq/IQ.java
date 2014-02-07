@@ -41,11 +41,19 @@ public class IQ extends Protocol implements Collector {
 	private final static List<Protocol> empty = new ArrayList<Protocol>();
 
 	private List<Protocol> protocols;
+
+	public IQ() {
+		super();
+	}
+
+	public void setRegister(Register register){
+		
+	}
 	
 	public String getId() {
 		return super.getId() != null ? super.getId() : super.setId(UUID.randomUUID().toString()).getId();
 	}
-	
+
 	public IQ setId(Long id) {
 		super.setId(String.valueOf(id));
 		return this;
