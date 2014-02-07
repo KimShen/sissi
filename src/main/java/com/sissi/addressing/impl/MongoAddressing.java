@@ -176,7 +176,7 @@ public class MongoAddressing implements Addressing {
 		}
 
 		private boolean hasNext() {
-			return this.counter.get() > (this.resources.length - 1);
+			return this.counter.get() < this.resources.length;
 		}
 
 		private JID next() {

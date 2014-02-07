@@ -85,6 +85,17 @@ public class GroupItem extends Item implements Collector {
 		return this.subscription;
 	}
 
+	/**
+	 * For Xml Parser
+	 * 
+	 * @param subscription
+	 * @return
+	 */
+	public GroupItem setSubscription(String subscription) {
+		this.subscription = subscription;
+		return this;
+	}
+
 	public GroupItem setSubscription(RosterSubscription subscription) {
 		this.subscription = subscription.toString();
 		return this;

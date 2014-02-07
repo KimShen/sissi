@@ -17,8 +17,8 @@
 			<util:list>
 				<ref bean="bind.pro.addressing.limit" />
 				<ref bean="bind.pro.addressing.close.current" />
-				<ref bean="bind.pro.addressing.join" />
 				<ref bean="bind.pro.resource" />
+				<ref bean="bind.pro.addressing.join" />
 			</util:list>
 		</constructor-arg>
 	</bean>

@@ -46,10 +46,6 @@ public class IQ extends Protocol implements Collector {
 		super();
 	}
 
-	public void setRegister(Register register){
-		
-	}
-	
 	public String getId() {
 		return super.getId() != null ? super.getId() : super.setId(UUID.randomUUID().toString()).getId();
 	}

@@ -38,7 +38,7 @@ public class Group {
 	}
 
 	public Group setText(String text) {
-		if (this.item != null && this.getValue() == null) {
+		if (this.item != null && (text == null || text.isEmpty())) {
 			this.item.getGroup().remove(this);
 		} else {
 			this.value = text;
