@@ -22,10 +22,10 @@ public class Interval {
 	}
 
 	public Long getInterval() {
-		return interval;
+		return this.interval;
 	}
 
 	public TimeUnit getUnit() {
-		return unit;
+		return this.unit;
 	}
 }

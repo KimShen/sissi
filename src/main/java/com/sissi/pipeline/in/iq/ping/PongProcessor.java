@@ -10,7 +10,7 @@ import com.sissi.protocol.Protocol;
 public class PongProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		context.pong(protocol.getParent());
 		return true;
 	}

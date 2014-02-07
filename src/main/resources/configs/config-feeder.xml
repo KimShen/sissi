@@ -4,7 +4,7 @@
 
 	<bean id="feeder" class="com.sissi.feed.impl.DirectFeederBuilder" />
 
-	<bean id="looper" class="com.sissi.looper.impl.PrivateLooperBuilder">
+	<bean id="looper" class="com.sissi.looper.impl.PersonalLooperBuilder">
 		<constructor-arg value="${looper.num}" />
 		<constructor-arg ref="counter" />
 		<constructor-arg>

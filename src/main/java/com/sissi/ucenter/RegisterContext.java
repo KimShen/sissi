@@ -8,5 +8,5 @@ import com.sissi.ucenter.field.Fields;
  */
 public interface RegisterContext {
 
-	public Boolean register(Fields fields);
+	public boolean register(Fields fields);
 }

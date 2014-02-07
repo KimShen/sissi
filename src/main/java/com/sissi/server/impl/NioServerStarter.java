@@ -49,13 +49,13 @@ public class NioServerStarter implements ServerStarter {
 
 	@Override
 	public NioServerStarter stop() {
-		this.closeAll();
-		return this;
+		return this.closeAll();
 	}
 
-	private void closeAll() {
+	private NioServerStarter closeAll() {
 		this.serverLoopGroup.boss().shutdownGracefully();
 		this.serverLoopGroup.event().shutdownGracefully();
+		return this;
 	}
 
 	private class FailShutdownGenericFutureListener implements GenericFutureListener<Future<Void>> {

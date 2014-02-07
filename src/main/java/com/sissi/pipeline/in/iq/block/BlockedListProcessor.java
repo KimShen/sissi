@@ -1,5 +1,6 @@
 package com.sissi.pipeline.in.iq.block;
 
+import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
@@ -21,12 +22,12 @@ public class BlockedListProcessor extends ProxyProcessor {
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		BlockList list = BlockList.class.cast(protocol);
-		for (String each : this.blockContext.iBlockWho(context.getJid())) {
-			list.add(new BlockListItem().setJid(super.build(each, null).setDomain(context.getDomain()).asStringWithBare()));
+	public boolean input(JIDContext context, Protocol protocol) {
+		BlockList list = BlockList.class.cast(protocol).clear();
+		for (JID each : this.blockContext.iBlockWho(context.jid())) {
+			list.add(new BlockListItem().setJid(each.domain(context.domain()).asStringWithBare()));
 		}
-		context.write(list.getParent().setFrom(context.getDomain()).setType(ProtocolType.RESULT));
+		context.write(list.getParent().setFrom(context.domain()).setType(ProtocolType.RESULT));
 		return true;
 	}
 }

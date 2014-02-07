@@ -40,7 +40,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="server.main.handler" class="com.sissi.server.impl.PrivateServerHandlerBuilder">
+	<bean id="server.main.handler" class="com.sissi.server.impl.PersonalServerHandlerBuilder">
 		<constructor-arg ref="server.tls" />
 		<constructor-arg ref="server.reader" />
 		<constructor-arg ref="server.closer" />
@@ -79,7 +79,7 @@
 			<bean class="com.sissi.server.impl.NioServerLoopGroup" />
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.server.impl.PrivateServerHandlerChannelInitializer">
+			<bean class="com.sissi.server.impl.PersonalServerHandlerChannelInitializer">
 				<constructor-arg index="0" value="${global.idle.read}" />
 				<constructor-arg index="1" value="${global.idle.write}" />
 				<constructor-arg index="2" value="${global.idle.all}" />

@@ -14,39 +14,43 @@ class OfflineJID implements JID {
 	}
 
 	@Override
-	public String getUser() {
+	public String user() {
 		return null;
+	}
+
+	public boolean user(String jid) {
+		return false;
 	}
 
 	@Override
-	public String getDomain() {
+	public String domain() {
 		return null;
 	}
 
-	public JID setDomain(String domain) {
+	public JID domain(String domain) {
 		return this;
 	}
 
 	@Override
-	public String getResource() {
+	public String resource() {
 		return null;
 	}
 
 	@Override
-	public JID setResource(String resource) {
+	public JID resource(String resource) {
 		return this;
 	}
 
 	@Override
-	public JID getBare() {
+	public JID bare() {
 		return this;
 	}
 
-	public Boolean isValid() {
+	public boolean valid() {
 		return true;
 	}
 
-	public Boolean isValid(Boolean includeDomain) {
+	public boolean valid(boolean excludeDomain) {
 		return true;
 	}
 

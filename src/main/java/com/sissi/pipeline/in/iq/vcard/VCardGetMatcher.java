@@ -17,7 +17,7 @@ public class VCardGetMatcher extends ClassMatcher {
 	}
 
 	@Override
-	public Boolean match(Protocol protocol) {
-		return super.match(protocol) && (protocol.getParent().getTo() == null) == this.self;
+	public boolean match(Protocol protocol) {
+		return super.match(protocol) && !protocol.getParent().to() == this.self;
 	}
 }

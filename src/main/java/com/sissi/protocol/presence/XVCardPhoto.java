@@ -3,14 +3,14 @@ package com.sissi.protocol.presence;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 
 /**
  * @author kim 2013年12月13日
  */
-@MappingMetadata(uri = XVCardPhoto.XMLNS, localName = XVCardPhoto.NAME)
+@Metadata(uri = XVCardPhoto.XMLNS, localName = XVCardPhoto.NAME)
 @XmlRootElement(name = XVCardPhoto.NAME)
 public class XVCardPhoto implements Field<String> {
 
@@ -51,7 +51,7 @@ public class XVCardPhoto implements Field<String> {
 	}
 
 	@Override
-	public Boolean hasChild() {
+	public boolean hasChild() {
 		return false;
 	}
 }

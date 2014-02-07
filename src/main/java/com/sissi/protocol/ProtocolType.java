@@ -26,6 +26,15 @@ public enum ProtocolType {
 		return this == ProtocolType.parse(type);
 	}
 
+	public Boolean in(ProtocolType... types) {
+		for (ProtocolType type : types) {
+			if (this == type) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static ProtocolType parse(String value) {
 		String type = value != null ? value.toUpperCase() : value;
 		return values.contains(type) ? ProtocolType.valueOf(type) : null;

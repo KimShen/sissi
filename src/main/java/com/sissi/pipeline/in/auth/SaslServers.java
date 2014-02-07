@@ -9,7 +9,7 @@ import com.sissi.context.JIDContext;
  */
 public interface SaslServers {
 
-	public SaslServer set(JIDContext context, SaslServer sasl);
+	public SaslServer push(JIDContext context, SaslServer sasl);
 
-	public SaslServer get(JIDContext context);
+	public SaslServer pull(JIDContext context);
 }

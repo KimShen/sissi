@@ -7,9 +7,9 @@ import com.sissi.write.Transfer;
  */
 public interface ExchangerContext {
 
-	public Exchanger set(String host, Transfer transfer);
+	public Exchanger join(String host, Transfer transfer);
 	
-	public Exchanger get(String host);
+	public Exchanger leave(String host);
 
-	public Boolean isTarget(String host);
+	public boolean exists(String host);
 }

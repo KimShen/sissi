@@ -22,7 +22,7 @@ public class IQForkProcessor implements Input {
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		for (Protocol sub : IQ.class.cast(protocol).listChildren()) {
 			return this.finder.find(sub).input(context, sub);
 		}

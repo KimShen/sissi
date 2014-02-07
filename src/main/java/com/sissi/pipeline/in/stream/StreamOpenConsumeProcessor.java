@@ -11,7 +11,7 @@ import com.sissi.protocol.Stream;
 public class StreamOpenConsumeProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		Stream.class.cast(protocol).consume();
 		return true;
 	}

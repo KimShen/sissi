@@ -15,7 +15,7 @@ public class ClassMatcher implements InputMatcher {
 		this.clazz = clazz;
 	}
 
-	public Boolean match(Protocol protocol) {
-		return this.clazz == protocol.getClass();
+	public boolean match(Protocol protocol) {
+		return protocol.clazz(this.clazz);
 	}
 }

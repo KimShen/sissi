@@ -16,9 +16,9 @@ import com.sissi.ucenter.RelationRoster;
 public class PresenceRosterSubscribed2ItemProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		JID source = super.build(protocol.getTo());
-		super.broadcast(source, new IQ().add(new Roster(new GroupItem(RelationRoster.class.cast(super.ourRelation(source, context.getJid()))))).setType(ProtocolType.SET));
+		super.broadcast(source, new IQ().add(new Roster(new GroupItem(RelationRoster.class.cast(super.ourRelation(source, context.jid()))))).setType(ProtocolType.SET));
 		return true;
 	}
 }

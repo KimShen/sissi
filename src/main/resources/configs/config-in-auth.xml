@@ -5,7 +5,9 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="auth.sasl" class="com.sissi.pipeline.in.auth.impl.CachedSaslServers" />
+	<bean id="auth.sasl" class="com.sissi.pipeline.in.auth.impl.CachedSaslServers">
+		<constructor-arg ref="counter" />
+	</bean>
 
 	<util:list id="auth.callback.chained">
 		<bean class="com.sissi.pipeline.in.auth.impl.PlainAuthCallback">

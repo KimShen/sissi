@@ -18,7 +18,7 @@ public class RosterActionMatcher extends IQActionMatcher {
 	}
 
 	@Override
-	public Boolean match(Protocol protocol) {
-		return super.match(protocol) && Roster.class.cast(protocol).getFirstItem().getAction() == this.action;
+	public boolean match(Protocol protocol) {
+		return super.match(protocol) && Roster.class.cast(protocol).getFirstItem().action(this.action);
 	}
 }

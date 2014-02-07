@@ -10,53 +10,53 @@ import com.sissi.protocol.Element;
  */
 public interface JIDContext {
 
-	public Long getIndex();
+	public long index();
 
-	public JIDContext setJid(JID jid);
+	public JIDContext jid(JID jid);
 
-	public JID getJid();
+	public JID jid();
 
-	public JIDContext setAuth(Boolean canAccess);
+	public JIDContext auth(boolean canAccess);
 
-	public Boolean isAuth();
+	public boolean auth();
 
-	public Boolean isAuthRetry();
+	public boolean authRetry();
 
-	public JIDContext setBinding(Boolean isBinding);
+	public JIDContext bind();
 
-	public Boolean isBinding();
+	public boolean binding();
 
-	public JIDContext setPriority(Integer priority);
+	public JIDContext priority(int priority);
 
-	public Integer getPriority();
+	public int priority();
 
-	public JIDContext setDomain(String domain);
+	public JIDContext domain(String domain);
 
-	public String getDomain();
+	public String domain();
 
-	public JIDContext setLang(String lang);
+	public JIDContext lang(String lang);
 
-	public String getLang();
+	public String lang();
 
-	public SocketAddress getAddress();
+	public SocketAddress address();
 
-	public Boolean setTls();
+	public boolean encrypt();
 
-	public Boolean isTls();
+	public boolean encrypted();
 
-	public JIDContext setPresence();
+	public JIDContext present();
 
-	public Boolean isPresence();
+	public boolean presented();
 
-	public Status getStatus();
+	public Status status();
 
 	public JIDContext reset();
 
-	public Boolean close();
+	public boolean close();
 
-	public Boolean closePrepare();
+	public boolean closePrepare();
 
-	public Boolean closeTimeout();
+	public boolean closeTimeout();
 
 	public JIDContext ping();
 

@@ -10,8 +10,8 @@ import com.sissi.protocol.Protocol;
 public class BindAddressJoinProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		super.join(context);
-		return context.setBinding(true).isBinding();
+		return context.bind().binding();
 	}
 }

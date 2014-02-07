@@ -11,8 +11,8 @@ import com.sissi.protocol.Stream;
 public class StreamContextDomainProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		context.setDomain(Stream.class.cast(protocol).getTo());
+	public boolean input(JIDContext context, Protocol protocol) {
+		context.domain(Stream.class.cast(protocol).getTo());
 		return true;
 	}
 }

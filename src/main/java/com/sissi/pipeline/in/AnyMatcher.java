@@ -9,7 +9,7 @@ import com.sissi.protocol.Protocol;
 public class AnyMatcher implements InputMatcher {
 
 	@Override
-	public Boolean match(Protocol protocol) {
+	public boolean match(Protocol protocol) {
 		return true;
 	}
 }

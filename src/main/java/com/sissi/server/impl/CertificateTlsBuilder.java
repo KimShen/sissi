@@ -40,7 +40,7 @@ public class CertificateTlsBuilder implements ServerTlsBuilder {
 
 	private SSLContext build(Certificate key, Certificate trust) {
 		try {
-			SSLContext context = SSLContext.getInstance(protocol);
+			SSLContext context = SSLContext.getInstance(this.protocol);
 			context.init(this.getKeyManagers(key), this.getTrustManagers(trust), null);
 			return context;
 		} catch (Exception e) {
@@ -56,7 +56,7 @@ public class CertificateTlsBuilder implements ServerTlsBuilder {
 		KeyManagerFactory factory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 		InputStream certificate = key.getFile().openStream();
 		try {
-			KeyStore ks = KeyStore.getInstance(keystore);
+			KeyStore ks = KeyStore.getInstance(this.keystore);
 			ks.load(certificate, key.getPassword());
 			factory.init(ks, key.getPassword());
 		} finally {
@@ -69,7 +69,7 @@ public class CertificateTlsBuilder implements ServerTlsBuilder {
 		TrustManagerFactory factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 		InputStream certificate = trust.getFile().openStream();
 		try {
-			KeyStore ks = KeyStore.getInstance(keystore);
+			KeyStore ks = KeyStore.getInstance(this.keystore);
 			ks.load(certificate, trust.getPassword());
 			factory.init(ks);
 		} finally {

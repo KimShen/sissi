@@ -11,8 +11,8 @@ import com.sissi.protocol.iq.roster.RosterSubscription;
 public class PresenceRosterUnSubscribedProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		super.update(super.build(protocol.getTo()), context.getJid(), RosterSubscription.NONE.toString());
+	public boolean input(JIDContext context, Protocol protocol) {
+		super.update(super.build(protocol.getTo()), context.jid(), RosterSubscription.NONE.toString());
 		return true;
 	}
 }

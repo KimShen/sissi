@@ -7,13 +7,13 @@ import com.sissi.protocol.Stream;
 import com.sissi.protocol.iq.auth.Failure;
 
 /**
+ * 
  * @author kim 2014年1月6日
  */
 public class AuthAbortProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		// Ignore if already binding
-		return context.isBinding() ? true : !context.write(Failure.INSTANCE_ABORTED).write(Stream.close()).close();
+	public boolean input(JIDContext context, Protocol protocol) {
+		return context.binding() ? true : !context.write(Failure.INSTANCE_ABORTED).write(Stream.closeGraceFully()).close();
 	}
 }

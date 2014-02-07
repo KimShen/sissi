@@ -2,6 +2,7 @@ package com.sissi.pipeline.in.stream;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
+import com.sissi.protocol.Feature;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 import com.sissi.protocol.feature.Bind;
@@ -12,13 +13,15 @@ import com.sissi.protocol.feature.Session;
  */
 public class StreamFeatureBindingProcessor implements Input {
 
+	private final Feature[] features = new Feature[] { Session.FEATURE, Bind.FEATURE };
+
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return context.isAuth() ? this.buildBindingFeature(Stream.class.cast(protocol)) : true;
+	public boolean input(JIDContext context, Protocol protocol) {
+		return context.auth() ? this.writeFeature(Stream.class.cast(protocol)) : true;
 	}
 
-	private Boolean buildBindingFeature(Stream stream) {
-		stream.addFeature(Session.FEATURE).addFeature(Bind.FEATURE);
+	private Boolean writeFeature(Stream stream) {
+		stream.addFeature(this.features);
 		return true;
 	}
 }

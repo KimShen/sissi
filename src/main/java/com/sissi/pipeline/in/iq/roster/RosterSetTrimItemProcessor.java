@@ -10,11 +10,11 @@ import com.sissi.protocol.iq.roster.Roster;
  */
 public class RosterSetTrimItemProcessor implements Input {
 
-	private final Integer items = 1;
+	private final int items = 1;
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		Roster.class.cast(protocol).trimItem(items);
+	public boolean input(JIDContext context, Protocol protocol) {
+		Roster.class.cast(protocol).trimItem(this.items);
 		return true;
 	}
 }

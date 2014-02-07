@@ -23,64 +23,40 @@ import com.sissi.read.Mapping;
  */
 public class SAXHandler extends DefaultHandler {
 
-	private final static Integer ONLY_ROOT = 1;
+	private final static String field = "text";
 
-	private final static String ROOT = "stream";
+	private final static Map<Class<?>, MethodFinder> cachedMethods = new HashMap<Class<?>, MethodFinder>();
 
-	private final static String TEXT = "text";
-
-	private final static Map<Class<?>, MethodFinder> CACHED_METHOD = new HashMap<Class<?>, MethodFinder>();
-
-	private final static Log LOG = LogFactory.getLog(SAXHandler.class);
+	private final static Log log = LogFactory.getLog(SAXHandler.class);
 
 	@SuppressWarnings("serial")
-	private final Set<String> rootNode = new HashSet<String>() {
+	private final Set<String> reset = new HashSet<String>() {
 		{
-			add(ROOT);
+			add("stream");
 		}
 	};
 
-	private final Mapping mapping;
+	private final Map<String, String> xmlns = new HashMap<String, String>();
 
-	private final LinkedList<Object> stack;
-
-	private final Map<String, String> xmlns;
+	private final LinkedList<Object> stack = new LinkedList<Object>();
 
 	private final SAXFuture future;
+
+	private final Mapping mapping;
 
 	private Object current;
 
 	public SAXHandler(Mapping mapping, SAXFuture future) {
 		super();
-		this.mapping = mapping;
 		this.future = future;
-		this.stack = new LinkedList<Object>();
-		this.xmlns = new HashMap<String, String>();
-	}
-
-	private void propertyCopy(Attributes attributes, Object element) {
-		for (int index = 0; index < attributes.getLength(); index++) {
-			this.propertyCopy(element, attributes.getLocalName(index), attributes.getValue(index));
-		}
-	}
-
-	private boolean propertyCopy(Object ob, String key, Object value) {
-		try {
-			this.find4Cached(ob).invoke(ob, key, value);
-			return true;
-		} catch (Exception e) {
-			if (LOG.isDebugEnabled()) {
-				e.printStackTrace();
-			}
-			return false;
-		}
+		this.mapping = mapping;
 	}
 
 	private MethodFinder find4Cached(Object ob) {
-		MethodFinder finder = CACHED_METHOD.get(ob.getClass());
+		MethodFinder finder = cachedMethods.get(ob.getClass());
 		if (finder == null) {
-			LOG.debug("Create MethodFinder for " + ob.getClass());
-			CACHED_METHOD.put(ob.getClass(), (finder = new MethodFinder()));
+			log.debug("Create MethodFinder for " + ob.getClass());
+			cachedMethods.put(ob.getClass(), (finder = new MethodFinder()));
 		}
 		return finder;
 	}
@@ -89,35 +65,54 @@ public class SAXHandler extends DefaultHandler {
 		return Collector.class.isAssignableFrom(this.stack.getFirst().getClass());
 	}
 
-	private void newRoot2Reset(String localName) {
-		if (this.rootNode.contains(localName.intern().trim())) {
-			this.stack.clear();
+	private SAXHandler propertyCopy(Attributes attributes, Object element) {
+		for (int index = 0; index < attributes.getLength(); index++) {
+			this.propertyCopy(element, attributes.getLocalName(index), attributes.getValue(index));
+		}
+		return this;
+	}
+
+	private boolean propertyCopy(Object ob, String key, Object value) {
+		try {
+			this.find4Cached(ob).invoke(ob, key, value);
+			return true;
+		} catch (Exception e) {
+			if (log.isDebugEnabled()) {
+				log.debug(e.toString());
+				e.printStackTrace();
+			}
+			return false;
 		}
 	}
 
-	private Object newElement(String uri, String localName) {
-		return this.current = this.mapping.newInstance(uri, localName);
+	private SAXHandler resetIfNecessary(String localName) {
+		if (this.reset.contains(localName.intern().trim())) {
+			this.stack.clear();
+		}
+		return this;
 	}
 
-	private void xmlnCopy() {
+	private SAXHandler newElement(String uri, String localName) {
+		this.current = this.mapping.instance(uri, localName);
+		return this;
+	}
+
+	private SAXHandler xmlnCopy() {
 		for (String xmln : this.xmlns.keySet()) {
 			this.propertyCopy(this.current, xmln, this.xmlns.get(xmln));
 		}
+		return this;
 	}
 
 	private boolean generateNode(Attributes attributes, String uri, String localName) {
-		this.newRoot2Reset(localName);
-		this.newElement(uri, localName);
-		this.xmlnCopy();
+		this.resetIfNecessary(localName).newElement(uri, localName).xmlnCopy();
 		if (this.current != null) {
 			if (this.stack.isEmpty()) {
 				this.propertyCopy(attributes, this.current);
-				this.future.set(this.current);
+				this.future.push(this.current);
 			} else {
-				this.propertyCopy(this.stack.getFirst(), localName, this.current);
-				if (this.isCollector()) {
-					Collector collector = Collector.class.cast(this.stack.getFirst());
-					collector.set(localName, this.current);
+				if (!this.propertyCopy(this.stack.getFirst(), localName, this.current) && this.isCollector()) {
+					Collector.class.cast(this.stack.getFirst()).set(localName, this.current);
 				}
 			}
 			this.stack.addFirst(this.current);
@@ -132,19 +127,20 @@ public class SAXHandler extends DefaultHandler {
 	}
 
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-		LOG.debug("Process uri: " + uri + " localName: " + localName);
-		if (this.generateNode(attributes, uri != null ? uri : null, localName)) {
+		log.debug("Process uri: " + uri + " localName: " + localName);
+		if (this.generateNode(attributes, uri, localName)) {
 			this.propertyCopy(attributes, this.stack.getFirst());
 		}
 	}
 
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-		if (this.mapping.hasCached(uri, localName)) {
+		// Can not use simple boolean flag, because node may be nest
+		if (this.mapping.exists(uri, localName)) {
 			Object firstNode = this.stack.removeFirst();
-			LOG.debug(firstNode.getClass() + " will be remove");
-			if (this.stack.size() <= ONLY_ROOT) {
-				LOG.debug(firstNode.getClass() + " will be feed");
-				this.future.set(firstNode);
+			log.debug(firstNode.getClass() + " will be remove");
+			if (this.stack.size() <= 1) {
+				log.debug(firstNode.getClass() + " will be feed");
+				this.future.push(firstNode);
 			}
 		}
 	}
@@ -153,19 +149,23 @@ public class SAXHandler extends DefaultHandler {
 		String text = new String(ch, start, length).trim();
 		if (!text.isEmpty()) {
 			if (this.current != null) {
-				this.propertyCopy(this.stack.getFirst(), TEXT, text);
+				this.propertyCopy(this.stack.getFirst(), field, text);
 			}
 		}
 	}
 
 	public void fatalError(SAXParseException e) throws SAXException {
+		if (log.isDebugEnabled()) {
+			log.debug(e.toString());
+			e.printStackTrace();
+		}
 	}
 
 	private static class MethodFinder extends HashMap<String, Method> {
 
 		private final static long serialVersionUID = 1L;
 
-		private final static Class<?>[] TYPES = new Class[] { String.class };
+		private final static Class<?>[] types = new Class[] { String.class };
 
 		private final Set<String> ignores = new HashSet<String>();
 
@@ -174,13 +174,13 @@ public class SAXHandler extends DefaultHandler {
 				return;
 			}
 			this.cacheMethod(ob, key, this.get(key)).invoke(ob, value);
-			LOG.debug("Copy " + key + " / " + value + " on " + ob.getClass());
+			log.debug("Copy " + key + " / " + value + " on " + ob.getClass());
 		}
 
 		private Method cacheMethod(Object ob, String key, Method method) throws NoSuchMethodException {
 			if (method == null) {
 				try {
-					this.put(key, (method = ob.getClass().getMethod("set" + StringUtils.capitalize(key), TYPES)));
+					this.put(key, (method = ob.getClass().getMethod("set" + StringUtils.capitalize(key), types)));
 				} catch (NoSuchMethodException e) {
 					this.ignores.add(key);
 				}

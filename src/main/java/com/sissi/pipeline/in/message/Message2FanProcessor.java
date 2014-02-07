@@ -10,8 +10,8 @@ import com.sissi.protocol.Protocol;
 public class Message2FanProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		super.findOne(super.build(protocol.getTo()), true).write(protocol.setFrom(context.getJid()));
+	public boolean input(JIDContext context, Protocol protocol) {
+		super.findOne(super.build(protocol.getTo()), true).write(protocol.setFrom(context.jid()));
 		return true;
 	}
 }

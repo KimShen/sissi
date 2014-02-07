@@ -20,61 +20,61 @@ import com.sissi.server.ServerTlsBuilder;
  */
 public class FixDomainServerTls implements ServerTls, GenericFutureListener<Future<Void>> {
 
-	private final Log log = LogFactory.getLog(this.getClass());
+	private final static Log log = LogFactory.getLog(FixDomainServerTls.class);
 
-	private final AtomicBoolean isStarttls = new AtomicBoolean();
+	private final AtomicBoolean prepareTls = new AtomicBoolean();
 
-	private final AtomicBoolean prepareStarttls = new AtomicBoolean();
+	private final AtomicBoolean isTls = new AtomicBoolean();
 
-	private final ServerTlsBuilder serverTlsbuilder;
+	private final ServerTlsBuilder serverTlsBuilder;
 
 	private final ChannelHandlerContext context;
 
 	private SslHandler handler;
 
-	public FixDomainServerTls(ServerTlsBuilder serverTlsbuilder, ChannelHandlerContext context) {
+	public FixDomainServerTls(ServerTlsBuilder serverTlsBuilder, ChannelHandlerContext context) {
 		super();
 		this.context = context;
-		this.serverTlsbuilder = serverTlsbuilder;
+		this.serverTlsBuilder = serverTlsBuilder;
 	}
 
 	public void operationComplete(Future<Void> future) throws Exception {
-		if (future.isSuccess() && this.prepareStarttls.get()) {
+		if (future.isSuccess() && this.prepareTls.get()) {
 			this.context.pipeline().addFirst(this.handler);
-			this.prepareStarttls.compareAndSet(true, false);
+			this.prepareTls.compareAndSet(true, false);
 		}
 	}
 
 	@Override
-	public Boolean startTls(String domain) {
+	public boolean startTls(String domain) {
 		try {
 			return this.prepareSSL();
 		} catch (Exception e) {
-			if (this.log.isErrorEnabled()) {
-				this.log.error(e.toString());
+			if (log.isErrorEnabled()) {
+				log.error(e.toString());
 				e.printStackTrace();
 			}
 			return this.rollbackSSL();
 		}
 	}
 
-	public Boolean isTls(String domain) {
-		return this.isStarttls.get();
+	public boolean isTls(String domain) {
+		return this.isTls.get();
 	}
 
-	private Boolean rollbackSSL() {
-		this.isStarttls.set(false);
-		this.prepareStarttls.set(false);
+	private boolean rollbackSSL() {
+		this.isTls.set(false);
+		this.prepareTls.set(false);
 		return false;
 	}
 
-	private Boolean prepareSSL() {
-		if (this.isStarttls.compareAndSet(false, true)) {
-			SSLEngine engine = this.serverTlsbuilder.getSSLContext().createSSLEngine();
+	private boolean prepareSSL() {
+		if (this.isTls.compareAndSet(false, true)) {
+			SSLEngine engine = this.serverTlsBuilder.getSSLContext().createSSLEngine();
 			engine.setNeedClientAuth(false);
 			engine.setUseClientMode(false);
 			this.handler = new SslHandler(engine);
-			this.prepareStarttls.compareAndSet(false, true);
+			this.prepareTls.compareAndSet(false, true);
 		}
 		return true;
 	}

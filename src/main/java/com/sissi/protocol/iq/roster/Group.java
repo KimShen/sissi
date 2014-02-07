@@ -3,12 +3,12 @@ package com.sissi.protocol.iq.roster;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013-11-20
  */
-@MappingMetadata(uri = Roster.XMLNS, localName = Group.NAME)
+@Metadata(uri = Roster.XMLNS, localName = Group.NAME)
 @XmlRootElement
 public class Group {
 
@@ -38,8 +38,12 @@ public class Group {
 	}
 
 	public Group setText(String text) {
-		this.value = text;
-		this.shouldIgnore();
+		if (this.item != null && this.getValue() == null) {
+			this.item.getGroup().remove(this);
+		} else {
+			this.value = text;
+		}
+		this.item = null;
 		return this;
 	}
 
@@ -48,12 +52,5 @@ public class Group {
 			this.value = this.value.substring(0, length);
 		}
 		return this;
-	}
-
-	private void shouldIgnore() {
-		if (this.item != null && this.getValue() == null) {
-			this.item.getGroup().remove(this);
-		}
-		this.item = null;
 	}
 }

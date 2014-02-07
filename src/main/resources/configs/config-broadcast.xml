@@ -6,9 +6,9 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="broadcast.any" abstract="true">
-		<property name="jidBuilder" ref="jid" />
-		<property name="addressing" ref="addressing" />
-		<property name="relationContext" ref="relation.roster" />
+		<constructor-arg ref="jid" />
+		<constructor-arg ref="addressing" />
+		<constructor-arg ref="relation.roster" />
 	</bean>
 	<bean id="broadcast.presence.self" class="com.sissi.broadcast.impl.ToSelfBroadcastPresence" parent="broadcast.any" />
 	<bean id="broadcast.presence.selfs" class="com.sissi.broadcast.impl.ToSelfsBroadcastPresence" parent="broadcast.any" />

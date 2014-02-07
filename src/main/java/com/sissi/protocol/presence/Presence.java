@@ -14,7 +14,7 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
@@ -22,7 +22,7 @@ import com.sissi.ucenter.field.impl.BeanFields;
 /**
  * @author kim 2013-10-28
  */
-@MappingMetadata(uri = Presence.XMLNS, localName = Presence.NAME)
+@Metadata(uri = Presence.XMLNS, localName = Presence.NAME)
 @XmlRootElement
 public class Presence extends Protocol implements com.sissi.context.Status, Fields, Collector {
 
@@ -45,27 +45,11 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		this.fields = new BeanFields(false);
 	}
 
-	public Presence(JID from, String type) {
-		this();
-		this.setFrom(from).setType(type);
-	}
-
-	public Presence(JID from, StatusClauses clauses) {
-		this();
-		this.copyClauses(clauses).setFrom(from);
-	}
-
-	private Presence copyClauses(StatusClauses clauses) {
-		this.setShow(clauses.find(StatusClauses.KEY_SHOW)).setStatus(clauses.find(StatusClauses.KEY_STATUS)).setAvator(clauses.find(StatusClauses.KEY_AVATOR)).setType(clauses.find(StatusClauses.KEY_TYPE));
-		return this;
-	}
-
 	private XVCard findXVard() {
 		return XVCard.class.cast(this.fields != null ? this.fields.findField(XVCard.NAME, XVCard.class) : null);
 	}
-
-	@XmlTransient
-	public Integer getPriority() {
+	
+	public Integer priority() {
 		return this.priority != null ? Integer.parseInt(this.priority.getText()) : 0;
 	}
 
@@ -132,13 +116,13 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	}
 
 	@Override
-	public Presence setClauses(StatusClauses clauses) {
-		return this.copyClauses(clauses);
+	public Presence clauses(StatusClauses clauses) {
+		this.setShow(clauses.find(StatusClauses.KEY_SHOW)).setStatus(clauses.find(StatusClauses.KEY_STATUS)).setAvator(clauses.find(StatusClauses.KEY_AVATOR)).setType(clauses.find(StatusClauses.KEY_TYPE));
+		return this;
 	}
 
 	@Override
-	@XmlTransient
-	public StatusClauses getClauses() {
+	public StatusClauses clauses() {
 		return new PresenceClauses();
 	}
 
@@ -190,7 +174,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	}
 
 	@Override
-	public Boolean isEmbed() {
+	public boolean isEmbed() {
 		return this.fields.isEmbed();
 	}
 

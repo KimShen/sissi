@@ -25,38 +25,32 @@ import com.sissi.server.ServerTls;
  */
 public class OnlineContextBuilder implements JIDContextBuilder {
 
-	public final static String KEY_OUTPUT = "OUTPUT";
-
-	public final static String KEY_ADDRESS = "ADDRESS";
-
-	public final static String KEY_SERVERTLS = "TLS";
-
-	private final static Long PONG = -1L;
-
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final AtomicLong indexes = new AtomicLong();
 
-	private final Integer priority = 0;
+	private final int priority = 0;
+
+	private final long pong = -1L;
 
 	private final StatusBuilder statusBuilder;
 
 	private final ServerHeart serverHeart;
 
-	private final Integer authRetry;
+	private final int authRetry;
 
-	private final Output output;
+	private final Output offline;
 
 	private final String domain;
 
 	private final String lang;
 
-	public OnlineContextBuilder(Integer authRetry, String lang, String domain, Output output, StatusBuilder statusBuilder, ServerHeart serverHeart) {
+	public OnlineContextBuilder(int authRetry, String lang, String domain, Output offline, StatusBuilder statusBuilder, ServerHeart serverHeart) {
 		super();
 		this.statusBuilder = statusBuilder;
 		this.serverHeart = serverHeart;
 		this.authRetry = authRetry;
-		this.output = output;
+		this.offline = offline;
 		this.domain = domain;
 		this.lang = lang;
 	}
@@ -71,29 +65,29 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private class UserContext implements JIDContext {
 
-		private final AtomicLong ping = new AtomicLong(OnlineContextBuilder.PONG);
+		private final AtomicLong ping = new AtomicLong(OnlineContextBuilder.this.pong);
 
-		private final AtomicBoolean isPrepareClose = new AtomicBoolean();
+		private final AtomicBoolean prepareClose = new AtomicBoolean();
 
-		private final AtomicBoolean isPresence = new AtomicBoolean();
+		private final AtomicBoolean presence = new AtomicBoolean();
 
-		private final AtomicBoolean isBinding = new AtomicBoolean();
+		private final AtomicBoolean binding = new AtomicBoolean();
+
+		private final AtomicBoolean auth = new AtomicBoolean();
 
 		private final AtomicInteger authRetry = new AtomicInteger();
 
-		private final AtomicBoolean isAuth = new AtomicBoolean();
-
-		private final Long index;
+		private final long index;
 
 		private final ServerTls serverTls;
 
 		private final SocketAddress address;
 
-		private JID jid = OfflineJID.JID;
-
-		private Integer priority;
+		private int priority;
 
 		private Output output;
+
+		private Output backup;
 
 		private Status status;
 
@@ -101,31 +95,34 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private String lang;
 
+		private JID jid;
+
 		public UserContext(JIDContextParam param) {
 			super();
 			this.index = OnlineContextBuilder.this.indexes.incrementAndGet();
-			this.address = param.find(KEY_ADDRESS, SocketAddress.class);
-			this.serverTls = param.find(KEY_SERVERTLS, ServerTls.class);
-			this.output = param.find(KEY_OUTPUT, Output.class);
+			this.address = param.find(JIDContextParam.KEY_ADDRESS, SocketAddress.class);
+			this.serverTls = param.find(JIDContextParam.KEY_SERVERTLS, ServerTls.class);
+			this.output = param.find(JIDContextParam.KEY_OUTPUT, Output.class);
 			this.priority = OnlineContextBuilder.this.priority;
+			this.jid = OfflineJID.JID;
 		}
 
-		public Long getIndex() {
+		public long index() {
 			return this.index;
 		}
 
-		public Boolean isBinding() {
-			return this.isBinding.get();
+		public boolean binding() {
+			return this.binding.get();
 		}
 
-		public JIDContext setBinding(Boolean isBinding) {
-			this.isBinding.set(isBinding);
+		public JIDContext bind() {
+			this.binding.set(true);
 			return this;
 		}
 
 		@Override
-		public UserContext setAuth(Boolean canAccess) {
-			this.isAuth.set(canAccess);
+		public UserContext auth(boolean canAccess) {
+			this.auth.set(canAccess);
 			if (!canAccess) {
 				this.authRetry.incrementAndGet();
 			}
@@ -133,96 +130,96 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		@Override
-		public Boolean isAuth() {
-			return this.isAuth.get();
+		public boolean auth() {
+			return this.auth.get();
 		}
 
-		public Boolean isAuthRetry() {
+		public boolean authRetry() {
 			return OnlineContextBuilder.this.authRetry >= this.authRetry.get();
 		}
 
-		public UserContext setJid(JID jid) {
+		public UserContext jid(JID jid) {
 			this.jid = jid;
 			return this;
 		}
 
-		public JID getJid() {
+		public JID jid() {
 			return this.jid;
 		}
 
 		@Override
-		public Boolean setTls() {
-			return this.serverTls.startTls(this.getDomain());
+		public boolean encrypt() {
+			return this.serverTls.startTls(this.domain());
 		}
 
-		public Boolean isTls() {
-			return this.serverTls.isTls(this.getDomain());
+		public boolean encrypted() {
+			return this.serverTls.isTls(this.domain());
 		}
 
-		public JIDContext setPresence() {
-			this.isPresence.set(true);
+		public JIDContext present() {
+			this.presence.set(true);
 			return this;
 		}
 
-		public Boolean isPresence() {
-			return this.isPresence.get();
+		public boolean presented() {
+			return this.presence.get();
 		}
 
 		@Override
-		public JIDContext setPriority(Integer priority) {
+		public JIDContext priority(int priority) {
 			this.priority = priority < -128 ? -128 : priority > 127 ? 127 : priority;
 			return this;
 		}
 
 		@Override
-		public Integer getPriority() {
+		public int priority() {
 			return this.priority;
 		}
 
 		@Override
-		public Status getStatus() {
+		public Status status() {
 			return this.status;
 		}
 
 		@Override
-		public SocketAddress getAddress() {
+		public SocketAddress address() {
 			return this.address;
 		}
 
-		public JIDContext setLang(String lang) {
+		public JIDContext lang(String lang) {
 			this.lang = lang;
 			return this;
 		}
 
-		public String getLang() {
+		public String lang() {
 			return this.lang != null ? this.lang : OnlineContextBuilder.this.lang;
 		}
 
-		public JIDContext setDomain(String domain) {
+		public JIDContext domain(String domain) {
 			this.domain = domain;
-			this.jid.setDomain(this.domain);
+			this.jid.domain(this.domain);
 			return this;
 		}
 
-		public String getDomain() {
+		public String domain() {
 			return this.domain != null ? this.domain : OnlineContextBuilder.this.domain;
 		}
 
 		public JIDContext reset() {
 			this.priority = OnlineContextBuilder.this.priority;
 			this.lang = OnlineContextBuilder.this.lang;
-			this.ping.set(OnlineContextBuilder.PONG);
-			this.isPrepareClose.set(false);
-			this.isPresence.set(false);
+			this.ping.set(OnlineContextBuilder.this.pong);
+			this.prepareClose.set(false);
+			this.presence.set(false);
 			this.authRetry.set(0);
 			return this;
 		}
 
 		@Override
-		public Boolean close() {
+		public boolean close() {
 			try {
 				if (this.closePrepare()) {
-					this.output.close();
+					this.backup.close();
 				}
 				return true;
 			} catch (Exception e) {
@@ -230,16 +227,16 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			}
 		}
 
-		public Boolean closeTimeout() {
-			return this.ping.get() != PONG ? this.close() : false;
+		public boolean closeTimeout() {
+			return this.ping.get() != pong ? this.close() : false;
 		}
 
-		public Boolean closePrepare() {
+		public boolean closePrepare() {
 			try {
-				if (this.isPrepareClose.compareAndSet(false, true)) {
-					this.output = OnlineContextBuilder.this.output;
+				if (this.prepareClose.compareAndSet(false, true)) {
+					this.backup = this.output;
+					this.output = OnlineContextBuilder.this.offline;
 					this.status.clear();
-					// clear the reference to avoid gc failed
 					this.status = OfflineStatus.STATUS;
 				}
 				return true;
@@ -258,7 +255,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public JIDContext pong(Element element) {
 			try {
 				if (this.ping.get() == Long.valueOf(element.getId())) {
-					this.ping.set(PONG);
+					this.ping.set(pong);
 				}
 			} catch (Exception e) {
 				this.logFailed(e);
@@ -268,7 +265,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public JIDContext write(Element node) {
-			this.output.output(this, node.setTo(this.getJid().asString()));
+			this.output.output(this, node.setTo(this.jid().asString()));
 			return this;
 		}
 
@@ -283,7 +280,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			return this;
 		}
 
-		private Boolean logFailed(Exception e) {
+		private boolean logFailed(Exception e) {
 			if (OnlineContextBuilder.this.log.isDebugEnabled()) {
 				OnlineContextBuilder.this.log.debug(e.toString());
 				e.printStackTrace();

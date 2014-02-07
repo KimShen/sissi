@@ -5,13 +5,13 @@ package com.sissi.protocol.iq.bytestreams;
  */
 public class BytestreamsProxy {
 
-	private String jid;
+	private final String jid;
 
-	private String name;
+	private final String name;
 
-	private String port;
-	
-	private String domain;
+	private final String port;
+
+	private final String domain;
 
 	public BytestreamsProxy(String jid, String name, String domain, String port) {
 		super();

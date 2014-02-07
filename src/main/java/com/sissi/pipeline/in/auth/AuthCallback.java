@@ -8,7 +8,7 @@ import com.sissi.protocol.iq.auth.Auth;
  */
 public interface AuthCallback {
 
-	public Boolean auth(Auth auth, JIDContext context);
+	public boolean auth(Auth auth, JIDContext context);
 
-	public Boolean isSupport(String mechanism);
+	public boolean isSupport(String mechanism);
 }

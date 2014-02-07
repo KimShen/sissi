@@ -12,7 +12,7 @@ import com.sissi.protocol.message.Message;
 public class MessageCheckBodyProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		Body body = Message.class.cast(protocol).getBody();
 		return body != null && body.hasContent();
 	}

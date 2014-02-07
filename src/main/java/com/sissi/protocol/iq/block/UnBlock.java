@@ -2,12 +2,12 @@ package com.sissi.protocol.iq.block;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月6日
  */
-@MappingMetadata(uri = Block.XMLNS, localName = UnBlock.NAME)
+@Metadata(uri = Block.XMLNS, localName = UnBlock.NAME)
 @XmlRootElement(name = UnBlock.NAME)
 public class UnBlock extends Block {
 

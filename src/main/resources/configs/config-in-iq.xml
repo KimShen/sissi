@@ -48,10 +48,10 @@
 	<bean id="iq.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="global.pro.check.chained" />
 				<ref bean="iq.pro.check.auth" />
 				<ref bean="iq.pro.check.action" />
 				<ref bean="iq.pro.check.children" />
-				<ref bean="global.pro.check.chained" />
 				<ref bean="iq.pro.fork" />
 			</util:list>
 		</constructor-arg>

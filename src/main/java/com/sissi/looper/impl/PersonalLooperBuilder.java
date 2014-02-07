@@ -17,34 +17,34 @@ import com.sissi.resource.ResourceCounter;
 /**
  * @author kim 2013-10-30
  */
-public class PrivateLooperBuilder implements LooperBuilder {
+public class PersonalLooperBuilder implements LooperBuilder {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private final String resource = PrivateLooper.class.getSimpleName();
+	private final String resource = PersonalLooper.class.getSimpleName();
 
 	private final Runner runner;
 
-	private final Integer threads;
-
 	private final Interval interval;
+	
+	private final int threadNumber;
 
 	private final ResourceCounter resourceCounter;
 
-	public PrivateLooperBuilder(Runner runner, Interval interval, Integer threads, ResourceCounter resourceCounter) {
+	public PersonalLooperBuilder(Runner runner, Interval interval, int threadNumber, ResourceCounter resourceCounter) {
 		super();
 		this.runner = runner;
-		this.threads = threads;
 		this.interval = interval;
+		this.threadNumber = threadNumber;
 		this.resourceCounter = resourceCounter;
 	}
 
 	@Override
 	public Looper build(Future<?> future, Feeder feeder) {
-		return new PrivateLooper(future, feeder);
+		return new PersonalLooper(future, feeder);
 	}
 
-	private class PrivateLooper implements Runnable, Looper {
+	private class PersonalLooper implements Runnable, Looper {
 
 		private final AtomicBoolean state;
 
@@ -52,7 +52,7 @@ public class PrivateLooperBuilder implements LooperBuilder {
 
 		private final Feeder feeder;
 
-		private PrivateLooper(Future<?> future, Feeder feeder) {
+		private PersonalLooper(Future<?> future, Feeder feeder) {
 			super();
 			this.state = new AtomicBoolean();
 			this.future = future;
@@ -62,7 +62,7 @@ public class PrivateLooperBuilder implements LooperBuilder {
 		@Override
 		public void run() {
 			try {
-				PrivateLooperBuilder.this.resourceCounter.increment(PrivateLooperBuilder.this.resource);
+				PersonalLooperBuilder.this.resourceCounter.increment(PersonalLooperBuilder.this.resource);
 				while (true) {
 					try {
 						if (this.prepareStop()) {
@@ -70,19 +70,19 @@ public class PrivateLooperBuilder implements LooperBuilder {
 						}
 						this.getAndFeed();
 					} catch (Exception e) {
-						if (PrivateLooperBuilder.this.log.isWarnEnabled()) {
-							PrivateLooperBuilder.this.log.warn(e.toString());
+						if (PersonalLooperBuilder.this.log.isWarnEnabled()) {
+							PersonalLooperBuilder.this.log.warn(e.toString());
 							e.printStackTrace();
 						}
 					}
 				}
 			} finally {
-				PrivateLooperBuilder.this.resourceCounter.decrement(PrivateLooperBuilder.this.resource);
+				PersonalLooperBuilder.this.resourceCounter.decrement(PersonalLooperBuilder.this.resource);
 			}
 		}
 
 		private void getAndFeed() throws Exception {
-			Protocol protocol = (Protocol) future.get(PrivateLooperBuilder.this.interval.getInterval(), PrivateLooperBuilder.this.interval.getUnit());
+			Protocol protocol = (Protocol) future.get(PersonalLooperBuilder.this.interval.getInterval(), PersonalLooperBuilder.this.interval.getUnit());
 			if (protocol != null) {
 				this.feeder.feed(protocol);
 			}
@@ -95,7 +95,7 @@ public class PrivateLooperBuilder implements LooperBuilder {
 		@Override
 		public Looper start() {
 			this.state.set(true);
-			PrivateLooperBuilder.this.runner.executor(PrivateLooperBuilder.this.threads, this);
+			PersonalLooperBuilder.this.runner.executor(PersonalLooperBuilder.this.threadNumber, this);
 			return this;
 		}
 

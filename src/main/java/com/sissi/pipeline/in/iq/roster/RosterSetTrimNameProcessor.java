@@ -10,16 +10,16 @@ import com.sissi.protocol.iq.roster.Roster;
  */
 public class RosterSetTrimNameProcessor implements Input {
 
-	private final Integer name;
+	private final int length;
 
-	public RosterSetTrimNameProcessor(Integer name) {
+	public RosterSetTrimNameProcessor(int name) {
 		super();
-		this.name = name;
+		this.length = name;
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		Roster.class.cast(protocol).getFirstItem().trimName(this.name);
+	public boolean input(JIDContext context, Protocol protocol) {
+		Roster.class.cast(protocol).getFirstItem().trimName(this.length);
 		return true;
 	}
 }

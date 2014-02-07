@@ -13,13 +13,22 @@ import com.sissi.protocol.presence.PresenceType;
 public class PresenceRosterUnSubscribed2PresenceProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		JID to = super.build(protocol.getTo());
-		JID from = super.build(context.getJid().asStringWithBare());
-		for (String resource : super.resources(from)) {
-			super.broadcast(to, new Presence().setFrom(from.setResource(resource)).setType(PresenceType.UNSUBSCRIBED));
-			super.broadcast(to, new Presence().setFrom(from.setResource(resource)).setType(PresenceType.UNAVAILABLE));
-		}
+		Presence presence = Presence.class.cast(protocol);
+		this.writeUnsubscribed(context, to, presence).writeUnavailable(context, to, presence);
 		return true;
+	}
+
+	private PresenceRosterUnSubscribed2PresenceProcessor writeUnsubscribed(JIDContext context, JID to, Presence presence) {
+		super.broadcast(to, presence.setType(PresenceType.UNSUBSCRIBED).setFrom(context.jid().asStringWithBare()));
+		return this;
+	}
+
+	protected PresenceRosterUnSubscribed2PresenceProcessor writeUnavailable(JIDContext context, JID to, Presence presence) {
+		for (JID resource : super.resources(context.jid())) {
+			super.broadcast(to, presence.setFrom(resource).setType(PresenceType.UNAVAILABLE));
+		}
+		return this;
 	}
 }

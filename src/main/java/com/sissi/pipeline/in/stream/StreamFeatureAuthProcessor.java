@@ -2,6 +2,7 @@ package com.sissi.pipeline.in.stream;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
+import com.sissi.protocol.Feature;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 import com.sissi.protocol.feature.Mechanisms;
@@ -12,13 +13,15 @@ import com.sissi.protocol.feature.Register;
  */
 public class StreamFeatureAuthProcessor implements Input {
 
+	private final Feature[] features = new Feature[] { Mechanisms.FEATURE, Register.FEATURE };
+
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return !context.isAuth() ? this.buildAuthFeature(Stream.class.cast(protocol)) : true;
+	public boolean input(JIDContext context, Protocol protocol) {
+		return !context.auth() ? this.writeFeature(Stream.class.cast(protocol)) : true;
 	}
 
-	private Boolean buildAuthFeature(Stream stream) {
-		stream.addFeature(Mechanisms.FEATURE).addFeature(Register.FEATURE);
+	private Boolean writeFeature(Stream stream) {
+		stream.addFeature(this.features);
 		return true;
 	}
 

@@ -5,12 +5,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月13日
  */
-@MappingMetadata(uri = File.XMLNS, localName = File.NAME)
+@Metadata(uri = File.XMLNS, localName = File.NAME)
 @XmlRootElement
 public class File implements Collector {
 
@@ -26,12 +26,12 @@ public class File implements Collector {
 
 	@XmlElement
 	public Desc getDesc() {
-		return desc;
+		return this.desc;
 	}
 
 	@XmlAttribute
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public File setName(String name) {
@@ -41,7 +41,7 @@ public class File implements Collector {
 
 	@XmlAttribute
 	public String getSize() {
-		return size;
+		return this.size;
 	}
 
 	public File setSize(String size) {

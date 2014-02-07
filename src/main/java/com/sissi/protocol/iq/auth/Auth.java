@@ -4,12 +4,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author Kim.shen 2013-10-16
  */
-@MappingMetadata(uri = Auth.XMLNS, localName = Auth.NAME)
+@Metadata(uri = Auth.XMLNS, localName = Auth.NAME)
 @XmlRootElement
 public class Auth extends Protocol {
 
@@ -27,7 +27,7 @@ public class Auth extends Protocol {
 	}
 
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
 	public Auth setText(String text) {
@@ -36,7 +36,7 @@ public class Auth extends Protocol {
 	}
 
 	public String getMechanism() {
-		return mechanism;
+		return this.mechanism;
 	}
 
 	public Auth setMechanism(String mechanism) {

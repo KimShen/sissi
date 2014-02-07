@@ -1,7 +1,7 @@
 package com.sissi.pipeline.in.iq.roster;
 
 import com.sissi.context.JID;
-import com.sissi.protocol.iq.roster.GroupAction;
+import com.sissi.protocol.iq.roster.RosterSubscription;
 
 /**
  * @author kim 2013-11-18
@@ -9,16 +9,16 @@ import com.sissi.protocol.iq.roster.GroupAction;
 public class RosterRemove2SelfsItemProcessor extends Roster2SelfsItemProcessor {
 
 	@Override
-	protected String subscription(JID master, JID slave) {
-		return GroupAction.REMOVE.toString();
+	protected RosterSubscription subscription(JID master, JID slave) {
+		return RosterSubscription.REMOVE;
 	}
 
 	@Override
-	protected Boolean isAsk() {
+	protected boolean isAsk() {
 		return false;
 	}
 
-	protected Boolean isNext(String subscription) {
+	protected boolean isNext(String subscription) {
 		return true;
 	}
 }

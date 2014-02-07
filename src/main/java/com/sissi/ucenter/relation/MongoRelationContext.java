@@ -12,35 +12,39 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
+import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationContext;
 import com.sissi.ucenter.RelationInductor;
+import com.sissi.ucenter.RelationRoster;
 
 /**
  * @author kim 2013-11-5
  */
 abstract class MongoRelationContext implements RelationContext {
 
-	protected final String ask = "ask";
+	protected final String fieldAsk = "ask";
 
-	protected final String nick = "nick";
+	protected final String fieldNick = "nick";
 
-	protected final String state = "state";
+	protected final String fieldState = "state";
 
-	protected final String slave = "slave";
+	protected final String fieldSlave = "slave";
 
-	protected final String master = "master";
+	protected final String fieldMaster = "master";
 
-	protected final String activate = "activate";
+	protected final String fieldActivate = "activate";
+	
+	protected final Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
 
-	private final DBObject filterMaster = BasicDBObjectBuilder.start(master, 1).get();
+	private final DBObject filterMaster = BasicDBObjectBuilder.start(this.fieldMaster, 1).get();
 
-	private final DBObject filterSlave = BasicDBObjectBuilder.start(slave, 1).get();
+	private final DBObject filterSlave = BasicDBObjectBuilder.start(this.fieldSlave, 1).get();
 
-	private final DBObject entityInitMaster = BasicDBObjectBuilder.start(this.state, 0).get();
+	private final DBObject entityInitMaster = BasicDBObjectBuilder.start(this.fieldState, 0).get();
 
-	private final DBObject entityInitSlave = BasicDBObjectBuilder.start().add(this.activate, false).add(this.state, 0).get();
+	private final DBObject entityInitSlave = BasicDBObjectBuilder.start().add(this.fieldActivate, false).add(this.fieldState, 0).get();
 
 	private final DBObject entityEstablishTo = BasicDBObjectBuilder.start("or", 1).get();
 
@@ -50,19 +54,20 @@ abstract class MongoRelationContext implements RelationContext {
 
 	private final DBObject entityBrokeFrom = BasicDBObjectBuilder.start("and", 2).get();
 
-	private final DBObject[] entityStates4Subscribed = new DBObject[] { BasicDBObjectBuilder.start(this.state, 1).get(), BasicDBObjectBuilder.start(this.state, 3).get() };
-
-	protected final Map<String, Object> plus = Collections.unmodifiableMap(new HashMap<String, Object>());
+	private final DBObject[] entityStates = new DBObject[] { BasicDBObjectBuilder.start(this.fieldState, 1).get(), BasicDBObjectBuilder.start(this.fieldState, 3).get() };
 
 	protected final MongoConfig config;
+
+	private final JIDBuilder jidBuilder;
 
 	private final Map<String, RelationUpdate> update;
 
 	private RelationInductor relationInductor;
 
-	public MongoRelationContext(MongoConfig config) {
+	public MongoRelationContext(MongoConfig config, JIDBuilder jidBuilder) {
 		super();
 		this.config = config;
+		this.jidBuilder = jidBuilder;
 		Map<String, RelationUpdate> update = new HashMap<String, RelationUpdate>();
 		update.put(RosterSubscription.TO.toString(), new RelationUpdate(this.entityEstablishFrom, this.entityEstablishTo));
 		update.put(RosterSubscription.NONE.toString(), new RelationUpdate(this.entityBrokeTo, this.entityBrokeFrom));
@@ -74,30 +79,30 @@ abstract class MongoRelationContext implements RelationContext {
 	}
 
 	private DBObject buildQuery(String master, String slave) {
-		return BasicDBObjectBuilder.start().add(this.master, master).add(this.slave, slave).get();
+		return BasicDBObjectBuilder.start().add(this.fieldMaster, master).add(this.fieldSlave, slave).get();
 	}
 
-	private DBObject buildQueryRole(String role, String jid) {
-		return BasicDBObjectBuilder.start().add(role, jid).add(this.activate, true).get();
+	private DBObject buildQueryWithRole(String role, String jid) {
+		return BasicDBObjectBuilder.start().add(role, jid).add(this.fieldActivate, true).get();
 	}
 
-	private DBObject buildQueryStates(String role, String jid, DBObject[] status) {
-		DBObject query = this.buildQueryRole(role, jid);
+	private DBObject buildQueryWithStates(String role, String jid, DBObject[] status) {
+		DBObject query = this.buildQueryWithRole(role, jid);
 		query.put("$or", status);
 		return query;
 	}
 
 	@Override
 	public RelationContext establish(JID from, Relation relation) {
-		this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.getJID()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(this.nick, relation.getName()).add(this.activate, true).get()).add("$setOnInsert", this.entityInitMaster).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.getJID()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(this.fieldNick, relation.getName()).add(this.fieldActivate, true).get()).add("$setOnInsert", this.entityInitMaster).get(), true, false, WriteConcern.SAFE);
 		this.config.collection().update(this.buildQuery(relation.getJID(), from.asStringWithBare()), BasicDBObjectBuilder.start("$setOnInsert", this.entityInitSlave).get(), true, false, WriteConcern.SAFE);
 		return this;
 	}
 
 	@Override
 	public RelationContext update(JID from, JID to, String state) {
-		this.config.collection().update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start(this.ask, true).get()).add("$bit", BasicDBObjectBuilder.start().add(this.state, this.update.get(state).getTo()).get()).get(), true, false, WriteConcern.SAFE);
-		this.config.collection().update(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(this.state, this.update.get(state).getFrom()).get()).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start(this.fieldAsk, true).get()).add("$bit", BasicDBObjectBuilder.start().add(this.fieldState, this.update.get(state).getTo()).get()).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(this.fieldState, this.update.get(state).getFrom()).get()).get(), true, false, WriteConcern.SAFE);
 		this.relationInductor.update(to, from);
 		return this;
 	}
@@ -111,7 +116,7 @@ abstract class MongoRelationContext implements RelationContext {
 
 	@Override
 	public Set<Relation> myRelations(JID from) {
-		return new MongoRelations(this.config.collection().find(this.buildQueryRole(this.master, from.asStringWithBare())));
+		return new MongoRelations(this.config.collection().find(this.buildQueryWithRole(this.fieldMaster, from.asStringWithBare())));
 	}
 
 	@Override
@@ -121,12 +126,12 @@ abstract class MongoRelationContext implements RelationContext {
 	}
 
 	@Override
-	public Set<String> whoSubscribedMe(JID from) {
-		return new JIDs(this.config.collection().find(this.buildQueryStates(this.slave, from.asStringWithBare(), this.entityStates4Subscribed), this.filterMaster), this.master);
+	public Set<JID> whoSubscribedMe(JID from) {
+		return new JIDGroup(this.config.collection().find(this.buildQueryWithStates(this.fieldSlave, from.asStringWithBare(), this.entityStates), this.filterMaster), this.fieldMaster);
 	}
 
-	public Set<String> iSubscribedWho(JID from) {
-		return new JIDs(this.config.collection().find(this.buildQueryStates(this.master, from.asStringWithBare(), this.entityStates4Subscribed), this.filterSlave), this.slave);
+	public Set<JID> iSubscribedWho(JID from) {
+		return new JIDGroup(this.config.collection().find(this.buildQueryWithStates(this.fieldMaster, from.asStringWithBare(), this.entityStates), this.filterSlave), this.fieldSlave);
 	}
 
 	abstract protected Relation build(DBObject db);
@@ -144,24 +149,24 @@ abstract class MongoRelationContext implements RelationContext {
 		}
 
 		public DBObject getFrom() {
-			return from;
+			return this.from;
 		}
 
 		public DBObject getTo() {
-			return to;
+			return this.to;
 		}
 	}
 
-	private class JIDs extends HashSet<String> {
+	private class JIDGroup extends HashSet<JID> {
 
 		private final static long serialVersionUID = 1L;
 
-		public JIDs(DBCursor cursor, String key) {
+		public JIDGroup(DBCursor cursor, String key) {
 			if (cursor == null) {
 				return;
 			}
 			while (cursor.hasNext()) {
-				this.add(cursor.next().get(key).toString());
+				this.add(MongoRelationContext.this.jidBuilder.build(MongoRelationContext.this.config.asString(cursor.next(), key)));
 			}
 		}
 	}
@@ -177,6 +182,58 @@ abstract class MongoRelationContext implements RelationContext {
 			while (cursor.hasNext()) {
 				this.add(MongoRelationContext.this.build(cursor.next()));
 			}
+		}
+	}
+
+	public class NoneRelation implements Relation, RelationRoster {
+
+		private final JID jid;
+
+		public NoneRelation(JID jid) {
+			super();
+			this.jid = jid;
+		}
+
+		@Override
+		public String getJID() {
+			return this.jid.asStringWithBare();
+		}
+
+		@Override
+		public String getName() {
+			return null;
+		}
+
+		@Override
+		public String getSubscription() {
+			return RosterSubscription.NONE.toString();
+		}
+
+		public boolean in(String... subscriptions) {
+			return false;
+		}
+
+		public boolean in(RosterSubscription... subscriptions) {
+			return false;
+		}
+
+		public boolean isActivate() {
+			return false;
+		}
+
+		@Override
+		public boolean isAsk() {
+			return false;
+		}
+
+		@Override
+		public Map<String, Object> plus() {
+			return MongoRelationContext.this.fieldPlus;
+		}
+
+		@Override
+		public String[] asGroups() {
+			return null;
 		}
 	}
 }

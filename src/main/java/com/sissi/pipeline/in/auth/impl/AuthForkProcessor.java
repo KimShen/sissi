@@ -23,14 +23,13 @@ public class AuthForkProcessor extends ProxyProcessor {
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		Auth auth = Auth.class.cast(protocol);
 		for (AuthCallback ac : this.authCallbacks) {
 			if (ac.isSupport(auth.getMechanism())) {
-				// if auth success it will return true, and pipeline should be stop
 				return !ac.auth(auth, context);
 			}
 		}
-		return !context.write(Failure.INSTANCE_INVALIDMECHANISM).write(Stream.close()).close();
+		return !context.write(Failure.INSTANCE_INVALIDMECHANISM).write(Stream.closeGraceFully()).close();
 	}
 }

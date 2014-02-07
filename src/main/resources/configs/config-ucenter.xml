@@ -13,11 +13,13 @@
 
 	<alias name="block.mongo" alias="block" />
 	<bean id="block.mongo" class="com.sissi.ucenter.relation.MongoBlockContext">
+		<constructor-arg ref="jid" />
 		<constructor-arg ref="ucenter.config" />
 	</bean>
 
 	<alias name="vcard.mongo" alias="vcard" />
 	<bean id="vcard.mongo" class="com.sissi.ucenter.user.MongoVCardContext">
+		<constructor-arg ref="jid" />
 		<constructor-arg ref="ucenter.config" />
 		<constructor-arg>
 			<util:map>
@@ -36,13 +38,14 @@
 		<constructor-arg ref="ucenter.config" />
 	</bean>
 
-	<bean id="relation.roster.inductor" class="com.sissi.ucenter.relation.ResearchRelationInductor">
+	<bean id="relation.roster.inductor" class="com.sissi.ucenter.relation.BroadcastRelationInductor">
 		<constructor-arg ref="broadcast.protocol.selfs" />
 		<property name="relationContext" ref="relation.roster" />
 	</bean>
 
 	<alias name="relation.roster.mongo" alias="relation.roster" />
 	<bean id="relation.roster.mongo" class="com.sissi.ucenter.relation.MongoRelationRosterContext">
+		<constructor-arg ref="jid" />
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
 				<constructor-arg ref="mongo" />

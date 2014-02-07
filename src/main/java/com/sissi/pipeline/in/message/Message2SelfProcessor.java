@@ -10,9 +10,8 @@ import com.sissi.protocol.Protocol;
 public class Message2SelfProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		// to selfs if "to" is null
-		return context.getJid().getUser().equals((protocol.getTo() != null ? super.build(protocol.getTo()) : context.getJid()).getUser()) ? this.writeAndReturn(context, protocol.setFrom(context.getJid())) : true;
+	public boolean input(JIDContext context, Protocol protocol) {
+		return !protocol.to() || context.jid().user(protocol.getTo()) ? this.writeAndReturn(context, protocol.setFrom(context.jid())) : true;
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {

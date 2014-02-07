@@ -9,9 +9,9 @@ import com.sissi.write.TransferBuffer;
  */
 public interface Exchanger {
 
+	public Exchanger source(Closeable source);
+
 	public Exchanger write(TransferBuffer buffer);
 
-	public Exchanger initer(Closeable initer);
-
-	public Exchanger close(ExchangerCloser closer);
+	public Exchanger close(ExchangerPoint point);
 }

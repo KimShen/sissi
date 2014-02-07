@@ -4,23 +4,24 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.ucenter.SignatureContext;
+import com.sissi.ucenter.VCardContext;
+import com.sissi.ucenter.field.impl.BeanField;
 
 /**
  * @author kim 2014年1月27日
  */
 public class PresenceLeaveSignatureProcessor extends ProxyProcessor {
 
-	private final SignatureContext signatureContext;
+	private final VCardContext vcardContext;
 
-	public PresenceLeaveSignatureProcessor(SignatureContext signatureContext) {
+	public PresenceLeaveSignatureProcessor(VCardContext vcardContext) {
 		super();
-		this.signatureContext = signatureContext;
+		this.vcardContext = vcardContext;
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		this.signatureContext.signature(context.getJid(), Presence.class.cast(protocol).getStatusAsText());
+	public boolean input(JIDContext context, Protocol protocol) {
+		this.vcardContext.set(context.jid(), new BeanField<String>().setName(VCardContext.SIGNATURE).setValue(Presence.class.cast(protocol).getStatusAsText()));
 		return true;
 	}
 }

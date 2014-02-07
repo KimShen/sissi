@@ -21,16 +21,29 @@ public class PresenceRosterSubscribe2PresenceReplyProcessor extends ProxyProcess
 	private final String[] relations = new String[] { RosterSubscription.TO.toString(), RosterSubscription.BOTH.toString() };
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return super.ourRelation(context.getJid(), super.build(protocol.getTo())).in(this.relations) ? this.writeAndReturn(context, protocol, super.build(protocol.getTo())) : true;
+	public boolean input(JIDContext context, Protocol protocol) {
+		return super.ourRelation(context.jid(), super.build(protocol.getTo())).in(this.relations) ? this.writeAndReturn(context, super.build(protocol.getTo()), Presence.class.cast(protocol)) : true;
 	}
 
-	private Boolean writeAndReturn(JIDContext context, Protocol protocol, JID to) {
-		for (String resource : super.resources(to)) {
-			super.broadcast(context.getJid(), new IQ().add(new Roster(new GroupItem(RelationRoster.class.cast(super.ourRelation(context.getJid(), to))))).setType(ProtocolType.SET));
-			super.broadcast(context.getJid(), new Presence().setFrom(to.setResource(resource)).setType(PresenceType.SUBSCRIBED));
-			super.broadcast(context.getJid(), new Presence().setFrom(to.setResource(resource)).setType(PresenceType.AVAILABLE));
-		}
+	private Boolean writeAndReturn(JIDContext context, JID to, Presence presence) {
+		this.writeRoster(context, to).writeSubscribed(context, to, presence.clear()).writeAvailable(context, to, presence.clear());
 		return false;
+	}
+
+	private PresenceRosterSubscribe2PresenceReplyProcessor writeRoster(JIDContext context, JID to) {
+		super.broadcast(context.jid(), new IQ().add(new Roster(new GroupItem(RelationRoster.class.cast(super.ourRelation(context.jid(), to))))).setType(ProtocolType.SET));
+		return this;
+	}
+
+	private PresenceRosterSubscribe2PresenceReplyProcessor writeSubscribed(JIDContext context, JID to, Presence presence) {
+		super.broadcast(context.jid(), presence.setType(PresenceType.SUBSCRIBED).setFrom(to.asStringWithBare()));
+		return this;
+	}
+
+	private PresenceRosterSubscribe2PresenceReplyProcessor writeAvailable(JIDContext context, JID to, Presence presence) {
+		for (JID resource : super.resources(to)) {
+			super.broadcast(context.jid(), presence.setFrom(resource).setType(PresenceType.AVAILABLE));
+		}
+		return this;
 	}
 }

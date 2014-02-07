@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author Kim.shen 2013-10-20
  */
-@MappingMetadata(uri = Bind.XMLNS, localName = Bind.NAME)
+@Metadata(uri = Bind.XMLNS, localName = Bind.NAME)
 @XmlType(namespace = Bind.XMLNS)
 @XmlRootElement
 public class Bind extends Protocol implements Collector {

@@ -1,6 +1,5 @@
 package com.sissi.pipeline.in;
 
-import java.util.Collection;
 import java.util.Set;
 
 import com.sissi.addressing.Addressing;
@@ -9,6 +8,7 @@ import com.sissi.broadcast.BroadcastProtocol;
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 import com.sissi.context.JIDContext;
+import com.sissi.context.JIDs;
 import com.sissi.context.Status;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
@@ -58,14 +58,6 @@ abstract public class ProxyProcessor implements Input {
 		return this.jidBuilder.build(username, resource);
 	}
 
-	protected Integer others(JIDContext context) {
-		return this.addressing.others(context.getJid());
-	}
-
-	protected Integer others(JIDContext context, Boolean usingResource) {
-		return this.addressing.others(context.getJid(), usingResource);
-	}
-
 	protected ProxyProcessor join(JIDContext context) {
 		this.addressing.join(context);
 		return this;
@@ -103,8 +95,12 @@ abstract public class ProxyProcessor implements Input {
 		return this;
 	}
 
-	public Collection<String> resources(JID jid) {
+	public JIDs resources(JID jid) {
 		return this.addressing.resources(jid);
+	}
+
+	public JIDs resources(JID jid, Boolean usingResource) {
+		return this.addressing.resources(jid, usingResource);
 	}
 
 	protected ProxyProcessor broadcast(JID jid, JID from, Status status) {
@@ -140,11 +136,11 @@ abstract public class ProxyProcessor implements Input {
 		return this.relationContext.myRelations(from);
 	}
 
-	protected Set<String> whoSubscribedMe(JID from) {
+	protected Set<JID> whoSubscribedMe(JID from) {
 		return this.relationContext.whoSubscribedMe(from);
 	}
 
-	protected Set<String> iSubscribedWho(JID from) {
+	protected Set<JID> iSubscribedWho(JID from) {
 		return this.relationContext.iSubscribedWho(from);
 	}
 }

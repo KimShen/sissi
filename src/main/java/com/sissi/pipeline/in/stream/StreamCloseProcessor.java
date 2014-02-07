@@ -11,7 +11,7 @@ import com.sissi.protocol.Stream;
 public class StreamCloseProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return Stream.class.cast(protocol).isUsing() ? !context.write(Stream.close()).closePrepare() : true;
+	public boolean input(JIDContext context, Protocol protocol) {
+		return Stream.class.cast(protocol).isConsume() ? !context.write(Stream.closeGraceFully()).closePrepare() : true;
 	}
 }

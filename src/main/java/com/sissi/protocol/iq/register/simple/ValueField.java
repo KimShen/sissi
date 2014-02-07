@@ -14,7 +14,7 @@ abstract class ValueField implements Field<String> {
 
 	@XmlValue
 	public String getValue() {
-		return value;
+		return this.value;
 	}
 
 	public void setText(String text) {
@@ -27,7 +27,7 @@ abstract class ValueField implements Field<String> {
 	}
 
 	@Override
-	public Boolean hasChild() {
+	public boolean hasChild() {
 		return false;
 	}
 }

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.iq.vcard.VCard;
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
@@ -16,16 +16,15 @@ import com.sissi.ucenter.field.impl.BeanFields;
 /**
  * @author kim 2013年12月5日
  */
-@MappingMetadata(uri = VCard.XMLNS, localName = Photo.NAME)
+@Metadata(uri = VCard.XMLNS, localName = Photo.NAME)
 @XmlRootElement(name = Photo.NAME)
 public class Photo implements Field<String>, Collector {
 
 	public final static String NAME = "PHOTO";
 
-	private final BeanFields fields;
+	private final BeanFields fields = new BeanFields(false);
 
 	public Photo() {
-		this.fields = new BeanFields(false);
 	}
 
 	public Photo(String type, String binval) {
@@ -58,7 +57,7 @@ public class Photo implements Field<String>, Collector {
 	}
 
 	@Override
-	public Boolean hasChild() {
+	public boolean hasChild() {
 		return true;
 	}
 }

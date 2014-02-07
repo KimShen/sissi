@@ -4,12 +4,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2014年1月28日
  */
-@MappingMetadata(uri = Message.XMLNS, localName = Thread.NAME)
+@Metadata(uri = Message.XMLNS, localName = Thread.NAME)
 @XmlRootElement
 public class Thread {
 
@@ -46,7 +46,7 @@ public class Thread {
 
 	@XmlAttribute
 	public String getParent() {
-		return parent;
+		return this.parent;
 	}
 
 	public Thread setParent(String parent) {

@@ -16,8 +16,8 @@ import com.sissi.config.MongoConfig;
 import com.sissi.gc.GC;
 import com.sissi.resource.ResourceCounter;
 import com.sissi.server.Exchanger;
-import com.sissi.server.ExchangerCloser;
 import com.sissi.server.ExchangerContext;
+import com.sissi.server.ExchangerPoint;
 import com.sissi.write.Transfer;
 import com.sissi.write.TransferBuffer;
 
@@ -26,49 +26,44 @@ import com.sissi.write.TransferBuffer;
  */
 public class BridgeExchangerContext implements ExchangerContext {
 
-	private final Integer gcThreads = 1;
+	private final int gcThreadNumber = 1;
+
+	private final String fieldHost = "host";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private final Map<String, Exchanger> cached = new ConcurrentHashMap<String, Exchanger>();
+	private final Map<String, Exchanger> exchangers = new ConcurrentHashMap<String, Exchanger>();
 
 	private final MongoConfig config;
 
 	public BridgeExchangerContext(Runner runner, Interval interval, MongoConfig config, ResourceCounter resourceCounter) {
 		super();
 		this.config = config.clear();
-		runner.executor(this.gcThreads, new LeakGC(interval, resourceCounter));
+		runner.executor(this.gcThreadNumber, new LeakGC(interval, resourceCounter));
 	}
 
 	@Override
-	public Exchanger set(String host, Transfer transfer) {
-		BridgeExchanger exchanger = new BridgeExchanger(host, transfer);
+	public Exchanger join(String host, Transfer transfer) {
+		BridgeExchanger exchanger = new BridgeExchanger(transfer);
+		this.exchangers.put(host, exchanger);
 		this.config.collection().save(this.build(host));
-		this.cached.put(host, exchanger);
 		return exchanger;
 	}
 
 	@Override
-	public Exchanger get(String host) {
-		return this.remove(host);
-	}
-
-	private Exchanger remove(String host) {
+	public Exchanger leave(String host) {
+		Exchanger exchanger = this.exchangers.remove(host);
 		this.config.collection().remove(this.build(host));
-		return this.cached.remove(host);
+		return exchanger;
 	}
 
 	@Override
-	public Boolean isTarget(String host) {
-		return !this.exists(host);
+	public boolean exists(String host) {
+		return this.config.collection().findOne(this.build(host)) != null;
 	}
 
 	private DBObject build(String host) {
-		return BasicDBObjectBuilder.start().add("host", host).get();
-	}
-
-	private Boolean exists(String host) {
-		return this.config.collection().findOne(this.build(host)) != null;
+		return BasicDBObjectBuilder.start(this.fieldHost, host).get();
 	}
 
 	private class LeakGC extends GC {
@@ -78,13 +73,11 @@ public class BridgeExchangerContext implements ExchangerContext {
 		}
 
 		@Override
-		public Boolean gc() {
-			for (String host : BridgeExchangerContext.this.cached.keySet()) {
+		public boolean gc() {
+			for (String host : BridgeExchangerContext.this.exchangers.keySet()) {
 				if (!BridgeExchangerContext.this.exists(host)) {
-					Exchanger leak = BridgeExchangerContext.this.cached.get(host);
-					leak.close(ExchangerCloser.TARGET);
-					leak.close(ExchangerCloser.INITER);
-					BridgeExchangerContext.this.log.error("Find leak exchanger: " + host);
+					BridgeExchangerContext.this.exchangers.get(host).close(ExchangerPoint.TARGET).close(ExchangerPoint.SOURCE);
+					BridgeExchangerContext.this.log.warn("Find leak exchanger: " + host);
 				}
 			}
 			return true;
@@ -93,19 +86,16 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 	private class BridgeExchanger implements Exchanger {
 
-		private final String host;
-
 		private final Transfer target;
 
-		private Closeable initer;
+		private Closeable source;
 
-		private BridgeExchanger(String host, Transfer target) {
-			this.host = host;
+		private BridgeExchanger(Transfer target) {
 			this.target = target;
 		}
 
-		public BridgeExchanger initer(Closeable initer) {
-			this.initer = initer;
+		public BridgeExchanger source(Closeable source) {
+			this.source = source;
 			return this;
 		}
 
@@ -115,21 +105,20 @@ public class BridgeExchangerContext implements ExchangerContext {
 			return this;
 		}
 
-		public Exchanger close(Closeable closer) {
+		@Override
+		public Exchanger close(ExchangerPoint closer) {
+			return closer == ExchangerPoint.SOURCE ? this.close(this.source) : this.close(this.target);
+		}
+
+		private Exchanger close(Closeable closer) {
 			try {
 				IOUtils.closeQuietly(closer);
-				BridgeExchangerContext.this.remove(this.host);
 			} catch (Exception e) {
 				if (BridgeExchangerContext.this.log.isDebugEnabled()) {
 					BridgeExchangerContext.this.log.debug(e.toString());
 				}
 			}
 			return this;
-		}
-
-		@Override
-		public Exchanger close(ExchangerCloser closer) {
-			return closer == ExchangerCloser.INITER ? this.close(this.initer) : this.close(this.target);
 		}
 	}
 }

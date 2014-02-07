@@ -3,12 +3,12 @@ package com.sissi.protocol.message;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2014年1月29日
  */
-@MappingMetadata(uri = Message.XMLNS, localName = Subject.NAME)
+@Metadata(uri = Message.XMLNS, localName = Subject.NAME)
 @XmlRootElement
 public class Subject {
 

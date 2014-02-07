@@ -17,7 +17,7 @@ public class IQActionMatcher extends ClassMatcher {
 	}
 
 	@Override
-	public Boolean match(Protocol protocol) {
-		return super.match(protocol) && this.type.equals(protocol.getParent().getType());
+	public boolean match(Protocol protocol) {
+		return super.match(protocol) && protocol.getParent().type(this.type);
 	}
 }

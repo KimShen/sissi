@@ -11,8 +11,8 @@ import com.sissi.protocol.iq.roster.Roster;
 public class RosterRemoveProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		super.remove(context.getJid(), super.build(Roster.class.cast(protocol).getFirstItem().getJid()));
+	public boolean input(JIDContext context, Protocol protocol) {
+		super.remove(context.jid(), super.build(Roster.class.cast(protocol).getFirstItem().getJid()));
 		return true;
 	}
 }

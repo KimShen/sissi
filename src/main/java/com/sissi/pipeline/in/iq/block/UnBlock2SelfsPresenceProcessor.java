@@ -10,6 +10,6 @@ public class UnBlock2SelfsPresenceProcessor extends Block2SelfsPresenceProcessor
 
 	@Override
 	protected Status build(JIDContext context) {
-		return context.getStatus();
+		return context.status();
 	}
 }

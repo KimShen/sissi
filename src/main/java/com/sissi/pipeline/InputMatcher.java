@@ -7,5 +7,5 @@ import com.sissi.protocol.Protocol;
  */
 public interface InputMatcher {
 
-	public Boolean match(Protocol protocol);
+	public boolean match(Protocol protocol);
 }

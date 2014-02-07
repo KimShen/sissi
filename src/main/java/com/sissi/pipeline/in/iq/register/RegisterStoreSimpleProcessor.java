@@ -14,7 +14,7 @@ public class RegisterStoreSimpleProcessor extends RegisterStoreProcessor {
 	}
 
 	@Override
-	protected Fields filter(Fields field) {
+	protected Fields process(Fields field) {
 		return field;
 	}
 }

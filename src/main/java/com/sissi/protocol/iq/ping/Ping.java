@@ -4,12 +4,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2014年1月8日
  */
-@MappingMetadata(uri = Ping.XMLNS, localName = Ping.NAME)
+@Metadata(uri = Ping.XMLNS, localName = Ping.NAME)
 @XmlRootElement
 public class Ping extends Protocol {
 

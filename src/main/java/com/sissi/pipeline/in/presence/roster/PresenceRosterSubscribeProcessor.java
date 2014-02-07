@@ -14,13 +14,13 @@ import com.sissi.ucenter.relation.PresenceWrapRelation;
 public class PresenceRosterSubscribeProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		RelationRoster relation = RelationRoster.class.cast(super.ourRelation(context.getJid(), super.build(protocol.getTo())));
+	public boolean input(JIDContext context, Protocol protocol) {
+		RelationRoster relation = RelationRoster.class.cast(super.ourRelation(context.jid(), super.build(protocol.getTo())));
 		return relation.isAsk() ? true : this.establishAndReturn(context, Presence.class.cast(protocol), relation);
 	}
 
 	private Boolean establishAndReturn(JIDContext context, Presence presence, Relation relation) {
-		super.establish(context.getJid(), new PresenceWrapRelation(super.jidBuilder, presence, relation));
+		super.establish(context.jid(), new PresenceWrapRelation(super.jidBuilder, presence, relation));
 		return true;
 	}
 }

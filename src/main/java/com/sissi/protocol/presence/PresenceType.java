@@ -28,13 +28,14 @@ public enum PresenceType {
 	}
 
 	public static PresenceType parse(String type) {
-		if (type == null) {
-			return AVAILABLE;
-		}
 		try {
-			return PresenceType.valueOf(type.toUpperCase());
+			return type == null ? AVAILABLE : PresenceType.valueOf(type.toUpperCase());
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public static boolean contains(String type) {
+		return parse(type) != null;
 	}
 }

@@ -16,13 +16,13 @@ import com.sissi.ucenter.RelationRoster;
 public class RosterGetProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		context.write(IQ.class.cast(protocol.getParent().clear().reply().setType(ProtocolType.RESULT)).add(this.prepare(context, Roster.class.cast(protocol))));
 		return false;
 	}
 
 	private Roster prepare(JIDContext context, Roster roster) {
-		for (Relation each : super.myRelations(context.getJid())) {
+		for (Relation each : super.myRelations(context.jid())) {
 			roster.add(new GroupItem(RelationRoster.class.cast(each)));
 		}
 		return roster;

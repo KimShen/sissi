@@ -10,8 +10,8 @@ import com.sissi.protocol.Protocol;
 public class Disco2FansProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		super.findOne(super.build(protocol.getParent().getTo()), true).write(protocol.getParent().setFrom(context.getJid()));
+	public boolean input(JIDContext context, Protocol protocol) {
+		super.findOne(super.build(protocol.getParent().getTo()), true).write(protocol.getParent().setFrom(context.jid()));
 		return true;
 	}
 }

@@ -22,8 +22,8 @@ public class StreamCheckDomainProcessor implements Input {
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return this.domain.equals(protocol.getTo()) || this.localhost.equals(protocol.getTo()) ? true : this.close(context, protocol);
+	public boolean input(JIDContext context, Protocol protocol) {
+		return protocol.to(this.domain, this.localhost) ? true : this.close(context, protocol);
 	}
 
 	private Boolean close(JIDContext context, Protocol protocol) {

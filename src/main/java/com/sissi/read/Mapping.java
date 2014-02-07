@@ -6,7 +6,7 @@ package com.sissi.read;
  */
 public interface Mapping {
 
-	public Object newInstance(String uri, String localName);
+	public Object instance(String uri, String localName);
 
-	public Boolean hasCached(String uri, String localName);
+	public boolean exists(String uri, String localName);
 }

@@ -1,13 +1,16 @@
 package com.sissi.ucenter.relation;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
+import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
+import com.sissi.context.JIDBuilder;
+import com.sissi.context.JIDs;
 import com.sissi.ucenter.BlockContext;
 
 /**
@@ -15,19 +18,22 @@ import com.sissi.ucenter.BlockContext;
  */
 public class MongoBlockContext implements BlockContext {
 
-	private final String block = "blocks";
+	private final String fieldBlock = "blocks";
 
 	private final DBObject filterId = BasicDBObjectBuilder.start("_id", 1).get();
 
-	private final DBObject filterBlock = BasicDBObjectBuilder.start(block, 1).get();
+	private final DBObject filterBlock = BasicDBObjectBuilder.start(fieldBlock, 1).get();
 
-	private final List<String> empty = Collections.unmodifiableList(new ArrayList<String>());
+	private final EmptyJIDs empty = new EmptyJIDs();
 
 	private final MongoConfig config;
 
-	public MongoBlockContext(MongoConfig config) {
+	private final JIDBuilder jidBuilder;
+
+	public MongoBlockContext(MongoConfig config, JIDBuilder jidBuilder) {
 		super();
 		this.config = config;
+		this.jidBuilder = jidBuilder;
 	}
 
 	@Override
@@ -37,7 +43,7 @@ public class MongoBlockContext implements BlockContext {
 	}
 
 	public BlockContext unblock(JID from) {
-		this.config.collection().update(this.buildQuery(from), BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start().add(this.block, 0).get()).get());
+		this.config.collection().update(this.buildQuery(from), BasicDBObjectBuilder.start("$unset", BasicDBObjectBuilder.start(this.fieldBlock, 0).get()).get());
 		return this;
 	}
 
@@ -47,24 +53,83 @@ public class MongoBlockContext implements BlockContext {
 	}
 
 	private DBObject buildQuery(JID from) {
-		return BasicDBObjectBuilder.start().add("username", from.getUser()).get();
+		return BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_USERNAME, from.user()).get();
 	}
 
 	private DBObject buildEntity(String op, JID to) {
-		return BasicDBObjectBuilder.start().add(op, BasicDBObjectBuilder.start().add(this.block, to.getUser()).get()).get();
+		return BasicDBObjectBuilder.start(op, BasicDBObjectBuilder.start(this.fieldBlock, to.user()).get()).get();
 	}
 
 	@Override
-	public Boolean isBlock(JID from, JID to) {
+	public boolean isBlock(JID from, JID to) {
 		DBObject query = this.buildQuery(from);
-		query.put(this.block, to.getUser());
+		query.put(this.fieldBlock, to.user());
 		return this.config.collection().findOne(query, this.filterId) != null;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<String> iBlockWho(JID from) {
-		List<String> bans = (List<String>) this.config.collection().findOne(this.buildQuery(from), this.filterBlock).get(this.block);
-		return bans != null ? bans : this.empty;
+	public JIDs iBlockWho(JID from) {
+		List<String> bans = (List<String>) this.config.collection().findOne(this.buildQuery(from), this.filterBlock).get(this.fieldBlock);
+		return bans != null ? new GroupJIDs(bans) : this.empty;
+	}
+
+	private class GroupJIDs extends ArrayList<JID> implements JIDs {
+
+		private static final long serialVersionUID = 1L;
+
+		private GroupJIDs(List<String> bans) {
+			for (String ban : bans) {
+				super.add(MongoBlockContext.this.jidBuilder.build(ban));
+			}
+		}
+
+		@Override
+		public boolean moreThan(Integer counter) {
+			return super.size() >= counter;
+		}
+
+		@Override
+		public boolean lessThan(Integer counter) {
+			return super.size() <= counter;
+		}
+	}
+
+	private class EmptyJIDs implements JIDs {
+
+		@Override
+		public Iterator<JID> iterator() {
+			return new Iterator<JID>() {
+
+				@Override
+				public boolean hasNext() {
+					return false;
+				}
+
+				@Override
+				public JID next() {
+					return null;
+				}
+
+				@Override
+				public void remove() {
+				}
+			};
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return true;
+		}
+
+		@Override
+		public boolean moreThan(Integer counter) {
+			return false;
+		}
+
+		@Override
+		public boolean lessThan(Integer counter) {
+			return false;
+		}
 	}
 }

@@ -12,12 +12,12 @@ import com.sissi.protocol.iq.disco.feature.Identity;
 import com.sissi.protocol.iq.disco.feature.Si;
 import com.sissi.protocol.iq.disco.feature.SiFileTransfer;
 import com.sissi.protocol.iq.disco.feature.VCard;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月5日
  */
-@MappingMetadata(uri = DiscoInfo.XMLNS, localName = DiscoInfo.NAME)
+@Metadata(uri = DiscoInfo.XMLNS, localName = DiscoInfo.NAME)
 @XmlRootElement(name = DiscoInfo.NAME)
 public class DiscoInfo extends Disco {
 
@@ -25,11 +25,6 @@ public class DiscoInfo extends Disco {
 
 	public DiscoInfo() {
 		super(XMLNS);
-	}
-
-	public DiscoInfo add(DiscoFeature features) {
-		super.add(features);
-		return this;
 	}
 
 	@XmlElements({ @XmlElement(name = Identity.NAME, type = Identity.class), @XmlElement(name = Blocking.NAME, type = Blocking.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = SiFileTransfer.NAME, type = SiFileTransfer.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class) })

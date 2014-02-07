@@ -13,25 +13,13 @@ public class ClassesMatcher implements InputMatcher {
 
 	private final List<Class<? extends Protocol>> clazzes = new ArrayList<Class<? extends Protocol>>();
 
-	@SafeVarargs
-	public ClassesMatcher(Class<? extends Protocol>... protocol) {
-		for (Class<? extends Protocol> each : protocol) {
-			clazzes.add(each);
-		}
-	}
-
-	public ClassesMatcher(List<Class<? extends Protocol>> clazzes) {
+	public ClassesMatcher(List<Class<? extends Protocol>> protocol) {
 		super();
-		this.clazzes.addAll(clazzes);
+		this.clazzes.addAll(protocol);
 	}
 
 	@Override
-	public Boolean match(Protocol protocol) {
-		for (Class<? extends Protocol> each : this.clazzes) {
-			if (each == protocol.getClass()) {
-				return true;
-			}
-		}
-		return false;
+	public boolean match(Protocol protocol) {
+		return protocol.clazz(this.clazzes);
 	}
 }

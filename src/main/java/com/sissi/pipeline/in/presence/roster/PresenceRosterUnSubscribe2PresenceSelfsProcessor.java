@@ -13,10 +13,10 @@ import com.sissi.protocol.presence.PresenceType;
 public class PresenceRosterUnSubscribe2PresenceSelfsProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		JID from = super.build(protocol.getTo());
-		for (String resource : super.resources(from)) {
-			super.broadcast(context.getJid(), new Presence().setFrom(from.setResource(resource)).setType(PresenceType.UNAVAILABLE));
+	public boolean input(JIDContext context, Protocol protocol) {
+		Presence presence = Presence.class.cast(protocol);
+		for (JID resource : super.resources(super.build(protocol.getTo()))) {
+			super.broadcast(context.jid(), presence.setFrom(resource).setType(PresenceType.UNAVAILABLE));
 		}
 		return true;
 	}

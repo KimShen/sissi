@@ -14,13 +14,13 @@ import com.sissi.ucenter.RelationRoster;
 /**
  * @author kim 2014年1月22日
  */
-public class ResearchRelationInductor implements RelationInductor {
+public class BroadcastRelationInductor implements RelationInductor {
 
 	private final BroadcastProtocol broadcastProtocol;
 
 	private RelationContext relationContext;
 
-	public ResearchRelationInductor(BroadcastProtocol broadcastProtocol) {
+	public BroadcastRelationInductor(BroadcastProtocol broadcastProtocol) {
 		super();
 		this.broadcastProtocol = broadcastProtocol;
 	}
@@ -39,7 +39,7 @@ public class ResearchRelationInductor implements RelationInductor {
 	}
 
 	public RelationInductor remove(JID master, JID slave) {
-		this.broadcastProtocol.broadcast(master, new IQ().add(new Roster(new GroupItem(RelationRoster.class.cast(this.relationContext.ourRelation(master, slave))).setSubscription(RosterSubscription.REMOVE.toString()))).setType(ProtocolType.SET));
+		this.broadcastProtocol.broadcast(master, new IQ().add(new Roster(new GroupItem(slave,null).setSubscription(RosterSubscription.REMOVE))).setType(ProtocolType.SET));
 		return this;
 	}
 }

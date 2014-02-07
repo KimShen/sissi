@@ -18,110 +18,110 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	private final static RuntimeException NOT_SUPPORT = new RuntimeException("MultiContexts not support this function");
 
-	public JIDContext setBinding(Boolean isBinding) {
+	public JIDContext bind() {
 		for (JIDContext each : this) {
-			each.setBinding(isBinding);
+			each.bind();
 		}
 		return this;
 	}
 
-	public Boolean isBinding() {
-		boolean isBinding = true;
+	public boolean binding() {
+		boolean binding = true;
 		for (JIDContext each : this) {
-			isBinding = each.isBinding() ? isBinding : false;
+			binding = each.binding() ? binding : false;
 		}
-		return isBinding;
+		return binding;
 	}
 
 	@Override
-	public JIDContext setPriority(Integer priority) {
+	public JIDContext priority(int priority) {
 		for (JIDContext each : this) {
-			each.setPriority(priority);
+			each.priority(priority);
 		}
 		return this;
 	}
 
-	public JIDContext setDomain(String domain) {
+	public JIDContext domain(String domain) {
 		for (JIDContext each : this) {
-			each.setDomain(domain);
+			each.domain(domain);
 		}
 		return this;
 	}
 
-	public JIDContext setLang(String lang) {
+	public JIDContext lang(String lang) {
 		for (JIDContext each : this) {
-			each.setLang(lang);
-		}
-		return this;
-	}
-
-	@Override
-	public JIDContext setJid(JID jid) {
-		for (JIDContext each : this) {
-			each.setJid(jid);
+			each.lang(lang);
 		}
 		return this;
 	}
 
 	@Override
-	public Boolean setTls() {
-		boolean startTls = true;
+	public JIDContext jid(JID jid) {
 		for (JIDContext each : this) {
-			startTls = each.setTls() ? startTls : false;
-		}
-		return startTls;
-	}
-
-	public Boolean isTls() {
-		boolean isTls = true;
-		for (JIDContext each : this) {
-			isTls = each.isTls() ? isTls : false;
-		}
-		return isTls;
-	}
-
-	public JIDContext setPresence() {
-		for (JIDContext each : this) {
-			each.setPresence();
-		}
-		return this;
-	}
-
-	public Boolean isPresence() {
-		boolean isPresence = true;
-		for (JIDContext each : this) {
-			isPresence = each.isPresence() ? isPresence : false;
-		}
-		return isPresence;
-	}
-
-	@Override
-	public JIDContext setAuth(Boolean canAccess) {
-		for (JIDContext each : this) {
-			each.setAuth(canAccess);
+			each.jid(jid);
 		}
 		return this;
 	}
 
 	@Override
-	public Boolean isAuth() {
-		boolean isAuth = true;
+	public boolean encrypt() {
+		boolean encrypt = true;
 		for (JIDContext each : this) {
-			isAuth = each.isAuth() ? isAuth : false;
+			encrypt = each.encrypt() ? encrypt : false;
 		}
-		return isAuth;
+		return encrypt;
 	}
 
-	public Boolean isAuthRetry() {
-		boolean isAuthRetry = true;
+	public boolean encrypted() {
+		boolean encrypted = true;
 		for (JIDContext each : this) {
-			isAuthRetry = each.isAuthRetry() ? isAuthRetry : false;
+			encrypted = each.encrypted() ? encrypted : false;
 		}
-		return isAuthRetry;
+		return encrypted;
+	}
+
+	public JIDContext present() {
+		for (JIDContext each : this) {
+			each.present();
+		}
+		return this;
+	}
+
+	public boolean presented() {
+		boolean presented = true;
+		for (JIDContext each : this) {
+			presented = each.presented() ? presented : false;
+		}
+		return presented;
 	}
 
 	@Override
-	public Boolean close() {
+	public JIDContext auth(boolean canAccess) {
+		for (JIDContext each : this) {
+			each.auth(canAccess);
+		}
+		return this;
+	}
+
+	@Override
+	public boolean auth() {
+		boolean auth = true;
+		for (JIDContext each : this) {
+			auth = each.auth() ? auth : false;
+		}
+		return auth;
+	}
+
+	public boolean authRetry() {
+		boolean authRetry = true;
+		for (JIDContext each : this) {
+			authRetry = each.authRetry() ? authRetry : false;
+		}
+		return authRetry;
+	}
+
+	@Override
+	public boolean close() {
 		boolean allClose = true;
 		for (JIDContext each : this) {
 			allClose = each.close() ? allClose : true;
@@ -129,7 +129,7 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return allClose;
 	}
 
-	public Boolean closePrepare() {
+	public boolean closePrepare() {
 		boolean allClose = true;
 		for (JIDContext each : this) {
 			allClose = each.closePrepare() ? allClose : true;
@@ -137,7 +137,7 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return allClose;
 	}
 
-	public Boolean closeTimeout() {
+	public boolean closeTimeout() {
 		boolean allClose = true;
 		for (JIDContext each : this) {
 			allClose = each.closeTimeout() ? allClose : true;
@@ -181,34 +181,34 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return this;
 	}
 
-	public Long getIndex() {
+	public long index() {
 		throw NOT_SUPPORT;
 	}
 
 	@Override
-	public JID getJid() {
+	public JID jid() {
 		throw NOT_SUPPORT;
 	}
 
-	public String getLang() {
+	public String lang() {
 		throw NOT_SUPPORT;
 	}
 
-	public String getDomain() {
-		throw NOT_SUPPORT;
-	}
-
-	@Override
-	public Status getStatus() {
+	public String domain() {
 		throw NOT_SUPPORT;
 	}
 
 	@Override
-	public Integer getPriority() {
+	public Status status() {
 		throw NOT_SUPPORT;
 	}
 
-	public SocketAddress getAddress() {
+	@Override
+	public int priority() {
+		throw NOT_SUPPORT;
+	}
+
+	public SocketAddress address() {
 		throw NOT_SUPPORT;
 	}
 }

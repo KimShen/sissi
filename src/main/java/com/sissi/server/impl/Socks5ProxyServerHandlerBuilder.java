@@ -32,24 +32,23 @@ import org.apache.commons.logging.LogFactory;
 import com.sissi.protocol.iq.bytestreams.BytestreamsProxy;
 import com.sissi.resource.ResourceCounter;
 import com.sissi.server.Exchanger;
-import com.sissi.server.ExchangerCloser;
 import com.sissi.server.ExchangerContext;
+import com.sissi.server.ExchangerPoint;
+import com.sissi.server.ServerHandlerBuilder;
 import com.sissi.write.TransferBuffer;
 
 /**
  * @author kim 2013年12月22日
  */
-public class Socks5ProxyServerHandlerBuilder {
+public class Socks5ProxyServerHandlerBuilder implements ServerHandlerBuilder {
 
-	private final ChannelHandler channelHandler = new BridgeExchangerServerHandler();
-
-	private final Log log = LogFactory.getLog(this.getClass());
+	private final AttributeKey<Exchanger> exchanger = AttributeKey.valueOf("exchanger");
 
 	private final String resource = Sock5ProxyServerHandler.class.getSimpleName();
 
-	private final ExchangerContext exchangerContext;
+	private final Log log = LogFactory.getLog(this.getClass());
 
-	private final AttributeKey<Exchanger> exchanger;
+	private final ExchangerContext exchangerContext;
 
 	private final ResourceCounter resourceCounter;
 
@@ -59,9 +58,8 @@ public class Socks5ProxyServerHandlerBuilder {
 
 	public Socks5ProxyServerHandlerBuilder(BytestreamsProxy proxy, ExchangerContext exchangerContext, ResourceCounter resourceCounter) {
 		super();
-		this.exchangerContext = exchangerContext;
 		this.resourceCounter = resourceCounter;
-		this.exchanger = AttributeKey.valueOf("exchanger");
+		this.exchangerContext = exchangerContext;
 		this.init = this.prepareStatic(this.buildInit());
 		this.cmd = this.prepareStatic(this.buildCmd(proxy));
 	}
@@ -91,12 +89,12 @@ public class Socks5ProxyServerHandlerBuilder {
 	private class Sock5ProxyServerHandler extends ChannelInboundHandlerAdapter {
 
 		public void channelRegistered(final ChannelHandlerContext ctx) throws Exception {
-			super.channelRegistered(ctx);
 			Socks5ProxyServerHandlerBuilder.this.resourceCounter.increment(Socks5ProxyServerHandlerBuilder.this.resource);
 		}
 
 		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
-			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close(ExchangerCloser.INITER);
+			// Receiver must close source
+			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().close(ExchangerPoint.SOURCE);
 			Socks5ProxyServerHandlerBuilder.this.resourceCounter.decrement(Socks5ProxyServerHandlerBuilder.this.resource);
 		}
 
@@ -108,35 +106,37 @@ public class Socks5ProxyServerHandlerBuilder {
 			ctx.close();
 		}
 
-		public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
-			try {
-				this.prepareCmd(ctx, msg, ctx.write(this.build(msg))).flush();
-			} finally {
-				ReferenceCountUtil.release(msg);
-			}
-		}
-
 		public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+			// TODO:
+			// Check WRITE or READ
 			if (evt.getClass() == IdleStateEvent.class && IdleStateEvent.class.cast(evt).state() == IdleState.WRITER_IDLE) {
 				ctx.close();
 			}
 		}
 
-		private ChannelHandlerContext prepareCmd(final ChannelHandlerContext ctx, Object msg, ChannelFuture future) throws IOException {
+		public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
+			try {
+				this.prepare(ctx, msg, ctx.write(this.build(msg))).flush();
+			} finally {
+				ReferenceCountUtil.release(msg);
+			}
+		}
+
+		private ChannelHandlerContext prepare(final ChannelHandlerContext ctx, Object msg, ChannelFuture future) throws IOException {
 			if (msg.getClass() == SocksCmdRequest.class) {
 				SocksCmdRequest cmd = SocksCmdRequest.class.cast(msg);
-				return Socks5ProxyServerHandlerBuilder.this.exchangerContext.isTarget(cmd.host()) ? this.add(cmd, ctx) : this.add(Socks5ProxyServerHandlerBuilder.this.exchangerContext.get(cmd.host()), future, ctx);
+				return Socks5ProxyServerHandlerBuilder.this.exchangerContext.exists(cmd.host()) ? this.bridge(Socks5ProxyServerHandlerBuilder.this.exchangerContext.leave(cmd.host()), future, ctx) : this.join(cmd, ctx);
 			}
 			return ctx;
 		}
 
-		private ChannelHandlerContext add(SocksCmdRequest cmd, ChannelHandlerContext ctx) throws IOException {
-			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).set(Socks5ProxyServerHandlerBuilder.this.exchangerContext.set(cmd.host(), new NetworkTransfer(ctx)));
+		private ChannelHandlerContext join(SocksCmdRequest cmd, ChannelHandlerContext ctx) throws IOException {
+			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).set(Socks5ProxyServerHandlerBuilder.this.exchangerContext.join(cmd.host(), new NetworkTransfer(ctx)));
 			return ctx;
 		}
 
-		private ChannelHandlerContext add(Exchanger exchanger, ChannelFuture future, ChannelHandlerContext ctx) throws IOException {
-			future.addListener(new BridgeExchangeListener(ctx, exchanger.initer(new ContextCloseable(ctx))));
+		private ChannelHandlerContext bridge(Exchanger exchanger, ChannelFuture future, ChannelHandlerContext ctx) throws IOException {
+			future.addListener(new BridgeExchangeListener(ctx, exchanger));
 			return ctx;
 		}
 
@@ -153,16 +153,15 @@ public class Socks5ProxyServerHandlerBuilder {
 			public BridgeExchangeListener(ChannelHandlerContext ctx, Exchanger exchanger) {
 				super();
 				this.ctx = ctx;
-				this.exchanger = exchanger;
+				this.exchanger = exchanger.source(new ContextCloseable(ctx));
 			}
 
 			@Override
 			public void operationComplete(Future<Void> future) throws Exception {
 				if (future.isSuccess()) {
-					ctx.flush();
 					ctx.pipeline().remove(IdleStateHandler.class);
-					ctx.pipeline().addFirst(Socks5ProxyServerHandlerBuilder.this.channelHandler);
-					ctx.pipeline().context(BridgeExchangerServerHandler.class).attr(Socks5ProxyServerHandlerBuilder.this.exchanger).set(exchanger);
+					ctx.pipeline().addFirst(new BridgeExchangerServerHandler());
+					ctx.pipeline().context(BridgeExchangerServerHandler.class).attr(Socks5ProxyServerHandlerBuilder.this.exchanger).set(this.exchanger);
 				}
 			}
 		}
@@ -172,7 +171,6 @@ public class Socks5ProxyServerHandlerBuilder {
 	private class BridgeExchangerServerHandler extends ChannelInboundHandlerAdapter {
 
 		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
-			super.channelUnregistered(ctx);
 			Socks5ProxyServerHandlerBuilder.this.resourceCounter.decrement(Socks5ProxyServerHandlerBuilder.this.resource);
 		}
 
@@ -188,15 +186,15 @@ public class Socks5ProxyServerHandlerBuilder {
 			try {
 				ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().write(new ByteBufWrapTransferBuffer(ByteBuf.class.cast(msg)));
 			} catch (Exception e) {
+				// Release if write
 				ReferenceCountUtil.release(msg);
-				throw e;
 			}
 		}
 	}
 
 	private class ContextCloseable implements Closeable {
 
-		private ChannelHandlerContext ctx;
+		private final ChannelHandlerContext ctx;
 
 		public ContextCloseable(ChannelHandlerContext ctx) {
 			super();

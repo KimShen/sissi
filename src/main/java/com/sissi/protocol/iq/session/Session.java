@@ -5,12 +5,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author Kim.shen 2013-10-20
  */
-@MappingMetadata(uri = Session.XMLNS, localName = Session.NAME)
+@Metadata(uri = Session.XMLNS, localName = Session.NAME)
 @XmlType(namespace = Session.XMLNS)
 @XmlRootElement
 public class Session extends Protocol {

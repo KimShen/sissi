@@ -5,5 +5,11 @@ package com.sissi.context;
  */
 public interface JIDContextParam {
 
+	public final static String KEY_OUTPUT = "OUTPUT";
+
+	public final static String KEY_ADDRESS = "ADDRESS";
+
+	public final static String KEY_SERVERTLS = "TLS";
+
 	public <T> T find(String key, Class<T> clazz);
 }

@@ -12,9 +12,9 @@ abstract public class IQProcessor implements Input {
 
 	private final ProtocolType type;
 
-	private final Boolean clear;
+	private final boolean clear;
 
-	private final Boolean doNext;
+	private final boolean doNext;
 
 	public IQProcessor(String type) {
 		this(type, true);
@@ -31,7 +31,7 @@ abstract public class IQProcessor implements Input {
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		Protocol response = this.prepare(protocol.getParent().reply().setType(this.type));
 		context.write(this.clear ? response.clear() : response);
 		return this.doNext;

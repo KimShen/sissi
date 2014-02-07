@@ -14,11 +14,10 @@ import com.sissi.ucenter.relation.ItemWrapRelation;
 public class RosterSetProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		GroupItem item = Roster.class.cast(protocol).getFirstItem();
-		RelationRoster relation = RelationRoster.class.cast(super.ourRelation(context.getJid(), super.build(item.getJid())));
 		// convert jid to bare jid
-		super.establish(context.getJid(), new ItemWrapRelation(relation, item));
+		super.establish(context.jid(), new ItemWrapRelation(RelationRoster.class.cast(super.ourRelation(context.jid(), super.build(item.getJid()))), item));
 		return true;
 	}
 }

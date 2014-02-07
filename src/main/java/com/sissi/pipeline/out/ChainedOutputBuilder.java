@@ -47,7 +47,7 @@ public class ChainedOutputBuilder implements OutputBuilder {
 		}
 
 		@Override
-		public Boolean output(JIDContext context, Element node) {
+		public boolean output(JIDContext context, Element node) {
 			for (Output output : this.outputs) {
 				Boolean canNext = output.output(context, node);
 				if (!canNext) {

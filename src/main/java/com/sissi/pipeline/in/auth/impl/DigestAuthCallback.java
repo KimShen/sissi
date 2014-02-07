@@ -33,21 +33,19 @@ public class DigestAuthCallback implements AuthCallback {
 
 	private final String protocol = "XMPP";
 
-	private final String qop = "auth";
-
-	@SuppressWarnings("serial")
-	private final Map<String, String> props = new TreeMap<String, String>() {
-		{
-			put(Sasl.QOP, qop);
-		}
-	};
-
 	@SuppressWarnings("serial")
 	private final Map<Class<? extends Callback>, Handler> handlers = new HashMap<Class<? extends Callback>, Handler>() {
 		{
 			put(NameCallback.class, new NameCallbackHandler());
 			put(PasswordCallback.class, new PasswordCallbackHandler());
 			put(AuthorizeCallback.class, new AuthorizeCallbackHandler());
+		}
+	};
+
+	@SuppressWarnings("serial")
+	private final Map<String, String> props = new TreeMap<String, String>() {
+		{
+			put(Sasl.QOP, "auth");
 		}
 	};
 
@@ -67,9 +65,9 @@ public class DigestAuthCallback implements AuthCallback {
 	}
 
 	@Override
-	public Boolean auth(Auth auth, JIDContext context) {
+	public boolean auth(Auth auth, JIDContext context) {
 		try {
-			context.write(new Challenge(this.saslServers.set(context, Sasl.createSaslServer(MECHANISM, this.protocol, context.getDomain(), this.props, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
+			context.write(new Challenge(this.saslServers.push(context, Sasl.createSaslServer(MECHANISM, this.protocol, context.domain(), this.props, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
 			return true;
 		} catch (Exception e) {
 			if (this.log.isErrorEnabled()) {
@@ -81,7 +79,7 @@ public class DigestAuthCallback implements AuthCallback {
 	}
 
 	@Override
-	public Boolean isSupport(String mechanism) {
+	public boolean isSupport(String mechanism) {
 		return MECHANISM.equals(mechanism);
 	}
 
@@ -113,7 +111,7 @@ public class DigestAuthCallback implements AuthCallback {
 
 		@Override
 		public void handler(JIDContext context, Callback callback) {
-			context.setJid(DigestAuthCallback.this.jidBuilder.build(NameCallback.class.cast(callback).getDefaultName(), null));
+			context.jid(DigestAuthCallback.this.jidBuilder.build(NameCallback.class.cast(callback).getDefaultName(), null));
 		}
 	}
 
@@ -121,8 +119,8 @@ public class DigestAuthCallback implements AuthCallback {
 
 		@Override
 		public void handler(JIDContext context, Callback callback) {
-			String password = DigestAuthCallback.this.authAccessor.access(context.getJid().getUser());
-			PasswordCallback.class.cast(callback).setPassword(password != null ? DigestAuthCallback.this.authAccessor.access(context.getJid().getUser()).toCharArray() : new char[0]);
+			String pass = DigestAuthCallback.this.authAccessor.access(context.jid().user());
+			PasswordCallback.class.cast(callback).setPassword(pass != null ? pass.toCharArray() : new char[0]);
 		}
 	}
 

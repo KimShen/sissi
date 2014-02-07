@@ -35,12 +35,6 @@ public class Mechanisms extends Feature {
 		}
 	}
 
-	@Override
-	@XmlElement
-	public Required getRequired() {
-		return Required.REQUIRED;
-	}
-
 	@XmlElements({ @XmlElement(name = "mechanism", type = String.class) })
 	public Set<String> getMechanism() {
 		return mechanism;

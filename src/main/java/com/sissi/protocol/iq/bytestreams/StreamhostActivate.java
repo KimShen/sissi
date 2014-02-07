@@ -1,12 +1,12 @@
 package com.sissi.protocol.iq.bytestreams;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月24日
  */
-@MappingMetadata(uri = Bytestreams.XMLNS, localName = StreamhostActivate.NAME)
+@Metadata(uri = Bytestreams.XMLNS, localName = StreamhostActivate.NAME)
 public class StreamhostActivate extends Protocol {
 	
 	public final static String NAME = "activate";
@@ -14,7 +14,7 @@ public class StreamhostActivate extends Protocol {
 	private String text;
 
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
 	public StreamhostActivate setText(String text) {

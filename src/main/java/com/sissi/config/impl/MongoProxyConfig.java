@@ -1,5 +1,6 @@
 package com.sissi.config.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,9 +31,9 @@ public class MongoProxyConfig implements MongoConfig {
 
 	public static final String FIELD_USERNAME = "username";
 
-	private static final DBObject CLEAR = BasicDBObjectBuilder.start().get();
+	private static final DBObject clear = BasicDBObjectBuilder.start().get();
 
-	private static final Log LOG = LogFactory.getLog(MongoProxyConfig.class);
+	private static final Log log = LogFactory.getLog(MongoProxyConfig.class);
 
 	private final Map<String, String> configs;
 
@@ -56,7 +57,7 @@ public class MongoProxyConfig implements MongoConfig {
 	}
 
 	public MongoConfig clear() {
-		this.collection().remove(CLEAR);
+		this.collection().remove(clear);
 		return this;
 	}
 
@@ -69,12 +70,18 @@ public class MongoProxyConfig implements MongoConfig {
 		return value != null ? value.toString() : null;
 	}
 
-	public Integer asInteger(DBObject db, String key) {
+	public String[] asStrings(DBObject db, String key) {
+		@SuppressWarnings("unchecked")
+		ArrayList<String> value = ArrayList.class.cast(db.get(key));
+		return value != null ? value.toArray(new String[] {}) : null;
+	}
+
+	public int asInteger(DBObject db, String key) {
 		Object value = this.as(db, key);
 		return value != null ? Integer.parseInt(value.toString()) : null;
 	}
 
-	public Boolean asBoolean(DBObject db, String key) {
+	public boolean asBoolean(DBObject db, String key) {
 		Object value = this.as(db, key);
 		return value != null ? Boolean.class.cast(value) : Boolean.FALSE;
 	}
@@ -85,60 +92,64 @@ public class MongoProxyConfig implements MongoConfig {
 
 	private class MongoWrapCollection implements MongoCollection {
 
+		private void logUpdate(DBObject query, DBObject entity) {
+			log.debug("Update: " + query + " / " + entity);
+		}
+
 		public WriteResult remove(DBObject query) {
-			LOG.debug("Remove: " + query);
+			log.debug("Remove: " + query);
 			return MongoProxyConfig.this.collection.remove(query);
 		}
 
 		@Override
 		public WriteResult save(DBObject entity) {
-			LOG.debug("Save: " + entity);
+			log.debug("Save: " + entity);
 			return MongoProxyConfig.this.collection.save(entity);
 		}
 
 		public WriteResult save(DBObject entity, WriteConcern concern) {
-			LOG.debug("Save: " + entity);
+			log.debug("Save: " + entity);
 			return MongoProxyConfig.this.collection.save(entity, concern);
 		}
 
 		@Override
 		public WriteResult update(DBObject query, DBObject entity) {
-			LOG.debug("Update: " + query + " / " + entity);
+			this.logUpdate(query, entity);
 			return MongoProxyConfig.this.collection.update(query, entity);
 		}
 
 		@Override
 		public WriteResult update(DBObject query, DBObject entity, Boolean upsert, Boolean batch) {
-			LOG.debug("Update: " + query + " / " + entity);
+			this.logUpdate(query, entity);
 			return MongoProxyConfig.this.collection.update(query, entity, upsert, batch);
 		}
 
 		public WriteResult update(DBObject query, DBObject entity, Boolean upsert, Boolean batch, WriteConcern concern) {
-			LOG.debug("Update: " + query + " / " + entity);
+			this.logUpdate(query, entity);
 			return MongoProxyConfig.this.collection.update(query, entity, upsert, batch, concern);
 		}
 
 		@Override
 		public DBCursor find(DBObject query) {
-			LOG.debug("Find: " + query);
+			log.debug("Find: " + query);
 			return MongoProxyConfig.this.collection.find(query);
 		}
 
 		@Override
 		public DBCursor find(DBObject query, DBObject filter) {
-			LOG.debug("Find: " + query + " / Filter: " + filter);
+			log.debug("Find: " + query + " / Filter: " + filter);
 			return MongoProxyConfig.this.collection.find(query, filter);
 		}
 
 		@Override
 		public DBObject findOne(DBObject query) {
-			LOG.debug("FindOne: " + query);
+			log.debug("FindOne: " + query);
 			return MongoProxyConfig.this.collection.findOne(query);
 		}
 
 		@Override
 		public DBObject findOne(DBObject query, DBObject filter) {
-			LOG.debug("FindOne: " + query + " / Filter: " + filter);
+			log.debug("FindOne: " + query + " / Filter: " + filter);
 			return MongoProxyConfig.this.collection.findOne(query, filter);
 		}
 	}

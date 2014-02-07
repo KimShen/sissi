@@ -10,8 +10,8 @@ import com.sissi.protocol.Protocol;
 public class BindAddressCloseOthersProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		super.leave(context.getJid());
+	public boolean input(JIDContext context, Protocol protocol) {
+		super.leave(context.jid());
 		return true;
 	}
 }

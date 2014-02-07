@@ -10,15 +10,15 @@ import com.sissi.protocol.iq.roster.Roster;
  */
 public class RosterSetTrimGroupProcessor implements Input {
 
-	private final Integer group;
+	private final int group;
 
-	public RosterSetTrimGroupProcessor(Integer group) {
+	public RosterSetTrimGroupProcessor(int group) {
 		super();
 		this.group = group;
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		Roster.class.cast(protocol).getFirstItem().trimGroup(this.group);
 		return true;
 	}

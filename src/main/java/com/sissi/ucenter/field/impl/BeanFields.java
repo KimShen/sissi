@@ -1,6 +1,7 @@
 package com.sissi.ucenter.field.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,16 +15,16 @@ public class BeanFields implements Fields {
 
 	private final static ArrayList<Field<?>> EMPTY = new ArrayList<Field<?>>();
 
-	private Boolean isEmbed;
+	private boolean isEmbed;
 
 	private List<Field<?>> fields;
 
-	public BeanFields(Boolean isEmbed) {
+	public BeanFields(boolean isEmbed) {
 		super();
 		this.isEmbed = isEmbed;
 	}
 
-	public BeanFields(Boolean isEmbed, List<Field<?>> field) {
+	public BeanFields(boolean isEmbed, List<Field<?>> field) {
 		super();
 		this.isEmbed = isEmbed;
 		this.fields = field;
@@ -44,7 +45,7 @@ public class BeanFields implements Fields {
 		return this;
 	}
 
-	public BeanFields add(List<Field<?>> fields) {
+	public BeanFields add(Collection<Field<?>> fields) {
 		for (Field<?> each : fields) {
 			this.add(each);
 		}
@@ -61,7 +62,7 @@ public class BeanFields implements Fields {
 	}
 
 	@Override
-	public Boolean isEmbed() {
+	public boolean isEmbed() {
 		return this.isEmbed;
 	}
 

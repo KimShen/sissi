@@ -10,12 +10,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013-10-31
  */
-@MappingMetadata(uri = Roster.XMLNS, localName = Roster.NAME)
+@Metadata(uri = Roster.XMLNS, localName = Roster.NAME)
 @XmlRootElement(name = Roster.NAME)
 public class Roster extends Protocol implements Collector {
 

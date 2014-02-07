@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
@@ -17,7 +17,7 @@ import com.sissi.ucenter.field.impl.BeanFields;
 /**
  * @author kim 2013年12月13日
  */
-@MappingMetadata(uri = XVCard.XMLNS, localName = X.NAME)
+@Metadata(uri = XVCard.XMLNS, localName = X.NAME)
 @XmlType(namespace = XVCard.XMLNS)
 @XmlRootElement
 public class XVCard extends X implements Fields, Field<String>, Collector {
@@ -51,7 +51,7 @@ public class XVCard extends X implements Fields, Field<String>, Collector {
 	}
 
 	@Override
-	public Boolean hasChild() {
+	public boolean hasChild() {
 		return true;
 	}
 
@@ -61,7 +61,7 @@ public class XVCard extends X implements Fields, Field<String>, Collector {
 	}
 
 	@Override
-	public Boolean isEmbed() {
+	public boolean isEmbed() {
 		return this.vCardFields.isEmbed();
 	}
 

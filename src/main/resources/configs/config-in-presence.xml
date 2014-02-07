@@ -17,8 +17,8 @@
 	<bean id="presence.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.check.binding" />
 				<ref bean="global.pro.check.jid.format" />
+				<ref bean="presence.pro.check.binding" />
 				<ref bean="presence.pro.check.type" />
 				<ref bean="presence.pro.check.exists" />
 				<ref bean="presence.pro.check.loop" />
@@ -53,7 +53,7 @@
 		<property name="presenceQueue" ref="broadcast.presence.self" />
 	</bean>
 	<bean id="presence.pro.status.available.init.4selfs" class="com.sissi.pipeline.in.presence.status.PresenceInit4SelfsProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.status.available.init.4offline" class="com.sissi.pipeline.in.presence.status.PresenceInit4OfflineProcessor">
+	<bean id="presence.pro.status.available.init.4delay" class="com.sissi.pipeline.in.presence.status.PresenceInit4DelayProcessor">
 		<constructor-arg ref="offline" />
 	</bean>
 	<bean id="presence.pro.status.available.2self.priority" class="com.sissi.pipeline.in.presence.status.PresenceOnlinePriorityProcessor" parent="global.pro.proxy" />
@@ -67,7 +67,7 @@
 			<util:list>
 				<ref bean="presence.pro.status.available.init.4fans" />
 				<ref bean="presence.pro.status.available.init.4selfs" />
-				<ref bean="presence.pro.status.available.init.4offline" />
+				<ref bean="presence.pro.status.available.init.4delay" />
 				<ref bean="presence.pro.status.available.2self.priority" />
 				<ref bean="presence.pro.status.available.2self.update" />
 				<ref bean="presence.pro.status.available.2selfs" />

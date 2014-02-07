@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +28,7 @@ import com.sissi.commons.apache.IOUtils;
 import com.sissi.commons.apache.LineIterator;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.Element;
+import com.sissi.protocol.Stream;
 import com.sissi.write.Writer;
 import com.sissi.write.WriterFragement;
 import com.sissi.write.WriterPart;
@@ -50,7 +52,7 @@ public class JAXBWriter implements Writer {
 	private final NamespacePrefixMapper mapper;
 
 	public JAXBWriter() {
-		this(new JAXBNamespaceMapping());
+		this(XmppPrefixMapper.MAPPER);
 	}
 
 	public JAXBWriter(NamespacePrefixMapper mapper) {
@@ -63,33 +65,32 @@ public class JAXBWriter implements Writer {
 					clazz.add(each);
 				}
 			}
+			this.context = JAXBContext.newInstance(clazz.toArray(new Class[] {}));
 			this.log.info("All classes in JAXB Context: " + clazz);
-			context = JAXBContext.newInstance(clazz.toArray(new Class[] {}));
 		} catch (Exception e) {
 			this.log.error(e.toString());
 			throw new RuntimeException("Can't init JAXB context", e);
 		}
 	}
 
-	public Element write(JIDContext context, Element element, OutputStream output) throws IOException {
-		BufferedOutputStream bufferOut = new BufferedOutputStream(output);
+	public Element write(JIDContext context, OutputStream output, Element element) throws IOException {
 		try {
 			try {
 				switch (this.getPart(element.getClass())) {
 				case NONE:
-					this.marshaller(context, element, bufferOut);
+					this.marshaller(context, output, element);
 					break;
 				case WITH_LAST:
-					this.marshallerPart(context, WriterPart.WITH_LAST, element, output);
+					this.marshallerPart(context, WriterPart.WITH_LAST, output, element);
 					break;
 				case WITHOUT_FIRST:
-					this.marshallerPart(context, WriterPart.WITHOUT_FIRST, element, output);
+					this.marshallerPart(context, WriterPart.WITHOUT_FIRST, output, element);
 					break;
 				case WITHOUT_LAST:
-					this.marshallerPart(context, WriterPart.WITHOUT_LAST, element, output);
+					this.marshallerPart(context, WriterPart.WITHOUT_LAST, output, element);
 					break;
 				}
-				bufferOut.flush();
+				output.flush();
 				return element;
 			} catch (Exception e) {
 				if (this.log.isErrorEnabled()) {
@@ -99,7 +100,6 @@ public class JAXBWriter implements Writer {
 				return null;
 			}
 		} finally {
-			IOUtils.closeQuietly(bufferOut);
 			IOUtils.closeQuietly(output);
 		}
 	}
@@ -113,14 +113,14 @@ public class JAXBWriter implements Writer {
 		return part;
 	}
 
-	public Element marshaller(JIDContext context, Element element, OutputStream output) throws Exception {
+	public Element marshaller(JIDContext context, OutputStream output, Element element) throws Exception {
 		Marshaller marshaller = this.generateMarshaller(false, true);
 		if (this.log.isInfoEnabled()) {
 			StringBufferWriter bufferTemp = new StringBufferWriter(new StringWriter());
 			marshaller.marshal(element, bufferTemp);
 			bufferTemp.flush();
 			String content = bufferTemp.toString();
-			this.log.info("Write on " + context.getJid().asString() + " " + content);
+			this.log.info("Write on " + context.jid().asString() + " " + content);
 			output.write(content.getBytes("UTF-8"));
 		} else {
 			marshaller.marshal(element, output);
@@ -128,26 +128,33 @@ public class JAXBWriter implements Writer {
 		return element;
 	}
 
-	private Element marshallerPart(JIDContext context, WriterPart part, Element element, OutputStream output) throws Exception {
+	private Element marshallerPart(JIDContext context, WriterPart part, OutputStream output, Element element) throws Exception {
 		Marshaller marshaller = this.generateMarshaller(true, part == WriterPart.WITHOUT_FIRST ? true : false);
-		String content = this.getPart(this.prepareToLines(element, marshaller), part);
-		this.log.info("Write on " + context.getJid().asString() + " " + content);
+		String content = this.getPart(this.prepareToLines(marshaller, element), part);
+		this.log.info("Write on " + context.jid().asString() + " " + content);
 		output.write(content.getBytes("UTF-8"));
 		return element;
 	}
 
-	private LinkedList<String> prepareToLines(Element node, Marshaller marshaller) throws JAXBException, IOException {
+	private LinkedList<String> prepareToLines(Marshaller marshaller, Element node) throws JAXBException, IOException {
 		ByteArrayOutputStream prepare = new ByteArrayOutputStream();
-		marshaller.marshal(node, prepare);
-		LineIterator iterator = IOUtils.lineIterator(new ByteArrayInputStream(prepare.toByteArray()), "UTF-8");
-		LinkedList<String> contents = new LinkedList<String>();
-		while (iterator.hasNext()) {
-			String each = iterator.next().trim();
-			if (!each.isEmpty()) {
-				contents.add(each);
+		BufferedOutputStream buffer = new BufferedOutputStream(prepare);
+		try {
+			marshaller.marshal(node, buffer);
+			buffer.flush();
+			LineIterator iterator = IOUtils.lineIterator(new ByteArrayInputStream(prepare.toByteArray()), "UTF-8");
+			LinkedList<String> contents = new LinkedList<String>();
+			while (iterator.hasNext()) {
+				String each = iterator.next().trim();
+				if (!each.isEmpty()) {
+					contents.add(each);
+				}
 			}
+			return contents;
+		} finally {
+			IOUtils.closeQuietly(buffer);
+			IOUtils.closeQuietly(prepare);
 		}
-		return contents;
 	}
 
 	private void add(LinkedList<String> contents, StringBuffer parts) {
@@ -157,8 +164,8 @@ public class JAXBWriter implements Writer {
 	}
 
 	private Marshaller generateMarshaller(Boolean format, Boolean fragement) throws JAXBException, PropertyException {
-		Marshaller marshaller = context.createMarshaller();
-		marshaller.setProperty(mapperProperty, mapper);
+		Marshaller marshaller = this.context.createMarshaller();
+		marshaller.setProperty(this.mapperProperty, this.mapper);
 		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, fragement);
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, format);
 		return marshaller;
@@ -194,6 +201,24 @@ public class JAXBWriter implements Writer {
 
 		public String toString() {
 			return this.out.toString();
+		}
+	}
+
+	private static class XmppPrefixMapper extends NamespacePrefixMapper {
+
+		public final static NamespacePrefixMapper MAPPER = new XmppPrefixMapper();
+
+		private final Map<String, String> mapping;
+
+		private XmppPrefixMapper() {
+			super();
+			Map<String, String> mapping = new HashMap<String, String>();
+			mapping.put(Stream.XMLNS, Stream.NAME);
+			this.mapping = Collections.unmodifiableMap(mapping);
+		}
+
+		public String getPreferredPrefix(String namespaceUri, String suggestion, boolean requirePrefix) {
+			return this.mapping.get(namespaceUri);
 		}
 	}
 }

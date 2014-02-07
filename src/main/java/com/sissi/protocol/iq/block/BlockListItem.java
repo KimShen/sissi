@@ -5,12 +5,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Item;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月16日
  */
-@MappingMetadata(uri = Block.XMLNS, localName = Item.NAME)
+@Metadata(uri = Block.XMLNS, localName = Item.NAME)
 @XmlType(namespace = Block.XMLNS)
 @XmlRootElement(name = Item.NAME)
 public class BlockListItem extends Item {

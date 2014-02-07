@@ -8,7 +8,7 @@ import com.sissi.protocol.Element;
  */
 public interface Output {
 
-	public Boolean output(JIDContext context, Element element);
+	public boolean output(JIDContext context, Element element);
 
 	public Output close();
 }

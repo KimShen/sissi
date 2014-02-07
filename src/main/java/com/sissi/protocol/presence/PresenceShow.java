@@ -2,12 +2,12 @@ package com.sissi.protocol.presence;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013-11-2
  */
-@MappingMetadata(uri = Presence.XMLNS, localName = PresenceShow.NAME)
+@Metadata(uri = Presence.XMLNS, localName = PresenceShow.NAME)
 @XmlRootElement
 public class PresenceShow {
 
@@ -25,7 +25,7 @@ public class PresenceShow {
 	}
 
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
 	public PresenceShow setText(String text) {

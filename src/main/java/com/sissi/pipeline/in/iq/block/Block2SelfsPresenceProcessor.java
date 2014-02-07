@@ -6,6 +6,7 @@ import com.sissi.context.Status;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.block.Block;
+import com.sissi.protocol.presence.Presence;
 
 /**
  * @author kim 2013年12月12日
@@ -13,10 +14,11 @@ import com.sissi.protocol.iq.block.Block;
 abstract class Block2SelfsPresenceProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		JID from = super.build(Block.class.cast(protocol).getItem().getJid());
-		for (String resource : super.resources(from)) {
-			super.broadcast(context.getJid(), from.setResource(resource), this.build(super.findOne(from, true)));
+	public boolean input(JIDContext context, Protocol protocol) {
+		JID target = super.build(Block.class.cast(protocol).getItem().getJid());
+		Presence presence = new Presence();
+		for (JID resource : super.resources(target)) {
+			super.broadcast(context.jid(), presence.setFrom(resource).clauses(this.build(super.findOne(target, true)).clauses()));
 		}
 		return true;
 	}

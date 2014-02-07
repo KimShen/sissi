@@ -12,13 +12,11 @@ import com.sissi.protocol.presence.Presence;
 public class PresenceRosterSubscribed2PresenceProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		// write presence with current context status to all resources of jid who be subscribed from current context
-		JIDContext target = super.find(super.build(protocol.getTo()));
-		// deep copy
-		JID other = super.build(context.getJid().asStringWithBare());
-		for (String resource : super.resources(context.getJid())) {
-			target.write(new Presence(other.setResource(resource), super.findOne(other, true).getStatus().getClauses()));
+	public boolean input(JIDContext context, Protocol protocol) {
+		JID to = super.build(protocol.getTo());
+		Presence presence = Presence.class.cast(protocol).clear();
+		for (JID resource : super.resources(context.jid())) {
+			super.broadcast(to, presence.setFrom(resource).clauses(super.findOne(resource, true).status().clauses()));
 		}
 		return true;
 	}

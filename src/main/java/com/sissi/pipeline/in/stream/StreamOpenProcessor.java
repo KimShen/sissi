@@ -11,8 +11,8 @@ import com.sissi.protocol.Stream;
 public class StreamOpenProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(Stream.class.cast(protocol).setLang(context.getLang()).reply().setFrom(context.getDomain()));
+	public boolean input(JIDContext context, Protocol protocol) {
+		context.write(Stream.class.cast(protocol).setLang(context.lang()).reply().setFrom(context.domain()));
 		return true;
 	}
 }

@@ -35,12 +35,12 @@ abstract class BlockOutputBuilder implements OutputBuilder {
 	abstract protected class BlockOutput implements Output {
 
 		@Override
-		public Boolean output(JIDContext context, Element node) {
-			JID contacter = this.contacter(context.getJid(), node);
-			if (this.isEmpty(context.getJid(), contacter) || !BlockOutputBuilder.this.blockSupports.contains(node.getClass())) {
+		public boolean output(JIDContext context, Element node) {
+			JID contacter = this.contacter(context.jid(), node);
+			if (this.isEmpty(context.jid(), contacter) || !BlockOutputBuilder.this.blockSupports.contains(node.getClass())) {
 				return true;
 			}
-			return !BlockOutputBuilder.this.context.isBlock(this.user(context.getJid(), node), contacter);
+			return !BlockOutputBuilder.this.context.isBlock(this.user(context.jid(), node), contacter);
 		}
 
 		abstract protected JID user(JID current, Element node);
@@ -48,7 +48,7 @@ abstract class BlockOutputBuilder implements OutputBuilder {
 		abstract protected JID contacter(JID current, Element node);
 
 		private Boolean isEmpty(JID jid) {
-			return (jid == null || jid.getUser() == null);
+			return (jid == null || jid.user() == null);
 		}
 
 		private boolean isEmpty(JID user, JID contact) {

@@ -12,7 +12,7 @@ import com.sissi.protocol.presence.PresenceType;
 public class PresenceProbeOfflineStatusProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		return super.resources(super.build(protocol.getTo())).isEmpty() ? this.writeAndReturn(context, Presence.class.cast(protocol)) : true;
 	}
 

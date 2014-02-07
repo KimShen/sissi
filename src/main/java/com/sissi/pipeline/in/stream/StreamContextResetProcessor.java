@@ -10,7 +10,7 @@ import com.sissi.protocol.Protocol;
 public class StreamContextResetProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		context.reset();
 		return true;
 	}

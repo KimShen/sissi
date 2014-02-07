@@ -8,7 +8,7 @@ import com.sissi.context.JIDBuilder;
  */
 public class DomainJIDBuilder implements JIDBuilder {
 
-	private final String noneName = "_NA";
+	private final String name = "EMPTY";
 
 	private final String connectAt = "@";
 
@@ -18,14 +18,14 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 	private final StringBuffer emptyJID = new StringBuffer();
 
+	private final int lengthLimit;
+
 	private final String domain;
 
-	private final Integer jid;
-
-	public DomainJIDBuilder(String domain, Integer jid) {
+	public DomainJIDBuilder(String domain, int jid) {
 		super();
 		this.domain = domain;
-		this.jid = jid;
+		this.lengthLimit = jid;
 	}
 
 	@Override
@@ -43,42 +43,46 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 		public None() {
 			super();
-			this.toString = this.getUser() + DomainJIDBuilder.this.connectAt + this.getDomain();
+			this.toString = this.user() + DomainJIDBuilder.this.connectAt + this.domain();
 		}
 
 		@Override
-		public String getUser() {
-			return DomainJIDBuilder.this.noneName;
+		public String user() {
+			return DomainJIDBuilder.this.name;
+		}
+
+		public boolean user(String jid) {
+			return false;
 		}
 
 		@Override
-		public String getDomain() {
+		public String domain() {
 			return DomainJIDBuilder.this.domain;
 		}
 
-		public JID setDomain(String domain) {
+		public JID domain(String domain) {
 			return this;
 		}
 
 		@Override
-		public String getResource() {
+		public String resource() {
 			return null;
 		}
 
-		public JID setResource(String resource) {
+		public JID resource(String resource) {
 			return this;
 		}
 
 		@Override
-		public JID getBare() {
+		public JID bare() {
 			return this;
 		}
 
-		public Boolean isValid() {
+		public boolean valid() {
 			return true;
 		}
 
-		public Boolean isValid(Boolean includeDomain) {
+		public boolean valid(boolean excludeDomain) {
 			return true;
 		}
 
@@ -95,7 +99,9 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 	private class User implements JID {
 
-		private Boolean valid = Boolean.TRUE;
+		private boolean parseValid = Boolean.TRUE;
+
+		private User bareUser;
 
 		private String user;
 
@@ -103,13 +109,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 		private String resource;
 
-		private User bareUser;
-
 		private String asStringWithBare;
-
-		private User() {
-
-		}
 
 		private User(String jid) {
 			super();
@@ -121,7 +121,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 				this.domain = startResource == -1 ? buffer.substring(startHost != -1 ? startHost + 1 : 0) : buffer.substring(startHost + 1, startResource);
 				this.resource = startResource == -1 ? null : buffer.substring(startResource + 1);
 			} catch (Exception e) {
-				this.valid = false;
+				this.parseValid = false;
 			}
 		}
 
@@ -131,46 +131,50 @@ public class DomainJIDBuilder implements JIDBuilder {
 			this.resource = resource;
 		}
 
-		private User copy2NoneResourceClone() {
-			this.bareUser = new User();
-			this.bareUser.user = this.user;
+		private User copy2Bare() {
+			this.bareUser = new User(this.user, null);
 			this.bareUser.domain = this.domain;
 			return this.bareUser;
 		}
 
-		public String getUser() {
+		public String user() {
 			return this.user;
 		}
 
-		public String getDomain() {
+		public boolean user(String jid) {
+			JID user = DomainJIDBuilder.this.build(jid);
+			return this.asStringWithBare().equals(user.asStringWithBare());
+		}
+
+		public String domain() {
 			return this.domain;
 		}
 
-		public JID setDomain(String domain) {
+		public JID domain(String domain) {
 			this.domain = domain;
 			return this;
 		}
 
-		public String getResource() {
+		public String resource() {
 			return this.resource;
 		}
 
 		@Override
-		public JID setResource(String resource) {
+		public JID resource(String resource) {
 			this.resource = resource;
 			return this;
 		}
 
-		public JID getBare() {
-			return this.bareUser != null ? this.bareUser : this.copy2NoneResourceClone();
+		public JID bare() {
+			return this.bareUser != null ? this.bareUser : this.copy2Bare();
 		}
 
-		public Boolean isValid() {
-			return this.isValid(true);
+		public boolean valid() {
+			return this.valid(true);
 		}
 
-		public Boolean isValid(Boolean includeDomain) {
-			return this.valid && this.selfReflectLength() && this.selfReflectChar(this.getUser(), true) && this.selfReflectChar(this.getDomain(), !includeDomain) && this.selfReflectChar(this.getResource(), true);
+		public boolean valid(boolean excludeDomain) {
+			return this.parseValid && this.validLength() && this.validKeyword(this.user()) && this.validKeyword(this.domain(), excludeDomain) && this.validKeyword(this.resource());
 		}
 
 		public String asString() {
@@ -181,16 +185,20 @@ public class DomainJIDBuilder implements JIDBuilder {
 			return this.asStringWithBare != null ? this.asStringWithBare : (this.domain != null ? this.stringWithBare(true) : this.stringWithBare(false));
 		}
 
-		private String stringWithBare(Boolean cached) {
+		private String stringWithBare(boolean cached) {
 			String asStringWithBare = (this.user != null ? this.user + DomainJIDBuilder.this.connectAt : "") + this.domain;
 			return cached ? (this.asStringWithBare = asStringWithBare) : asStringWithBare;
 		}
 
-		private Boolean selfReflectLength() {
-			return this.asString().length() < DomainJIDBuilder.this.jid;
+		private boolean validLength() {
+			return this.asString().length() < DomainJIDBuilder.this.lengthLimit;
 		}
 
-		private Boolean selfReflectChar(String part, Boolean allowNull) {
+		private boolean validKeyword(String part) {
+			return this.validKeyword(part, true);
+		}
+
+		private boolean validKeyword(String part, boolean allowNull) {
 			return (part != null && !part.isEmpty()) ? !part.contains(DomainJIDBuilder.this.connectAt) && !part.contains(DomainJIDBuilder.this.connectResource) : (false || allowNull);
 		}
 	}

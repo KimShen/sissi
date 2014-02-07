@@ -10,13 +10,11 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
-import com.sissi.context.JIDBuilder;
 import com.sissi.context.JIDContext;
 import com.sissi.offline.DelayElement;
 import com.sissi.offline.DelayElementBox;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
-import com.sissi.ucenter.VCardContext;
 
 /**
  * @author kim 2013-11-15
@@ -27,18 +25,12 @@ public class MongoDelayElementBox implements DelayElementBox, Output {
 
 	private final MongoConfig config;
 
-	private final JIDBuilder jidBuilder;
-
-	private final VCardContext vcardContext;
-
 	private final List<DelayElement> elements;
 
-	public MongoDelayElementBox(MongoConfig config, JIDBuilder jidBuilder, VCardContext vcardContext, List<DelayElement> elements) {
+	public MongoDelayElementBox(MongoConfig config, List<DelayElement> elements) {
 		super();
 		this.config = config;
 		this.elements = elements;
-		this.jidBuilder = jidBuilder;
-		this.vcardContext = vcardContext;
 	}
 
 	@Override
@@ -51,9 +43,7 @@ public class MongoDelayElementBox implements DelayElementBox, Output {
 
 	@Override
 	public DelayElementBox push(Element element) {
-		if (this.vcardContext.exists(this.jidBuilder.build(element.getTo()))) {
-			this.doPush(element);
-		}
+		this.doPush(element);
 		return this;
 	}
 
@@ -67,7 +57,7 @@ public class MongoDelayElementBox implements DelayElementBox, Output {
 	}
 
 	@Override
-	public Boolean output(JIDContext context, Element element) {
+	public boolean output(JIDContext context, Element element) {
 		this.push(element);
 		return true;
 	}

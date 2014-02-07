@@ -16,18 +16,18 @@ abstract class RegisterStoreProcessor implements Input {
 
 	private final RegisterContext registerContext;
 
-	private final IQProcessor iqProcessor;
+	private final IQProcessor failedProcessor;
 
-	public RegisterStoreProcessor(RegisterContext registerContext, IQProcessor iqProcessor) {
+	public RegisterStoreProcessor(RegisterContext registerContext, IQProcessor failedProcessor) {
 		super();
 		this.registerContext = registerContext;
-		this.iqProcessor = iqProcessor;
+		this.failedProcessor = failedProcessor;
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return this.registerContext.register(this.filter(Register.class.cast(protocol))) ? true : this.iqProcessor.input(context, IQ.class.cast(protocol.getParent()).clear());
+	public boolean input(JIDContext context, Protocol protocol) {
+		return this.registerContext.register(this.process(Register.class.cast(protocol))) ? true : this.failedProcessor.input(context, IQ.class.cast(protocol.getParent()).clear());
 	}
 
-	abstract protected Fields filter(Fields fields);
+	abstract protected Fields process(Fields fields);
 }

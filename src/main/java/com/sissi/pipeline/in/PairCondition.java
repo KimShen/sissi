@@ -19,11 +19,11 @@ public class PairCondition implements InputCondition {
 		this.matcher = matcher;
 	}
 
-	public Input getInput() {
-		return input;
+	public Input input() {
+		return this.input;
 	}
 
-	public InputMatcher getMatcher() {
-		return matcher;
+	public InputMatcher matcher() {
+		return this.matcher;
 	}
 }

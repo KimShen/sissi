@@ -31,7 +31,7 @@ public class PresenceActionMatcher extends ClassMatcher {
 	}
 
 	@Override
-	public Boolean match(Protocol protocol) {
-		return super.match(protocol) && (protocol.getTo() == null || this.directed) && this.types.contains(PresenceType.parse(protocol.getType()));
+	public boolean match(Protocol protocol) {
+		return super.match(protocol) && (!protocol.to() || this.directed) && this.types.contains(PresenceType.parse(protocol.getType()));
 	}
 }

@@ -11,7 +11,7 @@ import com.sissi.protocol.ProtocolType;
 public class Bytestreams2ActivateProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		context.write(protocol.getParent().clear().reply().setType(ProtocolType.RESULT));
 		return true;
 	}

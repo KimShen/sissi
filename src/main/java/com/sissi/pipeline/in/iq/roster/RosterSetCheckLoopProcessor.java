@@ -2,6 +2,7 @@ package com.sissi.pipeline.in.iq.roster;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
+import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
@@ -13,14 +14,16 @@ import com.sissi.protocol.iq.roster.Roster;
  */
 public class RosterSetCheckLoopProcessor extends ProxyProcessor {
 
+	// Can not add from
+	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
+
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return !context.getJid().getUser().equals(super.build(Roster.class.cast(protocol).getFirstItem().getJid()).getUser()) ? true : this.writeAndReturn(context, protocol);
+	public boolean input(JIDContext context, Protocol protocol) {
+		return context.jid().user(Roster.class.cast(protocol).getFirstItem().getJid()) ? this.writeAndReturn(context, protocol) : true;
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		// Can not add from
-		context.write(protocol.getParent().reply().setError(new ServerError().setType(ProtocolType.CANCEL).add(NotAllowed.DETAIL)));
+		context.write(protocol.getParent().reply().setError(this.error));
 		return false;
 	}
 }

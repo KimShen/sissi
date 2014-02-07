@@ -17,14 +17,14 @@ import com.sissi.protocol.feature.Mechanisms;
 import com.sissi.protocol.feature.Register;
 import com.sissi.protocol.feature.Session;
 import com.sissi.protocol.feature.Starttls;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 import com.sissi.write.WriterFragement;
 import com.sissi.write.WriterPart;
 
 /**
  * @author Kim.shen 2013-10-16
  */
-@MappingMetadata(uri = Stream.XMLNS, localName = Stream.NAME)
+@Metadata(uri = Stream.XMLNS, localName = Stream.NAME)
 @XmlRootElement(namespace = Stream.XMLNS)
 @WriterFragement(part = WriterPart.WITHOUT_LAST)
 public class Stream extends Protocol {
@@ -48,7 +48,7 @@ public class Stream extends Protocol {
 		return this;
 	}
 
-	public Boolean isUsing() {
+	public Boolean isConsume() {
 		return this.isUsing.get();
 	}
 
@@ -61,25 +61,31 @@ public class Stream extends Protocol {
 		return this.xmlns;
 	}
 
+	public boolean version(String version) {
+		return version.compareTo(this.version) < 0;
+	}
+
 	@XmlAttribute
 	public String getVersion() {
 		return this.version;
 	}
 
+	public Boolean validStream() {
+		return this.stream != null && this.stream.equals(Stream.XMLNS);
+	}
+	
 	public Stream setStream(String stream) {
 		this.stream = stream;
 		return this;
 	}
 
-	public Boolean isValid() {
-		return this.stream != null && this.stream.equals(Stream.XMLNS);
-	}
-
-	public Stream addFeature(Feature feature) {
+	public Stream addFeature(Feature... features) {
 		if (this.features == null) {
 			this.features = new ArrayList<Feature>();
 		}
-		this.features.add(feature);
+		for (Feature feature : features) {
+			this.features.add(feature);
+		}
 		return this;
 	}
 
@@ -94,7 +100,7 @@ public class Stream extends Protocol {
 		return super.getError();
 	}
 
-	public static Stream close() {
+	public static Stream closeGraceFully() {
 		return CloseGracefully.CLOSE;
 	}
 

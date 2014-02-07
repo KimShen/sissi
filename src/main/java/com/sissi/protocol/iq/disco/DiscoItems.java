@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.iq.disco.feature.Item;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月18日
  */
-@MappingMetadata(uri = DiscoItems.XMLNS, localName = DiscoItems.NAME)
+@Metadata(uri = DiscoItems.XMLNS, localName = DiscoItems.NAME)
 @XmlRootElement(name = DiscoItems.NAME)
 public class DiscoItems extends Disco {
 
@@ -20,11 +20,6 @@ public class DiscoItems extends Disco {
 
 	public DiscoItems() {
 		super(XMLNS);
-	}
-
-	public DiscoItems add(DiscoFeature features) {
-		super.add(features);
-		return this;
 	}
 
 	@XmlElements({ @XmlElement(name = Item.NAME, type = Item.class) })

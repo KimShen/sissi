@@ -10,8 +10,8 @@ import com.sissi.protocol.Protocol;
 public class PresenceOnlineProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		super.broadcast(context.getJid(), protocol.setFrom(context.getJid()));
+	public boolean input(JIDContext context, Protocol protocol) {
+		super.broadcast(context.jid(), protocol.setFrom(context.jid()));
 		return true;
 	}
 }

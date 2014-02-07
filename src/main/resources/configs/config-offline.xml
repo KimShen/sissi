@@ -6,13 +6,11 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="delay" abstract="true">
-		<property name="jidBuilder" ref="jid" />
-		<property name="offline" value="${pipeline.offline.title}" />
+		<constructor-arg ref="jid" />
+		<constructor-arg value="${pipeline.offline.title}" />
 	</bean>
 
 	<bean id="offline" class="com.sissi.offline.impl.MongoDelayElementBox">
-		<constructor-arg ref="jid" />
-		<constructor-arg ref="vcard" />
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
 				<constructor-arg ref="mongo" />

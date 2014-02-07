@@ -2,6 +2,7 @@ package com.sissi.pipeline.in.iq.roster;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
+import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
@@ -14,6 +15,9 @@ import com.sissi.ucenter.VCardContext;
  */
 public class RosterSetCheckExistsProcessor extends ProxyProcessor {
 
+	// Can not add from
+	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
+
 	private final VCardContext vcardContext;
 
 	public RosterSetCheckExistsProcessor(VCardContext vcardContext) {
@@ -22,13 +26,12 @@ public class RosterSetCheckExistsProcessor extends ProxyProcessor {
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		return this.vcardContext.exists(super.build(Roster.class.cast(protocol).getFirstItem().getJid())) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		// Can not add from
-		context.write(protocol.getParent().reply().setError(new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL)));
+		context.write(protocol.getParent().reply().setError(this.error));
 		return false;
 	}
 }

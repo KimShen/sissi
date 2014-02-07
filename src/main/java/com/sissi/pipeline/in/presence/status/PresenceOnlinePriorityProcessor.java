@@ -11,8 +11,8 @@ import com.sissi.protocol.presence.Presence;
 public class PresenceOnlinePriorityProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		super.priority(context.setPriority(Presence.class.cast(protocol).getPriority()));
+	public boolean input(JIDContext context, Protocol protocol) {
+		super.priority(context.priority(Presence.class.cast(protocol).priority()));
 		return true;
 	}
 }

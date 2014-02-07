@@ -9,16 +9,17 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.context.JID;
 import com.sissi.protocol.Item;
 import com.sissi.protocol.presence.PresenceType;
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 import com.sissi.ucenter.RelationRoster;
 
 /**
  * @author kim 2013-10-31
  */
-@MappingMetadata(uri = Roster.XMLNS, localName = Item.NAME)
+@Metadata(uri = Roster.XMLNS, localName = Item.NAME)
 @XmlType(namespace = Roster.XMLNS)
 @XmlRootElement(name = Item.NAME)
 public class GroupItem extends Item implements Collector {
@@ -33,8 +34,16 @@ public class GroupItem extends Item implements Collector {
 		super();
 	}
 
+	public GroupItem(String jid, String name) {
+		super(jid, name);
+	}
+
+	public GroupItem(JID jid, String name) {
+		this(jid.asStringWithBare(), name);
+	}
+
 	public GroupItem(RelationRoster roster) {
-		super(roster.getJID(), roster.getName());
+		this(roster.getJID(), roster.getName());
 		this.setAsk(roster.isAsk());
 		this.subscription = roster.getSubscription();
 		if (roster.asGroups() != null) {
@@ -76,13 +85,13 @@ public class GroupItem extends Item implements Collector {
 		return this.subscription;
 	}
 
-	public GroupItem setSubscription(String subscription) {
-		this.subscription = subscription;
+	public GroupItem setSubscription(RosterSubscription subscription) {
+		this.subscription = subscription.toString();
 		return this;
 	}
 
-	public GroupAction getAction() {
-		return GroupAction.parse(this.getSubscription());
+	public Boolean action(GroupAction action) {
+		return GroupAction.parse(this.getSubscription()) == action;
 	}
 
 	public GroupItem trimName(Integer length) {

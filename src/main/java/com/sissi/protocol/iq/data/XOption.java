@@ -5,14 +5,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 
 /**
  * @author kim 2013年12月5日
  */
-@MappingMetadata(uri = XData.XMLNS, localName = XOption.NAME)
+@Metadata(uri = XData.XMLNS, localName = XOption.NAME)
 @XmlRootElement(name = XOption.NAME)
 public class XOption implements Field<XValue>, Collector {
 
@@ -50,7 +50,7 @@ public class XOption implements Field<XValue>, Collector {
 	}
 
 	@Override
-	public Boolean hasChild() {
+	public boolean hasChild() {
 		return false;
 	}
 

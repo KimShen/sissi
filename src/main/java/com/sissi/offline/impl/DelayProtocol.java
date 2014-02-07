@@ -15,66 +15,52 @@ import com.sissi.protocol.Element;
  */
 abstract class DelayProtocol implements DelayElement {
 
-	protected final static String FIELD_CLASS = "class";
+	protected final static String fieldClass = "class";
 
-	protected final static String FIELD_DELAY = "delay";
+	protected final static String fieldDelay = "delay";
 
-	protected final static String FIELD_FROM = "from";
+	protected final static String fieldFrom = "from";
 
-	protected final static String FIELD_TYPE = "type";
+	protected final static String fieldType = "type";
 
-	protected final static String FIELD_TO = "to";
+	protected final static String fieldTo = "to";
 
-	protected final static String FIELD_ID = "id";
+	protected final static String fieldId = "id";
+
+	protected final String offline;
 
 	private final Class<? extends Element> support;
 
-	private String offline;
+	private final JIDBuilder jidBuilder;
 
-	private JIDBuilder jidBuilder;
-
-	public DelayProtocol(Class<? extends Element> support) {
+	public DelayProtocol(Class<? extends Element> support, JIDBuilder jidBuilder, String offline) {
 		super();
 		this.support = support;
-	}
-
-	protected String getOffline() {
-		return this.offline;
-	}
-
-	public void setOffline(String offline) {
 		this.offline = offline;
-	}
-
-	protected JIDBuilder getJidBuilder() {
-		return jidBuilder;
-	}
-
-	public void setJidBuilder(JIDBuilder jidBuilder) {
 		this.jidBuilder = jidBuilder;
 	}
 
-	protected Element based(Map<String, Object> storage, Element element) {
-		return element.setId(this.toString(storage, FIELD_ID)).setFrom(this.toString(storage, FIELD_FROM)).setTo(this.toString(storage, FIELD_TO)).setType(this.toString(storage, FIELD_TYPE));
+	protected Element read(Map<String, Object> storage, Element element) {
+		return element.setId(this.toString(storage, fieldId)).setFrom(this.toString(storage, fieldFrom)).setTo(this.toString(storage, fieldTo)).setType(this.toString(storage, fieldType));
 	}
 
-	protected Map<String, Object> based(Element element) {
+	public Map<String, Object> write(Element element) {
 		Map<String, Object> entity = new HashMap<String, Object>();
-		entity.put(FIELD_ID, element.getId());
-		entity.put(FIELD_FROM, this.jidBuilder.build(element.getFrom()).asStringWithBare());
-		entity.put(FIELD_TO, this.jidBuilder.build(element.getTo()).asStringWithBare());
-		entity.put(FIELD_TYPE, element.getType());
-		entity.put(FIELD_DELAY, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
-		entity.put(FIELD_CLASS, element.getClass().getSimpleName());
+		entity.put(fieldId, element.getId());
+		entity.put(fieldFrom, this.jidBuilder.build(element.getFrom()).asStringWithBare());
+		entity.put(fieldTo, this.jidBuilder.build(element.getTo()).asStringWithBare());
+		entity.put(fieldType, element.getType());
+		entity.put(fieldDelay, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
+		entity.put(fieldClass, element.getClass().getSimpleName());
 		return entity;
 	}
 
 	@Override
-	public Boolean isSupport(Map<String, Object> storage) {
-		return this.support.getSimpleName().equals(storage.get(FIELD_CLASS));
+	public boolean isSupport(Map<String, Object> storage) {
+		return this.support.getSimpleName().equals(storage.get(fieldClass));
 	}
 
-	public Boolean isSupport(Element element) {
+	public boolean isSupport(Element element) {
 		return this.support == element.getClass();
 	}
 

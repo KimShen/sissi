@@ -8,22 +8,22 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2014年1月21日
  */
-public class PresenceInit4OfflineProcessor implements Input {
+public class PresenceInit4DelayProcessor implements Input {
 
 	private final DelayElementBox delayElementBox;
 
-	public PresenceInit4OfflineProcessor(DelayElementBox delayElementBox) {
+	public PresenceInit4DelayProcessor(DelayElementBox delayElementBox) {
 		super();
 		this.delayElementBox = delayElementBox;
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return context.isPresence() ? true : init4Offline(context);
+	public boolean input(JIDContext context, Protocol protocol) {
+		return context.presented() ? true : this.writeOffline(context);
 	}
 
-	private Boolean init4Offline(JIDContext context) {
-		context.write(this.delayElementBox.pull(context.getJid()));
+	private Boolean writeOffline(JIDContext context) {
+		context.write(this.delayElementBox.pull(context.jid()));
 		return true;
 	}
 }

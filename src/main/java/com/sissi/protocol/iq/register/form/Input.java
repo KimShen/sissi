@@ -72,7 +72,7 @@ public class Input implements Field<String> {
 	}
 
 	@Override
-	public Boolean hasChild() {
+	public boolean hasChild() {
 		return false;
 	}
 }

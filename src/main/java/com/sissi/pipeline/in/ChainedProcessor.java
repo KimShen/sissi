@@ -11,7 +11,7 @@ import com.sissi.protocol.Protocol;
  */
 public class ChainedProcessor implements Input {
 
-	private final Boolean doNext;
+	private final boolean isNext;
 
 	private final List<Input> processors;
 
@@ -19,21 +19,19 @@ public class ChainedProcessor implements Input {
 		this(Boolean.FALSE, processors);
 	}
 
-	public ChainedProcessor(Boolean doNext, List<Input> processors) {
+	public ChainedProcessor(boolean isNext, List<Input> processors) {
 		super();
-		this.doNext = doNext;
+		this.isNext = isNext;
 		this.processors = processors;
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		if (this.processors != null) {
-			for (Input each : this.processors) {
-				if (!each.input(context, protocol)) {
-					return false;
-				}
+	public boolean input(JIDContext context, Protocol protocol) {
+		for (Input each : this.processors) {
+			if (!each.input(context, protocol)) {
+				return false;
 			}
 		}
-		return this.doNext;
+		return this.isNext;
 	}
 }

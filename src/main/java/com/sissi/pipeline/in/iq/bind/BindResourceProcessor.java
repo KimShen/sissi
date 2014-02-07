@@ -13,15 +13,15 @@ import com.sissi.protocol.iq.bind.Bind;
 public class BindResourceProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		context.write(IQ.class.cast(protocol.getParent().reply().clear().setType(ProtocolType.RESULT)).add(this.binding(context, Bind.class.cast(protocol))));
 		return true;
 	}
 
 	private Bind binding(JIDContext context, Bind bind) {
 		if (bind.hasResource()) {
-			context.getJid().setResource(bind.getResource().getText());
+			context.jid().resource(bind.getResource().getText());
 		}
-		return bind.clear().setJid(context.getJid().asString());
+		return bind.clear().setJid(context.jid().asString());
 	}
 }

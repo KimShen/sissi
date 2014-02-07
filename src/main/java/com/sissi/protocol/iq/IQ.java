@@ -25,12 +25,12 @@ import com.sissi.protocol.iq.session.Session;
 import com.sissi.protocol.iq.si.Si;
 import com.sissi.protocol.iq.vcard.VCard;
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author Kim.shen 2013-10-16
  */
-@MappingMetadata(uri = IQ.XMLNS, localName = IQ.NAME)
+@Metadata(uri = IQ.XMLNS, localName = IQ.NAME)
 @XmlRootElement
 public class IQ extends Protocol implements Collector {
 
@@ -38,7 +38,7 @@ public class IQ extends Protocol implements Collector {
 
 	public final static String NAME = "iq";
 
-	private final static List<Protocol> EMPTY_CHILDREN = new ArrayList<Protocol>();
+	private final static List<Protocol> empty = new ArrayList<Protocol>();
 
 	private List<Protocol> protocols;
 	
@@ -65,7 +65,7 @@ public class IQ extends Protocol implements Collector {
 	}
 
 	public List<Protocol> listChildren() {
-		return this.protocols != null ? this.protocols : EMPTY_CHILDREN;
+		return this.protocols != null ? this.protocols : empty;
 	}
 
 	@XmlElement
@@ -83,7 +83,7 @@ public class IQ extends Protocol implements Collector {
 		this.add(Protocol.class.cast(ob));
 	}
 
-	public Boolean isValidAction() {
+	public Boolean validAction() {
 		return ProtocolType.parse(this.getType()) != null;
 	}
 }

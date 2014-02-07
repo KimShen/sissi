@@ -12,14 +12,14 @@ import com.sissi.protocol.presence.Presence;
 public class PresenceInit4SelfsProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return context.isPresence() ? true : this.init4Selfs(context);
+	public boolean input(JIDContext context, Protocol protocol) {
+		return context.presented() ? true : this.init4Selfs(context);
 	}
 
 	private Boolean init4Selfs(JIDContext context) {
-		JID other = super.build(context.getJid().asString());
-		for (String resource : super.resources(context.getJid())) {
-			context.write(new Presence().setFrom(other.setResource(resource)));
+		Presence presence = new Presence();
+		for (JID resource : super.resources(context.jid())) {
+			context.write(presence.setFrom(resource));
 		}
 		return true;
 	}

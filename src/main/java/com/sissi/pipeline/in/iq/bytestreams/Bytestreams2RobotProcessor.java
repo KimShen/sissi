@@ -21,8 +21,8 @@ public class Bytestreams2RobotProcessor implements Input {
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(Bytestreams.class.cast(protocol).add(new Streamhost(protocol.getParent().getTo(), this.bytestreamsProxy.getDomain(), this.bytestreamsProxy.getPort())).getParent().reply().setFrom(this.bytestreamsProxy.getJid()).setType(ProtocolType.RESULT));
+	public boolean input(JIDContext context, Protocol protocol) {
+		context.write(Bytestreams.class.cast(protocol).add(new Streamhost(protocol.getParent().getTo(), this.bytestreamsProxy)).getParent().reply().setFrom(this.bytestreamsProxy.getJid()).setType(ProtocolType.RESULT));
 		return true;
 	}
 }

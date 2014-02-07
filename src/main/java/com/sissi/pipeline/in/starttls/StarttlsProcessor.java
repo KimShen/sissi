@@ -13,12 +13,12 @@ import com.sissi.protocol.starttls.Proceed;
 public class StarttlsProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return context.setTls() ? this.writeAndTrue(context) : this.writeAndFalse(context);
+	public boolean input(JIDContext context, Protocol protocol) {
+		return context.encrypt() ? this.writeAndTrue(context) : this.writeAndFalse(context);
 	}
 
 	private Boolean writeAndFalse(JIDContext context) {
-		context.write(Failure.FAILURE).write(Stream.close()).close();
+		context.write(Failure.FAILURE).write(Stream.closeGraceFully()).close();
 		return false;
 	}
 

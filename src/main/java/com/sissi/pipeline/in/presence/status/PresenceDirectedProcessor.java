@@ -10,7 +10,7 @@ import com.sissi.protocol.Protocol;
 public class PresenceDirectedProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		return true;
 	}
 }

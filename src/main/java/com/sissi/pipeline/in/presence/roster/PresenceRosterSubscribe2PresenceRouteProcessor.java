@@ -12,9 +12,9 @@ import com.sissi.protocol.presence.PresenceType;
 public class PresenceRosterSubscribe2PresenceRouteProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		// must using bare jid
-		super.broadcast(super.build(protocol.getTo()), context.getJid().getBare(), Presence.class.cast(protocol).setType(PresenceType.SUBSCRIBE));
+		super.broadcast(super.build(protocol.getTo()), context.jid().bare(), Presence.class.cast(protocol).setType(PresenceType.SUBSCRIBE));
 		return true;
 	}
 }

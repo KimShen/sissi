@@ -4,8 +4,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import com.sissi.protocol.iq.disco.DiscoItems;
+import com.sissi.protocol.iq.bytestreams.BytestreamsProxy;
 import com.sissi.protocol.iq.disco.DiscoFeature;
+import com.sissi.protocol.iq.disco.DiscoItems;
 
 /**
  * @author kim 2013年12月18日
@@ -24,15 +25,15 @@ public class Item extends DiscoFeature {
 		super(null);
 	}
 
-	public Item(String jid, String name) {
+	public Item(BytestreamsProxy proxy) {
 		this();
-		this.jid = jid;
-		this.name = name;
+		this.jid = proxy.getJid();
+		this.name = proxy.getName();
 	}
 
 	@XmlAttribute
 	public String getJid() {
-		return jid;
+		return this.jid;
 	}
 
 	public Item setJid(String jid) {
@@ -42,7 +43,7 @@ public class Item extends DiscoFeature {
 
 	@XmlAttribute
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public Item setName(String name) {

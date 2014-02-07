@@ -10,8 +10,10 @@ import com.sissi.protocol.presence.PresenceType;
  */
 public class Blocked2FansPresenceProcessor extends Block2FansPresenceProcessor {
 
+	private final Presence unavailable = new Presence().setType(PresenceType.UNAVAILABLE);
+
 	@Override
 	protected Status build(JIDContext context) {
-		return new Presence().setType(PresenceType.UNAVAILABLE);
+		return this.unavailable;
 	}
 }

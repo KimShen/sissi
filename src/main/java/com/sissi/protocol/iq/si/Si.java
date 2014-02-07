@@ -8,12 +8,12 @@ import javax.xml.bind.annotation.XmlType;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月13日
  */
-@MappingMetadata(uri = Si.XMLNS, localName = Si.NAME)
+@Metadata(uri = Si.XMLNS, localName = Si.NAME)
 @XmlType(namespace = Stream.XMLNS)
 @XmlRootElement
 public class Si extends Protocol implements Collector {
@@ -25,12 +25,12 @@ public class Si extends Protocol implements Collector {
 	private String profile;
 
 	private Feature feature;
-	
+
 	private File file;
 
 	@XmlAttribute
 	public String getProfile() {
-		return profile;
+		return this.profile;
 	}
 
 	public Si setProfile(String profile) {
@@ -40,12 +40,12 @@ public class Si extends Protocol implements Collector {
 
 	@XmlElement
 	public File getFile() {
-		return file;
+		return this.file;
 	}
 
 	@XmlElement
 	public Feature getFeature() {
-		return feature;
+		return this.feature;
 	}
 
 	@XmlAttribute

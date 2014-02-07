@@ -9,16 +9,16 @@ import com.sissi.protocol.iq.roster.RosterSubscription;
 public class RosterSet2SelfsProcessor extends Roster2SelfsItemProcessor {
 
 	@Override
-	protected String subscription(JID master, JID slave) {
-		return super.ourRelation(master, slave).getSubscription();
+	protected RosterSubscription subscription(JID master, JID slave) {
+		return RosterSubscription.parse(super.ourRelation(master, slave).getSubscription());
 	}
 
 	@Override
-	protected Boolean isAsk() {
+	protected boolean isAsk() {
 		return true;
 	}
 
-	protected Boolean isNext(String subscription) {
+	protected boolean isNext(String subscription) {
 		return RosterSubscription.parse(subscription) == RosterSubscription.NONE;
 	}
 }

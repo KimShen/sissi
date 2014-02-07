@@ -36,18 +36,18 @@ public class PlainAuthCallback implements AuthCallback {
 	}
 
 	@Override
-	public Boolean auth(Auth auth, JIDContext context) {
+	public boolean auth(Auth auth, JIDContext context) {
 		AuthCertificate certificate = new AuthCertificate(auth);
-		return context.setAuth(certificate.getPass().equals(this.authAccessor.access(certificate.getUser()))).isAuth() ? this.writeSuccessProtocol(context, certificate) : true;
+		return context.auth(certificate.pass(this.authAccessor.access(certificate.getUser()))).auth() ? this.writeSuccessProtocol(context, certificate) : false;
 	}
 
 	@Override
-	public Boolean isSupport(String mechanism) {
+	public boolean isSupport(String mechanism) {
 		return MECHANISM.equals(mechanism);
 	}
 
 	private boolean writeSuccessProtocol(JIDContext context, AuthCertificate certificate) {
-		context.setJid(this.jidBuilder.build(certificate.getUser(), null)).write(Success.INSTANCE);
+		context.jid(this.jidBuilder.build(certificate.getUser(), null)).write(Success.INSTANCE);
 		return true;
 	}
 
@@ -59,7 +59,7 @@ public class PlainAuthCallback implements AuthCallback {
 
 		public AuthCertificate(Auth auth) {
 			super();
-			byte[] afterDecode = base64.decode(auth.getText());
+			byte[] afterDecode = PlainAuthCallback.this.base64.decode(auth.getText());
 			if (PlainAuthCallback.this.log.isDebugEnabled()) {
 				PlainAuthCallback.this.log.debug("User/Pass is: " + Arrays.toString(afterDecode));
 			}
@@ -72,8 +72,8 @@ public class PlainAuthCallback implements AuthCallback {
 			return this.user;
 		}
 
-		public String getPass() {
-			return this.pass;
+		public Boolean pass(String pass) {
+			return this.pass.equals(pass);
 		}
 	}
 }

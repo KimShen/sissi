@@ -19,7 +19,7 @@ public interface RelationContext {
 
 	public Set<Relation> myRelations(JID from);
 
-	public Set<String> whoSubscribedMe(JID from);
+	public Set<JID> whoSubscribedMe(JID from);
 
-	public Set<String> iSubscribedWho(JID from);
+	public Set<JID> iSubscribedWho(JID from);
 }

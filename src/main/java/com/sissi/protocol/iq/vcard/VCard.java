@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.vcard.field.Photo;
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
@@ -20,7 +20,7 @@ import com.sissi.ucenter.field.impl.BeanFields;
 /**
  * @author kim 2013年12月5日
  */
-@MappingMetadata(uri = VCard.XMLNS, localName = VCard.NAME)
+@Metadata(uri = VCard.XMLNS, localName = VCard.NAME)
 @XmlType(namespace = VCard.XMLNS)
 @XmlRootElement(name = VCard.NAME)
 public class VCard extends Protocol implements Fields, Collector {
@@ -29,11 +29,7 @@ public class VCard extends Protocol implements Fields, Collector {
 
 	public final static String NAME = "vCard";
 
-	private final BeanFields fields;
-
-	public VCard() {
-		this.fields = new BeanFields(false);
-	}
+	private final BeanFields fields = new BeanFields(false);
 
 	@XmlAttribute
 	public String getXmlns() {
@@ -66,7 +62,7 @@ public class VCard extends Protocol implements Fields, Collector {
 	}
 
 	@Override
-	public Boolean isEmbed() {
+	public boolean isEmbed() {
 		return this.fields.isEmbed();
 	}
 

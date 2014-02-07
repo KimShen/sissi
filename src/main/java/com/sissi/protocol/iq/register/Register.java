@@ -14,7 +14,7 @@ import com.sissi.protocol.iq.data.XData;
 import com.sissi.protocol.iq.register.simple.Password;
 import com.sissi.protocol.iq.register.simple.Username;
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
@@ -22,7 +22,7 @@ import com.sissi.ucenter.field.impl.BeanFields;
 /**
  * @author kim 2013年12月3日
  */
-@MappingMetadata(uri = Register.XMLNS, localName = Register.NAME)
+@Metadata(uri = Register.XMLNS, localName = Register.NAME)
 @XmlType(namespace = Register.XMLNS)
 @XmlRootElement(name = Register.NAME)
 public class Register extends Protocol implements Fields, Collector {
@@ -42,6 +42,10 @@ public class Register extends Protocol implements Fields, Collector {
 	public Register(String instructions) {
 		this();
 		this.instructions = instructions;
+	}
+
+	public Boolean form(boolean needForm) {
+		return (this.fields.findField(XData.NAME, XData.class) != null) == needForm;
 	}
 
 	@XmlElement
@@ -69,10 +73,6 @@ public class Register extends Protocol implements Fields, Collector {
 		return this.fields.getFields();
 	}
 
-	public Boolean isForm() {
-		return this.fields.findField(XData.NAME, XData.class) != null;
-	}
-
 	public void set(String localName, Object ob) {
 		this.fields.add(Field.class.cast(ob));
 	}
@@ -83,7 +83,7 @@ public class Register extends Protocol implements Fields, Collector {
 	}
 
 	@Override
-	public Boolean isEmbed() {
+	public boolean isEmbed() {
 		return this.fields.isEmbed();
 	}
 

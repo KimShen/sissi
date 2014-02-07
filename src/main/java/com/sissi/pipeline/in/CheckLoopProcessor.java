@@ -11,7 +11,7 @@ import com.sissi.protocol.ProtocolType;
 public class CheckLoopProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return !ProtocolType.ERROR.equals(protocol.getType());
+	public boolean input(JIDContext context, Protocol protocol) {
+		return !protocol.type(ProtocolType.ERROR);
 	}
 }

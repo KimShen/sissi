@@ -10,6 +10,6 @@ public class UnBlock2FansPresenceProcessor extends Block2FansPresenceProcessor {
 
 	@Override
 	protected Status build(JIDContext context) {
-		return context.getStatus();
+		return context.status();
 	}
 }

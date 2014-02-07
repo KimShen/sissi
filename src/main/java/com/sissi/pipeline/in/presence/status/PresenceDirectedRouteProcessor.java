@@ -10,8 +10,8 @@ import com.sissi.protocol.Protocol;
 public class PresenceDirectedRouteProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		super.broadcast(super.build(protocol.getTo()), context.getJid(), context.getStatus());
+	public boolean input(JIDContext context, Protocol protocol) {
+		super.broadcast(super.build(protocol.getTo()), context.jid(), context.status());
 		return true;
 	}
 }

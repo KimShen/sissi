@@ -4,6 +4,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
+import com.sissi.protocol.iq.disco.DiscoFeature;
 import com.sissi.protocol.iq.disco.DiscoInfo;
 import com.sissi.protocol.iq.disco.feature.Blocking;
 import com.sissi.protocol.iq.disco.feature.Bytestreams;
@@ -17,9 +18,11 @@ import com.sissi.protocol.iq.disco.feature.VCard;
  */
 public class DiscoInfo2RobotProcessor implements Input {
 
+	private final DiscoFeature[] features = new DiscoFeature[] { Identity.FEATURE_PROXY, Bytestreams.FEATURE, SiFileTransfer.FEATURE, Si.FEATURE, VCard.FEATURE, Blocking.FEATURE };
+
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(DiscoInfo.class.cast(protocol).add(Identity.FEATURE_PROXY).add(Bytestreams.FEATURE).add(SiFileTransfer.FEATURE).add(Si.FEATURE).add(VCard.FEATURE).add(Blocking.FEATURE).getParent().reply().setType(ProtocolType.RESULT));
+	public boolean input(JIDContext context, Protocol protocol) {
+		context.write(DiscoInfo.class.cast(protocol).add(this.features).getParent().reply().setType(ProtocolType.RESULT));
 		return true;
 	}
 }

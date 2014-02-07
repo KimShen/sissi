@@ -3,7 +3,6 @@ package com.sissi.read.sax;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import javax.xml.parsers.SAXParser;
@@ -33,14 +32,6 @@ public class SAXReader implements Reader {
 
 	private final Mapping mapping;
 
-	public SAXReader(ResourceCounter resourceCounter) throws Exception {
-		this(new XMLMapping(), Executors.newSingleThreadExecutor(), resourceCounter);
-	}
-
-	public SAXReader(Mapping mapping, ResourceCounter resourceCounter) throws Exception {
-		this(mapping, Executors.newSingleThreadExecutor(), resourceCounter);
-	}
-
 	public SAXReader(Executor executor, ResourceCounter resourceCounter) throws Exception {
 		this(new XMLMapping(), executor, resourceCounter);
 	}
@@ -51,8 +42,8 @@ public class SAXReader implements Reader {
 		this.executor = executor;
 		this.resourceCounter = resourceCounter;
 		this.factory = SAXParserFactory.newInstance();
-		this.factory.setFeature("http://apache.org/xml/features/continue-after-fatal-error", true);
 		this.factory.setNamespaceAware(true);
+		this.factory.setFeature("http://apache.org/xml/features/continue-after-fatal-error", true);
 	}
 
 	public Future<Object> future(InputStream stream) throws IOException {
@@ -61,7 +52,10 @@ public class SAXReader implements Reader {
 			this.executor.execute(new ParseRunnable(stream, this.factory.newSAXParser(), new SAXHandler(this.mapping, future)));
 			return future;
 		} catch (Exception e) {
-			this.log.error(e);
+			if (this.log.isErrorEnabled()) {
+				this.log.error(e);
+				e.printStackTrace();
+			}
 			throw new RuntimeException(e);
 		}
 	}
@@ -77,8 +71,8 @@ public class SAXReader implements Reader {
 		public ParseRunnable(InputStream stream, SAXParser parser, SAXHandler handler) {
 			super();
 			this.parser = parser;
-			this.handler = handler;
 			this.stream = stream;
+			this.handler = handler;
 		}
 
 		public void run() {

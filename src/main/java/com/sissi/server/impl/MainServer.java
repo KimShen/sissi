@@ -9,11 +9,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class MainServer {
 
-	private final static String PREFIX = "classpath:";
+	private final static String prefix = "classpath:";
+
+	private final static String dir = "configs";
+
+	private final static String loading = "config-loading.xml";
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(PREFIX + "configs" + File.separatorChar + "config-loading.xml");
-		context.getBean(ChainedServerStarter.class).start();
+		new ClassPathXmlApplicationContext(prefix + dir + File.separatorChar + loading).getBean(ChainedServerStarter.class).start();
 	}
 }

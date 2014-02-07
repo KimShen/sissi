@@ -1,12 +1,10 @@
 package com.sissi.context.impl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoProxyConfig;
+import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.Status;
 import com.sissi.context.StatusBuilder;
@@ -16,8 +14,6 @@ import com.sissi.context.StatusClauses;
  * @author kim 2013-11-21
  */
 public class MongoStatusBuilder implements StatusBuilder {
-
-	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final MongoConfig config;
 
@@ -31,30 +27,26 @@ public class MongoStatusBuilder implements StatusBuilder {
 		return new MongoStatus(context);
 	}
 
-	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
-		this.config.collection().update(this.buildQuery(context), this.buildEntity("$set", context, type, show, status, avator));
-		return this;
-	}
-
 	private MongoStatusBuilder clear(JIDContext context) {
-		this.config.collection().update(this.buildQuery(context), this.buildEntity("$unset", context, null, null, null, null));
+		this.config.collection().remove(this.buildQuery(context.jid()));
 		return this;
 	}
-	
-	private DBObject get(JIDContext context) {
-		return this.config.collection().findOne(this.buildQuery(context));
+
+	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
+		this.config.collection().update(this.buildQuery(context.jid()), this.buildEntity("$set", context.priority(), type, show, status, avator));
+		return this;
 	}
 
-	private DBObject buildQuery(JIDContext context) {
-		DBObject query = BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, context.getJid().asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, context.getJid().getResource()).get();
-		this.log.debug("Query: " + query);
-		return query;
+	private StatusClauses get(JIDContext context) {
+		return new MongoClauses(this.config.collection().findOne(this.buildQuery(context.jid())));
 	}
 
-	private DBObject buildEntity(String op, JIDContext context, String type, String show, String status, String avator) {
-		DBObject entity = BasicDBObjectBuilder.start().add(op, BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoProxyConfig.FIELD_PRIORITY, context.getPriority()).get()).get();
-		this.log.debug("Entity: " + entity);
-		return entity;
+	private DBObject buildQuery(JID jid) {
+		return BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, jid.asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, jid.resource()).get();
+	}
+
+	private DBObject buildEntity(String op, Integer priority, String type, String show, String status, String avator) {
+		return BasicDBObjectBuilder.start().add(op, BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoProxyConfig.FIELD_PRIORITY, priority).get()).get();
 	}
 
 	private class MongoStatus implements Status {
@@ -68,19 +60,19 @@ public class MongoStatusBuilder implements StatusBuilder {
 
 		public MongoStatus clear() {
 			MongoStatusBuilder.this.clear(this.context);
-			// clear the reference to avoid gc failed
+			// clear reference to avoid gc failed
 			this.context = null;
 			return this;
 		}
 
-		public Status setClauses(StatusClauses clauses) {
+		public Status clauses(StatusClauses clauses) {
 			MongoStatusBuilder.this.set(this.context, clauses.find(StatusClauses.KEY_TYPE), clauses.find(StatusClauses.KEY_SHOW), clauses.find(StatusClauses.KEY_STATUS), clauses.find(StatusClauses.KEY_AVATOR));
 			return this;
 		}
 
 		@Override
-		public StatusClauses getClauses() {
-			return new MongoClauses(MongoStatusBuilder.this.get(this.context));
+		public StatusClauses clauses() {
+			return MongoStatusBuilder.this.get(this.context);
 		}
 	}
 

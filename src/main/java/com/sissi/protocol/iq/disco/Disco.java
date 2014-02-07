@@ -10,7 +10,7 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2014年1月16日
  */
-abstract class Disco extends Protocol {
+abstract public class Disco extends Protocol {
 
 	public final static String NAME = "query";
 
@@ -23,11 +23,13 @@ abstract class Disco extends Protocol {
 		this.xmlns = xmlns;
 	}
 
-	public Disco add(DiscoFeature features) {
+	public Disco add(DiscoFeature... features) {
 		if (this.features == null) {
 			this.features = new ArrayList<DiscoFeature>();
 		}
-		this.features.add(features);
+		for (DiscoFeature feature : features) {
+			this.features.add(feature);
+		}
 		return this;
 	}
 

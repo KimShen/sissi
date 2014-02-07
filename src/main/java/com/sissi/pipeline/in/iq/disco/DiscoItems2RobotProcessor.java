@@ -13,16 +13,16 @@ import com.sissi.protocol.iq.disco.feature.Item;
  */
 public class DiscoItems2RobotProcessor extends ProxyProcessor {
 
-	private final BytestreamsProxy bytestreamsProxy;
+	private final Item item;
 
 	public DiscoItems2RobotProcessor(BytestreamsProxy bytestreamsProxy) {
 		super();
-		this.bytestreamsProxy = bytestreamsProxy;
+		this.item = new Item(bytestreamsProxy);
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		context.write(DiscoItems.class.cast(protocol).add(new Item(this.bytestreamsProxy.getJid(), this.bytestreamsProxy.getName())).getParent().reply().setType(ProtocolType.RESULT));
+	public boolean input(JIDContext context, Protocol protocol) {
+		context.write(DiscoItems.class.cast(protocol).add(this.item).getParent().reply().setType(ProtocolType.RESULT));
 		return true;
 	}
 }

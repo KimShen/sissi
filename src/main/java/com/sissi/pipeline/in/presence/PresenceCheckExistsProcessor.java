@@ -18,7 +18,7 @@ public class PresenceCheckExistsProcessor extends ProxyProcessor {
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return protocol.getTo() == null || this.vcardContext.exists(super.build(protocol.getTo())) ? true : false;
+	public boolean input(JIDContext context, Protocol protocol) {
+		return !protocol.to() || this.vcardContext.exists(protocol.getTo()) ? true : false;
 	}
 }

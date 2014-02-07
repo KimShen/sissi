@@ -28,9 +28,8 @@ public class DigestAuthProcessor extends ProxyProcessor {
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		try {
-			// if auth success it will return true, and pipeline should be stop
 			return !this.isSuccess(context, protocol);
 		} catch (Exception e) {
 			this.log.debug(e.toString());
@@ -41,17 +40,11 @@ public class DigestAuthProcessor extends ProxyProcessor {
 	private Boolean isSuccess(JIDContext context, Protocol protocol) throws SaslException {
 		SaslServer sasl = null;
 		try {
-			return (sasl = this.saslServers.get(context)) != null ? context.write(new Success(sasl.evaluateResponse(Response.class.cast(protocol).getResponse()))).setAuth(true).isAuth() : false;
+			return (sasl = this.saslServers.pull(context)) != null ? context.write(new Success(sasl.evaluateResponse(Response.class.cast(protocol).getResponse()))).auth(true).auth() : false;
 		} finally {
-			this.close(context, sasl);
-		}
-	}
-
-	private void close(JIDContext context, SaslServer sasl) throws SaslException {
-		if (sasl != null) {
-			sasl.dispose();
-		} else {
-			this.log.warn("SASL can not be free on " + context.getJid().asString());
+			if (sasl != null) {
+				sasl.dispose();
+			}
 		}
 	}
 }

@@ -7,6 +7,7 @@
 
 	<alias name="addressing.mongo" alias="addressing" />
 	<bean id="addressing.mongo" class="com.sissi.addressing.impl.MongoAddressing">
+		<constructor-arg ref="jid" />
 		<constructor-arg ref="runner" />
 		<constructor-arg ref="counter" />
 		<constructor-arg>

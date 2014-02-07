@@ -3,12 +3,12 @@ package com.sissi.protocol.iq.bytestreams;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月18日
  */
-@MappingMetadata(uri = Bytestreams.XMLNS, localName = Streamhost.NAME)
+@Metadata(uri = Bytestreams.XMLNS, localName = Streamhost.NAME)
 @XmlRootElement
 public class Streamhost {
 
@@ -24,11 +24,11 @@ public class Streamhost {
 
 	}
 
-	public Streamhost(String jid, String host, String port) {
+	public Streamhost(String jid, BytestreamsProxy proxy) {
 		super();
+		this.host = proxy.getDomain();
+		this.port = proxy.getPort();
 		this.jid = jid;
-		this.host = host;
-		this.port = port;
 	}
 
 	public Streamhost setJid(String jid) {
@@ -48,16 +48,16 @@ public class Streamhost {
 
 	@XmlAttribute
 	public String getJid() {
-		return jid;
+		return this.jid;
 	}
 
 	@XmlAttribute
 	public String getHost() {
-		return host;
+		return this.host;
 	}
 
 	@XmlAttribute
 	public String getPort() {
-		return port;
+		return this.port;
 	}
 }

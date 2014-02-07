@@ -5,7 +5,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.PresenceType;
 import com.sissi.server.ServerCloser;
-import com.sissi.ucenter.SignatureContext;
+import com.sissi.ucenter.VCardContext;
 
 /**
  * @author kim 2013-11-20
@@ -14,17 +14,17 @@ public class BroadcastServerCloser implements ServerCloser {
 
 	private final BroadcastProtocol protocolBraodcast;
 
-	private final SignatureContext signatureContext;
+	private final VCardContext vCardContext;
 
-	public BroadcastServerCloser(BroadcastProtocol protocolBraodcast, SignatureContext signatureContext) {
+	public BroadcastServerCloser(BroadcastProtocol protocolBraodcast, VCardContext vCardContext) {
 		super();
 		this.protocolBraodcast = protocolBraodcast;
-		this.signatureContext = signatureContext;
+		this.vCardContext = vCardContext;
 	}
 
 	@Override
 	public BroadcastServerCloser close(JIDContext context) {
-		this.protocolBraodcast.broadcast(context.getJid(), new Presence().setFrom(context.getJid()).setStatus(this.signatureContext.signature(context.getJid())).setType(PresenceType.UNAVAILABLE));
+		this.protocolBraodcast.broadcast(context.jid(), new Presence().setFrom(context.jid()).setStatus(this.vCardContext.get(context.jid(), VCardContext.SIGNATURE).getValue()).setType(PresenceType.UNAVAILABLE));
 		return this;
 	}
 }

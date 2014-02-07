@@ -5,21 +5,23 @@ package com.sissi.context;
  */
 public interface JID {
 
-	public String getUser();
+	public String user();
+	
+	public boolean user(String jid);
 
-	public String getDomain();
+	public String domain();
 
-	public JID setDomain(String domain);
+	public JID domain(String domain);
 
-	public String getResource();
+	public String resource();
 
-	public JID setResource(String resource);
+	public JID resource(String resource);
+	
+	public boolean valid();
 
-	public JID getBare();
+	public boolean valid(boolean excludeDomain);
 
-	public Boolean isValid();
-
-	public Boolean isValid(Boolean includeDomain);
+	public JID bare();
 
 	public String asString();
 

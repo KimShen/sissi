@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
@@ -16,23 +16,19 @@ import com.sissi.ucenter.field.impl.BeanFields;
 /**
  * @author kim 2013年12月5日
  */
-@MappingMetadata(uri = XData.XMLNS, localName = XField.NAME)
+@Metadata(uri = XData.XMLNS, localName = XField.NAME)
 @XmlRootElement(name = XField.NAME)
 public class XField implements Field<String>, Collector {
 
 	public final static String NAME = "field";
+
+	private final BeanFields fields = new BeanFields(true);
 
 	private String var;
 
 	private String type;
 
 	private String value;
-
-	private final BeanFields fields;
-
-	public XField() {
-		this.fields = new BeanFields(true);
-	}
 
 	@XmlAttribute
 	public String getType() {
@@ -69,7 +65,7 @@ public class XField implements Field<String>, Collector {
 	}
 
 	@Override
-	public Boolean hasChild() {
+	public boolean hasChild() {
 		return this.getValue() == null && (this.fields.getFields() != null && !this.fields.getFields().isEmpty());
 	}
 

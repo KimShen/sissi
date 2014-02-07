@@ -17,7 +17,7 @@ public class Block extends Protocol implements Collector {
 
 	@XmlElement
 	public BlockListItem getItem() {
-		return item;
+		return this.item;
 	}
 
 	@XmlAttribute

@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.iq.data.XData;
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月13日
  */
-@MappingMetadata(uri = Feature.XMLNS, localName = Feature.NAME)
+@Metadata(uri = Feature.XMLNS, localName = Feature.NAME)
 @XmlType(namespace = Feature.XMLNS)
 @XmlRootElement
 public class Feature implements Collector {
@@ -25,7 +25,7 @@ public class Feature implements Collector {
 
 	@XmlElement
 	public XData getX() {
-		return x;
+		return this.x;
 	}
 
 	@XmlAttribute

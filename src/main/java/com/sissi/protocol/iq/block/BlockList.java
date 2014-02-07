@@ -9,12 +9,12 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月6日
  */
-@MappingMetadata(uri = Block.XMLNS, localName = BlockList.NAME)
+@Metadata(uri = Block.XMLNS, localName = BlockList.NAME)
 @XmlRootElement(name = BlockList.NAME)
 public class BlockList extends Protocol {
 
@@ -38,5 +38,11 @@ public class BlockList extends Protocol {
 	@XmlAttribute
 	public String getXmlns() {
 		return Block.XMLNS;
+	}
+
+	public BlockList clear() {
+		super.clear();
+		this.item = null;
+		return this;
 	}
 }

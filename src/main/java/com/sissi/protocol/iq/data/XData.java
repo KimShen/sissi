@@ -13,7 +13,7 @@ import com.sissi.protocol.iq.register.form.Instructions;
 import com.sissi.protocol.iq.register.form.Select;
 import com.sissi.protocol.iq.register.form.Title;
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
@@ -21,7 +21,7 @@ import com.sissi.ucenter.field.impl.BeanFields;
 /**
  * @author kim 2013年12月5日
  */
-@MappingMetadata(uri = XData.XMLNS, localName = XData.NAME)
+@Metadata(uri = XData.XMLNS, localName = XData.NAME)
 @XmlType(namespace = XData.XMLNS)
 @XmlRootElement(name = XData.NAME)
 public class XData extends BeanFields implements Field<Object>, Collector {
@@ -78,7 +78,7 @@ public class XData extends BeanFields implements Field<Object>, Collector {
 	}
 
 	@Override
-	public Boolean isEmbed() {
+	public boolean isEmbed() {
 		return super.isEmbed();
 	}
 
@@ -93,7 +93,7 @@ public class XData extends BeanFields implements Field<Object>, Collector {
 	}
 
 	@Override
-	public Boolean hasChild() {
+	public boolean hasChild() {
 		return super.getFields() != null && !super.getFields().isEmpty();
 	}
 

@@ -16,6 +16,6 @@ public class VCardGet2SelfProcessor extends VCardGetProcessor {
 
 	@Override
 	protected VCard get(JIDContext context, Protocol protocol) {
-		return super.vcardContext.get(context.getJid(), VCard.class.cast(protocol));
+		return super.vcardContext.get(context.jid(), VCard.class.cast(protocol));
 	}
 }

@@ -31,7 +31,7 @@ public class Select extends Input {
 		}
 	}
 
-	public Select add(XOption option) {
+	private Select add(XOption option) {
 		if (this.option == null) {
 			this.option = new ArrayList<XOption>();
 		}
@@ -41,6 +41,6 @@ public class Select extends Input {
 
 	@XmlElements({ @XmlElement(name = XOption.NAME, type = XOption.class) })
 	public List<XOption> getOption() {
-		return option;
+		return this.option;
 	}
 }

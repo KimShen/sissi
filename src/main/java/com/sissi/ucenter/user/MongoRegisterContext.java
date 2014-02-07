@@ -26,7 +26,7 @@ public class MongoRegisterContext extends MongoFieldContext implements RegisterC
 	}
 
 	@Override
-	public Boolean register(Fields fields) {
+	public boolean register(Fields fields) {
 		try {
 			return this.valid(fields) ? (this.config.collection().save(super.getEntities(fields, BasicDBObjectBuilder.start())).getError() == null) : false;
 		} catch (MongoException e) {
@@ -34,13 +34,13 @@ public class MongoRegisterContext extends MongoFieldContext implements RegisterC
 		}
 	}
 
-	private Boolean valid(Fields fields) {
+	private boolean valid(Fields fields) {
 		Field<?> register = fields.findField(Username.NAME, Field.class);
 		return register.hasChild() ? this.validUsername(this.extractUsername(register)) : this.validUsername(String.class.cast(register.getValue()));
 	}
 
 	private Boolean validUsername(String username) {
-		return username != null && !username.isEmpty() && this.jidBuilder.build(username, null).isValid(false);
+		return username != null && !username.isEmpty() && this.jidBuilder.build(username, null).valid(true);
 	}
 	
 	private String extractUsername(Field<?> register) {

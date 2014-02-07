@@ -8,5 +8,5 @@ import com.sissi.protocol.Protocol;
  */
 public interface Input {
 
-	public Boolean input(JIDContext context, Protocol protocol);
+	public boolean input(JIDContext context, Protocol protocol);
 }

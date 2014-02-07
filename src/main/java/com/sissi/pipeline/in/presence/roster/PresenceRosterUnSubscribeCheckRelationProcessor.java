@@ -13,7 +13,7 @@ public class PresenceRosterUnSubscribeCheckRelationProcessor extends ProxyProces
 	private final String[] relations = new String[] { RosterSubscription.TO.toString(), RosterSubscription.BOTH.toString() };
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return super.ourRelation(context.getJid(), super.build(protocol.getTo())).in(this.relations);
+	public boolean input(JIDContext context, Protocol protocol) {
+		return super.ourRelation(context.jid(), super.build(protocol.getTo())).in(this.relations);
 	}
 }

@@ -12,8 +12,8 @@ import com.sissi.protocol.presence.PresenceType;
 public class PresenceRosterUnSubscribe2PresenceFansProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		super.broadcast(super.build(protocol.getTo()), new Presence().setFrom(context.getJid()).setType(PresenceType.UNSUBSCRIBE));
+	public boolean input(JIDContext context, Protocol protocol) {
+		super.broadcast(super.build(protocol.getTo()), Presence.class.cast(protocol).setFrom(context.jid()).setType(PresenceType.UNSUBSCRIBE));
 		return true;
 	}
 }

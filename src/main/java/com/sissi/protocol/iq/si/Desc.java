@@ -3,12 +3,12 @@ package com.sissi.protocol.iq.si;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月31日
  */
-@MappingMetadata(uri = File.XMLNS, localName = Desc.NAME)
+@Metadata(uri = File.XMLNS, localName = Desc.NAME)
 @XmlRootElement
 public class Desc {
 
@@ -18,7 +18,7 @@ public class Desc {
 
 	@XmlValue
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
 	public Desc setText(String text) {

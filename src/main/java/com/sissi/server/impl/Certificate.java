@@ -22,6 +22,6 @@ public class Certificate {
 	}
 
 	public char[] getPassword() {
-		return password.toCharArray();
+		return this.password.toCharArray();
 	}
 }

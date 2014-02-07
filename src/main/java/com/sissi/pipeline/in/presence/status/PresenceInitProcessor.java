@@ -10,7 +10,7 @@ import com.sissi.protocol.Protocol;
 public class PresenceInitProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return context.isPresence() ? true : context.setPresence().isPresence();
+	public boolean input(JIDContext context, Protocol protocol) {
+		return context.presented() ? true : context.present().presented();
 	}
 }

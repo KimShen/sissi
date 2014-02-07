@@ -10,8 +10,8 @@ import com.sissi.protocol.Protocol;
 public class Block2SelfsItemProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		super.broadcast(context.getJid(), protocol.getParent());
+	public boolean input(JIDContext context, Protocol protocol) {
+		super.broadcast(context.jid(), protocol.getParent());
 		return true;
 	}
 }

@@ -5,7 +5,7 @@ package com.sissi.pipeline;
  */
 public interface InputCondition {
 
-	public Input getInput();
+	public Input input();
 
-	public InputMatcher getMatcher();
+	public InputMatcher matcher();
 }

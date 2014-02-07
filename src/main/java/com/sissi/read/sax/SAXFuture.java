@@ -14,7 +14,7 @@ public class SAXFuture implements Future<Object> {
 
 	private final BlockingQueue<Object> queue = new LinkedBlockingQueue<Object>();
 
-	public boolean set(Object node) {
+	public boolean push(Object node) {
 		return this.queue.offer(node);
 	}
 
@@ -27,7 +27,7 @@ public class SAXFuture implements Future<Object> {
 	}
 
 	public boolean isDone() {
-		return !this.queue.isEmpty();
+		return false;
 	}
 
 	public Object get() throws InterruptedException, ExecutionException {

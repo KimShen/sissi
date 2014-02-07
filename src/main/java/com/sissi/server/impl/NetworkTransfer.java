@@ -19,16 +19,12 @@ import com.sissi.write.TransferBuffer;
  */
 public class NetworkTransfer implements Transfer {
 
-	private final static Log log = LogFactory.getLog(NetworkTransfer.class);
-
 	private final GenericFutureListener<Future<Void>> futureListener;
 
 	private ChannelHandlerContext context;
 
 	public NetworkTransfer(ChannelHandlerContext context) {
-		super();
-		this.futureListener = FailLogedGenericFutureListener.FUTURE;
-		this.context = context;
+		this(FailLogedGenericFutureListener.FUTURE, context);
 	}
 
 	public NetworkTransfer(GenericFutureListener<Future<Void>> futureListener, ChannelHandlerContext context) {
@@ -61,12 +57,7 @@ public class NetworkTransfer implements Transfer {
 		}
 
 		public void operationComplete(Future<Void> future) throws Exception {
-			try {
-				
-				this.transferBuffer.release();
-			} catch (Exception e) {
-				NetworkTransfer.log.error("Memory leak: " + e.toString());
-			}
+			this.transferBuffer.release();
 		}
 	}
 

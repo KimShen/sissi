@@ -11,8 +11,8 @@ import com.sissi.protocol.presence.Presence;
 public class PresenceOnlineUpdateProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		context.getStatus().setClauses(Presence.class.cast(protocol).getClauses());
+	public boolean input(JIDContext context, Protocol protocol) {
+		context.status().clauses(Presence.class.cast(protocol).clauses());
 		return true;
 	}
 }

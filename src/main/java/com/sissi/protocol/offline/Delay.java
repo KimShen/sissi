@@ -29,31 +29,21 @@ public class Delay {
 
 	@XmlValue
 	public String getHit() {
-		return hit;
+		return this.hit;
+	}
+
+	@XmlAttribute
+	public String getFrom() {
+		return this.from;
+	}
+
+	@XmlAttribute
+	public String getStamp() {
+		return this.stamp;
 	}
 
 	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;
-	}
-
-	@XmlAttribute
-	public String getFrom() {
-		return from;
-	}
-
-	public Delay setFrom(String from) {
-		this.from = from;
-		return this;
-	}
-
-	@XmlAttribute
-	public String getStamp() {
-		return stamp;
-	}
-
-	public Delay setStamp(String stamp) {
-		this.stamp = stamp;
-		return this;
 	}
 }

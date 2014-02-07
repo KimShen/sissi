@@ -16,7 +16,7 @@ public class RegisterStoreMultiProcessor extends RegisterStoreProcessor {
 	}
 
 	@Override
-	protected Fields filter(Fields fields) {
+	protected Fields process(Fields fields) {
 		return new BeanFields(false, fields.findField(XData.NAME, XData.class).getFields());
 	}
 }

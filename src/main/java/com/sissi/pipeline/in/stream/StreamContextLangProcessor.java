@@ -11,8 +11,8 @@ import com.sissi.protocol.Stream;
 public class StreamContextLangProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		context.setLang(Stream.class.cast(protocol).getLang());
+	public boolean input(JIDContext context, Protocol protocol) {
+		context.lang(Stream.class.cast(protocol).getLang());
 		return true;
 	}
 }

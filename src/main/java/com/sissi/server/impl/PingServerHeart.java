@@ -22,9 +22,9 @@ import com.sissi.server.ServerHeart;
  */
 public class PingServerHeart implements ServerHeart, Runnable {
 
-	private final Integer timeoutThreads = 1;
+	private final int timeoutThreadNumber = 1;
 
-	private final AtomicLong eids = new AtomicLong();
+	private final AtomicLong pids = new AtomicLong();
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -32,30 +32,30 @@ public class PingServerHeart implements ServerHeart, Runnable {
 
 	private final DelayQueue<PingTimeout> timeouts = new DelayQueue<PingTimeout>();
 
-	private final Interval interval;
+	private final long interval;
 
 	private final ResourceCounter resourceCounter;
 
 	public PingServerHeart(Runner runner, Interval interval, ResourceCounter resourceCounter) {
 		super();
-		this.interval = interval;
 		this.resourceCounter = resourceCounter;
-		runner.executor(this.timeoutThreads, this);
+		this.interval = interval.convert(TimeUnit.MILLISECONDS);
+		runner.executor(this.timeoutThreadNumber, this);
 	}
 
 	@Override
-	public Long ping(JIDContext context) {
-		Long eid = this.eids.incrementAndGet();
+	public long ping(JIDContext context) {
+		long pid = this.pids.incrementAndGet();
 		this.timeouts.add(new PingTimeout(context));
-		context.write(new IQ().setId(eid).add(Ping.PING).setType(ProtocolType.GET));
-		return eid;
+		context.write(new IQ().setId(pid).add(Ping.PING).setType(ProtocolType.GET));
+		return pid;
 	}
 
 	@Override
 	public void run() {
 		while (true) {
 			try {
-				this.timeouts.take().gc();
+				this.timeouts.take().timeout();
 			} catch (Exception e) {
 				if (this.log.isWarnEnabled()) {
 					this.log.warn(e.toString());
@@ -69,15 +69,15 @@ public class PingServerHeart implements ServerHeart, Runnable {
 
 		private final JIDContext context;
 
-		private final Long deadline;
+		private final long deadline;
 
 		public PingTimeout(JIDContext context) {
 			this.context = context;
-			this.deadline = PingServerHeart.this.interval.convert(TimeUnit.MILLISECONDS) + System.currentTimeMillis();
+			this.deadline = PingServerHeart.this.interval + System.currentTimeMillis();
 			PingServerHeart.this.resourceCounter.increment(PingServerHeart.this.resource);
 		}
 
-		public PingTimeout gc() {
+		public PingTimeout timeout() {
 			this.context.closeTimeout();
 			PingServerHeart.this.resourceCounter.decrement(PingServerHeart.this.resource);
 			return this;

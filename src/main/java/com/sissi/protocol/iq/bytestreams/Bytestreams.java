@@ -13,12 +13,12 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.read.Collector;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月18日
  */
-@MappingMetadata(uri = Bytestreams.XMLNS, localName = Bytestreams.NAME)
+@Metadata(uri = Bytestreams.XMLNS, localName = Bytestreams.NAME)
 @XmlType(namespace = Bytestreams.XMLNS)
 @XmlRootElement(name = Bytestreams.NAME)
 public class Bytestreams extends Protocol implements Collector {
@@ -57,12 +57,12 @@ public class Bytestreams extends Protocol implements Collector {
 
 	@XmlAttribute
 	public String getMode() {
-		return mode;
+		return this.mode;
 	}
 
 	@XmlAttribute
 	public String getSid() {
-		return sid;
+		return this.sid;
 	}
 
 	@XmlElements({ @XmlElement(name = Streamhost.NAME, type = Streamhost.class) })
@@ -72,7 +72,7 @@ public class Bytestreams extends Protocol implements Collector {
 
 	@XmlElement(name = StreamhostUsed.NAME)
 	public StreamhostUsed getStreamhostUsed() {
-		return streamhostUsed;
+		return this.streamhostUsed;
 	}
 
 	public Bytestreams add(Streamhost streamhost) {

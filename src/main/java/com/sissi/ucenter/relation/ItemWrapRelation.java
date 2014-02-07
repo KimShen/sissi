@@ -36,7 +36,8 @@ public class ItemWrapRelation implements RelationRoster {
 	}
 
 	@Override
-	public Boolean isAsk() {
+	public boolean isAsk() {
+		// recover or new
 		return this.relation.isActivate() ? this.relation.isAsk() : true;
 	}
 
@@ -58,11 +59,15 @@ public class ItemWrapRelation implements RelationRoster {
 		return RosterSubscription.parse(this.relation.getSubscription()).toString();
 	}
 
-	public Boolean in(String... subscriptions) {
+	public boolean in(String... subscriptions) {
+		return RosterSubscription.parse(this.relation.getSubscription()).in(subscriptions);
+	}
+	
+	public boolean in(RosterSubscription... subscriptions){
 		return RosterSubscription.parse(this.relation.getSubscription()).in(subscriptions);
 	}
 
-	public Boolean isActivate() {
+	public boolean isActivate() {
 		return this.relation.isActivate();
 	}
 

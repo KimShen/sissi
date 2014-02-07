@@ -13,7 +13,7 @@ public class BeanField<T> implements Field<T> {
 
 	private List<Field<?>> children;
 
-	private Boolean isEmbed;
+	private boolean isEmbed;
 
 	private String name;
 
@@ -23,7 +23,7 @@ public class BeanField<T> implements Field<T> {
 		this(false);
 	}
 
-	public BeanField(Boolean isEmbed) {
+	public BeanField(boolean isEmbed) {
 		super();
 		this.isEmbed = isEmbed;
 	}
@@ -48,7 +48,7 @@ public class BeanField<T> implements Field<T> {
 		return this.value;
 	}
 
-	public BeanField<T> add(Field<?> field) {
+	public BeanField<T> add(Field<T> field) {
 		if (this.children == null) {
 			this.children = new ArrayList<Field<?>>();
 		}
@@ -62,7 +62,7 @@ public class BeanField<T> implements Field<T> {
 	}
 
 	@Override
-	public Boolean hasChild() {
-		return this.children != null;
+	public boolean hasChild() {
+		return this.children != null && !this.children.isEmpty();
 	}
 }

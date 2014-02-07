@@ -10,7 +10,7 @@ import com.sissi.protocol.Protocol;
 public class PresenceCheckLoopProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return !context.getJid().getUser().equals(super.build(protocol.getTo()).getUser()) ? true : false;
+	public boolean input(JIDContext context, Protocol protocol) {
+		return !context.jid().user(protocol.getTo()) ? true : false;
 	}
 }

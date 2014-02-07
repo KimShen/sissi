@@ -3,12 +3,12 @@ package com.sissi.protocol.iq.bind;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
-import com.sissi.read.MappingMetadata;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013-10-30
  */
-@MappingMetadata(uri = Bind.XMLNS, localName = Resource.NAME)
+@Metadata(uri = Bind.XMLNS, localName = Resource.NAME)
 @XmlRootElement
 public class Resource extends Protocol {
 
@@ -26,7 +26,7 @@ public class Resource extends Protocol {
 	}
 
 	public String getText() {
-		return text;
+		return this.text;
 	}
 
 	public Resource setText(String text) {

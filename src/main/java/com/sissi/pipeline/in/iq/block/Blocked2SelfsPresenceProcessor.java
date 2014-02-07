@@ -10,8 +10,10 @@ import com.sissi.protocol.presence.PresenceType;
  */
 public class Blocked2SelfsPresenceProcessor extends Block2SelfsPresenceProcessor {
 
+	private final Presence unavailable = new Presence().setType(PresenceType.UNAVAILABLE);
+
 	@Override
 	protected Status build(JIDContext contacter) {
-		return new Presence().setType(PresenceType.UNAVAILABLE);
+		return this.unavailable;
 	}
 }

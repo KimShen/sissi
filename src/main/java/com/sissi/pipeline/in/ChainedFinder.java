@@ -29,8 +29,8 @@ public class ChainedFinder implements InputFinder {
 	@Override
 	public Input find(Protocol protocol) {
 		for (InputCondition each : this.conditions) {
-			if (each.getMatcher().match(protocol)) {
-				Input input = each.getInput();
+			if (each.matcher().match(protocol)) {
+				Input input = each.input();
 				this.log.debug("Input for " + protocol.getClass());
 				return input;
 			}
@@ -47,7 +47,7 @@ public class ChainedFinder implements InputFinder {
 		}
 
 		@Override
-		public Boolean input(JIDContext context, Protocol current) {
+		public boolean input(JIDContext context, Protocol current) {
 			this.log.warn("Nothing for " + current.getClass() + ", please check");
 			return false;
 		}

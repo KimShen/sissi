@@ -5,7 +5,7 @@ package com.sissi.ucenter.field;
  */
 public interface Fields extends Iterable<Field<?>> {
 
-	public Boolean isEmbed();
+	public boolean isEmbed();
 
 	public Fields add(Field<?> field);
 

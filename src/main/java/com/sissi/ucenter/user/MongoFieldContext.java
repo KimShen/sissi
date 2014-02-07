@@ -12,20 +12,30 @@ abstract class MongoFieldContext {
 
 	protected DBObject getEntities(Fields fields, BasicDBObjectBuilder builder) {
 		for (Field<?> field : fields) {
-			if (field.hasChild()) {
-				this.embedOrNot(builder, field);
-			} else {
-				builder.add(field.getName(), field.getValue());
-			}
+			this.getEntity(field, builder, false);
 		}
 		return builder.get();
 	}
 
-	private void embedOrNot(BasicDBObjectBuilder builder, Field<?> field) {
-		if (field.getChildren().isEmbed()) {
-			this.getEntities(field.getChildren(), builder);
+	protected DBObject getEntity(Field<?> field, BasicDBObjectBuilder builder) {
+		return this.getEntity(field, builder, true);
+	}
+
+	private DBObject getEntity(Field<?> field, BasicDBObjectBuilder builder, Boolean build) {
+		if (field.hasChild()) {
+			this.embedOrNot(builder, field);
 		} else {
-			builder.add(field.getName(), this.getEntities(field.getChildren(), BasicDBObjectBuilder.start()));
+			builder.add(field.getName(), field.getValue());
+		}
+		return build ? builder.get() : null;
+	}
+
+	private void embedOrNot(BasicDBObjectBuilder builder, Field<?> field) {
+		Fields fields = field.getChildren();
+		if (fields.isEmbed()) {
+			this.getEntities(fields, builder);
+		} else {
+			builder.add(field.getName(), this.getEntities(fields, BasicDBObjectBuilder.start()));
 		}
 	}
 

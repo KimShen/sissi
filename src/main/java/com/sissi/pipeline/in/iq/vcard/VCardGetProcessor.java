@@ -20,7 +20,7 @@ abstract class VCardGetProcessor extends ProxyProcessor {
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
+	public boolean input(JIDContext context, Protocol protocol) {
 		context.write(this.get(context, protocol).getParent().reply().setType(ProtocolType.RESULT));
 		return true;
 	}

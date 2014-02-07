@@ -18,7 +18,7 @@ public class PresenceRosterActionMatcher extends ClassMatcher {
 	}
 
 	@Override
-	public Boolean match(Protocol protocol) {
+	public boolean match(Protocol protocol) {
 		return super.match(protocol) && this.type.equals(protocol.getType());
 	}
 }

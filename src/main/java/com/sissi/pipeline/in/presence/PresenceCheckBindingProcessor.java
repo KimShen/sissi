@@ -14,7 +14,7 @@ import com.sissi.protocol.error.detail.NotAuthorized;
 public class PresenceCheckBindingProcessor implements Input {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return context.isBinding() ? true : !context.write(Stream.closeWhenRunning(new ServerError().setType(ProtocolType.AUTH).add(NotAuthorized.DETAIL_ELEMENT)).setFrom(context.getDomain())).close();
+	public boolean input(JIDContext context, Protocol protocol) {
+		return context.binding() ? true : !context.write(Stream.closeWhenRunning(new ServerError().setType(ProtocolType.AUTH).add(NotAuthorized.DETAIL_ELEMENT)).setFrom(context.domain())).close();
 	}
 }

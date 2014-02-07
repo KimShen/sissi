@@ -1,5 +1,7 @@
 package com.sissi.protocol;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -60,6 +62,19 @@ abstract public class Protocol implements Element {
 		return this;
 	}
 
+	public boolean to() {
+		return this.getTo() != null;
+	}
+
+	public boolean to(String... tos) {
+		for (String to : tos) {
+			if (to.equals(this.getTo())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@XmlAttribute
 	public String getTo() {
 		return this.to;
@@ -73,6 +88,14 @@ abstract public class Protocol implements Element {
 	public Protocol setTo(JID to) {
 		this.to = to.asString();
 		return this;
+	}
+
+	public boolean type(String type) {
+		return type.equals(this.getType());
+	}
+
+	public boolean type(ProtocolType type) {
+		return type.equals(this.getType());
 	}
 
 	@XmlAttribute
@@ -111,13 +134,26 @@ abstract public class Protocol implements Element {
 	}
 
 	public Protocol reply() {
-		final String iamFrom = this.getFrom();
-		return this.setFrom(this.getTo()).setTo(iamFrom);
+		final String from = this.getFrom();
+		return this.setFrom(this.getTo()).setTo(from);
 	}
 
 	public Protocol clear() {
 		this.id = null;
 		this.type = null;
 		return this;
+	}
+
+	public boolean clazz(Class<? extends Protocol> clazz) {
+		return this.getClass() == clazz;
+	}
+
+	public boolean clazz(List<Class<? extends Protocol>> clazz) {
+		for (Class<? extends Protocol> each : clazz) {
+			if (this.getClass() == each) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

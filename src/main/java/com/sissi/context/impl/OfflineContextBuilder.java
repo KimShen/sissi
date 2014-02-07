@@ -14,22 +14,20 @@ import com.sissi.context.StatusClauses;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.presence.PresenceType;
-import com.sissi.ucenter.SignatureContext;
+import com.sissi.ucenter.VCardContext;
 
 /**
  * @author kim 2013-11-19
  */
 public class OfflineContextBuilder implements JIDContextBuilder {
 
-	private final Integer priority = 0;
-
-	private final Status status = OfflineStatus.STATUS;
+	private final int priority = 0;
 
 	private final JIDContext context = new OfflineContext();
 
 	private final SocketAddress address = new InetSocketAddress(InetAddress.getByName("0.0.0.0"), 0);
 
-	private final SignatureContext signatureContext;
+	private final VCardContext vCardContext;
 
 	private final String lang;
 
@@ -42,20 +40,20 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		this.lang = lang;
 		this.domain = domain;
 		this.output = output;
-		this.signatureContext = null;
+		this.vCardContext = null;
 	}
 
-	public OfflineContextBuilder(String lang, String domain, Output output, SignatureContext signatureContext) throws Exception {
+	public OfflineContextBuilder(String lang, String domain, Output output, VCardContext vCardContext) throws Exception {
 		super();
 		this.lang = lang;
 		this.domain = domain;
 		this.output = output;
-		this.signatureContext = signatureContext;
+		this.vCardContext = vCardContext;
 	}
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
-		return this.signatureContext != null ? new OfflineContext(new SignatureClauses(this.signatureContext.signature(jid))) : this.context;
+		return this.vCardContext != null ? new OfflineContext(new SignatureClauses(this.vCardContext.get(jid, VCardContext.SIGNATURE).getValue())) : this.context;
 	}
 
 	private class OfflineContext implements JIDContext {
@@ -66,7 +64,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		public OfflineContext() {
 			super();
-			this.status = OfflineContextBuilder.this.status;
+			this.status = OfflineStatus.STATUS;
 		}
 
 		public OfflineContext(StatusClauses statusClauses) {
@@ -74,104 +72,104 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			this.status = new OfflineStatus(statusClauses);
 		}
 
-		public Long getIndex() {
-			return null;
+		public long index() {
+			return -1;
 		}
 
 		@Override
-		public JIDContext setAuth(Boolean canAccess) {
+		public JIDContext auth(boolean canAccess) {
 			return this;
 		}
 
 		@Override
-		public Boolean isAuth() {
+		public boolean auth() {
 			return false;
 		}
 
-		public Boolean isAuthRetry() {
+		public boolean authRetry() {
 			return false;
 		}
 
-		public Boolean isBinding() {
+		public JIDContext bind() {
+			return this;
+		}
+
+		public boolean binding() {
 			return false;
 		}
 
-		public JIDContext setBinding(Boolean isBinding) {
+		@Override
+		public JIDContext jid(JID jid) {
 			return this;
 		}
 
 		@Override
-		public JIDContext setJid(JID jid) {
-			return this;
-		}
-
-		@Override
-		public JID getJid() {
+		public JID jid() {
 			return this.jid;
 		}
 
 		@Override
-		public Status getStatus() {
+		public Status status() {
 			return this.status;
 		}
 
 		@Override
-		public JIDContext setPriority(Integer priority) {
+		public JIDContext priority(int priority) {
 			return this;
 		}
 
 		@Override
-		public Integer getPriority() {
+		public int priority() {
 			return OfflineContextBuilder.this.priority;
 		}
 
-		public JIDContext setDomain(String domain) {
+		public JIDContext domain(String domain) {
 			return this;
 		}
 
-		public JIDContext setLang(String lang) {
+		public JIDContext lang(String lang) {
 			return this;
 		}
 
-		public String getLang() {
+		public String lang() {
 			return OfflineContextBuilder.this.lang;
 		}
 
-		public String getDomain() {
+		public String domain() {
 			return OfflineContextBuilder.this.domain;
 		}
 
-		public SocketAddress getAddress() {
+		public SocketAddress address() {
 			return OfflineContextBuilder.this.address;
 		}
 
 		@Override
-		public Boolean setTls() {
+		public boolean encrypt() {
 			return false;
 		}
 
-		public Boolean isTls() {
+		public boolean encrypted() {
 			return false;
 		}
 
-		public JIDContext setPresence() {
+		public JIDContext present() {
 			return this;
 		}
 
-		public Boolean isPresence() {
+		public boolean presented() {
 			return false;
 		}
 
-		public Boolean closePrepare() {
+		public boolean closePrepare() {
 			return false;
 		}
 
-		public Boolean closeTimeout() {
+		public boolean closeTimeout() {
 			return false;
 		}
 
 		@Override
-		public Boolean close() {
+		public boolean close() {
 			return false;
 		}
 

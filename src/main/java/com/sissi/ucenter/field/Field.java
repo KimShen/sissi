@@ -11,5 +11,5 @@ public interface Field<T> {
 
 	public Fields getChildren();
 
-	public Boolean hasChild();
+	public boolean hasChild();
 }

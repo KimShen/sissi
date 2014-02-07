@@ -15,7 +15,7 @@ abstract public class GC implements Runnable {
 
 	private final static Log LOG = LogFactory.getLog(GC.class);
 
-	private final Long sleep;
+	private final long sleep;
 
 	private final String resource;
 
@@ -51,5 +51,5 @@ abstract public class GC implements Runnable {
 		}
 	}
 
-	abstract protected Boolean gc();
+	abstract protected boolean gc();
 }

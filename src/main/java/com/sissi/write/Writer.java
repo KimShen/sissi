@@ -11,5 +11,5 @@ import com.sissi.protocol.Element;
  */
 public interface Writer {
 
-	public Element write(JIDContext context, Element element, OutputStream outputStream) throws IOException;
+	public Element write(JIDContext context, OutputStream outputStream, Element element) throws IOException;
 }

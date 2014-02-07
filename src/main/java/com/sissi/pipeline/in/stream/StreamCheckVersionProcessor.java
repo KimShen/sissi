@@ -23,7 +23,7 @@ public class StreamCheckVersionProcessor implements Input {
 	}
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		return this.minVersion.compareTo(Stream.class.cast(protocol).getVersion()) <= 0 ? true : !context.write(Stream.closeWhenOpening(new ServerError().add(UnSupportedVersion.DETAIL)).setFrom(this.domain).setTo(protocol.getFrom())).close();
+	public boolean input(JIDContext context, Protocol protocol) {
+		return Stream.class.cast(protocol).version(this.minVersion) ? true : !context.write(Stream.closeWhenOpening(new ServerError().add(UnSupportedVersion.DETAIL)).setFrom(this.domain).setTo(protocol.getFrom())).close();
 	}
 }

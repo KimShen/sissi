@@ -9,33 +9,16 @@ import com.sissi.ucenter.RelationContext;
  */
 abstract class ToAnyBroadcastProtocol {
 
-	private JIDBuilder jidBuilder;
+	protected final JIDBuilder jidBuilder;
 
-	private Addressing addressing;
+	protected final Addressing addressing;
 
-	private RelationContext relationContext;
+	protected final RelationContext relationContext;
 
-	public void setJidBuilder(JIDBuilder jidBuilder) {
+	public ToAnyBroadcastProtocol(JIDBuilder jidBuilder, Addressing addressing, RelationContext relationContext) {
+		super();
 		this.jidBuilder = jidBuilder;
-	}
-
-	public void setAddressing(Addressing addressing) {
 		this.addressing = addressing;
-	}
-
-	public void setRelationContext(RelationContext relationContext) {
 		this.relationContext = relationContext;
-	}
-
-	protected JIDBuilder getJidBuilder() {
-		return jidBuilder;
-	}
-
-	protected Addressing getAddressing() {
-		return addressing;
-	}
-
-	protected RelationContext getRelationContext() {
-		return relationContext;
 	}
 }

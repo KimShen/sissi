@@ -14,15 +14,14 @@ import com.sissi.protocol.presence.Presence;
 abstract class Block2FansPresenceProcessor extends ProxyProcessor {
 
 	@Override
-	public Boolean input(JIDContext context, Protocol protocol) {
-		JIDContext target = super.find(super.build(Block.class.cast(protocol).getItem().getJid()));
-		// deep copy
-		JID from = super.build(context.getJid().asStringWithBare());
-		for (String resource : super.resources(context.getJid())) {
-			target.write(new Presence(from.setResource(resource), this.build(context).getClauses()));
+	public boolean input(JIDContext context, Protocol protocol) {
+		JID target = super.build(Block.class.cast(protocol).getItem().getJid());
+		Presence presence = new Presence();
+		for (JID resource : super.resources(context.jid())) {
+			super.broadcast(target, presence.setFrom(resource).clauses(this.build(context).clauses()));
 		}
 		return true;
 	}
 
-	abstract Status build(JIDContext context);
+	abstract protected Status build(JIDContext context);
 }

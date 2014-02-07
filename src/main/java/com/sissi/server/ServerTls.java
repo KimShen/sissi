@@ -5,8 +5,8 @@ package com.sissi.server;
  */
 public interface ServerTls {
 
-	public Boolean startTls(String domain);
+	public boolean startTls(String domain);
 
-	public Boolean isTls(String domain);
+	public boolean isTls(String domain);
 
 }

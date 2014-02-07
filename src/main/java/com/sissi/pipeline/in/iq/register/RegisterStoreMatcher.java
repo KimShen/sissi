@@ -9,15 +9,15 @@ import com.sissi.protocol.iq.register.Register;
  */
 public class RegisterStoreMatcher extends ClassMatcher {
 
-	private final Boolean isForm;
+	private final boolean needForm;
 
-	public RegisterStoreMatcher(Boolean isForm) {
+	public RegisterStoreMatcher(boolean needForm) {
 		super(Register.class);
-		this.isForm = isForm;
+		this.needForm = needForm;
 	}
 
 	@Override
-	public Boolean match(Protocol protocol) {
-		return super.match(protocol) && Register.class.cast(protocol).isForm() == this.isForm;
+	public boolean match(Protocol protocol) {
+		return super.match(protocol) && Register.class.cast(protocol).form(this.needForm);
 	}
 }
