@@ -26,12 +26,19 @@
 	<bean id="roster.pro.establish.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- Prevent add self roster -->
 				<ref bean="roster.pro.establish.set.check.loop" />
+				<!-- Prevent add non-exists roster -->
 				<ref bean="roster.pro.establish.set.check.exists" />
+				<!-- Prevent multi item -->
 				<ref bean="roster.pro.establish.set.trim.item" />
+				<!-- Trim item.name -->
 				<ref bean="roster.pro.establish.set.trim.name" />
+				<!-- Trim item.group.name -->
 				<ref bean="roster.pro.establish.set.trim.group" />
+				<!-- DB operation -->
 				<ref bean="roster.pro.establish.set" />
+				<!-- Synchronize to all resources for roster -->
 				<ref bean="roster.pro.establish.set.2selfs" />
 				<!-- Avoid if send roster but not send presence -->
 				<!-- <ref bean="roster.pro.establish.set.2fans" /> -->
@@ -40,12 +47,14 @@
 		</constructor-arg>
 	</bean>
 	<bean id="roster.pro.establish.remove" class="com.sissi.pipeline.in.iq.roster.RosterRemoveProcessor" parent="global.pro.proxy" />
-	<bean id="roster.pro.establish.remove.2selfs.item" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsItemProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.remove.2selfs" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.remove.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- DB operation -->
 				<ref bean="roster.pro.establish.remove" />
-				<ref bean="roster.pro.establish.remove.2selfs.item" />
+				<!-- Synchronize to all resources for roster -->
+				<ref bean="roster.pro.establish.remove.2selfs" />
 				<ref bean="iq.pro.result.stop" />
 			</util:list>
 		</constructor-arg>

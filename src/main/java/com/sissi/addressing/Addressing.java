@@ -15,10 +15,6 @@ public interface Addressing {
 
 	public Addressing leave(JIDContext context);
 
-	public Addressing leave(JID jid);
-
-	public Addressing leave(JID jid, Boolean usingResource);
-
 	public JIDContext find(JID jid);
 
 	public JIDContext find(JID jid, Boolean usingResource);

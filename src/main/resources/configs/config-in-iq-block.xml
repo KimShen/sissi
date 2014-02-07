@@ -14,9 +14,13 @@
 	<bean id="block.pro.blocked.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- Synchronize to all resources that who I blocked -->
 				<ref bean="block.pro.blocked.2selfs.item" />
+				<!-- Presence unavailable to all resources that who I blocked -->
 				<ref bean="block.pro.blocked.2selfs.presence" />
+				<!-- Presence unavailable to all resources that who blocked me -->
 				<ref bean="block.pro.blocked.2fans.presence" />
+				<!-- DB operation -->
 				<ref bean="block.pro.blocked" />
 			</util:list>
 		</constructor-arg>
@@ -30,9 +34,13 @@
 	<bean id="block.pro.unblock.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- DB operation -->
 				<ref bean="block.pro.unblock" />
+				<!-- Synchronize to all resources that who I unblocked -->
 				<ref bean="block.pro.unblock.2selfs.item" />
+				<!-- Presence available to all resources that who I blocked -->
 				<ref bean="block.pro.unblock.2selfs.presence" />
+				<!-- Presence available to all resources that who blocked me -->
 				<ref bean="block.pro.unblock.2fans.presence" />
 			</util:list>
 		</constructor-arg>

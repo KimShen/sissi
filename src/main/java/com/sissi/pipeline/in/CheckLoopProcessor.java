@@ -12,10 +12,10 @@ public class CheckLoopProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return protocol.type(ProtocolType.ERROR) ? this.tryPong(context, protocol) : true;
+		return protocol.type(ProtocolType.ERROR) ? this.pong(context, protocol) : true;
 	}
 
-	private boolean tryPong(JIDContext context, Protocol protocol) {
+	private boolean pong(JIDContext context, Protocol protocol) {
 		context.pong(protocol);
 		return false;
 	}

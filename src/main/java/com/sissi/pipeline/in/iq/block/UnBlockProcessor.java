@@ -22,15 +22,15 @@ public class UnBlockProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		UnBlock ub = UnBlock.class.cast(protocol);
-		return ub.isUnBlockAll() ? this.writeAndReturn(context) : this.writeAndReturn(context, ub.getItem());
+		return ub.isUnBlockAll() ? this.unblockAndReturn(context) : this.unblockAndReturn(context, ub.getItem());
 	}
 
-	private Boolean writeAndReturn(JIDContext context, BlockListItem item) {
+	private Boolean unblockAndReturn(JIDContext context, BlockListItem item) {
 		this.blockContext.unblock(context.jid(), super.build(item.getJid()));
 		return true;
 	}
 
-	private Boolean writeAndReturn(JIDContext context) {
+	private Boolean unblockAndReturn(JIDContext context) {
 		this.blockContext.unblock(context.jid());
 		return true;
 	}

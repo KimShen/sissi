@@ -4,7 +4,6 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoProxyConfig;
-import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.Status;
 import com.sissi.context.StatusBuilder;
@@ -28,21 +27,21 @@ public class MongoStatusBuilder implements StatusBuilder {
 	}
 
 	private MongoStatusBuilder clear(JIDContext context) {
-		this.config.collection().remove(this.buildQuery(context.jid()));
+		this.config.collection().remove(this.buildQuery(context));
 		return this;
 	}
 
 	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
-		this.config.collection().update(this.buildQuery(context.jid()), this.buildEntity("$set", context.priority(), type, show, status, avator));
+		this.config.collection().update(this.buildQuery(context), this.buildEntity("$set", context.priority(), type, show, status, avator));
 		return this;
 	}
 
 	private StatusClauses get(JIDContext context) {
-		return new MongoClauses(this.config.collection().findOne(this.buildQuery(context.jid())));
+		return new MongoClauses(this.config.collection().findOne(this.buildQuery(context)));
 	}
 
-	private DBObject buildQuery(JID jid) {
-		return BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, jid.asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, jid.resource()).get();
+	private DBObject buildQuery(JIDContext context) {
+		return BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_INDEX, context.index()).add(MongoProxyConfig.FIELD_JID, context.jid().asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, context.jid().resource()).get();
 	}
 
 	private DBObject buildEntity(String op, Integer priority, String type, String show, String status, String avator) {

@@ -63,21 +63,6 @@ abstract public class ProxyProcessor implements Input {
 		return this;
 	}
 
-	protected ProxyProcessor leave(JID jid) {
-		this.addressing.leave(jid);
-		return this;
-	}
-
-	protected ProxyProcessor leave(JIDContext context) {
-		this.addressing.leave(context);
-		return this;
-	}
-
-	protected ProxyProcessor leave(JID jid, Boolean usingResource) {
-		this.addressing.leave(jid, usingResource);
-		return this;
-	}
-
 	protected JIDContext find(JID jid) {
 		return this.addressing.find(jid);
 	}

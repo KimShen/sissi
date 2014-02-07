@@ -5,6 +5,7 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="bind.pro.binding" class="com.sissi.pipeline.in.iq.bind.BindingProcessor" parent="global.pro.proxy" />
 	<bean id="bind.pro.resource" class="com.sissi.pipeline.in.iq.bind.BindResourceProcessor" parent="global.pro.proxy" />
 	<bean id="bind.pro.addressing.limit" class="com.sissi.pipeline.in.iq.bind.BindAddressLimitProcessor" parent="global.pro.proxy">
 		<constructor-arg value="${pipeline.resource.limit}" />
@@ -15,10 +16,20 @@
 	<bean id="bind.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- Limit resources of multi connection -->
 				<ref bean="bind.pro.addressing.limit" />
-				<ref bean="bind.pro.addressing.close.current" />
+				<!-- Copy resource of "bind" to JIDContext -->
 				<ref bean="bind.pro.resource" />
+				<!-- Prevent same resource -->
+				<ref bean="bind.pro.addressing.close.current" />
+				<!-- Kick same resource -->
+				<!-- 
+				<ref bean="bind.pro.addressing.close.others" />
+				 -->
+				<!-- Join JIDContext pool -->
 				<ref bean="bind.pro.addressing.join" />
+				<!-- Response -->
+				<ref bean="bind.pro.binding" />
 			</util:list>
 		</constructor-arg>
 	</bean>

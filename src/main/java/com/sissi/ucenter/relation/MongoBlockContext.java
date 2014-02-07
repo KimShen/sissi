@@ -80,13 +80,8 @@ public class MongoBlockContext implements BlockContext {
 
 		private GroupJIDs(List<String> bans) {
 			for (String ban : bans) {
-				super.add(MongoBlockContext.this.jidBuilder.build(ban));
+				super.add(MongoBlockContext.this.jidBuilder.build(ban, null));
 			}
-		}
-
-		@Override
-		public boolean moreThan(Integer counter) {
-			return super.size() >= counter;
 		}
 
 		@Override
@@ -120,11 +115,6 @@ public class MongoBlockContext implements BlockContext {
 		@Override
 		public boolean isEmpty() {
 			return true;
-		}
-
-		@Override
-		public boolean moreThan(Integer counter) {
-			return false;
 		}
 
 		@Override

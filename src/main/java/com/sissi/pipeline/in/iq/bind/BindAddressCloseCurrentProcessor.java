@@ -17,6 +17,6 @@ public class BindAddressCloseCurrentProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return super.resources(super.build(protocol.getTo()), true).isEmpty() ? true : !context.write(Stream.closeWhenRunning(this.error)).close();
+		return super.resources(context.jid(), true).isEmpty() ? true : !context.write(Stream.closeWhenRunning(this.error)).close();
 	}
 }

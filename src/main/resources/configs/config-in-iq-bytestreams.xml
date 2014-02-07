@@ -13,10 +13,7 @@
 	</bean>
 
 	<bean id="bytestreams.pro.2activate" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ActivateProcessor" />
-	<bean id="bytestreams.pro.2proxy" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2RobotProcessor">
-		<constructor-arg ref="bytestreams.proxy" />
-	</bean>
-	<bean id="bytestreams.pro.2server" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2RobotProcessor">
+	<bean id="bytestreams.pro.2robot" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2RobotProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
 	<bean id="bytestreams.pro.2fans" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2FansProcessor" parent="global.pro.proxy">
@@ -55,7 +52,7 @@
 				<constructor-arg index="1" value="${global.domain}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="bytestreams.pro.2server" />
+		<constructor-arg ref="bytestreams.pro.2robot" />
 	</bean>
 	<bean id="bytestreams.condition.2proxy" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
@@ -64,7 +61,7 @@
 				<constructor-arg index="1" value="${bytestreams.jid}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="bytestreams.pro.2proxy" />
+		<constructor-arg ref="bytestreams.pro.2robot" />
 	</bean>
 	<bean id="bytestreams.condition.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

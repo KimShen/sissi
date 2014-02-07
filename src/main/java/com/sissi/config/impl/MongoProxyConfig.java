@@ -24,6 +24,8 @@ import com.sissi.config.MongoConfig;
 public class MongoProxyConfig implements MongoConfig {
 
 	public static final String FIELD_JID = "jid";
+	
+	public static final String FIELD_INDEX = "index";
 
 	public static final String FIELD_PRIORITY = "priority";
 

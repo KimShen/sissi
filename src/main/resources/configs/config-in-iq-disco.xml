@@ -5,16 +5,12 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="disco.pro.info.2server" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2RobotProcessor" />
-	<bean id="disco.pro.info.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2RobotProcessor" />
+	<bean id="disco.pro.info.2robot" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2RobotProcessor" />
 	<bean id="disco.pro.info.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy" />
 	<bean id="disco.pro.info.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.disco.info" />
 	</bean>
-	<bean id="disco.pro.items.2server" class="com.sissi.pipeline.in.iq.disco.DiscoItems2RobotProcessor">
-		<constructor-arg ref="bytestreams.proxy" />
-	</bean>
-	<bean id="disco.pro.items.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoItems2RobotProcessor">
+	<bean id="disco.pro.items.2robot" class="com.sissi.pipeline.in.iq.disco.DiscoItems2RobotProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
 	<bean id="disco.pro.items.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy" />
@@ -62,7 +58,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.AnyMatcher" />
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.info.2server" />
+		<constructor-arg ref="disco.pro.info.2robot" />
 	</bean>
 	<bean id="disco.condition.info.2proxy" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
@@ -71,7 +67,7 @@
 				<constructor-arg index="1" value="${bytestreams.jid}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.info.2proxy" />
+		<constructor-arg ref="disco.pro.info.2robot" />
 	</bean>
 	<bean id="disco.condition.info.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
@@ -86,7 +82,7 @@
 				<constructor-arg index="1" value="${global.domain}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.items.2server" />
+		<constructor-arg ref="disco.pro.items.2robot" />
 	</bean>
 	<bean id="disco.condition.items.2proxy" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
@@ -95,7 +91,7 @@
 				<constructor-arg index="1" value="${bytestreams.jid}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.items.2proxy" />
+		<constructor-arg ref="disco.pro.items.2robot" />
 	</bean>
 	<bean id="disco.condition.items.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

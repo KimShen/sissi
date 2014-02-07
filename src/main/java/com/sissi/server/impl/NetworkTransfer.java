@@ -43,7 +43,6 @@ public class NetworkTransfer implements Transfer {
 	public void close() {
 		if (this.context != null) {
 			this.context.close().addListener(FailLogedGenericFutureListener.FUTURE);
-			this.context = null;
 		}
 	}
 

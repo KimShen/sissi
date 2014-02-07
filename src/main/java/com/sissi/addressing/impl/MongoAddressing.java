@@ -33,11 +33,9 @@ public class MongoAddressing implements Addressing {
 
 	private final Integer gcThreadNumber = 1;
 
-	private final String fieldIndex = "index";
-
 	private final String fieldAddress = "address";
 
-	private final DBObject filterIndex = BasicDBObjectBuilder.start(this.fieldIndex, 1).get();
+	private final DBObject filterIndex = BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_INDEX, 1).get();
 
 	private final DBObject filterResource = BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_RESOURCE, 1).get();
 
@@ -70,21 +68,10 @@ public class MongoAddressing implements Addressing {
 		return this;
 	}
 
-	public Addressing leave(JID jid) {
-		return this.leave(jid, true);
-	}
-
-	public Addressing leave(JID jid, Boolean usingResource) {
-		for (JIDContext current : this.find(jid, usingResource, false)) {
-			this.leave(current);
-		}
-		return this;
-	}
-
 	@Override
 	public Addressing leave(JIDContext context) {
-		if (context.close()) {
-			this.config.collection().remove(this.buildQueryWithNecessaryFields(this.contexts.remove(context.index())));
+		if (this.contexts.remove(context.index()) != null) {
+			this.config.collection().remove(this.buildQueryWithNecessaryFields(context));
 		}
 		return this;
 	}
@@ -107,7 +94,7 @@ public class MongoAddressing implements Addressing {
 	public JIDContext findOne(JID jid, Boolean usingResource) {
 		DBObject entity = this.config.collection().findOne(this.buildQueryWithSmartResource(jid, usingResource), this.filterIndex);
 		// Assert: Not find with findOne(jid,resource) should not find with find(jid,resource)
-		return entity != null ? this.contexts.get(Long.class.cast(entity.get(this.fieldIndex))) : this.find(jid);
+		return entity != null ? this.contexts.get(Long.class.cast(entity.get(MongoProxyConfig.FIELD_INDEX))) : this.find(jid);
 	}
 
 	public JIDs resources(JID jid) {
@@ -128,7 +115,7 @@ public class MongoAddressing implements Addressing {
 	}
 
 	private DBObject buildQueryWithNecessaryFields(JIDContext context) {
-		return BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, context.jid().asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, context.jid().resource()).add(this.fieldIndex, context.index()).add(this.fieldAddress, context.address().toString()).get();
+		return BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, context.jid().asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, context.jid().resource()).add(MongoProxyConfig.FIELD_INDEX, context.index()).add(this.fieldAddress, context.address().toString()).get();
 	}
 
 	private DBObject buildQueryWithSmartResource(JID jid, Boolean usingResource) {
@@ -140,7 +127,7 @@ public class MongoAddressing implements Addressing {
 	}
 
 	private boolean exists(Long index) {
-		return this.config.collection().findOne(BasicDBObjectBuilder.start(this.fieldIndex, index).get(), MongoAddressing.this.filterIndex) != null;
+		return this.config.collection().findOne(BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_INDEX, index).get(), MongoAddressing.this.filterIndex) != null;
 	}
 
 	private class Resources implements JIDs {
@@ -167,12 +154,8 @@ public class MongoAddressing implements Addressing {
 			return this.resources == null || this.resources.length == 0;
 		}
 
-		public boolean moreThan(Integer counter) {
-			return this.resources.length >= counter;
-		}
-
 		public boolean lessThan(Integer counter) {
-			return this.resources.length <= counter;
+			return this.resources.length < counter;
 		}
 
 		private boolean hasNext() {
@@ -207,7 +190,7 @@ public class MongoAddressing implements Addressing {
 
 		private MongoJIDContexts(JID jid, Boolean usingOffline, DBCursor cursor) {
 			while (cursor.hasNext()) {
-				JIDContext context = MongoAddressing.this.contexts.get(Long.class.cast(cursor.next().get(MongoAddressing.this.fieldIndex)));
+				JIDContext context = MongoAddressing.this.contexts.get(Long.class.cast(cursor.next().get(MongoProxyConfig.FIELD_INDEX)));
 				if (context != null) {
 					super.add(context);
 				}
@@ -231,8 +214,12 @@ public class MongoAddressing implements Addressing {
 		@Override
 		public boolean gc() {
 			for (Long index : MongoAddressing.this.contexts.keySet()) {
-				if (!MongoAddressing.this.exists(index) && MongoAddressing.this.contexts.get(index).close()) {
+				if (!MongoAddressing.this.exists(index)) {
+					JIDContext leak = MongoAddressing.this.contexts.get(index);
 					MongoAddressing.this.log.warn("Find leak context: " + index);
+					if (leak != null) {
+						leak.close();
+					}
 				}
 			}
 			return true;
