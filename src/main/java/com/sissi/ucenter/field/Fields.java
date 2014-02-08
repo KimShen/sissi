@@ -10,5 +10,7 @@ public interface Fields extends Iterable<Field<?>> {
 
 	public Fields add(Field<?> field);
 
+	public Fields findField(String name);
+
 	public <T extends Field<?>> T findField(String name, Class<T> clazz);
 }

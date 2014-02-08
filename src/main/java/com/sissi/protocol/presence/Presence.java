@@ -213,6 +213,10 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		this.fields.add(field);
 		return this;
 	}
+	
+	public Fields findField(String name) {
+		return this.fields.findField(name);
+	}
 
 	@Override
 	public <T extends Field<?>> T findField(String name, Class<T> clazz) {

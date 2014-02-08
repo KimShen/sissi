@@ -97,7 +97,7 @@
 								</constructor-arg>
 							</bean>
 							<bean class="com.sissi.protocol.iq.register.form.Input">
-								<constructor-arg index="0" value="text-single" />
+								<constructor-arg index="0" value="text-private" />
 								<constructor-arg index="1" value="Password" />
 								<constructor-arg index="2" value="password" />
 								<constructor-arg>
@@ -105,16 +105,17 @@
 								</constructor-arg>
 							</bean>
 							<bean class="com.sissi.protocol.iq.register.form.Input">
-								<constructor-arg index="0" value="text-single" />
-								<constructor-arg index="1" value="Nickname" />
-								<constructor-arg index="2" value="nickname" />
+								<constructor-arg index="0" value="text-multi" />
+								<constructor-arg index="1" value="Desc" />
+								<constructor-arg index="2" value="desc" />
 								<constructor-arg>
 									<null />
 								</constructor-arg>
 							</bean>
 							<bean class="com.sissi.protocol.iq.register.form.Select">
-								<constructor-arg index="0" value="Gender" />
-								<constructor-arg index="1" value="gender" />
+								<constructor-arg index="0" value="list-single" />
+								<constructor-arg index="1" value="Gender" />
+								<constructor-arg index="2" value="gender" />
 								<constructor-arg>
 									<null />
 								</constructor-arg>
@@ -127,6 +128,26 @@
 										<bean class="com.sissi.protocol.iq.data.XOption">
 											<constructor-arg index="0" value="Female" />
 											<constructor-arg index="1" value="F" />
+										</bean>
+									</util:list>
+								</constructor-arg>
+							</bean>
+							<bean class="com.sissi.protocol.iq.register.form.Select">
+								<constructor-arg index="0" value="list-multi" />
+								<constructor-arg index="1" value="Title" />
+								<constructor-arg index="2" value="title" />
+								<constructor-arg>
+									<null />
+								</constructor-arg>
+								<constructor-arg>
+									<util:list>
+										<bean class="com.sissi.protocol.iq.data.XOption">
+											<constructor-arg index="0" value="GM" />
+											<constructor-arg index="1" value="gm" />
+										</bean>
+										<bean class="com.sissi.protocol.iq.data.XOption">
+											<constructor-arg index="0" value="CEO" />
+											<constructor-arg index="1" value="ceo" />
 										</bean>
 									</util:list>
 								</constructor-arg>

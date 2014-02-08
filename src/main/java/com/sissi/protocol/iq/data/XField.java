@@ -1,5 +1,6 @@
 package com.sissi.protocol.iq.data;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -18,7 +19,7 @@ import com.sissi.ucenter.field.impl.BeanFields;
  */
 @Metadata(uri = XData.XMLNS, localName = XField.NAME)
 @XmlRootElement(name = XField.NAME)
-public class XField implements Field<String>, Collector {
+public class XField implements Field<Object>, Collector {
 
 	public final static String NAME = "field";
 
@@ -30,7 +31,7 @@ public class XField implements Field<String>, Collector {
 
 	private String type;
 
-	private String value;
+	private Object value;
 
 	@XmlElement
 	public String getDesc() {
@@ -51,7 +52,7 @@ public class XField implements Field<String>, Collector {
 		this.type = type;
 		return this;
 	}
-	
+
 	public XField setType(XFieldType type) {
 		this.type = type.toString();
 		return this;
@@ -91,12 +92,15 @@ public class XField implements Field<String>, Collector {
 	}
 
 	@Override
-	public String getValue() {
+	public Object getValue() {
 		return this.value != null ? this.value : this.computeValue();
 	}
 
-	private String computeValue() {
-		XValue value = this.fields.findField(XValue.NAME, XValue.class);
-		return value != null ? (this.value = value.getValue()) : null;
+	private Object computeValue() {
+		LinkedList<String> fields = new LinkedList<String>();
+		for (Field<?> field : this.fields.findField(XValue.NAME)) {
+			fields.add(field.getValue().toString());
+		}
+		return fields.size() == 1 ? fields.getFirst() : fields.toArray(new String[] {});
 	}
 }

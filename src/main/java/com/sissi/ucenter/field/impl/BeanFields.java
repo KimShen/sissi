@@ -66,6 +66,16 @@ public class BeanFields implements Fields {
 		return this.isEmbed;
 	}
 
+	public Fields findField(String name){
+		BeanFields fields = new BeanFields(false);
+		for (Field<?> each : this) {
+			if (each.getName().equals(name)) {
+				fields.add(each);
+			}
+		}
+		return fields;
+	}
+	
 	@Override
 	public <T extends Field<?>> T findField(String name, Class<T> clazz) {
 		for (Field<?> each : this) {

@@ -71,6 +71,10 @@ public class XVCard extends X implements Fields, Field<String>, Collector {
 		return this;
 	}
 
+	public Fields findField(String name) {
+		return this.vCardFields.findField(name);
+	}
+	
 	@Override
 	public <T extends Field<?>> T findField(String name, Class<T> clazz) {
 		return this.vCardFields.findField(name, clazz);

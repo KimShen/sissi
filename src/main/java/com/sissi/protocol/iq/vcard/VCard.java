@@ -65,6 +65,10 @@ public class VCard extends Protocol implements Fields, Collector {
 	public boolean isEmbed() {
 		return this.fields.isEmbed();
 	}
+	
+	public Fields findField(String name) {
+		return this.fields.findField(name);
+	}
 
 	@Override
 	public <T extends Field<?>> T findField(String name, Class<T> clazz) {
