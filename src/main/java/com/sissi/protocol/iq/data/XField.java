@@ -26,9 +26,21 @@ public class XField implements Field<String>, Collector {
 
 	private String var;
 
+	private String desc;
+
 	private String type;
 
 	private String value;
+
+	@XmlElement
+	public String getDesc() {
+		return desc;
+	}
+
+	public XField setDesc(String desc) {
+		this.desc = desc;
+		return this;
+	}
 
 	@XmlAttribute
 	public String getType() {
@@ -37,6 +49,11 @@ public class XField implements Field<String>, Collector {
 
 	public XField setType(String type) {
 		this.type = type;
+		return this;
+	}
+	
+	public XField setType(XFieldType type) {
+		this.type = type.toString();
 		return this;
 	}
 

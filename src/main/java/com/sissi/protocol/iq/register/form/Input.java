@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sissi.protocol.iq.data.XFieldType;
+import com.sissi.protocol.iq.data.XRequired;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 
@@ -23,14 +25,14 @@ public class Input implements Field<String> {
 
 	private String value;
 
-	private Required required;
+	private XRequired required;
 
 	public Input() {
 
 	}
 
-	public Input(String type, String name, String var, Required required) {
-		this.type = InputType.parse(type).toString();
+	public Input(String type, String name, String var, XRequired required) {
+		this.type = XFieldType.parse(type).toString();
 		this.name = name;
 		this.var = var;
 		this.required = required;
@@ -62,7 +64,7 @@ public class Input implements Field<String> {
 	}
 
 	@XmlElement
-	public Required getRequired() {
+	public XRequired getRequired() {
 		return this.required;
 	}
 

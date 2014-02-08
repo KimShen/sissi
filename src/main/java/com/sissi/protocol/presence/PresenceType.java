@@ -14,11 +14,11 @@ public enum PresenceType {
 		return super.toString().toLowerCase();
 	}
 
-	public Boolean equals(String type) {
+	public boolean equals(String type) {
 		return this == PresenceType.parse(type);
 	}
 
-	public Boolean in(PresenceType... types) {
+	public boolean in(PresenceType... types) {
 		for (PresenceType type : types) {
 			if (this == type) {
 				return true;

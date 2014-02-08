@@ -22,11 +22,11 @@ public enum ProtocolType {
 		return super.toString().toLowerCase();
 	}
 
-	public Boolean equals(String type) {
+	public boolean equals(String type) {
 		return this == ProtocolType.parse(type);
 	}
 
-	public Boolean in(ProtocolType... types) {
+	public boolean in(ProtocolType... types) {
 		for (ProtocolType type : types) {
 			if (this == type) {
 				return true;

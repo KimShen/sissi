@@ -93,7 +93,7 @@
 								<constructor-arg index="1" value="Useranme" />
 								<constructor-arg index="2" value="username" />
 								<constructor-arg>
-									<util:constant static-field="com.sissi.protocol.iq.register.form.Required.FIELD" />
+									<util:constant static-field="com.sissi.protocol.iq.data.XRequired.FIELD" />
 								</constructor-arg>
 							</bean>
 							<bean class="com.sissi.protocol.iq.register.form.Input">
@@ -101,7 +101,7 @@
 								<constructor-arg index="1" value="Password" />
 								<constructor-arg index="2" value="password" />
 								<constructor-arg>
-									<util:constant static-field="com.sissi.protocol.iq.register.form.Required.FIELD" />
+									<util:constant static-field="com.sissi.protocol.iq.data.XRequired.FIELD" />
 								</constructor-arg>
 							</bean>
 							<bean class="com.sissi.protocol.iq.register.form.Input">

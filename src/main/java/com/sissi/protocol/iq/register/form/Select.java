@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sissi.protocol.iq.data.XFieldType;
+import com.sissi.protocol.iq.data.XRequired;
 import com.sissi.protocol.iq.data.XOption;
 
 /**
@@ -22,8 +24,8 @@ public class Select extends Input {
 	public Select() {
 	}
 
-	public Select(String name, String var, Required required, XOption... options) {
-		super(InputType.LIST_SINGLE.toString(), name, var, required);
+	public Select(String name, String var, XRequired required, XOption... options) {
+		super(XFieldType.LIST_SINGLE.toString(), name, var, required);
 		if (options != null) {
 			for (XOption each : options) {
 				this.add(each);

@@ -24,11 +24,11 @@ public enum RosterSubscription {
 		return super.toString().toLowerCase();
 	}
 
-	public Boolean equals(String subscribe) {
+	public boolean equals(String subscribe) {
 		return this == RosterSubscription.parse(subscribe);
 	}
 
-	public Boolean in(RosterSubscription... subscriptions) {
+	public boolean in(RosterSubscription... subscriptions) {
 		for (RosterSubscription subscription : subscriptions) {
 			if (this == subscription) {
 				return true;
@@ -37,7 +37,7 @@ public enum RosterSubscription {
 		return false;
 	}
 	
-	public Boolean in(String... subscriptions) {
+	public boolean in(String... subscriptions) {
 		for (String subscription : subscriptions) {
 			if (this == RosterSubscription.parse(subscription)) {
 				return true;

@@ -13,7 +13,15 @@
 		<constructor-arg ref="ucenter.register" />
 	</bean>
 	<bean id="register.pro.store.simple" class="com.sissi.pipeline.in.iq.register.RegisterStoreSimpleProcessor" parent="register.pro.store" />
-	<bean id="register.pro.store.multiple" class="com.sissi.pipeline.in.iq.register.RegisterStoreMultiProcessor" parent="register.pro.store" />
+	<bean id="register.pro.store.multiple" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg value="true" />
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.pipeline.in.iq.register.RegisterStoreCheckProcessor" />
+				<bean class="com.sissi.pipeline.in.iq.register.RegisterStoreMultiProcessor" parent="register.pro.store" />
+			</util:list>
+		</constructor-arg>
+	</bean>
 	<bean id="register.pro.store.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.register.store" />
 	</bean>
