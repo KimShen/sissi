@@ -12,7 +12,7 @@ public class PresenceOnlinePriorityProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		super.priority(context.priority(Presence.class.cast(protocol).priority()));
+		super.priority(context.priority(Presence.class.cast(protocol).getPriority()));
 		return true;
 	}
 }

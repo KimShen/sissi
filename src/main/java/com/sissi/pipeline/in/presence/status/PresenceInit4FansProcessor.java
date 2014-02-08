@@ -45,7 +45,7 @@ public class PresenceInit4FansProcessor extends ProxyProcessor {
 	private void writeOnlinePresence(JIDContext context, JID from, JIDs resoures) {
 		Presence presence = new Presence();
 		for (JID resource : resoures) {
-			context.write(presence.setFrom(resource).clauses(super.findOne(resource, true).status().clauses()));
+			context.write(presence.clear().setFrom(resource).clauses(super.findOne(resource, true).status().clauses()));
 		}
 	}
 }

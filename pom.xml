@@ -72,7 +72,7 @@
 		<maven.pipeline.roster.group>10</maven.pipeline.roster.group>
 		<maven.pipeline.resource.limit>2</maven.pipeline.resource.limit>
 		<maven.pipeline.message.relation>false</maven.pipeline.message.relation>
-		<maven.pipeline.offline.title>From sissi offline</maven.pipeline.offline.title>
+		<maven.pipeline.offline.title>From Sissi offline</maven.pipeline.offline.title>
 	</properties>
 	<dependencies>
 		<!-- For Compile -->
@@ -140,12 +140,6 @@
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
-			<version>1.9.1</version>
-		</dependency>
-		<!-- For project -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.1</version>
 		</dependency>
 	</dependencies>

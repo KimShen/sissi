@@ -14,25 +14,14 @@
 	<bean id="iq.pro.error.none" class="com.sissi.pipeline.in.iq.IQErrorProcessor">
 		<constructor-arg value="false" />
 	</bean>
-	<bean id="iq.pro.check.auth" class="com.sissi.pipeline.in.iq.IQCheckAuthProcessor">
-		<constructor-arg>
-			<set>
-				<value>com.sissi.protocol.iq.roster.Roster</value>
-				<value>com.sissi.protocol.iq.ping.Ping</value>
-				<value>com.sissi.protocol.iq.block.Blocked</value>
-				<value>com.sissi.protocol.iq.block.BlockList</value>
-				<value>com.sissi.protocol.iq.block.UnBlock</value>
-				<value>com.sissi.protocol.iq.bytestreams.Bytestreams</value>
-				<value>com.sissi.protocol.iq.disco.DiscoInfo</value>
-				<value>com.sissi.protocol.iq.disco.DiscoItems</value>
-				<value>com.sissi.protocol.iq.si.Si</value>
-				<value>com.sissi.protocol.iq.vcard.VCard</value>
-			</set>
-		</constructor-arg>
-	</bean>
-	<bean id="iq.pro.check.action" class="com.sissi.pipeline.in.iq.IQCheckActionProcessor" />
+	<bean id="iq.pro.check" class="com.sissi.pipeline.in.iq.IQCheckProcessor" />
 	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
 		<constructor-arg ref="finder.iq" />
+		<constructor-arg>
+			<set>
+				<value>com.sissi.protocol.iq.register.Register</value>
+			</set>
+		</constructor-arg>
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.ChainedProcessor">
 				<constructor-arg>
@@ -48,8 +37,8 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="global.pro.check.chained" />
-				<ref bean="iq.pro.check.auth" />
-				<ref bean="iq.pro.check.action" />
+				<!-- Check IQ type -->
+				<ref bean="iq.pro.check" />
 				<ref bean="iq.pro.fork" />
 			</util:list>
 		</constructor-arg>

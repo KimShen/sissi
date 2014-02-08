@@ -25,6 +25,8 @@ public class Roster extends Protocol implements Collector {
 
 	private List<GroupItem> item;
 
+	private GroupItem firstItem;
+
 	public Roster() {
 		super();
 	}
@@ -52,7 +54,7 @@ public class Roster extends Protocol implements Collector {
 	}
 
 	public GroupItem getFirstItem() {
-		return this.item != null && !this.item.isEmpty() ? this.item.get(0) : null;
+		return this.firstItem != null ? this.firstItem : this.getFirstItemCached();
 	}
 
 	@Override
@@ -73,5 +75,9 @@ public class Roster extends Protocol implements Collector {
 			this.item.add(need);
 		}
 		return this;
+	}
+
+	private GroupItem getFirstItemCached() {
+		return !this.item.isEmpty() ? (this.firstItem = this.item.get(0)) : (this.firstItem = null);
 	}
 }

@@ -5,6 +5,6 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<!-- <import resource="../externals/config-3ti.xml" /> -->
+	<!-- <import resource="../externals/..." /> -->
 	 
 </beans>

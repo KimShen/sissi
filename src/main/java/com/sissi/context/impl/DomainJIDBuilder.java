@@ -51,6 +51,10 @@ public class DomainJIDBuilder implements JIDBuilder {
 			return DomainJIDBuilder.this.name;
 		}
 
+		public boolean user(JID jid) {
+			return false;
+		}
+
 		public boolean user(String jid) {
 			return false;
 		}
@@ -139,6 +143,10 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 		public String user() {
 			return this.user;
+		}
+
+		public boolean user(JID jid) {
+			return this.user(jid.asStringWithBare());
 		}
 
 		public boolean user(String jid) {

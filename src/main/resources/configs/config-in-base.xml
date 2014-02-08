@@ -23,11 +23,11 @@
 		<constructor-arg value="true" />
 		<constructor-arg>
 			<util:list>
-				<!-- Type is not error -->
+				<!-- Ignore protocol that type = error -->
 				<ref bean="global.pro.check.loop" />
-				<!-- Legal JID format -->
+				<!-- Assert legal JID format -->
 				<ref bean="global.pro.check.jid.format" />
-				<!-- Attribute "to" is localhost / domain / proxy or any exists jid -->
+				<!-- Assert attribute "to" is localhost / domain / proxy or any exists jid -->
 				<ref bean="global.pro.check.jid.exists" />
 			</util:list>
 		</constructor-arg>

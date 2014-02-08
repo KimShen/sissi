@@ -34,8 +34,4 @@ public enum PresenceType {
 			return null;
 		}
 	}
-
-	public static boolean contains(String type) {
-		return parse(type) != null;
-	}
 }

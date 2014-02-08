@@ -12,13 +12,13 @@ import com.sissi.protocol.iq.IQ;
 /**
  * @author kim 2014年1月14日
  */
-public class IQCheckActionProcessor implements Input {
+public class IQCheckProcessor implements Input {
 
 	private final Error error = new ServerError().setType(ProtocolType.MODIFY).add(BadRequest.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return IQ.class.cast(protocol).validAction() ? true : this.writeAndReturn(context, protocol);
+		return IQ.class.cast(protocol).type() ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {

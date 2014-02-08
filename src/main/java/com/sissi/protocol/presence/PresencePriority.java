@@ -10,10 +10,21 @@ import com.sissi.read.Metadata;
 @Metadata(uri = Presence.XMLNS, localName = PresencePriority.NAME)
 @XmlRootElement
 public class PresencePriority {
-	
+
+	public final static PresencePriority ZERO = new PresencePriority("0");
+
 	public final static String NAME = "priority";
-	
+
 	private String text;
+
+	public PresencePriority() {
+		super();
+	}
+
+	public PresencePriority(String text) {
+		super();
+		this.text = text;
+	}
 
 	public String getText() {
 		return this.text;

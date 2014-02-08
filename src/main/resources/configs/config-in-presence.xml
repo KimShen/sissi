@@ -6,9 +6,6 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="presence.pro.check.binding" class="com.sissi.pipeline.in.presence.PresenceCheckBindingProcessor" />
-	<bean id="presence.pro.check.exists" class="com.sissi.pipeline.in.presence.PresenceCheckExistsProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="vcard" />
-	</bean>
 	<bean id="presence.pro.check.loop" class="com.sissi.pipeline.in.presence.PresenceCheckLoopProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.check.type" class="com.sissi.pipeline.in.presence.PresenceCheckTypeProcessor" />
 	<bean id="presence.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
@@ -17,10 +14,12 @@
 	<bean id="presence.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="global.pro.check.jid.format" />
+				<ref bean="global.pro.check.chained" />
+				<!-- After binding -->
 				<ref bean="presence.pro.check.binding" />
+				<!-- Check presence type -->
 				<ref bean="presence.pro.check.type" />
-				<ref bean="presence.pro.check.exists" />
+				<!-- Prevent to self -->
 				<ref bean="presence.pro.check.loop" />
 				<ref bean="presence.pro.fork" />
 			</util:list>
@@ -32,19 +31,23 @@
 	<bean id="presence.pro.probe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- Check relation -->
 				<ref bean="presence.pro.probe.relation" />
+				<!-- Presence unavailable when offline -->
 				<ref bean="presence.pro.probe.status.offline" />
+				<!-- Presence probe when online -->
 				<ref bean="presence.pro.probe.status.online" />
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.status.direct" class="com.sissi.pipeline.in.presence.status.PresenceDirectedProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.status.direct.route" class="com.sissi.pipeline.in.presence.status.PresenceDirectedRouteProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.status.direct.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+	<bean id="presence.pro.status.forward" class="com.sissi.pipeline.in.presence.status.PresenceForwardProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.forward.route" class="com.sissi.pipeline.in.presence.status.PresenceForwardRouteProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.forward.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.status.direct" />
-				<ref bean="presence.pro.status.direct.route" />
+				<!-- Nothing, experiment -->
+				<ref bean="presence.pro.status.forward" />
+				<ref bean="presence.pro.status.forward.route" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -56,6 +59,7 @@
 	<bean id="presence.pro.status.available.init.4delay" class="com.sissi.pipeline.in.presence.status.PresenceInit4DelayProcessor">
 		<constructor-arg ref="offline" />
 	</bean>
+	<bean id="presence.pro.status.available.init" class="com.sissi.pipeline.in.presence.status.PresenceInitProcessor" />
 	<bean id="presence.pro.status.available.2self.priority" class="com.sissi.pipeline.in.presence.status.PresenceOnlinePriorityProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.available.2self.update" class="com.sissi.pipeline.in.presence.status.PresenceOnlineUpdateProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.available.2selfs" class="com.sissi.pipeline.in.presence.status.PresenceOnlineProcessor" parent="global.pro.proxy" />
@@ -65,11 +69,21 @@
 	<bean id="presence.pro.status.available.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- Get presence from fans if: -->
+				<!-- 1, Online, broadcast available from all resources of fans -->
+				<!-- 2, Offline, broadcast unavailable with signature in VCard -->
 				<ref bean="presence.pro.status.available.init.4fans" />
+				<!-- Get presence from other resources of jid -->
 				<ref bean="presence.pro.status.available.init.4selfs" />
+				<!-- Get offline message / presence -->
 				<ref bean="presence.pro.status.available.init.4delay" />
+				<!-- Update presented -->
+				<ref bean="presence.pro.status.available.init" />
+				<!-- Update priority -->
 				<ref bean="presence.pro.status.available.2self.priority" />
+				<!-- Update status -->
 				<ref bean="presence.pro.status.available.2self.update" />
+				<!-- Foward presence to other resources / fans -->
 				<ref bean="presence.pro.status.available.2selfs" />
 				<ref bean="presence.pro.status.available.2fans" />
 			</util:list>
@@ -82,7 +96,9 @@
 	<bean id="presence.pro.status.unavailable.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- Offline signature, experiment -->
 				<ref bean="presence.pro.status.unavailable.signature" />
+				<!-- Close Xmpp -->
 				<ref bean="presence.pro.status.unavailable.close" />
 			</util:list>
 		</constructor-arg>
@@ -94,9 +110,14 @@
 	<bean id="presence.pro.roster.subscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- If relation is TO/BOTH -->
+				<!-- 1, Response subscribed -->
+				<!-- 2, Broadcast available from all resources of fans -->
 				<ref bean="presence.pro.roster.subscribe.2presence.reply" />
 				<ref bean="presence.pro.roster.subscribe.2presence.route" />
+				<!-- Same as roster.pro.establish.set -->
 				<ref bean="presence.pro.roster.subscribe" />
+				<!-- Same as roster.pro.establish.set.2selfs -->
 				<ref bean="presence.pro.roster.subscribe.2item" />
 			</util:list>
 		</constructor-arg>
@@ -108,9 +129,13 @@
 	<bean id="presence.pro.roster.unsubscribed.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- Check relation is TO/BOTH or NONE with "ask" -->
 				<ref bean="presence.pro.roster.unsubscribed.check" />
+				<!-- DB operation -->
 				<ref bean="presence.pro.roster.unsubscribed" />
+				<!-- Broadcast unsubscribed to all resources of fans -->
 				<ref bean="presence.pro.roster.unsubscribed.2item" />
+				<!-- Broadcast unavailable to all resources of fans -->
 				<ref bean="presence.pro.roster.unsubscribed.2presence" />
 			</util:list>
 		</constructor-arg>
@@ -122,26 +147,32 @@
 	<bean id="presence.pro.roster.subscribed.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- Check relation is NONE/BOTH -->
 				<ref bean="presence.pro.roster.subscribed.check" />
+				<!-- DB operation -->
 				<ref bean="presence.pro.roster.subscribed" />
+				<!-- Broadcast subscribed to all resources of fans -->
 				<ref bean="presence.pro.roster.subscribed.2item" />
+				<!-- Broadcast available to all resources of fans -->
 				<ref bean="presence.pro.roster.subscribed.2presence" />
 			</util:list>
 		</constructor-arg>
 	</bean>
 	<bean id="presence.pro.roster.unsubscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribeProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.unsubscribe.2item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2ItemProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.roster.unsubscribe.2presence.selfs" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2PresenceSelfsProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.roster.unsubscribe.2presence.fans" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2PresenceFansProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.unsubscribe.2presence" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribe2PresenceProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.unsubscribe.check" class="com.sissi.pipeline.in.presence.roster.PresenceRosterUnSubscribeCheckRelationProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.unsubscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- Check relation is TO/BOTH -->
 				<ref bean="presence.pro.roster.unsubscribe.check" />
+				<!-- DB operation -->
 				<ref bean="presence.pro.roster.unsubscribe" />
+				<!-- Synchronize to all resources for roster -->
 				<ref bean="presence.pro.roster.unsubscribe.2item" />
-				<ref bean="presence.pro.roster.unsubscribe.2presence.selfs" />
-				<ref bean="presence.pro.roster.unsubscribe.2presence.fans" />
+				<!-- Broadcast unavailable to all resources -->
+				<ref bean="presence.pro.roster.unsubscribe.2presence" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -157,7 +188,7 @@
 			<util:list>
 				<ref bean="presence.condition.probe" />
 				<ref bean="presence.condition.status" />
-				<ref bean="presence.condition.status.directed" />
+				<ref bean="presence.condition.status.forwarded" />
 				<ref bean="presence.condition.roster" />
 			</util:list>
 		</constructor-arg>
@@ -208,7 +239,7 @@
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.status.fork" />
 	</bean>
-	<bean id="presence.condition.status.directed" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="presence.condition.status.forwarded" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.presence.status.PresenceActionMatcher">
 				<constructor-arg value="true" />
@@ -220,7 +251,7 @@
 				</constructor-arg>
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="presence.pro.status.direct.chained" />
+		<constructor-arg ref="presence.pro.status.forward.chained" />
 	</bean>
 	<bean id="presence.condition.status.available" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

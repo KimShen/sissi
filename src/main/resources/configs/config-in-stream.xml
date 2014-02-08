@@ -27,18 +27,22 @@
 	<bean id="stream.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<!-- Check if close stream -->
 				<ref bean="stream.pro.close" />
+				<!-- Check namespace -->
 				<ref bean="stream.pro.check.xmlns" />
 				<ref bean="stream.pro.check.domain" />
 				<ref bean="stream.pro.check.version" />
 				<ref bean="stream.pro.feature.auth" />
 				<ref bean="stream.pro.feature.binding" />
 				<ref bean="stream.pro.feature.starttls" />
+				<!-- Reset JIDContext -->
 				<ref bean="stream.pro.context.reset" />
 				<ref bean="stream.pro.context.lang" />
 				<ref bean="stream.pro.context.domain" />
-				<ref bean="stream.pro.open" />
+				<!-- Mark stream is open -->
 				<ref bean="stream.pro.open.consume" />
+				<ref bean="stream.pro.open" />
 			</util:list>
 		</constructor-arg>
 	</bean>

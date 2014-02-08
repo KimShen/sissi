@@ -37,6 +37,6 @@ public class MessageCheckRelationProcessor extends ProxyProcessor {
 
 	private Boolean isPass(JIDContext context, JID slave) {
 		// 1,Free 2,To Self 3,Has relation
-		return this.isFree || context.jid().user(slave.user()) || RelationRoster.class.cast(super.ourRelation(context.jid(), slave)).in(RosterSubscription.BOTH, RosterSubscription.TO);
+		return this.isFree || context.jid().user(slave) || RelationRoster.class.cast(super.ourRelation(context.jid(), slave)).in(RosterSubscription.BOTH, RosterSubscription.TO);
 	}
 }

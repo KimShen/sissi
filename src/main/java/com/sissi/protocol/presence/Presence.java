@@ -8,6 +8,9 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.sissi.context.JID;
 import com.sissi.context.StatusClauses;
 import com.sissi.protocol.Protocol;
@@ -30,6 +33,8 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	public final static String NAME = "presence";
 
+	private final static Log log = LogFactory.getLog(Presence.class);
+
 	private Delay delay;
 
 	private BeanFields fields;
@@ -48,9 +53,13 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	private XVCard findXVard() {
 		return XVCard.class.cast(this.fields != null ? this.fields.findField(XVCard.NAME, XVCard.class) : null);
 	}
-	
-	public Integer priority() {
-		return this.priority != null ? Integer.parseInt(this.priority.getText()) : 0;
+
+	public boolean type() {
+		return PresenceType.parse(this.getType()) != null;
+	}
+
+	public boolean type(PresenceType type) {
+		return type.equals(this.getType());
 	}
 
 	public Presence setType(PresenceType type) {
@@ -76,6 +85,24 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	public Presence setDelay(Delay delay) {
 		this.delay = delay;
 		return this;
+	}
+
+	private Presence setPriority(String priority) {
+		try {
+			this.priority = priority != null ? new PresencePriority(String.valueOf(priority)) : PresencePriority.ZERO;
+		} catch (Exception e) {
+			this.priority = PresencePriority.ZERO;
+			if (log.isDebugEnabled()) {
+				log.debug(e.toString());
+				e.printStackTrace();
+			}
+		}
+		return this;
+	}
+
+	@XmlElement
+	public int getPriority() {
+		return this.priority != null ? Integer.parseInt(this.priority.getText()) : 0;
 	}
 
 	@XmlElement(name = PresenceShow.NAME)
@@ -117,7 +144,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	@Override
 	public Presence clauses(StatusClauses clauses) {
-		this.setShow(clauses.find(StatusClauses.KEY_SHOW)).setStatus(clauses.find(StatusClauses.KEY_STATUS)).setAvator(clauses.find(StatusClauses.KEY_AVATOR)).setType(clauses.find(StatusClauses.KEY_TYPE));
+		this.setShow(clauses.find(StatusClauses.KEY_SHOW)).setStatus(clauses.find(StatusClauses.KEY_STATUS)).setAvator(clauses.find(StatusClauses.KEY_AVATOR)).setPriority(clauses.find(StatusClauses.KEY_PRIORITY)).setType(clauses.find(StatusClauses.KEY_TYPE));
 		return this;
 	}
 
@@ -205,6 +232,8 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 				return Presence.this.getStatusAsText();
 			case StatusClauses.KEY_AVATOR:
 				return Presence.this.getAvatorAsText();
+			case StatusClauses.KEY_PRIORITY:
+				return String.valueOf(Presence.this.getPriority());
 			}
 			return null;
 		}

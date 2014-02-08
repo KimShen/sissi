@@ -47,14 +47,20 @@
 		</constructor-arg>
 	</bean>
 	<bean id="roster.pro.establish.remove" class="com.sissi.pipeline.in.iq.roster.RosterRemoveProcessor" parent="global.pro.proxy" />
-	<bean id="roster.pro.establish.remove.2selfs" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.remove.2selfs.item" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsItemProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.remove.2selfs.presence" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsPresenceProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.remove.2fans.presence" class="com.sissi.pipeline.in.iq.roster.RosterRemove2FansPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.remove.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<!-- DB operation -->
 				<ref bean="roster.pro.establish.remove" />
 				<!-- Synchronize to all resources for roster -->
-				<ref bean="roster.pro.establish.remove.2selfs" />
+				<ref bean="roster.pro.establish.remove.2selfs.item" />
+				<!-- Presence to me that fans is unavailable -->
+				<ref bean="roster.pro.establish.remove.2selfs.presence" />
+				<!-- Presence to fans that I am unavailable -->
+				<ref bean="roster.pro.establish.remove.2fans.presence" />
 				<ref bean="iq.pro.result.stop" />
 			</util:list>
 		</constructor-arg>

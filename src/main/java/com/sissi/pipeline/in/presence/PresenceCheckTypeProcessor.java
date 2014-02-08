@@ -7,7 +7,7 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.BadRequest;
-import com.sissi.protocol.presence.PresenceType;
+import com.sissi.protocol.presence.Presence;
 
 /**
  * @author kim 2014年1月14日
@@ -18,7 +18,7 @@ public class PresenceCheckTypeProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return PresenceType.contains(protocol.getType()) ? true : this.writeAndReturn(context, protocol);
+		return Presence.class.cast(protocol).type() ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {

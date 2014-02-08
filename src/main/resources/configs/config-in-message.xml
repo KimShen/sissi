@@ -15,7 +15,9 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="global.pro.check.chained" />
+				<!-- Prevent empty content -->
 				<ref bean="message.pro.check.body" />
+				<!-- Precent garbage message -->
 				<ref bean="message.pro.check.relation" />
 				<ref bean="message.pro.2self" />
 				<ref bean="message.pro.2fan" />

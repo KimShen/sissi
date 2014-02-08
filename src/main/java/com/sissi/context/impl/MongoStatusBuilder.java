@@ -14,6 +14,8 @@ import com.sissi.context.StatusClauses;
  */
 public class MongoStatusBuilder implements StatusBuilder {
 
+	private final DBObject filter = BasicDBObjectBuilder.start().add(StatusClauses.KEY_AVATOR, 1).add(StatusClauses.KEY_SHOW, 1).add(StatusClauses.KEY_STATUS, 1).add(StatusClauses.KEY_TYPE, 1).add(StatusClauses.KEY_PRIORITY, 1).get();
+
 	private final MongoConfig config;
 
 	public MongoStatusBuilder(MongoConfig config) {
@@ -37,7 +39,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 	}
 
 	private StatusClauses get(JIDContext context) {
-		return new MongoClauses(this.config.collection().findOne(this.buildQuery(context)));
+		return new MongoClauses(this.config.collection().findOne(this.buildQuery(context), this.filter));
 	}
 
 	private DBObject buildQuery(JIDContext context) {

@@ -18,6 +18,10 @@ class OfflineJID implements JID {
 		return null;
 	}
 
+	public boolean user(JID jid) {
+		return false;
+	}
+
 	public boolean user(String jid) {
 		return false;
 	}

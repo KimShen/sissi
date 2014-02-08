@@ -7,6 +7,8 @@ public interface JID {
 
 	public String user();
 	
+	public boolean user(JID jid);
+	
 	public boolean user(String jid);
 
 	public String domain();

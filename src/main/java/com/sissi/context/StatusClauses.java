@@ -12,6 +12,8 @@ public interface StatusClauses {
 	public final static String KEY_STATUS = "status";
 
 	public final static String KEY_AVATOR = "avator";
+	
+	public final static String KEY_PRIORITY = "priority";
 
 	public String find(String key);
 }

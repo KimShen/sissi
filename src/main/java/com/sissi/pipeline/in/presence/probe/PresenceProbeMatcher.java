@@ -16,6 +16,6 @@ public class PresenceProbeMatcher extends ClassMatcher {
 
 	@Override
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && PresenceType.PROBE.equals(protocol.getType());
+		return super.match(protocol) && Presence.class.cast(protocol).type(PresenceType.PROBE);
 	}
 }

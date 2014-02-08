@@ -14,9 +14,9 @@ public class PresenceProbeOnlineStatusProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Presence presence = Presence.class.cast(protocol);
+		Presence presence = Presence.class.cast(protocol).setType(PresenceType.PROBE);
 		for (JID resource : super.resources(super.build(protocol.getTo()))) {
-			context.write(presence.clear().setFrom(resource).clauses(super.findOne(resource, true).status().clauses()).setType(PresenceType.PROBE));
+			context.write(presence.clear().setFrom(resource).clauses(super.findOne(resource, true).status().clauses()));
 		}
 		return true;
 	}
