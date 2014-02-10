@@ -15,7 +15,6 @@ import com.sissi.ucenter.VCardContext;
  */
 public class RosterSetCheckExistsProcessor extends ProxyProcessor {
 
-	// Can not add from
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
 
 	private final VCardContext vcardContext;

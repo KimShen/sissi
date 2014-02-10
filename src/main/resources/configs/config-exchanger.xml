@@ -38,7 +38,10 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="server.exchanger.status" class="com.sissi.server.impl.MemoryServerStatus" />
+
 	<bean id="server.exchanger" class="com.sissi.server.impl.NioServerStarter">
+		<constructor-arg ref="server.exchanger.status" />
 		<constructor-arg value="${global.port.exchanger}" />
 		<constructor-arg ref="server.exchanger.loop" />
 		<constructor-arg ref="server.exchanger.pipeline" />

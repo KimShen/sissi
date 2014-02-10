@@ -18,7 +18,7 @@ abstract class Block2SelfsPresenceProcessor extends ProxyProcessor {
 		JID target = super.build(Block.class.cast(protocol).getItem().getJid());
 		Presence presence = new Presence();
 		for (JID resource : super.resources(target)) {
-			super.broadcast(context.jid(), presence.clear().setFrom(resource).clauses(this.build(super.findOne(target, true)).clauses()));
+			super.broadcast(context.jid(), presence.setFrom(resource).clauses(this.build(super.findOne(target, true)).clauses()));
 		}
 		return true;
 	}

@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.sissi.protocol.iq.disco.feature.Blocking;
 import com.sissi.protocol.iq.disco.feature.Bytestreams;
 import com.sissi.protocol.iq.disco.feature.Identity;
+import com.sissi.protocol.iq.disco.feature.Last;
 import com.sissi.protocol.iq.disco.feature.Si;
 import com.sissi.protocol.iq.disco.feature.SiFileTransfer;
 import com.sissi.protocol.iq.disco.feature.VCard;
@@ -28,7 +29,7 @@ public class DiscoInfo extends Disco {
 		super(XMLNS);
 	}
 
-	@XmlElements({ @XmlElement(name = XData.NAME, type = XData.class), @XmlElement(name = Identity.NAME, type = Identity.class), @XmlElement(name = Blocking.NAME, type = Blocking.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = SiFileTransfer.NAME, type = SiFileTransfer.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class) })
+	@XmlElements({ @XmlElement(name = XData.NAME, type = XData.class), @XmlElement(name = Identity.NAME, type = Identity.class), @XmlElement(name = Blocking.NAME, type = Blocking.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = SiFileTransfer.NAME, type = SiFileTransfer.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Last.NAME, type = Last.class) })
 	public List<DiscoFeature> getDisco() {
 		return super.getDisco();
 	}

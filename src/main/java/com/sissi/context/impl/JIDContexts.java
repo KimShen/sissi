@@ -25,6 +25,13 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return this;
 	}
 
+	private JIDContext assertOnly() {
+		if (super.size() == 1) {
+			return super.get(0);
+		}
+		throw NOT_SUPPORT;
+	}
+
 	public boolean binding() {
 		boolean binding = true;
 		for (JIDContext each : this) {
@@ -182,33 +189,37 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	}
 
 	public long index() {
-		throw NOT_SUPPORT;
+		return this.assertOnly().index();
 	}
 
 	@Override
 	public JID jid() {
-		throw NOT_SUPPORT;
+		return this.assertOnly().jid();
 	}
 
 	public String lang() {
-		throw NOT_SUPPORT;
+		return this.assertOnly().lang();
 	}
 
 	public String domain() {
-		throw NOT_SUPPORT;
+		return this.assertOnly().domain();
 	}
 
 	@Override
 	public Status status() {
-		throw NOT_SUPPORT;
+		return this.assertOnly().status();
 	}
 
 	@Override
 	public int priority() {
-		throw NOT_SUPPORT;
+		return this.assertOnly().priority();
+	}
+
+	public long idle() {
+		return this.assertOnly().idle();
 	}
 
 	public SocketAddress address() {
-		throw NOT_SUPPORT;
+		return this.assertOnly().address();
 	}
 }

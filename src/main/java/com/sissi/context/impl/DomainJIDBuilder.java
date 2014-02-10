@@ -82,6 +82,10 @@ public class DomainJIDBuilder implements JIDBuilder {
 			return this;
 		}
 
+		public boolean isBare() {
+			return false;
+		}
+
 		public boolean valid() {
 			return true;
 		}
@@ -175,6 +179,10 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 		public JID bare() {
 			return this.bareUser != null ? this.bareUser : this.copy2Bare();
+		}
+
+		public boolean isBare() {
+			return this.resource() == null;
 		}
 
 		public boolean valid() {

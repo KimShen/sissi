@@ -41,8 +41,9 @@ public class PresenceRosterSubscribe2PresenceReplyProcessor extends ProxyProcess
 	}
 
 	private PresenceRosterSubscribe2PresenceReplyProcessor writeAvailable(JIDContext context, JID to, Presence presence) {
+		presence.setType(PresenceType.AVAILABLE);
 		for (JID resource : super.resources(to)) {
-			super.broadcast(context.jid(), presence.clear().setType(PresenceType.AVAILABLE).setFrom(resource).clauses(super.findOne(resource, true).status().clauses()));
+			super.broadcast(context.jid(), presence.setFrom(resource).clauses(super.findOne(resource, true).status().clauses()));
 		}
 		return this;
 	}

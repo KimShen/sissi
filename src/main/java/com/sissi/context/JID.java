@@ -6,9 +6,9 @@ package com.sissi.context;
 public interface JID {
 
 	public String user();
-	
+
 	public boolean user(JID jid);
-	
+
 	public boolean user(String jid);
 
 	public String domain();
@@ -18,12 +18,14 @@ public interface JID {
 	public String resource();
 
 	public JID resource(String resource);
-	
+
 	public boolean valid();
 
 	public boolean valid(boolean excludeDomain);
-
+	
 	public JID bare();
+	
+	public boolean isBare();
 
 	public String asString();
 

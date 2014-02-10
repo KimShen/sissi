@@ -19,6 +19,8 @@ import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 import com.sissi.server.ServerHeart;
 import com.sissi.server.ServerTls;
+import com.sissi.ucenter.VCardContext;
+import com.sissi.ucenter.field.impl.BeanField;
 
 /**
  * @author kim 2013-11-19
@@ -29,11 +31,15 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final AtomicLong indexes = new AtomicLong();
 
+	private final JID jid = new OfflineJID();
+
 	private final int priority = 0;
 
 	private final long pong = -1L;
 
 	private final StatusBuilder statusBuilder;
+
+	private final VCardContext vCardContext;
 
 	private final ServerHeart serverHeart;
 
@@ -45,9 +51,10 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final String lang;
 
-	public OnlineContextBuilder(int authRetry, String lang, String domain, Output offline, StatusBuilder statusBuilder, ServerHeart serverHeart) {
+	public OnlineContextBuilder(int authRetry, String lang, String domain, Output offline, StatusBuilder statusBuilder, VCardContext vCardContext, ServerHeart serverHeart) {
 		super();
 		this.statusBuilder = statusBuilder;
+		this.vCardContext = vCardContext;
 		this.serverHeart = serverHeart;
 		this.authRetry = authRetry;
 		this.offline = offline;
@@ -66,6 +73,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 	private class UserContext implements JIDContext {
 
 		private final AtomicLong ping = new AtomicLong(OnlineContextBuilder.this.pong);
+
+		private final AtomicLong idle = new AtomicLong(System.currentTimeMillis());
 
 		private final AtomicBoolean prepareClose = new AtomicBoolean();
 
@@ -104,7 +113,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			this.serverTls = param.find(JIDContextParam.KEY_SERVERTLS, ServerTls.class);
 			this.output = param.find(JIDContextParam.KEY_OUTPUT, Output.class);
 			this.priority = OnlineContextBuilder.this.priority;
-			this.jid = OfflineJID.JID;
+			this.jid = OnlineContextBuilder.this.jid;
 		}
 
 		public long index() {
@@ -176,6 +185,10 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			return this.priority;
 		}
 
+		public long idle() {
+			return this.idle.get();
+		}
+
 		@Override
 		public Status status() {
 			return this.status;
@@ -238,6 +251,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 					this.output = OnlineContextBuilder.this.offline;
 					this.status.clear();
 					this.status = OfflineStatus.STATUS;
+					OnlineContextBuilder.this.vCardContext.set(this.jid(), new BeanField<String>().setName(VCardContext.FIELD_LOGOUT).setValue(String.valueOf(System.currentTimeMillis())));
 				}
 				return true;
 			} catch (Exception e) {
@@ -266,6 +280,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		@Override
 		public JIDContext write(Element node) {
 			this.output.output(this, node.setTo(this.jid().asString()));
+			this.idle.set(System.currentTimeMillis());
 			return this;
 		}
 
@@ -286,6 +301,72 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 				e.printStackTrace();
 			}
 			return false;
+		}
+	}
+
+	private class OfflineJID implements JID {
+
+		private OfflineJID() {
+
+		}
+
+		@Override
+		public String user() {
+			return null;
+		}
+
+		public boolean user(JID jid) {
+			return false;
+		}
+
+		public boolean user(String jid) {
+			return false;
+		}
+
+		@Override
+		public String domain() {
+			return null;
+		}
+
+		public JID domain(String domain) {
+			return this;
+		}
+
+		@Override
+		public String resource() {
+			return null;
+		}
+
+		@Override
+		public JID resource(String resource) {
+			return this;
+		}
+
+		@Override
+		public JID bare() {
+			return this;
+		}
+
+		public boolean isBare() {
+			return false;
+		}
+
+		public boolean valid() {
+			return true;
+		}
+
+		public boolean valid(boolean excludeDomain) {
+			return true;
+		}
+
+		@Override
+		public String asString() {
+			return null;
+		}
+
+		@Override
+		public String asStringWithBare() {
+			return null;
 		}
 	}
 }

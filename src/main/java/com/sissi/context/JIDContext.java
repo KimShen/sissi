@@ -47,6 +47,8 @@ public interface JIDContext {
 	public JIDContext present();
 
 	public boolean presented();
+	
+	public long idle();
 
 	public Status status();
 

@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.Protocol;
+import com.sissi.protocol.iq.vcard.field.Nickname;
 import com.sissi.protocol.iq.vcard.field.Photo;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
@@ -36,7 +37,7 @@ public class VCard extends Protocol implements Fields, Collector {
 		return XMLNS;
 	}
 
-	@XmlElements({ @XmlElement(name = Photo.NAME, type = Photo.class) })
+	@XmlElements({ @XmlElement(name = Nickname.NAME, type = Nickname.class), @XmlElement(name = Photo.NAME, type = Photo.class) })
 	public List<Field<?>> getFields() {
 		return this.fields.getFields();
 	}
@@ -65,7 +66,7 @@ public class VCard extends Protocol implements Fields, Collector {
 	public boolean isEmbed() {
 		return this.fields.isEmbed();
 	}
-	
+
 	public Fields findField(String name) {
 		return this.fields.findField(name);
 	}

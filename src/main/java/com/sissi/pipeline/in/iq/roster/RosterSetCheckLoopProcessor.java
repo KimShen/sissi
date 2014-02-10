@@ -14,7 +14,6 @@ import com.sissi.protocol.iq.roster.Roster;
  */
 public class RosterSetCheckLoopProcessor extends ProxyProcessor {
 
-	// Can not add from
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
 
 	@Override

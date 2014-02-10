@@ -26,9 +26,9 @@ public class PresenceRosterUnSubscribed2PresenceProcessor extends ProxyProcessor
 	}
 
 	protected PresenceRosterUnSubscribed2PresenceProcessor writeUnavailable(JIDContext context, JID to, Presence presence) {
-		presence.setType(PresenceType.UNAVAILABLE);
+		presence.clear().setType(PresenceType.UNAVAILABLE);
 		for (JID resource : super.resources(context.jid())) {
-			super.broadcast(to, presence.clear().setFrom(resource));
+			super.broadcast(to, presence.setFrom(resource));
 		}
 		return this;
 	}

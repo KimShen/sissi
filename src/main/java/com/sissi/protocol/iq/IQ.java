@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sissi.protocol.Element;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
@@ -18,6 +19,8 @@ import com.sissi.protocol.iq.block.UnBlock;
 import com.sissi.protocol.iq.bytestreams.Bytestreams;
 import com.sissi.protocol.iq.disco.DiscoInfo;
 import com.sissi.protocol.iq.disco.DiscoItems;
+import com.sissi.protocol.iq.last.Last;
+import com.sissi.protocol.iq.last.Last.LastSeconds;
 import com.sissi.protocol.iq.ping.Ping;
 import com.sissi.protocol.iq.register.Register;
 import com.sissi.protocol.iq.roster.Roster;
@@ -40,6 +43,8 @@ public class IQ extends Protocol implements Collector {
 
 	private final static List<Protocol> empty = new ArrayList<Protocol>();
 
+	private List<Element> extras;
+	
 	private List<Protocol> protocols;
 
 	public IQ() {
@@ -59,9 +64,14 @@ public class IQ extends Protocol implements Collector {
 		return ProtocolType.parse(this.getType()) != null;
 	}
 
-	@XmlElements({ @XmlElement(name = Ping.NAME, type = Ping.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = DiscoInfo.NAME, type = DiscoInfo.class), @XmlElement(name = DiscoItems.NAME, type = DiscoItems.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
+	@XmlElements({@XmlElement(name = Ping.NAME, type = Ping.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = DiscoInfo.NAME, type = DiscoInfo.class), @XmlElement(name = DiscoItems.NAME, type = DiscoItems.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
 	public List<Protocol> getProtocols() {
 		return this.protocols;
+	}
+
+	@XmlElements({ @XmlElement(name = Last.NAME, type = LastSeconds.class) })
+	public List<Element> getExtras() {
+		return this.extras;
 	}
 
 	public IQ add(Protocol protocol) {
@@ -69,6 +79,14 @@ public class IQ extends Protocol implements Collector {
 			this.protocols = new ArrayList<Protocol>();
 		}
 		this.protocols.add(protocol.setParent(this));
+		return this;
+	}
+
+	public IQ add(Element extra) {
+		if (this.extras == null) {
+			this.extras = new ArrayList<Element>();
+		}
+		this.extras.add(extra);
 		return this;
 	}
 
@@ -83,6 +101,7 @@ public class IQ extends Protocol implements Collector {
 
 	public IQ clear() {
 		this.protocols = null;
+		this.extras = null;
 		return this;
 	}
 

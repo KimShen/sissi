@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.sissi.server.ServerLoopGroup;
 import com.sissi.server.ServerStarter;
+import com.sissi.server.ServerStatus;
 
 /**
  * @author kim 2013-11-19
@@ -26,12 +27,15 @@ public class NioServerStarter implements ServerStarter {
 
 	private final ServerLoopGroup serverLoopGroup;
 
+	private final ServerStatus serverStatus;
+
 	private final Integer port;
 
-	public NioServerStarter(ChannelInitializer<SocketChannel> channelInitializer, ServerLoopGroup serverLoopGroup, Integer port) {
+	public NioServerStarter(ChannelInitializer<SocketChannel> channelInitializer, ServerLoopGroup serverLoopGroup, ServerStatus serverStatus, Integer port) {
 		super();
 		this.channelInitializer = channelInitializer;
 		this.serverLoopGroup = serverLoopGroup;
+		this.serverStatus = serverStatus;
 		this.port = port;
 	}
 
@@ -40,6 +44,7 @@ public class NioServerStarter implements ServerStarter {
 		try {
 			bootstrap.group(serverLoopGroup.boss(), serverLoopGroup.event()).channel(NioServerSocketChannel.class).childHandler(this.channelInitializer);
 			bootstrap.bind(this.port).addListener(new FailShutdownGenericFutureListener());
+			this.serverStatus.offer(ServerStatus.STATUS_STARTED, String.valueOf(System.currentTimeMillis()));
 		} catch (Exception e) {
 			this.log.fatal(e.toString());
 			this.closeAll();

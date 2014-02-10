@@ -19,26 +19,26 @@
 		<maven.global.port.main>5222</maven.global.port.main>
 		<maven.global.port.exchanger>6222</maven.global.port.exchanger>
 		<maven.global.jid>50</maven.global.jid>
-		<maven.global.idle.all>60</maven.global.idle.all>
-		<maven.global.idle.read>60</maven.global.idle.read>
-		<maven.global.idle.write>60</maven.global.idle.write>
+		<maven.global.idle.all>120</maven.global.idle.all>
+		<maven.global.idle.read>120</maven.global.idle.read>
+		<maven.global.idle.write>120</maven.global.idle.write>
 		<maven.global.heart.interval>10000</maven.global.heart.interval>
 		<maven.global.heart.unit>MILLISECONDS</maven.global.heart.unit>
 		<!-- For Loop -->
 		<maven.looper.num>2</maven.looper.num>
-		<maven.looper.gc.interval>30000</maven.looper.gc.interval>
+		<maven.looper.gc.interval>12000</maven.looper.gc.interval>
 		<maven.looper.gc.unit>MILLISECONDS</maven.looper.gc.unit>
 		<!-- For Addressing -->
-		<maven.addressing.gc.interval>3000</maven.addressing.gc.interval>
+		<maven.addressing.gc.interval>1200</maven.addressing.gc.interval>
 		<maven.addressing.gc.unit>MILLISECONDS</maven.addressing.gc.unit>
 		<!-- For Exchanger -->
-		<maven.exchanger.gc.interval>3000</maven.exchanger.gc.interval>
+		<maven.exchanger.gc.interval>1200</maven.exchanger.gc.interval>
 		<maven.exchanger.gc.unit>MILLISECONDS</maven.exchanger.gc.unit>
-		<maven.exchanger.idle.all>30</maven.exchanger.idle.all>
-		<maven.exchanger.idle.read>30</maven.exchanger.idle.read>
-		<maven.exchanger.idle.write>30</maven.exchanger.idle.write>
+		<maven.exchanger.idle.all>120</maven.exchanger.idle.all>
+		<maven.exchanger.idle.read>120</maven.exchanger.idle.read>
+		<maven.exchanger.idle.write>120</maven.exchanger.idle.write>
 		<!-- For Thread -->
-		<maven.executor.keep.alive>3000</maven.executor.keep.alive>
+		<maven.executor.keep.alive>300</maven.executor.keep.alive>
 		<maven.executor.maximum>1000</maven.executor.maximum>
 		<maven.executor.unit>SECONDS</maven.executor.unit>
 		<maven.executor.core>1000</maven.executor.core>

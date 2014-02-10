@@ -16,6 +16,7 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="vcard.pro.get.check" class="com.sissi.pipeline.in.iq.vcard.VCardGetCheckRelationProcessor" parent="global.pro.proxy" />
 	<bean id="vcard.pro.get.2fans" class="com.sissi.pipeline.in.iq.vcard.VCardGet2FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
 	</bean>
@@ -27,6 +28,15 @@
 	</bean>
 	<bean id="vcard.pro.get.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.vcard.get" />
+	</bean>
+	<bean id="vcard.pro.get.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<!-- Check relation -->
+				<ref bean="vcard.pro.get.check" />
+				<ref bean="vcard.pro.get.fork" />
+			</util:list>
+		</constructor-arg>
 	</bean>
 
 	<bean id="finder.vcard" class="com.sissi.pipeline.in.ChainedFinder">
@@ -70,7 +80,7 @@
 				<constructor-arg value="GET" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="vcard.pro.get.fork" />
+		<constructor-arg ref="vcard.pro.get.chained" />
 	</bean>
 	<bean id="vcard.condition.get.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

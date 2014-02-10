@@ -23,8 +23,6 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private final int priority = 0;
 
-	private final JIDContext context = new OfflineContext();
-
 	private final SocketAddress address = new InetSocketAddress(InetAddress.getByName("0.0.0.0"), 0);
 
 	private final VCardContext vCardContext;
@@ -53,22 +51,22 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
-		return this.vCardContext != null ? new OfflineContext(new SignatureClauses(this.vCardContext.get(jid, VCardContext.SIGNATURE).getValue())) : this.context;
+		return this.vCardContext != null ? new OfflineContext(jid, new SignatureClauses(this.vCardContext.get(jid, VCardContext.FIELD_SIGNATURE).getValue())) : new OfflineContext(jid);
 	}
 
 	private class OfflineContext implements JIDContext {
 
-		private final JID jid = OfflineJID.JID;
+		private final JID jid;
 
 		private final Status status;
 
-		public OfflineContext() {
-			super();
+		public OfflineContext(JID jid) {
+			this.jid = jid;
 			this.status = OfflineStatus.STATUS;
 		}
 
-		public OfflineContext(StatusClauses statusClauses) {
-			super();
+		public OfflineContext(JID jid, StatusClauses statusClauses) {
+			this.jid = jid;
 			this.status = new OfflineStatus(statusClauses);
 		}
 
@@ -158,6 +156,11 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		public boolean presented() {
 			return false;
+		}
+
+		public long idle() {
+			String idle = OfflineContextBuilder.this.vCardContext.get(this.jid(), VCardContext.FIELD_LOGOUT).getValue();
+			return Long.valueOf(idle.isEmpty() ? "0" : idle);
 		}
 
 		public boolean closePrepare() {

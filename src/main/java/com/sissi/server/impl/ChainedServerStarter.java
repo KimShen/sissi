@@ -31,5 +31,4 @@ public class ChainedServerStarter implements ServerStarter {
 		}
 		return this;
 	}
-
 }
