@@ -14,7 +14,7 @@ import com.sissi.read.Metadata;
  */
 @Metadata(uri = Time.XMLNS, localName = Time.NAME)
 @XmlType(namespace = Time.XMLNS)
-@XmlRootElement
+@XmlRootElement(name = Time.NAME)
 public class Time extends Protocol implements Collector {
 
 	public final static String XMLNS = "urn:xmpp:time";
