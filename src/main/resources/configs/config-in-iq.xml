@@ -54,6 +54,7 @@
 				<ref bean="block.condition" />
 				<ref bean="bind.condition" />
 				<ref bean="last.condition" />
+				<ref bean="time.condition" />
 				<ref bean="session.condition" />
 				<ref bean="register.condition" />
 				<ref bean="disco.condition.info" />

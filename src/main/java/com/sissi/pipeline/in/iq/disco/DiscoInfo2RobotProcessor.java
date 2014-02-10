@@ -12,6 +12,7 @@ import com.sissi.protocol.iq.disco.feature.Identity;
 import com.sissi.protocol.iq.disco.feature.Last;
 import com.sissi.protocol.iq.disco.feature.Si;
 import com.sissi.protocol.iq.disco.feature.SiFileTransfer;
+import com.sissi.protocol.iq.disco.feature.Time;
 import com.sissi.protocol.iq.disco.feature.VCard;
 
 /**
@@ -19,7 +20,7 @@ import com.sissi.protocol.iq.disco.feature.VCard;
  */
 public class DiscoInfo2RobotProcessor implements Input {
 
-	private final DiscoFeature[] features = new DiscoFeature[] { Identity.FEATURE_PROXY, Bytestreams.FEATURE, SiFileTransfer.FEATURE, Si.FEATURE, VCard.FEATURE, Blocking.FEATURE, Last.FEATURE };
+	private final DiscoFeature[] features = new DiscoFeature[] { Identity.FEATURE_PROXY, Bytestreams.FEATURE, SiFileTransfer.FEATURE, Si.FEATURE, VCard.FEATURE, Blocking.FEATURE, Last.FEATURE, Time.FEATURE };
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

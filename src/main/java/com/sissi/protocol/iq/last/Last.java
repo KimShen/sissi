@@ -3,7 +3,6 @@ package com.sissi.protocol.iq.last;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 import com.sissi.protocol.Element;
@@ -25,7 +24,6 @@ public class Last extends Protocol {
 		return new LastSeconds(this);
 	}
 
-	@XmlType(namespace = Last.XMLNS)
 	@XmlRootElement(name = Last.NAME)
 	public static class LastSeconds implements Element {
 

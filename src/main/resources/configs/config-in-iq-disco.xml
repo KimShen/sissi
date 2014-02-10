@@ -5,10 +5,22 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="disco.pro.check" class="com.sissi.pipeline.in.iq.disco.Disco2FansCheckRelationProcessor">
+		<constructor-arg value="${global.domain}" />
+	</bean>
 	<bean id="disco.pro.info.2robot" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2RobotProcessor" />
 	<bean id="disco.pro.info.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy" />
 	<bean id="disco.pro.info.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.disco.info" />
+	</bean>
+	<bean id="disco.pro.info.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<!-- Check relation -->
+				<ref bean="disco.pro.check" />
+				<ref bean="disco.pro.info.fork" />
+			</util:list>
+		</constructor-arg>
 	</bean>
 	<bean id="disco.pro.items.2robot" class="com.sissi.pipeline.in.iq.disco.DiscoItems2RobotProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
@@ -16,6 +28,15 @@
 	<bean id="disco.pro.items.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy" />
 	<bean id="disco.pro.items.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.disco.items" />
+	</bean>
+	<bean id="disco.pro.items.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<!-- Check relation -->
+				<ref bean="disco.pro.check" />
+				<ref bean="disco.pro.items.fork" />
+			</util:list>
+		</constructor-arg>
 	</bean>
 
 	<bean id="finder.disco.info" class="com.sissi.pipeline.in.ChainedFinder">
@@ -43,7 +64,7 @@
 				<constructor-arg value="com.sissi.protocol.iq.disco.DiscoInfo" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.info.fork" />
+		<constructor-arg ref="disco.pro.info.chained" />
 	</bean>
 
 	<bean id="disco.condition.items" class="com.sissi.pipeline.in.PairCondition">
@@ -52,7 +73,7 @@
 				<constructor-arg value="com.sissi.protocol.iq.disco.DiscoItems" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.items.fork" />
+		<constructor-arg ref="disco.pro.items.chained" />
 	</bean>
 	<bean id="disco.condition.info.2server" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
