@@ -6,8 +6,8 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="jid" class="com.sissi.context.impl.DomainJIDBuilder">
-		<constructor-arg value="${global.domain}" />
-		<constructor-arg value="${global.jid}" />
+		<constructor-arg value="${global.jid.lengthLimit}" />
+		<constructor-arg value="${global.jid.group}" />
 	</bean>
 
 	<bean id="status" class="com.sissi.context.impl.MongoStatusBuilder">

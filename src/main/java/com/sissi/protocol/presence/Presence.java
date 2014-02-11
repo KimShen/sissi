@@ -16,6 +16,8 @@ import com.sissi.context.StatusClauses;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.offline.Delay;
+import com.sissi.protocol.presence.muc.XMuc;
+import com.sissi.protocol.presence.muc.XUser;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
@@ -158,7 +160,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = XVCard.NAME, type = XVCard.class) })
+	@XmlElements({ @XmlElement(name = XVCard.NAME, type = XVCard.class), @XmlElement(name = XMuc.NAME, type = XMuc.class), @XmlElement(name = XUser.NAME, type = XUser.class) })
 	public List<Field<?>> getFields() {
 		return this.fields != null ? this.fields.getFields() : null;
 	}
@@ -205,6 +207,10 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return this.fields.isEmbed();
 	}
 
+	public boolean isEmpty() {
+		return this.fields.isEmpty();
+	}
+
 	@Override
 	public Presence add(Field<?> field) {
 		if (this.fields == null) {
@@ -213,9 +219,9 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		this.fields.add(field);
 		return this;
 	}
-	
-	public Fields findField(String name) {
-		return this.fields.findField(name);
+
+	public Fields findFields(String name) {
+		return this.fields.findFields(name);
 	}
 
 	@Override

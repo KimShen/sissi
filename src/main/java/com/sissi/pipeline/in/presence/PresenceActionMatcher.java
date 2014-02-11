@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.presence.status;
+package com.sissi.pipeline.in.presence;
 
 import java.util.HashSet;
 import java.util.Set;

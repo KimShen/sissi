@@ -97,8 +97,10 @@ public class SAXHandler extends DefaultHandler {
 	}
 
 	private SAXHandler xmlnCopy() {
-		for (String xmln : this.xmlns.keySet()) {
-			this.propertyCopy(this.current, xmln, this.xmlns.get(xmln));
+		if (this.current != null) {
+			for (String xmln : this.xmlns.keySet()) {
+				this.propertyCopy(this.current, xmln, this.xmlns.get(xmln));
+			}
 		}
 		return this;
 	}

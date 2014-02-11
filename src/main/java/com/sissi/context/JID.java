@@ -26,6 +26,8 @@ public interface JID {
 	public JID bare();
 	
 	public boolean isBare();
+	
+	public boolean isGroup();
 
 	public String asString();
 

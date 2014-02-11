@@ -8,101 +8,29 @@ import com.sissi.context.JIDBuilder;
  */
 public class DomainJIDBuilder implements JIDBuilder {
 
-	private final String name = "EMPTY";
-
 	private final String connectAt = "@";
 
 	private final String connectResource = "/";
-
-	private final None none = new None();
 
 	private final StringBuffer emptyJID = new StringBuffer();
 
 	private final int lengthLimit;
 
-	private final String domain;
+	private final String group;
 
-	public DomainJIDBuilder(String domain, int jid) {
+	public DomainJIDBuilder(int lengthLimit, String group) {
 		super();
-		this.domain = domain;
-		this.lengthLimit = jid;
+		this.lengthLimit = lengthLimit;
+		this.group = group;
 	}
 
 	@Override
 	public JID build(String jid) {
-		return (jid != null && !jid.isEmpty()) ? new User(jid) : this.none;
+		return jid != null ? new User(jid.trim()) : OfflineJID.OFFLINE;
 	}
 
 	public JID build(String username, String resource) {
 		return new User(username, resource);
-	}
-
-	private class None implements JID {
-
-		private final String toString;
-
-		public None() {
-			super();
-			this.toString = this.user() + DomainJIDBuilder.this.connectAt + this.domain();
-		}
-
-		@Override
-		public String user() {
-			return DomainJIDBuilder.this.name;
-		}
-
-		public boolean user(JID jid) {
-			return false;
-		}
-
-		public boolean user(String jid) {
-			return false;
-		}
-
-		@Override
-		public String domain() {
-			return DomainJIDBuilder.this.domain;
-		}
-
-		public JID domain(String domain) {
-			return this;
-		}
-
-		@Override
-		public String resource() {
-			return null;
-		}
-
-		public JID resource(String resource) {
-			return this;
-		}
-
-		@Override
-		public JID bare() {
-			return this;
-		}
-
-		public boolean isBare() {
-			return false;
-		}
-
-		public boolean valid() {
-			return true;
-		}
-
-		public boolean valid(boolean excludeDomain) {
-			return true;
-		}
-
-		@Override
-		public String asString() {
-			return this.toString;
-		}
-
-		@Override
-		public String asStringWithBare() {
-			return this.asString();
-		}
 	}
 
 	private class User implements JID {
@@ -122,7 +50,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 		private User(String jid) {
 			super();
 			try {
-				StringBuffer buffer = jid != null ? new StringBuffer(jid) : DomainJIDBuilder.this.emptyJID;
+				StringBuffer buffer = jid.isEmpty() ? DomainJIDBuilder.this.emptyJID : new StringBuffer(jid);
 				int startHost = buffer.indexOf(DomainJIDBuilder.this.connectAt);
 				this.user = startHost == -1 ? null : buffer.substring(0, startHost);
 				int startResource = buffer.indexOf(DomainJIDBuilder.this.connectResource);
@@ -168,7 +96,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 		}
 
 		public String resource() {
-			return this.resource;
+			return this.resource != null & !this.resource.isEmpty() ? this.resource : null;
 		}
 
 		@Override
@@ -185,12 +113,16 @@ public class DomainJIDBuilder implements JIDBuilder {
 			return this.resource() == null;
 		}
 
+		public boolean isGroup() {
+			return DomainJIDBuilder.this.group.equals(this.domain);
+		}
+
 		public boolean valid() {
 			return this.valid(true);
 		}
 
 		public boolean valid(boolean excludeDomain) {
-			return this.parseValid && this.validLength() && this.validKeyword(this.user()) && this.validKeyword(this.domain(), excludeDomain) && this.validKeyword(this.resource());
+			return this.parseValid && this.validLength() && this.validKeyword(this.user()) && this.validKeyword(this.domain(), excludeDomain);
 		}
 
 		public String asString() {

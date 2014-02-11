@@ -98,7 +98,7 @@ public class XField implements Field<Object>, Collector {
 
 	private Object computeValue() {
 		LinkedList<String> fields = new LinkedList<String>();
-		for (Field<?> field : this.fields.findField(XValue.NAME)) {
+		for (Field<?> field : this.fields.findFields(XValue.NAME)) {
 			fields.add(field.getValue().toString());
 		}
 		return fields.size() == 1 ? fields.getFirst() : fields.toArray(new String[] {});

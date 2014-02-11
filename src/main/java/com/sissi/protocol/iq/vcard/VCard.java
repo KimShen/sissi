@@ -67,8 +67,12 @@ public class VCard extends Protocol implements Fields, Collector {
 		return this.fields.isEmbed();
 	}
 
-	public Fields findField(String name) {
-		return this.fields.findField(name);
+	public boolean isEmpty() {
+		return this.fields.isEmpty();
+	}
+
+	public Fields findFields(String name) {
+		return this.fields.findFields(name);
 	}
 
 	@Override

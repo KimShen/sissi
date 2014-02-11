@@ -186,9 +186,10 @@
 	<bean id="finder.presence" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<ref bean="presence.condition.muc" />
 				<ref bean="presence.condition.probe" />
 				<ref bean="presence.condition.status" />
-				<ref bean="presence.condition.status.forwarded" />
+				<ref bean="presence.condition.status.forward" />
 				<ref bean="presence.condition.roster" />
 			</util:list>
 		</constructor-arg>
@@ -228,7 +229,7 @@
 	</bean>
 	<bean id="presence.condition.status" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.presence.status.PresenceActionMatcher">
+			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
 				<constructor-arg>
 					<array>
 						<value>AVAILABLE</value>
@@ -239,9 +240,9 @@
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.status.fork" />
 	</bean>
-	<bean id="presence.condition.status.forwarded" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="presence.condition.status.forward" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.presence.status.PresenceActionMatcher">
+			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
 				<constructor-arg value="true" />
 				<constructor-arg>
 					<array>
@@ -255,7 +256,7 @@
 	</bean>
 	<bean id="presence.condition.status.available" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.presence.status.PresenceActionMatcher">
+			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
 				<constructor-arg>
 					<array>
 						<value>AVAILABLE</value>
@@ -267,7 +268,7 @@
 	</bean>
 	<bean id="presence.condition.status.unavailable" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.presence.status.PresenceActionMatcher">
+			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
 				<constructor-arg>
 					<array>
 						<value>UNAVAILABLE</value>

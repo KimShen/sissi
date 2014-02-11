@@ -64,6 +64,10 @@ public class XVCard extends X implements Fields, Field<String>, Collector {
 	public boolean isEmbed() {
 		return this.vCardFields.isEmbed();
 	}
+	
+	public boolean isEmpty() {
+		return this.vCardFields.isEmpty();
+	}
 
 	@Override
 	public XVCard add(Field<?> field) {
@@ -71,8 +75,8 @@ public class XVCard extends X implements Fields, Field<String>, Collector {
 		return this;
 	}
 
-	public Fields findField(String name) {
-		return this.vCardFields.findField(name);
+	public Fields findFields(String name) {
+		return this.vCardFields.findFields(name);
 	}
 	
 	@Override

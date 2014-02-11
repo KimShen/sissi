@@ -66,7 +66,11 @@ public class BeanFields implements Fields {
 		return this.isEmbed;
 	}
 
-	public Fields findField(String name){
+	public boolean isEmpty() {
+		return this.fields != null ? this.fields.isEmpty() : true;
+	}
+
+	public Fields findFields(String name) {
 		BeanFields fields = new BeanFields(false);
 		for (Field<?> each : this) {
 			if (each.getName().equals(name)) {
@@ -75,7 +79,7 @@ public class BeanFields implements Fields {
 		}
 		return fields;
 	}
-	
+
 	@Override
 	public <T extends Field<?>> T findField(String name, Class<T> clazz) {
 		for (Field<?> each : this) {
