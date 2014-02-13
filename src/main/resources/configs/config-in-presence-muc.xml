@@ -5,15 +5,32 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<alias name="relation.muc.mongo" alias="relation.muc" />
+	<bean id="relation.muc.mongo" class="com.sissi.ucenter.relation.MongoRelationMucContext">
+		<constructor-arg ref="jid" />
+		<constructor-arg>
+			<bean class="com.sissi.config.impl.MongoProxyConfig">
+				<constructor-arg ref="mongo" />
+				<constructor-arg index="1" value="${mongo.db}" />
+				<constructor-arg index="2" value="${mongo.collection.muc}" />
+			</bean>
+		</constructor-arg>
+		<property name="relationInductor" ref="relation.roster.inductor" />
+	</bean>
+
 	<bean id="presence.pro.muc.check.xmlns" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckXmlnsProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.muc.check.nickname" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckNicknameProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.muc.join" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoinProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.muc.join" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoinProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="relation.muc" />
+	</bean>
+	<bean id="presence.pro.muc.join.2selfs" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfsProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.muc.join.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="presence.pro.muc.check.xmlns" />
 				<ref bean="presence.pro.muc.check.nickname" />
 				<ref bean="presence.pro.muc.join" />
+				<ref bean="presence.pro.muc.join.2selfs" />
 			</util:list>
 		</constructor-arg>
 	</bean>

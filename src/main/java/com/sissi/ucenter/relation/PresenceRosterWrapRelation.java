@@ -12,19 +12,16 @@ import com.sissi.ucenter.RelationRoster;
 /**
  * @author kim 2014年1月23日
  */
-public class PresenceWrapRelation implements RelationRoster {
+public class PresenceRosterWrapRelation implements RelationRoster {
 
 	private final String jid;
 
 	private final Relation relation;
 
-	private final Presence presence;
-
-	public PresenceWrapRelation(JIDBuilder jidBuilder, Presence presence, Relation relation) {
+	public PresenceRosterWrapRelation(JIDBuilder jidBuilder, Presence presence, Relation relation) {
 		super();
-		this.presence = presence;
 		this.relation = relation;
-		this.jid = jidBuilder.build(this.presence.getTo()).asStringWithBare();
+		this.jid = jidBuilder.build(presence.getTo()).asStringWithBare();
 	}
 
 	@Override
@@ -72,5 +69,4 @@ public class PresenceWrapRelation implements RelationRoster {
 		plus.put("ask", this.isAsk());
 		return plus;
 	}
-
 }
