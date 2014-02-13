@@ -22,7 +22,6 @@ public class Item extends DiscoFeature {
 	private String name;
 
 	public Item() {
-		super(null);
 	}
 
 	public Item(BytestreamsProxy proxy) {

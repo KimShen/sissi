@@ -8,8 +8,73 @@
 	<bean id="disco.pro.check" class="com.sissi.pipeline.in.iq.disco.Disco2FansCheckRelationProcessor">
 		<constructor-arg value="${global.domain}" />
 	</bean>
-	<bean id="disco.pro.info.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2ProxyProcessor" />
-	<bean id="disco.pro.info.2server" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2ServerProcessor" />
+	<bean id="disco.pro.info.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoInfoProcessor">
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.protocol.iq.disco.feature.Identity">
+					<constructor-arg index="0" value="SOCKS5 Bytestreams Service" />
+					<constructor-arg index="1" value="bytestreams" />
+					<constructor-arg index="2" value="proxy" />
+				</bean>
+				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.bytestreams.Bytestreams.XMLNS" />
+					</constructor-arg>
+				</bean>
+				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.si.Si.XMLNS" />
+					</constructor-arg>
+				</bean>
+				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.si.File.XMLNS" />
+					</constructor-arg>
+				</bean>
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="disco.pro.info.2server" class="com.sissi.pipeline.in.iq.disco.DiscoInfoProcessor">
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.disco.DiscoInfo.XMLNS" />
+					</constructor-arg>
+				</bean>
+				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.disco.DiscoItems.XMLNS" />
+					</constructor-arg>
+				</bean>
+				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.ping.Ping.XMLNS" />
+					</constructor-arg>
+				</bean>
+				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.vcard.VCard.XMLNS" />
+					</constructor-arg>
+				</bean>
+				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.block.Block.XMLNS" />
+					</constructor-arg>
+				</bean>
+				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.last.Last.XMLNS" />
+					</constructor-arg>
+				</bean>
+				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
+					<constructor-arg>
+						<util:constant static-field="com.sissi.protocol.iq.time.Time.XMLNS" />
+					</constructor-arg>
+				</bean>
+			</util:list>
+		</constructor-arg>
+	</bean>
 	<bean id="disco.pro.info.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy" />
 	<bean id="disco.pro.info.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.disco.info" />
@@ -23,7 +88,7 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="disco.pro.items.2reboot" class="com.sissi.pipeline.in.iq.disco.DiscoItems2RebootProcessor" />
+	<bean id="disco.pro.items" class="com.sissi.pipeline.in.iq.disco.DiscoItemsProcessor" />
 	<bean id="disco.pro.items.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy" />
 	<bean id="disco.pro.items.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.disco.items" />
@@ -43,8 +108,7 @@
 			<util:list>
 				<ref bean="disco.condition.info.2server" />
 				<ref bean="disco.condition.info.2proxy" />
-				<!-- Get info from fans -->
-				<!-- <ref bean="disco.condition.info.2fans" /> -->
+				<ref bean="disco.condition.info.2fans" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -53,8 +117,7 @@
 			<util:list>
 				<ref bean="disco.condition.items.2server" />
 				<ref bean="disco.condition.items.2proxy" />
-				<!-- Get item from fans -->
-				<!-- <ref bean="disco.condition.items.2fans" /> -->
+				<ref bean="disco.condition.items.2fans" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -87,7 +150,10 @@
 	</bean>
 	<bean id="disco.condition.info.2proxy" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.AnyMatcher" />
+			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
+				<constructor-arg index="0" value="com.sissi.protocol.iq.disco.DiscoInfo" />
+				<constructor-arg index="1" value="${bytestreams.jid}" />
+			</bean>
 		</constructor-arg>
 		<constructor-arg ref="disco.pro.info.2proxy" />
 	</bean>
@@ -104,13 +170,16 @@
 				<constructor-arg index="1" value="${global.domain}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.items.2reboot" />
+		<constructor-arg ref="disco.pro.items" />
 	</bean>
 	<bean id="disco.condition.items.2proxy" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.AnyMatcher" />
+			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
+				<constructor-arg index="0" value="com.sissi.protocol.iq.disco.DiscoItems" />
+				<constructor-arg index="1" value="${bytestreams.jid}" />
+			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.items.2reboot" />
+		<constructor-arg ref="disco.pro.items" />
 	</bean>
 	<bean id="disco.condition.items.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

@@ -96,7 +96,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 		}
 
 		public String resource() {
-			return this.resource != null & !this.resource.isEmpty() ? this.resource : null;
+			return this.resource != null && !this.resource.isEmpty() ? this.resource : null;
 		}
 
 		@Override

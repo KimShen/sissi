@@ -5,7 +5,7 @@ package com.sissi.protocol.presence.muc;
  */
 public enum ItemAffiliation {
 
-	OWNER, ADMIN, MEMBER;
+	OWNER, ADMIN, MEMBER, OUTCAST;
 
 	public String toString() {
 		return super.toString().toLowerCase();

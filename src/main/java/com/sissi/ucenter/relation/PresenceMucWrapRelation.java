@@ -6,7 +6,6 @@ import java.util.Map;
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.protocol.presence.muc.PresenceMucSubscription;
 import com.sissi.ucenter.RelationMuc;
 
 /**
@@ -33,7 +32,7 @@ public class PresenceMucWrapRelation implements RelationMuc {
 
 	@Override
 	public String getSubscription() {
-		return PresenceMucSubscription.BOTH.toString();
+		return "";
 	}
 
 	@Override

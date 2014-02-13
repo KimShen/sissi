@@ -6,11 +6,12 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import com.sissi.protocol.Protocol;
+import com.sissi.read.Collector;
 
 /**
  * @author kim 2014年1月16日
  */
-abstract public class Disco extends Protocol {
+abstract public class Disco extends Protocol implements Collector {
 
 	public final static String NAME = "query";
 
@@ -31,6 +32,10 @@ abstract public class Disco extends Protocol {
 			this.features.add(feature);
 		}
 		return this;
+	}
+
+	public void set(String localName, Object ob) {
+		this.add(DiscoFeature.class.cast(ob));
 	}
 
 	public List<DiscoFeature> getDisco() {

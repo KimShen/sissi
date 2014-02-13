@@ -3,10 +3,14 @@ package com.sissi.protocol.iq.disco.feature;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import com.sissi.protocol.iq.disco.DiscoFeature;
+import com.sissi.protocol.iq.disco.DiscoInfo;
+import com.sissi.protocol.iq.disco.DiscoItems;
+import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月20日
  */
+@Metadata(uri = { DiscoInfo.XMLNS, DiscoItems.XMLNS }, localName = Identity.NAME)
 public class Identity extends DiscoFeature {
 
 	public final static Identity FEATURE_MUC = new Identity("Macbeth Chat Service", "text", "conference");
@@ -22,7 +26,6 @@ public class Identity extends DiscoFeature {
 	private String name;
 
 	public Identity() {
-		super(null);
 	}
 
 	public Identity(String name, String type, String category) {
@@ -30,6 +33,21 @@ public class Identity extends DiscoFeature {
 		this.category = category;
 		this.type = type;
 		this.name = name;
+	}
+
+	public Identity setCategory(String category) {
+		this.category = category;
+		return this;
+	}
+
+	public Identity setType(String type) {
+		this.type = type;
+		return this;
+	}
+
+	public Identity setName(String name) {
+		this.name = name;
+		return this;
 	}
 
 	@XmlAttribute

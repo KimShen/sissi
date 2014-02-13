@@ -56,6 +56,10 @@
 		<property name="relationInductor" ref="relation.roster.inductor" />
 	</bean>
 
+	<alias name="relation.muc.mongo" alias="relation.muc" />
+	<bean id="relation.muc.mongo" class="com.sissi.ucenter.relation.MongoRelationMucContext">
+	</bean>
+
 	<alias name="ucenter.register.mongo" alias="ucenter.register" />
 	<bean id="ucenter.register.mongo" class="com.sissi.ucenter.user.MongoRegisterContext">
 		<constructor-arg ref="jid" />

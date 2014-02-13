@@ -8,7 +8,7 @@ import com.sissi.protocol.ProtocolType;
 /**
  * @author kim 2013年12月19日
  */
-public class DiscoItems2RebootProcessor extends ProxyProcessor {
+public class DiscoItemsProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
