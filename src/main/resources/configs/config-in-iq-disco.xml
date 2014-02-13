@@ -11,7 +11,7 @@
 	<bean id="disco.pro.info.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoInfoProcessor">
 		<constructor-arg>
 			<util:list>
-				<bean class="com.sissi.protocol.iq.disco.feature.Identity">
+				<bean class="com.sissi.protocol.iq.disco.Identity">
 					<constructor-arg index="0" value="SOCKS5 Bytestreams Service" />
 					<constructor-arg index="1" value="bytestreams" />
 					<constructor-arg index="2" value="proxy" />
@@ -37,6 +37,11 @@
 	<bean id="disco.pro.info.2server" class="com.sissi.pipeline.in.iq.disco.DiscoInfoProcessor">
 		<constructor-arg>
 			<util:list>
+				<bean class="com.sissi.protocol.iq.disco.Identity">
+					<constructor-arg index="0" value="Sissi Service" />
+					<constructor-arg index="1" value="server" />
+					<constructor-arg index="2" value="server" />
+				</bean>
 				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
 					<constructor-arg>
 						<util:constant static-field="com.sissi.protocol.iq.disco.DiscoInfo.XMLNS" />

@@ -21,7 +21,7 @@ public class DiscoInfo extends Disco {
 		super(XMLNS);
 	}
 
-	@XmlElements({ @XmlElement(name = DiscoFeature.NAME, type = DiscoFeature.class) })
+	@XmlElements({ @XmlElement(name = DiscoFeature.NAME, type = DiscoFeature.class), @XmlElement(name = Identity.NAME, type = Identity.class) })
 	public List<DiscoFeature> getDisco() {
 		return super.getDisco();
 	}

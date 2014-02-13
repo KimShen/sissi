@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.protocol.iq.disco.feature.Item;
 import com.sissi.read.Metadata;
 
 /**

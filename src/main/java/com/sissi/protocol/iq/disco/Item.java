@@ -1,12 +1,10 @@
-package com.sissi.protocol.iq.disco.feature;
+package com.sissi.protocol.iq.disco;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.iq.bytestreams.BytestreamsProxy;
-import com.sissi.protocol.iq.disco.DiscoFeature;
-import com.sissi.protocol.iq.disco.DiscoItems;
 
 /**
  * @author kim 2013年12月18日
