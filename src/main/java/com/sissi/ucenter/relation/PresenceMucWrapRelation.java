@@ -4,45 +4,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.sissi.context.JID;
-import com.sissi.context.JIDBuilder;
-import com.sissi.protocol.presence.Presence;
-import com.sissi.ucenter.RelationMuc;
+import com.sissi.ucenter.Relation;
 
 /**
  * @author kim 2014年2月11日
  */
-public class PresenceMucWrapRelation implements RelationMuc {
+public class PresenceMucWrapRelation extends BitSetRelationMuc {
 
-	private final JID group;
+	private final JID jid;
 
-	public PresenceMucWrapRelation(JIDBuilder jidBuilder, Presence presence) {
-		super();
-		this.group = jidBuilder.build(presence.getTo());
+	private final Relation relation;
+
+	public PresenceMucWrapRelation(JID jid, Relation relation) {
+		super(relation.getSubscription());
+		this.jid = jid;
+		this.relation = relation;
 	}
 
 	@Override
 	public String getJID() {
-		return this.group.asStringWithBare();
+		return this.jid.asStringWithBare();
+	}
+
+	public String getRoom() {
+		return this.jid.user();
 	}
 
 	@Override
 	public String getName() {
-		return this.group.resource();
-	}
-
-	@Override
-	public String getSubscription() {
-		return "";
+		return this.jid.resource();
 	}
 
 	@Override
 	public boolean isActivate() {
-		return true;
+		return this.relation.isActivate();
 	}
 
 	@Override
 	public Map<String, Object> plus() {
 		Map<String, Object> plus = new HashMap<String, Object>();
+		plus.put("room", this.getRoom());
 		return plus;
 	}
 

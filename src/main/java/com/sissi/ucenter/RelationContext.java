@@ -12,7 +12,7 @@ public interface RelationContext {
 	public RelationContext establish(JID from, Relation relation);
 
 	public RelationContext update(JID from, JID to, String state);
-	
+
 	public RelationContext remove(JID from, JID to);
 
 	public Relation ourRelation(JID from, JID to);

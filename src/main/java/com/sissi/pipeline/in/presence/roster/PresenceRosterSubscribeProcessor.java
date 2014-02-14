@@ -20,7 +20,7 @@ public class PresenceRosterSubscribeProcessor extends ProxyProcessor {
 	}
 
 	private Boolean establishAndReturn(JIDContext context, Presence presence, Relation relation) {
-		super.establish(context.jid(), new PresenceRosterWrapRelation(super.jidBuilder, presence, relation));
+		super.establish(context.jid(), new PresenceRosterWrapRelation(super.build(presence.getTo()), presence, relation));
 		return true;
 	}
 }

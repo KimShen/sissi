@@ -21,7 +21,7 @@ public class VCardGetCheckRelationProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return !protocol.getParent().to() || RelationRoster.class.cast(super.ourRelation(context.jid(), super.build(protocol.getParent().getTo()))).in(this.relations) ? true : this.writeAndReturn(context, protocol);
+		return !protocol.getParent().to() || protocol.getParent().to(context.jid().asStringWithBare()) || RelationRoster.class.cast(super.ourRelation(context.jid(), super.build(protocol.getParent().getTo()))).in(this.relations) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

@@ -7,8 +7,8 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.JIDMalformed;
+import com.sissi.protocol.muc.XMuc;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.protocol.presence.muc.XMuc;
 
 /**
  * @author kim 2014年2月11日

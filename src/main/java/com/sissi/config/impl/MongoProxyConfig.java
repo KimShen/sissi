@@ -24,7 +24,11 @@ import com.sissi.config.MongoConfig;
 public class MongoProxyConfig implements MongoConfig {
 
 	public static final String FIELD_JID = "jid";
-	
+
+	public static final String FIELD_NICK = "nick";
+
+	public static final String FIELD_STATE = "state";
+
 	public static final String FIELD_INDEX = "index";
 
 	public static final String FIELD_PRIORITY = "priority";
@@ -86,6 +90,11 @@ public class MongoProxyConfig implements MongoConfig {
 	public boolean asBoolean(DBObject db, String key) {
 		Object value = this.as(db, key);
 		return value != null ? Boolean.class.cast(value) : Boolean.FALSE;
+	}
+
+	public byte[] asBytes(DBObject db, String key) {
+		Object value = this.as(db, key);
+		return value != null ? byte[].class.cast(value) : new byte[0];
 	}
 
 	private Object as(DBObject db, String key) {

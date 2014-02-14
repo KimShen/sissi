@@ -11,6 +11,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.sissi.config.MongoConfig;
+import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.iq.roster.RosterSubscription;
@@ -26,27 +27,23 @@ public class MongoRelationRosterContext implements RelationContext {
 
 	private final String fieldAsk = "ask";
 
-	private final String fieldNick = "nick";
-
-	private final String fieldState = "state";
-
 	private final String fieldSlave = "slave";
 
 	private final String fieldMaster = "master";
 
 	private final String fieldActivate = "activate";
-	
-	private final String groups = "groups";
-	
+
+	private final String fieldGroups = "groups";
+
 	private final Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
 
 	private final DBObject filterMaster = BasicDBObjectBuilder.start(this.fieldMaster, 1).get();
 
 	private final DBObject filterSlave = BasicDBObjectBuilder.start(this.fieldSlave, 1).get();
 
-	private final DBObject entityInitMaster = BasicDBObjectBuilder.start(this.fieldState, 0).get();
+	private final DBObject entityInitMaster = BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_STATE, 0).get();
 
-	private final DBObject entityInitSlave = BasicDBObjectBuilder.start().add(this.fieldActivate, false).add(this.fieldState, 0).get();
+	private final DBObject entityInitSlave = BasicDBObjectBuilder.start().add(this.fieldActivate, false).add(MongoProxyConfig.FIELD_STATE, 0).get();
 
 	private final DBObject entityEstablishTo = BasicDBObjectBuilder.start("or", 1).get();
 
@@ -56,9 +53,9 @@ public class MongoRelationRosterContext implements RelationContext {
 
 	private final DBObject entityBrokeFrom = BasicDBObjectBuilder.start("and", 2).get();
 
-	private final DBObject[] entityStates = new DBObject[] { BasicDBObjectBuilder.start(this.fieldState, 1).get(), BasicDBObjectBuilder.start(this.fieldState, 3).get() };
+	private final DBObject[] entityStates = new DBObject[] { BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_STATE, 1).get(), BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_STATE, 3).get() };
 
-	protected final MongoConfig config;
+	private final MongoConfig config;
 
 	private final JIDBuilder jidBuilder;
 
@@ -95,21 +92,21 @@ public class MongoRelationRosterContext implements RelationContext {
 	}
 
 	@Override
-	public RelationContext establish(JID from, Relation relation) {
-		this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.getJID()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(this.fieldNick, relation.getName()).add(this.fieldActivate, true).get()).add("$setOnInsert", this.entityInitMaster).get(), true, false, WriteConcern.SAFE);
+	public MongoRelationRosterContext establish(JID from, Relation relation) {
+		this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.getJID()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(MongoProxyConfig.FIELD_JID, relation.getName()).add(this.fieldActivate, true).get()).add("$setOnInsert", this.entityInitMaster).get(), true, false, WriteConcern.SAFE);
 		this.config.collection().update(this.buildQuery(relation.getJID(), from.asStringWithBare()), BasicDBObjectBuilder.start("$setOnInsert", this.entityInitSlave).get(), true, false, WriteConcern.SAFE);
 		return this;
 	}
 
 	@Override
-	public RelationContext update(JID from, JID to, String state) {
-		this.config.collection().update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start(this.fieldAsk, true).get()).add("$bit", BasicDBObjectBuilder.start().add(this.fieldState, this.update.get(state).getTo()).get()).get(), true, false, WriteConcern.SAFE);
-		this.config.collection().update(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(this.fieldState, this.update.get(state).getFrom()).get()).get(), true, false, WriteConcern.SAFE);
+	public MongoRelationRosterContext update(JID from, JID to, String state) {
+		this.config.collection().update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start(this.fieldAsk, true).get()).add("$bit", BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_STATE, this.update.get(state).getTo()).get()).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_STATE, this.update.get(state).getFrom()).get()).get(), true, false, WriteConcern.SAFE);
 		this.relationInductor.update(to, from);
 		return this;
 	}
 
-	public RelationContext remove(JID from, JID to) {
+	public MongoRelationRosterContext remove(JID from, JID to) {
 		this.config.collection().remove(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()));
 		this.config.collection().remove(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()));
 		this.relationInductor.remove(to, from);
@@ -124,7 +121,7 @@ public class MongoRelationRosterContext implements RelationContext {
 	@Override
 	public Relation ourRelation(JID from, JID to) {
 		DBObject db = this.config.collection().findOne(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()));
-		return db != null ? this.build(db) : new NoneRelation(to);
+		return db != null ? this.build(db) : new NoneRelation(to, RosterSubscription.NONE.toString());
 	}
 
 	@Override
@@ -189,58 +186,6 @@ public class MongoRelationRosterContext implements RelationContext {
 		}
 	}
 
-	public class NoneRelation implements Relation, RelationRoster {
-
-		private final JID jid;
-
-		public NoneRelation(JID jid) {
-			super();
-			this.jid = jid;
-		}
-
-		@Override
-		public String getJID() {
-			return this.jid.asStringWithBare();
-		}
-
-		@Override
-		public String getName() {
-			return null;
-		}
-
-		@Override
-		public String getSubscription() {
-			return RosterSubscription.NONE.toString();
-		}
-
-		public boolean in(String... subscriptions) {
-			return false;
-		}
-
-		public boolean in(RosterSubscription... subscriptions) {
-			return false;
-		}
-
-		public boolean isActivate() {
-			return false;
-		}
-
-		@Override
-		public boolean isAsk() {
-			return false;
-		}
-
-		@Override
-		public Map<String, Object> plus() {
-			return MongoRelationRosterContext.this.fieldPlus;
-		}
-
-		@Override
-		public String[] asGroups() {
-			return null;
-		}
-	}
-	
 	private class MongoRelationRoster implements RelationRoster {
 
 		private final String jid;
@@ -257,12 +202,12 @@ public class MongoRelationRosterContext implements RelationContext {
 
 		public MongoRelationRoster(DBObject db) {
 			super();
-			this.jid = MongoRelationRosterContext.this.config.asString(db, MongoRelationRosterContext.this.fieldSlave);
-			this.name = MongoRelationRosterContext.this.config.asString(db, MongoRelationRosterContext.this.fieldNick);
+			this.name = MongoRelationRosterContext.this.config.asString(db, MongoProxyConfig.FIELD_NICK);
+			this.subscription = MongoRelationRosterContext.this.config.asInteger(db, MongoProxyConfig.FIELD_STATE);
 			this.ask = MongoRelationRosterContext.this.config.asBoolean(db, MongoRelationRosterContext.this.fieldAsk);
+			this.jid = MongoRelationRosterContext.this.config.asString(db, MongoRelationRosterContext.this.fieldSlave);
+			this.groups = MongoRelationRosterContext.this.config.asStrings(db, MongoRelationRosterContext.this.fieldGroups);
 			this.activate = MongoRelationRosterContext.this.config.asBoolean(db, MongoRelationRosterContext.this.fieldActivate);
-			this.subscription = MongoRelationRosterContext.this.config.asInteger(db, MongoRelationRosterContext.this.fieldState);
-			this.groups = MongoRelationRosterContext.this.config.asStrings(db, MongoRelationRosterContext.this.groups);
 		}
 
 		public String getJID() {

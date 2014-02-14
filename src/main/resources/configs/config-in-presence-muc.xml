@@ -10,7 +10,9 @@
 	<bean id="presence.pro.muc.join" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoinProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="relation.muc" />
 	</bean>
-	<bean id="presence.pro.muc.join.2selfs" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfsProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.muc.join.2selfs" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfsProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="relation.muc" />
+	</bean>
 	<bean id="presence.pro.muc.join.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>

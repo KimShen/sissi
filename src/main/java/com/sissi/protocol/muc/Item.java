@@ -1,8 +1,10 @@
-package com.sissi.protocol.presence.muc;
+package com.sissi.protocol.muc;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
+import com.sissi.ucenter.RelationMuc;
 
 /**
  * @author kim 2014年2月11日
@@ -21,10 +23,10 @@ public class Item {
 		super();
 	}
 
-	public Item(ItemAffiliation affiliation, ItemRole role) {
+	public Item(RelationMuc muc) {
 		super();
-		this.affiliation = affiliation.toString();
-		this.role = role.toString();
+		this.affiliation = muc.getAffiliaion();
+		this.role = muc.getRole();
 	}
 
 	@XmlAttribute

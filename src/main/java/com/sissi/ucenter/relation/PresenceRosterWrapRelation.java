@@ -3,7 +3,7 @@ package com.sissi.ucenter.relation;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sissi.context.JIDBuilder;
+import com.sissi.context.JID;
 import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.ucenter.Relation;
@@ -14,24 +14,24 @@ import com.sissi.ucenter.RelationRoster;
  */
 public class PresenceRosterWrapRelation implements RelationRoster {
 
-	private final String jid;
+	private final JID jid;
 
 	private final Relation relation;
 
-	public PresenceRosterWrapRelation(JIDBuilder jidBuilder, Presence presence, Relation relation) {
+	public PresenceRosterWrapRelation(JID jid, Presence presence, Relation relation) {
 		super();
+		this.jid = jid;
 		this.relation = relation;
-		this.jid = jidBuilder.build(presence.getTo()).asStringWithBare();
 	}
 
 	@Override
 	public String getJID() {
-		return this.jid;
+		return this.jid.asStringWithBare();
 	}
 
 	@Override
 	public String getName() {
-		return this.relation.getName();
+		return this.jid.resource();
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class PresenceRosterWrapRelation implements RelationRoster {
 	@Override
 	public Map<String, Object> plus() {
 		Map<String, Object> plus = new HashMap<String, Object>();
-		plus.put("ask", this.isAsk());
+		plus.put("name", this.jid.user());
 		return plus;
 	}
 }

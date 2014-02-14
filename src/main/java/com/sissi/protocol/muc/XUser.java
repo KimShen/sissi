@@ -1,4 +1,4 @@
-package com.sissi.protocol.presence.muc;
+package com.sissi.protocol.muc;
 
 import java.util.ArrayList;
 import java.util.List;

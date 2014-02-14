@@ -56,14 +56,14 @@ public class ItemWrapRelation implements RelationRoster {
 
 	@Override
 	public String getSubscription() {
-		return RosterSubscription.parse(this.relation.getSubscription()).toString();
+		return this.relation.getSubscription();
 	}
 
 	public boolean in(String... subscriptions) {
 		return RosterSubscription.parse(this.relation.getSubscription()).in(subscriptions);
 	}
-	
-	public boolean in(RosterSubscription... subscriptions){
+
+	public boolean in(RosterSubscription... subscriptions) {
 		return RosterSubscription.parse(this.relation.getSubscription()).in(subscriptions);
 	}
 

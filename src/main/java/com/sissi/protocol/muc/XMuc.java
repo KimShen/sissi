@@ -1,4 +1,4 @@
-package com.sissi.protocol.presence.muc;
+package com.sissi.protocol.muc;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
