@@ -6,7 +6,6 @@ import java.util.Map;
 import com.sissi.context.JID;
 import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationRoster;
 
 /**
@@ -16,9 +15,9 @@ public class PresenceRosterWrapRelation implements RelationRoster {
 
 	private final JID jid;
 
-	private final Relation relation;
+	private final RelationRoster relation;
 
-	public PresenceRosterWrapRelation(JID jid, Presence presence, Relation relation) {
+	public PresenceRosterWrapRelation(JID jid, Presence presence, RelationRoster relation) {
 		super();
 		this.jid = jid;
 		this.relation = relation;

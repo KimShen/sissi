@@ -9,7 +9,7 @@ import com.sissi.read.Metadata;
  */
 @Metadata(uri = Presence.XMLNS, localName = PresenceStatus.NAME)
 @XmlRootElement
-public class PresenceStatus {
+public class PresenceStatus extends Presence {
 
 	public final static String NAME = "status";
 

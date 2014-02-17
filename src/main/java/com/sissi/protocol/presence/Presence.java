@@ -160,7 +160,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = XVCard.NAME, type = XVCard.class), @XmlElement(name = XMuc.NAME, type = XMuc.class), @XmlElement(name = XUser.NAME, type = XUser.class) })
+	@XmlElements({ @XmlElement(name = XVCardPhoto.NAME, type = XVCardPhoto.class), @XmlElement(name = XVCard.NAME, type = XVCard.class), @XmlElement(name = XMuc.NAME, type = XMuc.class), @XmlElement(name = XUser.NAME, type = XUser.class) })
 	public List<Field<?>> getFields() {
 		return this.fields != null ? this.fields.getFields() : null;
 	}

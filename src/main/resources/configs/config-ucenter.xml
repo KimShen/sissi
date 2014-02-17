@@ -29,6 +29,12 @@
 					</key>
 					<bean class="com.sissi.ucenter.user.PhotoFieldParser" />
 				</entry>
+				<entry>
+					<key>
+						<util:constant static-field="com.sissi.protocol.iq.vcard.field.Nickname.NAME" />
+					</key>
+					<bean class="com.sissi.ucenter.user.NicknameFieldParser" />
+				</entry>
 			</util:map>
 		</constructor-arg>
 	</bean>

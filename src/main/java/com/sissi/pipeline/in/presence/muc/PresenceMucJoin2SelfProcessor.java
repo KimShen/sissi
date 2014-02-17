@@ -9,18 +9,27 @@ import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationMuc;
+import com.sissi.ucenter.RelationMucMapping;
 
 /**
  * @author kim 2014年2月11日
  */
-public class PresenceMucJoin2SelfsProcessor extends ProxyProcessor {
+public class PresenceMucJoin2SelfProcessor extends ProxyProcessor {
+
+	private final RelationMucMapping relationMucMapping;
+
+	public PresenceMucJoin2SelfProcessor(RelationMucMapping relationMucMapping) {
+		super();
+		this.relationMucMapping = relationMucMapping;
+	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.getTo());
+		Presence presence = new Presence();
 		for (Relation each : super.myRelations(group)) {
-			RelationMuc relation = RelationMuc.class.cast(each);
-			super.broadcast(context.jid(), group.resource(relation.getName()), Presence.class.cast(protocol).clear().add(new XUser().add(new Item(relation))));
+			RelationMuc muc = RelationMuc.class.cast(each);
+			context.write(presence.clear().add(new XUser().add(new Item(muc))).clauses(super.findOne(this.relationMucMapping.mapping(group.resource(muc.getName()))).status().clauses()).setFrom(group));
 		}
 		return true;
 	}

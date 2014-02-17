@@ -4,21 +4,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.sissi.context.JID;
-import com.sissi.ucenter.Relation;
+import com.sissi.ucenter.RelationMuc;
 
 /**
  * @author kim 2014年2月11日
  */
-public class PresenceMucWrapRelation extends BitSetRelationMuc {
+public class PresenceMucWrapRelation implements RelationMuc {
+
+	private final static Map<String, Object> plus = new HashMap<String, Object>();
 
 	private final JID jid;
 
-	private final Relation relation;
+	private final RelationMuc muc;
 
-	public PresenceMucWrapRelation(JID jid, Relation relation) {
-		super(relation.getSubscription());
+	public PresenceMucWrapRelation(JID jid, RelationMuc muc) {
 		this.jid = jid;
-		this.relation = relation;
+		this.muc = muc;
 	}
 
 	@Override
@@ -37,18 +38,21 @@ public class PresenceMucWrapRelation extends BitSetRelationMuc {
 
 	@Override
 	public boolean isActivate() {
-		return this.relation.isActivate();
+		return this.muc.isActivate();
+	}
+
+	@Override
+	public String getRole() {
+		return this.muc.getRole();
+	}
+
+	@Override
+	public String getAffiliaion() {
+		return this.muc.getAffiliaion();
 	}
 
 	@Override
 	public Map<String, Object> plus() {
-		Map<String, Object> plus = new HashMap<String, Object>();
-		plus.put("room", this.getRoom());
 		return plus;
-	}
-
-	@Override
-	public boolean in(String... subscriptions) {
-		return false;
 	}
 }

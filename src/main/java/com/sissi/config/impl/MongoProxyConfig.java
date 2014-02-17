@@ -1,6 +1,7 @@
 package com.sissi.config.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -87,14 +89,14 @@ public class MongoProxyConfig implements MongoConfig {
 		return value != null ? Integer.parseInt(value.toString()) : null;
 	}
 
+	public long asLong(DBObject db, String key) {
+		Object value = this.as(db, key);
+		return value != null ? Long.parseLong(value.toString()) : null;
+	}
+
 	public boolean asBoolean(DBObject db, String key) {
 		Object value = this.as(db, key);
 		return value != null ? Boolean.class.cast(value) : Boolean.FALSE;
-	}
-
-	public byte[] asBytes(DBObject db, String key) {
-		Object value = this.as(db, key);
-		return value != null ? byte[].class.cast(value) : new byte[0];
 	}
 
 	private Object as(DBObject db, String key) {
@@ -162,6 +164,11 @@ public class MongoProxyConfig implements MongoConfig {
 		public DBObject findOne(DBObject query, DBObject filter) {
 			log.debug("FindOne: " + query + " / Filter: " + filter);
 			return MongoProxyConfig.this.collection.findOne(query, filter);
+		}
+
+		public AggregationOutput aggregate(DBObject firstOp, DBObject... additionalOps) {
+			log.debug("Aggregate: " + firstOp + " / " + Arrays.toString(additionalOps));
+			return MongoProxyConfig.this.collection.aggregate(firstOp, additionalOps);
 		}
 	}
 }

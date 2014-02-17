@@ -19,6 +19,8 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 
 	private static final Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
 
+	private static final String zero = "0";
+
 	private final JID jid;
 
 	private final String subscription;
@@ -27,6 +29,10 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 		super();
 		this.jid = jid;
 		this.subscription = subscription;
+	}
+
+	public NoneRelation(JID jid) {
+		this(jid, zero);
 	}
 
 	@Override
@@ -53,7 +59,7 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 	}
 
 	public String getAffiliaion() {
-		return ItemAffiliation.OUTCAST.toString();
+		return ItemAffiliation.MEMBER.toString();
 	}
 
 	public boolean in(String... subscriptions) {

@@ -9,11 +9,19 @@ import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationRoster;
+import com.sissi.ucenter.VCardContext;
 
 /**
  * @author kim 2013-10-31
  */
 public class RosterGetProcessor extends ProxyProcessor {
+
+	private final VCardContext vcardContext;
+
+	public RosterGetProcessor(VCardContext vcardContext) {
+		super();
+		this.vcardContext = vcardContext;
+	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
@@ -23,7 +31,7 @@ public class RosterGetProcessor extends ProxyProcessor {
 
 	private Roster prepare(JIDContext context, Roster roster) {
 		for (Relation each : super.myRelations(context.jid())) {
-			roster.add(new GroupItem(RelationRoster.class.cast(each)));
+			roster.add(new GroupItem(RelationRoster.class.cast(each)).setNickname(this.vcardContext.get(context.jid(), VCardContext.FIELD_NICKNAME).getValue()));
 		}
 		return roster;
 	}

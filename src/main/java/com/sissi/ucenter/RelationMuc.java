@@ -5,8 +5,6 @@ package com.sissi.ucenter;
  */
 public interface RelationMuc extends Relation {
 	
-	public String getRoom();
-
 	public String getRole();
 	
 	public String getAffiliaion();

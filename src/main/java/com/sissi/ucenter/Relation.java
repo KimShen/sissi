@@ -11,11 +11,7 @@ public interface Relation {
 
 	public String getName();
 
-	public String getSubscription();
-
 	public boolean isActivate();
 
-	public boolean in(String... subscriptions);
-	
 	public Map<String, Object> plus();
 }

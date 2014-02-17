@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.context.JID;
 import com.sissi.protocol.Item;
+import com.sissi.protocol.Sissi;
 import com.sissi.protocol.presence.PresenceType;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
@@ -29,6 +30,8 @@ public class GroupItem extends Item implements Collector {
 	private String ask;
 
 	private String subscription;
+
+	private RosterNickname nickname;
 
 	public GroupItem() {
 		super();
@@ -58,6 +61,16 @@ public class GroupItem extends Item implements Collector {
 			this.groups = new HashSet<Group>();
 		}
 		this.groups.add(group.setItem(this));
+		return this;
+	}
+
+	@XmlElement(namespace = Sissi.XMLNS)
+	public RosterNickname getNickname() {
+		return this.nickname;
+	}
+
+	public GroupItem setNickname(String nick) {
+		this.nickname = new RosterNickname(nick);
 		return this;
 	}
 

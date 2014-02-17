@@ -13,11 +13,11 @@
 	<bean id="server.closer" class="com.sissi.server.impl.ChainedServerCloser">
 		<constructor-arg>
 			<util:list>
-				<bean class="com.sissi.server.impl.BroadcastServerCloser">
+				<bean class="com.sissi.server.impl.PresenceServerCloser">
 					<constructor-arg ref="vcard" />
 					<constructor-arg ref="broadcast.protocol.fans" />
 				</bean>
-				<bean class="com.sissi.server.impl.BroadcastServerCloser">
+				<bean class="com.sissi.server.impl.PresenceServerCloser">
 					<constructor-arg ref="vcard" />
 					<constructor-arg ref="broadcast.protocol.selfs" />
 				</bean>

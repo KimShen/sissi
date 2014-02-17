@@ -20,8 +20,8 @@ public interface MongoConfig extends Config {
 	public String[] asStrings(DBObject db, String key);
 	
 	public int asInteger(DBObject db, String key);
+	
+	public long asLong(DBObject db, String key);
 
 	public boolean asBoolean(DBObject db, String key);
-	
-	public byte[] asBytes(DBObject db, String key);
 }

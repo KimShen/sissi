@@ -4,6 +4,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.roster.RosterSubscription;
+import com.sissi.ucenter.RelationRoster;
 
 /**
  * @author kim 2014年1月26日
@@ -14,6 +15,6 @@ public class PresenceRosterUnSubscribeCheckRelationProcessor extends ProxyProces
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return super.ourRelation(context.jid(), super.build(protocol.getTo())).in(this.relations);
+		return RelationRoster.class.cast(super.ourRelation(context.jid(), super.build(protocol.getTo()))).in(this.relations);
 	}
 }

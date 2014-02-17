@@ -20,11 +20,11 @@ abstract public class IQProcessor implements Input {
 		this(type, true);
 	}
 
-	public IQProcessor(String type, Boolean clear) {
+	public IQProcessor(String type, boolean clear) {
 		this(type, true, false);
 	}
 
-	public IQProcessor(String type, Boolean clear, Boolean doNext) {
+	public IQProcessor(String type, boolean clear, Boolean doNext) {
 		this.type = ProtocolType.parse(type);
 		this.clear = clear;
 		this.doNext = doNext;

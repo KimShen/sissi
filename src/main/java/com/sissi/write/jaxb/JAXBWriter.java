@@ -28,6 +28,7 @@ import com.sissi.commons.apache.IOUtils;
 import com.sissi.commons.apache.LineIterator;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.Element;
+import com.sissi.protocol.Sissi;
 import com.sissi.protocol.Stream;
 import com.sissi.write.Writer;
 import com.sissi.write.WriterFragement;
@@ -214,6 +215,7 @@ public class JAXBWriter implements Writer {
 			super();
 			Map<String, String> mapping = new HashMap<String, String>();
 			mapping.put(Stream.XMLNS, Stream.NAME);
+			mapping.put(Sissi.XMLNS, Sissi.NAME);
 			this.mapping = Collections.unmodifiableMap(mapping);
 		}
 

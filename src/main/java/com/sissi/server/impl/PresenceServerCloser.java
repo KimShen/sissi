@@ -10,20 +10,20 @@ import com.sissi.ucenter.VCardContext;
 /**
  * @author kim 2013-11-20
  */
-public class BroadcastServerCloser implements ServerCloser {
+public class PresenceServerCloser implements ServerCloser {
 
 	private final BroadcastProtocol protocolBraodcast;
 
 	private final VCardContext vCardContext;
 
-	public BroadcastServerCloser(BroadcastProtocol protocolBraodcast, VCardContext vCardContext) {
+	public PresenceServerCloser(BroadcastProtocol protocolBraodcast, VCardContext vCardContext) {
 		super();
 		this.protocolBraodcast = protocolBraodcast;
 		this.vCardContext = vCardContext;
 	}
 
 	@Override
-	public BroadcastServerCloser close(JIDContext context) {
+	public PresenceServerCloser close(JIDContext context) {
 		this.protocolBraodcast.broadcast(context.jid(), new Presence().setFrom(context.jid()).setStatus(this.vCardContext.get(context.jid(), VCardContext.FIELD_SIGNATURE).getValue()).setType(PresenceType.UNAVAILABLE));
 		return this;
 	}

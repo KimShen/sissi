@@ -22,7 +22,7 @@ public class PresenceRosterSubscribe2PresenceReplyProcessor extends ProxyProcess
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return super.ourRelation(context.jid(), super.build(protocol.getTo())).in(this.relations) ? this.writeAndReturn(context, super.build(protocol.getTo()), Presence.class.cast(protocol)) : true;
+		return RelationRoster.class.cast(super.ourRelation(context.jid(), super.build(protocol.getTo()))).in(this.relations) ? this.writeAndReturn(context, super.build(protocol.getTo()), Presence.class.cast(protocol)) : true;
 	}
 
 	private Boolean writeAndReturn(JIDContext context, JID to, Presence presence) {

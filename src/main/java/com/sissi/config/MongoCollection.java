@@ -1,5 +1,6 @@
 package com.sissi.config;
 
+import com.mongodb.AggregationOutput;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
@@ -29,4 +30,6 @@ public interface MongoCollection {
 	public DBObject findOne(DBObject query);
 
 	public DBObject findOne(DBObject query, DBObject filter);
+
+	public AggregationOutput aggregate(DBObject firstOp, DBObject... additionalOps);
 }
