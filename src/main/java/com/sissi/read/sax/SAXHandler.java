@@ -137,7 +137,7 @@ public class SAXHandler extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		// Can not use simple boolean flag, because node may be nest
 		if (this.mapping.exists(uri, localName)) {
-			Object firstNode = this.stack.removeFirst();
+			Object firstNode = this.stack.size() == 1 ? this.stack.getFirst() : this.stack.removeFirst();
 			log.debug(firstNode.getClass() + " will be remove");
 			if (this.stack.size() <= 1) {
 				log.debug(firstNode.getClass() + " will be feed");

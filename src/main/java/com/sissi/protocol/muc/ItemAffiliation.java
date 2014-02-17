@@ -8,15 +8,16 @@ import java.util.Map;
  */
 public enum ItemAffiliation {
 
-	OUTCAST, MEMBER, ADMIN, OWNER;
+	OUTCAST, NONE, MEMBER, ADMIN, OWNER;
 
 	private static Map<Integer, ItemAffiliation> MAPPING = new HashMap<Integer, ItemAffiliation>();
 
 	static {
 		MAPPING.put(1, OUTCAST);
-		MAPPING.put(2, MEMBER);
-		MAPPING.put(3, ADMIN);
-		MAPPING.put(3, OWNER);
+		MAPPING.put(2, NONE);
+		MAPPING.put(3, MEMBER);
+		MAPPING.put(4, ADMIN);
+		MAPPING.put(5, OWNER);
 	}
 
 	public String toString() {

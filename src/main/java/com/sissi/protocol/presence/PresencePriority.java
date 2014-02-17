@@ -9,7 +9,7 @@ import com.sissi.read.Metadata;
  */
 @Metadata(uri = Presence.XMLNS, localName = PresencePriority.NAME)
 @XmlRootElement
-public class PresencePriority extends Presence{
+public class PresencePriority {
 
 	public final static PresencePriority ZERO = new PresencePriority("0");
 

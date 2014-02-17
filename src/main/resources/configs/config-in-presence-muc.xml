@@ -34,9 +34,13 @@
 	<bean id="presence.pro.muc.leave.2all" class="com.sissi.pipeline.in.presence.muc.PresenceMucLeave2AllProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="relation.muc" />
 	</bean>
+	<bean id="presence.pro.muc.leave.check" class="com.sissi.pipeline.in.presence.muc.PresenceMucLeaveCheckRelationProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="relation.muc" />
+	</bean>
 	<bean id="presence.pro.muc.leave.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="presence.pro.muc.leave.check" />
 				<ref bean="presence.pro.muc.leave.2all" />
 				<ref bean="presence.pro.muc.leave" />
 			</util:list>

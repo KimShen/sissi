@@ -17,7 +17,6 @@ import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
-import com.sissi.context.impl.MongoJIDGroup;
 import com.sissi.context.impl.OfflineJID;
 import com.sissi.protocol.muc.ItemAffiliation;
 import com.sissi.ucenter.Relation;
@@ -45,8 +44,6 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 	private final String fieldAffiliations = this.fieldAffiliation + "s";
 
 	private final Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
-
-	private final DBObject filterJID = BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_JID, 1).get();
 
 	private final DBObject aggregateLimit = BasicDBObjectBuilder.start().add("$limit", 1).get();
 
@@ -120,7 +117,8 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	@Override
 	public Set<JID> iSubscribedWho(JID from) {
-		return new MongoJIDGroup(this.jidBuilder, this.config.collection().find(BasicDBObjectBuilder.start(this.fieldRoles + "." + MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(this.fieldRoles + "." + MongoProxyConfig.FIELD_RESOURCE, from.resource()).get(), this.filterJID), MongoProxyConfig.FIELD_JID);
+		DBObject match = BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(this.fieldRoles + "." + MongoProxyConfig.FIELD_JID, from.asStringWithBare()).get()).get();
+		return new MongoJIDGroup(List.class.cast(this.config.collection().aggregate(match, BasicDBObjectBuilder.start("$unwind", "$" + this.fieldRoles).get(), match, BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, "$" + MongoProxyConfig.FIELD_JID).add(MongoProxyConfig.FIELD_RESOURCE, "$" + this.fieldRoles + "." + MongoProxyConfig.FIELD_NICK).get()).get()).getCommandResult().get(this.fieldResult)));
 	}
 
 	@Override
@@ -140,6 +138,21 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 			}
 			for (String jid : jids) {
 				this.add(MongoRelationMucContext.this.jidBuilder.build(jid));
+			}
+		}
+	}
+
+	private class MongoJIDGroup extends HashSet<JID> {
+
+		private final static long serialVersionUID = 1L;
+
+		public MongoJIDGroup(List<?> db) {
+			if (db == null) {
+				return;
+			}
+			for (Object each : db) {
+				DBObject jid = DBObject.class.cast(each);
+				this.add(MongoRelationMucContext.this.jidBuilder.build(MongoRelationMucContext.this.config.asString(jid, MongoProxyConfig.FIELD_JID)).resource(MongoRelationMucContext.this.config.asString(jid, MongoProxyConfig.FIELD_RESOURCE)));
 			}
 		}
 	}
@@ -191,11 +204,8 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 		private final String role;
 
-		private final boolean activate;
-
 		public MongoRelation(DBObject db) {
 			this.creator = MongoRelationMucContext.this.config.asString(db, MongoRelationMucContext.this.fieldCreator);
-			this.activate = MongoRelationMucContext.this.config.asBoolean(db, MongoRelationMucContext.this.fieldActivate);
 			this.affiliaion = MongoRelationMucContext.this.config.asString(db, MongoRelationMucContext.this.fieldAffiliation);
 			DBObject roles = DBObject.class.cast(db.get(MongoRelationMucContext.this.fieldRoles));
 			this.jid = MongoRelationMucContext.this.config.asString(roles, MongoProxyConfig.FIELD_JID);
@@ -213,11 +223,11 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 		}
 
 		public boolean isActivate() {
-			return this.activate;
+			return true;
 		}
 
 		public String getAffiliaion() {
-			return this.creator.equals(this.jid) ? ItemAffiliation.OWNER.toString() : this.affiliaion;
+			return this.creator.equals(this.jid) ? ItemAffiliation.OWNER.toString() : this.affiliaion != null ? this.affiliaion : ItemAffiliation.NONE.toString();
 		}
 
 		@Override

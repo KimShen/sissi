@@ -7,9 +7,6 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2014年2月14日
  */
-/**
- * @author kim 2014年2月14日
- */
 public class PresenceMucLeaveProcessor extends ProxyProcessor {
 
 	@Override

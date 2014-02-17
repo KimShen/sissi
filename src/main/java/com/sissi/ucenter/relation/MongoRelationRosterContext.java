@@ -14,7 +14,6 @@ import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
-import com.sissi.context.impl.MongoJIDGroup;
 import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationContext;
@@ -127,11 +126,11 @@ public class MongoRelationRosterContext implements RelationContext {
 
 	@Override
 	public Set<JID> whoSubscribedMe(JID from) {
-		return new MongoJIDGroup(this.jidBuilder, this.config.collection().find(this.buildQueryWithStates(this.fieldSlave, from.asStringWithBare(), this.entityStates), this.filterMaster), this.fieldMaster);
+		return new MongoJIDGroup(this.config.collection().find(this.buildQueryWithStates(this.fieldSlave, from.asStringWithBare(), this.entityStates), this.filterMaster), this.fieldMaster);
 	}
 
 	public Set<JID> iSubscribedWho(JID from) {
-		return new MongoJIDGroup(this.jidBuilder, this.config.collection().find(this.buildQueryWithStates(this.fieldMaster, from.asStringWithBare(), this.entityStates), this.filterSlave), this.fieldSlave);
+		return new MongoJIDGroup(this.config.collection().find(this.buildQueryWithStates(this.fieldMaster, from.asStringWithBare(), this.entityStates), this.filterSlave), this.fieldSlave);
 	}
 
 	private Relation build(DBObject db) {
@@ -232,6 +231,20 @@ public class MongoRelationRosterContext implements RelationContext {
 
 		public Map<String, Object> plus() {
 			return MongoRelationRosterContext.this.fieldPlus;
+		}
+	}
+
+	private class MongoJIDGroup extends HashSet<JID> {
+
+		private final static long serialVersionUID = 1L;
+
+		public MongoJIDGroup(DBCursor cursor, String key) {
+			if (cursor == null) {
+				return;
+			}
+			while (cursor.hasNext()) {
+				this.add(MongoRelationRosterContext.this.jidBuilder.build(cursor.next().get(key).toString()));
+			}
 		}
 	}
 }
