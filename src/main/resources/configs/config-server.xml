@@ -21,6 +21,10 @@
 					<constructor-arg ref="vcard" />
 					<constructor-arg ref="broadcast.protocol.selfs" />
 				</bean>
+				<bean class="com.sissi.server.impl.GroupServerCloser">
+					<constructor-arg ref="relation.muc" />
+					<constructor-arg ref="presence.pro.muc.leave.chained"/>
+				</bean>
 			</util:list>
 		</constructor-arg>
 	</bean>
