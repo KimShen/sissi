@@ -40,6 +40,10 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="presence.pro.status.2selfs" class="com.sissi.pipeline.in.presence.status.PresenceStatusProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.2fans" class="com.sissi.pipeline.in.presence.status.PresenceStatusProcessor" parent="global.pro.proxy">
+		<property name="protocolQueue" ref="broadcast.protocol.fans" />
+	</bean>
 	<bean id="presence.pro.status.forward" class="com.sissi.pipeline.in.presence.status.PresenceForwardProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.forward.route" class="com.sissi.pipeline.in.presence.status.PresenceForwardRouteProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.forward.chained" class="com.sissi.pipeline.in.ChainedProcessor">
@@ -50,6 +54,22 @@
 				<ref bean="presence.pro.status.forward.route" />
 			</util:list>
 		</constructor-arg>
+	</bean>
+	<bean id="presence.pro.status.available.muc" class="com.sissi.pipeline.in.presence.status.PresenceOnlineMucProcessor" parent="global.pro.proxy">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.ChainedProcessor">
+				<constructor-arg value="true" />
+				<constructor-arg>
+					<util:list>
+						<ref bean="presence.pro.muc.check.xmlns" />
+						<ref bean="presence.pro.muc.check.nickname" />
+						<ref bean="presence.pro.muc.join" />
+						<ref bean="presence.pro.muc.join.2fans" />
+					</util:list>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+		<property name="relationContext" ref="relation.muc" />
 	</bean>
 	<bean id="presence.pro.status.available.init.4fans" class="com.sissi.pipeline.in.presence.status.PresenceInit4FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
@@ -62,10 +82,6 @@
 	<bean id="presence.pro.status.available.init" class="com.sissi.pipeline.in.presence.status.PresenceInitProcessor" />
 	<bean id="presence.pro.status.available.2self.priority" class="com.sissi.pipeline.in.presence.status.PresenceOnlinePriorityProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.available.2self.update" class="com.sissi.pipeline.in.presence.status.PresenceOnlineUpdateProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.status.available.2selfs" class="com.sissi.pipeline.in.presence.status.PresenceOnlineProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.status.available.2fans" class="com.sissi.pipeline.in.presence.status.PresenceOnlineProcessor" parent="global.pro.proxy">
-		<property name="protocolQueue" ref="broadcast.protocol.fans" />
-	</bean>
 	<bean id="presence.pro.status.available.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
@@ -83,23 +99,32 @@
 				<ref bean="presence.pro.status.available.2self.priority" />
 				<!-- Update status -->
 				<ref bean="presence.pro.status.available.2self.update" />
-				<!-- Foward presence to other resources / fans -->
-				<ref bean="presence.pro.status.available.2selfs" />
-				<ref bean="presence.pro.status.available.2fans" />
+				<!-- Forward presence to other resources / fans -->
+				<ref bean="presence.pro.status.2selfs" />
+				<ref bean="presence.pro.status.2fans" />
+				<!-- Forward presence to muc -->
+				<ref bean="presence.pro.status.available.muc" />
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.status.unavailable.signature" class="com.sissi.pipeline.in.presence.status.PresenceLeaveSignatureProcessor" parent="global.pro.proxy">
+	<bean id="presence.pro.status.unavailable.muc" class="com.sissi.pipeline.in.presence.status.PresenceOfflineMucProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="presence.pro.muc.leave.chained" />
+		<property name="relationContext" ref="relation.muc" />
+	</bean>
+	<bean id="presence.pro.status.unavailable.signature" class="com.sissi.pipeline.in.presence.status.PresenceOfflineSignatureProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
 	</bean>
-	<bean id="presence.pro.status.unavailable.close" class="com.sissi.pipeline.in.presence.status.PresenceLeaveCloseProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.unavailable.close" class="com.sissi.pipeline.in.presence.status.PresenceOfflineCloseProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.unavailable.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<!-- Offline signature, experiment -->
+				<ref bean="presence.pro.status.2selfs" />
+				<ref bean="presence.pro.status.2fans" />
 				<ref bean="presence.pro.status.unavailable.signature" />
+				<ref bean="presence.pro.status.unavailable.muc" />
 				<!-- Close Xmpp -->
-				<ref bean="presence.pro.status.unavailable.close" />
+				<!-- <ref bean="presence.pro.status.unavailable.close" /> -->
 			</util:list>
 		</constructor-arg>
 	</bean>

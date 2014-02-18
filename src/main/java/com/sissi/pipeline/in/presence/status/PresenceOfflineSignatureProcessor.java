@@ -10,11 +10,11 @@ import com.sissi.ucenter.field.impl.BeanField;
 /**
  * @author kim 2014年1月27日
  */
-public class PresenceLeaveSignatureProcessor extends ProxyProcessor {
+public class PresenceOfflineSignatureProcessor extends ProxyProcessor {
 
 	private final VCardContext vcardContext;
 
-	public PresenceLeaveSignatureProcessor(VCardContext vcardContext) {
+	public PresenceOfflineSignatureProcessor(VCardContext vcardContext) {
 		super();
 		this.vcardContext = vcardContext;
 	}

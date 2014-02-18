@@ -79,8 +79,9 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 		RelationMuc muc = RelationMuc.class.cast(relation);
 		try {
 			DBObject query = this.buildQuery(muc.getJID());
-			query.put(this.fieldRoles + "." + MongoProxyConfig.FIELD_JID, from.asString());
-			this.config.collection().update(query, BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start().add(this.fieldRoles + ".$." + this.fieldRole, muc.getRole()).get()).add(this.fieldRoles + ".$." + MongoProxyConfig.FIELD_NICK, muc.getName()).get(), false, false, WriteConcern.SAFE);
+			query.put(this.fieldRoles + "." + MongoProxyConfig.FIELD_JID, from.asStringWithBare());
+			query.put(this.fieldRoles + "." + MongoProxyConfig.FIELD_RESOURCE, from.resource());
+			this.config.collection().update(query, BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start().add(this.fieldRoles + ".$." + this.fieldRole, muc.getRole()).add(this.fieldRoles + ".$." + MongoProxyConfig.FIELD_NICK, muc.getName()).get()).get(), true, false, WriteConcern.SAFE);
 		} catch (MongoException e) {
 			this.config.collection().update(this.buildQuery(muc.getJID()), BasicDBObjectBuilder.start().add("$setOnInsert", BasicDBObjectBuilder.start().add(this.fieldActivate, false).add(this.fieldCreator, from.asStringWithBare()).add(this.fieldAffiliations, new DBObject[] { BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(this.fieldAffiliation, ItemAffiliation.OWNER.toString()).get() }).get()).add("$addToSet", BasicDBObjectBuilder.start().add(this.fieldRoles, BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, from.resource()).add(MongoProxyConfig.FIELD_NICK, relation.getName()).add(this.fieldRole, muc.getRole()).get()).get()).get(), true, false, WriteConcern.SAFE);
 		}

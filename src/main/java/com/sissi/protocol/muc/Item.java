@@ -19,6 +19,8 @@ public class Item {
 
 	private String role;
 
+	private String jid;
+
 	public Item() {
 		super();
 	}
@@ -27,6 +29,16 @@ public class Item {
 		super();
 		this.affiliation = muc.getAffiliaion();
 		this.role = muc.getRole();
+	}
+
+	@XmlAttribute
+	public String getJid() {
+		return jid;
+	}
+
+	public Item setJid(String jid) {
+		this.jid = jid;
+		return this;
 	}
 
 	@XmlAttribute

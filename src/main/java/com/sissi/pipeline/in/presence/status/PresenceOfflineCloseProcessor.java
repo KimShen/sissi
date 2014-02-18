@@ -7,7 +7,7 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2014年1月27日
  */
-public class PresenceLeaveCloseProcessor extends ProxyProcessor {
+public class PresenceOfflineCloseProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
