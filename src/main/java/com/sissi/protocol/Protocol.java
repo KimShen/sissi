@@ -1,5 +1,6 @@
 package com.sissi.protocol;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -73,6 +74,10 @@ abstract public class Protocol implements Element {
 			}
 		}
 		return false;
+	}
+	
+	public boolean to(Collection<String> tos) {
+		return tos.contains(this.getTo());
 	}
 
 	@XmlAttribute

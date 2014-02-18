@@ -7,7 +7,7 @@
 
 	<bean id="jid" class="com.sissi.context.impl.DomainJIDBuilder">
 		<constructor-arg value="${global.jid.lengthLimit}" />
-		<constructor-arg value="${global.jid.group}" />
+		<constructor-arg value="${global.domain.group}" />
 	</bean>
 
 	<bean id="status" class="com.sissi.context.impl.MongoStatusBuilder">

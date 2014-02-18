@@ -16,8 +16,15 @@
 	<bean id="global.pro.check.jid.format" class="com.sissi.pipeline.in.CheckJIDMalformedProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.exists" class="com.sissi.pipeline.in.CheckJIDExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
-		<constructor-arg index="1" value="${global.domain}" />
-		<constructor-arg index="2" value="${bytestreams.jid}" />
+		<constructor-arg>
+			<util:list>
+				<value>127.0.0.1</value>
+				<value>localhost</value>
+				<value>${global.domain}</value>
+				<value>${global.domain.group}</value>
+				<value>${bytestreams.jid}</value>
+			</util:list>
+		</constructor-arg>
 	</bean>
 	<bean id="global.pro.check.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg value="true" />

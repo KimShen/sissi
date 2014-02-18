@@ -14,11 +14,11 @@
 		<maven.project.name>sissi</maven.project.name>
 		<!-- For Server -->
 		<maven.global.domain>sissi.pw</maven.global.domain>
+		<maven.global.domain.group>group.sissi.pw</maven.global.domain.group>
 		<maven.global.version>1.0</maven.global.version>
 		<maven.global.lang>zh_CN</maven.global.lang>
 		<maven.global.port.main>5222</maven.global.port.main>
 		<maven.global.port.exchanger>6222</maven.global.port.exchanger>
-		<maven.global.jid.group>group.sissi.pw</maven.global.jid.group>
 		<maven.global.jid.lengthLimit>50</maven.global.jid.lengthLimit>
 		<maven.global.idle.all>120</maven.global.idle.all>
 		<maven.global.idle.read>120</maven.global.idle.read>
@@ -65,7 +65,7 @@
 		<maven.tls.key.password>client</maven.tls.key.password>
 		<maven.tls.trust.file>tls.store</maven.tls.trust.file>
 		<maven.tls.trust.password>client</maven.tls.trust.password>
-		<maven.bytestreams.jid>proxy.sissi</maven.bytestreams.jid>
+		<maven.bytestreams.jid>proxy.sissi.pw</maven.bytestreams.jid>
 		<maven.bytestreams.host>sissi.pw</maven.bytestreams.host>
 		<maven.bytestreams.port>${maven.global.port.exchanger}</maven.bytestreams.port>
 		<maven.bytestreams.name>Socks 5 Bytestreams Proxy</maven.bytestreams.name>

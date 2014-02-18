@@ -4,7 +4,6 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
-import com.sissi.protocol.iq.bytestreams.BytestreamsProxy;
 import com.sissi.protocol.iq.disco.Disco;
 import com.sissi.protocol.iq.disco.Item;
 
@@ -13,16 +12,16 @@ import com.sissi.protocol.iq.disco.Item;
  */
 public class DiscoItemsProcessor extends ProxyProcessor {
 
-	private final Item item;
+	private final Item[] items;
 
-	public DiscoItemsProcessor(BytestreamsProxy bytestreamsProxy) {
+	public DiscoItemsProcessor(Item[] items) {
 		super();
-		this.item = new Item(bytestreamsProxy);
+		this.items = items;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.write(Disco.class.cast(protocol).add(this.item).getParent().reply().setType(ProtocolType.RESULT));
+		context.write(Disco.class.cast(protocol).add(this.items).getParent().reply().setType(ProtocolType.RESULT));
 		return true;
 	}
 }
