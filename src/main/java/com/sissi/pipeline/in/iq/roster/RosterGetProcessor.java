@@ -31,7 +31,7 @@ public class RosterGetProcessor extends ProxyProcessor {
 
 	private Roster prepare(JIDContext context, Roster roster) {
 		for (Relation each : super.myRelations(context.jid())) {
-			roster.add(new GroupItem(RelationRoster.class.cast(each)).setNickname(this.vcardContext.get(context.jid(), VCardContext.FIELD_NICKNAME).getValue(), context.jid().user()));
+			roster.add(new GroupItem(RelationRoster.class.cast(each)).nickname(this.vcardContext.get(super.build(each.getJID()), VCardContext.FIELD_NICKNAME).getValue(), context.jid().user()));
 		}
 		return roster;
 	}

@@ -15,21 +15,10 @@ public class PresenceRosterUnSubscribed2PresenceProcessor extends ProxyProcessor
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID to = super.build(protocol.getTo());
-		Presence presence = Presence.class.cast(protocol);
-		this.writeUnsubscribed(context, to, presence).writeUnavailable(context, to, presence);
-		return true;
-	}
-
-	private PresenceRosterUnSubscribed2PresenceProcessor writeUnsubscribed(JIDContext context, JID to, Presence presence) {
-		super.broadcast(to, presence.setType(PresenceType.UNSUBSCRIBED).setFrom(context.jid().asStringWithBare()));
-		return this;
-	}
-
-	protected PresenceRosterUnSubscribed2PresenceProcessor writeUnavailable(JIDContext context, JID to, Presence presence) {
-		presence.clear().setType(PresenceType.UNAVAILABLE);
+		Presence presence = Presence.class.cast(protocol).clear().setType(PresenceType.UNAVAILABLE);
 		for (JID resource : super.resources(context.jid())) {
 			super.broadcast(to, presence.setFrom(resource));
 		}
-		return this;
+		return true;
 	}
 }

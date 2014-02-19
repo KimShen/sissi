@@ -102,9 +102,13 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return this;
 	}
 
+	public int priority(int def) {
+		return this.priority != null ? Integer.parseInt(this.priority.getText()) : def;
+	}
+
 	@XmlElement
-	public int getPriority() {
-		return this.priority != null ? Integer.parseInt(this.priority.getText()) : 0;
+	public Integer getPriority() {
+		return this.priority != null ? Integer.parseInt(this.priority.getText()) : null;
 	}
 
 	@XmlElement(name = PresenceShow.NAME)

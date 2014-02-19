@@ -64,14 +64,14 @@ public class GroupItem extends Item implements Collector {
 		return this;
 	}
 
+	public GroupItem nickname(String nick, String def) {
+		this.nickname = nick != null ? new RosterNickname(nick) : new RosterNickname(def);
+		return this;
+	}
+
 	@XmlElement(namespace = Sissi.XMLNS)
 	public RosterNickname getNickname() {
 		return this.nickname;
-	}
-
-	public GroupItem setNickname(String nick, String def) {
-		this.nickname = nick != null ? new RosterNickname(nick) : new RosterNickname(def);
-		return this;
 	}
 
 	@XmlElements({ @XmlElement(name = Group.NAME, type = Group.class) })
