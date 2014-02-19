@@ -17,7 +17,7 @@
 		<constructor-arg value="${pipeline.roster.name}" />
 	</bean>
 	<bean id="roster.pro.establish.set.trim.group" class="com.sissi.pipeline.in.iq.roster.RosterSetTrimGroupProcessor">
-		<constructor-arg value="${pipeline.roster.group}" />
+		<constructor-arg value="${pipeline.roster.group.length}" />
 	</bean>
 	<bean id="roster.pro.establish.set.check.loop" class="com.sissi.pipeline.in.iq.roster.RosterSetCheckLoopProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.set.check.exists" class="com.sissi.pipeline.in.iq.roster.RosterSetCheckExistsProcessor" parent="global.pro.proxy">

@@ -13,9 +13,21 @@ public class PresenceRosterSubscribedCheckRelationProcessor extends ProxyProcess
 
 	private final String[] relations = new String[] { RosterSubscription.NONE.toString(), RosterSubscription.FROM.toString() };
 
+	private boolean reply;
+
+	public PresenceRosterSubscribedCheckRelationProcessor() {
+		super();
+		this.reply = false;
+	}
+
+	public PresenceRosterSubscribedCheckRelationProcessor(boolean reply) {
+		super();
+		this.reply = reply;
+	}
+
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		RelationRoster roster = RelationRoster.class.cast(super.ourRelation(super.build(protocol.getTo()), context.jid()));
-		return roster.in(this.relations) && roster.isAsk();
+		return roster.in(this.relations) && (this.reply || roster.isAsk());
 	}
 }

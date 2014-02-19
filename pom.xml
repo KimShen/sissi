@@ -71,7 +71,8 @@
 		<maven.bytestreams.name>Socks 5 Bytestreams Proxy</maven.bytestreams.name>
 		<maven.pipeline.auth.retry>2</maven.pipeline.auth.retry>
 		<maven.pipeline.roster.name>10</maven.pipeline.roster.name>
-		<maven.pipeline.roster.group>10</maven.pipeline.roster.group>
+		<maven.pipeline.roster.group.length>10</maven.pipeline.roster.group.length>
+		<maven.pipeline.roster.group.default>好友</maven.pipeline.roster.group.default>
 		<maven.pipeline.resource.limit>2</maven.pipeline.resource.limit>
 		<maven.pipeline.message.relation>false</maven.pipeline.message.relation>
 		<maven.pipeline.offline.title>From Sissi offline</maven.pipeline.offline.title>
@@ -139,9 +140,15 @@
 			<artifactId>spring-core</artifactId>
 			<version>${maven.project.spring.version}</version>
 		</dependency>
+		<!-- For project -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
+			<version>1.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.1</version>
 		</dependency>
 	</dependencies>

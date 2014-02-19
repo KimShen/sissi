@@ -16,7 +16,7 @@ import com.sissi.ucenter.RelationRoster;
 /**
  * @author kim 2014年1月24日
  */
-public class PresenceRosterSubscribe2PresenceReplyProcessor extends ProxyProcessor {
+public class PresenceRosterSubscribe2ReplySelfsProcessor extends ProxyProcessor {
 
 	private final String[] relations = new String[] { RosterSubscription.TO.toString(), RosterSubscription.BOTH.toString() };
 
@@ -30,17 +30,17 @@ public class PresenceRosterSubscribe2PresenceReplyProcessor extends ProxyProcess
 		return false;
 	}
 
-	private PresenceRosterSubscribe2PresenceReplyProcessor writeRoster(JIDContext context, JID to) {
+	private PresenceRosterSubscribe2ReplySelfsProcessor writeRoster(JIDContext context, JID to) {
 		super.broadcast(context.jid(), new IQ().add(new Roster(new GroupItem(RelationRoster.class.cast(super.ourRelation(context.jid(), to))))).setType(ProtocolType.SET));
 		return this;
 	}
 
-	private PresenceRosterSubscribe2PresenceReplyProcessor writeSubscribed(JIDContext context, JID to, Presence presence) {
+	private PresenceRosterSubscribe2ReplySelfsProcessor writeSubscribed(JIDContext context, JID to, Presence presence) {
 		super.broadcast(context.jid(), presence.setType(PresenceType.SUBSCRIBED).setFrom(to.asStringWithBare()));
 		return this;
 	}
 
-	private PresenceRosterSubscribe2PresenceReplyProcessor writeAvailable(JIDContext context, JID to, Presence presence) {
+	private PresenceRosterSubscribe2ReplySelfsProcessor writeAvailable(JIDContext context, JID to, Presence presence) {
 		presence.setType(PresenceType.AVAILABLE);
 		for (JID resource : super.resources(to)) {
 			super.broadcast(context.jid(), presence.setFrom(resource).clauses(super.findOne(resource, true).status().clauses()));

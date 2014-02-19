@@ -13,7 +13,7 @@ import com.sissi.read.Metadata;
 @XmlRootElement(namespace = Sissi.XMLNS, name = RosterNickname.NAME)
 public class RosterNickname {
 
-	public final static String XMLNS = "sissi.pw";
+	public final static String XMLNS = "sissi:iq:roster";
 
 	public final static String NAME = "nickname";
 

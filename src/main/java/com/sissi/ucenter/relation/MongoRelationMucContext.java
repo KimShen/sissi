@@ -165,6 +165,9 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 		private final Map<String, String> affiliations = new HashMap<String, String>();
 
 		public MongoRelations(DBObject db) {
+			if (db == null) {
+				return;
+			}
 			this.prepareAffiliations(db).prepareRelations(db);
 		}
 

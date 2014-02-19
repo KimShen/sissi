@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.context.JID;
 import com.sissi.protocol.presence.X;
 import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
@@ -25,17 +26,50 @@ public class XUser extends X implements Field<String> {
 
 	private List<Item> items;
 
+	private List<ItemStatus> statuses;
+
+	private String jid;
+
+	public XUser() {
+		super();
+	}
+
+	public XUser(JID jid) {
+		this(jid.asStringWithBare());
+	}
+
+	public XUser(String jid) {
+		super();
+		this.jid = jid;
+	}
+
 	public XUser add(Item item) {
 		if (this.items == null) {
 			this.items = new ArrayList<Item>();
 		}
 		this.items.add(item);
+		if (item.jid(this.jid)) {
+			this.add(ItemStatus.STATUS_110);
+		}
+		return this;
+	}
+
+	public XUser add(ItemStatus code) {
+		if (this.statuses == null) {
+			this.statuses = new ArrayList<ItemStatus>();
+		}
+		this.statuses.add(code);
 		return this;
 	}
 
 	@XmlElements({ @XmlElement(name = Item.NAME, type = Item.class) })
 	public List<Item> getItems() {
 		return this.items;
+	}
+
+	@XmlElements({ @XmlElement(name = ItemStatus.NAME, type = ItemStatus.class) })
+	public List<ItemStatus> getStatuses() {
+		return this.statuses;
 	}
 
 	@Override

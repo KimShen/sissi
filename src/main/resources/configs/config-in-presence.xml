@@ -137,14 +137,38 @@
 	<bean id="presence.pro.roster.subscribe" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe.2item" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2ItemProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.roster.subscribe.2presence.route" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2PresenceRouteProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.roster.subscribe.2presence.reply" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2PresenceReplyProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.subscribe.2presence.reply.2selfs" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2ReplySelfsProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.roster.subscribe.2presence.reply.2fans" class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribe2ReplyFansProcessor" parent="global.pro.proxy">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.ChainedProcessor">
+				<constructor-arg>
+					<util:list>
+						<!-- Check relation is NONE/BOTH -->
+						<bean class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedCheckRelationProcessor" parent="global.pro.proxy">
+							<constructor-arg value="true" />
+						</bean>
+						<!-- DB operation -->
+						<ref bean="presence.pro.roster.subscribed" />
+						<!-- Broadcast subscribed to all resources of fans -->
+						<ref bean="presence.pro.roster.subscribed.2item" />
+						<ref bean="presence.pro.roster.route" />
+						<!-- Broadcast available to all resources of fans -->
+						<ref bean="presence.pro.roster.subscribed.2presence" />
+					</util:list>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+	</bean>
 	<bean id="presence.pro.roster.subscribe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<!-- If relation is TO/BOTH -->
 				<!-- 1, Response subscribed -->
 				<!-- 2, Broadcast available from all resources of fans -->
-				<ref bean="presence.pro.roster.subscribe.2presence.reply" />
+				<ref bean="presence.pro.roster.subscribe.2presence.reply.2selfs" />
+				<!-- If relation is From -->
+				<!-- Proxy contacter subscribed -->
+				<ref bean="presence.pro.roster.subscribe.2presence.reply.2fans" />
 				<ref bean="presence.pro.roster.subscribe.2presence.route" />
 				<!-- Same as roster.pro.establish.set -->
 				<ref bean="presence.pro.roster.subscribe" />

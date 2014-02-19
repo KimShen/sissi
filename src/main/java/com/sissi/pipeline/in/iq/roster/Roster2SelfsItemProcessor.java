@@ -25,6 +25,6 @@ abstract class Roster2SelfsItemProcessor extends ProxyProcessor {
 	abstract protected boolean isAsk();
 
 	abstract protected boolean isNext(String subscription);
-	
+
 	abstract protected RosterSubscription subscription(JID master, JID slave);
 }

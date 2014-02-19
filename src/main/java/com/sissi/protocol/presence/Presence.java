@@ -52,6 +52,10 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		this.fields = new BeanFields(false);
 	}
 
+	private boolean status() {
+		return PresenceType.parse(this.getType()).in(PresenceType.AVAILABLE, PresenceType.UNAVAILABLE);
+	}
+
 	private XVCard findXVard() {
 		return XVCard.class.cast(this.fields != null ? this.fields.findField(XVCard.NAME, XVCard.class) : null);
 	}
@@ -66,6 +70,12 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	public Presence setType(PresenceType type) {
 		super.setType(type.toString());
+		if(!this.status()){
+			this.fields = null;
+			this.priority = null;
+			this.show = null;
+			this.status = null;
+		}
 		return this;
 	}
 
@@ -89,6 +99,10 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return this;
 	}
 
+	public int priority(int def) {
+		return this.priority != null ? Integer.parseInt(this.priority.getText()) : def;
+	}
+
 	private Presence setPriority(String priority) {
 		try {
 			this.priority = priority != null ? new PresencePriority(String.valueOf(priority)) : PresencePriority.ZERO;
@@ -100,10 +114,6 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 			}
 		}
 		return this;
-	}
-
-	public int priority(int def) {
-		return this.priority != null ? Integer.parseInt(this.priority.getText()) : def;
 	}
 
 	@XmlElement

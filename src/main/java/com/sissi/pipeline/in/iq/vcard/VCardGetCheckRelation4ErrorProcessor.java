@@ -13,7 +13,7 @@ import com.sissi.ucenter.RelationRoster;
 /**
  * @author kim 2014年1月26日
  */
-public class VCardGetCheckRelationProcessor extends ProxyProcessor {
+public class VCardGetCheckRelation4ErrorProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 

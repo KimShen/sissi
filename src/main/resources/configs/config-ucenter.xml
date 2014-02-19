@@ -52,6 +52,7 @@
 	<alias name="relation.roster.mongo" alias="relation.roster" />
 	<bean id="relation.roster.mongo" class="com.sissi.ucenter.relation.MongoRelationRosterContext">
 		<constructor-arg ref="jid" />
+		<constructor-arg value="${pipeline.roster.group.default}" />
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
 				<constructor-arg ref="mongo" />

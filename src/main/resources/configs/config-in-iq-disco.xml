@@ -167,6 +167,7 @@
 		<constructor-arg>
 			<util:list>
 				<bean class="com.sissi.protocol.iq.disco.Item">
+					<!-- TODO -->
 					<constructor-arg index="0" value="for test" />
 					<constructor-arg index="1" value="for test" />
 				</bean>

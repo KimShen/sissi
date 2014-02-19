@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.context.JID;
 import com.sissi.ucenter.RelationMuc;
 
 /**
@@ -21,8 +22,15 @@ public class Item {
 
 	private String jid;
 
+	private boolean hidden;
+
 	public Item() {
+		this(false);
+	}
+
+	public Item(boolean hidden) {
 		super();
+		this.hidden = hidden;
 	}
 
 	public Item(RelationMuc muc) {
@@ -31,9 +39,22 @@ public class Item {
 		this.role = muc.getRole();
 	}
 
+	public boolean equals(String jid) {
+		return this.jid.equals(jid);
+	}
+
+	public boolean jid(String jid) {
+		return this.jid != null && this.jid.equals(jid) ? true : false;
+	}
+
 	@XmlAttribute
 	public String getJid() {
-		return jid;
+		return this.hidden ? null : this.jid;
+	}
+
+	public Item setJid(JID jid) {
+		this.setJid(jid.asStringWithBare());
+		return this;
 	}
 
 	public Item setJid(String jid) {

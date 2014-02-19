@@ -56,6 +56,8 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 	private final DBObject[] entityStates = new DBObject[] { BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_STATE, 1).get(), BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_STATE, 3).get() };
 
+	private final String[] groups;
+
 	private final MongoConfig config;
 
 	private final JIDBuilder jidBuilder;
@@ -64,10 +66,11 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 	private RelationInductor relationInductor;
 
-	public MongoRelationRosterContext(MongoConfig config, JIDBuilder jidBuilder) {
+	public MongoRelationRosterContext(String group, MongoConfig config, JIDBuilder jidBuilder) {
 		super();
 		this.config = config;
 		this.jidBuilder = jidBuilder;
+		this.groups = new String[] { group };
 		Map<String, RelationUpdate> update = new HashMap<String, RelationUpdate>();
 		update.put(RosterSubscription.TO.toString(), new RelationUpdate(this.entityEstablishFrom, this.entityEstablishTo));
 		update.put(RosterSubscription.NONE.toString(), new RelationUpdate(this.entityBrokeTo, this.entityBrokeFrom));
@@ -216,7 +219,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 		}
 
 		public String[] asGroups() {
-			return this.groups;
+			return this.groups != null ? this.groups : MongoRelationRosterContext.this.groups;
 		}
 
 		public String getSubscription() {
