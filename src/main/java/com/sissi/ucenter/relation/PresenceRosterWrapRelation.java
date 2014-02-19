@@ -66,6 +66,7 @@ public class PresenceRosterWrapRelation implements RelationRoster {
 	public Map<String, Object> plus() {
 		Map<String, Object> plus = new HashMap<String, Object>();
 		plus.put("name", this.jid.user());
+		plus.put("ask", this.isAsk());
 		return plus;
 	}
 }

@@ -71,14 +71,18 @@
 		</constructor-arg>
 		<property name="relationContext" ref="relation.muc" />
 	</bean>
+	<bean id="presence.pro.status.available.init.4ask" class="com.sissi.pipeline.in.presence.status.PresenceInit4AskProcessor">
+		<constructor-arg ref="relation.roster" />
+	</bean>
+	<bean id="presence.pro.status.available.init.4delay" class="com.sissi.pipeline.in.presence.status.PresenceInit4DelayProcessor">
+		<constructor-arg ref="offline" />
+	</bean>
 	<bean id="presence.pro.status.available.init.4fans" class="com.sissi.pipeline.in.presence.status.PresenceInit4FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
 		<property name="presenceQueue" ref="broadcast.presence.self" />
 	</bean>
 	<bean id="presence.pro.status.available.init.4selfs" class="com.sissi.pipeline.in.presence.status.PresenceInit4SelfsProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.status.available.init.4delay" class="com.sissi.pipeline.in.presence.status.PresenceInit4DelayProcessor">
-		<constructor-arg ref="offline" />
-	</bean>
+
 	<bean id="presence.pro.status.available.init" class="com.sissi.pipeline.in.presence.status.PresenceInitProcessor" />
 	<bean id="presence.pro.status.available.2self.priority" class="com.sissi.pipeline.in.presence.status.PresenceOnlinePriorityProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.available.2self.update" class="com.sissi.pipeline.in.presence.status.PresenceOnlineUpdateProcessor" parent="global.pro.proxy" />
@@ -93,6 +97,8 @@
 				<ref bean="presence.pro.status.available.init.4selfs" />
 				<!-- Get offline message / presence -->
 				<ref bean="presence.pro.status.available.init.4delay" />
+				<!-- Get presence for roster ask -->
+				<ref bean="presence.pro.status.available.init.4ask" />
 				<!-- Update presented -->
 				<ref bean="presence.pro.status.available.init" />
 				<!-- Update priority -->

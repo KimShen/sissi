@@ -18,12 +18,13 @@ import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationContext;
 import com.sissi.ucenter.RelationInductor;
+import com.sissi.ucenter.RelationRecover;
 import com.sissi.ucenter.RelationRoster;
 
 /**
  * @author kim 2013-11-5
  */
-public class MongoRelationRosterContext implements RelationContext {
+public class MongoRelationRosterContext implements RelationContext, RelationRecover {
 
 	private final String fieldAsk = "ask";
 
@@ -93,7 +94,7 @@ public class MongoRelationRosterContext implements RelationContext {
 
 	@Override
 	public MongoRelationRosterContext establish(JID from, Relation relation) {
-		this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.getJID()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(MongoProxyConfig.FIELD_JID, relation.getName()).add(this.fieldActivate, true).get()).add("$setOnInsert", this.entityInitMaster).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.getJID()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(MongoProxyConfig.FIELD_NICK, relation.getName()).add(this.fieldActivate, true).get()).add("$setOnInsert", this.entityInitMaster).get(), true, false, WriteConcern.SAFE);
 		this.config.collection().update(this.buildQuery(relation.getJID(), from.asStringWithBare()), BasicDBObjectBuilder.start("$setOnInsert", this.entityInitSlave).get(), true, false, WriteConcern.SAFE);
 		return this;
 	}
@@ -121,7 +122,7 @@ public class MongoRelationRosterContext implements RelationContext {
 	@Override
 	public Relation ourRelation(JID from, JID to) {
 		DBObject db = this.config.collection().findOne(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()));
-		return db != null ? this.build(db) : new NoneRelation(to, RosterSubscription.NONE.toString());
+		return db != null ? new MongoRelationRoster(db, this.fieldSlave) : new NoneRelation(to, RosterSubscription.NONE.toString());
 	}
 
 	@Override
@@ -133,8 +134,9 @@ public class MongoRelationRosterContext implements RelationContext {
 		return new MongoJIDGroup(this.config.collection().find(this.buildQueryWithStates(this.fieldMaster, from.asStringWithBare(), this.entityStates), this.filterSlave), this.fieldSlave);
 	}
 
-	private Relation build(DBObject db) {
-		return new MongoRelationRoster(db);
+	@Override
+	public Set<Relation> recover(JID jid) {
+		return new MongoRelations(this.config.collection().find(BasicDBObjectBuilder.start().add(this.fieldSlave, jid.asStringWithBare()).add(this.fieldAsk, true).get()), this.fieldMaster);
 	}
 
 	private class RelationUpdate {
@@ -163,11 +165,15 @@ public class MongoRelationRosterContext implements RelationContext {
 		private final static long serialVersionUID = 1L;
 
 		public MongoRelations(DBCursor cursor) {
+			this(cursor, MongoRelationRosterContext.this.fieldSlave);
+		}
+
+		public MongoRelations(DBCursor cursor, String fieldJID) {
 			if (cursor == null) {
 				return;
 			}
 			while (cursor.hasNext()) {
-				this.add(MongoRelationRosterContext.this.build(cursor.next()));
+				this.add(new MongoRelationRoster(cursor.next(), fieldJID));
 			}
 		}
 	}
@@ -186,12 +192,12 @@ public class MongoRelationRosterContext implements RelationContext {
 
 		private final String[] groups;
 
-		public MongoRelationRoster(DBObject db) {
+		public MongoRelationRoster(DBObject db, String fieldJID) {
 			super();
+			this.jid = MongoRelationRosterContext.this.config.asString(db, fieldJID);
 			this.name = MongoRelationRosterContext.this.config.asString(db, MongoProxyConfig.FIELD_NICK);
 			this.subscription = MongoRelationRosterContext.this.config.asInteger(db, MongoProxyConfig.FIELD_STATE);
 			this.ask = MongoRelationRosterContext.this.config.asBoolean(db, MongoRelationRosterContext.this.fieldAsk);
-			this.jid = MongoRelationRosterContext.this.config.asString(db, MongoRelationRosterContext.this.fieldSlave);
 			this.groups = MongoRelationRosterContext.this.config.asStrings(db, MongoRelationRosterContext.this.fieldGroups);
 			this.activate = MongoRelationRosterContext.this.config.asBoolean(db, MongoRelationRosterContext.this.fieldActivate);
 		}

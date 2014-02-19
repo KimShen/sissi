@@ -69,8 +69,8 @@ public class GroupItem extends Item implements Collector {
 		return this.nickname;
 	}
 
-	public GroupItem setNickname(String nick) {
-		this.nickname = new RosterNickname(nick);
+	public GroupItem setNickname(String nick, String def) {
+		this.nickname = nick != null ? new RosterNickname(nick) : new RosterNickname(def);
 		return this;
 	}
 

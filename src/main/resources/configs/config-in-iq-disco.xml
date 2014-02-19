@@ -85,11 +85,6 @@
 				</bean>
 				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
 					<constructor-arg>
-						<util:constant static-field="com.sissi.protocol.muc.XMuc.XMLNS" />
-					</constructor-arg>
-				</bean>
-				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
-					<constructor-arg>
 						<util:constant static-field="com.sissi.protocol.iq.vcard.VCard.XMLNS" />
 					</constructor-arg>
 				</bean>
@@ -144,7 +139,7 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="disco.pro.items" class="com.sissi.pipeline.in.iq.disco.DiscoItemsProcessor">
+	<bean id="disco.pro.items.2server" class="com.sissi.pipeline.in.iq.disco.DiscoItemsProcessor">
 		<constructor-arg>
 			<util:list>
 				<bean class="com.sissi.protocol.iq.disco.Item">
@@ -154,6 +149,26 @@
 				<bean class="com.sissi.protocol.iq.disco.Item">
 					<constructor-arg index="0" value="${global.domain.group}" />
 					<constructor-arg index="1" value="Chat Service" />
+				</bean>
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="disco.pro.items.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoItemsProcessor">
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.protocol.iq.disco.Item">
+					<constructor-arg index="0" value="${bytestreams.jid}" />
+					<constructor-arg index="1" value="SOCKS5 Bytestreams Service" />
+				</bean>
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="disco.pro.items.2muc" class="com.sissi.pipeline.in.iq.disco.DiscoItemsProcessor">
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.protocol.iq.disco.Item">
+					<constructor-arg index="0" value="for test" />
+					<constructor-arg index="1" value="for test" />
 				</bean>
 			</util:list>
 		</constructor-arg>
@@ -187,6 +202,7 @@
 			<util:list>
 				<ref bean="disco.condition.items.2server" />
 				<ref bean="disco.condition.items.2proxy" />
+				<ref bean="disco.condition.items.2muc" />
 				<ref bean="disco.condition.items.2fans" />
 			</util:list>
 		</constructor-arg>
@@ -249,7 +265,7 @@
 				<constructor-arg index="1" value="${global.domain}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.items" />
+		<constructor-arg ref="disco.pro.items.2server" />
 	</bean>
 	<bean id="disco.condition.items.2proxy" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
@@ -258,7 +274,16 @@
 				<constructor-arg index="1" value="${bytestreams.jid}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.items" />
+		<constructor-arg ref="disco.pro.items.2proxy" />
+	</bean>
+	<bean id="disco.condition.items.2muc" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.ToServerMatcher">
+				<constructor-arg index="0" value="com.sissi.protocol.iq.disco.DiscoItems" />
+				<constructor-arg index="1" value="${global.domain}" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="disco.pro.items.2muc" />
 	</bean>
 	<bean id="disco.condition.items.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
