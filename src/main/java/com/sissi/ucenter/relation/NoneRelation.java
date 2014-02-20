@@ -55,11 +55,11 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 	}
 
 	public String getRole() {
-		return ItemRole.PARTICIPANT.toString();
+		return ItemRole.VISITOR.toString();
 	}
 
 	public String getAffiliaion() {
-		return ItemAffiliation.MEMBER.toString();
+		return ItemAffiliation.NONE.toString();
 	}
 
 	public boolean in(String... subscriptions) {

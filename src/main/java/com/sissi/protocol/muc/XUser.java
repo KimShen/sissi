@@ -49,7 +49,7 @@ public class XUser extends X implements Field<String> {
 		}
 		this.items.add(item);
 		if (item.jid(this.jid)) {
-			this.add(ItemStatus.STATUS_110);//.add(ItemStatus.STATUS_210);
+			this.add(ItemStatus.STATUS_110);
 		}
 		return this;
 	}
