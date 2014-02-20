@@ -2,7 +2,6 @@ package com.sissi.protocol.iq;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
@@ -28,6 +27,7 @@ import com.sissi.protocol.iq.session.Session;
 import com.sissi.protocol.iq.si.Si;
 import com.sissi.protocol.iq.time.Time;
 import com.sissi.protocol.iq.vcard.VCard;
+import com.sissi.protocol.iq.version.Client;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
 
@@ -45,15 +45,16 @@ public class IQ extends Protocol implements Collector {
 	private final static List<Protocol> empty = new ArrayList<Protocol>();
 
 	private List<Element> extras;
-	
+
 	private List<Protocol> protocols;
 
 	public IQ() {
 		super();
 	}
 
-	public String getId() {
-		return super.getId() != null ? super.getId() : super.setId(UUID.randomUUID().toString()).getId();
+	public IQ setId(String id) {
+		super.setId(id);
+		return this;
 	}
 
 	public IQ setId(Long id) {
@@ -65,7 +66,7 @@ public class IQ extends Protocol implements Collector {
 		return ProtocolType.parse(this.getType()) != null;
 	}
 
-	@XmlElements({@XmlElement(name = Time.NAME, type = Time.class), @XmlElement(name = Last.NAME, type = LastSeconds.class), @XmlElement(name = Ping.NAME, type = Ping.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = DiscoInfo.NAME, type = DiscoInfo.class), @XmlElement(name = DiscoItems.NAME, type = DiscoItems.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
+	@XmlElements({ @XmlElement(name = Client.NAME, type = Client.class), @XmlElement(name = Time.NAME, type = Time.class), @XmlElement(name = Last.NAME, type = LastSeconds.class), @XmlElement(name = Ping.NAME, type = Ping.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = DiscoInfo.NAME, type = DiscoInfo.class), @XmlElement(name = DiscoItems.NAME, type = DiscoItems.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
 	public List<Protocol> getProtocols() {
 		return this.protocols;
 	}

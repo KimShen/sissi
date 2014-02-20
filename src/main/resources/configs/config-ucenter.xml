@@ -46,6 +46,11 @@
 
 	<bean id="relation.roster.inductor" class="com.sissi.ucenter.relation.BroadcastRelationInductor">
 		<constructor-arg ref="broadcast.protocol.selfs" />
+		<constructor-arg>
+			<bean class="com.sissi.protocol.iq.roster.Group">
+				<constructor-arg value="${pipeline.roster.group.default}" />
+			</bean>
+		</constructor-arg>
 		<property name="relationContext" ref="relation.roster" />
 	</bean>
 

@@ -1,5 +1,7 @@
 package com.sissi.pipeline.in.presence.roster;
 
+import java.util.UUID;
+
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
@@ -31,7 +33,7 @@ public class PresenceRosterSubscribe2ReplySelfsProcessor extends ProxyProcessor 
 	}
 
 	private PresenceRosterSubscribe2ReplySelfsProcessor writeRoster(JIDContext context, JID to) {
-		super.broadcast(context.jid(), new IQ().add(new Roster(new GroupItem(RelationRoster.class.cast(super.ourRelation(context.jid(), to))))).setType(ProtocolType.SET));
+		super.broadcast(context.jid(), new IQ().setId(UUID.randomUUID().toString()).add(new Roster(new GroupItem(RelationRoster.class.cast(super.ourRelation(context.jid(), to))))).setType(ProtocolType.SET));
 		return this;
 	}
 

@@ -23,7 +23,13 @@
 	<bean id="roster.pro.establish.set.check.exists" class="com.sissi.pipeline.in.iq.roster.RosterSetCheckExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
 	</bean>
-	<bean id="roster.pro.establish.set.2selfs" class="com.sissi.pipeline.in.iq.roster.RosterSet2SelfsProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.set.2selfs" class="com.sissi.pipeline.in.iq.roster.RosterSet2SelfsProcessor" parent="global.pro.proxy">
+		<constructor-arg>
+			<bean class="com.sissi.protocol.iq.roster.Group">
+				<constructor-arg value="${pipeline.roster.group.default}" />
+			</bean>
+		</constructor-arg>
+	</bean>
 	<bean id="roster.pro.establish.set.2fans" class="com.sissi.pipeline.in.iq.roster.RosterSet2FansProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -49,7 +55,13 @@
 		</constructor-arg>
 	</bean>
 	<bean id="roster.pro.establish.remove" class="com.sissi.pipeline.in.iq.roster.RosterRemoveProcessor" parent="global.pro.proxy" />
-	<bean id="roster.pro.establish.remove.2selfs.item" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsItemProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.remove.2selfs.item" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsItemProcessor" parent="global.pro.proxy">
+		<constructor-arg>
+			<bean class="com.sissi.protocol.iq.roster.Group">
+				<constructor-arg value="${pipeline.roster.group.default}" />
+			</bean>
+		</constructor-arg>
+	</bean>
 	<bean id="roster.pro.establish.remove.2selfs.presence" class="com.sissi.pipeline.in.iq.roster.RosterRemove2SelfsPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.remove.2fans.presence" class="com.sissi.pipeline.in.iq.roster.RosterRemove2FansPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.remove.chained" class="com.sissi.pipeline.in.ChainedProcessor">

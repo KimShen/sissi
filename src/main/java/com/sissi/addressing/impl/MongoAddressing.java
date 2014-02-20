@@ -144,6 +144,7 @@ public class MongoAddressing implements Addressing {
 			for (int index = 0; cursor.hasNext(); index++) {
 				this.resources[index] = MongoAddressing.this.config.asString(cursor.next(), MongoProxyConfig.FIELD_RESOURCE);
 			}
+			cursor.close();
 		}
 
 		public Iterator<JID> iterator() {
@@ -196,6 +197,7 @@ public class MongoAddressing implements Addressing {
 				}
 			}
 			this.usingOffline(jid, usingOffline);
+			cursor.close();
 		}
 
 		private void usingOffline(JID jid, Boolean usingOffline) {

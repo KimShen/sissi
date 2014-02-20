@@ -25,16 +25,15 @@ public class Item {
 	private boolean hidden;
 
 	public Item() {
-		this(false);
-	}
-
-	public Item(boolean hidden) {
-		super();
-		this.hidden = hidden;
 	}
 
 	public Item(RelationMuc muc) {
+		this(false, muc);
+	}
+
+	public Item(boolean hidden, RelationMuc muc) {
 		super();
+		this.hidden = hidden;
 		this.affiliation = muc.getAffiliaion();
 		this.role = muc.getRole();
 	}
@@ -53,7 +52,7 @@ public class Item {
 	}
 
 	public Item setJid(JID jid) {
-		this.setJid(jid.asStringWithBare());
+		this.setJid(jid.asString());
 		return this;
 	}
 

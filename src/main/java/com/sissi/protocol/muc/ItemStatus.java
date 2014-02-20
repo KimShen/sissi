@@ -12,6 +12,8 @@ import javax.xml.bind.annotation.XmlType;
 public class ItemStatus {
 
 	public final static ItemStatus STATUS_110 = new ItemStatus("110");
+	
+	public final static ItemStatus STATUS_210 = new ItemStatus("210");
 
 	public final static String NAME = "status";
 

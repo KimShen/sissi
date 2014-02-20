@@ -27,10 +27,6 @@ public class PresenceMucWrapRelation implements RelationMuc {
 		return this.jid.asStringWithBare();
 	}
 
-	public String getRoom() {
-		return this.jid.user();
-	}
-
 	@Override
 	public String getName() {
 		return this.jid.resource();

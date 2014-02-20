@@ -101,7 +101,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	@Override
 	public Relation ourRelation(JID from, JID to) {
-		AggregationOutput output = this.config.collection().aggregate(BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_JID, to.asStringWithBare()).get()).get(), this.aggregateUnwindRoles, this.aggregateUnwindAffiliation, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(this.fieldRoles + "." + MongoProxyConfig.FIELD_JID, from.asStringWithBare()).get()).get(), this.aggregateProject, this.aggregateSort, this.aggregateLimit);
+		AggregationOutput output = this.config.collection().aggregate(BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_JID, to.asStringWithBare()).get()).get(), this.aggregateUnwindRoles, this.aggregateUnwindAffiliation, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start().add(this.fieldRoles + "." + MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(this.fieldRoles + "." + MongoProxyConfig.FIELD_RESOURCE, from.resource()).get()).get(), this.aggregateProject, this.aggregateSort, this.aggregateLimit);
 		List<?> result = List.class.cast(output.getCommandResult().get(this.fieldResult));
 		return result.isEmpty() ? new NoneRelation(to) : new MongoRelation(DBObject.class.cast(result.get(0)));
 	}
@@ -118,7 +118,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	@Override
 	public Set<JID> iSubscribedWho(JID from) {
-		DBObject match = BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(this.fieldRoles + "." + MongoProxyConfig.FIELD_JID, from.asStringWithBare()).get()).get();
+		DBObject match = BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start().add(this.fieldRoles + "." + MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(this.fieldRoles + "." + MongoProxyConfig.FIELD_RESOURCE, from.resource()).get()).get();
 		return new MongoJIDGroup(List.class.cast(this.config.collection().aggregate(match, BasicDBObjectBuilder.start("$unwind", "$" + this.fieldRoles).get(), match, BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, "$" + MongoProxyConfig.FIELD_JID).add(MongoProxyConfig.FIELD_RESOURCE, "$" + this.fieldRoles + "." + MongoProxyConfig.FIELD_NICK).get()).get()).getCommandResult().get(this.fieldResult)));
 	}
 

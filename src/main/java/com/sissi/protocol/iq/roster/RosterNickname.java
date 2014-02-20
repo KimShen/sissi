@@ -10,10 +10,8 @@ import com.sissi.read.Metadata;
  * @author kim 2014年2月17日
  */
 @Metadata(uri = Roster.XMLNS, localName = RosterNickname.NAME)
-@XmlRootElement(namespace = Sissi.XMLNS, name = RosterNickname.NAME)
+@XmlRootElement(name = RosterNickname.NAME)
 public class RosterNickname {
-
-	public final static String XMLNS = "sissi:iq:roster";
 
 	public final static String NAME = "nickname";
 
@@ -31,5 +29,9 @@ public class RosterNickname {
 	@XmlValue
 	public String getText() {
 		return this.text;
+	}
+
+	public String getXmlns() {
+		return Sissi.XMLNS;
 	}
 }

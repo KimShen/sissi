@@ -1,5 +1,6 @@
 package com.sissi.pipeline.in.iq.roster;
 
+import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
@@ -31,7 +32,8 @@ public class RosterGetProcessor extends ProxyProcessor {
 
 	private Roster prepare(JIDContext context, Roster roster) {
 		for (Relation each : super.myRelations(context.jid())) {
-			roster.add(new GroupItem(RelationRoster.class.cast(each)).nickname(this.vcardContext.get(super.build(each.getJID()), VCardContext.FIELD_NICKNAME).getValue(), context.jid().user()));
+			JID to = super.build(each.getJID());
+			roster.add(new GroupItem(RelationRoster.class.cast(each)).nickname(this.vcardContext.get(to, VCardContext.FIELD_NICKNAME).getValue(), to.user()));
 		}
 		return roster;
 	}

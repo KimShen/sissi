@@ -178,6 +178,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 			while (cursor.hasNext()) {
 				this.add(new MongoRelationRoster(cursor.next(), fieldJID));
 			}
+			cursor.close();
 		}
 	}
 
@@ -254,6 +255,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 			while (cursor.hasNext()) {
 				this.add(MongoRelationRosterContext.this.jidBuilder.build(cursor.next().get(key).toString()));
 			}
+			cursor.close();
 		}
 	}
 }

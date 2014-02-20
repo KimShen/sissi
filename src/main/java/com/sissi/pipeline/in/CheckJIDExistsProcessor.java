@@ -41,7 +41,7 @@ public class CheckJIDExistsProcessor extends ProxyProcessor {
 	}
 
 	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.getParent().clear().reply().setError(this.error));
+		context.write(protocol.getParent().reply().setError(this.error));
 		return false;
 	}
 }

@@ -15,6 +15,8 @@ public class PresenceMucJoinProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.getTo());
+		System.out.println(group.asString());
+		System.out.println(context.jid().asString());
 		super.establish(context.jid(), new PresenceMucWrapRelation(group, RelationMuc.class.cast(super.ourRelation(context.jid(), group))));
 		return true;
 	}

@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.context.JID;
 import com.sissi.protocol.Item;
-import com.sissi.protocol.Sissi;
 import com.sissi.protocol.presence.PresenceType;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
@@ -37,12 +36,12 @@ public class GroupItem extends Item implements Collector {
 		super();
 	}
 
-	public GroupItem(String jid, String name) {
+	private GroupItem(String jid, String name) {
 		super(jid, name);
 	}
 
-	public GroupItem(JID jid, String name) {
-		this(jid.asStringWithBare(), name);
+	public GroupItem(JID jid) {
+		this(jid.asStringWithBare(), null);
 	}
 
 	public GroupItem(RelationRoster roster) {
@@ -56,11 +55,20 @@ public class GroupItem extends Item implements Collector {
 		}
 	}
 
-	private GroupItem add(Group group) {
+	public GroupItem add(Group group) {
 		if (this.groups == null) {
 			this.groups = new HashSet<Group>();
 		}
-		this.groups.add(group.setItem(this));
+		if (group != null) {
+			this.groups.add(group.setItem(this));
+		}
+		return this;
+	}
+
+	public GroupItem addOnEmpty(Group group) {
+		if (this.getGroup() == null) {
+			this.add(group);
+		}
 		return this;
 	}
 
@@ -69,14 +77,14 @@ public class GroupItem extends Item implements Collector {
 		return this;
 	}
 
-	@XmlElement(namespace = Sissi.XMLNS)
+	@XmlElement
 	public RosterNickname getNickname() {
 		return this.nickname;
 	}
 
 	@XmlElements({ @XmlElement(name = Group.NAME, type = Group.class) })
 	public Set<Group> getGroup() {
-		return this.groups == null || this.groups.isEmpty() ? null : this.groups;
+		return this.groups != null && !this.groups.isEmpty() ? this.groups : null;
 	}
 
 	public void set(String localname, Object ob) {
