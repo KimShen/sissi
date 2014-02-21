@@ -7,7 +7,6 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.muc.Item;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.ucenter.MucGroupConfig;
 import com.sissi.ucenter.MucGroupContext;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationMuc;
@@ -32,7 +31,7 @@ public class PresenceMucJoin2FansProcessor extends ProxyProcessor {
 		for (Relation each : super.myRelations(group)) {
 			RelationMuc muc = RelationMuc.class.cast(each);
 			JID to = super.build(muc.getJID());
-			super.findOne(to, true).write(presence.clear().add(new XUser(to.asString()).add(new Item(this.mucGroupContext.find(group).allowed(MucGroupConfig.HIDDEN, to), ourRelation).setJid(context.jid()))).clauses(context.status().clauses()).setFrom(protocol.getTo()));
+			super.findOne(to, true).write(presence.clear().add(new XUser(to.asString()).add(new Item(group, ourRelation, this.mucGroupContext).setJid(context.jid()))).clauses(context.status().clauses()).setFrom(protocol.getTo()));
 		}
 		return true;
 	}

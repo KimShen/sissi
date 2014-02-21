@@ -14,8 +14,6 @@ import com.sissi.read.Metadata;
 @XmlRootElement
 public class PresencePriority {
 
-	public final static PresencePriority ZERO = new PresencePriority("0");
-
 	public final static String NAME = "priority";
 
 	private final Log log = LogFactory.getLog(PresencePriority.class);

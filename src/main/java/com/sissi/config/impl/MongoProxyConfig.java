@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.mongodb.AggregationOutput;
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -32,7 +33,7 @@ public class MongoProxyConfig implements MongoConfig {
 	public static final String FIELD_STATE = "state";
 
 	public static final String FIELD_INDEX = "index";
-	
+
 	public static final String FIELD_CREATOR = "creator";
 
 	public static final String FIELD_PRIORITY = "priority";
@@ -91,9 +92,9 @@ public class MongoProxyConfig implements MongoConfig {
 		return value != null ? Integer.parseInt(value.toString()) : null;
 	}
 
-	public int[] asInts(DBObject db, String key) {
+	public Integer[] asInts(DBObject db, String key) {
 		Object value = this.as(db, key);
-		return value != null ? int[].class.cast(value) : null;
+		return value != null ? BasicDBList.class.cast(value).toArray(new Integer[] {}) : null;
 	}
 
 	public long asLong(DBObject db, String key) {

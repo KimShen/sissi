@@ -19,7 +19,7 @@ public class MongoMucGroupContext implements MucGroupContext {
 
 	private final String fieldMapping = "mapping";
 
-	private final DBObject filter = BasicDBObjectBuilder.start(this.fieldConfigs, 1).get();
+	private final DBObject filter = BasicDBObjectBuilder.start().add(this.fieldConfigs, 1).add(MongoProxyConfig.FIELD_CREATOR, 1).get();
 
 	private final MongoConfig config;
 
@@ -40,7 +40,7 @@ public class MongoMucGroupContext implements MucGroupContext {
 
 		private final String creator;
 
-		private final int[] mapping;
+		private final Integer[] mapping;
 
 		public MongoMucGroupConfig(DBObject configs, String creator) {
 			super();
@@ -51,13 +51,13 @@ public class MongoMucGroupContext implements MucGroupContext {
 
 		@Override
 		public boolean allowed(String key, Object value) {
-			return MongoMucGroupContext.this.config.asBoolean(this.configs, MucGroupConfig.HIDDEN) || JID.class.cast(value).asStringWithBare().equals(this.creator);
+			return MongoMucGroupContext.this.config.asBoolean(this.configs, MucGroupConfig.HIDDEN) && !JID.class.cast(value).asStringWithBare().equals(this.creator);
 		}
 
 		@Override
 		public String mapping(String affiliation) {
 			int ordinal = ItemAffiliation.parse(affiliation).ordinal();
-			return (this.mapping.length - 1) < ordinal ? ItemRole.toString(this.mapping[ordinal]) : ItemRole.NONE.toString();
+			return this.mapping != null && (this.mapping.length - 1) > ordinal ? ItemRole.toString(this.mapping[ordinal]) : ItemRole.NONE.toString();
 		}
 	}
 }

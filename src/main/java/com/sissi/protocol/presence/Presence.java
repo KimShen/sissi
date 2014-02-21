@@ -70,7 +70,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	public Presence setType(PresenceType type) {
 		super.setType(type.toString());
-		if(!this.status()){
+		if (!this.status()) {
 			this.fields = null;
 			this.priority = null;
 			this.show = null;
@@ -100,14 +100,13 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	}
 
 	public int priority(int def) {
-		return this.priority != null ? this.priority.priority(def): def;
+		return this.priority != null ? this.priority.priority(def) : def;
 	}
 
 	private Presence setPriority(String priority) {
 		try {
-			this.priority = priority != null ? new PresencePriority(String.valueOf(priority)) : PresencePriority.ZERO;
+			this.priority = priority != null ? new PresencePriority(String.valueOf(priority)) : null;
 		} catch (Exception e) {
-			this.priority = PresencePriority.ZERO;
 			if (log.isDebugEnabled()) {
 				log.debug(e.toString());
 				e.printStackTrace();
