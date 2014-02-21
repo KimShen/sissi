@@ -35,8 +35,6 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	private final String fieldResult = "result";
 
-	private final String fieldCreator = "creator";
-
 	private final String fieldActivate = "activate";
 
 	private final String fieldAffiliation = "affiliation";
@@ -53,7 +51,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	private final DBObject aggregateSort = BasicDBObjectBuilder.start().add("$sort", BasicDBObjectBuilder.start(this.fieldAffiliation, -1).get()).get();
 
-	private final DBObject aggregateProject = BasicDBObjectBuilder.start().add("$project", BasicDBObjectBuilder.start().add(this.fieldActivate, "$" + this.fieldActivate).add(this.fieldCreator, "$" + this.fieldCreator).add(this.fieldRoles, "$" + this.fieldRoles).add(this.fieldAffiliation, BasicDBObjectBuilder.start().add("$cond", new Object[] { BasicDBObjectBuilder.start("$eq", new String[] { "$" + this.fieldAffiliations + "." + MongoProxyConfig.FIELD_JID, "$" + this.fieldRoles + "." + MongoProxyConfig.FIELD_JID }).get(), "$" + this.fieldAffiliations + "." + this.fieldAffiliation, null }).get()).get()).get();
+	private final DBObject aggregateProject = BasicDBObjectBuilder.start().add("$project", BasicDBObjectBuilder.start().add(this.fieldActivate, "$" + this.fieldActivate).add(MongoProxyConfig.FIELD_CREATOR, "$" + MongoProxyConfig.FIELD_CREATOR).add(this.fieldRoles, "$" + this.fieldRoles).add(this.fieldAffiliation, BasicDBObjectBuilder.start().add("$cond", new Object[] { BasicDBObjectBuilder.start("$eq", new String[] { "$" + this.fieldAffiliations + "." + MongoProxyConfig.FIELD_JID, "$" + this.fieldRoles + "." + MongoProxyConfig.FIELD_JID }).get(), "$" + this.fieldAffiliations + "." + this.fieldAffiliation, null }).get()).get()).get();
 
 	private final MongoConfig config;
 
@@ -83,7 +81,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 			query.put(this.fieldRoles + "." + MongoProxyConfig.FIELD_RESOURCE, from.resource());
 			this.config.collection().update(query, BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start().add(this.fieldRoles + ".$." + this.fieldRole, muc.getRole()).add(this.fieldRoles + ".$." + MongoProxyConfig.FIELD_NICK, muc.getName()).get()).get(), true, false, WriteConcern.SAFE);
 		} catch (MongoException e) {
-			this.config.collection().update(this.buildQuery(muc.getJID()), BasicDBObjectBuilder.start().add("$setOnInsert", BasicDBObjectBuilder.start().add(this.fieldActivate, false).add(this.fieldCreator, from.asStringWithBare()).add(this.fieldAffiliations, new DBObject[] { BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(this.fieldAffiliation, ItemAffiliation.OWNER.toString()).get() }).get()).add("$addToSet", BasicDBObjectBuilder.start().add(this.fieldRoles, BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, from.resource()).add(MongoProxyConfig.FIELD_NICK, relation.getName()).add(this.fieldRole, muc.getRole()).get()).get()).get(), true, false, WriteConcern.SAFE);
+			this.config.collection().update(this.buildQuery(muc.getJID()), BasicDBObjectBuilder.start().add("$setOnInsert", BasicDBObjectBuilder.start().add(this.fieldActivate, false).add(MongoProxyConfig.FIELD_CREATOR, from.asStringWithBare()).add(this.fieldAffiliations, new DBObject[] { BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(this.fieldAffiliation, ItemAffiliation.OWNER.toString()).get() }).get()).add("$addToSet", BasicDBObjectBuilder.start().add(this.fieldRoles, BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, from.resource()).add(MongoProxyConfig.FIELD_NICK, relation.getName()).add(this.fieldRole, muc.getRole()).get()).get()).get(), true, false, WriteConcern.SAFE);
 		}
 		return this;
 	}
@@ -175,10 +173,10 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 			DBObject relation = new BasicDBObject();
 			for (Object each : List.class.cast(db.get(MongoRelationMucContext.this.fieldRoles))) {
 				DBObject role = DBObject.class.cast(each);
-				relation.put(MongoRelationMucContext.this.fieldCreator, MongoRelationMucContext.this.config.asString(db, MongoRelationMucContext.this.fieldCreator));
-				relation.put(MongoRelationMucContext.this.fieldActivate, MongoRelationMucContext.this.config.asBoolean(db, MongoRelationMucContext.this.fieldActivate));
-				relation.put(MongoRelationMucContext.this.fieldAffiliation, this.affiliations.get(role.get(MongoProxyConfig.FIELD_JID)));
 				relation.put(MongoRelationMucContext.this.fieldRoles, role);
+				relation.put(MongoRelationMucContext.this.fieldAffiliation, this.affiliations.get(role.get(MongoProxyConfig.FIELD_JID)));
+				relation.put(MongoProxyConfig.FIELD_CREATOR, MongoRelationMucContext.this.config.asString(db, MongoProxyConfig.FIELD_CREATOR));
+				relation.put(MongoRelationMucContext.this.fieldActivate, MongoRelationMucContext.this.config.asBoolean(db, MongoRelationMucContext.this.fieldActivate));
 				super.add(new MongoRelation(relation));
 			}
 			return this;
@@ -209,7 +207,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 		private final String role;
 
 		public MongoRelation(DBObject db) {
-			this.creator = MongoRelationMucContext.this.config.asString(db, MongoRelationMucContext.this.fieldCreator);
+			this.creator = MongoRelationMucContext.this.config.asString(db, MongoProxyConfig.FIELD_CREATOR);
 			this.affiliaion = MongoRelationMucContext.this.config.asString(db, MongoRelationMucContext.this.fieldAffiliation);
 			DBObject roles = DBObject.class.cast(db.get(MongoRelationMucContext.this.fieldRoles));
 			this.jid = MongoRelationMucContext.this.config.asString(roles, MongoProxyConfig.FIELD_JID);

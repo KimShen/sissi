@@ -2,6 +2,9 @@ package com.sissi.protocol.presence;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.sissi.read.Metadata;
 
 /**
@@ -15,6 +18,8 @@ public class PresencePriority {
 
 	public final static String NAME = "priority";
 
+	private final Log log = LogFactory.getLog(PresencePriority.class);
+
 	private String text;
 
 	public PresencePriority() {
@@ -24,6 +29,23 @@ public class PresencePriority {
 	public PresencePriority(String text) {
 		super();
 		this.text = text;
+	}
+
+	public Integer priority() {
+		try {
+			return this.text != null ? Integer.parseInt(this.getText()) : null;
+		} catch (Exception e) {
+			if (log.isDebugEnabled()) {
+				log.debug(e.toString());
+				e.printStackTrace();
+			}
+			return null;
+		}
+	}
+
+	public Integer priority(int def) {
+		Integer priority = this.priority();
+		return priority != null ? priority : def;
 	}
 
 	public String getText() {

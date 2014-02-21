@@ -19,7 +19,9 @@ public interface MongoConfig extends Config {
 	
 	public String[] asStrings(DBObject db, String key);
 	
-	public int asInteger(DBObject db, String key);
+	public int asInt(DBObject db, String key);
+	
+	public int[] asInts(DBObject db, String key);
 	
 	public long asLong(DBObject db, String key);
 

@@ -57,7 +57,6 @@
 		<maven.mongo.collection.counter>counter</maven.mongo.collection.counter>
 		<maven.mongo.collection.roster>roster</maven.mongo.collection.roster>
 		<maven.mongo.collection.muc>muc</maven.mongo.collection.muc>
-		<mongo.collection.muc.context>muc.context</mongo.collection.muc.context>
 		<maven.mongo.collection.user>user</maven.mongo.collection.user>
 		<!-- For Protocol -->
 		<maven.register.title>Welcome 2 register</maven.register.title>

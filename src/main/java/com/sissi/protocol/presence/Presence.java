@@ -100,7 +100,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	}
 
 	public int priority(int def) {
-		return this.priority != null ? Integer.parseInt(this.priority.getText()) : def;
+		return this.priority != null ? this.priority.priority(def): def;
 	}
 
 	private Presence setPriority(String priority) {
@@ -118,7 +118,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	@XmlElement
 	public Integer getPriority() {
-		return this.priority != null ? Integer.parseInt(this.priority.getText()) : null;
+		return this.priority != null ? this.priority.priority() : null;
 	}
 
 	@XmlElement(name = PresenceShow.NAME)
@@ -169,7 +169,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return new PresenceClauses();
 	}
 
-	public Presence setAvator(String type) {
+	private Presence setAvator(String type) {
 		this.add(new XVCard().add(new XVCardPhoto(type)));
 		return this;
 	}

@@ -85,7 +85,7 @@
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
 				<constructor-arg ref="mongo" />
 				<constructor-arg index="1" value="${mongo.db}" />
-				<constructor-arg index="2" value="${mongo.collection.muc.context}" />
+				<constructor-arg index="2" value="${mongo.collection.muc}" />
 			</bean>
 		</constructor-arg>
 	</bean>

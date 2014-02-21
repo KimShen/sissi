@@ -34,8 +34,8 @@ public class Item {
 	public Item(boolean hidden, RelationMuc muc) {
 		super();
 		this.hidden = hidden;
-		this.affiliation = muc.getAffiliaion();
 		this.role = muc.getRole();
+		this.affiliation = muc.getAffiliaion();
 	}
 
 	public boolean equals(String jid) {

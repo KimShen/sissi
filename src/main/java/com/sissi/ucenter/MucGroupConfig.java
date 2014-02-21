@@ -5,7 +5,7 @@ package com.sissi.ucenter;
  */
 public interface MucGroupConfig {
 
-	public final static String IS_HIDDEN = "isHidden";
+	public final static String HIDDEN = "hidden";
 	
 	public boolean allowed(String key, Object value);
 

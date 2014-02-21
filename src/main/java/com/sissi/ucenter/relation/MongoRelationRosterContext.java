@@ -200,7 +200,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 			super();
 			this.jid = MongoRelationRosterContext.this.config.asString(db, fieldJID);
 			this.name = MongoRelationRosterContext.this.config.asString(db, MongoProxyConfig.FIELD_NICK);
-			this.subscription = MongoRelationRosterContext.this.config.asInteger(db, MongoProxyConfig.FIELD_STATE);
+			this.subscription = MongoRelationRosterContext.this.config.asInt(db, MongoProxyConfig.FIELD_STATE);
 			this.ask = MongoRelationRosterContext.this.config.asBoolean(db, MongoRelationRosterContext.this.fieldAsk);
 			this.groups = MongoRelationRosterContext.this.config.asStrings(db, MongoRelationRosterContext.this.fieldGroups);
 			this.activate = MongoRelationRosterContext.this.config.asBoolean(db, MongoRelationRosterContext.this.fieldActivate);

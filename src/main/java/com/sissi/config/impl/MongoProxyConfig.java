@@ -32,6 +32,8 @@ public class MongoProxyConfig implements MongoConfig {
 	public static final String FIELD_STATE = "state";
 
 	public static final String FIELD_INDEX = "index";
+	
+	public static final String FIELD_CREATOR = "creator";
 
 	public static final String FIELD_PRIORITY = "priority";
 
@@ -84,9 +86,14 @@ public class MongoProxyConfig implements MongoConfig {
 		return value != null ? value.toArray(new String[] {}) : null;
 	}
 
-	public int asInteger(DBObject db, String key) {
+	public int asInt(DBObject db, String key) {
 		Object value = this.as(db, key);
 		return value != null ? Integer.parseInt(value.toString()) : null;
+	}
+
+	public int[] asInts(DBObject db, String key) {
+		Object value = this.as(db, key);
+		return value != null ? int[].class.cast(value) : null;
 	}
 
 	public long asLong(DBObject db, String key) {
