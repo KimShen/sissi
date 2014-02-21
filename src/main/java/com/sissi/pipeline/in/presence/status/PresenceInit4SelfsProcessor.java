@@ -19,7 +19,7 @@ public class PresenceInit4SelfsProcessor extends ProxyProcessor {
 	private boolean writePresence(JIDContext context) {
 		Presence presence = new Presence();
 		for (JID resource : super.resources(context.jid())) {
-			context.write(presence.setFrom(resource).clauses(super.findOne(resource, true).status().clauses()));
+			context.write(presence.setFrom(resource).clauses(super.findOne(resource, true).status().clauses()), true);
 		}
 		return true;
 	}

@@ -18,6 +18,10 @@ public interface JID {
 	public String resource();
 
 	public JID resource(String resource);
+	
+	public boolean same(JID jid);
+	
+	public boolean same(String jid);
 
 	public boolean valid();
 
@@ -28,7 +32,7 @@ public interface JID {
 	public boolean isBare();
 	
 	public boolean isGroup();
-
+	
 	public String asString();
 
 	public String asStringWithBare();

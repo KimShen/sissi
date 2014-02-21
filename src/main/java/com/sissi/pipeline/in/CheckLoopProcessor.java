@@ -1,5 +1,7 @@
 package com.sissi.pipeline.in;
 
+import java.util.List;
+
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
@@ -10,9 +12,15 @@ import com.sissi.protocol.ProtocolType;
  */
 public class CheckLoopProcessor implements Input {
 
+	private final List<String> ignore;
+
+	public CheckLoopProcessor(List<String> ignore) {
+		this.ignore = ignore;
+	}
+
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return protocol.type(ProtocolType.ERROR) ? this.pong(context, protocol) : true;
+		return protocol.type(ProtocolType.ERROR) && (!protocol.to() || protocol.to(this.ignore)) ? this.pong(context, protocol) : true;
 	}
 
 	private boolean pong(JIDContext context, Protocol protocol) {

@@ -39,13 +39,13 @@ public class PresenceInit4FansProcessor extends ProxyProcessor {
 	}
 
 	private void writeOfflinePresence(JIDContext context, JID from) {
-		context.write(new Presence().setFrom(from).setStatus(this.vCardContext.get(from, VCardContext.FIELD_SIGNATURE).getValue()).setType(PresenceType.UNAVAILABLE));
+		context.write(new Presence().setFrom(from).setStatus(this.vCardContext.get(from, VCardContext.FIELD_SIGNATURE).getValue()).setType(PresenceType.UNAVAILABLE), true);
 	}
 
 	private void writeOnlinePresence(JIDContext context, JID from, JIDs resoures) {
 		Presence presence = new Presence();
 		for (JID resource : resoures) {
-			context.write(presence.setFrom(resource).clauses(super.findOne(resource, true).status().clauses()));
+			context.write(presence.setFrom(resource).clauses(super.findOne(resource, true).status().clauses()), true);
 		}
 	}
 }

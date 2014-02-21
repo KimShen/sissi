@@ -55,7 +55,7 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 	}
 
 	public String getRole() {
-		return ItemRole.VISITOR.toString();
+		return ItemRole.NONE.toString();
 	}
 
 	public String getAffiliaion() {

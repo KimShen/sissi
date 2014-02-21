@@ -5,6 +5,14 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<util:list id="global.ignore">
+		<value>127.0.0.1</value>
+		<value>localhost</value>
+		<value>${global.domain}</value>
+		<value>${global.domain.group}</value>
+		<value>${bytestreams.jid}</value>
+	</util:list>
+
 	<bean id="global.pro.proxy" abstract="true">
 		<property name="jidBuilder" ref="jid" />
 		<property name="addressing" ref="addressing" />
@@ -12,19 +20,13 @@
 		<property name="presenceQueue" ref="broadcast.presence.selfs" />
 		<property name="relationContext" ref="relation.roster" />
 	</bean>
-	<bean id="global.pro.check.loop" class="com.sissi.pipeline.in.CheckLoopProcessor" />
+	<bean id="global.pro.check.loop" class="com.sissi.pipeline.in.CheckLoopProcessor">
+		<constructor-arg ref="global.ignore" />
+	</bean>
 	<bean id="global.pro.check.jid.format" class="com.sissi.pipeline.in.CheckJIDMalformedProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.exists" class="com.sissi.pipeline.in.CheckJIDExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
-		<constructor-arg>
-			<util:list>
-				<value>127.0.0.1</value>
-				<value>localhost</value>
-				<value>${global.domain}</value>
-				<value>${global.domain.group}</value>
-				<value>${bytestreams.jid}</value>
-			</util:list>
-		</constructor-arg>
+		<constructor-arg ref="global.ignore" />
 	</bean>
 	<bean id="global.pro.check.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg value="true" />

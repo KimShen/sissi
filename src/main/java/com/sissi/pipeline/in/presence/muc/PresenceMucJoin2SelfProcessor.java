@@ -7,6 +7,8 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.muc.Item;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.presence.Presence;
+import com.sissi.ucenter.MucGroupConfig;
+import com.sissi.ucenter.MucGroupContext;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationMuc;
 import com.sissi.ucenter.RelationMucMapping;
@@ -18,9 +20,12 @@ public class PresenceMucJoin2SelfProcessor extends ProxyProcessor {
 
 	private final RelationMucMapping relationMucMapping;
 
-	public PresenceMucJoin2SelfProcessor(RelationMucMapping relationMucMapping) {
+	private final MucGroupContext mucGroupContext;
+
+	public PresenceMucJoin2SelfProcessor(RelationMucMapping relationMucMapping, MucGroupContext mucGroupContext) {
 		super();
 		this.relationMucMapping = relationMucMapping;
+		this.mucGroupContext = mucGroupContext;
 	}
 
 	@Override
@@ -29,7 +34,7 @@ public class PresenceMucJoin2SelfProcessor extends ProxyProcessor {
 		Presence presence = new Presence();
 		for (Relation each : super.myRelations(group)) {
 			RelationMuc muc = RelationMuc.class.cast(each);
-			context.write(presence.clear().add(new XUser(context.jid().asString()).add(new Item(true, muc).setJid(super.build(muc.getJID())))).clauses(super.findOne(this.relationMucMapping.mapping(group.resource(muc.getName()))).status().clauses()).setFrom(group));
+			context.write(presence.clear().add(new XUser(context.jid().asString()).add(new Item(this.mucGroupContext.find(group).allowed(MucGroupConfig.IS_HIDDEN, context.jid()), muc).setJid(super.build(muc.getJID())))).clauses(super.findOne(this.relationMucMapping.mapping(group.resource(muc.getName()))).status().clauses()).setFrom(group));
 		}
 		return true;
 	}

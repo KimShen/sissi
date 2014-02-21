@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,7 +68,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 	public JIDContext build(JID jid, JIDContextParam param) {
 		UserContext context = new UserContext(param);
 		// two-way reference
-		context.status = this.statusBuilder.build(context);
+		context.statusCurrent = context.statusOnline = this.statusBuilder.build(context);
 		return context;
 	}
 
@@ -86,6 +88,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final AtomicInteger authRetry = new AtomicInteger();
 
+		private final Lock lock = new ReentrantLock();
+
 		private final long index;
 
 		private final ServerTls serverTls;
@@ -94,11 +98,13 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private int priority;
 
-		private Output output;
+		private Status statusCurrent;
 
-		private Output backup;
+		private Status statusOnline;
 
-		private Status status;
+		private Output outputOnline;
+
+		private Output outputCurrent;
 
 		private String domain;
 
@@ -108,12 +114,13 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		public UserContext(JIDContextParam param) {
 			super();
+			this.jid = OnlineContextBuilder.this.jid;
+			this.priority = OnlineContextBuilder.this.priority;
 			this.index = OnlineContextBuilder.this.indexes.incrementAndGet();
+			this.outputOnline = param.find(JIDContextParam.KEY_OUTPUT, Output.class);
 			this.address = param.find(JIDContextParam.KEY_ADDRESS, SocketAddress.class);
 			this.serverTls = param.find(JIDContextParam.KEY_SERVERTLS, ServerTls.class);
-			this.output = param.find(JIDContextParam.KEY_OUTPUT, Output.class);
-			this.priority = OnlineContextBuilder.this.priority;
-			this.jid = OnlineContextBuilder.this.jid;
+			this.outputCurrent = this.outputOnline;
 		}
 
 		public long index() {
@@ -166,8 +173,27 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		public JIDContext present() {
-			this.presence.set(true);
-			return this;
+			try {
+				this.lock.lock();
+				this.outputCurrent = this.outputOnline;
+				this.statusCurrent = this.statusOnline;
+				this.presence.set(true);
+				return this;
+			} finally {
+				this.lock.unlock();
+			}
+		}
+
+		public JIDContext leaving() {
+			try {
+				this.lock.lock();
+				this.outputCurrent = OnlineContextBuilder.this.offline;
+				this.statusCurrent = OfflineStatus.STATUS;
+				this.presence.set(false);
+				return this;
+			} finally {
+				this.lock.unlock();
+			}
 		}
 
 		public boolean presented() {
@@ -191,7 +217,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public Status status() {
-			return this.status;
+			return this.statusCurrent;
 		}
 
 		@Override
@@ -232,7 +258,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public boolean close() {
 			try {
 				if (this.closePrepare()) {
-					this.backup.close();
+					this.statusOnline.clear();
+					this.outputOnline.close();
 				}
 				return true;
 			} catch (Exception e) {
@@ -247,10 +274,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public boolean closePrepare() {
 			try {
 				if (this.prepareClose.compareAndSet(false, true)) {
-					this.backup = this.output;
-					this.output = OnlineContextBuilder.this.offline;
-					this.status.clear();
-					this.status = OfflineStatus.STATUS;
+					this.outputCurrent = OnlineContextBuilder.this.offline;
+					this.statusCurrent = OfflineStatus.STATUS;
 					OnlineContextBuilder.this.vCardContext.set(this.jid(), new BeanField<String>().setName(VCardContext.FIELD_LOGOUT).setValue(String.valueOf(System.currentTimeMillis())));
 				}
 				return true;
@@ -277,17 +302,31 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			return this;
 		}
 
-		@Override
-		public JIDContext write(Element node) {
-			this.output.output(this, node.setTo(this.jid().asString()));
-			this.idle.set(System.currentTimeMillis());
+		private JIDContext write(Element element, Output output) {
+			if (!this.jid().same(element.getFrom())) {
+				output.output(this, element.setTo(this.jid().asString()));
+				this.idle.set(System.currentTimeMillis());
+			}
 			return this;
 		}
 
+		@Override
+		public JIDContext write(Element element) {
+			return this.write(element, false);
+		}
+
+		public JIDContext write(Element element, boolean force) {
+			return this.write(element, force ? this.outputOnline : this.outputCurrent);
+		}
+
 		public JIDContext write(Collection<Element> elements) {
+			return this.write(elements, false);
+		}
+
+		public JIDContext write(Collection<Element> elements, boolean force) {
 			for (Element element : elements) {
 				try {
-					this.write(element);
+					this.write(element, force);
 				} catch (Exception e) {
 					this.logFailed(e);
 				}

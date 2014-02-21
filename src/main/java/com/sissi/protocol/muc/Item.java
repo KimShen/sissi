@@ -63,11 +63,11 @@ public class Item {
 
 	@XmlAttribute
 	public String getAffiliation() {
-		return affiliation;
+		return this.affiliation;
 	}
 
 	@XmlAttribute
 	public String getRole() {
-		return role;
+		return this.role;
 	}
 }

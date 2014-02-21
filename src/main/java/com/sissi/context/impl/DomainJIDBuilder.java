@@ -117,6 +117,14 @@ public class DomainJIDBuilder implements JIDBuilder {
 			return DomainJIDBuilder.this.group.equals(this.domain);
 		}
 
+		public boolean same(JID jid) {
+			return this.same(jid != null ? jid.asString() : null);
+		}
+
+		public boolean same(String jid) {
+			return jid != null && jid.equals(this.asString());
+		}
+
 		public boolean valid() {
 			return this.valid(true);
 		}

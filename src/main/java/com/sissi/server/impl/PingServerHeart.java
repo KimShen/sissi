@@ -47,7 +47,7 @@ public class PingServerHeart implements ServerHeart, Runnable {
 	public long ping(JIDContext context) {
 		long pid = this.pids.incrementAndGet();
 		this.timeouts.add(new PingTimeout(context));
-		context.write(new IQ().setId(pid).add(Ping.PING).setType(ProtocolType.GET));
+		context.write(new IQ().setId(pid).add(Ping.PING).setType(ProtocolType.GET), true);
 		return pid;
 	}
 

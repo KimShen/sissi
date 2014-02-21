@@ -46,8 +46,10 @@ public interface JIDContext {
 
 	public JIDContext present();
 
+	public JIDContext leaving();
+
 	public boolean presented();
-	
+
 	public long idle();
 
 	public Status status();
@@ -66,5 +68,9 @@ public interface JIDContext {
 
 	public JIDContext write(Element element);
 
+	public JIDContext write(Element element, boolean force);
+
 	public JIDContext write(Collection<Element> elements);
+
+	public JIDContext write(Collection<Element> elements, boolean force);
 }

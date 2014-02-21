@@ -12,9 +12,11 @@
 	</bean>
 	<bean id="presence.pro.muc.join.2self" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="relation.muc" />
+		<constructor-arg ref="relation.muc.context" />
 		<property name="relationContext" ref="relation.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.2fans" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2FansProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="relation.muc.context" />	
 		<property name="relationContext" ref="relation.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.chained" class="com.sissi.pipeline.in.ChainedProcessor">

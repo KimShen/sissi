@@ -58,6 +58,14 @@ public class OfflineJID implements JID {
 		return false;
 	}
 
+	public boolean same(JID jid) {
+		return false;
+	}
+
+	public boolean same(String jid) {
+		return false;
+	}
+
 	public boolean valid() {
 		return true;
 	}

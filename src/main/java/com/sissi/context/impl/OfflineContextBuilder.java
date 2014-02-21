@@ -154,6 +154,10 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return this;
 		}
 
+		public JIDContext leaving() {
+			return this;
+		}
+
 		public boolean presented() {
 			return false;
 		}
@@ -194,11 +198,19 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return this;
 		}
 
+		public JIDContext write(Element element, boolean force) {
+			return this.write(element, force);
+		}
+
 		public JIDContext write(Collection<Element> elements) {
 			for (Element element : elements) {
 				this.write(element);
 			}
 			return this;
+		}
+
+		public JIDContext write(Collection<Element> elements, boolean force) {
+			return this.write(elements);
 		}
 	}
 

@@ -8,14 +8,15 @@ import java.util.Map;
  */
 public enum ItemRole {
 
-	VISITOR, PARTICIPANT, MODERATOR;
+	NONE, VISITOR, PARTICIPANT, MODERATOR;
 
 	private static Map<Integer, ItemRole> MAPPING = new HashMap<Integer, ItemRole>();
 
 	static {
-		MAPPING.put(1, VISITOR);
-		MAPPING.put(2, PARTICIPANT);
-		MAPPING.put(3, MODERATOR);
+		MAPPING.put(1, NONE);
+		MAPPING.put(2, VISITOR);
+		MAPPING.put(3, PARTICIPANT);
+		MAPPING.put(4, MODERATOR);
 	}
 
 	public String toString() {

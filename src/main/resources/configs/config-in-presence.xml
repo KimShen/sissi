@@ -112,13 +112,10 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.status.unavailable.muc" class="com.sissi.pipeline.in.presence.status.PresenceOfflineMucProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="presence.pro.muc.leave.chained" />
-		<property name="relationContext" ref="relation.muc" />
-	</bean>
-	<bean id="presence.pro.status.unavailable.signature" class="com.sissi.pipeline.in.presence.status.PresenceOfflineSignatureProcessor" parent="global.pro.proxy">
+	<bean id="presence.pro.status.unavailable.vcard" class="com.sissi.pipeline.in.presence.status.PresenceOfflineVCardProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
 	</bean>
+	<bean id="presence.pro.status.unavailable.status" class="com.sissi.pipeline.in.presence.status.PresenceOfflineStatusProcessor" />
 	<bean id="presence.pro.status.unavailable.close" class="com.sissi.pipeline.in.presence.status.PresenceOfflineCloseProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.unavailable.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -126,8 +123,8 @@
 				<!-- Offline signature, experiment -->
 				<ref bean="presence.pro.status.2selfs" />
 				<ref bean="presence.pro.status.2fans" />
-				<ref bean="presence.pro.status.unavailable.signature" />
-				<ref bean="presence.pro.status.unavailable.muc" />
+				<ref bean="presence.pro.status.unavailable.vcard" />
+				<ref bean="presence.pro.status.unavailable.status" />
 				<!-- Close Xmpp -->
 				<!-- <ref bean="presence.pro.status.unavailable.close" /> -->
 			</util:list>

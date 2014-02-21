@@ -34,6 +34,10 @@ public class Message extends Protocol implements Collector {
 		super();
 	}
 
+	public String getId() {
+		return super.getId() != null ? super.getId() : UUID.randomUUID().toString();
+	}
+
 	@XmlElement
 	public Delay getDelay() {
 		return this.delay;

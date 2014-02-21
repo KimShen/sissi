@@ -80,6 +80,16 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="relation.muc.context" class="com.sissi.ucenter.relation.MongoMucGroupContext">
+		<constructor-arg>
+			<bean class="com.sissi.config.impl.MongoProxyConfig">
+				<constructor-arg ref="mongo" />
+				<constructor-arg index="1" value="${mongo.db}" />
+				<constructor-arg index="2" value="${mongo.collection.muc.context}" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
 	<alias name="ucenter.register.mongo" alias="ucenter.register" />
 	<bean id="ucenter.register.mongo" class="com.sissi.ucenter.user.MongoRegisterContext">
 		<constructor-arg ref="jid" />

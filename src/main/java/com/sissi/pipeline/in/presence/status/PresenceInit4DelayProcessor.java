@@ -23,7 +23,7 @@ public class PresenceInit4DelayProcessor implements Input {
 	}
 
 	private Boolean writeOffline(JIDContext context) {
-		context.write(this.delayElementBox.pull(context.jid()));
+		context.write(this.delayElementBox.pull(context.jid()), true);
 		return true;
 	}
 }

@@ -94,6 +94,13 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return this;
 	}
 
+	public JIDContext leaving() {
+		for (JIDContext each : this) {
+			each.leaving();
+		}
+		return this;
+	}
+
 	public boolean presented() {
 		boolean presented = true;
 		for (JIDContext each : this) {
@@ -166,24 +173,38 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return this;
 	}
 
-	public JIDContext pong(Element node) {
+	public JIDContext pong(Element element) {
 		for (JIDContext each : this) {
-			each.pong(node);
+			each.pong(element);
 		}
 		return this;
 	}
 
 	@Override
-	public JIDContext write(Element node) {
+	public JIDContext write(Element element) {
 		for (JIDContext each : this) {
-			each.write(node);
+			each.write(element);
 		}
 		return this;
 	}
 
-	public JIDContext write(Collection<Element> nodes) {
-		for (Element node : nodes) {
-			this.write(node);
+	public JIDContext write(Element element, boolean force) {
+		for (JIDContext each : this) {
+			each.write(element, force);
+		}
+		return this;
+	}
+
+	public JIDContext write(Collection<Element> elements) {
+		for (Element element : elements) {
+			this.write(element);
+		}
+		return this;
+	}
+
+	public JIDContext write(Collection<Element> elements, boolean force) {
+		for (Element element : elements) {
+			this.write(element, force);
 		}
 		return this;
 	}
