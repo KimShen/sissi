@@ -81,6 +81,8 @@
 	</bean>
 
 	<bean id="relation.muc.context" class="com.sissi.ucenter.relation.MongoMucGroupContext">
+		<constructor-arg ref="jid" />
+		<constructor-arg ref="relation.muc" />
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
 				<constructor-arg ref="mongo" />

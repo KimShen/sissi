@@ -22,23 +22,14 @@ public enum ItemRole {
 	public String toString() {
 		return super.toString().toLowerCase();
 	}
-	
+
 	public boolean equals(String role) {
 		return this == ItemRole.parse(role);
 	}
 
-	public boolean all(ItemRole... roles) {
-		for (ItemRole role : roles) {
-			if ((this != role) && ((this.ordinal() & role.ordinal()) != 0)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public static ItemRole parse(String role) {
 		try {
-			return ItemRole.valueOf(role.toUpperCase());
+			return role != null ? ItemRole.valueOf(role.toUpperCase()) : null;
 		} catch (Exception e) {
 			return null;
 		}

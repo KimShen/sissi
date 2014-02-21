@@ -35,7 +35,7 @@ public class PresenceMucJoin2FansProcessor extends ProxyProcessor {
 		for (Relation each : super.myRelations(group)) {
 			RelationMuc muc = RelationMuc.class.cast(each);
 			JID to = super.build(muc.getJID());
-			super.findOne(to, true).write(presence.clear().add(new XUser(to.asString()).setItem(new Item(group, ourRelation, this.mucGroupContext).setJid(context.jid()), this.mucStatusCollector)).clauses(context.status().clauses()).setFrom(protocol.getTo()));
+			super.findOne(to, true).write(presence.clear().add(new XUser(to.asString()).setItem(new Item(group, to, context.jid(), ourRelation, this.mucGroupContext), this.mucStatusCollector)).clauses(context.status().clauses()).setFrom(protocol.getTo()));
 		}
 		return true;
 	}

@@ -29,19 +29,31 @@ public class Item implements MucStatusJudge {
 
 	private JID group;
 
+	private JID current;
+
 	public Item() {
 	}
+	
+	public Item(JID group, JID current, RelationMuc muc, MucGroupContext mucGroupContext) {
+		this(group, current, (String)null, muc, mucGroupContext);
+	}
 
-	public Item(JID group, RelationMuc muc, MucGroupContext mucGroupContext) {
+	public Item(JID group, JID current, JID jid, RelationMuc muc, MucGroupContext mucGroupContext) {
+		this(group, current, jid.asString(), muc, mucGroupContext);
+	}
+
+	public Item(JID group, JID current, String jid, RelationMuc muc, MucGroupContext mucGroupContext) {
 		super();
+		this.jid = jid;
 		this.group = group;
+		this.current = current;
 		this.role = muc.getRole();
 		this.affiliation = muc.getAffiliaion();
 		this.config = mucGroupContext.find(this.group);
 	}
 
 	private boolean hidden() {
-		return this.config.allowed(MucGroupConfig.HIDDEN, this.group);
+		return this.config.allowed(MucGroupConfig.HIDDEN, this.current);
 	}
 
 	public boolean equals(String jid) {
@@ -55,16 +67,6 @@ public class Item implements MucStatusJudge {
 	@XmlAttribute
 	public String getJid() {
 		return this.hidden() ? null : this.jid;
-	}
-
-	public Item setJid(JID jid) {
-		this.setJid(jid.asString());
-		return this;
-	}
-
-	public Item setJid(String jid) {
-		this.jid = jid;
-		return this;
 	}
 
 	@XmlAttribute
