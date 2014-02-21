@@ -22,7 +22,7 @@ public enum ItemRole {
 	public String toString() {
 		return super.toString().toLowerCase();
 	}
-
+	
 	public boolean equals(String role) {
 		return this == ItemRole.parse(role);
 	}

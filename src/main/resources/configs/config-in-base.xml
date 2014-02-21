@@ -20,9 +20,10 @@
 		<property name="presenceQueue" ref="broadcast.presence.selfs" />
 		<property name="relationContext" ref="relation.roster" />
 	</bean>
-	<bean id="global.pro.check.loop" class="com.sissi.pipeline.in.CheckLoopProcessor">
+	<bean id="global.pro.check.error.pong" class="com.sissi.pipeline.in.CheckErrorPongProcessor">
 		<constructor-arg ref="global.ignore" />
 	</bean>
+	<bean id="global.pro.check.error.route" class="com.sissi.pipeline.in.CheckErrorRouteProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.format" class="com.sissi.pipeline.in.CheckJIDMalformedProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.exists" class="com.sissi.pipeline.in.CheckJIDExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
@@ -32,8 +33,9 @@
 		<constructor-arg value="true" />
 		<constructor-arg>
 			<util:list>
-				<!-- Ignore protocol that type = error -->
-				<ref bean="global.pro.check.loop" />
+				<!-- Process protocol that type = error -->
+				<ref bean="global.pro.check.error.pong" />
+				<ref bean="global.pro.check.error.route" />
 				<!-- Assert legal JID format -->
 				<ref bean="global.pro.check.jid.format" />
 				<!-- Assert attribute "to" is localhost / domain / proxy or any exists jid -->

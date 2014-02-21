@@ -1,7 +1,7 @@
 package com.sissi.protocol.muc;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
@@ -11,6 +11,9 @@ import javax.xml.bind.annotation.XmlType;
 import com.sissi.context.JID;
 import com.sissi.protocol.presence.X;
 import com.sissi.read.Metadata;
+import com.sissi.ucenter.MucStatus;
+import com.sissi.ucenter.MucStatusCollector;
+import com.sissi.ucenter.MucStatusJudge;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 
@@ -20,61 +23,63 @@ import com.sissi.ucenter.field.Fields;
 @Metadata(uri = XUser.XMLNS, localName = X.NAME)
 @XmlType(namespace = XUser.XMLNS)
 @XmlRootElement
-public class XUser extends X implements Field<String> {
+public class XUser extends X implements Field<String>, MucStatus {
 
 	public final static String XMLNS = "http://jabber.org/protocol/muc#user";
 
-	private List<Item> items;
+	private Item item;
 
-	private List<ItemStatus> statuses;
+	private String current;
 
-	private String jid;
+	private Set<ItemStatus> statuses;
 
 	public XUser() {
 		super();
 	}
 
-	public XUser(JID jid) {
-		this(jid.asStringWithBare());
+	public XUser(JID current) {
+		this(current.asStringWithBare());
 	}
 
-	public XUser(String jid) {
-		super();
-		this.jid = jid;
+	public XUser(String current) {
+		this.current = current;
 	}
 
-	public XUser add(Item item) {
-		if (this.items == null) {
-			this.items = new ArrayList<Item>();
-		}
-		this.items.add(item);
-		if (item.jid(this.jid)) {
-			this.add(ItemStatus.STATUS_110);
-		}
+	public XUser setItem(Item item, MucStatusCollector collector) {
+		this.item = item;
+		collector.collect(this, this.item);
 		return this;
 	}
 
-	public XUser add(ItemStatus code) {
+	public XUser add(String code) {
 		if (this.statuses == null) {
-			this.statuses = new ArrayList<ItemStatus>();
+			this.statuses = new HashSet<ItemStatus>();
 		}
-		this.statuses.add(code);
+		this.statuses.add(ItemStatus.parse(code));
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = Item.NAME, type = Item.class) })
-	public List<Item> getItems() {
-		return this.items;
+	@XmlElement
+	public Item getItem() {
+		return this.item;
 	}
 
 	@XmlElements({ @XmlElement(name = ItemStatus.NAME, type = ItemStatus.class) })
-	public List<ItemStatus> getStatuses() {
+	public Set<ItemStatus> getStatuses() {
 		return this.statuses;
 	}
 
 	@Override
 	public String getXmlns() {
 		return XMLNS;
+	}
+
+	public Object supply(String key) {
+		return null;
+	}
+
+	public boolean judge(String key, Object value) {
+		return MucStatusJudge.JUDEGE_JID.equals(key) ? (this.current != null ? this.current.equals(value.toString()) : false) : false;
 	}
 
 	@Override

@@ -5,6 +5,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.context.JID;
+import com.sissi.ucenter.MucGroupConfig;
+import com.sissi.ucenter.MucGroupContext;
+import com.sissi.ucenter.MucStatusJudge;
 import com.sissi.ucenter.RelationMuc;
 
 /**
@@ -12,9 +15,11 @@ import com.sissi.ucenter.RelationMuc;
  */
 @XmlType(namespace = XMuc.XMLNS)
 @XmlRootElement(name = Item.NAME)
-public class Item {
+public class Item implements MucStatusJudge {
 
 	public final static String NAME = "item";
+
+	private MucGroupConfig config;
 
 	private String affiliation;
 
@@ -22,20 +27,21 @@ public class Item {
 
 	private String jid;
 
-	private boolean hidden;
+	private JID group;
 
 	public Item() {
 	}
 
-	public Item(RelationMuc muc) {
-		this(false, muc);
-	}
-
-	public Item(boolean hidden, RelationMuc muc) {
+	public Item(JID group, RelationMuc muc, MucGroupContext mucGroupContext) {
 		super();
-		this.hidden = hidden;
+		this.group = group;
 		this.role = muc.getRole();
 		this.affiliation = muc.getAffiliaion();
+		this.config = mucGroupContext.find(this.group);
+	}
+
+	private boolean hidden() {
+		return this.config.allowed(MucGroupConfig.HIDDEN, this.group);
 	}
 
 	public boolean equals(String jid) {
@@ -48,7 +54,7 @@ public class Item {
 
 	@XmlAttribute
 	public String getJid() {
-		return this.hidden ? null : this.jid;
+		return this.hidden() ? null : this.jid;
 	}
 
 	public Item setJid(JID jid) {
@@ -68,6 +74,22 @@ public class Item {
 
 	@XmlAttribute
 	public String getRole() {
-		return this.role;
+		return ItemRole.NONE.equals(this.role) ? this.config.mapping(this.getAffiliation()) : this.role;
+	}
+
+	public Object supply(String key) {
+		switch (key) {
+		case MucStatusJudge.JUDEGE_JID:
+			return this.jid;
+		}
+		return null;
+	}
+
+	public boolean judge(String key, Object value) {
+		switch (key) {
+		case MucStatusJudge.JUDEGE_HIDDEN:
+			return this.hidden();
+		}
+		return false;
 	}
 }

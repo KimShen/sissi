@@ -10,11 +10,12 @@ import com.sissi.protocol.ProtocolType;
 /**
  * @author kim 2014年1月29日
  */
-public class CheckLoopProcessor implements Input {
+public class CheckErrorPongProcessor implements Input {
 
 	private final List<String> ignore;
 
-	public CheckLoopProcessor(List<String> ignore) {
+	public CheckErrorPongProcessor(List<String> ignore) {
+		super();
 		this.ignore = ignore;
 	}
 
@@ -24,7 +25,7 @@ public class CheckLoopProcessor implements Input {
 	}
 
 	private boolean pong(JIDContext context, Protocol protocol) {
-		context.pong(protocol);
+		context.pong(protocol.getParent());
 		return false;
 	}
 }

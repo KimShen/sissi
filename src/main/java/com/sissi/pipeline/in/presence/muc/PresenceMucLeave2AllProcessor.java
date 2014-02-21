@@ -8,6 +8,8 @@ import com.sissi.protocol.muc.Item;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.PresenceType;
+import com.sissi.ucenter.MucGroupContext;
+import com.sissi.ucenter.MucStatusCollector;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationMuc;
 
@@ -16,6 +18,16 @@ import com.sissi.ucenter.RelationMuc;
  */
 public class PresenceMucLeave2AllProcessor extends ProxyProcessor {
 
+	private final MucGroupContext mucGroupContext;
+
+	private final MucStatusCollector mucStatusCollector;
+
+	public PresenceMucLeave2AllProcessor(MucGroupContext mucGroupContext, MucStatusCollector mucStatusCollector) {
+		super();
+		this.mucGroupContext = mucGroupContext;
+		this.mucStatusCollector = mucStatusCollector;
+	}
+
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.getTo());
@@ -23,7 +35,7 @@ public class PresenceMucLeave2AllProcessor extends ProxyProcessor {
 		Presence presence = new Presence();
 		for (Relation each : super.myRelations(group)) {
 			RelationMuc relation = RelationMuc.class.cast(each);
-			super.findOne(super.build(relation.getJID()), true).write(presence.clear().add(new XUser().add(new Item(ourRelation))).setType(PresenceType.UNAVAILABLE).setFrom(protocol.getTo()));
+			super.findOne(super.build(relation.getJID()), true).write(presence.clear().add(new XUser().setItem(new Item(group, ourRelation, this.mucGroupContext), this.mucStatusCollector)).setType(PresenceType.UNAVAILABLE).setFrom(protocol.getTo()));
 		}
 		return true;
 	}
