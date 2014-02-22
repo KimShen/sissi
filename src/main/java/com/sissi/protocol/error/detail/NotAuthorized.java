@@ -21,6 +21,6 @@ public class NotAuthorized extends ServerErrorDetail {
 	}
 
 	private NotAuthorized(String xmlns) {
-		super(XMLNS_STREAM);
+		super(xmlns);
 	}
 }

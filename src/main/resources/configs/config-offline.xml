@@ -7,7 +7,7 @@
 
 	<bean id="delay" abstract="true">
 		<constructor-arg ref="jid" />
-		<constructor-arg value="${pipeline.offline.title}" />
+		<constructor-arg value="${pipeline.offline}" />
 	</bean>
 
 	<bean id="offline" class="com.sissi.offline.impl.MongoDelayElementBox">

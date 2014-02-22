@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.error.ServerError;
+import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
@@ -22,6 +23,8 @@ public class Message extends Protocol implements Collector {
 
 	public final static String NAME = "message";
 
+	private XUser x;
+
 	private Body body;
 
 	private Delay delay;
@@ -32,6 +35,11 @@ public class Message extends Protocol implements Collector {
 
 	public Message() {
 		super();
+	}
+
+	public Message setType(MessageType type) {
+		super.setType(type.toString());
+		return this;
 	}
 
 	public String getId() {
@@ -81,6 +89,16 @@ public class Message extends Protocol implements Collector {
 	@XmlElement
 	public ServerError getError() {
 		return super.getError();
+	}
+
+	public Message setX(XUser x) {
+		this.x = x;
+		return this;
+	}
+
+	@XmlElement
+	public XUser getX() {
+		return this.x;
 	}
 
 	public boolean hasContent() {

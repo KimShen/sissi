@@ -7,5 +7,5 @@ public interface RelationMuc extends Relation {
 	
 	public String getRole();
 	
-	public String getAffiliaion();
+	public String getAffiliation();
 }

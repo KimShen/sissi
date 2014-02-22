@@ -81,7 +81,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 			query.put(this.fieldRoles + "." + MongoProxyConfig.FIELD_RESOURCE, from.resource());
 			this.config.collection().update(query, BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start().add(this.fieldRoles + ".$." + this.fieldRole, muc.getRole()).add(this.fieldRoles + ".$." + MongoProxyConfig.FIELD_NICK, muc.getName()).get()).get(), true, false, WriteConcern.SAFE);
 		} catch (MongoException e) {
-			this.config.collection().update(this.buildQuery(muc.getJID()), BasicDBObjectBuilder.start().add("$setOnInsert", BasicDBObjectBuilder.start().add(this.fieldActivate, false).add(MongoProxyConfig.FIELD_CREATOR, from.asStringWithBare()).add(this.fieldAffiliations, new DBObject[] { BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(this.fieldAffiliation, ItemAffiliation.OWNER.toString()).get() }).get()).add("$addToSet", BasicDBObjectBuilder.start().add(this.fieldRoles, BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, from.resource()).add(MongoProxyConfig.FIELD_NICK, relation.getName()).add(this.fieldRole, muc.getRole()).get()).get()).get(), true, false, WriteConcern.SAFE);
+			this.config.collection().update(this.buildQuery(muc.getJID()), BasicDBObjectBuilder.start().add("$setOnInsert", BasicDBObjectBuilder.start(relation.plus()).add(this.fieldActivate, false).add(MongoProxyConfig.FIELD_CREATOR, from.asStringWithBare()).add(this.fieldAffiliations, new DBObject[] { BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(this.fieldAffiliation, ItemAffiliation.OWNER.toString()).get() }).get()).add("$addToSet", BasicDBObjectBuilder.start().add(this.fieldRoles, BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_JID, from.asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, from.resource()).add(MongoProxyConfig.FIELD_NICK, relation.getName()).add(this.fieldRole, muc.getRole()).get()).get()).get(), true, false, WriteConcern.SAFE);
 		}
 		return this;
 	}
@@ -228,7 +228,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 			return true;
 		}
 
-		public String getAffiliaion() {
+		public String getAffiliation() {
 			return this.creator.equals(this.jid) ? ItemAffiliation.OWNER.toString() : this.affiliaion != null ? this.affiliaion : ItemAffiliation.NONE.toString();
 		}
 

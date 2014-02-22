@@ -5,8 +5,14 @@ package com.sissi.ucenter;
  */
 public interface MucGroupConfig {
 
-	public final static String HIDDEN = "hidden";
-	
+	public final static String HIDDEN_ROLE = "hidden_role";
+
+	public final static String HIDDEN_PURE = "hidden_pure";
+
+	public final static String PASSWORD = "password";
+
+	public final static String ROLES = "roles";
+
 	public boolean allowed(String key, Object value);
 
 	public String mapping(String affiliation);

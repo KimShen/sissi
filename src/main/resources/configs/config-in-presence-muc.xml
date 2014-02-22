@@ -15,15 +15,25 @@
 	</bean>
 
 	<bean id="presence.pro.muc.check.xmlns" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckXmlnsProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.muc.check.password" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckPasswordProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="relation.muc.context" />
+	</bean>
+	<bean id="presence.pro.muc.check.affiliation" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckAffiliationProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="relation.muc.context" />
+	</bean>
 	<bean id="presence.pro.muc.check.nickname" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckNicknameProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.muc.join" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoinProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="relation.muc" />
 	</bean>
-	<bean id="presence.pro.muc.join.2self" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfProcessor" parent="global.pro.proxy">
+	<bean id="presence.pro.muc.join.2self.presence" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfPresenceProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="relation.muc" />
 		<constructor-arg ref="presence.muc.status" />
 		<constructor-arg ref="relation.muc.context" />
 		<property name="relationContext" ref="relation.muc" />
+	</bean>
+	<bean id="presence.pro.muc.join.2self.message" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfMessageProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="relation.muc.context" />
+		<constructor-arg value="${pipeline.message.hidden}" />
 	</bean>
 	<bean id="presence.pro.muc.join.2fans" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="relation.muc.context" />
@@ -35,9 +45,12 @@
 			<util:list>
 				<ref bean="presence.pro.muc.check.xmlns" />
 				<ref bean="presence.pro.muc.check.nickname" />
-				<ref bean="presence.pro.muc.join.2self" />
+				<ref bean="presence.pro.muc.check.password" />
+				<ref bean="presence.pro.muc.check.affiliation" />
+				<ref bean="presence.pro.muc.join.2self.presence" />
 				<ref bean="presence.pro.muc.join" />
 				<ref bean="presence.pro.muc.join.2fans" />
+				<ref bean="presence.pro.muc.join.2self.message" />
 			</util:list>
 		</constructor-arg>
 	</bean>

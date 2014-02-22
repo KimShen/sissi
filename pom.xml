@@ -74,8 +74,9 @@
 		<maven.pipeline.roster.group.length>10</maven.pipeline.roster.group.length>
 		<maven.pipeline.roster.group.default>好友</maven.pipeline.roster.group.default>
 		<maven.pipeline.resource.limit>2</maven.pipeline.resource.limit>
+		<maven.pipeline.offline>From Sissi offline</maven.pipeline.offline>
 		<maven.pipeline.message.relation>false</maven.pipeline.message.relation>
-		<maven.pipeline.offline.title>From Sissi offline</maven.pipeline.offline.title>
+		<maven.pipeline.message.hidden>Room is not anonymous</maven.pipeline.message.hidden>
 	</properties>
 	<dependencies>
 		<!-- For Compile -->

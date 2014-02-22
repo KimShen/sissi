@@ -11,8 +11,8 @@ import javax.xml.bind.annotation.XmlType;
 import com.sissi.context.JID;
 import com.sissi.protocol.presence.X;
 import com.sissi.read.Metadata;
-import com.sissi.ucenter.MucStatus;
 import com.sissi.ucenter.MucStatusCollector;
+import com.sissi.ucenter.MucStatusComputer;
 import com.sissi.ucenter.MucStatusJudge;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
@@ -23,7 +23,7 @@ import com.sissi.ucenter.field.Fields;
 @Metadata(uri = XUser.XMLNS, localName = X.NAME)
 @XmlType(namespace = XUser.XMLNS)
 @XmlRootElement
-public class XUser extends X implements Field<String>, MucStatus {
+public class XUser extends X implements Field<String>, MucStatusCollector {
 
 	public final static String XMLNS = "http://jabber.org/protocol/muc#user";
 
@@ -45,7 +45,7 @@ public class XUser extends X implements Field<String>, MucStatus {
 		this.current = current;
 	}
 
-	public XUser setItem(Item item, MucStatusCollector collector) {
+	public XUser setItem(Item item, MucStatusComputer collector) {
 		this.item = item;
 		collector.collect(this, this.item);
 		return this;

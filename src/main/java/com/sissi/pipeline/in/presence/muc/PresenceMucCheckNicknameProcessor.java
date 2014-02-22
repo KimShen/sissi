@@ -13,7 +13,7 @@ import com.sissi.protocol.error.detail.JIDMalformed;
  */
 public class PresenceMucCheckNicknameProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.MODIFY).add(JIDMalformed.DETAIL);
+	private final Error error = new ServerError().setCode("400").setType(ProtocolType.MODIFY).add(JIDMalformed.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

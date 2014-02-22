@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.protocol.presence.X;
+import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
@@ -14,13 +15,19 @@ import com.sissi.ucenter.field.Fields;
 @Metadata(uri = XMuc.XMLNS, localName = X.NAME)
 @XmlType(namespace = XMuc.XMLNS)
 @XmlRootElement
-public class XMuc extends X implements Field<String> {
+public class XMuc extends X implements Field<String>, Collector {
 
 	public final static String XMLNS = "http://jabber.org/protocol/muc";
+
+	private XPassword password;
 
 	@Override
 	public String getXmlns() {
 		return XMLNS;
+	}
+
+	public String getPassword() {
+		return this.password != null ? this.password.getText() : null;
 	}
 
 	@Override
@@ -36,5 +43,10 @@ public class XMuc extends X implements Field<String> {
 	@Override
 	public boolean hasChild() {
 		return false;
+	}
+
+	@Override
+	public void set(String localName, Object ob) {
+		this.password = XPassword.class.cast(ob);
 	}
 }

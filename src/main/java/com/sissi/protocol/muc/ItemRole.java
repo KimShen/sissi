@@ -23,6 +23,10 @@ public enum ItemRole {
 		return super.toString().toLowerCase();
 	}
 
+	public boolean contains(ItemRole role) {
+		return this.ordinal() >= role.ordinal();
+	}
+
 	public boolean equals(String role) {
 		return this == ItemRole.parse(role);
 	}
@@ -31,7 +35,7 @@ public enum ItemRole {
 		try {
 			return role != null ? ItemRole.valueOf(role.toUpperCase()) : null;
 		} catch (Exception e) {
-			return null;
+			return ItemRole.NONE;
 		}
 	}
 

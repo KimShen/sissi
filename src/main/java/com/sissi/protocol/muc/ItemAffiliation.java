@@ -24,24 +24,19 @@ public enum ItemAffiliation {
 		return super.toString().toLowerCase();
 	}
 
+	public boolean contains(ItemAffiliation affiliation){
+		return this.ordinal() >= affiliation.ordinal();
+	}
+	
 	public boolean equals(String affiliation) {
 		return this == ItemAffiliation.parse(affiliation);
-	}
-
-	public boolean all(ItemAffiliation... affiliations) {
-		for (ItemAffiliation affiliation : affiliations) {
-			if ((this != affiliation) && ((this.ordinal() & affiliation.ordinal()) != 0)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	public static ItemAffiliation parse(String affiliation) {
 		try {
 			return ItemAffiliation.valueOf(affiliation.toUpperCase());
 		} catch (Exception e) {
-			return null;
+			return ItemAffiliation.NONE;
 		}
 	}
 

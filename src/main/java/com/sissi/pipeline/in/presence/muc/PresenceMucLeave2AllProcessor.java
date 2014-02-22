@@ -9,7 +9,7 @@ import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.PresenceType;
 import com.sissi.ucenter.MucGroupContext;
-import com.sissi.ucenter.MucStatusCollector;
+import com.sissi.ucenter.MucStatusComputer;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationMuc;
 
@@ -20,9 +20,9 @@ public class PresenceMucLeave2AllProcessor extends ProxyProcessor {
 
 	private final MucGroupContext mucGroupContext;
 
-	private final MucStatusCollector mucStatusCollector;
+	private final MucStatusComputer mucStatusCollector;
 
-	public PresenceMucLeave2AllProcessor(MucGroupContext mucGroupContext, MucStatusCollector mucStatusCollector) {
+	public PresenceMucLeave2AllProcessor(MucGroupContext mucGroupContext, MucStatusComputer mucStatusCollector) {
 		super();
 		this.mucGroupContext = mucGroupContext;
 		this.mucStatusCollector = mucStatusCollector;

@@ -1,9 +1,10 @@
 package com.sissi.ucenter;
 
+
 /**
  * @author kim 2014年2月21日
  */
-public interface MucStatusCollector {
+public interface MucStatusCollector extends MucStatusJudge{
 
-	public MucStatusCollector collect(MucStatus status, MucStatusJudge judge);
+	public MucStatusCollector add(String code);
 }

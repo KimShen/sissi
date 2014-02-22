@@ -5,7 +5,6 @@ import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
-import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.muc.ItemAffiliation;
 import com.sissi.protocol.muc.ItemRole;
 import com.sissi.ucenter.MucGroupConfig;
@@ -20,20 +19,23 @@ public class MongoMucGroupContext implements MucGroupContext {
 
 	private final String fieldConfigs = "configs";
 
+	private final String fieldHidden = "hidden";
+
 	private final String fieldMapping = "mapping";
+
+	private final String fieldPassword = "password";
+	
+	private final String fieldAffiliation = "affiliation";
 
 	private final DBObject filter = BasicDBObjectBuilder.start().add(this.fieldConfigs, 1).add(MongoProxyConfig.FIELD_CREATOR, 1).get();
 
 	private final MongoConfig config;
 
-	private final JIDBuilder jidBuilder;
-
 	private final RelationContext relationContext;
 
-	public MongoMucGroupContext(MongoConfig config, JIDBuilder jidBuilder, RelationContext relationContext) {
+	public MongoMucGroupContext(MongoConfig config, RelationContext relationContext) {
 		super();
 		this.config = config;
-		this.jidBuilder = jidBuilder;
 		this.relationContext = relationContext;
 	}
 
@@ -64,13 +66,23 @@ public class MongoMucGroupContext implements MucGroupContext {
 		@Override
 		public boolean allowed(String key, Object value) {
 			switch (key) {
-			case MucGroupConfig.HIDDEN:
+			case MucGroupConfig.HIDDEN_ROLE: {
 				if (value == null) {
 					return false;
 				}
 				JID jid = JID.class.cast(value);
 				RelationMuc muc = RelationMuc.class.cast(MongoMucGroupContext.this.relationContext.ourRelation(jid, this.group));
-				return MongoMucGroupContext.this.config.asBoolean(this.configs, MucGroupConfig.HIDDEN) && !jid.asStringWithBare().equals(this.creator) && !ItemRole.MODERATOR.equals(ItemRole.NONE.equals(muc.getRole()) ? this.mapping(muc.getAffiliaion()) : muc.getRole());
+				return MongoMucGroupContext.this.config.asBoolean(this.configs, MongoMucGroupContext.this.fieldHidden) && !jid.asStringWithBare().equals(this.creator) && !ItemRole.MODERATOR.equals(ItemRole.NONE.equals(muc.getRole()) ? this.mapping(muc.getAffiliation()) : muc.getRole());
+			}
+			case MucGroupConfig.HIDDEN_PURE:
+				return MongoMucGroupContext.this.config.asBoolean(this.configs, MongoMucGroupContext.this.fieldHidden);
+			case MucGroupConfig.PASSWORD:
+				String password = MongoMucGroupContext.this.config.asString(this.configs, MongoMucGroupContext.this.fieldPassword);
+				return password == null ? true : value == null ? false : password.equals(value.toString());
+			case MucGroupConfig.ROLES: {
+				RelationMuc muc = RelationMuc.class.cast(MongoMucGroupContext.this.relationContext.ourRelation(JID.class.cast(value), this.group));
+				return ItemAffiliation.parse(muc.getAffiliation()).contains(ItemAffiliation.parse(MongoMucGroupContext.this.config.asString(this.configs, MongoMucGroupContext.this.fieldAffiliation)));
+			}
 			}
 			return false;
 		}

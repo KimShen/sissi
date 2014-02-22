@@ -8,7 +8,7 @@ import com.sissi.protocol.muc.Item;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.ucenter.MucGroupContext;
-import com.sissi.ucenter.MucStatusCollector;
+import com.sissi.ucenter.MucStatusComputer;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationMuc;
 import com.sissi.ucenter.RelationMucMapping;
@@ -16,15 +16,15 @@ import com.sissi.ucenter.RelationMucMapping;
 /**
  * @author kim 2014年2月11日
  */
-public class PresenceMucJoin2SelfProcessor extends ProxyProcessor {
+public class PresenceMucJoin2SelfPresenceProcessor extends ProxyProcessor {
 
 	private final RelationMucMapping relationMucMapping;
 
-	private final MucStatusCollector mucStatusCollector;
+	private final MucStatusComputer mucStatusCollector;
 
 	private final MucGroupContext mucGroupContext;
 
-	public PresenceMucJoin2SelfProcessor(RelationMucMapping relationMucMapping, MucStatusCollector mucStatusCollector, MucGroupContext mucGroupContext) {
+	public PresenceMucJoin2SelfPresenceProcessor(RelationMucMapping relationMucMapping, MucStatusComputer mucStatusCollector, MucGroupContext mucGroupContext) {
 		super();
 		this.relationMucMapping = relationMucMapping;
 		this.mucStatusCollector = mucStatusCollector;

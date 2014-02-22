@@ -48,12 +48,12 @@ public class Item implements MucStatusJudge {
 		this.group = group;
 		this.current = current;
 		this.role = muc.getRole();
-		this.affiliation = muc.getAffiliaion();
+		this.affiliation = muc.getAffiliation();
 		this.config = mucGroupContext.find(this.group);
 	}
 
 	private boolean hidden() {
-		return this.config.allowed(MucGroupConfig.HIDDEN, this.current);
+		return this.config.allowed(MucGroupConfig.HIDDEN_ROLE, this.current);
 	}
 
 	public boolean equals(String jid) {

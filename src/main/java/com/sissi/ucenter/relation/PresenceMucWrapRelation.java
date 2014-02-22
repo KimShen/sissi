@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.sissi.context.JID;
+import com.sissi.protocol.muc.XMuc;
+import com.sissi.protocol.presence.Presence;
 import com.sissi.ucenter.RelationMuc;
 
 /**
@@ -17,9 +19,12 @@ public class PresenceMucWrapRelation implements RelationMuc {
 
 	private final RelationMuc muc;
 
-	public PresenceMucWrapRelation(JID jid, RelationMuc muc) {
+	private final Presence presence;
+
+	public PresenceMucWrapRelation(JID jid, Presence presence, RelationMuc muc) {
 		this.jid = jid;
 		this.muc = muc;
+		this.presence = presence;
 	}
 
 	@Override
@@ -43,12 +48,19 @@ public class PresenceMucWrapRelation implements RelationMuc {
 	}
 
 	@Override
-	public String getAffiliaion() {
-		return this.muc.getAffiliaion();
+	public String getAffiliation() {
+		return this.muc.getAffiliation();
 	}
 
 	@Override
 	public Map<String, Object> plus() {
-		return plus;
+		XMuc xmuc = this.presence.findField(XMuc.NAME, XMuc.class);
+		if (xmuc != null) {
+			Map<String, Object> plus = new HashMap<String, Object>();
+			plus.put("configs.password", xmuc.getPassword());
+			return plus;
+		} else {
+			return plus;
+		}
 	}
 }
