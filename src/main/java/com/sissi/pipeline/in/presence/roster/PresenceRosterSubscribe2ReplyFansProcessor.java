@@ -27,10 +27,10 @@ public class PresenceRosterSubscribe2ReplyFansProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID to = super.build(protocol.getTo());
-		return RelationRoster.class.cast(super.ourRelation(context.jid(), to)).in(this.relations) ? this.writeAndReturn(context, to, Presence.class.cast(protocol)) : true;
+		return super.ourRelation(context.jid(), to).cast(RelationRoster.class).in(this.relations) ? this.writeAndReturn(context, to, Presence.class.cast(protocol)) : true;
 	}
 
-	private Boolean writeAndReturn(JIDContext context, JID to, Presence presence) {
+	private boolean writeAndReturn(JIDContext context, JID to, Presence presence) {
 		this.input.input(super.findOne(to), presence.setType(PresenceType.SUBSCRIBED).setTo(context.jid().asStringWithBare()));
 		return false;
 	}

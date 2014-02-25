@@ -12,11 +12,11 @@ public class IQResultProcessor extends IQProcessor {
 		super(ProtocolType.RESULT.toString(), true);
 	}
 
-	public IQResultProcessor(Boolean clear) {
+	public IQResultProcessor(boolean clear) {
 		super(ProtocolType.RESULT.toString(), true, false);
 	}
 
-	public IQResultProcessor(Boolean clear, Boolean doNext) {
+	public IQResultProcessor(boolean clear, boolean doNext) {
 		super(ProtocolType.RESULT.toString(), clear, doNext);
 	}
 

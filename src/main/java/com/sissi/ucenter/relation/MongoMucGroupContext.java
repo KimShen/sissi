@@ -2,6 +2,7 @@ package com.sissi.ucenter.relation;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
+import com.sissi.commons.Extracter;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
@@ -24,7 +25,7 @@ public class MongoMucGroupContext implements MucGroupContext {
 	private final String fieldMapping = "mapping";
 
 	private final String fieldPassword = "password";
-	
+
 	private final String fieldAffiliation = "affiliation";
 
 	private final DBObject filter = BasicDBObjectBuilder.start().add(this.fieldConfigs, 1).add(MongoProxyConfig.FIELD_CREATOR, 1).get();
@@ -42,25 +43,25 @@ public class MongoMucGroupContext implements MucGroupContext {
 	@Override
 	public MucGroupConfig find(JID group) {
 		DBObject db = this.config.collection().findOne(BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_JID, group.asStringWithBare()).get(), this.filter);
-		return new MongoMucGroupConfig(group, db != null ? DBObject.class.cast(db.get(this.fieldConfigs)) : null, this.config.asString(db, MongoProxyConfig.FIELD_CREATOR));
+		return new MongoMucGroupConfig(group, db != null ? DBObject.class.cast(db.get(this.fieldConfigs)) : null, Extracter.asString(db, MongoProxyConfig.FIELD_CREATOR));
 	}
 
 	private class MongoMucGroupConfig implements MucGroupConfig {
 
 		private final JID group;
 
-		private final DBObject configs;
+		private final int[] mapping;
 
 		private final String creator;
 
-		private final Integer[] mapping;
+		private final DBObject configs;
 
 		public MongoMucGroupConfig(JID group, DBObject configs, String creator) {
 			super();
 			this.group = group;
 			this.configs = configs;
 			this.creator = creator;
-			this.mapping = MongoMucGroupContext.this.config.asInts(this.configs, MongoMucGroupContext.this.fieldMapping);
+			this.mapping = Extracter.asInts(this.configs, MongoMucGroupContext.this.fieldMapping);
 		}
 
 		@Override
@@ -72,16 +73,16 @@ public class MongoMucGroupContext implements MucGroupContext {
 				}
 				JID jid = JID.class.cast(value);
 				RelationMuc muc = RelationMuc.class.cast(MongoMucGroupContext.this.relationContext.ourRelation(jid, this.group));
-				return MongoMucGroupContext.this.config.asBoolean(this.configs, MongoMucGroupContext.this.fieldHidden) && !jid.asStringWithBare().equals(this.creator) && !ItemRole.MODERATOR.equals(ItemRole.NONE.equals(muc.getRole()) ? this.mapping(muc.getAffiliation()) : muc.getRole());
+				return Extracter.asBoolean(this.configs, MongoMucGroupContext.this.fieldHidden) && !jid.asStringWithBare().equals(this.creator) && !ItemRole.MODERATOR.equals(ItemRole.NONE.equals(muc.getRole()) ? this.mapping(muc.getAffiliation()) : muc.getRole());
 			}
 			case MucGroupConfig.HIDDEN_PURE:
-				return MongoMucGroupContext.this.config.asBoolean(this.configs, MongoMucGroupContext.this.fieldHidden);
+				return Extracter.asBoolean(this.configs, MongoMucGroupContext.this.fieldHidden);
 			case MucGroupConfig.PASSWORD:
-				String password = MongoMucGroupContext.this.config.asString(this.configs, MongoMucGroupContext.this.fieldPassword);
+				String password = Extracter.asString(this.configs, MongoMucGroupContext.this.fieldPassword);
 				return password == null ? true : value == null ? false : password.equals(value.toString());
-			case MucGroupConfig.ROLES: {
+			case MucGroupConfig.AFFILIATIONS: {
 				RelationMuc muc = RelationMuc.class.cast(MongoMucGroupContext.this.relationContext.ourRelation(JID.class.cast(value), this.group));
-				return ItemAffiliation.parse(muc.getAffiliation()).contains(ItemAffiliation.parse(MongoMucGroupContext.this.config.asString(this.configs, MongoMucGroupContext.this.fieldAffiliation)));
+				return ItemAffiliation.parse(muc.getAffiliation()).contains(ItemAffiliation.parse(Extracter.asString(this.configs, MongoMucGroupContext.this.fieldAffiliation)));
 			}
 			}
 			return false;

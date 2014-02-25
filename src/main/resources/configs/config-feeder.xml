@@ -8,12 +8,12 @@
 		<constructor-arg value="${looper.num}" />
 		<constructor-arg ref="counter" />
 		<constructor-arg>
-			<bean class="com.sissi.commons.Runner">
+			<bean class="com.sissi.thread.Runner">
 				<constructor-arg ref="executor" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.commons.Interval">
+			<bean class="com.sissi.thread.Interval">
 				<constructor-arg value="${looper.gc.interval}" />
 				<constructor-arg value="${looper.gc.unit}" />
 			</bean>

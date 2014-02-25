@@ -1,6 +1,7 @@
 package com.sissi.pipeline.in;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
@@ -12,15 +13,16 @@ import com.sissi.protocol.ProtocolType;
  */
 public class CheckErrorPongProcessor implements Input {
 
-	private final List<String> ignore;
+	private final Set<String> ignore;
 
-	public CheckErrorPongProcessor(List<String> ignore) {
+	public CheckErrorPongProcessor(HashSet<String> ignore) {
 		super();
 		this.ignore = ignore;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
+		// Not contain "to" or "to" in special addresses
 		return protocol.type(ProtocolType.ERROR) && (!protocol.to() || protocol.to(this.ignore)) ? this.pong(context, protocol) : true;
 	}
 

@@ -12,7 +12,7 @@ public class StreamOpenProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.write(Stream.class.cast(protocol).setLang(context.lang()).reply().setFrom(context.domain()));
+		context.write(protocol.cast(Stream.class).setLang(context.lang()).reply().setFrom(context.domain()));
 		return true;
 	}
 }

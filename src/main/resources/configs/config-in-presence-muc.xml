@@ -21,14 +21,13 @@
 	<bean id="presence.pro.muc.check.affiliation" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckAffiliationProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="relation.muc.context" />
 	</bean>
-	<bean id="presence.pro.muc.check.nickname" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckNicknameProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.muc.check.nickname" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckNicknameContainsProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.muc.join" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoinProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="relation.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.2self.presence" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfPresenceProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="relation.muc" />
-		<constructor-arg ref="presence.muc.status" />
 		<constructor-arg ref="relation.muc.context" />
+		<constructor-arg ref="presence.muc.status" />
 		<property name="relationContext" ref="relation.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.2self.message" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfMessageProcessor" parent="global.pro.proxy">
@@ -59,10 +58,9 @@
 	</bean>
 	<bean id="presence.pro.muc.leave.2all" class="com.sissi.pipeline.in.presence.muc.PresenceMucLeave2AllProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="relation.muc.context" />
-		<constructor-arg ref="presence.muc.status" />
 		<property name="relationContext" ref="relation.muc" />
 	</bean>
-	<bean id="presence.pro.muc.leave.check" class="com.sissi.pipeline.in.presence.muc.PresenceMucLeaveCheckRelationProcessor" parent="global.pro.proxy">
+	<bean id="presence.pro.muc.leave.check" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckOutcastProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="relation.muc" />
 	</bean>
 	<bean id="presence.pro.muc.leave.chained" class="com.sissi.pipeline.in.ChainedProcessor">

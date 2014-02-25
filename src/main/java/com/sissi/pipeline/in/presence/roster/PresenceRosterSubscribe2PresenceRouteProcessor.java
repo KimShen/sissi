@@ -14,7 +14,7 @@ public class PresenceRosterSubscribe2PresenceRouteProcessor extends ProxyProcess
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		// must using bare jid
-		super.broadcast(super.build(protocol.getTo()), context.jid().bare(), Presence.class.cast(protocol).setType(PresenceType.SUBSCRIBE));
+		super.broadcast(super.build(protocol.getTo()), context.jid().bare(), protocol.cast(Presence.class).setType(PresenceType.SUBSCRIBE));
 		return true;
 	}
 }

@@ -38,23 +38,23 @@ public interface JIDContext {
 
 	public String lang();
 
-	public SocketAddress address();
-
 	public boolean encrypt();
 
 	public boolean encrypted();
 
-	public JIDContext present();
+	public JIDContext online();
 
-	public JIDContext leaving();
+	public JIDContext offline();
 
-	public boolean presented();
+	public boolean presence();
 
 	public long idle();
 
 	public Status status();
 
 	public JIDContext reset();
+
+	public SocketAddress address();
 
 	public boolean close();
 
@@ -70,7 +70,11 @@ public interface JIDContext {
 
 	public JIDContext write(Element element, boolean force);
 
+	public JIDContext write(Element element, boolean force, boolean bare);
+
 	public JIDContext write(Collection<Element> elements);
 
 	public JIDContext write(Collection<Element> elements, boolean force);
+
+	public JIDContext write(Collection<Element> elements, boolean force, boolean bare);
 }

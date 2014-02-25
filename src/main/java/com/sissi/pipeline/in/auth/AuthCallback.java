@@ -10,5 +10,5 @@ public interface AuthCallback {
 
 	public boolean auth(Auth auth, JIDContext context);
 
-	public boolean isSupport(String mechanism);
+	public boolean support(String mechanism);
 }

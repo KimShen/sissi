@@ -186,7 +186,7 @@ public class Socks5ProxyServerHandlerBuilder implements ServerHandlerBuilder {
 			try {
 				ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().write(new ByteBufWrapTransferBuffer(ByteBuf.class.cast(msg)));
 			} catch (Exception e) {
-				// Release if write
+				// Release if exception
 				ReferenceCountUtil.release(msg);
 			}
 		}

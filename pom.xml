@@ -15,6 +15,7 @@
 		<!-- For Server -->
 		<maven.global.domain>sissi.pw</maven.global.domain>
 		<maven.global.domain.group>group.sissi.pw</maven.global.domain.group>
+		<maven.global.domain.delegation>delegation@sissi.pw/delegation</maven.global.domain.delegation>
 		<maven.global.version>1.0</maven.global.version>
 		<maven.global.lang>zh_CN</maven.global.lang>
 		<maven.global.port.main>5222</maven.global.port.main>
@@ -73,12 +74,18 @@
 		<maven.pipeline.roster.name>10</maven.pipeline.roster.name>
 		<maven.pipeline.roster.group.length>10</maven.pipeline.roster.group.length>
 		<maven.pipeline.roster.group.default>好友</maven.pipeline.roster.group.default>
-		<maven.pipeline.resource.limit>2</maven.pipeline.resource.limit>
+		<maven.pipeline.bind.resource>2</maven.pipeline.bind.resource>
+		<maven.pipeline.bind.content>您有其他客户端上线了</maven.pipeline.bind.content>
 		<maven.pipeline.offline>From Sissi offline</maven.pipeline.offline>
 		<maven.pipeline.message.relation>false</maven.pipeline.message.relation>
 		<maven.pipeline.message.hidden>Room is not anonymous</maven.pipeline.message.hidden>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.3.2</version>
+		</dependency>
 		<!-- For Compile -->
 		<dependency>
 			<groupId>io.netty</groupId>

@@ -38,7 +38,7 @@ public class XUser extends X implements Field<String>, MucStatusCollector {
 	}
 
 	public XUser(JID current) {
-		this(current.asStringWithBare());
+		this(current.asString());
 	}
 
 	public XUser(String current) {

@@ -2,6 +2,7 @@ package com.sissi.context.impl;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
+import com.sissi.commons.Extracter;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JIDContext;
@@ -34,7 +35,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 	}
 
 	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
-		this.config.collection().update(this.buildQuery(context), this.buildEntity("$set", context.priority(), type, show, status, avator));
+		this.config.collection().update(this.buildQuery(context), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoProxyConfig.FIELD_PRIORITY, context.priority()).get()).get());
 		return this;
 	}
 
@@ -44,10 +45,6 @@ public class MongoStatusBuilder implements StatusBuilder {
 
 	private DBObject buildQuery(JIDContext context) {
 		return BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_INDEX, context.index()).add(MongoProxyConfig.FIELD_JID, context.jid().asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, context.jid().resource()).get();
-	}
-
-	private DBObject buildEntity(String op, Integer priority, String type, String show, String status, String avator) {
-		return BasicDBObjectBuilder.start().add(op, BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoProxyConfig.FIELD_PRIORITY, priority).get()).get();
 	}
 
 	private class MongoStatus implements Status {
@@ -88,7 +85,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 
 		@Override
 		public String find(String key) {
-			return MongoStatusBuilder.this.config.asString(this.status, key);
+			return Extracter.asString(this.status, key);
 		}
 	}
 }

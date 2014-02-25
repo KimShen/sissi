@@ -16,7 +16,7 @@ public class PresenceProbeOfflineStatusProcessor extends ProxyProcessor {
 		return super.resources(super.build(protocol.getTo())).isEmpty() ? this.writeAndReturn(context, Presence.class.cast(protocol)) : true;
 	}
 
-	private Boolean writeAndReturn(JIDContext context, Presence presence) {
+	private boolean writeAndReturn(JIDContext context, Presence presence) {
 		context.write(presence.clear().reply().setType(PresenceType.UNAVAILABLE.toString()));
 		return false;
 	}

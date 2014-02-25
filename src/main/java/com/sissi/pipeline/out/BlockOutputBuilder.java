@@ -47,7 +47,7 @@ abstract class BlockOutputBuilder implements OutputBuilder {
 
 		abstract protected JID contacter(JID current, Element node);
 
-		private Boolean isEmpty(JID jid) {
+		private boolean isEmpty(JID jid) {
 			return (jid == null || jid.user() == null);
 		}
 

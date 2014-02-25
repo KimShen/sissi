@@ -1,6 +1,5 @@
 package com.sissi.config.impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,7 +9,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.mongodb.AggregationOutput;
-import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -47,18 +45,18 @@ public class MongoProxyConfig implements MongoConfig {
 	private static final Log log = LogFactory.getLog(MongoProxyConfig.class);
 
 	private final Map<String, String> configs;
+	
+	private final MongoWrapCollection wrap;
 
 	private final DBCollection collection;
-
-	private final MongoWrapCollection wrap;
 
 	public MongoProxyConfig(MongoClient client, String db, String collection) {
 		super();
 		Map<String, String> configs = new HashMap<String, String>();
 		configs.put(MongoProxyConfig.D_NAME, db);
 		configs.put(MongoProxyConfig.C_NAME, collection);
-		this.wrap = new MongoWrapCollection();
 		this.configs = Collections.unmodifiableMap(configs);
+		this.wrap = new MongoWrapCollection();
 		this.collection = client.getDB(db).getCollection(collection);
 	}
 
@@ -74,41 +72,6 @@ public class MongoProxyConfig implements MongoConfig {
 
 	public MongoWrapCollection collection() {
 		return this.wrap;
-	}
-
-	public String asString(DBObject db, String key) {
-		Object value = this.as(db, key);
-		return value != null ? value.toString() : null;
-	}
-
-	public String[] asStrings(DBObject db, String key) {
-		@SuppressWarnings("unchecked")
-		ArrayList<String> value = ArrayList.class.cast(db.get(key));
-		return value != null ? value.toArray(new String[] {}) : null;
-	}
-
-	public int asInt(DBObject db, String key) {
-		Object value = this.as(db, key);
-		return value != null ? Integer.parseInt(value.toString()) : null;
-	}
-
-	public Integer[] asInts(DBObject db, String key) {
-		Object value = this.as(db, key);
-		return value != null ? BasicDBList.class.cast(value).toArray(new Integer[] {}) : null;
-	}
-
-	public long asLong(DBObject db, String key) {
-		Object value = this.as(db, key);
-		return value != null ? Long.parseLong(value.toString()) : null;
-	}
-
-	public boolean asBoolean(DBObject db, String key) {
-		Object value = this.as(db, key);
-		return value != null ? Boolean.class.cast(value) : Boolean.FALSE;
-	}
-
-	private Object as(DBObject db, String key) {
-		return db != null ? db.get(key) : null;
 	}
 
 	private class MongoWrapCollection implements MongoCollection {
@@ -140,12 +103,12 @@ public class MongoProxyConfig implements MongoConfig {
 		}
 
 		@Override
-		public WriteResult update(DBObject query, DBObject entity, Boolean upsert, Boolean batch) {
+		public WriteResult update(DBObject query, DBObject entity, boolean upsert, boolean batch) {
 			this.logUpdate(query, entity);
 			return MongoProxyConfig.this.collection.update(query, entity, upsert, batch);
 		}
 
-		public WriteResult update(DBObject query, DBObject entity, Boolean upsert, Boolean batch, WriteConcern concern) {
+		public WriteResult update(DBObject query, DBObject entity, boolean upsert, boolean batch, WriteConcern concern) {
 			this.logUpdate(query, entity);
 			return MongoProxyConfig.this.collection.update(query, entity, upsert, batch, concern);
 		}

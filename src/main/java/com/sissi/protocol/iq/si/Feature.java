@@ -23,6 +23,11 @@ public class Feature implements Collector {
 
 	private XData x;
 
+	public Feature setX(XData x) {
+		this.x = x;
+		return this;
+	}
+
 	@XmlElement
 	public XData getX() {
 		return this.x;

@@ -23,10 +23,10 @@ public class PresenceInit4FansProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return context.presented() ? true : this.init4Fans(context);
+		return context.presence() ? true : this.init4Fans(context);
 	}
 
-	private Boolean init4Fans(JIDContext context) {
+	private boolean init4Fans(JIDContext context) {
 		for (JID jid : super.iSubscribedWho(context.jid())) {
 			JIDs resoures = super.resources(jid);
 			if (resoures.isEmpty() && this.vCardContext != null) {

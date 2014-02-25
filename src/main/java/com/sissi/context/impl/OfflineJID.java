@@ -18,11 +18,11 @@ public class OfflineJID implements JID {
 		return null;
 	}
 
-	public boolean user(JID jid) {
+	public boolean like(JID jid) {
 		return false;
 	}
 
-	public boolean user(String jid) {
+	public boolean like(String jid) {
 		return false;
 	}
 
@@ -47,6 +47,10 @@ public class OfflineJID implements JID {
 
 	@Override
 	public JID bare() {
+		return this;
+	}
+
+	public JID clone() {
 		return this;
 	}
 

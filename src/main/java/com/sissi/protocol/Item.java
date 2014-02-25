@@ -25,7 +25,7 @@ abstract public class Item {
 
 	@XmlAttribute
 	public String getJid() {
-		return jid;
+		return this.jid;
 	}
 
 	public Item setJid(String jid) {

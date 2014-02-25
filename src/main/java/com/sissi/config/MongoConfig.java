@@ -1,6 +1,5 @@
 package com.sissi.config;
 
-import com.mongodb.DBObject;
 
 /**
  * @author kim 2013-11-15
@@ -14,16 +13,4 @@ public interface MongoConfig extends Config {
 	public MongoConfig clear();
 
 	public MongoCollection collection();
-
-	public String asString(DBObject db, String key);
-	
-	public String[] asStrings(DBObject db, String key);
-	
-	public int asInt(DBObject db, String key);
-	
-	public Integer[] asInts(DBObject db, String key);
-	
-	public long asLong(DBObject db, String key);
-
-	public boolean asBoolean(DBObject db, String key);
 }

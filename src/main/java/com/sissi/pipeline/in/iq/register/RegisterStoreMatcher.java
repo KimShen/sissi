@@ -18,6 +18,6 @@ public class RegisterStoreMatcher extends ClassMatcher {
 
 	@Override
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && Register.class.cast(protocol).form(this.needForm);
+		return super.match(protocol) && protocol.cast(Register.class).form(this.needForm);
 	}
 }

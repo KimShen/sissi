@@ -8,14 +8,14 @@ import com.sissi.ucenter.VCardContext;
 /**
  * @author kim 2013年12月10日
  */
-public class VCardGet2SelfProcessor extends VCardGetProcessor {
+public class VCardGet4SelfProcessor extends VCardGetProcessor {
 
-	public VCardGet2SelfProcessor(VCardContext vcardContext) {
+	public VCardGet4SelfProcessor(VCardContext vcardContext) {
 		super(vcardContext);
 	}
 
 	@Override
 	protected VCard get(JIDContext context, Protocol protocol) {
-		return super.vcardContext.get(context.jid(), VCard.class.cast(protocol));
+		return super.vcardContext.get(context.jid(), protocol.cast(VCard.class));
 	}
 }

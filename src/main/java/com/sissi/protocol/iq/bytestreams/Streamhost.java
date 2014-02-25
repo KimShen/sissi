@@ -24,11 +24,11 @@ public class Streamhost {
 
 	}
 
-	public Streamhost(String jid, BytestreamsProxy proxy) {
+	public Streamhost(BytestreamsProxy proxy) {
 		super();
 		this.host = proxy.getDomain();
 		this.port = proxy.getPort();
-		this.jid = jid;
+		this.jid = proxy.getJid();
 	}
 
 	public Streamhost setJid(String jid) {

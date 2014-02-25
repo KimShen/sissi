@@ -8,14 +8,15 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.commons.Interval;
-import com.sissi.commons.Runner;
+import com.sissi.commons.Trace;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.ping.Ping;
 import com.sissi.resource.ResourceCounter;
 import com.sissi.server.ServerHeart;
+import com.sissi.thread.Interval;
+import com.sissi.thread.Runner;
 
 /**
  * @author kim 2014年1月8日
@@ -57,10 +58,8 @@ public class PingServerHeart implements ServerHeart, Runnable {
 			try {
 				this.timeouts.take().timeout();
 			} catch (Exception e) {
-				if (this.log.isWarnEnabled()) {
-					this.log.warn(e.toString());
-					e.printStackTrace();
-				}
+				this.log.warn(e.toString());
+				Trace.trace(this.log, e);
 			}
 		}
 	}

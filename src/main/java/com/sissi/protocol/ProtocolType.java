@@ -1,22 +1,11 @@
 package com.sissi.protocol;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * @author kim 2014年1月16日
  */
 public enum ProtocolType {
 
-	SET, GET, RESULT, ERROR, CANCEL, WAIT, AUTH, CONTINUE, MODIFY;
-
-	private final static Set<String> values = new HashSet<String>();
-
-	static {
-		for (ProtocolType each : ProtocolType.values()) {
-			values.add(each.toString().toUpperCase());
-		}
-	}
+	NONE, SET, GET, RESULT, ERROR, CANCEL, WAIT, AUTH, CONTINUE, MODIFY;
 
 	public String toString() {
 		return super.toString().toLowerCase();
@@ -36,7 +25,10 @@ public enum ProtocolType {
 	}
 
 	public static ProtocolType parse(String value) {
-		String type = value != null ? value.toUpperCase() : value;
-		return values.contains(type) ? ProtocolType.valueOf(type) : null;
+		try {
+			return ProtocolType.valueOf(value.toUpperCase());
+		} catch (Exception e) {
+			return NONE;
+		}
 	}
 }

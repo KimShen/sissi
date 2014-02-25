@@ -14,11 +14,11 @@ public class PresenceRosterSubscribeProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		RelationRoster relation = RelationRoster.class.cast(super.ourRelation(context.jid(), super.build(protocol.getTo())));
-		return relation.isAsk() ? true : this.establishAndReturn(context, Presence.class.cast(protocol), relation);
+		RelationRoster relation = super.ourRelation(context.jid(), super.build(protocol.getTo())).cast(RelationRoster.class);
+		return relation.isAsk() ? true : this.establishAndReturn(context, protocol.cast(Presence.class), relation);
 	}
 
-	private Boolean establishAndReturn(JIDContext context, Presence presence, RelationRoster relation) {
+	private boolean establishAndReturn(JIDContext context, Presence presence, RelationRoster relation) {
 		super.establish(context.jid(), new PresenceRosterWrapRelation(super.build(presence.getTo()), presence, relation));
 		return true;
 	}

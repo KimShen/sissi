@@ -12,7 +12,7 @@ public class StreamContextDomainProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.domain(Stream.class.cast(protocol).getTo());
+		context.domain(protocol.cast(Stream.class).getTo());
 		return true;
 	}
 }

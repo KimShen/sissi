@@ -20,6 +20,6 @@ public class LastDomainMatcher extends ClassMatcher {
 	}
 
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && ( protocol.to(this.domain) == this.server);
+		return super.match(protocol) && (protocol.to(this.domain) == this.server);
 	}
 }

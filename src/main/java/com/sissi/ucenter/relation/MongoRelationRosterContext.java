@@ -10,6 +10,7 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
+import com.sissi.commons.Extracter;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
@@ -188,9 +189,9 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 		private final String name;
 
-		private final Boolean ask;
+		private final boolean ask;
 
-		private final Boolean activate;
+		private final boolean activate;
 
 		private final Integer subscription;
 
@@ -198,12 +199,12 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 		public MongoRelationRoster(DBObject db, String fieldJID) {
 			super();
-			this.jid = MongoRelationRosterContext.this.config.asString(db, fieldJID);
-			this.name = MongoRelationRosterContext.this.config.asString(db, MongoProxyConfig.FIELD_NICK);
-			this.subscription = MongoRelationRosterContext.this.config.asInt(db, MongoProxyConfig.FIELD_STATE);
-			this.ask = MongoRelationRosterContext.this.config.asBoolean(db, MongoRelationRosterContext.this.fieldAsk);
-			this.groups = MongoRelationRosterContext.this.config.asStrings(db, MongoRelationRosterContext.this.fieldGroups);
-			this.activate = MongoRelationRosterContext.this.config.asBoolean(db, MongoRelationRosterContext.this.fieldActivate);
+			this.jid = Extracter.asString(db, fieldJID);
+			this.name = Extracter.asString(db, MongoProxyConfig.FIELD_NICK);
+			this.subscription = Extracter.asInt(db, MongoProxyConfig.FIELD_STATE);
+			this.ask = Extracter.asBoolean(db, MongoRelationRosterContext.this.fieldAsk);
+			this.groups = Extracter.asStrings(db, MongoRelationRosterContext.this.fieldGroups);
+			this.activate = Extracter.asBoolean(db, MongoRelationRosterContext.this.fieldActivate);
 		}
 
 		public String getJID() {
@@ -241,6 +242,11 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 		public Map<String, Object> plus() {
 			return MongoRelationRosterContext.this.fieldPlus;
+		}
+
+		@Override
+		public <T extends Relation> T cast(Class<T> clazz) {
+			return clazz.cast(this);
 		}
 	}
 

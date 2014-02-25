@@ -16,6 +16,7 @@ import javax.security.sasl.Sasl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.commons.Trace;
 import com.sissi.context.JIDBuilder;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.auth.AuthCallback;
@@ -70,16 +71,14 @@ public class DigestAuthCallback implements AuthCallback {
 			context.write(new Challenge(this.saslServers.push(context, Sasl.createSaslServer(MECHANISM, this.protocol, context.domain(), this.props, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
 			return true;
 		} catch (Exception e) {
-			if (this.log.isErrorEnabled()) {
-				this.log.error(e.toString());
-				e.printStackTrace();
-			}
+			this.log.error(e.toString());
+			Trace.trace(this.log, e);
 			return false;
 		}
 	}
 
 	@Override
-	public boolean isSupport(String mechanism) {
+	public boolean support(String mechanism) {
 		return MECHANISM.equals(mechanism);
 	}
 

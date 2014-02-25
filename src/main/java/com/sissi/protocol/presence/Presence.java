@@ -61,7 +61,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	}
 
 	public boolean type() {
-		return PresenceType.parse(this.getType()) != null;
+		return PresenceType.parse(this.getType()) != PresenceType.NONE;
 	}
 
 	public boolean type(PresenceType type) {

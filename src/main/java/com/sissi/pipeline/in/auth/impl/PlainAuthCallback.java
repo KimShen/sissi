@@ -21,8 +21,6 @@ public class PlainAuthCallback implements AuthCallback {
 
 	public final static String MECHANISM = "PLAIN";
 
-	private final Base64 base64 = new Base64();
-
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final JIDBuilder jidBuilder;
@@ -42,7 +40,7 @@ public class PlainAuthCallback implements AuthCallback {
 	}
 
 	@Override
-	public boolean isSupport(String mechanism) {
+	public boolean support(String mechanism) {
 		return MECHANISM.equals(mechanism);
 	}
 
@@ -59,7 +57,7 @@ public class PlainAuthCallback implements AuthCallback {
 
 		public AuthCertificate(Auth auth) {
 			super();
-			byte[] afterDecode = PlainAuthCallback.this.base64.decode(auth.getText());
+			byte[] afterDecode = Base64.decodeBase64(auth.getText());
 			if (PlainAuthCallback.this.log.isDebugEnabled()) {
 				PlainAuthCallback.this.log.debug("User/Pass is: " + Arrays.toString(afterDecode));
 			}
@@ -72,7 +70,7 @@ public class PlainAuthCallback implements AuthCallback {
 			return this.user;
 		}
 
-		public Boolean pass(String pass) {
+		public boolean pass(String pass) {
 			return this.pass.equals(pass);
 		}
 	}

@@ -35,7 +35,7 @@ public class Body {
 		return this;
 	}
 
-	public Boolean hasContent() {
+	public boolean hasContent() {
 		return this.text.length() > 0;
 	}
 }

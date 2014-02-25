@@ -12,6 +12,7 @@ import javax.net.ssl.SSLEngine;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.commons.Trace;
 import com.sissi.server.ServerTls;
 import com.sissi.server.ServerTlsBuilder;
 
@@ -50,10 +51,8 @@ public class FixDomainServerTls implements ServerTls, GenericFutureListener<Futu
 		try {
 			return this.prepareSSL();
 		} catch (Exception e) {
-			if (log.isErrorEnabled()) {
-				log.error(e.toString());
-				e.printStackTrace();
-			}
+			log.error(e.toString());
+			Trace.trace(log, e);
 			return this.rollbackSSL();
 		}
 	}

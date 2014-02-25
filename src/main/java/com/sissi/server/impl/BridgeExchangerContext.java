@@ -9,8 +9,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
-import com.sissi.commons.Interval;
-import com.sissi.commons.Runner;
 import com.sissi.commons.apache.IOUtils;
 import com.sissi.config.MongoConfig;
 import com.sissi.gc.GC;
@@ -18,6 +16,8 @@ import com.sissi.resource.ResourceCounter;
 import com.sissi.server.Exchanger;
 import com.sissi.server.ExchangerContext;
 import com.sissi.server.ExchangerPoint;
+import com.sissi.thread.Interval;
+import com.sissi.thread.Runner;
 import com.sissi.write.Transfer;
 import com.sissi.write.TransferBuffer;
 
@@ -25,8 +25,6 @@ import com.sissi.write.TransferBuffer;
  * @author kim 2013年12月22日
  */
 public class BridgeExchangerContext implements ExchangerContext {
-
-	private final int gcThreadNumber = 1;
 
 	private final String fieldHost = "host";
 
@@ -39,7 +37,7 @@ public class BridgeExchangerContext implements ExchangerContext {
 	public BridgeExchangerContext(Runner runner, Interval interval, MongoConfig config, ResourceCounter resourceCounter) {
 		super();
 		this.config = config.clear();
-		runner.executor(this.gcThreadNumber, new LeakGC(interval, resourceCounter));
+		runner.executor(1, new LeakGC(interval, resourceCounter));
 	}
 
 	@Override

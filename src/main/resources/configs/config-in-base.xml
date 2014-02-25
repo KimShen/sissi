@@ -5,13 +5,14 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<util:list id="global.ignore">
+	<util:set id="global.ignore">
 		<value>127.0.0.1</value>
 		<value>localhost</value>
 		<value>${global.domain}</value>
 		<value>${global.domain.group}</value>
+		<value>${global.domain.delegation}</value>
 		<value>${bytestreams.jid}</value>
-	</util:list>
+	</util:set>
 
 	<bean id="global.pro.proxy" abstract="true">
 		<property name="jidBuilder" ref="jid" />
@@ -35,7 +36,9 @@
 			<util:list>
 				<!-- Process protocol that type = error -->
 				<ref bean="global.pro.check.error.pong" />
+				<!--
 				<ref bean="global.pro.check.error.route" />
+				-->
 				<!-- Assert legal JID format -->
 				<ref bean="global.pro.check.jid.format" />
 				<!-- Assert attribute "to" is localhost / domain / proxy or any exists jid -->

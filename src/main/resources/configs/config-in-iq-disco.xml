@@ -106,27 +106,7 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="disco.pro.info.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy">
-		<constructor-arg>
-			<util:list>
-				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
-					<constructor-arg>
-						<util:constant static-field="com.sissi.protocol.iq.bytestreams.Bytestreams.XMLNS" />
-					</constructor-arg>
-				</bean>
-				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
-					<constructor-arg>
-						<util:constant static-field="com.sissi.protocol.iq.si.Si.XMLNS" />
-					</constructor-arg>
-				</bean>
-				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
-					<constructor-arg>
-						<util:constant static-field="com.sissi.protocol.iq.si.File.XMLNS" />
-					</constructor-arg>
-				</bean>
-			</util:list>
-		</constructor-arg>
-	</bean>
+	<bean id="disco.pro.info.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy" />
 	<bean id="disco.pro.info.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.disco.info" />
 	</bean>

@@ -16,7 +16,7 @@
 			</bean>
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.commons.Interval">
+			<bean class="com.sissi.thread.Interval">
 				<constructor-arg value="${exchanger.gc.interval}" />
 				<constructor-arg value="${exchanger.gc.unit}" />
 			</bean>

@@ -18,10 +18,10 @@ public class PresenceCheckTypeProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return Presence.class.cast(protocol).type() ? true : this.writeAndReturn(context, protocol);
+		return protocol.cast(Presence.class).type() ? true : this.writeAndReturn(context, protocol);
 	}
 
-	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
+	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
 		context.write(protocol.reply().setError(this.error));
 		return false;
 	}

@@ -1,23 +1,19 @@
 package com.sissi.pipeline.in.iq.disco;
 
 import com.sissi.context.JIDContext;
-import com.sissi.pipeline.in.ProxyProcessor;
+import com.sissi.pipeline.in.CheckRelationProcessor;
 import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.Forbidden;
-import com.sissi.protocol.iq.roster.RosterSubscription;
-import com.sissi.ucenter.RelationRoster;
 
 /**
  * @author kim 2014年1月26日
  */
-public class Disco2FansCheckRelationProcessor extends ProxyProcessor {
+public class Disco2FansCheckRelationProcessor extends CheckRelationProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
-
-	private final String[] relations = new String[] { RosterSubscription.TO.toString(), RosterSubscription.BOTH.toString() };
 
 	private final String domain;
 
@@ -28,10 +24,10 @@ public class Disco2FansCheckRelationProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return !protocol.to() || protocol.to(this.domain) || RelationRoster.class.cast(super.ourRelation(context.jid(), super.build(protocol.getParent().getTo()))).in(this.relations) ? true : this.writeAndReturn(context, protocol);
+		return !protocol.to() || protocol.to(this.domain) || super.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);
 	}
 
-	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
+	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {
 		context.write(protocol.getParent().reply().setError(this.error));
 		return false;
 	}

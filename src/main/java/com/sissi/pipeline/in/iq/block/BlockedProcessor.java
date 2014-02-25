@@ -20,7 +20,7 @@ public class BlockedProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		this.blockContext.block(context.jid(), super.build(Blocked.class.cast(protocol).getItem().getJid()));
+		this.blockContext.block(context.jid(), super.build(protocol.cast(Blocked.class).getItem().getJid()));
 		return true;
 	}
 }

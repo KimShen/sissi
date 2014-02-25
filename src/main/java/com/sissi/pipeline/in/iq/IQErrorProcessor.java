@@ -11,17 +11,17 @@ import com.sissi.protocol.error.detail.ServiceUnavaliable;
  */
 public class IQErrorProcessor extends IQProcessor {
 
-	private final Error error = new ServerError().add(ServiceUnavaliable.DETAIL);
+	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ServiceUnavaliable.DETAIL);
 
 	public IQErrorProcessor() {
 		super(ProtocolType.ERROR.toString(), true);
 	}
 
-	public IQErrorProcessor(Boolean clear) {
+	public IQErrorProcessor(boolean clear) {
 		super(ProtocolType.ERROR.toString(), true, false);
 	}
 
-	public IQErrorProcessor(Boolean clear, Boolean doNext) {
+	public IQErrorProcessor(boolean clear, boolean doNext) {
 		super(ProtocolType.ERROR.toString(), clear, doNext);
 	}
 

@@ -12,7 +12,7 @@ import com.sissi.protocol.presence.Presence;
  */
 public class PresenceOnlineMucProcessor extends ProxyProcessor {
 
-	private Input input;
+	private final Input input;
 
 	public PresenceOnlineMucProcessor(Input input) {
 		super();
@@ -21,7 +21,7 @@ public class PresenceOnlineMucProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Presence presence = new Presence().clauses(Presence.class.cast(protocol).clauses());
+		Presence presence = new Presence().clauses(protocol.cast(Presence.class).clauses());
 		for (JID group : super.iSubscribedWho(context.jid())) {
 			this.input.input(context, presence.setTo(group));
 		}

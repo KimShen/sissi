@@ -16,15 +16,15 @@ public class BindAddressLimitProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ResourceConstraint.DETAIL_ELEMENT);
 
-	private final int resources;
+	private final int limit;
 
-	public BindAddressLimitProcessor(int resources) {
+	public BindAddressLimitProcessor(int limit) {
 		super();
-		this.resources = resources;
+		this.limit = limit;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return super.resources(context.jid()).lessThan(this.resources) ? true : !context.write(protocol.getParent().clear().reply().setFrom(context.domain()).setError(this.error)).write(Stream.closeGraceFully()).close();
+		return super.resources(context.jid()).lessThan(this.limit) ? true : !context.write(protocol.getParent().clear().reply().setFrom(context.domain()).setError(this.error)).write(Stream.closeGraceFully()).close();
 	}
 }

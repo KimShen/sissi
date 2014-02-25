@@ -15,10 +15,10 @@ abstract class Block2SelfsPresenceProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		JID target = super.build(Block.class.cast(protocol).getItem().getJid());
+		JID to = super.build(protocol.cast(Block.class).getItem().getJid());
 		Presence presence = new Presence();
-		for (JID resource : super.resources(target)) {
-			super.broadcast(context.jid(), presence.setFrom(resource).clauses(this.build(super.findOne(target, true)).clauses()));
+		for (JID resource : super.resources(to)) {
+			super.broadcast(context.jid(), presence.setFrom(resource).clauses(this.build(super.findOne(to, true)).clauses()));
 		}
 		return true;
 	}

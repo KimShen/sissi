@@ -13,6 +13,7 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
+import com.sissi.commons.Extracter;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
@@ -69,7 +70,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	private JID build(DBObject db) {
 		DBObject roles = DBObject.class.cast(db.get(this.fieldRoles));
-		return this.jidBuilder.build(this.config.asString(roles, MongoProxyConfig.FIELD_JID)).resource(this.config.asString(roles, MongoProxyConfig.FIELD_RESOURCE));
+		return this.jidBuilder.build(Extracter.asString(roles, MongoProxyConfig.FIELD_JID)).resource(Extracter.asString(roles, MongoProxyConfig.FIELD_RESOURCE));
 	}
 
 	@Override
@@ -111,7 +112,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	@Override
 	public Set<JID> whoSubscribedMe(JID from) {
-		return new JIDGroup(this.config.asStrings(this.config.collection().findOne(this.buildQuery(from.asStringWithBare())), this.fieldRoles));
+		return new JIDGroup(Extracter.asStrings(this.config.collection().findOne(this.buildQuery(from.asStringWithBare())), this.fieldRoles));
 	}
 
 	@Override
@@ -151,7 +152,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 			}
 			for (Object each : db) {
 				DBObject jid = DBObject.class.cast(each);
-				this.add(MongoRelationMucContext.this.jidBuilder.build(MongoRelationMucContext.this.config.asString(jid, MongoProxyConfig.FIELD_JID)).resource(MongoRelationMucContext.this.config.asString(jid, MongoProxyConfig.FIELD_RESOURCE)));
+				this.add(MongoRelationMucContext.this.jidBuilder.build(Extracter.asString(jid, MongoProxyConfig.FIELD_JID)).resource(Extracter.asString(jid, MongoProxyConfig.FIELD_RESOURCE)));
 			}
 		}
 	}
@@ -175,8 +176,8 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 				DBObject role = DBObject.class.cast(each);
 				relation.put(MongoRelationMucContext.this.fieldRoles, role);
 				relation.put(MongoRelationMucContext.this.fieldAffiliation, this.affiliations.get(role.get(MongoProxyConfig.FIELD_JID)));
-				relation.put(MongoProxyConfig.FIELD_CREATOR, MongoRelationMucContext.this.config.asString(db, MongoProxyConfig.FIELD_CREATOR));
-				relation.put(MongoRelationMucContext.this.fieldActivate, MongoRelationMucContext.this.config.asBoolean(db, MongoRelationMucContext.this.fieldActivate));
+				relation.put(MongoProxyConfig.FIELD_CREATOR, Extracter.asString(db, MongoProxyConfig.FIELD_CREATOR));
+				relation.put(MongoRelationMucContext.this.fieldActivate, Extracter.asBoolean(db, MongoRelationMucContext.this.fieldActivate));
 				super.add(new MongoRelation(relation));
 			}
 			return this;
@@ -186,7 +187,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 			List<?> affiliations = List.class.cast(db.get(MongoRelationMucContext.this.fieldAffiliations));
 			for (Object each : affiliations) {
 				DBObject affiliation = DBObject.class.cast(each);
-				this.affiliations.put(MongoRelationMucContext.this.config.asString(affiliation, MongoProxyConfig.FIELD_JID), MongoRelationMucContext.this.config.asString(affiliation, MongoRelationMucContext.this.fieldAffiliation));
+				this.affiliations.put(Extracter.asString(affiliation, MongoProxyConfig.FIELD_JID), Extracter.asString(affiliation, MongoRelationMucContext.this.fieldAffiliation));
 			}
 			return this;
 		}
@@ -207,13 +208,13 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 		private final String role;
 
 		public MongoRelation(DBObject db) {
-			this.creator = MongoRelationMucContext.this.config.asString(db, MongoProxyConfig.FIELD_CREATOR);
-			this.affiliaion = MongoRelationMucContext.this.config.asString(db, MongoRelationMucContext.this.fieldAffiliation);
+			this.creator = Extracter.asString(db, MongoProxyConfig.FIELD_CREATOR);
+			this.affiliaion = Extracter.asString(db, MongoRelationMucContext.this.fieldAffiliation);
 			DBObject roles = DBObject.class.cast(db.get(MongoRelationMucContext.this.fieldRoles));
-			this.jid = MongoRelationMucContext.this.config.asString(roles, MongoProxyConfig.FIELD_JID);
-			this.name = MongoRelationMucContext.this.config.asString(roles, MongoProxyConfig.FIELD_NICK);
-			this.resource = MongoRelationMucContext.this.config.asString(roles, MongoProxyConfig.FIELD_RESOURCE);
-			this.role = MongoRelationMucContext.this.config.asString(roles, MongoRelationMucContext.this.fieldRole);
+			this.jid = Extracter.asString(roles, MongoProxyConfig.FIELD_JID);
+			this.name = Extracter.asString(roles, MongoProxyConfig.FIELD_NICK);
+			this.resource = Extracter.asString(roles, MongoProxyConfig.FIELD_RESOURCE);
+			this.role = Extracter.asString(roles, MongoRelationMucContext.this.fieldRole);
 		}
 
 		public String getJID() {
@@ -239,6 +240,11 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 		public Map<String, Object> plus() {
 			return MongoRelationMucContext.this.fieldPlus;
+		}
+
+		@Override
+		public <T extends Relation> T cast(Class<T> clazz) {
+			return clazz.cast(this);
 		}
 	}
 }

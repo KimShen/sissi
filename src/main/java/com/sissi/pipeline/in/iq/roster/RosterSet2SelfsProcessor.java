@@ -16,7 +16,7 @@ public class RosterSet2SelfsProcessor extends Roster2SelfsItemProcessor {
 
 	@Override
 	protected RosterSubscription subscription(JID master, JID slave) {
-		return RosterSubscription.parse(RelationRoster.class.cast(super.ourRelation(master, slave)).getSubscription());
+		return RosterSubscription.parse(super.ourRelation(master, slave).cast(RelationRoster.class).getSubscription());
 	}
 
 	@Override
@@ -25,6 +25,7 @@ public class RosterSet2SelfsProcessor extends Roster2SelfsItemProcessor {
 	}
 
 	protected boolean isNext(String subscription) {
+		// Add or Update
 		return RosterSubscription.parse(subscription) == RosterSubscription.NONE;
 	}
 }

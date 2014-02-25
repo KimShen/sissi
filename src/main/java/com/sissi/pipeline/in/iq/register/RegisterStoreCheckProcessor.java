@@ -20,11 +20,11 @@ public class RegisterStoreCheckProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		XData xdata = Register.class.cast(protocol).findField(XData.NAME, XData.class);
+		XData xdata = protocol.cast(Register.class).findField(XData.NAME, XData.class);
 		return xdata.type(XDataType.SUBMIT) ? true : this.writeAndReturn(context, protocol);
 	}
 
-	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
+	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
 		context.write(protocol.getParent().reply().setError(this.error));
 		return false;
 	}

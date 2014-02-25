@@ -14,7 +14,7 @@ public interface BlockContext {
 	
 	public BlockContext unblock(JID from, JID to);
 
-	public boolean isBlock(JID from, JID to);
-
 	public JIDs iBlockWho(JID jid);
+	
+	public boolean isBlock(JID from, JID to);
 }

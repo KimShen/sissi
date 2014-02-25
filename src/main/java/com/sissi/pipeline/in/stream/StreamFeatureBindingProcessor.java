@@ -17,10 +17,10 @@ public class StreamFeatureBindingProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return context.auth() ? this.writeFeature(Stream.class.cast(protocol)) : true;
+		return context.auth() ? this.writeFeature(protocol.cast(Stream.class)) : true;
 	}
 
-	private Boolean writeFeature(Stream stream) {
+	private boolean writeFeature(Stream stream) {
 		stream.addFeature(this.features);
 		return true;
 	}

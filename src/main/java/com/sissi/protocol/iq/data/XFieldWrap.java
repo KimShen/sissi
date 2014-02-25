@@ -22,7 +22,7 @@ abstract class XFieldWrap extends BeanFields {
 		super(false);
 	}
 
-	public XFieldWrap(Boolean isEmbed) {
+	public XFieldWrap(boolean isEmbed) {
 		super(isEmbed);
 	}
 

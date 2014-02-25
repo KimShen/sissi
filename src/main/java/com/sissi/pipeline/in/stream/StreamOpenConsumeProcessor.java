@@ -12,7 +12,7 @@ public class StreamOpenConsumeProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Stream.class.cast(protocol).consume();
+		protocol.cast(Stream.class).consume();
 		return true;
 	}
 

@@ -26,10 +26,10 @@ public class RosterSetCheckExistsProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.vcardContext.exists(super.build(Roster.class.cast(protocol).getFirstItem().getJid())) ? true : this.writeAndReturn(context, protocol);
+		return this.vcardContext.exists(protocol.cast(Roster.class).getFirstItem().getJid()) ? true : this.writeAndReturn(context, protocol);
 	}
 
-	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
+	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
 		context.write(protocol.getParent().reply().setError(this.error));
 		return false;
 	}

@@ -17,12 +17,12 @@ public class StarttlsProcessor implements Input {
 		return context.encrypt() ? this.writeAndTrue(context) : this.writeAndFalse(context);
 	}
 
-	private Boolean writeAndFalse(JIDContext context) {
+	private boolean writeAndFalse(JIDContext context) {
 		context.write(Failure.FAILURE).write(Stream.closeGraceFully()).close();
 		return false;
 	}
 
-	private Boolean writeAndTrue(JIDContext context) {
+	private boolean writeAndTrue(JIDContext context) {
 		context.write(Proceed.PROCEED);
 		return true;
 	}

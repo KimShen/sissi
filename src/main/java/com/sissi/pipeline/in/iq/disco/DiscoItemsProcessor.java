@@ -21,7 +21,7 @@ public class DiscoItemsProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.write(Disco.class.cast(protocol).add(this.items).getParent().reply().setType(ProtocolType.RESULT));
+		context.write(protocol.cast(Disco.class).add(this.items).getParent().reply().setType(ProtocolType.RESULT));
 		return true;
 	}
 }

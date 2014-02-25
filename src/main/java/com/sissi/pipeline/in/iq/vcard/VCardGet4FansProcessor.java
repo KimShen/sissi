@@ -8,14 +8,14 @@ import com.sissi.ucenter.VCardContext;
 /**
  * @author kim 2013年12月10日
  */
-public class VCardGet2FansProcessor extends VCardGetProcessor {
+public class VCardGet4FansProcessor extends VCardGetProcessor {
 
-	public VCardGet2FansProcessor(VCardContext vcardContext) {
+	public VCardGet4FansProcessor(VCardContext vcardContext) {
 		super(vcardContext);
 	}
 
 	@Override
 	protected VCard get(JIDContext context, Protocol protocol) {
-		return super.vcardContext.get(super.build(protocol.getParent().getTo()), VCard.class.cast(protocol));
+		return super.vcardContext.get(super.build(protocol.getParent().getTo()), protocol.cast(VCard.class));
 	}
 }

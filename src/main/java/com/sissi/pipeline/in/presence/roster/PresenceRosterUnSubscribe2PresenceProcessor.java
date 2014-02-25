@@ -14,7 +14,7 @@ public class PresenceRosterUnSubscribe2PresenceProcessor extends ProxyProcessor 
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Presence presence = Presence.class.cast(protocol).clear().setType(PresenceType.UNAVAILABLE);
+		Presence presence = protocol.cast(Presence.class).clear().setType(PresenceType.UNAVAILABLE);
 		for (JID resource : super.resources(super.build(protocol.getTo()))) {
 			super.broadcast(context.jid(), presence.setFrom(resource));
 		}

@@ -11,8 +11,8 @@ import com.sissi.ucenter.field.impl.BeanFields;
  */
 public class RegisterStoreMultiProcessor extends RegisterStoreProcessor {
 
-	public RegisterStoreMultiProcessor(RegisterContext registerContext, IQProcessor iqProcessor) {
-		super(registerContext, iqProcessor);
+	public RegisterStoreMultiProcessor(RegisterContext registerContext, IQProcessor processor) {
+		super(registerContext, processor);
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import com.sissi.ucenter.MucGroupContext;
  */
 public class PresenceMucCheckAffiliationProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setCode("407").setType(ProtocolType.AUTH).add(RegistrationRequired.DETAIL);
+	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(RegistrationRequired.DETAIL);
 
 	private final MucGroupContext mucGroupContext;
 
@@ -26,7 +26,7 @@ public class PresenceMucCheckAffiliationProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.mucGroupContext.find(super.build(protocol.getTo())).allowed(MucGroupConfig.ROLES, context.jid()) ? true : this.writeAndReturn(context, protocol);
+		return this.mucGroupContext.find(super.build(protocol.getTo())).allowed(MucGroupConfig.AFFILIATIONS, context.jid()) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

@@ -5,7 +5,7 @@ package com.sissi.protocol.presence;
  */
 public enum PresenceType {
 
-	PROBE, SUBSCRIBE, SUBSCRIBED, UNSUBSCRIBE, UNSUBSCRIBED, UNAVAILABLE, AVAILABLE;
+	NONE, PROBE, SUBSCRIBE, SUBSCRIBED, UNSUBSCRIBE, UNSUBSCRIBED, UNAVAILABLE, AVAILABLE;
 
 	public String toString() {
 		if (AVAILABLE == this) {
@@ -31,7 +31,7 @@ public enum PresenceType {
 		try {
 			return type == null ? AVAILABLE : PresenceType.valueOf(type.toUpperCase());
 		} catch (Exception e) {
-			return null;
+			return NONE;
 		}
 	}
 }

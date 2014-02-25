@@ -71,7 +71,7 @@ abstract public class ProxyProcessor implements Input {
 		return this.addressing.findOne(jid);
 	}
 
-	protected JIDContext findOne(JID jid, Boolean usingResource) {
+	protected JIDContext findOne(JID jid, boolean usingResource) {
 		return this.addressing.findOne(jid, usingResource);
 	}
 
@@ -84,7 +84,7 @@ abstract public class ProxyProcessor implements Input {
 		return this.addressing.resources(jid);
 	}
 
-	public JIDs resources(JID jid, Boolean usingResource) {
+	public JIDs resources(JID jid, boolean usingResource) {
 		return this.addressing.resources(jid, usingResource);
 	}
 

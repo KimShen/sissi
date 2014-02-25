@@ -20,7 +20,7 @@ public class Last extends Protocol {
 
 	public final static String NAME = "query";
 
-	public LastSeconds getSeconds() {
+	public LastSeconds seconds() {
 		return new LastSeconds(this);
 	}
 

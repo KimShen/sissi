@@ -75,7 +75,7 @@
 		<constructor-arg ref="relation.roster" />
 	</bean>
 	<bean id="presence.pro.status.available.init.4delay" class="com.sissi.pipeline.in.presence.status.PresenceInit4DelayProcessor">
-		<constructor-arg ref="offline" />
+		<constructor-arg ref="offline.all" />
 	</bean>
 	<bean id="presence.pro.status.available.init.4fans" class="com.sissi.pipeline.in.presence.status.PresenceInit4FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />

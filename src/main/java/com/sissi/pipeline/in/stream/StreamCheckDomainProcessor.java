@@ -26,7 +26,7 @@ public class StreamCheckDomainProcessor implements Input {
 		return protocol.to(this.domain, this.localhost) ? true : this.close(context, protocol);
 	}
 
-	private Boolean close(JIDContext context, Protocol protocol) {
+	private boolean close(JIDContext context, Protocol protocol) {
 		return !context.write(Stream.closeWhenOpening(new ServerError().add(HostUnknown.DETAIL)).setFrom(this.domain).setTo(protocol.getFrom())).close();
 	}
 }

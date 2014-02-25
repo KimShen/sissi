@@ -13,7 +13,7 @@ public class UnBlock extends Block {
 
 	public final static String NAME = "unblock";
 
-	public Boolean isUnBlockAll() {
+	public boolean isUnBlockAll() {
 		return super.getItem() == null;
 	}
 }

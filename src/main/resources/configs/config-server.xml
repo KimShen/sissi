@@ -5,6 +5,10 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="server.mock" class="com.sissi.server.impl.MockTransferBuilder">
+		<constructor-arg ref="offline.mock" />
+	</bean>
+
 	<bean id="server.reader" class="com.sissi.read.sax.SAXReader">
 		<constructor-arg ref="executor" />
 		<constructor-arg ref="counter" />
@@ -23,7 +27,7 @@
 				</bean>
 				<bean class="com.sissi.server.impl.GroupServerCloser">
 					<constructor-arg ref="relation.muc" />
-					<constructor-arg ref="presence.pro.muc.leave.chained"/>
+					<constructor-arg ref="presence.pro.muc.leave.chained" />
 				</bean>
 			</util:list>
 		</constructor-arg>
@@ -71,7 +75,7 @@
 		<constructor-arg ref="runner" />
 		<constructor-arg ref="counter" />
 		<constructor-arg>
-			<bean class="com.sissi.commons.Interval">
+			<bean class="com.sissi.thread.Interval">
 				<constructor-arg value="${global.heart.interval}" />
 				<constructor-arg value="${global.heart.unit}" />
 			</bean>

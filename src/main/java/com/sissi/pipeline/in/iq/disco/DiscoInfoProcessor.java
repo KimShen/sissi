@@ -4,8 +4,8 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
+import com.sissi.protocol.iq.disco.Disco;
 import com.sissi.protocol.iq.disco.DiscoFeature;
-import com.sissi.protocol.iq.disco.DiscoInfo;
 
 /**
  * @author kim 2014年2月13日
@@ -20,7 +20,7 @@ public class DiscoInfoProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.write(DiscoInfo.class.cast(protocol).add(this.features).getParent().reply().setType(ProtocolType.RESULT));
+		context.write(protocol.cast(Disco.class).add(this.features).getParent().reply().setType(ProtocolType.RESULT));
 		return true;
 	}
 }

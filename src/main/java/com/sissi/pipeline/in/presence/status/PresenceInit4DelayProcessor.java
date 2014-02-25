@@ -1,7 +1,7 @@
 package com.sissi.pipeline.in.presence.status;
 
 import com.sissi.context.JIDContext;
-import com.sissi.offline.DelayElementBox;
+import com.sissi.persistent.PersistentElementBox;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
 
@@ -10,20 +10,21 @@ import com.sissi.protocol.Protocol;
  */
 public class PresenceInit4DelayProcessor implements Input {
 
-	private final DelayElementBox delayElementBox;
+	private final PersistentElementBox persistentElementBox;
 
-	public PresenceInit4DelayProcessor(DelayElementBox delayElementBox) {
+	public PresenceInit4DelayProcessor(PersistentElementBox persistentElementBox) {
 		super();
-		this.delayElementBox = delayElementBox;
+		this.persistentElementBox = persistentElementBox;
 	}
 
+	
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return context.presented() ? true : this.writeOffline(context);
+		return context.presence() ? true : this.writeDelay(context);
 	}
 
-	private Boolean writeOffline(JIDContext context) {
-		context.write(this.delayElementBox.pull(context.jid()), true);
+	private boolean writeDelay(JIDContext context) {
+		context.write(this.persistentElementBox.pull(context.jid()), true, true);
 		return true;
 	}
 }

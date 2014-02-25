@@ -21,7 +21,7 @@ public class LastDomainProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.write(Last.class.cast(protocol).getSeconds().seconds(this.serverStatus.take(ServerStatus.STATUS_STARTED, String.class)).getParent().reply().setFrom(context.domain()).setType(ProtocolType.RESULT));
+		context.write(protocol.cast(Last.class).seconds().seconds(this.serverStatus.take(ServerStatus.STATUS_STARTED, String.class)).getParent().reply().setFrom(context.domain()).setType(ProtocolType.RESULT));
 		return false;
 	}
 }

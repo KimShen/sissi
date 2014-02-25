@@ -34,9 +34,14 @@ public class IQForkProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		for (Protocol sub : IQ.class.cast(protocol).listChildren()) {
-			return (context.auth() || this.ignores.contains(sub.getClass())) ? this.finder.find(sub).input(context, sub) : !context.write(protocol.reply().setError(this.error)).close();
+		for (Protocol sub : protocol.cast(IQ.class).listChildren()) {
+			return (context.auth() || this.ignores.contains(sub.getClass())) ? this.finder.find(sub).input(context, sub) : this.writeAndReturn(context, protocol);
 		}
 		return this.noChild.input(context, protocol);
+	}
+
+	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
+		context.write(protocol.getParent().reply().setError(this.error));
+		return false;
 	}
 }

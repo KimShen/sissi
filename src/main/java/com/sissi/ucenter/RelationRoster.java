@@ -9,9 +9,9 @@ public interface RelationRoster extends Relation {
 
 	public String getSubscription();
 
-	public boolean isAsk();
-
 	public String[] asGroups();
+
+	public boolean isAsk();
 
 	public boolean in(String... subscriptions);
 

@@ -8,6 +8,7 @@ import java.util.Set;
 import com.sissi.protocol.iq.roster.Group;
 import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.RosterSubscription;
+import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationRoster;
 
 /**
@@ -78,5 +79,10 @@ public class ItemWrapRelation implements RelationRoster {
 		}
 		plus.put("groups", this.asGroups());
 		return plus;
+	}
+
+	@Override
+	public <T extends Relation> T cast(Class<T> clazz) {
+		return clazz.cast(this);
 	}
 }

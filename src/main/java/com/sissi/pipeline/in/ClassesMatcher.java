@@ -1,7 +1,7 @@
 package com.sissi.pipeline.in;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.sissi.pipeline.InputMatcher;
 import com.sissi.protocol.Protocol;
@@ -11,9 +11,9 @@ import com.sissi.protocol.Protocol;
  */
 public class ClassesMatcher implements InputMatcher {
 
-	private final List<Class<? extends Protocol>> clazzes = new ArrayList<Class<? extends Protocol>>();
+	private final Set<Class<? extends Protocol>> clazzes = new HashSet<Class<? extends Protocol>>();
 
-	public ClassesMatcher(List<Class<? extends Protocol>> protocol) {
+	public ClassesMatcher(Set<Class<? extends Protocol>> protocol) {
 		super();
 		this.clazzes.addAll(protocol);
 	}

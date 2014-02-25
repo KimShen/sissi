@@ -22,7 +22,7 @@ public enum MessageType {
 		return super.toString().toLowerCase();
 	}
 
-	public Boolean equals(String type) {
+	public boolean equals(String type) {
 		return this == MessageType.parse(type);
 	}
 

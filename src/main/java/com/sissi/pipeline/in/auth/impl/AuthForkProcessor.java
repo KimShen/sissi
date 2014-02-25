@@ -1,6 +1,6 @@
 package com.sissi.pipeline.in.auth.impl;
 
-import java.util.List;
+import java.util.Set;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
@@ -15,18 +15,18 @@ import com.sissi.protocol.iq.auth.Failure;
  */
 public class AuthForkProcessor extends ProxyProcessor {
 
-	private final List<AuthCallback> authCallbacks;
+	private final Set<AuthCallback> authCallbacks;
 
-	public AuthForkProcessor(List<AuthCallback> authCallbacks) {
+	public AuthForkProcessor(Set<AuthCallback> authCallbacks) {
 		super();
 		this.authCallbacks = authCallbacks;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Auth auth = Auth.class.cast(protocol);
+		Auth auth = protocol.cast(Auth.class);
 		for (AuthCallback ac : this.authCallbacks) {
-			if (ac.isSupport(auth.getMechanism())) {
+			if (ac.support(auth.getMechanism())) {
 				return !ac.auth(auth, context);
 			}
 		}

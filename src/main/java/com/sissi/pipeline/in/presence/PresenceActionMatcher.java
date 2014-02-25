@@ -13,18 +13,17 @@ import com.sissi.protocol.presence.PresenceType;
  */
 public class PresenceActionMatcher extends ClassMatcher {
 
-	private final Set<PresenceType> types;
+	private final Set<PresenceType> types = new HashSet<PresenceType>();
 
-	private final Boolean directed;
+	private final boolean directed;
 
-	public PresenceActionMatcher(String... types) {
+	public PresenceActionMatcher(Set<String> types) {
 		this(false, types);
 	}
 
-	public PresenceActionMatcher(Boolean directed, String... types) {
+	public PresenceActionMatcher(boolean directed, Set<String> types) {
 		super(Presence.class);
 		this.directed = directed;
-		this.types = new HashSet<PresenceType>();
 		for (String type : types) {
 			this.types.add(PresenceType.parse(type));
 		}

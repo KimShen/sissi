@@ -39,7 +39,7 @@ public class MongoRegisterContext extends MongoFieldContext implements RegisterC
 		return register.hasChild() ? this.validUsername(this.extractUsername(register)) : this.validUsername(String.class.cast(register.getValue()));
 	}
 
-	private Boolean validUsername(String username) {
+	private boolean validUsername(String username) {
 		return username != null && !username.isEmpty() && this.jidBuilder.build(username, null).valid(true);
 	}
 	

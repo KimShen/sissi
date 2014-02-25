@@ -18,10 +18,10 @@ public class RosterSetCheckLoopProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return context.jid().user(Roster.class.cast(protocol).getFirstItem().getJid()) ? this.writeAndReturn(context, protocol) : true;
+		return context.jid().like(protocol.cast(Roster.class).getFirstItem().getJid()) ? this.writeAndReturn(context, protocol) : true;
 	}
 
-	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
+	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
 		context.write(protocol.getParent().reply().setError(this.error));
 		return false;
 	}

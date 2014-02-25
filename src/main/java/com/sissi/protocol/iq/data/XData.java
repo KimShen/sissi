@@ -28,15 +28,15 @@ public class XData extends XFieldWrap implements Field<Object>, Collector {
 		super(false);
 	}
 
-	public XData(Boolean isEmbed) {
+	public XData(boolean isEmbed) {
 		super(isEmbed);
 	}
 
-	public XData(Boolean isEmbed, List<Field<?>> fields) {
+	public XData(boolean isEmbed, List<Field<?>> fields) {
 		this(isEmbed, XDataType.FORM.toString(), fields);
 	}
 
-	public XData(Boolean isEmbed, String type, List<Field<?>> fields) {
+	public XData(boolean isEmbed, String type, List<Field<?>> fields) {
 		super(isEmbed);
 		super.add(fields);
 		this.type = type;
@@ -46,9 +46,18 @@ public class XData extends XFieldWrap implements Field<Object>, Collector {
 		return XDataType.parse(this.getType()) == type && (type == XDataType.CANCEL ? !this.hasChild() : this.hasChild());
 	}
 
+	public XData add(Field<?> field) {
+		super.add(field);
+		return this;
+	}
+
 	@XmlAttribute
 	public String getType() {
 		return this.type;
+	}
+
+	public XData setType(XDataType type) {
+		return this.setType(type.toString());
 	}
 
 	public XData setType(String type) {

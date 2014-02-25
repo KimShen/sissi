@@ -163,7 +163,7 @@ public class JAXBWriter implements Writer {
 		}
 	}
 
-	private Marshaller generateMarshaller(Boolean format, Boolean fragement) throws JAXBException, PropertyException {
+	private Marshaller generateMarshaller(boolean format, boolean fragement) throws JAXBException, PropertyException {
 		Marshaller marshaller = this.context.createMarshaller();
 		marshaller.setProperty(this.mapperProperty, this.mapper);
 		marshaller.setProperty(Marshaller.JAXB_FRAGMENT, fragement);

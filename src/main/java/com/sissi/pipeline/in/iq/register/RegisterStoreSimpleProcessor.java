@@ -9,8 +9,8 @@ import com.sissi.ucenter.field.Fields;
  */
 public class RegisterStoreSimpleProcessor extends RegisterStoreProcessor {
 
-	public RegisterStoreSimpleProcessor(RegisterContext registerContext, IQProcessor iqProcessor) {
-		super(registerContext, iqProcessor);
+	public RegisterStoreSimpleProcessor(RegisterContext registerContext, IQProcessor processor) {
+		super(registerContext, processor);
 	}
 
 	@Override

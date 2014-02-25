@@ -12,7 +12,7 @@ public class BindResourceProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Bind bind = Bind.class.cast(protocol);
+		Bind bind = protocol.cast(Bind.class);
 		if (bind.hasResource()) {
 			context.jid().resource(bind.getResource().getText());
 		}

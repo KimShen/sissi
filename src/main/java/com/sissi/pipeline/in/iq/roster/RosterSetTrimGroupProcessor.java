@@ -19,7 +19,7 @@ public class RosterSetTrimGroupProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Roster.class.cast(protocol).getFirstItem().trimGroup(this.group);
+		protocol.cast(Roster.class).getFirstItem().trimGroup(this.group);
 		return true;
 	}
 }

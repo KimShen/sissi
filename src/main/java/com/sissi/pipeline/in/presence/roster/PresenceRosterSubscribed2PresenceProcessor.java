@@ -14,7 +14,7 @@ public class PresenceRosterSubscribed2PresenceProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID to = super.build(protocol.getTo());
-		Presence presence = Presence.class.cast(protocol);
+		Presence presence = protocol.cast(Presence.class);
 		for (JID resource : super.resources(context.jid())) {
 			super.broadcast(to, presence.clear().setFrom(resource).clauses(super.findOne(resource, true).status().clauses()));
 		}

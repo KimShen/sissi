@@ -89,4 +89,8 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 		return null;
 	}
 
+	@Override
+	public <T extends Relation> T cast(Class<T> clazz) {
+		return clazz.cast(this);
+	}
 }

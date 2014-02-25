@@ -58,7 +58,7 @@ public class Bind extends Protocol implements Collector {
 		return XMLNS;
 	}
 
-	public Boolean hasResource() {
+	public boolean hasResource() {
 		return this.resource != null && this.resource.hasResource();
 	}
 

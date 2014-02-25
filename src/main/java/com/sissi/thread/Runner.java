@@ -1,4 +1,4 @@
-package com.sissi.commons;
+package com.sissi.thread;
 
 import java.util.concurrent.Executor;
 

@@ -21,7 +21,7 @@ abstract class MongoFieldContext {
 		return this.getEntity(field, builder, true);
 	}
 
-	private DBObject getEntity(Field<?> field, BasicDBObjectBuilder builder, Boolean build) {
+	private DBObject getEntity(Field<?> field, BasicDBObjectBuilder builder, boolean build) {
 		if (field.hasChild()) {
 			this.embedOrNot(builder, field);
 		} else {

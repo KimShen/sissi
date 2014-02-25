@@ -91,7 +91,7 @@ public class GroupItem extends Item implements Collector {
 		this.add(Group.class.cast(ob));
 	}
 
-	public GroupItem setAsk(Boolean ask) {
+	public GroupItem setAsk(boolean ask) {
 		this.ask = ask ? PresenceType.SUBSCRIBE.toString() : null;
 		return this;
 	}
@@ -122,7 +122,7 @@ public class GroupItem extends Item implements Collector {
 		return this;
 	}
 
-	public Boolean action(GroupAction action) {
+	public boolean action(GroupAction action) {
 		return GroupAction.parse(this.getSubscription()) == action;
 	}
 

@@ -12,6 +12,7 @@ import javax.net.ssl.TrustManagerFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.commons.Trace;
 import com.sissi.commons.apache.IOUtils;
 import com.sissi.server.ServerTlsBuilder;
 
@@ -44,10 +45,8 @@ public class CertificateTlsBuilder implements ServerTlsBuilder {
 			context.init(this.getKeyManagers(key), this.getTrustManagers(trust), null);
 			return context;
 		} catch (Exception e) {
-			if (this.log.isFatalEnabled()) {
-				this.log.fatal(e.toString());
-				e.printStackTrace();
-			}
+			this.log.fatal(e.toString());
+			Trace.trace(this.log, e);
 			return null;
 		}
 	}

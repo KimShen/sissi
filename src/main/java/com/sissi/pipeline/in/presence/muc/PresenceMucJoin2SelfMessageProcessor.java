@@ -20,12 +20,12 @@ public class PresenceMucJoin2SelfMessageProcessor extends ProxyProcessor {
 
 	private final MucGroupContext mucGroupContext;
 
-	private final String message;
+	private final Body body;
 
 	public PresenceMucJoin2SelfMessageProcessor(MucGroupContext mucGroupContext, String message) {
 		super();
 		this.mucGroupContext = mucGroupContext;
-		this.message = message;
+		this.body = new Body(message);
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class PresenceMucJoin2SelfMessageProcessor extends ProxyProcessor {
 	}
 
 	private boolean writeAndReturn(JIDContext context, JID group) {
-		context.write(new Message().setBody(new Body(this.message)).setX(this.x).setType(MessageType.GROUPCHAT).setFrom(group.asStringWithBare()));
+		context.write(new Message().setBody(this.body).setX(this.x).setType(MessageType.GROUPCHAT).setFrom(group.asStringWithBare()));
 		return true;
 	}
 }

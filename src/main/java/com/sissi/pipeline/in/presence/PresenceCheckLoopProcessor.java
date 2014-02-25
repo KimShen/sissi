@@ -11,6 +11,6 @@ public class PresenceCheckLoopProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return context.jid().user(protocol.getTo()) ? false : true;
+		return context.jid().like(protocol.getTo()) ? false : true;
 	}
 }

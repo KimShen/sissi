@@ -19,10 +19,10 @@ public class PresenceMucCheckXmlnsProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return Presence.class.cast(protocol).findFields(XMuc.NAME).isEmpty() ? this.writeAndReturn(context, protocol) : true;
+		return protocol.cast(Presence.class).findFields(XMuc.NAME).isEmpty() ? this.writeAndReturn(context, protocol) : true;
 	}
 
-	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
+	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
 		context.write(protocol.getParent().reply().setError(this.error));
 		return false;
 	}

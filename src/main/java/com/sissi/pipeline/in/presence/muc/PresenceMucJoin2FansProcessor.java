@@ -19,23 +19,22 @@ public class PresenceMucJoin2FansProcessor extends ProxyProcessor {
 
 	private final MucGroupContext mucGroupContext;
 
-	private final MucStatusComputer mucStatusCollector;
+	private final MucStatusComputer mucStatusComputer;
 
-	public PresenceMucJoin2FansProcessor(MucGroupContext mucGroupContext, MucStatusComputer mucStatusCollector) {
+	public PresenceMucJoin2FansProcessor(MucGroupContext mucGroupContext, MucStatusComputer mucStatusComputer) {
 		super();
 		this.mucGroupContext = mucGroupContext;
-		this.mucStatusCollector = mucStatusCollector;
+		this.mucStatusComputer = mucStatusComputer;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		JID group = super.build(protocol.getTo());
-		RelationMuc ourRelation = RelationMuc.class.cast(super.ourRelation(context.jid(), group));
 		Presence presence = new Presence();
+		JID group = super.build(protocol.getTo());
+		RelationMuc ourRelation = super.ourRelation(context.jid(), group).cast(RelationMuc.class);
 		for (Relation each : super.myRelations(group)) {
-			RelationMuc muc = RelationMuc.class.cast(each);
-			JID to = super.build(muc.getJID());
-			super.findOne(to, true).write(presence.clear().add(new XUser(to.asString()).setItem(new Item(group, to, context.jid(), ourRelation, this.mucGroupContext), this.mucStatusCollector)).clauses(context.status().clauses()).setFrom(protocol.getTo()));
+			JID to = super.build(each.cast(RelationMuc.class).getJID());
+			super.findOne(to, true).write(presence.clear().add(new XUser(to).setItem(new Item(group, to, context.jid(), ourRelation, this.mucGroupContext), this.mucStatusComputer)).clauses(context.status().clauses()).setFrom(protocol.getTo()));
 		}
 		return true;
 	}

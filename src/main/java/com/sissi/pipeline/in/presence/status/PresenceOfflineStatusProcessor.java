@@ -11,7 +11,7 @@ public class PresenceOfflineStatusProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.leaving();
+		context.offline();
 		return true;
 	}
 }

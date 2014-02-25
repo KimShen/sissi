@@ -26,14 +26,14 @@ public class RosterGetProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.write(IQ.class.cast(protocol.getParent().clear().reply().setType(ProtocolType.RESULT)).add(this.prepare(context, Roster.class.cast(protocol))));
+		context.write(protocol.getParent().clear().reply().setType(ProtocolType.RESULT).cast(IQ.class).add(this.prepare(context, protocol.cast(Roster.class))));
 		return false;
 	}
 
 	private Roster prepare(JIDContext context, Roster roster) {
 		for (Relation each : super.myRelations(context.jid())) {
 			JID to = super.build(each.getJID());
-			roster.add(new GroupItem(RelationRoster.class.cast(each)).nickname(this.vcardContext.get(to, VCardContext.FIELD_NICKNAME).getValue(), to.user()));
+			roster.add(new GroupItem(each.cast(RelationRoster.class)).nickname(this.vcardContext.get(to, VCardContext.FIELD_NICKNAME).getValue(), to.user()));
 		}
 		return roster;
 	}

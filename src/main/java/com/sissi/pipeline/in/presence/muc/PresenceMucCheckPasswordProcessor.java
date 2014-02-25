@@ -17,7 +17,7 @@ import com.sissi.ucenter.MucGroupContext;
  */
 public class PresenceMucCheckPasswordProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setCode("401").setType(ProtocolType.AUTH).add(NotAuthorized.DETAIL_ELEMENT);
+	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(NotAuthorized.DETAIL_ELEMENT);
 
 	private final MucGroupContext mucGroupContext;
 
@@ -33,7 +33,7 @@ public class PresenceMucCheckPasswordProcessor extends ProxyProcessor {
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.reply().setError(this.error));
+		context.write(protocol.getParent().reply().setError(this.error));
 		return false;
 	}
 }

@@ -11,10 +11,10 @@ import com.sissi.protocol.ProtocolType;
 abstract public class IQProcessor implements Input {
 
 	private final ProtocolType type;
+	
+	private final boolean doNext;
 
 	private final boolean clear;
-
-	private final boolean doNext;
 
 	public IQProcessor(String type) {
 		this(type, true);
@@ -24,7 +24,7 @@ abstract public class IQProcessor implements Input {
 		this(type, true, false);
 	}
 
-	public IQProcessor(String type, boolean clear, Boolean doNext) {
+	public IQProcessor(String type, boolean clear, boolean doNext) {
 		this.type = ProtocolType.parse(type);
 		this.clear = clear;
 		this.doNext = doNext;

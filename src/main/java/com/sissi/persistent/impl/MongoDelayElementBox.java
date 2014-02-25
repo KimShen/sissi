@@ -1,8 +1,9 @@
-package com.sissi.offline.impl;
+package com.sissi.persistent.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
@@ -11,23 +12,21 @@ import com.mongodb.DBObject;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
-import com.sissi.offline.DelayElement;
-import com.sissi.offline.DelayElementBox;
+import com.sissi.persistent.PersistentElement;
+import com.sissi.persistent.PersistentElementBox;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 
 /**
  * @author kim 2013-11-15
  */
-public class MongoDelayElementBox implements DelayElementBox, Output {
-
-	private final String to = "to";
+public class MongoDelayElementBox implements PersistentElementBox, Output {
 
 	private final MongoConfig config;
 
-	private final List<DelayElement> elements;
+	private final List<PersistentElement> elements;
 
-	public MongoDelayElementBox(MongoConfig config, List<DelayElement> elements) {
+	public MongoDelayElementBox(MongoConfig config, List<PersistentElement> elements) {
 		super();
 		this.config = config;
 		this.elements = elements;
@@ -35,20 +34,25 @@ public class MongoDelayElementBox implements DelayElementBox, Output {
 
 	@Override
 	public Collection<Element> pull(JID jid) {
-		DBObject query = BasicDBObjectBuilder.start(this.to, jid.asStringWithBare()).get();
+		DBObject query = BasicDBObjectBuilder.start().add(PersistentElementBox.fieldTo, jid.asStringWithBare()).add(PersistentElementBox.fieldActivate, true).get();
 		Elements elements = new Elements(this.config.collection().find(query));
-		this.config.collection().remove(query);
+		this.config.collection().update(query, BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(PersistentElementBox.fieldActivate, false).get()).get(), false, true);
 		return elements;
 	}
 
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> peek(Map<String, Object> query) {
+		return this.config.collection().findOne(BasicDBObjectBuilder.start(query).get()).toMap();
+	}
+
 	@Override
-	public DelayElementBox push(Element element) {
+	public PersistentElementBox push(Element element) {
 		this.doPush(element);
 		return this;
 	}
 
-	private DelayElementBox doPush(Element element) {
-		for (DelayElement delay : this.elements) {
+	private PersistentElementBox doPush(Element element) {
+		for (PersistentElement delay : this.elements) {
 			if (delay.isSupport(element)) {
 				this.config.collection().update(BasicDBObjectBuilder.start(delay.query(element)).get(), BasicDBObjectBuilder.start(delay.write(element)).get(), true, false);
 			}
@@ -75,7 +79,7 @@ public class MongoDelayElementBox implements DelayElementBox, Output {
 			super();
 			while (cursor.hasNext()) {
 				BasicDBObject each = BasicDBObject.class.cast(cursor.next());
-				for (DelayElement element : MongoDelayElementBox.this.elements) {
+				for (PersistentElement element : MongoDelayElementBox.this.elements) {
 					if (element.isSupport(each)) {
 						this.add(element.read(each));
 					}

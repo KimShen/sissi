@@ -1,7 +1,6 @@
 package com.sissi.protocol;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
@@ -75,7 +74,7 @@ abstract public class Protocol implements Element {
 		}
 		return false;
 	}
-	
+
 	public boolean to(Collection<String> tos) {
 		return tos.contains(this.getTo());
 	}
@@ -153,12 +152,16 @@ abstract public class Protocol implements Element {
 		return this.getClass() == clazz;
 	}
 
-	public boolean clazz(List<Class<? extends Protocol>> clazz) {
+	public boolean clazz(Collection<Class<? extends Protocol>> clazz) {
 		for (Class<? extends Protocol> each : clazz) {
 			if (this.getClass() == each) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public <T extends Protocol> T cast(Class<T> clazz) {
+		return clazz.cast(this);
 	}
 }

@@ -38,7 +38,7 @@ public class Binval implements Field<String> {
 		return this;
 	}
 
-	public Boolean hasContent() {
+	public boolean hasContent() {
 		return this.value != null;
 	}
 

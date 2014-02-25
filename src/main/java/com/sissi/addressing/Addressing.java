@@ -9,21 +9,21 @@ import com.sissi.context.JIDs;
  */
 public interface Addressing {
 
-	public Addressing priority(JIDContext context);
-
 	public Addressing join(JIDContext context);
 
 	public Addressing leave(JIDContext context);
+	
+	public Addressing priority(JIDContext context);
 
 	public JIDContext find(JID jid);
 
-	public JIDContext find(JID jid, Boolean usingResource);
+	public JIDContext find(JID jid, boolean usingResource);
 
 	public JIDContext findOne(JID jid);
 
-	public JIDContext findOne(JID jid, Boolean usingResource);
+	public JIDContext findOne(JID jid, boolean usingResource);
 
 	public JIDs resources(JID jid);
 
-	public JIDs resources(JID jid, Boolean usingResource);
+	public JIDs resources(JID jid, boolean usingResource);
 }

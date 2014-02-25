@@ -37,11 +37,11 @@ public class Bytestreams extends Protocol implements Collector {
 
 	private String mode;
 
-	public Boolean isUsed() {
+	public boolean isUsed() {
 		return this.streamhostUsed != null;
 	}
 
-	public Boolean isActivate() {
+	public boolean isActivate() {
 		return this.activate != null;
 	}
 
@@ -73,6 +73,19 @@ public class Bytestreams extends Protocol implements Collector {
 	@XmlElement(name = StreamhostUsed.NAME)
 	public StreamhostUsed getStreamhostUsed() {
 		return this.streamhostUsed;
+	}
+
+	public Bytestreams mock(StreamhostUsed streamhostUsed) {
+		this.streamhostUsed = streamhostUsed;
+		this.streamhosts = null;
+		return this;
+	}
+
+	public Bytestreams add(Streamhost streamhost, boolean clear) {
+		if (clear) {
+			this.streamhosts = null;
+		}
+		return this.add(streamhost);
 	}
 
 	public Bytestreams add(Streamhost streamhost) {

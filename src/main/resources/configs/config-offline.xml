@@ -5,23 +5,47 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="offline.config" class="com.sissi.config.impl.MongoProxyConfig">
+		<constructor-arg ref="mongo" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.offline}" />
+	</bean>
+
 	<bean id="delay" abstract="true">
 		<constructor-arg ref="jid" />
 		<constructor-arg value="${pipeline.offline}" />
 	</bean>
 
-	<bean id="offline" class="com.sissi.offline.impl.MongoDelayElementBox">
-		<constructor-arg>
-			<bean class="com.sissi.config.impl.MongoProxyConfig">
-				<constructor-arg ref="mongo" />
-				<constructor-arg index="1" value="${mongo.db}" />
-				<constructor-arg index="2" value="${mongo.collection.offline}" />
-			</bean>
-		</constructor-arg>
+	<bean id="offline" class="com.sissi.persistent.impl.MongoDelayElementBox">
+		<constructor-arg ref="offline.config" />
 		<constructor-arg>
 			<util:list>
-				<bean class="com.sissi.offline.impl.DelayMessage" parent="delay" />
-				<bean class="com.sissi.offline.impl.DelayPresence" parent="delay" />
+				<bean class="com.sissi.persistent.impl.PersistentMessage" parent="delay" />
+				<bean class="com.sissi.persistent.impl.PersistentPresence" parent="delay" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="offline.mock" class="com.sissi.persistent.impl.MongoDelayElementBox">
+		<constructor-arg ref="offline.config" />
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.persistent.impl.PersistentSi" parent="delay">
+					<constructor-arg value="${global.domain.delegation}" />
+				</bean>
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="offline.all" class="com.sissi.persistent.impl.MongoDelayElementBox">
+		<constructor-arg ref="offline.config" />
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.persistent.impl.PersistentMessage" parent="delay" />
+				<bean class="com.sissi.persistent.impl.PersistentPresence" parent="delay" />
+				<bean class="com.sissi.persistent.impl.PersistentSi" parent="delay">
+					<constructor-arg value="${global.domain.delegation}" />
+				</bean>
 			</util:list>
 		</constructor-arg>
 	</bean>

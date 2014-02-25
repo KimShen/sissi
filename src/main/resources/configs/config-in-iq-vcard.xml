@@ -18,10 +18,10 @@
 	</bean>
 	<bean id="vcard.pro.get.check.4error" class="com.sissi.pipeline.in.iq.vcard.VCardGetCheckRelation4ErrorProcessor" parent="global.pro.proxy" />
 	<bean id="vcard.pro.get.check.4empty" class="com.sissi.pipeline.in.iq.vcard.VCardGetCheckRelation4EmptyProcessor" parent="global.pro.proxy" />
-	<bean id="vcard.pro.get.2fans" class="com.sissi.pipeline.in.iq.vcard.VCardGet2FansProcessor" parent="global.pro.proxy">
+	<bean id="vcard.pro.get.4fans" class="com.sissi.pipeline.in.iq.vcard.VCardGet4FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
 	</bean>
-	<bean id="vcard.pro.get.2self" class="com.sissi.pipeline.in.iq.vcard.VCardGet2SelfProcessor">
+	<bean id="vcard.pro.get.4self" class="com.sissi.pipeline.in.iq.vcard.VCardGet4SelfProcessor">
 		<constructor-arg ref="vcard" />
 	</bean>
 	<bean id="vcard.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
@@ -53,8 +53,8 @@
 	<bean id="finder.vcard.get" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="vcard.condition.get.2fans" />
-				<ref bean="vcard.condition.get.2self" />
+				<ref bean="vcard.condition.get.4fans" />
+				<ref bean="vcard.condition.get.4self" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -85,21 +85,21 @@
 		</constructor-arg>
 		<constructor-arg ref="vcard.pro.get.chained" />
 	</bean>
-	<bean id="vcard.condition.get.2fans" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="vcard.condition.get.4fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.vcard.VCardGetMatcher">
 				<constructor-arg value="false" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="vcard.pro.get.2fans" />
+		<constructor-arg ref="vcard.pro.get.4fans" />
 	</bean>
-	<bean id="vcard.condition.get.2self" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="vcard.condition.get.4self" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.vcard.VCardGetMatcher">
 				<constructor-arg value="true" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="vcard.pro.get.2self" />
+		<constructor-arg ref="vcard.pro.get.4self" />
 	</bean>
 
 </beans>

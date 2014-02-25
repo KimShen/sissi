@@ -13,11 +13,11 @@
 
 	<alias name="addressing.mongo" alias="addressing" />
 	<bean id="addressing.mongo" class="com.sissi.addressing.impl.MongoAddressing">
-		<constructor-arg ref="jid" />
 		<constructor-arg ref="runner" />
 		<constructor-arg ref="counter" />
+		<constructor-arg ref="addressing.config" />
 		<constructor-arg>
-			<bean class="com.sissi.commons.Interval">
+			<bean class="com.sissi.thread.Interval">
 				<constructor-arg value="${addressing.gc.interval}" />
 				<constructor-arg value="${addressing.gc.unit}" />
 			</bean>
@@ -30,7 +30,6 @@
 				<constructor-arg value="${global.domain}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="addressing.config" />
 	</bean>
 
 </beans>

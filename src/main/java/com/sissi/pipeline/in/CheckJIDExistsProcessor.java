@@ -1,6 +1,6 @@
 package com.sissi.pipeline.in;
 
-import java.util.List;
+import java.util.Set;
 
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.Error;
@@ -17,18 +17,18 @@ import com.sissi.ucenter.VCardContext;
 public class CheckJIDExistsProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ServiceUnavaliable.DETAIL);
-	
+
 	private final VCardContext vcardContext;
 
 	private final boolean presenceIgnore;
-	
-	private final List<String> ignore;
 
-	public CheckJIDExistsProcessor(VCardContext vcardContext, List<String> ignore) {
+	private final Set<String> ignore;
+
+	public CheckJIDExistsProcessor(VCardContext vcardContext, Set<String> ignore) {
 		this(vcardContext, true, ignore);
 	}
 
-	public CheckJIDExistsProcessor(VCardContext vcardContext, Boolean presenceIgnore, List<String> ignore) {
+	public CheckJIDExistsProcessor(VCardContext vcardContext, boolean presenceIgnore, Set<String> ignore) {
 		super();
 		this.ignore = ignore;
 		this.vcardContext = vcardContext;
@@ -37,10 +37,13 @@ public class CheckJIDExistsProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
+		// Not contain "to" or "to" in special addresses
+		// Not presence node
+		// JID exists
 		return !protocol.to() || protocol.to(this.ignore) || this.presenceIgnore && protocol.clazz(Presence.class) || this.vcardContext.exists(protocol.getTo()) ? true : this.writeAndReturn(context, protocol);
 	}
 
-	private Boolean writeAndReturn(JIDContext context, Protocol protocol) {
+	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
 		context.write(protocol.getParent().reply().setError(this.error));
 		return false;
 	}

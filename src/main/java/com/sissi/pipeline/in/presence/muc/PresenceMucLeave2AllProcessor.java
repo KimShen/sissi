@@ -9,7 +9,9 @@ import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.PresenceType;
 import com.sissi.ucenter.MucGroupContext;
+import com.sissi.ucenter.MucStatusCollector;
 import com.sissi.ucenter.MucStatusComputer;
+import com.sissi.ucenter.MucStatusJudge;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationMuc;
 
@@ -20,24 +22,29 @@ public class PresenceMucLeave2AllProcessor extends ProxyProcessor {
 
 	private final MucGroupContext mucGroupContext;
 
-	private final MucStatusComputer mucStatusCollector;
+	private final MucStatusComputer mucStatusComputer = new NothingMucStatusComputer();
 
-	public PresenceMucLeave2AllProcessor(MucGroupContext mucGroupContext, MucStatusComputer mucStatusCollector) {
+	public PresenceMucLeave2AllProcessor(MucGroupContext mucGroupContext) {
 		super();
 		this.mucGroupContext = mucGroupContext;
-		this.mucStatusCollector = mucStatusCollector;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		JID group = super.build(protocol.getTo());
-		RelationMuc ourRelation = RelationMuc.class.cast(super.ourRelation(context.jid(), group));
 		Presence presence = new Presence();
+		JID group = super.build(protocol.getTo());
+		RelationMuc ourRelation = super.ourRelation(context.jid(), group).cast(RelationMuc.class);
 		for (Relation each : super.myRelations(group)) {
-			RelationMuc relation = RelationMuc.class.cast(each);
-			JID to = super.build(relation.getJID());
-			super.findOne(to, true).write(presence.clear().add(new XUser().setItem(new Item(group, to, ourRelation, this.mucGroupContext), this.mucStatusCollector)).setType(PresenceType.UNAVAILABLE).setFrom(protocol.getTo()));
+			JID to = super.build(each.cast(RelationMuc.class).getJID());
+			super.findOne(to, true).write(presence.clear().add(new XUser().setItem(new Item(group, to, ourRelation, this.mucGroupContext), this.mucStatusComputer)).setType(PresenceType.UNAVAILABLE).setFrom(protocol.getTo()));
 		}
 		return true;
+	}
+
+	private class NothingMucStatusComputer implements MucStatusComputer {
+		@Override
+		public NothingMucStatusComputer collect(MucStatusCollector collector, MucStatusJudge judge) {
+			return this;
+		}
 	}
 }

@@ -19,7 +19,7 @@ public class RosterSetTrimNameProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Roster.class.cast(protocol).getFirstItem().trimName(this.length);
+		protocol.cast(Roster.class).getFirstItem().trimName(this.length);
 		return true;
 	}
 }

@@ -6,13 +6,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.commons.Interval;
-import com.sissi.commons.Runner;
+import com.sissi.commons.Trace;
 import com.sissi.feed.Feeder;
 import com.sissi.looper.Looper;
 import com.sissi.looper.LooperBuilder;
 import com.sissi.protocol.Protocol;
 import com.sissi.resource.ResourceCounter;
+import com.sissi.thread.Interval;
+import com.sissi.thread.Runner;
 
 /**
  * @author kim 2013-10-30
@@ -23,13 +24,13 @@ public class PersonalLooperBuilder implements LooperBuilder {
 
 	private final String resource = PersonalLooper.class.getSimpleName();
 
-	private final Runner runner;
+	private final ResourceCounter resourceCounter;
 
 	private final Interval interval;
-	
-	private final int threadNumber;
 
-	private final ResourceCounter resourceCounter;
+	private final Runner runner;
+
+	private final int threadNumber;
 
 	public PersonalLooperBuilder(Runner runner, Interval interval, int threadNumber, ResourceCounter resourceCounter) {
 		super();
@@ -46,7 +47,7 @@ public class PersonalLooperBuilder implements LooperBuilder {
 
 	private class PersonalLooper implements Runnable, Looper {
 
-		private final AtomicBoolean state;
+		private final AtomicBoolean state = new AtomicBoolean();
 
 		private final Future<?> future;
 
@@ -54,7 +55,6 @@ public class PersonalLooperBuilder implements LooperBuilder {
 
 		private PersonalLooper(Future<?> future, Feeder feeder) {
 			super();
-			this.state = new AtomicBoolean();
 			this.future = future;
 			this.feeder = feeder;
 		}
@@ -70,10 +70,8 @@ public class PersonalLooperBuilder implements LooperBuilder {
 						}
 						this.getAndFeed();
 					} catch (Exception e) {
-						if (PersonalLooperBuilder.this.log.isWarnEnabled()) {
-							PersonalLooperBuilder.this.log.warn(e.toString());
-							e.printStackTrace();
-						}
+						PersonalLooperBuilder.this.log.warn(e.toString());
+						Trace.trace(PersonalLooperBuilder.this.log, e);
 					}
 				}
 			} finally {
@@ -82,7 +80,7 @@ public class PersonalLooperBuilder implements LooperBuilder {
 		}
 
 		private void getAndFeed() throws Exception {
-			Protocol protocol = (Protocol) future.get(PersonalLooperBuilder.this.interval.getInterval(), PersonalLooperBuilder.this.interval.getUnit());
+			Protocol protocol = Protocol.class.cast(future.get(PersonalLooperBuilder.this.interval.getInterval(), PersonalLooperBuilder.this.interval.getUnit()));
 			if (protocol != null) {
 				this.feeder.feed(protocol);
 			}

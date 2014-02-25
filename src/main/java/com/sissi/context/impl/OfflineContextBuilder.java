@@ -21,17 +21,17 @@ import com.sissi.ucenter.VCardContext;
  */
 public class OfflineContextBuilder implements JIDContextBuilder {
 
-	private final int priority = 0;
-
 	private final SocketAddress address = new InetSocketAddress(InetAddress.getByName("0.0.0.0"), 0);
 
-	private final VCardContext vCardContext;
+	private final int priority = -1;
 
-	private final String lang;
+	private final VCardContext vCardContext;
 
 	private final String domain;
 
 	private final Output output;
+
+	private final String lang;
 
 	public OfflineContextBuilder(String lang, String domain, Output output) throws Exception {
 		super();
@@ -51,7 +51,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
-		return this.vCardContext != null ? new OfflineContext(jid, new SignatureClauses(this.vCardContext.get(jid, VCardContext.FIELD_SIGNATURE).getValue())) : new OfflineContext(jid);
+		return new OfflineContext(jid, this.vCardContext != null);
 	}
 
 	private class OfflineContext implements JIDContext {
@@ -60,14 +60,13 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		private final Status status;
 
-		public OfflineContext(JID jid) {
+		public OfflineContext(JID jid, boolean signature) {
 			this.jid = jid;
-			this.status = OfflineStatus.STATUS;
-		}
-
-		public OfflineContext(JID jid, StatusClauses statusClauses) {
-			this.jid = jid;
-			this.status = new OfflineStatus(statusClauses);
+			if (signature) {
+				this.status = new OfflineStatus(new SignatureClauses(OfflineContextBuilder.this.vCardContext.get(jid, VCardContext.FIELD_SIGNATURE).getValue()));
+			} else {
+				this.status = OfflineStatus.STATUS;
+			}
 		}
 
 		public long index() {
@@ -150,21 +149,21 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return false;
 		}
 
-		public JIDContext present() {
+		public JIDContext online() {
 			return this;
 		}
 
-		public JIDContext leaving() {
+		public JIDContext offline() {
 			return this;
 		}
 
-		public boolean presented() {
+		public boolean presence() {
 			return false;
 		}
 
 		public long idle() {
 			String idle = OfflineContextBuilder.this.vCardContext.get(this.jid(), VCardContext.FIELD_LOGOUT).getValue();
-			return Long.valueOf(idle.isEmpty() ? "0" : idle);
+			return idle == null ? 0L : Long.valueOf(idle);
 		}
 
 		public boolean closePrepare() {
@@ -199,7 +198,11 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		public JIDContext write(Element element, boolean force) {
-			return this.write(element, force);
+			return this.write(element);
+		}
+
+		public JIDContext write(Element element, boolean force, boolean bare) {
+			return this.write(element);
 		}
 
 		public JIDContext write(Collection<Element> elements) {
@@ -210,6 +213,10 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		public JIDContext write(Collection<Element> elements, boolean force) {
+			return this.write(elements);
+		}
+
+		public JIDContext write(Collection<Element> elements, boolean force, boolean bare) {
 			return this.write(elements);
 		}
 	}

@@ -34,7 +34,7 @@ public class Resource extends Protocol {
 		return this;
 	}
 
-	public Boolean hasResource() {
+	public boolean hasResource() {
 		return this.text != null && !this.text.isEmpty();
 	}
 }

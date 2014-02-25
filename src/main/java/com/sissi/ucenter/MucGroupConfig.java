@@ -11,7 +11,7 @@ public interface MucGroupConfig {
 
 	public final static String PASSWORD = "password";
 
-	public final static String ROLES = "roles";
+	public final static String AFFILIATIONS = "affiliations";
 
 	public boolean allowed(String key, Object value);
 

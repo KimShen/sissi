@@ -14,6 +14,6 @@ public class BytestreamsActivateMatcher extends ClassMatcher {
 	}
 
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && Bytestreams.class.cast(protocol).isActivate();
+		return super.match(protocol) && protocol.cast(Bytestreams.class).isActivate();
 	}
 }

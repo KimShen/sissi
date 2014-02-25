@@ -5,6 +5,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 import com.sissi.read.Collector;
@@ -28,6 +30,11 @@ public class Si extends Protocol implements Collector {
 
 	private File file;
 
+	public Si setId(String id) {
+		super.setId(id);
+		return this;
+	}
+
 	@XmlAttribute
 	public String getProfile() {
 		return this.profile;
@@ -38,9 +45,19 @@ public class Si extends Protocol implements Collector {
 		return this;
 	}
 
+	public Si setFile(File file) {
+		this.file = file;
+		return this;
+	}
+
 	@XmlElement
 	public File getFile() {
 		return this.file;
+	}
+
+	public Si setFeature(Feature feature) {
+		this.feature = feature;
+		return this;
 	}
 
 	@XmlElement
@@ -51,6 +68,18 @@ public class Si extends Protocol implements Collector {
 	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;
+	}
+
+	public String host() {
+		return this.compute(this.getParent().getFrom(), this.getParent().getTo());
+	}
+
+	public String host(String from, String to) {
+		return this.compute(from, to);
+	}
+
+	private String compute(String from, String to) {
+		return DigestUtils.sha1Hex(this.getId() + from + to);
 	}
 
 	@Override

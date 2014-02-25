@@ -16,7 +16,7 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	private final static long serialVersionUID = 1L;
 
-	private final static RuntimeException NOT_SUPPORT = new RuntimeException("MultiContexts not support this function");
+	private final static RuntimeException NOT_SUPPORT = new RuntimeException("JIDContexts not support this function");
 
 	public JIDContext bind() {
 		for (JIDContext each : this) {
@@ -87,24 +87,24 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return encrypted;
 	}
 
-	public JIDContext present() {
+	public JIDContext online() {
 		for (JIDContext each : this) {
-			each.present();
+			each.online();
 		}
 		return this;
 	}
 
-	public JIDContext leaving() {
+	public JIDContext offline() {
 		for (JIDContext each : this) {
-			each.leaving();
+			each.offline();
 		}
 		return this;
 	}
 
-	public boolean presented() {
+	public boolean presence() {
 		boolean presented = true;
 		for (JIDContext each : this) {
-			presented = each.presented() ? presented : false;
+			presented = each.presence() ? presented : false;
 		}
 		return presented;
 	}
@@ -195,6 +195,13 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return this;
 	}
 
+	public JIDContext write(Element element, boolean force, boolean bare) {
+		for (JIDContext each : this) {
+			each.write(element, force, bare);
+		}
+		return this;
+	}
+
 	public JIDContext write(Collection<Element> elements) {
 		for (Element element : elements) {
 			this.write(element);
@@ -205,6 +212,13 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	public JIDContext write(Collection<Element> elements, boolean force) {
 		for (Element element : elements) {
 			this.write(element, force);
+		}
+		return this;
+	}
+
+	public JIDContext write(Collection<Element> elements, boolean force, boolean bare) {
+		for (Element element : elements) {
+			this.write(element, force, bare);
 		}
 		return this;
 	}

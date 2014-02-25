@@ -24,16 +24,17 @@ public class PresenceRosterSubscribe2ReplySelfsProcessor extends ProxyProcessor 
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return RelationRoster.class.cast(super.ourRelation(context.jid(), super.build(protocol.getTo()))).in(this.relations) ? this.writeAndReturn(context, super.build(protocol.getTo()), Presence.class.cast(protocol)) : true;
+		JID to = super.build(protocol.getTo());
+		return super.ourRelation(context.jid(), to).cast(RelationRoster.class).in(this.relations) ? this.writeAndReturn(context, to, protocol.cast(Presence.class)) : true;
 	}
 
-	private Boolean writeAndReturn(JIDContext context, JID to, Presence presence) {
+	private boolean writeAndReturn(JIDContext context, JID to, Presence presence) {
 		this.writeRoster(context, to).writeSubscribed(context, to, presence.clear()).writeAvailable(context, to, presence.clear());
 		return false;
 	}
 
 	private PresenceRosterSubscribe2ReplySelfsProcessor writeRoster(JIDContext context, JID to) {
-		super.broadcast(context.jid(), new IQ().setId(UUID.randomUUID().toString()).add(new Roster(new GroupItem(RelationRoster.class.cast(super.ourRelation(context.jid(), to))))).setType(ProtocolType.SET));
+		super.broadcast(context.jid(), new IQ().setId(UUID.randomUUID().toString()).add(new Roster(new GroupItem(super.ourRelation(context.jid(), to).cast(RelationRoster.class)))).setType(ProtocolType.SET));
 		return this;
 	}
 
@@ -43,9 +44,8 @@ public class PresenceRosterSubscribe2ReplySelfsProcessor extends ProxyProcessor 
 	}
 
 	private PresenceRosterSubscribe2ReplySelfsProcessor writeAvailable(JIDContext context, JID to, Presence presence) {
-		presence.setType(PresenceType.AVAILABLE);
 		for (JID resource : super.resources(to)) {
-			super.broadcast(context.jid(), presence.setFrom(resource).clauses(super.findOne(resource, true).status().clauses()));
+			super.broadcast(context.jid(), presence.setType(PresenceType.AVAILABLE).setFrom(resource).clauses(super.findOne(resource, true).status().clauses()));
 		}
 		return this;
 	}

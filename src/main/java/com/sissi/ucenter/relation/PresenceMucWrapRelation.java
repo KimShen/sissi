@@ -6,6 +6,7 @@ import java.util.Map;
 import com.sissi.context.JID;
 import com.sissi.protocol.muc.XMuc;
 import com.sissi.protocol.presence.Presence;
+import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationMuc;
 
 /**
@@ -62,5 +63,10 @@ public class PresenceMucWrapRelation implements RelationMuc {
 		} else {
 			return plus;
 		}
+	}
+
+	@Override
+	public <T extends Relation> T cast(Class<T> clazz) {
+		return clazz.cast(this);
 	}
 }

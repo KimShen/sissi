@@ -17,9 +17,9 @@ public interface MongoCollection {
 
 	public WriteResult update(DBObject query, DBObject entity);
 
-	public WriteResult update(DBObject query, DBObject entity, Boolean upsert, Boolean batch);
+	public WriteResult update(DBObject query, DBObject entity, boolean upsert, boolean batch);
 
-	public WriteResult update(DBObject query, DBObject entity, Boolean upsert, Boolean batch, WriteConcern concern);
+	public WriteResult update(DBObject query, DBObject entity, boolean upsert, boolean batch, WriteConcern concern);
 
 	public WriteResult remove(DBObject query);
 

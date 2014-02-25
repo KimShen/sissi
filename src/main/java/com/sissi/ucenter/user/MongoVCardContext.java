@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
+import com.sissi.commons.Extracter;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
@@ -53,7 +54,7 @@ public class MongoVCardContext extends MongoFieldContext implements VCardContext
 	}
 
 	public Field<String> get(JID jid, String name) {
-		return new BeanField<String>().setName(name).setValue(this.config.asString(this.config.collection().findOne(this.buildQuery(jid), BasicDBObjectBuilder.start(name, 1).get()), name));
+		return new BeanField<String>().setName(name).setValue(Extracter.asString(this.config.collection().findOne(this.buildQuery(jid), BasicDBObjectBuilder.start(name, 1).get()), name));
 	}
 
 	@SuppressWarnings("unchecked")

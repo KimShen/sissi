@@ -48,7 +48,7 @@ public class Stream extends Protocol {
 		return this;
 	}
 
-	public Boolean isConsume() {
+	public boolean isConsume() {
 		return this.isUsing.get();
 	}
 
@@ -70,7 +70,7 @@ public class Stream extends Protocol {
 		return this.version;
 	}
 
-	public Boolean validStream() {
+	public boolean validStream() {
 		return this.stream != null && this.stream.equals(Stream.XMLNS);
 	}
 	

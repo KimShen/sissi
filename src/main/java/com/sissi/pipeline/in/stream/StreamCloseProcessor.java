@@ -12,6 +12,6 @@ public class StreamCloseProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return Stream.class.cast(protocol).isConsume() ? !context.write(Stream.closeGraceFully()).closePrepare() : true;
+		return protocol.cast(Stream.class).isConsume() ? !context.write(Stream.closeGraceFully()).closePrepare() : true;
 	}
 }

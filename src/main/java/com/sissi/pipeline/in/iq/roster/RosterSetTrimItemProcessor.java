@@ -14,7 +14,7 @@ public class RosterSetTrimItemProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Roster.class.cast(protocol).trimItem(this.items);
+		protocol.cast(Roster.class).trimItem(this.items);
 		return true;
 	}
 }

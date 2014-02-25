@@ -5,15 +5,16 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.commons.Interval;
+import com.sissi.commons.Trace;
 import com.sissi.resource.ResourceCounter;
+import com.sissi.thread.Interval;
 
 /**
  * @author kim 2014年1月15日
  */
 abstract public class GC implements Runnable {
 
-	private final static Log LOG = LogFactory.getLog(GC.class);
+	private final static Log log = LogFactory.getLog(GC.class);
 
 	private final long sleep;
 
@@ -34,16 +35,14 @@ abstract public class GC implements Runnable {
 			this.resourceCounter.increment(this.resource);
 			while (true) {
 				try {
-					if (this.gc()) {
-						Thread.sleep(this.sleep);
-					} else {
-						break;
-					}
+//					if (this.gc()) {
+//						Thread.sleep(this.sleep);
+//					} else {
+//						break;
+//					}
 				} catch (Exception e) {
-					if (LOG.isErrorEnabled()) {
-						LOG.error(e.toString());
-						e.printStackTrace();
-					}
+					log.error(e.toString());
+					Trace.trace(log, e);
 				}
 			}
 		} finally {

@@ -18,7 +18,7 @@ abstract public class Feature {
 		this(xmlns, false);
 	}
 
-	public Feature(String xmlns, Boolean required) {
+	public Feature(String xmlns, boolean required) {
 		super();
 		this.xmlns = xmlns;
 		this.required = required ? Required.REQUIRED : null;

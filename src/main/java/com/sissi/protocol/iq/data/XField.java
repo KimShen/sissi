@@ -33,6 +33,11 @@ public class XField implements Field<Object>, Collector {
 
 	private Object value;
 
+	public XField add(Field<?> field) {
+		this.fields.add(field);
+		return this;
+	}
+
 	@XmlElement
 	public String getDesc() {
 		return desc;

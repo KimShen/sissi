@@ -11,6 +11,6 @@ public class PresenceInitProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return context.presented() ? true : context.present().presented();
+		return context.presence() ? true : context.online().presence();
 	}
 }

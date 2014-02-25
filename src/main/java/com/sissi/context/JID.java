@@ -7,10 +7,6 @@ public interface JID {
 
 	public String user();
 
-	public boolean user(JID jid);
-
-	public boolean user(String jid);
-
 	public String domain();
 
 	public JID domain(String domain);
@@ -18,21 +14,27 @@ public interface JID {
 	public String resource();
 
 	public JID resource(String resource);
-	
+
 	public boolean same(JID jid);
-	
+
 	public boolean same(String jid);
+
+	public boolean like(JID jid);
+
+	public boolean like(String jid);
 
 	public boolean valid();
 
 	public boolean valid(boolean excludeDomain);
-	
-	public JID bare();
-	
+
 	public boolean isBare();
-	
+
 	public boolean isGroup();
-	
+
+	public JID bare();
+
+	public JID clone();
+
 	public String asString();
 
 	public String asStringWithBare();

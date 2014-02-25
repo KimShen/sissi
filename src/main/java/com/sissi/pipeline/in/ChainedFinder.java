@@ -31,8 +31,8 @@ public class ChainedFinder implements InputFinder {
 		for (InputCondition each : this.conditions) {
 			if (each.matcher().match(protocol)) {
 				Input input = each.input();
-				this.log.debug("Input for " + protocol.getClass());
-				return input;
+				this.log.debug("Input " + input.getClass() + "for " + protocol.getClass());
+				return each.input();
 			}
 		}
 		return this.nothing;

@@ -14,4 +14,6 @@ public interface Relation {
 	public boolean isActivate();
 
 	public Map<String, Object> plus();
+
+	public <T extends Relation> T cast(Class<T> clazz);
 }

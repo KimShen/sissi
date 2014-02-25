@@ -22,7 +22,7 @@ public class Bytestreams2RobotProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.write(Bytestreams.class.cast(protocol).add(new Streamhost(protocol.getParent().getTo(), this.bytestreamsProxy)).getParent().reply().setFrom(this.bytestreamsProxy.getJid()).setType(ProtocolType.RESULT));
+		context.write(protocol.cast(Bytestreams.class).add(new Streamhost(this.bytestreamsProxy)).getParent().reply().setFrom(this.bytestreamsProxy.getJid()).setType(ProtocolType.RESULT));
 		return true;
 	}
 }

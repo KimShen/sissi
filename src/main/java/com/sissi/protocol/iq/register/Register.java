@@ -43,7 +43,7 @@ public class Register extends Protocol implements Fields, Collector {
 		this.instructions = instructions;
 	}
 
-	public Boolean form(boolean needForm) {
+	public boolean form(boolean needForm) {
 		return (this.fields.findField(XData.NAME, XData.class) != null) == needForm;
 	}
 

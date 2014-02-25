@@ -16,7 +16,7 @@ public class RosterRemove2SelfsPresenceProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		Presence presence = new Presence().setType(PresenceType.UNAVAILABLE);
-		for (JID resource : super.resources(super.build(Roster.class.cast(protocol).getFirstItem().getJid()))) {
+		for (JID resource : super.resources(super.build(protocol.cast(Roster.class).getFirstItem().getJid()))) {
 			super.broadcast(context.jid(), presence.setFrom(resource));
 		}
 		return false;

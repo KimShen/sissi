@@ -15,9 +15,9 @@ public class RosterSetProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		GroupItem item = Roster.class.cast(protocol).getFirstItem();
+		GroupItem item = protocol.cast(Roster.class).getFirstItem();
 		// convert jid to bare jid
-		super.establish(context.jid(), new ItemWrapRelation(RelationRoster.class.cast(super.ourRelation(context.jid(), super.build(item.getJid()))), item));
+		super.establish(context.jid(), new ItemWrapRelation(super.ourRelation(context.jid(), super.build(item.getJid())).cast(RelationRoster.class), item));
 		return true;
 	}
 }

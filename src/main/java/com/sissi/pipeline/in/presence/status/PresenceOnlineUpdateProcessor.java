@@ -12,7 +12,7 @@ public class PresenceOnlineUpdateProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.status().clauses(Presence.class.cast(protocol).clauses());
+		context.status().clauses(protocol.cast(Presence.class).clauses());
 		return true;
 	}
 }

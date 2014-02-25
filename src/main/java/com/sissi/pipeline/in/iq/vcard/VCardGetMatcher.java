@@ -9,9 +9,9 @@ import com.sissi.protocol.iq.vcard.VCard;
  */
 public class VCardGetMatcher extends ClassMatcher {
 
-	private final Boolean self;
+	private final boolean self;
 
-	public VCardGetMatcher(Boolean self) {
+	public VCardGetMatcher(boolean self) {
 		super(VCard.class);
 		this.self = self;
 	}

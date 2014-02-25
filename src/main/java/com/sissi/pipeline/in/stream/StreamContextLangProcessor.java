@@ -12,7 +12,7 @@ public class StreamContextLangProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.lang(Stream.class.cast(protocol).getLang());
+		context.lang(protocol.cast(Stream.class).getLang());
 		return true;
 	}
 }

@@ -54,7 +54,7 @@ public class Thread {
 		return this;
 	}
 
-	public Boolean hasContent() {
+	public boolean hasContent() {
 		return this.text != null && this.text.length() > 0;
 	}
 }

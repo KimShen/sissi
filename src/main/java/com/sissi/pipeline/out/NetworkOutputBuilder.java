@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.commons.Trace;
 import com.sissi.commons.apache.IOUtils;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Output;
@@ -56,11 +57,9 @@ public class NetworkOutputBuilder implements OutputBuilder {
 				NetworkOutputBuilder.this.writer.write(context, buf, node);
 				buf.flush();
 				this.transfer.transfer(output);
-			} catch (IOException e) {
-				if (NetworkOutputBuilder.this.log.isErrorEnabled()) {
-					NetworkOutputBuilder.this.log.error(e.toString());
-					e.printStackTrace();
-				}
+			} catch (Exception e) {
+				NetworkOutputBuilder.this.log.error(e.toString());
+				Trace.trace(NetworkOutputBuilder.this.log, e);
 			} finally {
 				IOUtils.closeQuietly(buf);
 				IOUtils.closeQuietly(output);

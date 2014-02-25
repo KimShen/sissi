@@ -22,10 +22,10 @@ public class PresenceInit4AskProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return context.presented() ? true : this.writeAsk(context);
+		return context.presence() ? true : this.writeAsk(context);
 	}
 
-	private Boolean writeAsk(JIDContext context) {
+	private boolean writeAsk(JIDContext context) {
 		Presence presence = new Presence();
 		for (Relation relation : this.relationRecover.recover(context.jid())) {
 			context.write(presence.clear().setType(PresenceType.SUBSCRIBE).setFrom(relation.getJID()), true);

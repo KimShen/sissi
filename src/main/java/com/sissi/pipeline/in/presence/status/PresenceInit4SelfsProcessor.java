@@ -13,7 +13,7 @@ public class PresenceInit4SelfsProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return context.presented() ? true : this.writePresence(context);
+		return context.presence() ? true : this.writePresence(context);
 	}
 
 	private boolean writePresence(JIDContext context) {

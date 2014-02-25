@@ -23,7 +23,7 @@ public class BlockedListProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		BlockList list = BlockList.class.cast(protocol).clear();
+		BlockList list = protocol.cast(BlockList.class).clear();
 		for (JID each : this.blockContext.iBlockWho(context.jid())) {
 			list.add(new BlockListItem().setJid(each.domain(context.domain()).asStringWithBare()));
 		}

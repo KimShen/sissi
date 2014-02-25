@@ -25,6 +25,10 @@ public class XOption implements Field<XValue>, Collector {
 	public XOption() {
 	}
 
+	public XOption(String value) {
+		this.xValue = new XValue(value);
+	}
+
 	public XOption(String name, String value) {
 		this.name = name;
 		this.xValue = new XValue(value);

@@ -14,7 +14,7 @@ import com.sissi.protocol.iq.roster.RosterSubscription;
  */
 abstract class Roster2SelfsItemProcessor extends ProxyProcessor {
 
-	private Group group;
+	private final Group group;
 
 	public Roster2SelfsItemProcessor(Group group) {
 		super();
@@ -23,7 +23,7 @@ abstract class Roster2SelfsItemProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		GroupItem item = Roster.class.cast(protocol).getFirstItem();
+		GroupItem item = protocol.cast(Roster.class).getFirstItem();
 		JID to = super.build(item.getJid());
 		item.addOnEmpty(this.group).setAsk(this.isAsk()).setSubscription(this.subscription(context.jid(), to)).setJid(to.asStringWithBare());
 		super.broadcast(context.jid(), protocol.getParent());
