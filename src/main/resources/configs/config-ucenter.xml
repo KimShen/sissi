@@ -48,6 +48,11 @@
 	<bean id="ucenter.register.mongo" class="com.sissi.ucenter.user.MongoRegisterContext">
 		<constructor-arg ref="jid" />
 		<constructor-arg ref="ucenter.config" />
+		<constructor-arg>
+			<util:set>
+				<value>${exchanger.delegation.user}</value>
+			</util:set>
+		</constructor-arg>
 	</bean>
 
 	<bean id="uncenter.fields.simple" class="com.sissi.ucenter.field.impl.BeanFields">

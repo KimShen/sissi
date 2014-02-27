@@ -15,7 +15,6 @@
 		<!-- For Server -->
 		<maven.global.domain>sissi.pw</maven.global.domain>
 		<maven.global.domain.group>group.sissi.pw</maven.global.domain.group>
-		<maven.global.domain.delegation>delegation@sissi.pw</maven.global.domain.delegation>
 		<maven.global.version>1.0</maven.global.version>
 		<maven.global.lang>zh_CN</maven.global.lang>
 		<maven.global.port.main>5222</maven.global.port.main>
@@ -40,8 +39,11 @@
 		<maven.exchanger.idle.all>120</maven.exchanger.idle.all>
 		<maven.exchanger.idle.read>120</maven.exchanger.idle.read>
 		<maven.exchanger.idle.write>120</maven.exchanger.idle.write>
+		<!-- Adium must contain resource for SI -->
+		<maven.exchanger.delegation.user>delegation</maven.exchanger.delegation.user>
+		<maven.exchanger.delegation.domain>${maven.exchanger.delegation.user}@${maven.global.domain}/delegation</maven.exchanger.delegation.domain>
 		<maven.exchanger.delegation.bare>true</maven.exchanger.delegation.bare>
-		<maven.exchanger.delegation.buffer>20</maven.exchanger.delegation.buffer>
+		<maven.exchanger.delegation.buffer>1024</maven.exchanger.delegation.buffer>
 		<maven.exchanger.delegation.dir>/Users/kim/Downloads</maven.exchanger.delegation.dir>
 		<!-- For Thread -->
 		<maven.executor.keep.alive>300</maven.executor.keep.alive>

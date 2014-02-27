@@ -1,5 +1,7 @@
 package com.sissi.ucenter.user;
 
+import java.util.Set;
+
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.MongoException;
 import com.sissi.config.MongoConfig;
@@ -20,9 +22,12 @@ public class MongoRegisterContext extends MongoFieldContext implements RegisterC
 
 	private final JIDBuilder jidBuilder;
 
-	public MongoRegisterContext(MongoConfig config, JIDBuilder jidBuilder) {
+	private final Set<String> reserved;
+
+	public MongoRegisterContext(Set<String> reserved, MongoConfig config, JIDBuilder jidBuilder) {
 		super();
 		this.config = config;
+		this.reserved = reserved;
 		this.jidBuilder = jidBuilder;
 	}
 
@@ -41,9 +46,9 @@ public class MongoRegisterContext extends MongoFieldContext implements RegisterC
 	}
 
 	private boolean validUsername(String username) {
-		return username != null && !username.isEmpty() && this.jidBuilder.build(username, null).valid(true);
+		return username != null && !username.isEmpty() && this.jidBuilder.build(username, null).valid(true) && !this.reserved.contains(username);
 	}
-	
+
 	private String extractUsername(Field<?> register) {
 		for (Field<?> field : register.getChildren()) {
 			if (field.getClass() == XValue.class) {

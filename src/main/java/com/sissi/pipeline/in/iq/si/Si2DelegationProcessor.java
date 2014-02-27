@@ -40,7 +40,7 @@ public class Si2DelegationProcessor extends ProxyProcessor {
 	public boolean input(JIDContext context, Protocol protocol) {
 		Si si = protocol.cast(Si.class).setFeature(this.feature);
 		JID to = super.build(si.parent().getTo());
-		this.exchangerContext.join(si.host(context.jid().asString(this.bare), to.asString(this.bare)), this.transferBuilder.build(new SiTransferParam(si, this.bare)));
+		this.exchangerContext.join(si.host(context.jid().asString(this.bare), to.asString(this.bare)), this.transferBuilder.build(new SiTransferParam(si)));
 		context.write(si.parent().reply().setType(ProtocolType.RESULT));
 		return true;
 	}
@@ -49,12 +49,9 @@ public class Si2DelegationProcessor extends ProxyProcessor {
 
 		private final Si si;
 
-		private final boolean bare;
-
-		public SiTransferParam(Si si, boolean bare) {
+		public SiTransferParam(Si si) {
 			super();
 			this.si = si;
-			this.bare = bare;
 		}
 
 		@Override
@@ -62,8 +59,6 @@ public class Si2DelegationProcessor extends ProxyProcessor {
 			switch (key) {
 			case TransferParam.KEY_SI:
 				return clazz.cast(this.si);
-			case TransferParam.KEY_BARE:
-				return clazz.cast(this.bare);
 			}
 			return null;
 		}

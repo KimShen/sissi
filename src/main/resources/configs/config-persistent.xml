@@ -18,7 +18,7 @@
 
 	<bean id="persistent.hanlder.message" class="com.sissi.persistent.impl.PersistentMessage" parent="persistent.delay" />
 	<bean id="persistent.hanlder.si" class="com.sissi.persistent.impl.PersistentSi" parent="persistent.delay">
-		<constructor-arg value="${global.domain.delegation}" />
+		<constructor-arg value="${exchanger.delegation.domain}" />
 	</bean>
 
 	<bean id="persistent.message" class="com.sissi.persistent.impl.MongoDelayElementBox">

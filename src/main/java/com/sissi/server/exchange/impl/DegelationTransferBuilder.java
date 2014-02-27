@@ -56,7 +56,7 @@ public class DegelationTransferBuilder implements TransferBuilder {
 
 	@Override
 	public Transfer build(TransferParam param) {
-		return new DelegationTransfer(param.find(TransferParam.KEY_SI, Si.class), param.find(TransferParam.KEY_BARE, Boolean.class));
+		return new DelegationTransfer(param.find(TransferParam.KEY_SI, Si.class));
 	}
 
 	private class DelegationTransfer implements Transfer {
@@ -67,16 +67,13 @@ public class DegelationTransferBuilder implements TransferBuilder {
 
 		private final Si si;
 
-		private final boolean bare;
-
 		private final OutputStream output;
 
 		private byte[] buffer = new byte[DegelationTransferBuilder.this.buffer];
 
-		public DelegationTransfer(Si si, boolean bare) {
+		public DelegationTransfer(Si si) {
 			super();
 			this.si = si;
-			this.bare = bare;
 			this.output = DegelationTransferBuilder.this.delegation.allocate(si.getId());
 			DegelationTransferBuilder.this.resourceCounter.increment(DegelationTransferBuilder.this.resoure);
 		}
@@ -123,7 +120,7 @@ public class DegelationTransferBuilder implements TransferBuilder {
 		public void close() {
 			this.closeAndDecr();
 			DegelationTransferBuilder.this.persistentElementBox.push(this.si);
-			DegelationTransferBuilder.this.delegationCallback.callback(DegelationTransferBuilder.this.jidBuilder.build(si.parent().getTo()).asString(this.bare));
+			DegelationTransferBuilder.this.delegationCallback.callback(DegelationTransferBuilder.this.jidBuilder.build(si.parent().getTo()).asStringWithBare());
 		}
 	}
 }

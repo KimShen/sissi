@@ -10,7 +10,7 @@
 		<value>localhost</value>
 		<value>${global.domain}</value>
 		<value>${global.domain.group}</value>
-		<value>${global.domain.delegation}</value>
+		<value>${exchanger.delegation.domain}</value>
 		<value>${bytestreams.jid}</value>
 	</util:set>
 

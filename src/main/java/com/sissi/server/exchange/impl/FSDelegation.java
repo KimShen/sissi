@@ -128,6 +128,7 @@ public class FSDelegation implements Delegation {
 				int readable = this.input.read(this.buffer);
 				if (readable != -1) {
 					this.byteBuf.writeBytes(this.buffer, 0, readable);
+					this.current.addAndGet(readable);
 				}
 				return this;
 			} catch (IOException e) {
