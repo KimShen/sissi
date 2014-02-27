@@ -9,7 +9,7 @@ public interface ExchangerContext {
 
 	public Exchanger join(String host, Transfer transfer);
 	
-	public Exchanger leave(String host);
+	public Exchanger active(String host);
 
 	public boolean exists(String host);
 }

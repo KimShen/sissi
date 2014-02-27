@@ -24,22 +24,25 @@
 		<maven.global.idle.all>120</maven.global.idle.all>
 		<maven.global.idle.read>120</maven.global.idle.read>
 		<maven.global.idle.write>120</maven.global.idle.write>
-		<maven.global.heart.interval>10000</maven.global.heart.interval>
+		<maven.global.heart.interval>30000</maven.global.heart.interval>
 		<maven.global.heart.unit>MILLISECONDS</maven.global.heart.unit>
 		<!-- For Loop -->
 		<maven.looper.num>2</maven.looper.num>
-		<maven.looper.gc.interval>12000</maven.looper.gc.interval>
-		<maven.looper.gc.unit>MILLISECONDS</maven.looper.gc.unit>
+		<maven.looper.unit>MILLISECONDS</maven.looper.unit>
+		<maven.looper.interval>30000</maven.looper.interval>
 		<!-- For Addressing -->
-		<maven.addressing.gc.interval>1200</maven.addressing.gc.interval>
+		<maven.addressing.gc.interval>30000</maven.addressing.gc.interval>
 		<maven.addressing.gc.unit>MILLISECONDS</maven.addressing.gc.unit>
 		<!-- For Exchanger -->
-		<maven.exchanger.gc.interval>1200</maven.exchanger.gc.interval>
+		<maven.exchanger.gc.interval>30000</maven.exchanger.gc.interval>
 		<maven.exchanger.gc.unit>MILLISECONDS</maven.exchanger.gc.unit>
+		<maven.exchanger.timeout>30000</maven.exchanger.timeout>
 		<maven.exchanger.idle.all>120</maven.exchanger.idle.all>
 		<maven.exchanger.idle.read>120</maven.exchanger.idle.read>
 		<maven.exchanger.idle.write>120</maven.exchanger.idle.write>
-		<maven.exchanger.delegation>/Users/kim/Downloads</maven.exchanger.delegation>
+		<maven.exchanger.delegation.bare>true</maven.exchanger.delegation.bare>
+		<maven.exchanger.delegation.buffer>20</maven.exchanger.delegation.buffer>
+		<maven.exchanger.delegation.dir>/Users/kim/Downloads</maven.exchanger.delegation.dir>
 		<!-- For Thread -->
 		<maven.executor.keep.alive>300</maven.executor.keep.alive>
 		<maven.executor.maximum>1000</maven.executor.maximum>
@@ -53,7 +56,7 @@
 		<maven.mongo.port>27017</maven.mongo.port>
 		<maven.mongo.host>localhost</maven.mongo.host>
 		<maven.mongo.collection.log>log</maven.mongo.collection.log>
-		<maven.mongo.collection.persistent>offline</maven.mongo.collection.persistent>
+		<maven.mongo.collection.persistent>persistent</maven.mongo.collection.persistent>
 		<maven.mongo.collection.addressing>addressing</maven.mongo.collection.addressing>
 		<maven.mongo.collection.exchanger>exchanger</maven.mongo.collection.exchanger>
 		<maven.mongo.collection.counter>counter</maven.mongo.collection.counter>

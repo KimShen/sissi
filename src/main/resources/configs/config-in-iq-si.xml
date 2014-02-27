@@ -9,11 +9,12 @@
 	<bean id="si.pro.2delegation" class="com.sissi.pipeline.in.iq.si.Si2DelegationProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="server.exchanger.context" />
 		<constructor-arg ref="server.exchanger.transfer" />
-		<constructor-arg value="${global.domain.delegation}" />
+		<constructor-arg value="${exchanger.delegation.bare}" />
 	</bean>
 	<bean id="si.pro.4delegation" class="com.sissi.pipeline.in.iq.si.Si4DelegationProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="persistent.si" />
-		<constructor-arg value="${global.domain.delegation}" />
+		<constructor-arg index="0" value="${exchanger.delegation.bare}" />
+		<constructor-arg index="1" value="${global.domain.delegation}" />
 		<constructor-arg>
 			<bean class="com.sissi.protocol.iq.bytestreams.Streamhost">
 				<constructor-arg ref="bytestreams.proxy" />

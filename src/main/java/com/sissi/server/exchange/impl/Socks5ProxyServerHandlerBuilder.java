@@ -126,7 +126,7 @@ public class Socks5ProxyServerHandlerBuilder implements ServerHandlerBuilder {
 		private ChannelHandlerContext prepare(final ChannelHandlerContext ctx, Object msg, ChannelFuture future) throws IOException {
 			if (msg.getClass() == SocksCmdRequest.class) {
 				SocksCmdRequest cmd = SocksCmdRequest.class.cast(msg);
-				return Socks5ProxyServerHandlerBuilder.this.exchangerContext.exists(cmd.host()) ? this.bridge(Socks5ProxyServerHandlerBuilder.this.exchangerContext.leave(cmd.host()), future, ctx) : this.join(cmd, ctx);
+				return Socks5ProxyServerHandlerBuilder.this.exchangerContext.exists(cmd.host()) ? this.bridge(Socks5ProxyServerHandlerBuilder.this.exchangerContext.active(cmd.host()), future, ctx) : this.join(cmd, ctx);
 			}
 			return ctx;
 		}

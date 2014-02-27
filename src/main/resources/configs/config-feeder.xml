@@ -10,7 +10,7 @@
 		<constructor-arg ref="runner" />
 		<constructor-arg>
 			<bean class="com.sissi.thread.Interval">
-				<constructor-arg value="${looper.gc.interval}" />
+				<constructor-arg value="${looper.interval}" />
 				<constructor-arg value="${looper.gc.unit}" />
 			</bean>
 		</constructor-arg>

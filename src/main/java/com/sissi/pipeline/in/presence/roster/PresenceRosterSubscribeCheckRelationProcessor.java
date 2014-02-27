@@ -15,7 +15,6 @@ public class PresenceRosterSubscribeCheckRelationProcessor extends ProxyProcesso
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		RelationRoster roster = super.ourRelation(super.build(protocol.getTo()), context.jid()).cast(RelationRoster.class);
-		return roster.in(this.relations);
+		return super.ourRelation(super.build(protocol.getTo()), context.jid()).cast(RelationRoster.class).in(this.relations);
 	}
 }

@@ -31,7 +31,7 @@ public class PresenceRosterSubscribe2ReplyFansProcessor extends ProxyProcessor {
 	}
 
 	private boolean writeAndReturn(JIDContext context, JID to, Presence presence) {
-		this.proxy.input(super.findOne(to), presence.setType(PresenceType.SUBSCRIBED).setFrom(context.jid().asStringWithBare()));
+		this.proxy.input(super.findOne(to), presence.setType(PresenceType.SUBSCRIBED).setTo(context.jid().asStringWithBare()));
 		return false;
 	}
 }

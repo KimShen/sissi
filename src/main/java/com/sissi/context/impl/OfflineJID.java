@@ -87,4 +87,8 @@ public class OfflineJID implements JID {
 	public String asStringWithBare() {
 		return null;
 	}
+
+	public String asString(boolean bare) {
+		return null;
+	}
 }

@@ -7,7 +7,7 @@ import java.io.OutputStream;
  */
 public interface Delegation {
 
-	public Delegation read(Exchanger exchanger);
+	public OutputStream allocate(String sid);
 
-	public OutputStream write(String host);
+	public Delegation recover(Exchanger exchanger);
 }

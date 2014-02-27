@@ -27,39 +27,34 @@ public class Si2DelegationProcessor extends ProxyProcessor {
 
 	private final TransferBuilder transferBuilder;
 
-	private final String delegation;
+	private final boolean bare;
 
-	public Si2DelegationProcessor(ExchangerContext exchangerContext, TransferBuilder transferBuilder, String delegation) {
+	public Si2DelegationProcessor(ExchangerContext exchangerContext, TransferBuilder transferBuilder, boolean bare) {
 		super();
 		this.exchangerContext = exchangerContext;
 		this.transferBuilder = transferBuilder;
-		this.delegation = delegation;
+		this.bare = bare;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Si si = protocol.cast(Si.class);
+		Si si = protocol.cast(Si.class).setFeature(this.feature);
 		JID to = super.build(si.parent().getTo());
-		//TODO
-		this.exchangerContext.join(si.host(context.jid().asStringWithBare(), to.asStringWithBare()), this.transferBuilder.build(new SiTransferParam(si, this.delegation, to.asStringWithBare())));
-		protocol.cast(Si.class).set(Feature.NAME, this.feature);
-		context.write(protocol.parent().reply().setType(ProtocolType.RESULT));
-		return false;
+		this.exchangerContext.join(si.host(context.jid().asString(this.bare), to.asString(this.bare)), this.transferBuilder.build(new SiTransferParam(si, this.bare)));
+		context.write(si.parent().reply().setType(ProtocolType.RESULT));
+		return true;
 	}
 
 	private class SiTransferParam implements TransferParam {
 
 		private final Si si;
 
-		private final String from;
+		private final boolean bare;
 
-		private final String to;
-
-		public SiTransferParam(Si si, String from, String to) {
+		public SiTransferParam(Si si, boolean bare) {
 			super();
 			this.si = si;
-			this.from = from;
-			this.to = to;
+			this.bare = bare;
 		}
 
 		@Override
@@ -67,10 +62,8 @@ public class Si2DelegationProcessor extends ProxyProcessor {
 			switch (key) {
 			case TransferParam.KEY_SI:
 				return clazz.cast(this.si);
-			case TransferParam.KEY_FROM:
-				return clazz.cast(this.from);
-			case TransferParam.KEY_TO:
-				return clazz.cast(this.to);
+			case TransferParam.KEY_BARE:
+				return clazz.cast(this.bare);
 			}
 			return null;
 		}

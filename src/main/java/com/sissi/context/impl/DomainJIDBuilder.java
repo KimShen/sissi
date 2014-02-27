@@ -141,6 +141,10 @@ public class DomainJIDBuilder implements JIDBuilder {
 			return this.asStringWithBare != null ? this.asStringWithBare : (this.domain != null ? this.stringWithBare(true) : this.stringWithBare(false));
 		}
 
+		public String asString(boolean bare) {
+			return bare ? this.asStringWithBare() : this.asString();
+		}
+
 		private String stringWithBare(boolean cached) {
 			String asStringWithBare = (this.user() != null ? this.user() + DomainJIDBuilder.this.connectAt : "") + this.domain();
 			return cached ? (this.asStringWithBare = asStringWithBare) : asStringWithBare;

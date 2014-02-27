@@ -58,6 +58,11 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 	}
 
 	@SuppressWarnings("unchecked")
+	public Map<String, Object> peek(Map<String, Object> query) {
+		return this.config.collection().findOne(BasicDBObjectBuilder.start(query).get()).toMap();
+	}
+
+	@SuppressWarnings("unchecked")
 	public Map<String, Object> peek(Map<String, Object> query, Map<String, Object> update) {
 		return this.config.collection().findAndModify(BasicDBObjectBuilder.start(query).add("$or", this.support).get(), BasicDBObjectBuilder.start(update).get()).toMap();
 	}

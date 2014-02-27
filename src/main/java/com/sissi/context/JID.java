@@ -38,4 +38,6 @@ public interface JID {
 	public String asString();
 
 	public String asStringWithBare();
+	
+	public String asString(boolean bare);
 }

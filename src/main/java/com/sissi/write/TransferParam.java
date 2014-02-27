@@ -5,15 +5,9 @@ package com.sissi.write;
  */
 public interface TransferParam {
 
-	public final static String KEY_CONTEXT = "CONTEXT";
+	public final static String KEY_SI = "si";
 
-	public final static String KEY_JID = "JID";
-
-	public final static String KEY_SI = "SI";
-
-	public final static String KEY_FROM = "from";
-
-	public final static String KEY_TO = "to";
+	public final static String KEY_BARE = "bare";
 
 	public <T> T find(String key, Class<T> clazz);
 }

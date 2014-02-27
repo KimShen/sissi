@@ -350,7 +350,7 @@
 	<bean id="presence.condition.roster.unsubscribe" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
-				<constructor-arg value="false" />
+				<constructor-arg value="true" />
 				<constructor-arg>
 					<util:set>
 						<value>UNSUBSCRIBE</value>
@@ -363,7 +363,7 @@
 	<bean id="presence.condition.roster.unsubscribed" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
-				<constructor-arg value="false" />
+				<constructor-arg value="true" />
 				<constructor-arg>
 					<util:set>
 						<value>UNSUBSCRIBED</value>
@@ -376,7 +376,7 @@
 	<bean id="presence.condition.roster.subscribed" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
-				<constructor-arg value="false" />
+				<constructor-arg value="true" />
 				<constructor-arg>
 					<util:set>
 						<value>SUBSCRIBED</value>
@@ -389,7 +389,7 @@
 	<bean id="presence.condition.roster.subscribe" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
-				<constructor-arg value="false" />
+				<constructor-arg value="true" />
 				<constructor-arg>
 					<util:set>
 						<value>SUBSCRIBE</value>
