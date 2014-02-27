@@ -65,6 +65,11 @@ public class Bytestreams extends Protocol implements Collector {
 		return this.sid;
 	}
 
+	@XmlAttribute
+	public String getXmlns() {
+		return XMLNS;
+	}
+
 	@XmlElements({ @XmlElement(name = Streamhost.NAME, type = Streamhost.class) })
 	public List<Streamhost> getStreamhost() {
 		return this.streamhosts;
@@ -75,7 +80,7 @@ public class Bytestreams extends Protocol implements Collector {
 		return this.streamhostUsed;
 	}
 
-	public Bytestreams mock(StreamhostUsed streamhostUsed) {
+	public Bytestreams setStreamhostUsed(StreamhostUsed streamhostUsed) {
 		this.streamhostUsed = streamhostUsed;
 		this.streamhosts = null;
 		return this;
@@ -116,10 +121,5 @@ public class Bytestreams extends Protocol implements Collector {
 			this.activate = StreamhostActivate.class.cast(ob);
 			return;
 		}
-	}
-
-	@XmlAttribute
-	public String getXmlns() {
-		return XMLNS;
 	}
 }

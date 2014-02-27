@@ -29,7 +29,7 @@ public class PresenceRosterSubscribe2ReplySelfsProcessor extends ProxyProcessor 
 	}
 
 	private boolean writeAndReturn(JIDContext context, JID to, Presence presence) {
-		this.writeRoster(context, to).writeSubscribed(context, to, presence.clear()).writeAvailable(context, to, presence.clear());
+		this.writeRoster(context, to).writeSubscribed(context, to, presence).writeAvailable(context, to, presence);
 		return false;
 	}
 

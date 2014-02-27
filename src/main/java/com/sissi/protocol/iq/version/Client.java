@@ -29,17 +29,17 @@ public class Client extends Protocol implements Collector {
 
 	@XmlElement(name = ClientOS.NAME)
 	public ClientOS getOs() {
-		return os;
+		return this.os;
 	}
 
 	@XmlElement(name = ClientName.NAME)
 	public ClientName getName() {
-		return name;
+		return this.name;
 	}
 
 	@XmlElement(name = ClientVersion.NAME)
 	public ClientVersion getVersion() {
-		return version;
+		return this.version;
 	}
 
 	@XmlAttribute

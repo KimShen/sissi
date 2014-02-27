@@ -24,7 +24,8 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 	@Override
 	public JID build(String jid) {
-		return jid != null && !jid.isEmpty() ? new User(jid.trim()) : OfflineJID.OFFLINE;
+		String trim = (jid != null ? jid.trim() : null);
+		return trim != null && !trim.isEmpty() ? new User(trim) : OfflineJID.OFFLINE;
 	}
 
 	public JID build(String username, String resource) {
@@ -48,10 +49,10 @@ public class DomainJIDBuilder implements JIDBuilder {
 			try {
 				StringBuffer buffer = new StringBuffer(jid);
 				int startHost = buffer.indexOf(DomainJIDBuilder.this.connectAt);
-				this.user = startHost == -1 ? null : buffer.substring(0, startHost);
+				this.user = startHost == -1 ? null : buffer.substring(0, startHost).trim();
 				int startResource = buffer.indexOf(DomainJIDBuilder.this.connectResource);
-				this.domain = startResource == -1 ? buffer.substring(startHost != -1 ? startHost + 1 : 0) : buffer.substring(startHost + 1, startResource);
-				this.resource = startResource == -1 ? null : buffer.substring(startResource + 1);
+				this.domain = (startResource == -1 ? buffer.substring(startHost != -1 ? startHost + 1 : 0) : buffer.substring(startHost + 1, startResource)).trim();
+				this.resource = startResource == -1 ? null : buffer.substring(startResource + 1).trim();
 			} catch (Exception e) {
 				this.valid = Boolean.FALSE;
 			}
@@ -65,7 +66,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 
 		private User copy2Bare() {
 			User user = new User(this.user, null);
-			user.domain = domain;
+			user.domain(this.domain());
 			return user;
 		}
 
@@ -83,7 +84,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 		}
 
 		public String resource() {
-			return this.resource != null ? this.resource.trim() : null;
+			return this.resource != null && !this.resource.isEmpty() ? this.resource : null;
 		}
 
 		@Override
@@ -129,7 +130,7 @@ public class DomainJIDBuilder implements JIDBuilder {
 		}
 
 		public boolean valid(boolean excludeDomain) {
-			return this.valid && this.validKeyword(this.user()) && this.validKeyword(this.domain(), excludeDomain) && this.validLength();
+			return this.valid && this.validLength() && this.validKeyword(this.user()) && this.validKeyword(this.domain(), excludeDomain);
 		}
 
 		public String asString() {

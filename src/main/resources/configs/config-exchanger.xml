@@ -5,9 +5,15 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="server.exchanger.context" class="com.sissi.server.impl.BridgeExchangerContext">
+	<bean id="server.exchanger.context" class="com.sissi.server.exchange.impl.BridgeExchangerContext">
 		<constructor-arg ref="runner" />
 		<constructor-arg ref="counter" />
+		<constructor-arg>
+			<bean class="com.sissi.thread.Interval">
+				<constructor-arg value="${exchanger.gc.interval}" />
+				<constructor-arg value="${exchanger.gc.unit}" />
+			</bean>
+		</constructor-arg>
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
 				<constructor-arg ref="mongo" />
@@ -15,22 +21,14 @@
 				<constructor-arg index="2" value="${mongo.collection.exchanger}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg>
-			<bean class="com.sissi.thread.Interval">
-				<constructor-arg value="${exchanger.gc.interval}" />
-				<constructor-arg value="${exchanger.gc.unit}" />
-			</bean>
-		</constructor-arg>
 	</bean>
 
-	<bean id="server.exchanger.loop" class="com.sissi.server.impl.NioServerLoopGroup" />
-
-	<bean id="server.exchanger.pipeline" class="com.sissi.server.impl.Socks5ProxyServerHandlerChannelInitializer">
+	<bean id="server.exchanger.pipeline" class="com.sissi.server.exchange.impl.Socks5ProxyServerHandlerChannelInitializer">
 		<constructor-arg index="0" value="${maven.exchanger.idle.write}" />
 		<constructor-arg index="1" value="${maven.exchanger.idle.read}" />
 		<constructor-arg index="2" value="${maven.exchanger.idle.all}" />
 		<constructor-arg>
-			<bean class="com.sissi.server.impl.Socks5ProxyServerHandlerBuilder">
+			<bean class="com.sissi.server.exchange.impl.Socks5ProxyServerHandlerBuilder">
 				<constructor-arg ref="server.exchanger.context" />
 				<constructor-arg ref="bytestreams.proxy" />
 				<constructor-arg ref="counter" />
@@ -43,8 +41,22 @@
 	<bean id="server.exchanger" class="com.sissi.server.impl.NioServerStarter">
 		<constructor-arg ref="server.exchanger.status" />
 		<constructor-arg value="${global.port.exchanger}" />
-		<constructor-arg ref="server.exchanger.loop" />
 		<constructor-arg ref="server.exchanger.pipeline" />
+		<constructor-arg>
+			<bean class="com.sissi.server.netty.impl.NioServerLoopGroup" />
+		</constructor-arg>
 	</bean>
+
+	<bean id="server.exchanger.delegation" class="com.sissi.server.exchange.impl.FSDelegation">
+		<constructor-arg index="0" value="${exchanger.delegation}" />
+		<constructor-arg ref="persistent.si" />
+	</bean>
+
+	<bean id="server.exchanger.transfer" class="com.sissi.server.exchange.impl.DegelationTransferBuilder">
+		<constructor-arg ref="persistent.si" />
+		<constructor-arg ref="server.exchanger.delegation" />
+	</bean>
+
+
 
 </beans>

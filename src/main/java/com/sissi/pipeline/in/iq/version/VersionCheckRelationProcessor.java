@@ -16,7 +16,7 @@ public class VersionCheckRelationProcessor extends CheckRelationProcessor {
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
 	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.getParent().reply().setError(this.error));
+		context.write(protocol.parent().reply().setError(this.error));
 		return false;
 	}
 }

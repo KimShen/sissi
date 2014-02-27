@@ -5,10 +5,6 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="server.mock" class="com.sissi.server.impl.MockTransferBuilder">
-		<constructor-arg ref="offline.mock" />
-	</bean>
-
 	<bean id="server.reader" class="com.sissi.read.sax.SAXReader">
 		<constructor-arg ref="executor" />
 		<constructor-arg ref="counter" />
@@ -33,22 +29,22 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="server.tls" class="com.sissi.server.impl.CertificateTlsBuilder">
+	<bean id="server.tls" class="com.sissi.server.tls.impl.CertificateTlsBuilder">
 		<constructor-arg index="0">
-			<bean class="com.sissi.server.impl.Certificate">
+			<bean class="com.sissi.server.tls.impl.Certificate">
 				<constructor-arg index="0" value="${tls.key.file}" />
 				<constructor-arg index="1" value="${tls.key.password}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg index="1">
-			<bean class="com.sissi.server.impl.Certificate">
+			<bean class="com.sissi.server.tls.impl.Certificate">
 				<constructor-arg index="0" value="${tls.trust.file}" />
 				<constructor-arg index="1" value="${tls.trust.password}" />
 			</bean>
 		</constructor-arg>
 	</bean>
 
-	<bean id="server.main.handler" class="com.sissi.server.impl.PersonalServerHandlerBuilder">
+	<bean id="server.main.handler" class="com.sissi.server.netty.impl.PersonalServerHandlerBuilder">
 		<constructor-arg ref="server.tls" />
 		<constructor-arg ref="server.reader" />
 		<constructor-arg ref="server.closer" />
@@ -62,8 +58,8 @@
 			<bean class="com.sissi.context.impl.OnlineContextBuilder">
 				<constructor-arg ref="vcard" />
 				<constructor-arg ref="status" />
-				<constructor-arg ref="offline" />
 				<constructor-arg ref="server.heart" />
+				<constructor-arg ref="persistent.message" />
 				<constructor-arg index="0" value="${pipeline.auth.retry}" />
 				<constructor-arg index="1" value="${global.lang}" />
 				<constructor-arg index="2" value="${global.domain}" />
@@ -88,10 +84,10 @@
 		<constructor-arg ref="server.main.status" />
 		<constructor-arg value="${global.port.main}" />
 		<constructor-arg>
-			<bean class="com.sissi.server.impl.NioServerLoopGroup" />
+			<bean class="com.sissi.server.netty.impl.NioServerLoopGroup" />
 		</constructor-arg>
 		<constructor-arg>
-			<bean class="com.sissi.server.impl.PersonalServerHandlerChannelInitializer">
+			<bean class="com.sissi.server.netty.impl.PersonalServerHandlerChannelInitializer">
 				<constructor-arg index="0" value="${global.idle.read}" />
 				<constructor-arg index="1" value="${global.idle.write}" />
 				<constructor-arg index="2" value="${global.idle.all}" />

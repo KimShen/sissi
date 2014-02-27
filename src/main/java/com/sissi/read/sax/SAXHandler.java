@@ -15,6 +15,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.sissi.commons.Trace;
 import com.sissi.read.Collector;
 import com.sissi.read.Mapping;
 
@@ -76,10 +77,8 @@ public class SAXHandler extends DefaultHandler {
 		try {
 			return this.find4Cached(ob).invoke(ob, key, value);
 		} catch (Exception e) {
-			if (log.isDebugEnabled()) {
-				log.debug(e.toString());
-				e.printStackTrace();
-			}
+			log.debug(e.toString());
+			Trace.trace(log, e);
 			return false;
 		}
 	}
@@ -112,7 +111,7 @@ public class SAXHandler extends DefaultHandler {
 				this.propertyCopy(attributes, this.current);
 				this.future.push(this.current);
 			} else {
-				if (!this.propertyCopy(this.stack.getFirst(), localName, this.current) && this.isCollector()) {
+				if (this.isCollector()) {
 					Collector.class.cast(this.stack.getFirst()).set(localName, this.current);
 				}
 			}
@@ -156,10 +155,8 @@ public class SAXHandler extends DefaultHandler {
 	}
 
 	public void fatalError(SAXParseException e) throws SAXException {
-		if (log.isDebugEnabled()) {
-			log.debug(e.toString());
-			e.printStackTrace();
-		}
+		log.debug(e.toString());
+		Trace.trace(log, e);
 	}
 
 	private static class MethodFinder extends HashMap<String, Method> {

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -24,40 +24,42 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 
 	private final MongoConfig config;
 
+	private final DBObject[] support;
+
 	private final List<PersistentElement> elements;
 
-	public MongoDelayElementBox(MongoConfig config, List<PersistentElement> elements) {
+	public MongoDelayElementBox(MongoConfig config, Set<Class<? extends Element>> classes, List<PersistentElement> elements) {
 		super();
 		this.config = config;
 		this.elements = elements;
+		List<DBObject> support = new ArrayList<DBObject>();
+		for (Class<? extends Element> clazz : classes) {
+			support.add(BasicDBObjectBuilder.start(PersistentElementBox.fieldClass, clazz.getSimpleName()).get());
+		}
+		this.support = support.toArray(new DBObject[] {});
 	}
 
 	@Override
 	public Collection<Element> pull(JID jid) {
-		DBObject query = BasicDBObjectBuilder.start().add(PersistentElementBox.fieldTo, jid.asStringWithBare()).add(PersistentElementBox.fieldActivate, true).get();
+		DBObject query = BasicDBObjectBuilder.start().add(PersistentElementBox.fieldTo, jid.asStringWithBare()).add(PersistentElementBox.fieldActivate, true).add("$or", this.support).get();
 		Elements elements = new Elements(this.config.collection().find(query));
 		this.config.collection().update(query, BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(PersistentElementBox.fieldActivate, false).get()).get(), false, true);
 		return elements;
 	}
 
-	@SuppressWarnings("unchecked")
-	public Map<String, Object> peek(Map<String, Object> query) {
-		return this.config.collection().findOne(BasicDBObjectBuilder.start(query).get()).toMap();
-	}
-
 	@Override
 	public PersistentElementBox push(Element element) {
-		this.doPush(element);
-		return this;
-	}
-
-	private PersistentElementBox doPush(Element element) {
 		for (PersistentElement delay : this.elements) {
 			if (delay.isSupport(element)) {
 				this.config.collection().update(BasicDBObjectBuilder.start(delay.query(element)).get(), BasicDBObjectBuilder.start(delay.write(element)).get(), true, false);
 			}
 		}
 		return this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> peek(Map<String, Object> query, Map<String, Object> update) {
+		return this.config.collection().findAndModify(BasicDBObjectBuilder.start(query).add("$or", this.support).get(), BasicDBObjectBuilder.start(update).get()).toMap();
 	}
 
 	@Override
@@ -77,13 +79,18 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 
 		public Elements(DBCursor cursor) {
 			super();
-			while (cursor.hasNext()) {
-				BasicDBObject each = BasicDBObject.class.cast(cursor.next());
-				for (PersistentElement element : MongoDelayElementBox.this.elements) {
-					if (element.isSupport(each)) {
-						this.add(element.read(each));
+			try {
+				while (cursor.hasNext()) {
+					@SuppressWarnings("unchecked")
+					Map<String, Object> each = cursor.next().toMap();
+					for (PersistentElement element : MongoDelayElementBox.this.elements) {
+						if (element.isSupport(each)) {
+							this.add(element.read(each));
+						}
 					}
 				}
+			} finally {
+				cursor.close();
 			}
 		}
 	}

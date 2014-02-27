@@ -17,11 +17,11 @@ public class PresenceRosterSubscribe2ReplyFansProcessor extends ProxyProcessor {
 
 	private final String[] relations = new String[] { RosterSubscription.FROM.toString() };
 
-	private final Input input;
+	private final Input proxy;
 
-	public PresenceRosterSubscribe2ReplyFansProcessor(Input input) {
+	public PresenceRosterSubscribe2ReplyFansProcessor(Input proxy) {
 		super();
-		this.input = input;
+		this.proxy = proxy;
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class PresenceRosterSubscribe2ReplyFansProcessor extends ProxyProcessor {
 	}
 
 	private boolean writeAndReturn(JIDContext context, JID to, Presence presence) {
-		this.input.input(super.findOne(to), presence.setType(PresenceType.SUBSCRIBED).setTo(context.jid().asStringWithBare()));
+		this.proxy.input(super.findOne(to), presence.setType(PresenceType.SUBSCRIBED).setFrom(context.jid().asStringWithBare()));
 		return false;
 	}
 }

@@ -45,7 +45,7 @@ public class XOption implements Field<XValue>, Collector {
 
 	@XmlElement
 	public XValue getValue() {
-		return this.xValue != null ? this.xValue : null;
+		return this.xValue;
 	}
 
 	@Override

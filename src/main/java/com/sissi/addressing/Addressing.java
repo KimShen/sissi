@@ -12,7 +12,7 @@ public interface Addressing {
 	public Addressing join(JIDContext context);
 
 	public Addressing leave(JIDContext context);
-	
+
 	public Addressing priority(JIDContext context);
 
 	public JIDContext find(JID jid);
@@ -22,6 +22,8 @@ public interface Addressing {
 	public JIDContext findOne(JID jid);
 
 	public JIDContext findOne(JID jid, boolean usingResource);
+
+	public JIDContext findOne(JID jid, boolean usingResource, boolean offline);
 
 	public JIDs resources(JID jid);
 

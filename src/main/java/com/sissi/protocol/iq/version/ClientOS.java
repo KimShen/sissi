@@ -23,6 +23,6 @@ public class ClientOS {
 
 	@XmlValue
 	public String getText() {
-		return text;
+		return this.text;
 	}
 }

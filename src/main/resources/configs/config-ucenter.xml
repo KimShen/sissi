@@ -12,7 +12,7 @@
 	</bean>
 
 	<alias name="block.mongo" alias="block" />
-	<bean id="block.mongo" class="com.sissi.ucenter.relation.MongoBlockContext">
+	<bean id="block.mongo" class="com.sissi.ucenter.user.MongoBlockContext">
 		<constructor-arg ref="jid" />
 		<constructor-arg ref="ucenter.config" />
 	</bean>
@@ -40,55 +40,8 @@
 	</bean>
 
 	<alias name="ucenter.accessor.mongo" alias="accessor" />
-	<bean id="ucenter.accessor.mongo" class="com.sissi.ucenter.relation.MongoAuthAccessor">
+	<bean id="ucenter.accessor.mongo" class="com.sissi.ucenter.user.MongoAuthAccessor">
 		<constructor-arg ref="ucenter.config" />
-	</bean>
-
-	<bean id="relation.roster.inductor" class="com.sissi.ucenter.relation.BroadcastRelationInductor">
-		<constructor-arg ref="broadcast.protocol.selfs" />
-		<constructor-arg>
-			<bean class="com.sissi.protocol.iq.roster.Group">
-				<constructor-arg value="${pipeline.roster.group.default}" />
-			</bean>
-		</constructor-arg>
-		<property name="relationContext" ref="relation.roster" />
-	</bean>
-
-	<alias name="relation.roster.mongo" alias="relation.roster" />
-	<bean id="relation.roster.mongo" class="com.sissi.ucenter.relation.MongoRelationRosterContext">
-		<constructor-arg ref="jid" />
-		<constructor-arg value="${pipeline.roster.group.default}" />
-		<constructor-arg>
-			<bean class="com.sissi.config.impl.MongoProxyConfig">
-				<constructor-arg ref="mongo" />
-				<constructor-arg index="1" value="${mongo.db}" />
-				<constructor-arg index="2" value="${mongo.collection.roster}" />
-			</bean>
-		</constructor-arg>
-		<property name="relationInductor" ref="relation.roster.inductor" />
-	</bean>
-
-	<alias name="relation.muc.mongo" alias="relation.muc" />
-	<bean id="relation.muc.mongo" class="com.sissi.ucenter.relation.MongoRelationMucContext">
-		<constructor-arg ref="jid" />
-		<constructor-arg>
-			<bean class="com.sissi.config.impl.MongoProxyConfig">
-				<constructor-arg ref="mongo" />
-				<constructor-arg index="1" value="${mongo.db}" />
-				<constructor-arg index="2" value="${mongo.collection.muc}" />
-			</bean>
-		</constructor-arg>
-	</bean>
-
-	<bean id="relation.muc.context" class="com.sissi.ucenter.relation.MongoMucGroupContext">
-		<constructor-arg ref="relation.muc" />
-		<constructor-arg>
-			<bean class="com.sissi.config.impl.MongoProxyConfig">
-				<constructor-arg ref="mongo" />
-				<constructor-arg index="1" value="${mongo.db}" />
-				<constructor-arg index="2" value="${mongo.collection.muc}" />
-			</bean>
-		</constructor-arg>
 	</bean>
 
 	<alias name="ucenter.register.mongo" alias="ucenter.register" />

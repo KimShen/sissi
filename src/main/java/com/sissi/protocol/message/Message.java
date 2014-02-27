@@ -42,6 +42,19 @@ public class Message extends Protocol implements Collector {
 		return this;
 	}
 
+	public String getType() {
+		return super.getType() != null ? super.getType() : MessageType.NORMAL.toString();
+	}
+
+	public boolean type(MessageType... types) {
+		for (MessageType type : types) {
+			if (type.equals(this)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public String getId() {
 		return super.getId() != null ? super.getId() : UUID.randomUUID().toString();
 	}

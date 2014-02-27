@@ -18,11 +18,11 @@ public class IQCheckProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return protocol.cast(IQ.class).type() ? true : this.writeAndReturn(context, protocol);
+		return protocol.cast(IQ.class).valid() ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.getParent().reply().setError(this.error));
+		context.write(protocol.parent().reply().setError(this.error));
 		return false;
 	}
 }

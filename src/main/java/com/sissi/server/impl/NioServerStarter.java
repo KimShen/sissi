@@ -10,9 +10,10 @@ import io.netty.util.concurrent.GenericFutureListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.sissi.server.ServerLoopGroup;
+import com.sissi.commons.Trace;
 import com.sissi.server.ServerStarter;
 import com.sissi.server.ServerStatus;
+import com.sissi.server.netty.ServerLoopGroup;
 
 /**
  * @author kim 2013-11-19
@@ -68,7 +69,7 @@ public class NioServerStarter implements ServerStarter {
 		public void operationComplete(Future<Void> future) throws Exception {
 			if (!future.isSuccess()) {
 				NioServerStarter.this.closeAll();
-				future.cause().printStackTrace();
+				Trace.trace(NioServerStarter.this.log, future.cause());
 			}
 		}
 	}

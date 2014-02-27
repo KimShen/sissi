@@ -71,6 +71,14 @@ public class ServerError implements Error {
 		super();
 	}
 
+	public ServerError(Error error) {
+		this.by = error.getBy();
+		this.code = error.getCode();
+		this.type = error.getType();
+		this.details = error.getDetails();
+		this.text = error.getText() != null ? new ServerErrorText(error.getText().getLang(), error.getText().getText(), this.details != null && !this.details.isEmpty() ? this.details.get(0).getXmlns() : null) : null;
+	}
+
 	@Override
 	public String getId() {
 		return null;

@@ -20,12 +20,12 @@ public class RosterSet2SelfsProcessor extends Roster2SelfsItemProcessor {
 	}
 
 	@Override
-	protected boolean isAsk() {
+	protected boolean ask() {
 		return true;
 	}
 
-	protected boolean isNext(String subscription) {
-		// Add or Update
+	protected boolean next(String subscription) {
+		// None relation continue
 		return RosterSubscription.parse(subscription) == RosterSubscription.NONE;
 	}
 }

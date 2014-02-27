@@ -19,6 +19,6 @@ public class RosterRemove2SelfsPresenceProcessor extends ProxyProcessor {
 		for (JID resource : super.resources(super.build(protocol.cast(Roster.class).getFirstItem().getJid()))) {
 			super.broadcast(context.jid(), presence.setFrom(resource));
 		}
-		return false;
+		return true;
 	}
 }

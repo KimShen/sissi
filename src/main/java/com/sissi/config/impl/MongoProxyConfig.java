@@ -1,7 +1,6 @@
 package com.sissi.config.impl;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,48 +23,30 @@ import com.sissi.config.MongoConfig;
  */
 public class MongoProxyConfig implements MongoConfig {
 
-	public static final String FIELD_JID = "jid";
-
-	public static final String FIELD_NICK = "nick";
-
-	public static final String FIELD_STATE = "state";
-
-	public static final String FIELD_INDEX = "index";
-
-	public static final String FIELD_CREATOR = "creator";
-
-	public static final String FIELD_PRIORITY = "priority";
-
-	public static final String FIELD_RESOURCE = "resource";
-
-	public static final String FIELD_USERNAME = "username";
-
 	private static final DBObject clear = BasicDBObjectBuilder.start().get();
 
 	private static final Log log = LogFactory.getLog(MongoProxyConfig.class);
 
-	private final Map<String, String> configs;
-	
+	private final Map<String, Object> configs = new HashMap<String, Object>();
+
 	private final MongoWrapCollection wrap;
 
 	private final DBCollection collection;
 
 	public MongoProxyConfig(MongoClient client, String db, String collection) {
 		super();
-		Map<String, String> configs = new HashMap<String, String>();
-		configs.put(MongoProxyConfig.D_NAME, db);
-		configs.put(MongoProxyConfig.C_NAME, collection);
-		this.configs = Collections.unmodifiableMap(configs);
 		this.wrap = new MongoWrapCollection();
 		this.collection = client.getDB(db).getCollection(collection);
+		this.configs.put(MongoConfig.D_NAME, this.collection.getDB());
+		this.configs.put(MongoConfig.C_NAME, this.collection);
 	}
 
 	@Override
-	public String get(String key) {
+	public Object get(String key) {
 		return this.configs.get(key);
 	}
 
-	public MongoConfig clear() {
+	public MongoProxyConfig clear() {
 		this.collection().remove(clear);
 		return this;
 	}
@@ -135,6 +116,11 @@ public class MongoProxyConfig implements MongoConfig {
 		public DBObject findOne(DBObject query, DBObject filter) {
 			log.debug("FindOne: " + query + " / Filter: " + filter);
 			return MongoProxyConfig.this.collection.findOne(query, filter);
+		}
+
+		public DBObject findAndModify(DBObject query, DBObject entity) {
+			this.logUpdate(query, entity);
+			return MongoProxyConfig.this.collection.findAndModify(query, entity);
 		}
 
 		public AggregationOutput aggregate(DBObject firstOp, DBObject... additionalOps) {

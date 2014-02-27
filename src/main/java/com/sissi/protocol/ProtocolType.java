@@ -12,16 +12,7 @@ public enum ProtocolType {
 	}
 
 	public boolean equals(String type) {
-		return this == ProtocolType.parse(type);
-	}
-
-	public boolean in(ProtocolType... types) {
-		for (ProtocolType type : types) {
-			if (this == type) {
-				return true;
-			}
-		}
-		return false;
+		return this.toString().equals(type);
 	}
 
 	public static ProtocolType parse(String value) {

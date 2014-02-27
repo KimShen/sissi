@@ -58,7 +58,7 @@ public class IQ extends Protocol implements Collector {
 	}
 
 	public IQ setId(Long id) {
-		super.setId(String.valueOf(id));
+		super.setId(id.toString());
 		return this;
 	}
 	
@@ -67,7 +67,7 @@ public class IQ extends Protocol implements Collector {
 		return this;
 	}
 
-	public boolean type() {
+	public boolean valid() {
 		return ProtocolType.parse(this.getType()) != ProtocolType.NONE;
 	}
 
@@ -85,7 +85,7 @@ public class IQ extends Protocol implements Collector {
 		if (this.protocols == null) {
 			this.protocols = new ArrayList<Protocol>();
 		}
-		this.protocols.add(protocol.setParent(this));
+		this.protocols.add(protocol.parent(this));
 		return this;
 	}
 

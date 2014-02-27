@@ -29,9 +29,9 @@ import com.sissi.protocol.error.detail.TemporaryAuthFailure;
 @XmlRootElement
 public class Failure extends Protocol implements Error {
 
-	public final static Failure INSTANCE_INVALIDMECHANISM = new Failure().add(InvalidMechanism.DETAIL);
-
 	public final static Failure INSTANCE_NOTAUTHORIZED = new Failure().add(NotAuthorized.DETAIL_ELEMENT);
+	
+	public final static Failure INSTANCE_INVALIDMECHANISM = new Failure().add(InvalidMechanism.DETAIL);
 
 	public final static Failure INSTANCE_ABORTED = new Failure().add(Aborted.DETAIL);
 

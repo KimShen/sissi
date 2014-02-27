@@ -27,7 +27,7 @@ public class GroupServerCloser implements ServerCloser {
 	public GroupServerCloser close(JIDContext context) {
 		Presence presence = new Presence();
 		for (JID group : this.relationContext.iSubscribedWho(context.jid())) {
-			this.input.input(context, presence.clear().setTo(group).setType(PresenceType.UNAVAILABLE));
+			this.input.input(context, presence.setTo(group).setType(PresenceType.UNAVAILABLE));
 		}
 		return this;
 	}

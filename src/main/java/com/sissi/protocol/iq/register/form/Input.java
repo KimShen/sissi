@@ -33,9 +33,9 @@ public class Input implements Field<String> {
 
 	public Input(String type, String name, String var, XRequired required) {
 		this.type = XFieldType.parse(type).toString();
+		this.required = required;
 		this.name = name;
 		this.var = var;
-		this.required = required;
 	}
 
 	@Override

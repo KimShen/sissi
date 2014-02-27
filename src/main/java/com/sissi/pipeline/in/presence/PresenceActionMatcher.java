@@ -13,24 +13,22 @@ import com.sissi.protocol.presence.PresenceType;
  */
 public class PresenceActionMatcher extends ClassMatcher {
 
-	private final Set<PresenceType> types = new HashSet<PresenceType>();
+	private final PresenceType[] types;
 
 	private final boolean directed;
 
-	public PresenceActionMatcher(Set<String> types) {
-		this(false, types);
-	}
-
 	public PresenceActionMatcher(boolean directed, Set<String> types) {
 		super(Presence.class);
-		this.directed = directed;
+		Set<PresenceType> pts = new HashSet<PresenceType>();
 		for (String type : types) {
-			this.types.add(PresenceType.parse(type));
+			pts.add(PresenceType.parse(type));
 		}
+		this.types = pts.toArray(new PresenceType[] {});
+		this.directed = directed;
 	}
 
 	@Override
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && (!protocol.to() || this.directed) && this.types.contains(PresenceType.parse(protocol.getType()));
+		return super.match(protocol) && (!protocol.to() || this.directed) && PresenceType.parse(protocol.getType()).in(this.types);
 	}
 }

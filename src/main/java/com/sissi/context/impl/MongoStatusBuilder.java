@@ -4,7 +4,6 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.sissi.commons.Extracter;
 import com.sissi.config.MongoConfig;
-import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JIDContext;
 import com.sissi.context.Status;
 import com.sissi.context.StatusBuilder;
@@ -35,7 +34,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 	}
 
 	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
-		this.config.collection().update(this.buildQuery(context), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoProxyConfig.FIELD_PRIORITY, context.priority()).get()).get());
+		this.config.collection().update(this.buildQuery(context), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(MongoConfig.FIELD_PRIORITY, context.priority()).get()).get());
 		return this;
 	}
 
@@ -44,7 +43,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 	}
 
 	private DBObject buildQuery(JIDContext context) {
-		return BasicDBObjectBuilder.start().add(MongoProxyConfig.FIELD_INDEX, context.index()).add(MongoProxyConfig.FIELD_JID, context.jid().asStringWithBare()).add(MongoProxyConfig.FIELD_RESOURCE, context.jid().resource()).get();
+		return BasicDBObjectBuilder.start().add(MongoConfig.FIELD_INDEX, context.index()).add(MongoConfig.FIELD_JID, context.jid().asStringWithBare()).add(MongoConfig.FIELD_RESOURCE, context.jid().resource()).get();
 	}
 
 	private class MongoStatus implements Status {

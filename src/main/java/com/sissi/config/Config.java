@@ -5,5 +5,5 @@ package com.sissi.config;
  */
 public interface Config {
 
-	public String get(String key);
+	public Object get(String key);
 }

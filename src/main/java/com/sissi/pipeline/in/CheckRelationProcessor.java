@@ -18,7 +18,7 @@ abstract public class CheckRelationProcessor extends ProxyProcessor {
 	}
 
 	protected boolean ourRelation(JIDContext context, Protocol protocol) {
-		return super.ourRelation(context.jid(), super.build(protocol.getParent().getTo())).cast(RelationRoster.class).in(this.relations);
+		return super.ourRelation(context.jid(), super.build(protocol.parent().getTo())).cast(RelationRoster.class).in(this.relations);
 	}
 
 	abstract protected boolean writeAndReturn(JIDContext context, Protocol protocol);

@@ -58,9 +58,7 @@ public class PlainAuthCallback implements AuthCallback {
 		public AuthCertificate(Auth auth) {
 			super();
 			byte[] afterDecode = Base64.decodeBase64(auth.getText());
-			if (PlainAuthCallback.this.log.isDebugEnabled()) {
-				PlainAuthCallback.this.log.debug("User/Pass is: " + Arrays.toString(afterDecode));
-			}
+			PlainAuthCallback.this.log.debug("User/Pass is: " + Arrays.toString(afterDecode));
 			int passStart = ArrayUtils.lastIndexOf(afterDecode, (byte) 0) + 1;
 			this.pass = new String(afterDecode, passStart, afterDecode.length - passStart).trim();
 			this.user = new String(afterDecode, 0, passStart).trim();

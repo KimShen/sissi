@@ -35,11 +35,11 @@ public class Stream extends Protocol {
 
 	private final String xmlns = "jabber:client";
 
-	private final String version = "1.0";
-
 	private final AtomicBoolean isUsing = new AtomicBoolean();
 
 	private List<Feature> features;
+
+	private String version;
 
 	private String stream;
 
@@ -70,10 +70,15 @@ public class Stream extends Protocol {
 		return this.version;
 	}
 
-	public boolean validStream() {
+	public Stream setVersion(String version) {
+		this.version = version;
+		return this;
+	}
+
+	public boolean stream() {
 		return this.stream != null && this.stream.equals(Stream.XMLNS);
 	}
-	
+
 	public Stream setStream(String stream) {
 		this.stream = stream;
 		return this;

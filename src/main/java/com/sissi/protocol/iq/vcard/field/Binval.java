@@ -30,7 +30,7 @@ public class Binval implements Field<String> {
 
 	@XmlValue
 	public String getValue() {
-		return value.toString();
+		return this.value.toString();
 	}
 
 	public Binval setText(String text) {

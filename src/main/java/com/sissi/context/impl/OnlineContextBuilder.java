@@ -20,7 +20,7 @@ import com.sissi.context.StatusBuilder;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 import com.sissi.server.ServerHeart;
-import com.sissi.server.ServerTls;
+import com.sissi.server.tls.ServerTls;
 import com.sissi.ucenter.VCardContext;
 import com.sissi.ucenter.field.impl.BeanField;
 
@@ -72,6 +72,8 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private class UserContext implements JIDContext {
 
+		private final long index = OnlineContextBuilder.this.indexes.incrementAndGet();
+
 		private final AtomicLong ping = new AtomicLong(OnlineContextBuilder.this.pong);
 
 		private final AtomicLong idle = new AtomicLong(System.currentTimeMillis());
@@ -90,9 +92,9 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final JIDContextParam param;
 
-		private final long index;
+		private int priority = OnlineContextBuilder.this.priority;
 
-		private int priority;
+		private JID jid = OfflineJID.OFFLINE;
 
 		private Status statusCurrent;
 
@@ -106,14 +108,9 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private String lang;
 
-		private JID jid;
-
 		public UserContext(JIDContextParam param) {
 			super();
 			this.param = param;
-			this.jid = OfflineJID.OFFLINE;
-			this.priority = OnlineContextBuilder.this.priority;
-			this.index = OnlineContextBuilder.this.indexes.incrementAndGet();
 			this.outputCurrent = this.outputOnline = param.find(JIDContextParam.KEY_OUTPUT, Output.class);
 		}
 

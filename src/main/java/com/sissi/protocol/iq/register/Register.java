@@ -49,7 +49,7 @@ public class Register extends Protocol implements Fields, Collector {
 
 	@XmlElement
 	public String getInstructions() {
-		return instructions;
+		return this.instructions;
 	}
 
 	@XmlAttribute

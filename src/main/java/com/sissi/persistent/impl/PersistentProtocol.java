@@ -15,7 +15,7 @@ import com.sissi.protocol.Element;
  * @author kim 2013-11-15
  */
 abstract class PersistentProtocol implements PersistentElement {
-
+	
 	protected final String title;
 
 	protected final JIDBuilder jidBuilder;
@@ -36,11 +36,11 @@ abstract class PersistentProtocol implements PersistentElement {
 	public Map<String, Object> write(Element element) {
 		Map<String, Object> entity = new HashMap<String, Object>();
 		entity.put(PersistentElementBox.fieldId, element.getId());
+		entity.put(PersistentElementBox.fieldDelay, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
 		entity.put(PersistentElementBox.fieldFrom, this.jidBuilder.build(element.getFrom()).asStringWithBare());
 		entity.put(PersistentElementBox.fieldTo, this.jidBuilder.build(element.getTo()).asStringWithBare());
-		entity.put(PersistentElementBox.fieldType, element.getType());
-		entity.put(PersistentElementBox.fieldDelay, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
 		entity.put(PersistentElementBox.fieldClass, element.getClass().getSimpleName());
+		entity.put(PersistentElementBox.fieldType, element.getType());
 		entity.put(PersistentElementBox.fieldActivate, true);
 		return entity;
 	}
@@ -54,7 +54,7 @@ abstract class PersistentProtocol implements PersistentElement {
 		return this.support == element.getClass();
 	}
 
-	protected String toString(Map<String, Object> element, String key) {
+	private String toString(Map<String, Object> element, String key) {
 		Object value = element.get(key);
 		return value != null ? value.toString() : null;
 	}

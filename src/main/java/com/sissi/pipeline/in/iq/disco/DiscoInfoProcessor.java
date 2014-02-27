@@ -20,7 +20,7 @@ public class DiscoInfoProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.write(protocol.cast(Disco.class).add(this.features).getParent().reply().setType(ProtocolType.RESULT));
+		context.write(protocol.cast(Disco.class).add(this.features).parent().reply().setType(ProtocolType.RESULT));
 		return true;
 	}
 }

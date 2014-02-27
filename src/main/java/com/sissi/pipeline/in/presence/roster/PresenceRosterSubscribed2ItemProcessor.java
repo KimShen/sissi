@@ -19,8 +19,8 @@ public class PresenceRosterSubscribed2ItemProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		JID source = super.build(protocol.getTo());
-		super.broadcast(source, new IQ().setId(UUID.randomUUID().toString()).add(new Roster(new GroupItem(super.ourRelation(source, context.jid()).cast(RelationRoster.class)))).setType(ProtocolType.SET));
+		JID to = super.build(protocol.getTo());
+		super.broadcast(to, new IQ().setId(UUID.randomUUID().toString()).add(new Roster(new GroupItem(super.ourRelation(to, context.jid()).cast(RelationRoster.class)))).setType(ProtocolType.SET));
 		return true;
 	}
 }

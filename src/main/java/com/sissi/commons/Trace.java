@@ -7,7 +7,7 @@ import org.apache.commons.logging.Log;
  */
 public class Trace {
 
-	public static void trace(Log log, Exception e) {
+	public static void trace(Log log, Throwable e) {
 		if (log.isTraceEnabled()) {
 			e.printStackTrace();
 		}

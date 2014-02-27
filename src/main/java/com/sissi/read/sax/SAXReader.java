@@ -11,6 +11,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.commons.Trace;
 import com.sissi.read.Mapping;
 import com.sissi.read.Reader;
 import com.sissi.resource.ResourceCounter;
@@ -52,10 +53,8 @@ public class SAXReader implements Reader {
 			this.executor.execute(new ParseRunnable(stream, this.factory.newSAXParser(), new SAXHandler(this.mapping, future)));
 			return future;
 		} catch (Exception e) {
-			if (this.log.isErrorEnabled()) {
-				this.log.error(e);
-				e.printStackTrace();
-			}
+			this.log.error(e);
+			Trace.trace(log, e);
 			throw new RuntimeException(e);
 		}
 	}
@@ -80,10 +79,8 @@ public class SAXReader implements Reader {
 				SAXReader.this.resourceCounter.increment(SAXReader.this.resource);
 				this.parser.parse(this.stream, this.handler);
 			} catch (Exception e) {
-				if (SAXReader.this.log.isDebugEnabled()) {
-					SAXReader.this.log.debug(e.toString());
-					e.printStackTrace();
-				}
+				SAXReader.this.log.debug(e.toString());
+				Trace.trace(SAXReader.this.log, e);
 			} finally {
 				SAXReader.this.resourceCounter.decrement(SAXReader.this.resource);
 			}

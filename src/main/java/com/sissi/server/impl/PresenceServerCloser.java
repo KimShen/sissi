@@ -24,7 +24,7 @@ public class PresenceServerCloser implements ServerCloser {
 
 	@Override
 	public PresenceServerCloser close(JIDContext context) {
-		this.protocolBraodcast.broadcast(context.jid(), new Presence().setFrom(context.jid()).setStatus(this.vCardContext.get(context.jid(), VCardContext.FIELD_SIGNATURE).getValue()).setType(PresenceType.UNAVAILABLE));
+		this.protocolBraodcast.broadcast(context.jid(), new Presence().setFrom(context.jid()).status(this.vCardContext.get(context.jid(), VCardContext.FIELD_SIGNATURE).getValue()).setType(PresenceType.UNAVAILABLE));
 		return this;
 	}
 }

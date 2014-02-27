@@ -18,7 +18,7 @@ public interface PersistentElementBox {
 	public final static String fieldDelay = "delay";
 
 	public final static String fieldFrom = "from";
-	
+
 	public final static String fieldHost = "host";
 
 	public final static String fieldType = "type";
@@ -33,5 +33,5 @@ public interface PersistentElementBox {
 
 	public PersistentElementBox push(Element element);
 
-	public Map<String, Object> peek(Map<String, Object> query);
+	public Map<String, Object> peek(Map<String, Object> query, Map<String, Object> update);
 }

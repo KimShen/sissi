@@ -17,7 +17,7 @@ public class LastContacterCheckRelationProcessor extends CheckRelationProcessor 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
 	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.cast(Last.class).seconds().getParent().reply().setError(this.error));
+		context.write(protocol.cast(Last.class).seconds().parent().reply().setError(this.error));
 		return false;
 	}
 }

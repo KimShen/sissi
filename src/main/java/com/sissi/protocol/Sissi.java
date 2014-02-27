@@ -6,6 +6,4 @@ package com.sissi.protocol;
 public class Sissi {
 
 	public final static String XMLNS = "sissi.pw";
-
-	public final static String NAME = "sissi";
 }

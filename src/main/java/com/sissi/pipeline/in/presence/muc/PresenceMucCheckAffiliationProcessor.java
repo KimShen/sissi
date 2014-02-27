@@ -30,7 +30,7 @@ public class PresenceMucCheckAffiliationProcessor extends ProxyProcessor {
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.getParent().reply().setError(this.error));
+		context.write(protocol.parent().reply().setError(this.error));
 		return false;
 	}
 }

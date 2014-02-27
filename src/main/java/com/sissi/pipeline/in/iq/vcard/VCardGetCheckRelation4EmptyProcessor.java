@@ -10,7 +10,7 @@ import com.sissi.protocol.ProtocolType;
 public class VCardGetCheckRelation4EmptyProcessor extends VCardGetCheckRelationProcessor {
 
 	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.clear().getParent().reply().setType(ProtocolType.RESULT));
+		context.write(protocol.parent().reply().setType(ProtocolType.RESULT));
 		return false;
 	}
 }

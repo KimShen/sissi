@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.commons.Trace;
 import com.sissi.read.Metadata;
 
 /**
@@ -33,15 +34,13 @@ public class PresencePriority {
 		try {
 			return this.text != null ? Integer.parseInt(this.getText()) : null;
 		} catch (Exception e) {
-			if (log.isDebugEnabled()) {
-				log.debug(e.toString());
-				e.printStackTrace();
-			}
+			log.debug(e.toString());
+			Trace.trace(log, e);
 			return null;
 		}
 	}
 
-	public Integer priority(int def) {
+	public int priority(int def) {
 		Integer priority = this.priority();
 		return priority != null ? priority : def;
 	}

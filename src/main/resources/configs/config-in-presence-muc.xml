@@ -5,11 +5,11 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="presence.muc.status" class="com.sissi.ucenter.relation.ChainedMucStatusCollector">
+	<bean id="presence.muc.status" class="com.sissi.ucenter.relation.muc.ChainedMucStatusCollector">
 		<constructor-arg>
 			<util:list>
-				<bean class="com.sissi.ucenter.relation.Status100MucStatusCollector" />
-				<bean class="com.sissi.ucenter.relation.Status110MucStatusCollector" />
+				<bean class="com.sissi.ucenter.relation.muc.Status100MucStatusCollector" />
+				<bean class="com.sissi.ucenter.relation.muc.Status110MucStatusCollector" />
 			</util:list>
 		</constructor-arg>
 	</bean>

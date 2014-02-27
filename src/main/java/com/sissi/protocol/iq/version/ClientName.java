@@ -23,6 +23,6 @@ public class ClientName {
 
 	@XmlValue
 	public String getText() {
-		return text;
+		return this.text;
 	}
 }

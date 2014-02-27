@@ -9,6 +9,7 @@ import com.sissi.protocol.iq.register.simple.Username;
 import com.sissi.ucenter.RegisterContext;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
+import com.sissi.ucenter.relation.MongoFieldContext;
 
 /**
  * @author kim 2013年12月3日

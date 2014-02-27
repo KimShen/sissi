@@ -21,6 +21,6 @@ public class StreamCheckXmlnsProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return protocol.cast(Stream.class).validStream() ? true : !context.write(Stream.closeWhenOpening(new ServerError().add(InvaildNamespace.DETAIL)).setFrom(this.domain).setTo(protocol.getFrom())).close();
+		return protocol.cast(Stream.class).stream() ? true : !context.write(Stream.closeWhenOpening(new ServerError().add(InvaildNamespace.DETAIL)).setFrom(this.domain).setTo(protocol.getFrom())).close();
 	}
 }

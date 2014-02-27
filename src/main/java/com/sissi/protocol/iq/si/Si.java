@@ -26,9 +26,21 @@ public class Si extends Protocol implements Collector {
 
 	private String profile;
 
+	private String source;
+
 	private Feature feature;
 
 	private File file;
+
+	@XmlAttribute
+	public String getSource() {
+		return source;
+	}
+
+	public Si setSource(String source) {
+		this.source = source;
+		return this;
+	}
 
 	public Si setId(String id) {
 		super.setId(id);
@@ -70,15 +82,7 @@ public class Si extends Protocol implements Collector {
 		return XMLNS;
 	}
 
-	public String host() {
-		return this.compute(this.getParent().getFrom(), this.getParent().getTo());
-	}
-
 	public String host(String from, String to) {
-		return this.compute(from, to);
-	}
-
-	private String compute(String from, String to) {
 		return DigestUtils.sha1Hex(this.getId() + from + to);
 	}
 

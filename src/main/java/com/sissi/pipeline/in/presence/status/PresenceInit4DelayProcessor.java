@@ -17,14 +17,13 @@ public class PresenceInit4DelayProcessor implements Input {
 		this.persistentElementBox = persistentElementBox;
 	}
 
-	
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		return context.presence() ? true : this.writeDelay(context);
 	}
 
 	private boolean writeDelay(JIDContext context) {
-		context.write(this.persistentElementBox.pull(context.jid()), true, true);
+		context.write(this.persistentElementBox.pull(context.jid()), true);
 		return true;
 	}
 }

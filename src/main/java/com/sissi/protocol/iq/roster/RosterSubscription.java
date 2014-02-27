@@ -25,7 +25,7 @@ public enum RosterSubscription {
 	}
 
 	public boolean equals(String subscribe) {
-		return this == RosterSubscription.parse(subscribe);
+		return this.toString().equals(subscribe);
 	}
 
 	public boolean in(RosterSubscription... subscriptions) {
@@ -39,7 +39,7 @@ public enum RosterSubscription {
 	
 	public boolean in(String... subscriptions) {
 		for (String subscription : subscriptions) {
-			if (this == RosterSubscription.parse(subscription)) {
+			if (this.equals(subscription)) {
 				return true;
 			}
 		}
@@ -47,7 +47,7 @@ public enum RosterSubscription {
 	}
 
 	public static RosterSubscription parse(String subscribe) {
-		return (subscribe == null || subscribe.toUpperCase().equals(REMOVE.name())) ? NONE : RosterSubscription.valueOf(subscribe.toUpperCase());
+		return (subscribe == null || REMOVE.equals(subscribe)) ? NONE : RosterSubscription.valueOf(subscribe.toUpperCase());
 	}
 
 	public static String toString(Integer num) {

@@ -22,12 +22,11 @@ public class CheckErrorPongProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		// Not contain "to" or "to" in special addresses
 		return protocol.type(ProtocolType.ERROR) && (!protocol.to() || protocol.to(this.ignore)) ? this.pong(context, protocol) : true;
 	}
 
 	private boolean pong(JIDContext context, Protocol protocol) {
-		context.pong(protocol.getParent());
+		context.pong(protocol.parent());
 		return false;
 	}
 }

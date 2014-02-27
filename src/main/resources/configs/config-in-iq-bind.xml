@@ -5,12 +5,12 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="bind.pro.binding" class="com.sissi.pipeline.in.iq.bind.BindProcessor" parent="global.pro.proxy" />
+	<bean id="bind.pro.response" class="com.sissi.pipeline.in.iq.bind.BindResponseProcessor" parent="global.pro.proxy" />
 	<bean id="bind.pro.resource" class="com.sissi.pipeline.in.iq.bind.BindResourceProcessor" parent="global.pro.proxy" />
 	<bean id="bind.pro.addressing.limit" class="com.sissi.pipeline.in.iq.bind.BindAddressLimitProcessor" parent="global.pro.proxy">
 		<constructor-arg value="${pipeline.bind.resource}" />
 	</bean>
-	<bean id="bind.pro.addressing.close.others" class="com.sissi.pipeline.in.iq.bind.BindAddressCloseOthersProcessor" parent="global.pro.proxy" >
+	<bean id="bind.pro.addressing.close.others" class="com.sissi.pipeline.in.iq.bind.BindAddressCloseOthersProcessor" parent="global.pro.proxy">
 		<constructor-arg value="${pipeline.bind.content}" />
 	</bean>
 	<bean id="bind.pro.addressing.close.current" class="com.sissi.pipeline.in.iq.bind.BindAddressCloseCurrentProcessor" parent="global.pro.proxy" />
@@ -23,15 +23,13 @@
 				<!-- Copy resource of "bind" to JIDContext -->
 				<ref bean="bind.pro.resource" />
 				<!-- Prevent same resource -->
-				<ref bean="bind.pro.addressing.close.current" />
+				<!-- <ref bean="bind.pro.addressing.close.current" /> -->
 				<!-- Kick same resource -->
-				<!-- 
 				<ref bean="bind.pro.addressing.close.others" />
-				 -->
 				<!-- Join JIDContext pool -->
 				<ref bean="bind.pro.addressing.join" />
 				<!-- Response -->
-				<ref bean="bind.pro.binding" />
+				<ref bean="bind.pro.response" />
 			</util:list>
 		</constructor-arg>
 	</bean>

@@ -17,7 +17,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="last.pro.domain" class="com.sissi.pipeline.in.iq.last.LastDomainProcessor" parent="global.pro.proxy">
+	<bean id="last.pro.server" class="com.sissi.pipeline.in.iq.last.LastServerProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="server.main.status" />
 	</bean>
 	<bean id="last.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
@@ -27,7 +27,7 @@
 	<bean id="finder.iq.last" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="last.condition.domain" />
+				<ref bean="last.condition.server" />
 				<ref bean="last.condition.contacter" />
 			</util:list>
 		</constructor-arg>
@@ -41,18 +41,18 @@
 		</constructor-arg>
 		<constructor-arg ref="last.pro.fork" />
 	</bean>
-	<bean id="last.condition.domain" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="last.condition.server" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.last.LastDomainMatcher">
+			<bean class="com.sissi.pipeline.in.iq.last.LastMatcher">
 				<constructor-arg value="${global.domain}" />
 				<constructor-arg value="true" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="last.pro.domain" />
+		<constructor-arg ref="last.pro.server" />
 	</bean>
 	<bean id="last.condition.contacter" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.last.LastDomainMatcher">
+			<bean class="com.sissi.pipeline.in.iq.last.LastMatcher">
 				<constructor-arg value="${global.domain}" />
 				<constructor-arg value="false" />
 			</bean>

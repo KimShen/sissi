@@ -27,7 +27,7 @@ public class Group {
 		this.value = text;
 	}
 
-	Group setItem(GroupItem item) {
+	Group item(GroupItem item) {
 		this.item = item;
 		return this;
 	}

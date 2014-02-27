@@ -75,6 +75,10 @@ abstract public class ProxyProcessor implements Input {
 		return this.addressing.findOne(jid, usingResource);
 	}
 
+	protected JIDContext findOne(JID jid, boolean usingResource, boolean offline) {
+		return this.addressing.findOne(jid, usingResource, offline);
+	}
+
 	public ProxyProcessor priority(JIDContext context) {
 		this.addressing.priority(context);
 		return this;

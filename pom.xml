@@ -15,7 +15,7 @@
 		<!-- For Server -->
 		<maven.global.domain>sissi.pw</maven.global.domain>
 		<maven.global.domain.group>group.sissi.pw</maven.global.domain.group>
-		<maven.global.domain.delegation>delegation@sissi.pw/delegation</maven.global.domain.delegation>
+		<maven.global.domain.delegation>delegation@sissi.pw</maven.global.domain.delegation>
 		<maven.global.version>1.0</maven.global.version>
 		<maven.global.lang>zh_CN</maven.global.lang>
 		<maven.global.port.main>5222</maven.global.port.main>
@@ -39,6 +39,7 @@
 		<maven.exchanger.idle.all>120</maven.exchanger.idle.all>
 		<maven.exchanger.idle.read>120</maven.exchanger.idle.read>
 		<maven.exchanger.idle.write>120</maven.exchanger.idle.write>
+		<maven.exchanger.delegation>/Users/kim/Downloads</maven.exchanger.delegation>
 		<!-- For Thread -->
 		<maven.executor.keep.alive>300</maven.executor.keep.alive>
 		<maven.executor.maximum>1000</maven.executor.maximum>
@@ -52,7 +53,7 @@
 		<maven.mongo.port>27017</maven.mongo.port>
 		<maven.mongo.host>localhost</maven.mongo.host>
 		<maven.mongo.collection.log>log</maven.mongo.collection.log>
-		<maven.mongo.collection.offline>offline</maven.mongo.collection.offline>
+		<maven.mongo.collection.persistent>offline</maven.mongo.collection.persistent>
 		<maven.mongo.collection.addressing>addressing</maven.mongo.collection.addressing>
 		<maven.mongo.collection.exchanger>exchanger</maven.mongo.collection.exchanger>
 		<maven.mongo.collection.counter>counter</maven.mongo.collection.counter>
@@ -76,7 +77,7 @@
 		<maven.pipeline.roster.group.default>好友</maven.pipeline.roster.group.default>
 		<maven.pipeline.bind.resource>2</maven.pipeline.bind.resource>
 		<maven.pipeline.bind.content>您有其他客户端上线了</maven.pipeline.bind.content>
-		<maven.pipeline.offline>From Sissi offline</maven.pipeline.offline>
+		<maven.pipeline.persistent>From Sissi offline</maven.pipeline.persistent>
 		<maven.pipeline.message.relation>false</maven.pipeline.message.relation>
 		<maven.pipeline.message.hidden>Room is not anonymous</maven.pipeline.message.hidden>
 	</properties>

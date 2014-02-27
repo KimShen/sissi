@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.commons.Trace;
 import com.sissi.context.JID;
 import com.sissi.context.StatusClauses;
 import com.sissi.protocol.Protocol;
@@ -37,9 +38,11 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	private final static Log log = LogFactory.getLog(Presence.class);
 
-	private Delay delay;
+	private PresenceClauses presenceClauses = new PresenceClauses();
 
-	private BeanFields fields;
+	private BeanFields fields = new BeanFields(false);
+
+	private Delay delay;
 
 	private PresenceShow show;
 
@@ -47,25 +50,36 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	private PresencePriority priority;
 
-	public Presence() {
-		super();
-		this.fields = new BeanFields(false);
-	}
-
 	private boolean status() {
 		return PresenceType.parse(this.getType()).in(PresenceType.AVAILABLE, PresenceType.UNAVAILABLE);
 	}
 
-	private XVCard findXVard() {
-		return XVCard.class.cast(this.fields != null ? this.fields.findField(XVCard.NAME, XVCard.class) : null);
+	private Presence show(String show) {
+		this.show = new PresenceShow(show);
+		return this;
 	}
 
-	public boolean type() {
+	private Presence avator(String type) {
+		this.add(new XVCard().add(new XVCardPhoto(type)));
+		return this;
+	}
+
+	private Presence priority(String priority) {
+		try {
+			this.priority = priority != null ? new PresencePriority(priority) : null;
+		} catch (Exception e) {
+			log.debug(e.toString());
+			Trace.trace(log, e);
+		}
+		return this;
+	}
+
+	public boolean valid() {
 		return PresenceType.parse(this.getType()) != PresenceType.NONE;
 	}
 
-	public boolean type(PresenceType type) {
-		return type.equals(this.getType());
+	private XVCard findXVard() {
+		return XVCard.class.cast(this.fields != null ? this.fields.findField(XVCard.NAME, XVCard.class) : null);
 	}
 
 	public Presence setType(PresenceType type) {
@@ -103,18 +117,6 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return this.priority != null ? this.priority.priority(def) : def;
 	}
 
-	private Presence setPriority(String priority) {
-		try {
-			this.priority = priority != null ? new PresencePriority(String.valueOf(priority)) : null;
-		} catch (Exception e) {
-			if (log.isDebugEnabled()) {
-				log.debug(e.toString());
-				e.printStackTrace();
-			}
-		}
-		return this;
-	}
-
 	@XmlElement
 	public Integer getPriority() {
 		return this.priority != null ? this.priority.priority() : null;
@@ -133,7 +135,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	@XmlTransient
 	public String getAvatorAsText() {
 		XVCard x = this.findXVard();
-		XVCardPhoto xp = x != null ? Fields.class.cast(x).findField(XVCardPhoto.NAME, XVCardPhoto.class) : null;
+		XVCardPhoto xp = x != null ? x.findField(XVCardPhoto.NAME, XVCardPhoto.class) : null;
 		return xp != null ? xp.getValue() : null;
 	}
 
@@ -142,8 +144,8 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return this;
 	}
 
-	public Presence setShow(String show) {
-		this.show = new PresenceShow(show);
+	public Presence status(String status) {
+		this.status = new PresenceStatus(status);
 		return this;
 	}
 
@@ -152,25 +154,15 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return this;
 	}
 
-	public Presence setStatus(String status) {
-		this.status = new PresenceStatus(status);
-		return this;
-	}
-
 	@Override
 	public Presence clauses(StatusClauses clauses) {
-		this.setShow(clauses.find(StatusClauses.KEY_SHOW)).setStatus(clauses.find(StatusClauses.KEY_STATUS)).setAvator(clauses.find(StatusClauses.KEY_AVATOR)).setPriority(clauses.find(StatusClauses.KEY_PRIORITY)).setType(clauses.find(StatusClauses.KEY_TYPE));
+		this.show(clauses.find(StatusClauses.KEY_SHOW)).status(clauses.find(StatusClauses.KEY_STATUS)).avator(clauses.find(StatusClauses.KEY_AVATOR)).priority(clauses.find(StatusClauses.KEY_PRIORITY)).setType(clauses.find(StatusClauses.KEY_TYPE));
 		return this;
 	}
 
 	@Override
 	public StatusClauses clauses() {
-		return new PresenceClauses();
-	}
-
-	private Presence setAvator(String type) {
-		this.add(new XVCard().add(new XVCardPhoto(type)));
-		return this;
+		return this.presenceClauses;
 	}
 
 	@XmlElements({ @XmlElement(name = XVCardPhoto.NAME, type = XVCardPhoto.class), @XmlElement(name = XVCard.NAME, type = XVCard.class), @XmlElement(name = XMuc.NAME, type = XMuc.class), @XmlElement(name = XUser.NAME, type = XUser.class) })
@@ -180,7 +172,6 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	public Presence clear() {
 		super.clear();
-		super.setType((String) null);
 		this.show = null;
 		this.status = null;
 		this.fields = null;
@@ -190,24 +181,6 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	@XmlElement
 	public ServerError getError() {
 		return super.getError();
-	}
-
-	@Override
-	public void set(String localName, Object ob) {
-		switch (localName) {
-		case X.NAME:
-			this.add(Field.class.cast(ob));
-			return;
-		case PresenceStatus.NAME:
-			this.setStatus((PresenceStatus) ob);
-			return;
-		case PresenceShow.NAME:
-			this.setShow((PresenceShow) ob);
-			return;
-		case PresencePriority.NAME:
-			this.priority = PresencePriority.class.cast(ob);
-			return;
-		}
 	}
 
 	@Override
@@ -240,6 +213,24 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	@Override
 	public <T extends Field<?>> T findField(String name, Class<T> clazz) {
 		return this.fields.findField(name, clazz);
+	}
+
+	@Override
+	public void set(String localName, Object ob) {
+		switch (localName) {
+		case X.NAME:
+			this.add(Field.class.cast(ob));
+			return;
+		case PresenceStatus.NAME:
+			this.setStatus((PresenceStatus) ob);
+			return;
+		case PresenceShow.NAME:
+			this.setShow((PresenceShow) ob);
+			return;
+		case PresencePriority.NAME:
+			this.priority = PresencePriority.class.cast(ob);
+			return;
+		}
 	}
 
 	private class PresenceClauses implements StatusClauses {

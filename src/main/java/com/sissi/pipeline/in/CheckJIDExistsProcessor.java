@@ -22,29 +22,22 @@ public class CheckJIDExistsProcessor extends ProxyProcessor {
 
 	private final boolean presenceIgnore;
 
-	private final Set<String> ignore;
+	private final Set<String> domains;
 
-	public CheckJIDExistsProcessor(VCardContext vcardContext, Set<String> ignore) {
-		this(vcardContext, true, ignore);
-	}
-
-	public CheckJIDExistsProcessor(VCardContext vcardContext, boolean presenceIgnore, Set<String> ignore) {
+	public CheckJIDExistsProcessor(boolean presenceIgnore, Set<String> domains, VCardContext vcardContext) {
 		super();
-		this.ignore = ignore;
+		this.domains = domains;
 		this.vcardContext = vcardContext;
 		this.presenceIgnore = presenceIgnore;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		// Not contain "to" or "to" in special addresses
-		// Not presence node
-		// JID exists
-		return !protocol.to() || protocol.to(this.ignore) || this.presenceIgnore && protocol.clazz(Presence.class) || this.vcardContext.exists(protocol.getTo()) ? true : this.writeAndReturn(context, protocol);
+		return !protocol.to() || protocol.to(this.domains) || this.presenceIgnore && protocol.clazz(Presence.class) || this.vcardContext.exists(protocol.getTo()) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.getParent().reply().setError(this.error));
+		context.write(protocol.parent().reply().setError(this.error));
 		return false;
 	}
 }

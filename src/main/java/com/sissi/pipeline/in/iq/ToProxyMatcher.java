@@ -16,6 +16,6 @@ public class ToProxyMatcher extends ClassMatcher {
 	}
 
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && protocol.getParent().to(this.jid);
+		return super.match(protocol) && protocol.parent().to(this.jid);
 	}
 }

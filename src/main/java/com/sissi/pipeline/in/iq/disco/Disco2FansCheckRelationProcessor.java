@@ -1,5 +1,7 @@
 package com.sissi.pipeline.in.iq.disco;
 
+import java.util.Set;
+
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.CheckRelationProcessor;
 import com.sissi.protocol.Error;
@@ -15,20 +17,20 @@ public class Disco2FansCheckRelationProcessor extends CheckRelationProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
-	private final String domain;
+	private final Set<String> domains;
 
-	public Disco2FansCheckRelationProcessor(String domain) {
+	public Disco2FansCheckRelationProcessor(Set<String> domains) {
 		super();
-		this.domain = domain;
+		this.domains = domains;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return !protocol.to() || protocol.to(this.domain) || super.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);
+		return !protocol.to() || protocol.to(this.domains) || super.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.getParent().reply().setError(this.error));
+		context.write(protocol.parent().reply().setError(this.error));
 		return false;
 	}
 }

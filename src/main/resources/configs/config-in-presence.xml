@@ -25,7 +25,7 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.probe.relation" class="com.sissi.pipeline.in.presence.probe.PresenceProbeRelationProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.probe.relation" class="com.sissi.pipeline.in.presence.probe.PresenceProbeCheckRelationProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.probe.status.offline" class="com.sissi.pipeline.in.presence.probe.PresenceProbeOfflineStatusProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.probe.status.online" class="com.sissi.pipeline.in.presence.probe.PresenceProbeOnlineStatusProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.probe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
@@ -71,11 +71,11 @@
 		</constructor-arg>
 		<property name="relationContext" ref="relation.muc" />
 	</bean>
-	<bean id="presence.pro.status.available.init.4ask" class="com.sissi.pipeline.in.presence.status.PresenceInit4AskProcessor">
+	<bean id="presence.pro.status.available.init.4subscribe" class="com.sissi.pipeline.in.presence.status.PresenceInit4SubscribeProcessor">
 		<constructor-arg ref="relation.roster" />
 	</bean>
 	<bean id="presence.pro.status.available.init.4delay" class="com.sissi.pipeline.in.presence.status.PresenceInit4DelayProcessor">
-		<constructor-arg ref="offline.all" />
+		<constructor-arg ref="persistent.all" />
 	</bean>
 	<bean id="presence.pro.status.available.init.4fans" class="com.sissi.pipeline.in.presence.status.PresenceInit4FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="vcard" />
@@ -94,10 +94,10 @@
 				<ref bean="presence.pro.status.available.init.4fans" />
 				<!-- Get presence from other resources of jid -->
 				<ref bean="presence.pro.status.available.init.4selfs" />
-				<!-- Get offline message / presence -->
-				<ref bean="presence.pro.status.available.init.4delay" />
 				<!-- Get presence for roster ask -->
-				<ref bean="presence.pro.status.available.init.4ask" />
+				<ref bean="presence.pro.status.available.init.4subscribe" />
+				<!-- Get offline message / presence / si -->
+				<ref bean="presence.pro.status.available.init.4delay" />
 				<!-- Update presented -->
 				<ref bean="presence.pro.status.available.init" />
 				<!-- Update priority -->
@@ -141,9 +141,7 @@
 				<constructor-arg>
 					<util:list>
 						<!-- Check relation is NONE/BOTH -->
-						<bean class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribedCheckRelationProcessor" parent="global.pro.proxy">
-							<constructor-arg value="true" />
-						</bean>
+						<bean class="com.sissi.pipeline.in.presence.roster.PresenceRosterSubscribeCheckRelationProcessor" parent="global.pro.proxy" />
 						<!-- DB operation -->
 						<ref bean="presence.pro.roster.subscribed" />
 						<!-- Broadcast subscribed to all resources of fans -->
@@ -278,18 +276,26 @@
 	</bean>
 	<bean id="presence.condition.probe" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.presence.probe.PresenceProbeMatcher" />
+			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
+				<constructor-arg value="false" />
+				<constructor-arg>
+					<util:set>
+						<value>PROBE</value>
+					</util:set>
+				</constructor-arg>
+			</bean>
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.probe.chained" />
 	</bean>
 	<bean id="presence.condition.status" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
+				<constructor-arg value="false" />
 				<constructor-arg>
-					<array>
+					<util:set>
 						<value>AVAILABLE</value>
 						<value>UNAVAILABLE</value>
-					</array>
+					</util:set>
 				</constructor-arg>
 			</bean>
 		</constructor-arg>
@@ -300,10 +306,10 @@
 			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
 				<constructor-arg value="true" />
 				<constructor-arg>
-					<array>
+					<util:set>
 						<value>AVAILABLE</value>
 						<value>UNAVAILABLE</value>
-					</array>
+					</util:set>
 				</constructor-arg>
 			</bean>
 		</constructor-arg>
@@ -312,10 +318,11 @@
 	<bean id="presence.condition.status.available" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
+				<constructor-arg value="false" />
 				<constructor-arg>
-					<array>
+					<util:set>
 						<value>AVAILABLE</value>
-					</array>
+					</util:set>
 				</constructor-arg>
 			</bean>
 		</constructor-arg>
@@ -324,10 +331,11 @@
 	<bean id="presence.condition.status.unavailable" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
+				<constructor-arg value="false" />
 				<constructor-arg>
-					<array>
+					<util:set>
 						<value>UNAVAILABLE</value>
-					</array>
+					</util:set>
 				</constructor-arg>
 			</bean>
 		</constructor-arg>
@@ -341,32 +349,52 @@
 	</bean>
 	<bean id="presence.condition.roster.unsubscribe" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.presence.roster.PresenceRosterActionMatcher">
-				<constructor-arg value="unsubscribe" />
+			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
+				<constructor-arg value="false" />
+				<constructor-arg>
+					<util:set>
+						<value>UNSUBSCRIBE</value>
+					</util:set>
+				</constructor-arg>
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.roster.unsubscribe.chained" />
 	</bean>
 	<bean id="presence.condition.roster.unsubscribed" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.presence.roster.PresenceRosterActionMatcher">
-				<constructor-arg value="unsubscribed" />
+			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
+				<constructor-arg value="false" />
+				<constructor-arg>
+					<util:set>
+						<value>UNSUBSCRIBED</value>
+					</util:set>
+				</constructor-arg>
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.roster.unsubscribed.chained" />
 	</bean>
 	<bean id="presence.condition.roster.subscribed" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.presence.roster.PresenceRosterActionMatcher">
-				<constructor-arg value="subscribed" />
+			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
+				<constructor-arg value="false" />
+				<constructor-arg>
+					<util:set>
+						<value>SUBSCRIBED</value>
+					</util:set>
+				</constructor-arg>
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.roster.subscribed.chained" />
 	</bean>
 	<bean id="presence.condition.roster.subscribe" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.presence.roster.PresenceRosterActionMatcher">
-				<constructor-arg value="subscribe" />
+			<bean class="com.sissi.pipeline.in.presence.PresenceActionMatcher">
+				<constructor-arg value="false" />
+				<constructor-arg>
+					<util:set>
+						<value>SUBSCRIBE</value>
+					</util:set>
+				</constructor-arg>
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="presence.pro.roster.subscribe.chained" />

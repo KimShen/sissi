@@ -62,11 +62,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		public OfflineContext(JID jid, boolean signature) {
 			this.jid = jid;
-			if (signature) {
-				this.status = new OfflineStatus(new SignatureClauses(OfflineContextBuilder.this.vCardContext.get(jid, VCardContext.FIELD_SIGNATURE).getValue()));
-			} else {
-				this.status = OfflineStatus.STATUS;
-			}
+			this.status = signature ? new OfflineStatus(new SignatureClauses(OfflineContextBuilder.this.vCardContext.get(jid, VCardContext.FIELD_SIGNATURE).getValue())) : OfflineStatus.STATUS;
 		}
 
 		public long index() {

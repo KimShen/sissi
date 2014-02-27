@@ -25,6 +25,6 @@ public class BindAddressLimitProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return super.resources(context.jid()).lessThan(this.limit) ? true : !context.write(protocol.getParent().clear().reply().setFrom(context.domain()).setError(this.error)).write(Stream.closeGraceFully()).close();
+		return super.resources(context.jid()).lessThan(this.limit) ? true : !context.write(protocol.parent().reply().setFrom(context.domain()).setError(this.error)).write(Stream.closeGraceFully()).close();
 	}
 }

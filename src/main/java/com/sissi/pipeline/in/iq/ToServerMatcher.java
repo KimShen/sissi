@@ -12,6 +12,6 @@ public class ToServerMatcher extends ToProxyMatcher {
 	}
 
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) || !protocol.getParent().to();
+		return super.match(protocol) || !protocol.parent().to();
 	}
 }

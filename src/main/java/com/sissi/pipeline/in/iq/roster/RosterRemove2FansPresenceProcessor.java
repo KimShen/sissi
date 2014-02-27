@@ -15,11 +15,11 @@ public class RosterRemove2FansPresenceProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		JID to = super.build(protocol.cast(Roster.class).getFirstItem().getJid());
 		Presence presence = new Presence().setType(PresenceType.UNAVAILABLE);
+		JID to = super.build(protocol.cast(Roster.class).getFirstItem().getJid());
 		for (JID resource : super.resources(context.jid())) {
 			super.broadcast(to, presence.setFrom(resource));
 		}
-		return false;
+		return true;
 	}
 }

@@ -17,7 +17,7 @@ public class Nickname implements Field<String> {
 
 	public final static String NAME = "NICKNAME";
 
-	private final StringBuffer value = new StringBuffer();
+	private String value;
 
 	public Nickname() {
 		super();
@@ -25,7 +25,7 @@ public class Nickname implements Field<String> {
 
 	public Nickname(String text) {
 		super();
-		this.value.append(text);
+		this.value = text;
 	}
 
 	@XmlValue
@@ -34,7 +34,7 @@ public class Nickname implements Field<String> {
 	}
 
 	public Nickname setText(String text) {
-		this.value.append(text);
+		this.value = text;
 		return this;
 	}
 

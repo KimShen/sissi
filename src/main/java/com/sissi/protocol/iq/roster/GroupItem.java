@@ -47,7 +47,7 @@ public class GroupItem extends Item implements Collector {
 	public GroupItem(RelationRoster roster) {
 		this(roster.getJID(), roster.getName());
 		this.setAsk(roster.isAsk());
-		this.subscription = roster.getSubscription();
+		this.setSubscription(roster.getSubscription());
 		if (roster.asGroups() != null) {
 			for (String group : roster.asGroups()) {
 				this.add(new Group(group));
@@ -59,9 +59,7 @@ public class GroupItem extends Item implements Collector {
 		if (this.groups == null) {
 			this.groups = new HashSet<Group>();
 		}
-		if (group != null) {
-			this.groups.add(group.setItem(this));
-		}
+		this.groups.add(group.item(this));
 		return this;
 	}
 
@@ -106,12 +104,6 @@ public class GroupItem extends Item implements Collector {
 		return this.subscription;
 	}
 
-	/**
-	 * For Xml Parser
-	 * 
-	 * @param subscription
-	 * @return
-	 */
 	public GroupItem setSubscription(String subscription) {
 		this.subscription = subscription;
 		return this;

@@ -3,7 +3,6 @@ package com.sissi.protocol;
 import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
 
 import com.sissi.context.JID;
 import com.sissi.protocol.error.ServerError;
@@ -27,12 +26,11 @@ abstract public class Protocol implements Element {
 
 	private ServerError error;
 
-	@XmlTransient
-	public Protocol getParent() {
+	public Protocol parent() {
 		return this.parent != null ? this.parent : this;
 	}
 
-	public Protocol setParent(Protocol parent) {
+	public Protocol parent(Protocol parent) {
 		this.parent = parent;
 		return this;
 	}
@@ -133,7 +131,7 @@ abstract public class Protocol implements Element {
 
 	public Protocol setError(Error error) {
 		this.setType(ProtocolType.ERROR);
-		this.error = ServerError.class.cast(error);
+		this.error = ServerError.class == error.getClass() ? ServerError.class.cast(error) : new ServerError(error);
 		return this;
 	}
 
@@ -145,6 +143,8 @@ abstract public class Protocol implements Element {
 	public Protocol clear() {
 		this.id = null;
 		this.type = null;
+		this.lang = null;
+		this.error = null;
 		return this;
 	}
 

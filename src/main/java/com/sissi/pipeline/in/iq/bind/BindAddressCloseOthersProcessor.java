@@ -22,7 +22,7 @@ public class BindAddressCloseOthersProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		super.findOne(context.jid(), true).write(new Message().setBody(this.body).setType(MessageType.HEADLINE).setFrom(context.domain())).write(Stream.closeGraceFully()).close();
+		super.findOne(context.jid(), true, true).write(new Message().setBody(this.body).setType(MessageType.HEADLINE).setFrom(context.domain())).write(Stream.closeGraceFully()).close();
 		return true;
 	}
 }

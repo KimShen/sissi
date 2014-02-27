@@ -40,7 +40,7 @@ public class XField implements Field<Object>, Collector {
 
 	@XmlElement
 	public String getDesc() {
-		return desc;
+		return this.desc;
 	}
 
 	public XField setDesc(String desc) {
@@ -92,10 +92,6 @@ public class XField implements Field<Object>, Collector {
 		return this.getValue() == null && (this.fields.getFields() != null && !this.fields.getFields().isEmpty());
 	}
 
-	public void set(String localName, Object ob) {
-		this.fields.add(Field.class.cast(ob));
-	}
-
 	@Override
 	public Object getValue() {
 		return this.value != null ? this.value : this.computeValue();
@@ -107,5 +103,9 @@ public class XField implements Field<Object>, Collector {
 			fields.add(field.getValue().toString());
 		}
 		return fields.size() == 1 ? fields.getFirst() : fields.toArray(new String[] {});
+	}
+
+	public void set(String localName, Object ob) {
+		this.fields.add(Field.class.cast(ob));
 	}
 }

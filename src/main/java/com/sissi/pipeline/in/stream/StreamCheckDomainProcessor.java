@@ -12,7 +12,9 @@ import com.sissi.protocol.error.detail.HostUnknown;
  */
 public class StreamCheckDomainProcessor implements Input {
 
-	private final String localhost = "127.0.0.1";
+	private final String localip = "127.0.0.1";
+
+	private final String localhost = "localhost";
 
 	private final String domain;
 
@@ -23,7 +25,7 @@ public class StreamCheckDomainProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return protocol.to(this.domain, this.localhost) ? true : this.close(context, protocol);
+		return protocol.to(this.domain, this.localip, this.localhost) ? true : this.close(context, protocol);
 	}
 
 	private boolean close(JIDContext context, Protocol protocol) {

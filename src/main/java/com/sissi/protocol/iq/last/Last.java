@@ -56,11 +56,6 @@ public class Last extends Protocol {
 			return this;
 		}
 
-		public LastSeconds setSeconds(String seconds) {
-			this.seconds = seconds;
-			return this;
-		}
-
 		public LastSeconds setText(String text) {
 			this.text = text;
 			return this;
@@ -74,11 +69,6 @@ public class Last extends Protocol {
 		@XmlValue
 		public String getText() {
 			return this.text;
-		}
-
-		@XmlAttribute
-		public String getXmlns() {
-			return Last.XMLNS;
 		}
 
 		@Override
@@ -128,10 +118,14 @@ public class Last extends Protocol {
 			this.last.setType(type);
 			return this;
 		}
-		
-		@XmlTransient
-		public Protocol getParent(){
-			return IQ.class.cast(this.last.getParent()).clear().add(this);
+
+		@XmlAttribute
+		public String getXmlns() {
+			return Last.XMLNS;
+		}
+
+		public Protocol parent() {
+			return this.last.parent().cast(IQ.class).clear().add(this);
 		}
 	}
 }

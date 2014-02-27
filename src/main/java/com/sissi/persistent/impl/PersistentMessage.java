@@ -8,6 +8,7 @@ import com.sissi.persistent.PersistentElementBox;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.message.Body;
 import com.sissi.protocol.message.Message;
+import com.sissi.protocol.message.MessageType;
 import com.sissi.protocol.offline.Delay;
 
 /**
@@ -40,6 +41,10 @@ public class PersistentMessage extends PersistentProtocol {
 	}
 
 	public boolean isSupport(Element element) {
-		return super.isSupport(element) && Message.class.cast(element).hasContent();
+		return super.isSupport(element) && this.isSupportMessage(Message.class.cast(element));
+	}
+
+	private boolean isSupportMessage(Message message) {
+		return message.hasContent() && message.type(MessageType.CHAT, MessageType.GROUPCHAT);
 	}
 }

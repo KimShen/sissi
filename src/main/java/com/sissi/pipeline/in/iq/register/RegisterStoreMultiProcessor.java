@@ -1,6 +1,6 @@
 package com.sissi.pipeline.in.iq.register;
 
-import com.sissi.pipeline.in.iq.IQProcessor;
+import com.sissi.pipeline.in.iq.IQResponseProcessor;
 import com.sissi.protocol.iq.data.XData;
 import com.sissi.ucenter.RegisterContext;
 import com.sissi.ucenter.field.Fields;
@@ -11,7 +11,7 @@ import com.sissi.ucenter.field.impl.BeanFields;
  */
 public class RegisterStoreMultiProcessor extends RegisterStoreProcessor {
 
-	public RegisterStoreMultiProcessor(RegisterContext registerContext, IQProcessor processor) {
+	public RegisterStoreMultiProcessor(RegisterContext registerContext, IQResponseProcessor processor) {
 		super(registerContext, processor);
 	}
 

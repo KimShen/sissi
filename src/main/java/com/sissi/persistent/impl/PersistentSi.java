@@ -23,15 +23,15 @@ import com.sissi.protocol.iq.si.Si;
  */
 public class PersistentSi extends PersistentProtocol {
 
-	private final String fieldFileName = "fileName";
+	private final String fieldName = "name";
 
-	private final String fieldFileSize = "fileSize";
+	private final String fieldSize = "size";
 
 	private final String profile = "http://jabber.org/protocol/si/profile/file-transfer";
 
 	private final Feature feature = new Feature().setX(new XData().setType(XDataType.FORM).add(new XField().setType(XFieldType.LIST_SINGLE).setVar("stream-method").add(new XOption(Bytestreams.XMLNS))));
 
-	private String delegation;
+	private final String delegation;
 
 	public PersistentSi(JIDBuilder jidBuilder, String title, String delegation) {
 		super(Si.class, jidBuilder, title);
@@ -46,17 +46,17 @@ public class PersistentSi extends PersistentProtocol {
 	@Override
 	public Map<String, Object> write(Element element) {
 		Si si = Si.class.cast(element);
-		Map<String, Object> entity = super.write(si.getParent().reply().setType(ProtocolType.SET.toString()));
+		Map<String, Object> entity = super.write(si.parent().reply().setType(ProtocolType.SET.toString()));
+		entity.put(PersistentElementBox.fieldHost, new String[] { si.host(this.delegation, super.jidBuilder.build(si.parent().getTo()).asStringWithBare()) });
 		entity.put(PersistentElementBox.fieldClass, element.getClass().getSimpleName());
-		entity.put(PersistentElementBox.fieldHost, si.host(this.delegation, super.jidBuilder.build(si.getParent().getTo()).asStringWithBare()));
 		entity.put(PersistentElementBox.fieldSid, si.getId());
-		entity.put(this.fieldFileName, si.getFile().getName());
-		entity.put(this.fieldFileSize, si.getFile().getSize());
+		entity.put(this.fieldName, si.getFile().getName());
+		entity.put(this.fieldSize, si.getFile().getSize());
 		return entity;
 	}
 
 	@Override
 	public Element read(Map<String, Object> element) {
-		return IQ.class.cast(super.read(element, new IQ())).setId(element.get(PersistentElementBox.fieldHost).toString()).setFrom(this.delegation).add(new Si().setId(element.get(PersistentElementBox.fieldSid).toString()).setProfile(this.profile).setFeature(this.feature).setFile(new File().setName(element.get(this.fieldFileName).toString()).setSize(element.get(this.fieldFileSize).toString())));
+		return IQ.class.cast(super.read(element, new IQ())).setId(element.get(PersistentElementBox.fieldSid).toString()).setFrom(this.delegation).add(new Si().setId(element.get(PersistentElementBox.fieldSid).toString()).setSource(PersistentElementBox.fieldFrom).setProfile(this.profile).setFeature(this.feature).setFile(new File().setName(element.get(this.fieldName).toString()).setSize(element.get(this.fieldSize).toString())));
 	}
 }

@@ -5,7 +5,7 @@ import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.ucenter.RelationRoster;
-import com.sissi.ucenter.relation.PresenceRosterWrapRelation;
+import com.sissi.ucenter.relation.roster.PresenceRosterWrapRelation;
 
 /**
  * @author kim 2013-11-18

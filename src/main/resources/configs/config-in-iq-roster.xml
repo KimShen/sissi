@@ -30,7 +30,9 @@
 			</bean>
 		</constructor-arg>
 	</bean>
-	<bean id="roster.pro.establish.set.2fans" class="com.sissi.pipeline.in.iq.roster.RosterSet2FansProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.set.2fans" class="com.sissi.pipeline.in.iq.roster.RosterSet2FansProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="presence.pro.roster.subscribe.chained" />
+	</bean>
 	<bean id="roster.pro.establish.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>

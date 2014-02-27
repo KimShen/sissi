@@ -29,7 +29,7 @@ public class PresenceInit4FansProcessor extends ProxyProcessor {
 	private boolean init4Fans(JIDContext context) {
 		for (JID jid : super.iSubscribedWho(context.jid())) {
 			JIDs resoures = super.resources(jid);
-			if (resoures.isEmpty() && this.vCardContext != null) {
+			if (resoures.isEmpty()) {
 				this.writeOfflinePresence(context, jid);
 			} else {
 				this.writeOnlinePresence(context, jid, resoures);
@@ -39,7 +39,7 @@ public class PresenceInit4FansProcessor extends ProxyProcessor {
 	}
 
 	private void writeOfflinePresence(JIDContext context, JID from) {
-		context.write(new Presence().setFrom(from).setStatus(this.vCardContext.get(from, VCardContext.FIELD_SIGNATURE).getValue()).setType(PresenceType.UNAVAILABLE), true);
+		context.write(new Presence().setFrom(from).status(this.vCardContext.get(from, VCardContext.FIELD_SIGNATURE).getValue()).setType(PresenceType.UNAVAILABLE), true);
 	}
 
 	private void writeOnlinePresence(JIDContext context, JID from, JIDs resoures) {

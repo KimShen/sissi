@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="persistent.config" class="com.sissi.config.impl.MongoProxyConfig">
+		<constructor-arg ref="mongo" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.persistent}" />
+	</bean>
+
+	<bean id="persistent.delay" abstract="true">
+		<constructor-arg ref="jid" />
+		<constructor-arg value="${pipeline.persistent}" />
+	</bean>
+
+	<bean id="persistent.hanlder.message" class="com.sissi.persistent.impl.PersistentMessage" parent="persistent.delay" />
+	<bean id="persistent.hanlder.si" class="com.sissi.persistent.impl.PersistentSi" parent="persistent.delay">
+		<constructor-arg value="${global.domain.delegation}" />
+	</bean>
+
+	<bean id="persistent.message" class="com.sissi.persistent.impl.MongoDelayElementBox">
+		<constructor-arg ref="persistent.config" />
+		<constructor-arg>
+			<util:set>
+				<value>com.sissi.protocol.message.Message</value>
+			</util:set>
+		</constructor-arg>
+		<constructor-arg>
+			<util:list>
+				<ref bean="persistent.hanlder.message" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="persistent.si" class="com.sissi.persistent.impl.MongoDelayElementBox">
+		<constructor-arg ref="persistent.config" />
+		<constructor-arg>
+			<util:set>
+				<value>com.sissi.protocol.iq.si.Si</value>
+			</util:set>
+		</constructor-arg>
+		<constructor-arg>
+			<util:list>
+				<ref bean="persistent.hanlder.si" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="persistent.all" class="com.sissi.persistent.impl.MongoDelayElementBox">
+		<constructor-arg ref="persistent.config" />
+		<constructor-arg>
+			<util:set>
+				<value>com.sissi.protocol.message.Message</value>
+				<value>com.sissi.protocol.iq.si.Si</value>
+			</util:set>
+		</constructor-arg>
+		<constructor-arg>
+			<util:list>
+				<ref bean="persistent.hanlder.message" />
+				<ref bean="persistent.hanlder.si" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+</beans>

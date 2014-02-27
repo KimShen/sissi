@@ -34,10 +34,6 @@ abstract public class Disco extends Protocol implements Collector {
 		return this;
 	}
 
-	public void set(String localName, Object ob) {
-		this.add(DiscoFeature.class.cast(ob));
-	}
-
 	public List<DiscoFeature> getDisco() {
 		return this.features;
 	}
@@ -45,5 +41,9 @@ abstract public class Disco extends Protocol implements Collector {
 	@XmlAttribute
 	public String getXmlns() {
 		return this.xmlns;
+	}
+
+	public void set(String localName, Object ob) {
+		this.add(DiscoFeature.class.cast(ob));
 	}
 }

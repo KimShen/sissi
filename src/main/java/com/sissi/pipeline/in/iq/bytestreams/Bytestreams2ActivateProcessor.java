@@ -12,7 +12,7 @@ public class Bytestreams2ActivateProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.write(protocol.getParent().clear().reply().setType(ProtocolType.RESULT));
+		context.write(protocol.parent().reply().setType(ProtocolType.RESULT));
 		return true;
 	}
 }

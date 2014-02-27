@@ -27,7 +27,7 @@ public class BlockedListProcessor extends ProxyProcessor {
 		for (JID each : this.blockContext.iBlockWho(context.jid())) {
 			list.add(new BlockListItem().setJid(each.domain(context.domain()).asStringWithBare()));
 		}
-		context.write(list.getParent().setFrom(context.domain()).setType(ProtocolType.RESULT));
+		context.write(list.parent().setFrom(context.domain()).setType(ProtocolType.RESULT));
 		return true;
 	}
 }

@@ -13,7 +13,7 @@ public class StreamFeatureStarttlsProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return context.encrypted() ? true : this.writeFeature(protocol.cast(Stream.class));
+		return context.encrypted() || context.auth() ? true : this.writeFeature(protocol.cast(Stream.class));
 	}
 
 	private boolean writeFeature(Stream stream) {

@@ -13,7 +13,7 @@ public class Blocked2SelfsPresenceProcessor extends Block2SelfsPresenceProcessor
 	private final Presence unavailable = new Presence().setType(PresenceType.UNAVAILABLE);
 
 	@Override
-	protected Status build(JIDContext contacter) {
+	protected Status build(JIDContext context) {
 		return this.unavailable;
 	}
 }

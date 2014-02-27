@@ -11,6 +11,6 @@ abstract class VCardGetCheckRelationProcessor extends CheckRelationProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return !protocol.getParent().to() || protocol.getParent().to(context.jid().asStringWithBare()) || super.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);
+		return !protocol.parent().to() || protocol.parent().to(context.jid().asStringWithBare()) || super.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);
 	}
 }

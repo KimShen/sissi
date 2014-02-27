@@ -71,11 +71,11 @@ public class OfflineJID implements JID {
 	}
 
 	public boolean valid() {
-		return true;
+		return false;
 	}
 
 	public boolean valid(boolean excludeDomain) {
-		return true;
+		return false;
 	}
 
 	@Override

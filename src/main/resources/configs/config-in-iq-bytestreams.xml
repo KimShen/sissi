@@ -12,11 +12,16 @@
 		<constructor-arg index="3" value="${bytestreams.port}" />
 	</bean>
 
-	<bean id="bytestreams.pro.2activate" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ActivateProcessor" />
-	<bean id="bytestreams.pro.2mock" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2MockProcessor">
-		<constructor-arg value="${bytestreams.jid}" />
+	<bean id="bytestreams.pro.2delegation" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2DelegationProcessor">
+		<constructor-arg>
+			<bean class="com.sissi.protocol.iq.bytestreams.StreamhostUsed">
+				<property name="jid" value="${bytestreams.jid}" />
+			</bean>
+		</constructor-arg>
 		<constructor-arg ref="server.exchanger.context" />
+		<constructor-arg ref="server.exchanger.delegation" />
 	</bean>
+	<bean id="bytestreams.pro.2activate" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ActivateProcessor" />
 	<bean id="bytestreams.pro.2robot" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2RobotProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
@@ -37,7 +42,8 @@
 				<ref bean="bytestreams.condition.2activate" />
 				<ref bean="bytestreams.condition.2server" />
 				<ref bean="bytestreams.condition.2proxy" />
-				<ref bean="bytestreams.condition.2mock" />
+				<!-- 2delegation must before 2fan after others -->
+				<ref bean="bytestreams.condition.2delegation" />
 				<ref bean="bytestreams.condition.2fans" />
 			</util:list>
 		</constructor-arg>
@@ -51,15 +57,15 @@
 		</constructor-arg>
 		<constructor-arg ref="bytestreams.pro.fork" />
 	</bean>
-	<bean id="bytestreams.condition.2mock" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="bytestreams.condition.2delegation" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.IQMockMatcher">
+			<bean class="com.sissi.pipeline.in.iq.ToDelegationMatcher">
 				<constructor-arg ref="jid" />
 				<constructor-arg ref="addressing" />
 				<constructor-arg index="0" value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="bytestreams.pro.2mock" />
+		<constructor-arg ref="bytestreams.pro.2delegation" />
 	</bean>
 	<bean id="bytestreams.condition.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

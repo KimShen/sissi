@@ -6,12 +6,13 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="si.pro.2fans" class="com.sissi.pipeline.in.iq.si.Si2FansProcessor" parent="global.pro.proxy" />
-	<bean id="si.pro.2mock" class="com.sissi.pipeline.in.iq.si.Si2MockProcessor" parent="global.pro.proxy">
+	<bean id="si.pro.2delegation" class="com.sissi.pipeline.in.iq.si.Si2DelegationProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="server.exchanger.context" />
-		<constructor-arg ref="server.mock" />
+		<constructor-arg ref="server.exchanger.transfer" />
+		<constructor-arg value="${global.domain.delegation}" />
 	</bean>
-	<bean id="si.pro.4mock" class="com.sissi.pipeline.in.iq.si.Si4MockProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="offline.mock" />
+	<bean id="si.pro.4delegation" class="com.sissi.pipeline.in.iq.si.Si4DelegationProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="persistent.si" />
 		<constructor-arg value="${global.domain.delegation}" />
 		<constructor-arg>
 			<bean class="com.sissi.protocol.iq.bytestreams.Streamhost">
@@ -26,8 +27,8 @@
 	<bean id="finder.si" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="si.condition.4mock" />
-				<ref bean="si.condition.2mock" />
+				<ref bean="si.condition.4delegation" />
+				<ref bean="si.condition.2delegation" />
 				<ref bean="si.condition.2fans" />
 			</util:list>
 		</constructor-arg>
@@ -47,23 +48,23 @@
 		</constructor-arg>
 		<constructor-arg ref="si.pro.2fans" />
 	</bean>
-	<bean id="si.condition.2mock" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="si.condition.2delegation" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.IQMockMatcher">
+			<bean class="com.sissi.pipeline.in.iq.ToDelegationMatcher">
 				<constructor-arg ref="jid" />
 				<constructor-arg ref="addressing" />
 				<constructor-arg index="0" value="com.sissi.protocol.iq.si.Si" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="si.pro.2mock" />
+		<constructor-arg ref="si.pro.2delegation" />
 	</bean>
-	<bean id="si.condition.4mock" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="si.condition.4delegation" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.si.Si4MockMatcher">
+			<bean class="com.sissi.pipeline.in.iq.si.Si4DelegationMatcher">
 				<constructor-arg value="${global.domain.delegation}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="si.pro.4mock" />
+		<constructor-arg ref="si.pro.4delegation" />
 	</bean>
 
 </beans>

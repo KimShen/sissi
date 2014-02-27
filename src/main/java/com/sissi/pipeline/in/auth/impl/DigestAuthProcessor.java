@@ -42,7 +42,7 @@ public class DigestAuthProcessor extends ProxyProcessor {
 	private boolean isSuccess(JIDContext context, Protocol protocol) throws SaslException {
 		SaslServer sasl = null;
 		try {
-			return (sasl = this.saslServers.pull(context)) != null ? context.write(new Success(sasl.evaluateResponse(Response.class.cast(protocol).getResponse()))).auth(true).auth() : false;
+			return (sasl = this.saslServers.pull(context)) != null ? context.write(new Success(sasl.evaluateResponse(protocol.cast(Response.class).getResponse()))).auth(true).auth() : false;
 		} finally {
 			if (sasl != null) {
 				sasl.dispose();

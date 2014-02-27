@@ -7,7 +7,6 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.sissi.commons.Extracter;
 import com.sissi.config.MongoConfig;
-import com.sissi.config.impl.MongoProxyConfig;
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 import com.sissi.ucenter.VCardContext;
@@ -15,6 +14,7 @@ import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.FieldParser;
 import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanField;
+import com.sissi.ucenter.relation.MongoFieldContext;
 
 /**
  * @author kim 2013年12月10日
@@ -70,6 +70,6 @@ public class MongoVCardContext extends MongoFieldContext implements VCardContext
 	}
 
 	private DBObject buildQuery(JID jid) {
-		return BasicDBObjectBuilder.start(MongoProxyConfig.FIELD_USERNAME, jid.user()).get();
+		return BasicDBObjectBuilder.start(MongoConfig.FIELD_USERNAME, jid.user()).get();
 	}
 }

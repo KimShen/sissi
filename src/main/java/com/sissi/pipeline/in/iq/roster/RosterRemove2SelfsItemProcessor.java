@@ -19,11 +19,11 @@ public class RosterRemove2SelfsItemProcessor extends Roster2SelfsItemProcessor {
 	}
 
 	@Override
-	protected boolean isAsk() {
+	protected boolean ask() {
 		return false;
 	}
 
-	protected boolean isNext(String subscription) {
+	protected boolean next(String subscription) {
 		return true;
 	}
 }

@@ -11,7 +11,7 @@ public class PongProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.pong(protocol.getParent());
+		context.pong(protocol.parent());
 		return true;
 	}
 }

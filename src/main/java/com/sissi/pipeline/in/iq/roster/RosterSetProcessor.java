@@ -6,7 +6,7 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.ucenter.RelationRoster;
-import com.sissi.ucenter.relation.ItemWrapRelation;
+import com.sissi.ucenter.relation.roster.ItemWrapRelation;
 
 /**
  * @author kim 2013-10-31

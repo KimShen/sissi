@@ -37,6 +37,6 @@ public class Mechanisms extends Feature {
 
 	@XmlElements({ @XmlElement(name = "mechanism", type = String.class) })
 	public Set<String> getMechanism() {
-		return mechanism;
+		return this.mechanism;
 	}
 }

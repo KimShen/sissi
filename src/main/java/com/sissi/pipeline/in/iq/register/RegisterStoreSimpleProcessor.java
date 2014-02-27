@@ -1,6 +1,6 @@
 package com.sissi.pipeline.in.iq.register;
 
-import com.sissi.pipeline.in.iq.IQProcessor;
+import com.sissi.pipeline.in.iq.IQResponseProcessor;
 import com.sissi.ucenter.RegisterContext;
 import com.sissi.ucenter.field.Fields;
 
@@ -9,7 +9,7 @@ import com.sissi.ucenter.field.Fields;
  */
 public class RegisterStoreSimpleProcessor extends RegisterStoreProcessor {
 
-	public RegisterStoreSimpleProcessor(RegisterContext registerContext, IQProcessor processor) {
+	public RegisterStoreSimpleProcessor(RegisterContext registerContext, IQResponseProcessor processor) {
 		super(registerContext, processor);
 	}
 

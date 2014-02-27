@@ -9,6 +9,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Output;
 import com.sissi.pipeline.OutputBuilder;
 import com.sissi.protocol.Element;
+import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.ucenter.BlockContext;
@@ -30,6 +31,7 @@ abstract class BlockOutputBuilder implements OutputBuilder {
 		this.jidBuilder = jidBuilder;
 		this.blockSupports.add(Presence.class);
 		this.blockSupports.add(Message.class);
+		this.blockSupports.add(IQ.class);
 	}
 
 	abstract protected class BlockOutput implements Output {

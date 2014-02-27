@@ -7,11 +7,7 @@
 	<bean id="looper" class="com.sissi.looper.impl.PersonalLooperBuilder">
 		<constructor-arg value="${looper.num}" />
 		<constructor-arg ref="counter" />
-		<constructor-arg>
-			<bean class="com.sissi.thread.Runner">
-				<constructor-arg ref="executor" />
-			</bean>
-		</constructor-arg>
+		<constructor-arg ref="runner" />
 		<constructor-arg>
 			<bean class="com.sissi.thread.Interval">
 				<constructor-arg value="${looper.gc.interval}" />

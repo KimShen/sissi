@@ -5,7 +5,7 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<util:set id="global.ignore">
+	<util:set id="global.domains">
 		<value>127.0.0.1</value>
 		<value>localhost</value>
 		<value>${global.domain}</value>
@@ -22,13 +22,14 @@
 		<property name="relationContext" ref="relation.roster" />
 	</bean>
 	<bean id="global.pro.check.error.pong" class="com.sissi.pipeline.in.CheckErrorPongProcessor">
-		<constructor-arg ref="global.ignore" />
+		<constructor-arg ref="global.domains" />
 	</bean>
 	<bean id="global.pro.check.error.route" class="com.sissi.pipeline.in.CheckErrorRouteProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.format" class="com.sissi.pipeline.in.CheckJIDMalformedProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.exists" class="com.sissi.pipeline.in.CheckJIDExistsProcessor" parent="global.pro.proxy">
+		<constructor-arg value="true" />
 		<constructor-arg ref="vcard" />
-		<constructor-arg ref="global.ignore" />
+		<constructor-arg ref="global.domains" />
 	</bean>
 	<bean id="global.pro.check.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg value="true" />
@@ -36,9 +37,7 @@
 			<util:list>
 				<!-- Process protocol that type = error -->
 				<ref bean="global.pro.check.error.pong" />
-				<!--
-				<ref bean="global.pro.check.error.route" />
-				-->
+				<!-- <ref bean="global.pro.check.error.route" /> -->
 				<!-- Assert legal JID format -->
 				<ref bean="global.pro.check.jid.format" />
 				<!-- Assert attribute "to" is localhost / domain / proxy or any exists jid -->

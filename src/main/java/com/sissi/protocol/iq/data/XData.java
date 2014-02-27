@@ -71,11 +71,6 @@ public class XData extends XFieldWrap implements Field<Object>, Collector {
 	}
 
 	@Override
-	public void set(String localName, Object ob) {
-		super.add(Field.class.cast(ob));
-	}
-
-	@Override
 	public List<Field<?>> getValue() {
 		return super.getFields();
 	}
@@ -83,5 +78,10 @@ public class XData extends XFieldWrap implements Field<Object>, Collector {
 	@Override
 	public String getName() {
 		return NAME;
+	}
+	
+	@Override
+	public void set(String localName, Object ob) {
+		super.add(Field.class.cast(ob));
 	}
 }
