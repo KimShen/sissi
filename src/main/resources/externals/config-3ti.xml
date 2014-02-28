@@ -5,7 +5,7 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<alias name="ucenter.accessor.rest" alias="accessor" />
+	<alias name="ucenter.accessor.rest" alias="ucenter.accessor" />
 	<bean id="ucenter.accessor.rest" class="com.threeti.relation.RestAuthAccessor">
 		<constructor-arg index="0" value="${3ti.url}" />
 		<constructor-arg index="1" value="${3ti.params}" />

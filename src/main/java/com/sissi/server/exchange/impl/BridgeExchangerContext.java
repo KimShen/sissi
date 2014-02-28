@@ -3,6 +3,7 @@ package com.sissi.server.exchange.impl;
 import java.io.Closeable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -125,6 +126,10 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 	private class BridgeExchanger implements Exchanger {
 
+		private final AtomicBoolean sourceClose = new AtomicBoolean(true);
+
+		private final AtomicBoolean targetClose = new AtomicBoolean(true);
+
 		private final Transfer target;
 
 		private final String host;
@@ -132,8 +137,9 @@ public class BridgeExchangerContext implements ExchangerContext {
 		private Closeable source;
 
 		private BridgeExchanger(String host, Transfer target) {
-			this.target = target;
 			this.host = host;
+			this.target = target;
+			this.targetClose.set(false);
 		}
 
 		public String host() {
@@ -142,6 +148,7 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 		public BridgeExchanger source(Closeable source) {
 			this.source = source;
+			this.sourceClose.set(false);
 			return this;
 		}
 
@@ -153,15 +160,21 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 		@Override
 		public BridgeExchanger close(ExchangerTerminal closer) {
-			return closer == ExchangerTerminal.SOURCE ? this.close(this.source) : this.close(this.target);
+			return closer == ExchangerTerminal.SOURCE ? this.close(this.source, this.sourceClose) : this.close(this.target, this.targetClose);
 		}
 
-		private BridgeExchanger close(Closeable closer) {
+		public boolean isClose(ExchangerTerminal terminal) {
+			return terminal == ExchangerTerminal.SOURCE ? this.sourceClose.get() : this.targetClose.get();
+		}
+
+		private BridgeExchanger close(Closeable closer, AtomicBoolean monitor) {
 			try {
 				IOUtils.closeQuietly(closer);
 			} catch (Exception e) {
 				BridgeExchangerContext.this.log.debug(e.toString());
 				Trace.trace(BridgeExchangerContext.this.log, e);
+			} finally {
+				monitor.set(true);
 			}
 			return this;
 		}

@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="message.pro.check.relation" class="com.sissi.pipeline.in.message.MessageCheckRelationProcessor" parent="global.pro.proxy">
-		<constructor-arg value="${pipeline.message.relation}" />
+		<constructor-arg value="${pipeline.message.free}" />
 	</bean>
 	<bean id="message.pro.check.body" class="com.sissi.pipeline.in.message.MessageCheckBodyProcessor" />
 	<bean id="message.pro.2fan" class="com.sissi.pipeline.in.message.Message2FanProcessor" parent="global.pro.proxy" />

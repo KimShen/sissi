@@ -15,7 +15,7 @@
 	</bean>
 
 	<bean id="global.jid" class="com.sissi.context.impl.DomainJIDBuilder">
-		<constructor-arg value="${global.jid.lengthLimit}" />
+		<constructor-arg value="${global.jid.limit}" />
 		<constructor-arg value="${global.domain.muc}" />
 	</bean>
 
@@ -50,7 +50,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.thread.Interval">
 				<constructor-arg value="${looper.interval}" />
-				<constructor-arg value="${looper.gc.unit}" />
+				<constructor-arg value="${looper.unit}" />
 			</bean>
 		</constructor-arg>
 	</bean>

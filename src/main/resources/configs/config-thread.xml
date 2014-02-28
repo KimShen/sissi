@@ -8,7 +8,7 @@
 	<bean id="thread.executor" class="java.util.concurrent.ThreadPoolExecutor">
 		<constructor-arg index="0" value="${executor.core}" />
 		<constructor-arg index="1" value="${executor.maximum}" />
-		<constructor-arg index="2" value="${executor.keep.alive}" />
+		<constructor-arg index="2" value="${executor.keepalive}" />
 		<constructor-arg index="3" value="${executor.unit}" />
 		<constructor-arg>
 			<bean class="java.util.concurrent.LinkedBlockingQueue" />

@@ -10,10 +10,12 @@ import com.sissi.write.TransferBuffer;
 public interface Exchanger {
 
 	public String host();
-	
+
 	public Exchanger source(Closeable source);
 
 	public Exchanger write(TransferBuffer buffer);
 
 	public Exchanger close(ExchangerTerminal terminal);
+
+	public boolean isClose(ExchangerTerminal terminal);
 }
