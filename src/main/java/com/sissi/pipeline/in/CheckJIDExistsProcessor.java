@@ -9,7 +9,7 @@ import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.ServiceUnavaliable;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.ucenter.VCardContext;
+import com.sissi.ucenter.user.VCardContext;
 
 /**
  * @author kim 2014年1月24日

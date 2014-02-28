@@ -13,8 +13,8 @@
 	</bean>
 
 	<bean id="bytestreams.pro.2delegation.send" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2DelegationSendProcessor">
-		<constructor-arg ref="server.exchanger.context" />
-		<constructor-arg ref="server.exchanger.delegation" />
+		<constructor-arg ref="exchanger.context" />
+		<constructor-arg ref="exchanger.delegation" />
 	</bean>
 	<bean id="bytestreams.pro.2delegation.receive" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2DelegationReceiveProcessor">
 		<constructor-arg>
@@ -73,7 +73,7 @@
 	<bean id="bytestreams.condition.2delegation" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToDelegationMatcher">
-				<constructor-arg ref="jid" />
+				<constructor-arg ref="global.jid" />
 				<constructor-arg ref="addressing" />
 				<constructor-arg index="0" value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
 			</bean>

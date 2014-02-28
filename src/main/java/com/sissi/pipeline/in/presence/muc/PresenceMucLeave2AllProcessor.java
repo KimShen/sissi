@@ -8,12 +8,12 @@ import com.sissi.protocol.muc.Item;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.PresenceType;
-import com.sissi.ucenter.MucGroupContext;
-import com.sissi.ucenter.MucStatusCollector;
-import com.sissi.ucenter.MucStatusComputer;
-import com.sissi.ucenter.MucStatusJudge;
 import com.sissi.ucenter.Relation;
-import com.sissi.ucenter.RelationMuc;
+import com.sissi.ucenter.muc.MucGroupContext;
+import com.sissi.ucenter.muc.MucStatusCollector;
+import com.sissi.ucenter.muc.MucStatusComputer;
+import com.sissi.ucenter.muc.MucStatusJudge;
+import com.sissi.ucenter.muc.RelationMuc;
 
 /**
  * @author kim 2014年2月11日

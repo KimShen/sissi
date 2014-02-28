@@ -10,7 +10,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.mongodb.BasicDBObject;
 import com.sissi.config.MongoConfig;
-import com.sissi.ucenter.AuthAccessor;
+import com.sissi.ucenter.user.AuthAccessor;
 
 /**
  * @author kim 2014年1月3日

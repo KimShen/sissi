@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<alias name="block.mongo" alias="ucenter.block" />
+	<bean id="block.mongo" class="com.sissi.ucenter.user.impl.MongoBlockContext">
+		<constructor-arg ref="global.jid" />
+		<constructor-arg ref="ucenter.config" />
+	</bean>
+
+	<alias name="vcard.mongo" alias="ucenter.vcard" />
+	<bean id="vcard.mongo" class="com.sissi.ucenter.user.impl.MongoVCardContext">
+		<constructor-arg ref="global.jid" />
+		<constructor-arg ref="ucenter.config" />
+		<constructor-arg>
+			<util:map>
+				<entry>
+					<key>
+						<util:constant static-field="com.sissi.protocol.iq.vcard.field.Photo.NAME" />
+					</key>
+					<bean class="com.sissi.ucenter.user.impl.PhotoFieldParser" />
+				</entry>
+				<entry>
+					<key>
+						<util:constant static-field="com.sissi.protocol.iq.vcard.field.Nickname.NAME" />
+					</key>
+					<bean class="com.sissi.ucenter.user.impl.NicknameFieldParser" />
+				</entry>
+			</util:map>
+		</constructor-arg>
+	</bean>
+
+	<alias name="ucenter.accessor.mongo" alias="ucenter.accessor" />
+	<bean id="ucenter.accessor.mongo" class="com.sissi.ucenter.user.impl.MongoAuthAccessor">
+		<constructor-arg ref="ucenter.config" />
+	</bean>
+
+	<alias name="ucenter.register.mongo" alias="ucenter.register" />
+	<bean id="ucenter.register.mongo" class="com.sissi.ucenter.user.impl.MongoRegisterContext">
+		<constructor-arg ref="global.jid" />
+		<constructor-arg ref="ucenter.config" />
+		<constructor-arg>
+			<util:set>
+				<value>${exchanger.delegation.user}</value>
+			</util:set>
+		</constructor-arg>
+	</bean>
+
+</beans>

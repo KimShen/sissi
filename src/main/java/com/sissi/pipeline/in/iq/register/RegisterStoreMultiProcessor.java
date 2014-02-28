@@ -2,9 +2,9 @@ package com.sissi.pipeline.in.iq.register;
 
 import com.sissi.pipeline.in.iq.IQResponseProcessor;
 import com.sissi.protocol.iq.data.XData;
-import com.sissi.ucenter.RegisterContext;
 import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;
+import com.sissi.ucenter.user.RegisterContext;
 
 /**
  * @author kim 2013年12月5日

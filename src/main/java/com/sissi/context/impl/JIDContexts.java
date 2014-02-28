@@ -16,7 +16,7 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 
 	private final static long serialVersionUID = 1L;
 
-	private final static RuntimeException NOT_SUPPORT = new RuntimeException("JIDContexts not support this function");
+	private final static RuntimeException exception = new RuntimeException("JIDContexts not support this function");
 
 	public JIDContext bind() {
 		for (JIDContext each : this) {
@@ -29,7 +29,7 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		if (super.size() == 1) {
 			return super.get(0);
 		}
-		throw NOT_SUPPORT;
+		throw exception;
 	}
 
 	public boolean binding() {

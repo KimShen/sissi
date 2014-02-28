@@ -48,6 +48,7 @@ public class NioServerStarter implements ServerStarter {
 			this.serverStatus.offer(ServerStatus.STATUS_STARTED, String.valueOf(System.currentTimeMillis()));
 		} catch (Exception e) {
 			this.log.fatal(e.toString());
+			Trace.trace(this.log, e);
 			this.closeAll();
 		}
 		return this;

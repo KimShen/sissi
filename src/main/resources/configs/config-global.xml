@@ -10,8 +10,74 @@
 		<property name="fileEncoding" value="utf-8" />
 	</bean>
 
-	<bean id="mongo" class="com.mongodb.MongoClient">
+	<bean id="global.mongo" class="com.mongodb.MongoClient">
 		<constructor-arg value="${mongo.host}" />
 	</bean>
-	
+
+	<bean id="global.jid" class="com.sissi.context.impl.DomainJIDBuilder">
+		<constructor-arg value="${global.jid.lengthLimit}" />
+		<constructor-arg value="${global.domain.muc}" />
+	</bean>
+
+	<bean id="global.status.server" class="com.sissi.server.impl.MemoryServerStatus" />
+
+	<bean id="global.status.user" class="com.sissi.context.impl.MongoStatusBuilder">
+		<constructor-arg>
+			<bean class="com.sissi.config.impl.MongoProxyConfig">
+				<constructor-arg ref="global.mongo" />
+				<constructor-arg index="1" value="${mongo.db}" />
+				<constructor-arg index="2" value="${mongo.collection.addressing}" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="global.counter" class="com.sissi.resource.impl.MongoResourceCounter">
+		<constructor-arg>
+			<bean class="com.sissi.config.impl.MongoProxyConfig">
+				<constructor-arg ref="global.mongo" />
+				<constructor-arg index="1" value="${mongo.db}" />
+				<constructor-arg index="2" value="${mongo.collection.counter}" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="global.feeder" class="com.sissi.feed.impl.DirectFeederBuilder" />
+
+	<bean id="global.looper" class="com.sissi.looper.impl.PersonalLooperBuilder">
+		<constructor-arg value="${looper.num}" />
+		<constructor-arg ref="global.counter" />
+		<constructor-arg ref="thread.runner" />
+		<constructor-arg>
+			<bean class="com.sissi.thread.Interval">
+				<constructor-arg value="${looper.interval}" />
+				<constructor-arg value="${looper.gc.unit}" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	<bean id="global.reader" class="com.sissi.read.sax.SAXReader">
+		<constructor-arg ref="thread.executor" />
+		<constructor-arg ref="global.counter" />
+	</bean>
+
+	<bean id="global.output.block" abstract="true">
+		<constructor-arg ref="ucenter.block" />
+		<constructor-arg ref="global.jid" />
+	</bean>
+
+	<bean id="global.output" class="com.sissi.pipeline.out.ChainedOutputBuilder">
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.pipeline.out.Block4FansOutputBuilder" parent="global.output.block" />
+				<bean class="com.sissi.pipeline.out.Block2FansOutputBuilder" parent="global.output.block" />
+				<bean class="com.sissi.pipeline.out.NetworkOutputBuilder">
+					<constructor-arg>
+						<bean class="com.sissi.write.jaxb.JAXBWriter" />
+					</constructor-arg>
+				</bean>
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+
 </beans>

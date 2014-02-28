@@ -7,8 +7,8 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.RegistrationRequired;
-import com.sissi.ucenter.MucGroupConfig;
-import com.sissi.ucenter.MucGroupContext;
+import com.sissi.ucenter.muc.MucGroupConfig;
+import com.sissi.ucenter.muc.MucGroupContext;
 
 /**
  * @author kim 2014年2月22日

@@ -6,53 +6,9 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="ucenter.config" class="com.sissi.config.impl.MongoProxyConfig">
-		<constructor-arg ref="mongo" />
+		<constructor-arg ref="global.mongo" />
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.user}" />
-	</bean>
-
-	<alias name="block.mongo" alias="block" />
-	<bean id="block.mongo" class="com.sissi.ucenter.user.MongoBlockContext">
-		<constructor-arg ref="jid" />
-		<constructor-arg ref="ucenter.config" />
-	</bean>
-
-	<alias name="vcard.mongo" alias="vcard" />
-	<bean id="vcard.mongo" class="com.sissi.ucenter.user.MongoVCardContext">
-		<constructor-arg ref="jid" />
-		<constructor-arg ref="ucenter.config" />
-		<constructor-arg>
-			<util:map>
-				<entry>
-					<key>
-						<util:constant static-field="com.sissi.protocol.iq.vcard.field.Photo.NAME" />
-					</key>
-					<bean class="com.sissi.ucenter.user.PhotoFieldParser" />
-				</entry>
-				<entry>
-					<key>
-						<util:constant static-field="com.sissi.protocol.iq.vcard.field.Nickname.NAME" />
-					</key>
-					<bean class="com.sissi.ucenter.user.NicknameFieldParser" />
-				</entry>
-			</util:map>
-		</constructor-arg>
-	</bean>
-
-	<alias name="ucenter.accessor.mongo" alias="accessor" />
-	<bean id="ucenter.accessor.mongo" class="com.sissi.ucenter.user.MongoAuthAccessor">
-		<constructor-arg ref="ucenter.config" />
-	</bean>
-
-	<alias name="ucenter.register.mongo" alias="ucenter.register" />
-	<bean id="ucenter.register.mongo" class="com.sissi.ucenter.user.MongoRegisterContext">
-		<constructor-arg ref="jid" />
-		<constructor-arg ref="ucenter.config" />
-		<constructor-arg>
-			<util:set>
-				<value>${exchanger.delegation.user}</value>
-			</util:set>
-		</constructor-arg>
 	</bean>
 
 	<bean id="uncenter.fields.simple" class="com.sissi.ucenter.field.impl.BeanFields">
@@ -135,12 +91,12 @@
 								<constructor-arg>
 									<util:list>
 										<bean class="com.sissi.protocol.iq.data.XOption">
-											<constructor-arg index="0" value="GM" />
-											<constructor-arg index="1" value="gm" />
+											<constructor-arg index="0" value="MEMBER" />
+											<constructor-arg index="1" value="member" />
 										</bean>
 										<bean class="com.sissi.protocol.iq.data.XOption">
-											<constructor-arg index="0" value="CEO" />
-											<constructor-arg index="1" value="ceo" />
+											<constructor-arg index="0" value="VISITOR" />
+											<constructor-arg index="1" value="visitor" />
 										</bean>
 									</util:list>
 								</constructor-arg>

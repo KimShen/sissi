@@ -29,6 +29,7 @@ import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.commons.Trace;
 import com.sissi.protocol.iq.bytestreams.BytestreamsProxy;
 import com.sissi.resource.ResourceCounter;
 import com.sissi.server.exchange.Exchanger;
@@ -100,16 +101,12 @@ public class Socks5ProxyServerHandlerBuilder implements ServerHandlerBuilder {
 		}
 
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-			if (Socks5ProxyServerHandlerBuilder.this.log.isDebugEnabled()) {
-				Socks5ProxyServerHandlerBuilder.this.log.debug(cause.toString());
-				cause.printStackTrace();
-			}
+			Socks5ProxyServerHandlerBuilder.this.log.debug(cause.toString());
+			Trace.trace(Socks5ProxyServerHandlerBuilder.this.log, cause);
 			ctx.close();
 		}
 
 		public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-			// TODO:
-			// Check WRITE or READ
 			if (evt.getClass() == IdleStateEvent.class && IdleStateEvent.class.cast(evt).state() == IdleState.WRITER_IDLE) {
 				ctx.close();
 			}
@@ -176,10 +173,8 @@ public class Socks5ProxyServerHandlerBuilder implements ServerHandlerBuilder {
 		}
 
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-			if (Socks5ProxyServerHandlerBuilder.this.log.isDebugEnabled()) {
-				Socks5ProxyServerHandlerBuilder.this.log.debug(cause.toString());
-				cause.printStackTrace();
-			}
+			Socks5ProxyServerHandlerBuilder.this.log.debug(cause.toString());
+			Trace.trace(Socks5ProxyServerHandlerBuilder.this.log, cause);
 			ctx.close();
 		}
 

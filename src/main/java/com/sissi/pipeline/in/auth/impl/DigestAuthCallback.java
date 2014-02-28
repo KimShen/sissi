@@ -23,7 +23,7 @@ import com.sissi.pipeline.in.auth.AuthCallback;
 import com.sissi.pipeline.in.auth.SaslServers;
 import com.sissi.protocol.iq.auth.Auth;
 import com.sissi.protocol.iq.auth.Challenge;
-import com.sissi.ucenter.AuthAccessor;
+import com.sissi.ucenter.user.AuthAccessor;
 
 /**
  * @author kim 2013年11月25日

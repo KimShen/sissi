@@ -3,7 +3,7 @@ package com.sissi.pipeline.out;
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.Element;
-import com.sissi.ucenter.BlockContext;
+import com.sissi.ucenter.user.BlockContext;
 import com.sissi.write.Transfer;
 
 /**

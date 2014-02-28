@@ -9,8 +9,8 @@ import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.ucenter.Relation;
-import com.sissi.ucenter.RelationRoster;
-import com.sissi.ucenter.VCardContext;
+import com.sissi.ucenter.roster.RelationRoster;
+import com.sissi.ucenter.user.VCardContext;
 
 /**
  * @author kim 2013-10-31

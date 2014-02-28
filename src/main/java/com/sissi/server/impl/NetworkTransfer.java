@@ -5,12 +5,10 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.commons.Trace;
 import com.sissi.write.Transfer;
 import com.sissi.write.TransferBuffer;
 
@@ -72,16 +70,8 @@ public class NetworkTransfer implements Transfer {
 
 		public void operationComplete(Future<Void> future) throws Exception {
 			if (!future.isSuccess()) {
-				if (this.log.isDebugEnabled()) {
-					this.logIfDetail(future.cause());
-				}
+				Trace.trace(this.log, future.cause());
 			}
-		}
-
-		private void logIfDetail(Throwable cause) {
-			StringWriter trace = new StringWriter();
-			cause.printStackTrace(new PrintWriter(trace));
-			this.log.debug(trace.toString());
 		}
 	}
 }

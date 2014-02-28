@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="roster.pro.get" class="com.sissi.pipeline.in.iq.roster.RosterGetProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="vcard" />
+		<constructor-arg ref="ucenter.vcard" />
 	</bean>
 	<bean id="roster.pro.establish.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.iq.roster.establish" />
@@ -21,7 +21,7 @@
 	</bean>
 	<bean id="roster.pro.establish.set.check.loop" class="com.sissi.pipeline.in.iq.roster.RosterSetCheckLoopProcessor" parent="global.pro.proxy" />
 	<bean id="roster.pro.establish.set.check.exists" class="com.sissi.pipeline.in.iq.roster.RosterSetCheckExistsProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="vcard" />
+		<constructor-arg ref="ucenter.vcard" />
 	</bean>
 	<bean id="roster.pro.establish.set.2selfs" class="com.sissi.pipeline.in.iq.roster.RosterSet2SelfsProcessor" parent="global.pro.proxy">
 		<constructor-arg>

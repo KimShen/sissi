@@ -138,7 +138,7 @@
 					<constructor-arg index="1" value="SOCKS5 Bytestreams Service" />
 				</bean>
 				<bean class="com.sissi.protocol.iq.disco.Item">
-					<constructor-arg index="0" value="${global.domain.group}" />
+					<constructor-arg index="0" value="${global.domain.muc}" />
 					<constructor-arg index="1" value="Chat Service" />
 				</bean>
 				<bean class="com.sissi.protocol.iq.disco.Item">
@@ -253,7 +253,7 @@
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
 				<constructor-arg index="0" value="com.sissi.protocol.iq.disco.DiscoInfo" />
-				<constructor-arg index="1" value="${global.domain.group}" />
+				<constructor-arg index="1" value="${global.domain.muc}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="disco.pro.info.2muc" />

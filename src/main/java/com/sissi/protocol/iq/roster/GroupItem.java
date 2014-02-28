@@ -14,7 +14,7 @@ import com.sissi.protocol.Item;
 import com.sissi.protocol.presence.PresenceType;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
-import com.sissi.ucenter.RelationRoster;
+import com.sissi.ucenter.roster.RelationRoster;
 
 /**
  * @author kim 2013-10-31

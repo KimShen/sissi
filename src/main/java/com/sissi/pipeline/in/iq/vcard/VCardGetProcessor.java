@@ -5,7 +5,7 @@ import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.vcard.VCard;
-import com.sissi.ucenter.VCardContext;
+import com.sissi.ucenter.user.VCardContext;
 
 /**
  * @author kim 2013年12月10日

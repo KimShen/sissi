@@ -6,20 +6,20 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="auth.sasl" class="com.sissi.pipeline.in.auth.impl.CachedSaslServers">
-		<constructor-arg ref="counter" />
+		<constructor-arg ref="global.counter" />
 	</bean>
 
 	<util:list id="auth.callback.chained">
 		<bean class="com.sissi.pipeline.in.auth.impl.PlainAuthCallback">
-			<constructor-arg ref="jid" />
-			<constructor-arg ref="accessor" />
+			<constructor-arg ref="global.jid" />
+			<constructor-arg ref="ucenter.accessor" />
 		</bean>
 		<bean class="com.sissi.pipeline.in.auth.impl.DigestAuthCallback">
 			<constructor-arg>
 				<ref bean="auth.sasl" />
 			</constructor-arg>
-			<constructor-arg ref="jid" />
-			<constructor-arg ref="accessor" />
+			<constructor-arg ref="global.jid" />
+			<constructor-arg ref="ucenter.accessor" />
 		</bean>
 	</util:list>
 

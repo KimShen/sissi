@@ -5,26 +5,35 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<alias name="relation.muc.mongo" alias="relation.muc" />
-	<bean id="relation.muc.mongo" class="com.sissi.ucenter.relation.muc.MongoRelationMucContext">
-		<constructor-arg ref="jid" />
+	<alias name="ucenter.muc.mongo" alias="ucenter.muc" />
+	<bean id="ucenter.muc.mongo" class="com.sissi.ucenter.muc.impl.MongoRelationMucContext">
+		<constructor-arg ref="global.jid" />
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
-				<constructor-arg ref="mongo" />
+				<constructor-arg ref="global.mongo" />
 				<constructor-arg index="1" value="${mongo.db}" />
 				<constructor-arg index="2" value="${mongo.collection.muc}" />
 			</bean>
 		</constructor-arg>
 	</bean>
 
-	<bean id="relation.muc.context" class="com.sissi.ucenter.relation.muc.MongoMucGroupContext">
-		<constructor-arg ref="relation.muc" />
+	<bean id="ucenter.muc.context" class="com.sissi.ucenter.muc.impl.MongoMucGroupContext">
+		<constructor-arg ref="ucenter.muc" />
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
-				<constructor-arg ref="mongo" />
+				<constructor-arg ref="global.mongo" />
 				<constructor-arg index="1" value="${mongo.db}" />
 				<constructor-arg index="2" value="${mongo.collection.muc}" />
 			</bean>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="ucenter.muc.collector" class="com.sissi.ucenter.muc.impl.ChainedMucStatusCollector">
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.ucenter.muc.impl.Status100MucStatusCollector" />
+				<bean class="com.sissi.ucenter.muc.impl.Status110MucStatusCollector" />
+			</util:list>
 		</constructor-arg>
 	</bean>
 	

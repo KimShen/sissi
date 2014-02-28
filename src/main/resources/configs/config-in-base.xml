@@ -9,17 +9,17 @@
 		<value>127.0.0.1</value>
 		<value>localhost</value>
 		<value>${global.domain}</value>
-		<value>${global.domain.group}</value>
+		<value>${global.domain.muc}</value>
 		<value>${exchanger.delegation.domain}</value>
 		<value>${bytestreams.jid}</value>
 	</util:set>
 
 	<bean id="global.pro.proxy" abstract="true">
-		<property name="jidBuilder" ref="jid" />
+		<property name="jidBuilder" ref="global.jid" />
 		<property name="addressing" ref="addressing" />
+		<property name="relationContext" ref="ucenter.roster" />
 		<property name="protocolQueue" ref="broadcast.protocol.selfs" />
 		<property name="presenceQueue" ref="broadcast.presence.selfs" />
-		<property name="relationContext" ref="relation.roster" />
 	</bean>
 	<bean id="global.pro.check.error.pong" class="com.sissi.pipeline.in.CheckErrorPongProcessor">
 		<constructor-arg ref="global.domains" />
@@ -28,7 +28,7 @@
 	<bean id="global.pro.check.jid.format" class="com.sissi.pipeline.in.CheckJIDMalformedProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.exists" class="com.sissi.pipeline.in.CheckJIDExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg value="true" />
-		<constructor-arg ref="vcard" />
+		<constructor-arg ref="ucenter.vcard" />
 		<constructor-arg ref="global.domains" />
 	</bean>
 	<bean id="global.pro.check.chained" class="com.sissi.pipeline.in.ChainedProcessor">
@@ -46,7 +46,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="finder" class="com.sissi.pipeline.in.ChainedFinder">
+	<bean id="global.finder" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
 				<ref bean="presence.condition" />

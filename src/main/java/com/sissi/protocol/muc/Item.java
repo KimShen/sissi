@@ -5,10 +5,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.context.JID;
-import com.sissi.ucenter.MucGroupConfig;
-import com.sissi.ucenter.MucGroupContext;
-import com.sissi.ucenter.MucStatusJudge;
-import com.sissi.ucenter.RelationMuc;
+import com.sissi.ucenter.muc.MucGroupConfig;
+import com.sissi.ucenter.muc.MucGroupContext;
+import com.sissi.ucenter.muc.MucStatusJudge;
+import com.sissi.ucenter.muc.RelationMuc;
 
 /**
  * @author kim 2014年2月11日

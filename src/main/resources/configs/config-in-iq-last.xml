@@ -18,7 +18,7 @@
 	</bean>
 
 	<bean id="last.pro.server" class="com.sissi.pipeline.in.iq.last.LastServerProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="server.main.status" />
+		<constructor-arg ref="global.status.server" />
 	</bean>
 	<bean id="last.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.iq.last" />

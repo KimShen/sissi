@@ -5,10 +5,10 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="server.exchanger.context" class="com.sissi.server.exchange.impl.BridgeExchangerContext">
+	<bean id="exchanger.context" class="com.sissi.server.exchange.impl.BridgeExchangerContext">
 		<constructor-arg index="0" value="${exchanger.timeout}" />
-		<constructor-arg ref="runner" />
-		<constructor-arg ref="counter" />
+		<constructor-arg ref="thread.runner" />
+		<constructor-arg ref="global.counter" />
 		<constructor-arg>
 			<bean class="com.sissi.thread.Interval">
 				<constructor-arg value="${exchanger.gc.interval}" />
@@ -17,57 +17,57 @@
 		</constructor-arg>
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
-				<constructor-arg ref="mongo" />
+				<constructor-arg ref="global.mongo" />
 				<constructor-arg index="1" value="${mongo.db}" />
 				<constructor-arg index="2" value="${mongo.collection.exchanger}" />
 			</bean>
 		</constructor-arg>
 	</bean>
 
-	<bean id="server.exchanger.pipeline" class="com.sissi.server.exchange.impl.Socks5ProxyServerHandlerChannelInitializer">
+	<bean id="exchanger.pipeline" class="com.sissi.server.exchange.impl.Socks5ProxyServerHandlerChannelInitializer">
 		<constructor-arg index="0" value="${exchanger.idle.write}" />
 		<constructor-arg index="1" value="${exchanger.idle.read}" />
 		<constructor-arg index="2" value="${exchanger.idle.all}" />
 		<constructor-arg>
 			<bean class="com.sissi.server.exchange.impl.Socks5ProxyServerHandlerBuilder">
-				<constructor-arg ref="server.exchanger.context" />
+				<constructor-arg ref="exchanger.context" />
 				<constructor-arg ref="bytestreams.proxy" />
-				<constructor-arg ref="counter" />
+				<constructor-arg ref="global.counter" />
 			</bean>
 		</constructor-arg>
 	</bean>
 
-	<bean id="server.exchanger.status" class="com.sissi.server.impl.MemoryServerStatus" />
+	<bean id="exchanger.status" class="com.sissi.server.impl.MemoryServerStatus" />
 
-	<bean id="server.exchanger" class="com.sissi.server.impl.NioServerStarter">
-		<constructor-arg ref="server.exchanger.status" />
+	<bean id="exchanger" class="com.sissi.server.impl.NioServerStarter">
+		<constructor-arg ref="exchanger.status" />
+		<constructor-arg ref="exchanger.pipeline" />
 		<constructor-arg value="${global.port.exchanger}" />
-		<constructor-arg ref="server.exchanger.pipeline" />
 		<constructor-arg>
 			<bean class="com.sissi.server.netty.impl.NioServerLoopGroup" />
 		</constructor-arg>
 	</bean>
 
-	<bean id="server.exchanger.delegation" class="com.sissi.server.exchange.impl.FSDelegation">
+	<bean id="exchanger.delegation" class="com.sissi.server.exchange.impl.FSDelegation">
 		<constructor-arg index="0" value="${exchanger.delegation.dir}" />
 		<constructor-arg index="1" value="${exchanger.delegation.buffer}" />
-		<constructor-arg index="2" ref="counter" />
+		<constructor-arg index="2" ref="global.counter" />
 		<constructor-arg index="3" ref="persistent.si" />
 	</bean>
 
-	<bean id="server.exchanger.transfer" class="com.sissi.server.exchange.impl.DegelationTransferBuilder">
+	<bean id="exchanger.transfer" class="com.sissi.server.exchange.impl.DegelationTransferBuilder">
 		<constructor-arg value="${exchanger.delegation.buffer}" />
-		<constructor-arg ref="server.exchanger.delegation.callback" />
-		<constructor-arg ref="server.exchanger.delegation" />
+		<constructor-arg ref="exchanger.delegation.callback" />
+		<constructor-arg ref="exchanger.delegation" />
 		<constructor-arg ref="persistent.si" />
-		<constructor-arg ref="counter" />
-		<constructor-arg ref="jid" />
+		<constructor-arg ref="global.counter" />
+		<constructor-arg ref="global.jid" />
 	</bean>
 
-	<bean id="server.exchanger.delegation.callback" class="com.sissi.server.exchange.impl.ResendDelegationCallback">
+	<bean id="exchanger.delegation.callback" class="com.sissi.server.exchange.impl.ResendDelegationCallback">
 		<constructor-arg ref="persistent.si" />
 		<constructor-arg ref="addressing" />
-		<constructor-arg ref="jid" />
+		<constructor-arg ref="global.jid" />
 	</bean>
 
 </beans>

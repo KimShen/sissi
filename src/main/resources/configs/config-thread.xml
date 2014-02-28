@@ -5,7 +5,7 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="executor" class="java.util.concurrent.ThreadPoolExecutor">
+	<bean id="thread.executor" class="java.util.concurrent.ThreadPoolExecutor">
 		<constructor-arg index="0" value="${executor.core}" />
 		<constructor-arg index="1" value="${executor.maximum}" />
 		<constructor-arg index="2" value="${executor.keep.alive}" />
@@ -21,8 +21,8 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="runner" class="com.sissi.thread.Runner">
-		<constructor-arg ref="executor" />
+	<bean id="thread.runner" class="com.sissi.thread.Runner">
+		<constructor-arg ref="thread.executor" />
 	</bean>
 
 </beans>

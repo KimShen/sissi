@@ -4,8 +4,8 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.ucenter.RelationRoster;
-import com.sissi.ucenter.relation.roster.PresenceRosterWrapRelation;
+import com.sissi.ucenter.roster.RelationRoster;
+import com.sissi.ucenter.roster.impl.PresenceWrapRelation;
 
 /**
  * @author kim 2013-11-18
@@ -19,7 +19,7 @@ public class PresenceRosterSubscribeProcessor extends ProxyProcessor {
 	}
 
 	private boolean establishAndReturn(JIDContext context, Presence presence, RelationRoster relation) {
-		super.establish(context.jid(), new PresenceRosterWrapRelation(super.build(presence.getTo()), presence, relation));
+		super.establish(context.jid(), new PresenceWrapRelation(super.build(presence.getTo()), presence, relation));
 		return true;
 	}
 }

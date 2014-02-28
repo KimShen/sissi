@@ -14,7 +14,7 @@ import com.sissi.context.StatusClauses;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.presence.PresenceType;
-import com.sissi.ucenter.VCardContext;
+import com.sissi.ucenter.user.VCardContext;
 
 /**
  * @author kim 2013-11-19

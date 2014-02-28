@@ -5,8 +5,8 @@ import com.sissi.pipeline.Input;
 import com.sissi.pipeline.in.iq.IQResponseProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.register.Register;
-import com.sissi.ucenter.RegisterContext;
 import com.sissi.ucenter.field.Fields;
+import com.sissi.ucenter.user.RegisterContext;
 
 /**
  * @author kim 2013年12月5日

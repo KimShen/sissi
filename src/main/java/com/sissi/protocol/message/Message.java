@@ -48,7 +48,7 @@ public class Message extends Protocol implements Collector {
 
 	public boolean type(MessageType... types) {
 		for (MessageType type : types) {
-			if (type.equals(this)) {
+			if (type.equals(this.getType())) {
 				return true;
 			}
 		}

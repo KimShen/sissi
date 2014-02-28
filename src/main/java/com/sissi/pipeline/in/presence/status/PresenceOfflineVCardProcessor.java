@@ -4,8 +4,8 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.ucenter.VCardContext;
 import com.sissi.ucenter.field.impl.BeanField;
+import com.sissi.ucenter.user.VCardContext;
 
 /**
  * @author kim 2014年1月27日

@@ -24,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.ScanUtil;
+import com.sissi.commons.Trace;
 import com.sissi.commons.apache.IOUtils;
 import com.sissi.commons.apache.LineIterator;
 import com.sissi.context.JIDContext;
@@ -69,6 +70,7 @@ public class JAXBWriter implements Writer {
 			this.log.info("All classes in JAXB Context: " + clazz);
 		} catch (Exception e) {
 			this.log.error(e.toString());
+			Trace.trace(this.log, e);
 			throw new RuntimeException("Can't init JAXB context", e);
 		}
 	}
@@ -93,10 +95,8 @@ public class JAXBWriter implements Writer {
 				output.flush();
 				return element;
 			} catch (Exception e) {
-				if (this.log.isErrorEnabled()) {
-					this.log.error(e);
-					e.printStackTrace();
-				}
+				this.log.error(e);
+				Trace.trace(this.log, e);
 				return null;
 			}
 		} finally {

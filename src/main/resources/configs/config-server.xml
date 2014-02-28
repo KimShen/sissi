@@ -5,24 +5,19 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="server.reader" class="com.sissi.read.sax.SAXReader">
-		<constructor-arg ref="executor" />
-		<constructor-arg ref="counter" />
-	</bean>
-
 	<bean id="server.closer" class="com.sissi.server.impl.ChainedServerCloser">
 		<constructor-arg>
 			<util:list>
 				<bean class="com.sissi.server.impl.PresenceServerCloser">
-					<constructor-arg ref="vcard" />
+					<constructor-arg ref="ucenter.vcard" />
 					<constructor-arg ref="broadcast.protocol.fans" />
 				</bean>
 				<bean class="com.sissi.server.impl.PresenceServerCloser">
-					<constructor-arg ref="vcard" />
+					<constructor-arg ref="ucenter.vcard" />
 					<constructor-arg ref="broadcast.protocol.selfs" />
 				</bean>
-				<bean class="com.sissi.server.impl.GroupServerCloser">
-					<constructor-arg ref="relation.muc" />
+				<bean class="com.sissi.server.impl.MucServerCloser">
+					<constructor-arg ref="ucenter.muc" />
 					<constructor-arg ref="presence.pro.muc.leave.chained" />
 				</bean>
 			</util:list>
@@ -44,21 +39,21 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="server.main.handler" class="com.sissi.server.netty.impl.PersonalServerHandlerBuilder">
+	<bean id="server.handler" class="com.sissi.server.netty.impl.PersonalServerHandlerBuilder">
 		<constructor-arg ref="server.tls" />
-		<constructor-arg ref="server.reader" />
+		<constructor-arg ref="global.reader" />
+		<constructor-arg ref="global.finder" />
 		<constructor-arg ref="server.closer" />
+		<constructor-arg ref="global.feeder" />
+		<constructor-arg ref="global.looper" />
+		<constructor-arg ref="global.output" />
+		<constructor-arg ref="global.counter" />
 		<constructor-arg ref="addressing" />
-		<constructor-arg ref="output" />
-		<constructor-arg ref="finder" />
-		<constructor-arg ref="feeder" />
-		<constructor-arg ref="looper" />
-		<constructor-arg ref="counter" />
 		<constructor-arg>
 			<bean class="com.sissi.context.impl.OnlineContextBuilder">
-				<constructor-arg ref="vcard" />
-				<constructor-arg ref="status" />
+				<constructor-arg ref="ucenter.vcard" />
 				<constructor-arg ref="server.heart" />
+				<constructor-arg ref="global.status.user" />
 				<constructor-arg ref="persistent.message" />
 				<constructor-arg index="0" value="${pipeline.auth.retry}" />
 				<constructor-arg index="1" value="${global.lang}" />
@@ -68,8 +63,8 @@
 	</bean>
 
 	<bean id="server.heart" class="com.sissi.server.impl.PingServerHeart">
-		<constructor-arg ref="runner" />
-		<constructor-arg ref="counter" />
+		<constructor-arg ref="thread.runner" />
+		<constructor-arg ref="global.counter" />
 		<constructor-arg>
 			<bean class="com.sissi.thread.Interval">
 				<constructor-arg value="${global.heart.interval}" />
@@ -78,10 +73,8 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="server.main.status" class="com.sissi.server.impl.MemoryServerStatus" />
-
-	<bean id="server.main" class="com.sissi.server.impl.NioServerStarter">
-		<constructor-arg ref="server.main.status" />
+	<bean id="server" class="com.sissi.server.impl.NioServerStarter">
+		<constructor-arg ref="global.status.server" />
 		<constructor-arg value="${global.port.main}" />
 		<constructor-arg>
 			<bean class="com.sissi.server.netty.impl.NioServerLoopGroup" />
@@ -91,7 +84,7 @@
 				<constructor-arg index="0" value="${global.idle.read}" />
 				<constructor-arg index="1" value="${global.idle.write}" />
 				<constructor-arg index="2" value="${global.idle.all}" />
-				<constructor-arg ref="server.main.handler" />
+				<constructor-arg ref="server.handler" />
 			</bean>
 		</constructor-arg>
 	</bean>
@@ -99,8 +92,8 @@
 	<bean id="server.start" class="com.sissi.server.impl.ChainedServerStarter">
 		<constructor-arg>
 			<util:list>
-				<ref bean="server.main" />
-				<ref bean="server.exchanger" />
+				<ref bean="server" />
+				<ref bean="exchanger" />
 			</util:list>
 		</constructor-arg>
 	</bean>

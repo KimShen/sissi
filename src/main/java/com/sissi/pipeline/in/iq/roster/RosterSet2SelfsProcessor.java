@@ -3,7 +3,7 @@ package com.sissi.pipeline.in.iq.roster;
 import com.sissi.context.JID;
 import com.sissi.protocol.iq.roster.Group;
 import com.sissi.protocol.iq.roster.RosterSubscription;
-import com.sissi.ucenter.RelationRoster;
+import com.sissi.ucenter.roster.RelationRoster;
 
 /**
  * @author kim 2013-10-31

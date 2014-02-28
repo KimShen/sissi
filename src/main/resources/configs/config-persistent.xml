@@ -6,13 +6,13 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="persistent.config" class="com.sissi.config.impl.MongoProxyConfig">
-		<constructor-arg ref="mongo" />
+		<constructor-arg ref="global.mongo" />
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.persistent}" />
 	</bean>
 
 	<bean id="persistent.delay" abstract="true">
-		<constructor-arg ref="jid" />
+		<constructor-arg ref="global.jid" />
 		<constructor-arg value="${pipeline.persistent}" />
 	</bean>
 

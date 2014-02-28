@@ -6,7 +6,7 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.PresenceType;
 import com.sissi.ucenter.Relation;
-import com.sissi.ucenter.RelationRecover;
+import com.sissi.ucenter.roster.RelationRecover;
 
 /**
  * @author kim 2014年2月19日

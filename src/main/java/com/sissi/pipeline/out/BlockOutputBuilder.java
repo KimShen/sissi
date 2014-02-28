@@ -12,7 +12,7 @@ import com.sissi.protocol.Element;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.ucenter.BlockContext;
+import com.sissi.ucenter.user.BlockContext;
 
 /**
  * @author kim 2013年12月9日

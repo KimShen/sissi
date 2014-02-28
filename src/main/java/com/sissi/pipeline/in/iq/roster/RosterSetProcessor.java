@@ -5,8 +5,8 @@ import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster;
-import com.sissi.ucenter.RelationRoster;
-import com.sissi.ucenter.relation.roster.ItemWrapRelation;
+import com.sissi.ucenter.roster.RelationRoster;
+import com.sissi.ucenter.roster.impl.ItemWrapRelation;
 
 /**
  * @author kim 2013-10-31

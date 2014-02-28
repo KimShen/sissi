@@ -69,16 +69,16 @@
 				</constructor-arg>
 			</bean>
 		</constructor-arg>
-		<property name="relationContext" ref="relation.muc" />
+		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.status.available.init.4subscribe" class="com.sissi.pipeline.in.presence.status.PresenceInit4SubscribeProcessor">
-		<constructor-arg ref="relation.roster" />
+		<constructor-arg ref="ucenter.roster" />
 	</bean>
 	<bean id="presence.pro.status.available.init.4delay" class="com.sissi.pipeline.in.presence.status.PresenceInit4DelayProcessor">
 		<constructor-arg ref="persistent.all" />
 	</bean>
 	<bean id="presence.pro.status.available.init.4fans" class="com.sissi.pipeline.in.presence.status.PresenceInit4FansProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="vcard" />
+		<constructor-arg ref="ucenter.vcard" />
 		<property name="presenceQueue" ref="broadcast.presence.self" />
 	</bean>
 	<bean id="presence.pro.status.available.init.4selfs" class="com.sissi.pipeline.in.presence.status.PresenceInit4SelfsProcessor" parent="global.pro.proxy" />
@@ -113,7 +113,7 @@
 		</constructor-arg>
 	</bean>
 	<bean id="presence.pro.status.unavailable.vcard" class="com.sissi.pipeline.in.presence.status.PresenceOfflineVCardProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="vcard" />
+		<constructor-arg ref="ucenter.vcard" />
 	</bean>
 	<bean id="presence.pro.status.unavailable.status" class="com.sissi.pipeline.in.presence.status.PresenceOfflineStatusProcessor" />
 	<bean id="presence.pro.status.unavailable.close" class="com.sissi.pipeline.in.presence.status.PresenceOfflineCloseProcessor" parent="global.pro.proxy" />

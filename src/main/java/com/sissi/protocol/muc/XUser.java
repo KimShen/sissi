@@ -11,11 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 import com.sissi.context.JID;
 import com.sissi.protocol.presence.X;
 import com.sissi.read.Metadata;
-import com.sissi.ucenter.MucStatusCollector;
-import com.sissi.ucenter.MucStatusComputer;
-import com.sissi.ucenter.MucStatusJudge;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
+import com.sissi.ucenter.muc.MucStatusCollector;
+import com.sissi.ucenter.muc.MucStatusComputer;
+import com.sissi.ucenter.muc.MucStatusJudge;
 
 /**
  * @author kim 2014年2月11日

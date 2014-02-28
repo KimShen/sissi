@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="vcard.pro.set" class="com.sissi.pipeline.in.iq.vcard.VCardSetProcessor">
-		<constructor-arg ref="vcard" />
+		<constructor-arg ref="ucenter.vcard" />
 	</bean>
 	<bean id="vcard.pro.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -19,10 +19,10 @@
 	<bean id="vcard.pro.get.check.4error" class="com.sissi.pipeline.in.iq.vcard.VCardGetCheckRelation4ErrorProcessor" parent="global.pro.proxy" />
 	<bean id="vcard.pro.get.check.4empty" class="com.sissi.pipeline.in.iq.vcard.VCardGetCheckRelation4EmptyProcessor" parent="global.pro.proxy" />
 	<bean id="vcard.pro.get.4fans" class="com.sissi.pipeline.in.iq.vcard.VCardGet4FansProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="vcard" />
+		<constructor-arg ref="ucenter.vcard" />
 	</bean>
 	<bean id="vcard.pro.get.4self" class="com.sissi.pipeline.in.iq.vcard.VCardGet4SelfProcessor">
-		<constructor-arg ref="vcard" />
+		<constructor-arg ref="ucenter.vcard" />
 	</bean>
 	<bean id="vcard.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.vcard" />

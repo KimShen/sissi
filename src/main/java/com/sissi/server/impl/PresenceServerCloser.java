@@ -5,7 +5,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.PresenceType;
 import com.sissi.server.ServerCloser;
-import com.sissi.ucenter.VCardContext;
+import com.sissi.ucenter.user.VCardContext;
 
 /**
  * @author kim 2013-11-20

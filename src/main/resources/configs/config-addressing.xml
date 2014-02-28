@@ -7,8 +7,8 @@
 
 	<alias name="addressing.mongo" alias="addressing" />
 	<bean id="addressing.mongo" class="com.sissi.addressing.impl.MongoAddressing">
-		<constructor-arg ref="runner" />
-		<constructor-arg ref="counter" />
+		<constructor-arg ref="thread.runner" />
+		<constructor-arg ref="global.counter" />
 		<constructor-arg>
 			<bean class="com.sissi.thread.Interval">
 				<constructor-arg value="${addressing.gc.interval}" />
@@ -17,14 +17,14 @@
 		</constructor-arg>
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
-				<constructor-arg ref="mongo" />
+				<constructor-arg ref="global.mongo" />
 				<constructor-arg index="1" value="${mongo.db}" />
 				<constructor-arg index="2" value="${mongo.collection.addressing}" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg>
 			<bean class="com.sissi.context.impl.OfflineContextBuilder">
-				<constructor-arg ref="vcard" />
+				<constructor-arg ref="ucenter.vcard" />
 				<constructor-arg ref="persistent.message" />
 				<constructor-arg value="${global.lang}" />
 				<constructor-arg value="${global.domain}" />

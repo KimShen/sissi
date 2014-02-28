@@ -8,7 +8,7 @@ import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.ItemNotFound;
 import com.sissi.protocol.iq.roster.Roster;
-import com.sissi.ucenter.VCardContext;
+import com.sissi.ucenter.user.VCardContext;
 
 /**
  * @author kim 2014年1月14日

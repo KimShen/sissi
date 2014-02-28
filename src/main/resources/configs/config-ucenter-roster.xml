@@ -5,28 +5,28 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 	
-	<bean id="relation.roster.inductor" class="com.sissi.ucenter.relation.roster.BroadcastRelationInductor">
+	<bean id="ucenter.roster.inductor" class="com.sissi.ucenter.roster.impl.BroadcastRelationInductor">
 		<constructor-arg ref="broadcast.protocol.selfs" />
 		<constructor-arg>
 			<bean class="com.sissi.protocol.iq.roster.Group">
 				<constructor-arg value="${pipeline.roster.group.default}" />
 			</bean>
 		</constructor-arg>
-		<property name="relationContext" ref="relation.roster" />
+		<property name="relationContext" ref="ucenter.roster" />
 	</bean>
 
-	<alias name="relation.roster.mongo" alias="relation.roster" />
-	<bean id="relation.roster.mongo" class="com.sissi.ucenter.relation.roster.MongoRelationRosterContext">
-		<constructor-arg ref="jid" />
+	<alias name="ucenter.roster.mongo" alias="ucenter.roster" />
+	<bean id="ucenter.roster.mongo" class="com.sissi.ucenter.roster.impl.MongoRelationRosterContext">
+		<constructor-arg ref="global.jid" />
 		<constructor-arg value="${pipeline.roster.group.default}" />
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
-				<constructor-arg ref="mongo" />
+				<constructor-arg ref="global.mongo" />
 				<constructor-arg index="1" value="${mongo.db}" />
 				<constructor-arg index="2" value="${mongo.collection.roster}" />
 			</bean>
 		</constructor-arg>
-		<property name="relationInductor" ref="relation.roster.inductor" />
+		<property name="relationInductor" ref="ucenter.roster.inductor" />
 	</bean>
 	
 </beans>

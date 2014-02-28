@@ -7,8 +7,8 @@
 
 	<bean id="si.pro.2fans" class="com.sissi.pipeline.in.iq.si.Si2FansProcessor" parent="global.pro.proxy" />
 	<bean id="si.pro.2delegation" class="com.sissi.pipeline.in.iq.si.Si2DelegationProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="server.exchanger.context" />
-		<constructor-arg ref="server.exchanger.transfer" />
+		<constructor-arg ref="exchanger.context" />
+		<constructor-arg ref="exchanger.transfer" />
 		<constructor-arg value="${exchanger.delegation.bare}" />
 	</bean>
 	<bean id="si.pro.4delegation" class="com.sissi.pipeline.in.iq.si.Si4DelegationProcessor" parent="global.pro.proxy">
@@ -52,7 +52,7 @@
 	<bean id="si.condition.2delegation" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.ToDelegationMatcher">
-				<constructor-arg ref="jid" />
+				<constructor-arg ref="global.jid" />
 				<constructor-arg ref="addressing" />
 				<constructor-arg index="0" value="com.sissi.protocol.iq.si.Si" />
 			</bean>

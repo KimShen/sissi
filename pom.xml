@@ -14,7 +14,7 @@
 		<maven.project.name>sissi</maven.project.name>
 		<!-- For Server -->
 		<maven.global.domain>sissi.pw</maven.global.domain>
-		<maven.global.domain.group>group.sissi.pw</maven.global.domain.group>
+		<maven.global.domain.muc>group.sissi.pw</maven.global.domain.muc>
 		<maven.global.version>1.0</maven.global.version>
 		<maven.global.lang>zh_CN</maven.global.lang>
 		<maven.global.port.main>5222</maven.global.port.main>

@@ -8,8 +8,8 @@ import com.sissi.protocol.message.Body;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.message.MessageType;
 import com.sissi.protocol.muc.XUser;
-import com.sissi.ucenter.MucGroupConfig;
-import com.sissi.ucenter.MucGroupContext;
+import com.sissi.ucenter.muc.MucGroupConfig;
+import com.sissi.ucenter.muc.MucGroupContext;
 
 /**
  * @author kim 2014年2月11日

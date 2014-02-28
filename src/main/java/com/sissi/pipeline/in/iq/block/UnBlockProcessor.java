@@ -5,7 +5,7 @@ import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.block.BlockListItem;
 import com.sissi.protocol.iq.block.UnBlock;
-import com.sissi.ucenter.BlockContext;
+import com.sissi.ucenter.user.BlockContext;
 
 /**
  * @author kim 2013年12月6日

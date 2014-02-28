@@ -9,8 +9,8 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.NotAuthorized;
 import com.sissi.protocol.muc.XMuc;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.ucenter.MucGroupConfig;
-import com.sissi.ucenter.MucGroupContext;
+import com.sissi.ucenter.muc.MucGroupConfig;
+import com.sissi.ucenter.muc.MucGroupContext;
 
 /**
  * @author kim 2014年2月22日

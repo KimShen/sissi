@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.charset.Charset;
 
 import org.apache.commons.logging.Log;
@@ -133,7 +131,7 @@ public class PersonalServerHandlerBuilder implements ServerHandlerBuilder {
 
 		@Override
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-			this.logIfDetail(cause);
+			Trace.trace(PersonalServerHandlerBuilder.this.log, cause);
 			ctx.close();
 		}
 
@@ -184,16 +182,6 @@ public class PersonalServerHandlerBuilder implements ServerHandlerBuilder {
 				byteBuf.readerIndex(0);
 			}
 			return byteBuf;
-		}
-
-		private PersonalServerHandler logIfDetail(Throwable cause) {
-			if (PersonalServerHandlerBuilder.this.log.isInfoEnabled()) {
-				StringWriter trace = new StringWriter();
-				cause.printStackTrace(new PrintWriter(trace));
-				PersonalServerHandlerBuilder.this.log.info(trace.toString());
-				Trace.trace(PersonalServerHandlerBuilder.this.log, cause);
-			}
-			return this;
 		}
 	}
 
