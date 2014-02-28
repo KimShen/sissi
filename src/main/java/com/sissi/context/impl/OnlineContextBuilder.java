@@ -35,7 +35,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final int priority = -1;
 
-	private final long pong = -1L;
+	private final int pong = -1;
 
 	private final StatusBuilder statusBuilder;
 
@@ -74,7 +74,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final long index = OnlineContextBuilder.this.indexes.incrementAndGet();
 
-		private final AtomicLong ping = new AtomicLong(OnlineContextBuilder.this.pong);
+		private final AtomicInteger ping = new AtomicInteger(OnlineContextBuilder.this.pong);
 
 		private final AtomicLong idle = new AtomicLong(System.currentTimeMillis());
 
@@ -277,18 +277,14 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public JIDContext ping() {
-			this.ping.set(OnlineContextBuilder.this.serverHeart.ping(this));
+			this.ping.set(OnlineContextBuilder.this.serverHeart.ping(this).hashCode());
 			return this;
 		}
 
 		@Override
 		public JIDContext pong(Element element) {
-			try {
-				if (this.ping.get() == Long.valueOf(element.getId())) {
-					this.ping.set(pong);
-				}
-			} catch (Exception e) {
-				this.logFailed(e);
+			if (this.ping.get() == element.getId().hashCode()) {
+				this.ping.set(pong);
 			}
 			return this;
 		}

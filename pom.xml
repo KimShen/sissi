@@ -43,7 +43,7 @@
 		<maven.exchanger.delegation.user>delegation</maven.exchanger.delegation.user>
 		<maven.exchanger.delegation.domain>${maven.exchanger.delegation.user}@${maven.global.domain}/delegation</maven.exchanger.delegation.domain>
 		<maven.exchanger.delegation.bare>true</maven.exchanger.delegation.bare>
-		<maven.exchanger.delegation.buffer>1024</maven.exchanger.delegation.buffer>
+		<maven.exchanger.delegation.buffer>20480</maven.exchanger.delegation.buffer>
 		<maven.exchanger.delegation.dir>/Users/kim/Downloads</maven.exchanger.delegation.dir>
 		<!-- For Thread -->
 		<maven.executor.keep.alive>300</maven.executor.keep.alive>

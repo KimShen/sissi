@@ -7,5 +7,5 @@ import com.sissi.context.JIDContext;
  */
 public interface ServerHeart {
 
-	public long ping(JIDContext context);
+	public String ping(JIDContext context);
 }

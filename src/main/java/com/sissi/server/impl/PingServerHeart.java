@@ -1,9 +1,9 @@
 package com.sissi.server.impl;
 
+import java.util.UUID;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,8 +25,6 @@ public class PingServerHeart implements ServerHeart, Runnable {
 
 	private final int timeoutThreadNumber = 1;
 
-	private final AtomicLong pids = new AtomicLong();
-
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final String resource = PingTimeout.class.getSimpleName();
@@ -45,11 +43,11 @@ public class PingServerHeart implements ServerHeart, Runnable {
 	}
 
 	@Override
-	public long ping(JIDContext context) {
-		long pid = this.pids.incrementAndGet();
+	public String ping(JIDContext context) {
+		String uid = UUID.randomUUID().toString();
 		this.timeouts.add(new PingTimeout(context));
-		context.write(new IQ().setId(pid).add(Ping.PING).setType(ProtocolType.GET), true);
-		return pid;
+		context.write(new IQ().setId(uid).add(Ping.PING).setType(ProtocolType.GET), true);
+		return uid;
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.sissi.server.exchange.impl;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
 
 import java.io.BufferedInputStream;
@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.logging.Log;
@@ -34,7 +36,9 @@ import com.sissi.write.TransferBuffer;
  */
 public class FSDelegation implements Delegation {
 
-	private final String resoure = this.getClass().getSimpleName();
+	private final String resoureTransfer = this.getClass().getSimpleName() + ".Transfer";
+
+	private final String resoureChunk = this.getClass().getSimpleName() + ".Chunk";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -92,23 +96,23 @@ public class FSDelegation implements Delegation {
 		}
 	}
 
-	private class ByteTransferBuffer implements TransferBuffer, Closeable, Iterator<TransferBuffer> {
+	private class ByteTransferBuffer implements TransferBuffer, Closeable, Iterator<ByteTransferBuffer> {
 
-		private byte[] buffer = new byte[FSDelegation.this.buffer];
+		private final BlockingQueue<ByteBuf> queue = new LinkedBlockingQueue<ByteBuf>();
 
 		private final AtomicLong current = new AtomicLong();
 
 		private final InputStream input;
 
-		private ByteBuf byteBuf;
-
 		private final long total;
+
+		private ByteBuf byteBuf;
 
 		public ByteTransferBuffer(InputStream input, long total) {
 			super();
 			this.input = input;
 			this.total = total;
-			FSDelegation.this.resourceCounter.increment(FSDelegation.this.resoure);
+			FSDelegation.this.resourceCounter.increment(FSDelegation.this.resoureTransfer);
 		}
 
 		@Override
@@ -122,18 +126,18 @@ public class FSDelegation implements Delegation {
 		}
 
 		@Override
-		public TransferBuffer next() {
+		public ByteTransferBuffer next() {
 			try {
-				this.byteBuf = PooledByteBufAllocator.DEFAULT.buffer();
-				int readable = this.input.read(this.buffer);
-				if (readable != -1) {
-					this.byteBuf.writeBytes(this.buffer, 0, readable);
+				ByteBuf byteBuf = Unpooled.buffer(FSDelegation.this.buffer);
+				int readable = byteBuf.writeBytes(this.input, FSDelegation.this.buffer);
+				if (readable > 0) {
 					this.current.addAndGet(readable);
 				}
+				this.byteBuf = byteBuf;
+				this.queue.add(this.byteBuf);
+				FSDelegation.this.resourceCounter.increment(FSDelegation.this.resoureChunk);
 				return this;
-			} catch (IOException e) {
-				FSDelegation.this.log.error(e.toString());
-				Trace.trace(FSDelegation.this.log, e);
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -144,18 +148,24 @@ public class FSDelegation implements Delegation {
 
 		@Override
 		public TransferBuffer release() {
-			if (this.byteBuf.refCnt() > 0) {
-				ReferenceCountUtil.release(this.buffer);
+			try {
+				ByteBuf byteBuf = this.queue.take();
+				if (byteBuf.refCnt() > 0) {
+					ReferenceCountUtil.release(byteBuf);
+				}
+			} catch (Exception e) {
+				FSDelegation.this.log.warn("Find leak bytebuf");
+				Trace.trace(FSDelegation.this.log, e);
+			} finally {
+				FSDelegation.this.resourceCounter.decrement(FSDelegation.this.resoureChunk);
 			}
 			return this;
 		}
 
 		@Override
 		public void close() throws IOException {
-			this.release();
-			this.buffer = null;
 			IOUtils.closeQuietly(this.input);
-			FSDelegation.this.resourceCounter.decrement(FSDelegation.this.resoure);
+			FSDelegation.this.resourceCounter.decrement(FSDelegation.this.resoureTransfer);
 		}
 	}
 }

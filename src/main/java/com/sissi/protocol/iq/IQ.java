@@ -57,11 +57,6 @@ public class IQ extends Protocol implements Collector {
 		return this;
 	}
 
-	public IQ setId(Long id) {
-		super.setId(id.toString());
-		return this;
-	}
-	
 	public IQ setFrom(String from) {
 		super.setFrom(from);
 		return this;
