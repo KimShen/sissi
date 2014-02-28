@@ -35,7 +35,6 @@ abstract public class GC implements Runnable {
 			this.resourceCounter.increment(this.resource);
 			while (true) {
 				try {
-					Thread.sleep(Integer.MAX_VALUE);
 					if (this.gc()) {
 						Thread.sleep(this.sleep);
 					} else {
