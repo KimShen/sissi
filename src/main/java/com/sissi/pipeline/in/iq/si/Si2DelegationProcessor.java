@@ -40,7 +40,7 @@ public class Si2DelegationProcessor extends ProxyProcessor {
 	public boolean input(JIDContext context, Protocol protocol) {
 		Si si = protocol.cast(Si.class).setFeature(this.feature);
 		JID to = super.build(si.parent().getTo());
-		this.exchangerContext.join(si.host(context.jid().asString(this.bare), to.asString(this.bare)), this.transferBuilder.build(new SiTransferParam(si)));
+		this.exchangerContext.join(si.host(context.jid().asString(this.bare), to.asString(this.bare)), true, this.transferBuilder.build(new SiTransferParam(si)));
 		context.write(si.parent().reply().setType(ProtocolType.RESULT));
 		return true;
 	}

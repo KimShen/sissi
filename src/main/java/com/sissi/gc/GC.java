@@ -36,11 +36,11 @@ abstract public class GC implements Runnable {
 			while (true) {
 				try {
 					Thread.sleep(Integer.MAX_VALUE);
-//					if (this.gc()) {
-//						Thread.sleep(this.sleep);
-//					} else {
-//						break;
-//					}
+					if (this.gc()) {
+						Thread.sleep(this.sleep);
+					} else {
+						break;
+					}
 				} catch (Exception e) {
 					log.error(e.toString());
 					Trace.trace(log, e);

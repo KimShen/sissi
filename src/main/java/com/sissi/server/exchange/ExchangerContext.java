@@ -7,8 +7,8 @@ import com.sissi.write.Transfer;
  */
 public interface ExchangerContext {
 
-	public Exchanger join(String host, Transfer transfer);
-	
+	public Exchanger join(String host, boolean induct, Transfer transfer);
+
 	public Exchanger active(String host);
 
 	public boolean exists(String host);

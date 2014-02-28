@@ -11,11 +11,11 @@ public interface Exchanger {
 
 	public String host();
 
+	public Exchanger induct();
+
 	public Exchanger source(Closeable source);
 
 	public Exchanger write(TransferBuffer buffer);
 
 	public Exchanger close(ExchangerTerminal terminal);
-
-	public boolean isClose(ExchangerTerminal terminal);
 }

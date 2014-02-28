@@ -129,7 +129,7 @@ public class Socks5ProxyServerHandlerBuilder implements ServerHandlerBuilder {
 		}
 
 		private ChannelHandlerContext join(SocksCmdRequest cmd, ChannelHandlerContext ctx) throws IOException {
-			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).set(Socks5ProxyServerHandlerBuilder.this.exchangerContext.join(cmd.host(), new NetworkTransfer(ctx)));
+			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).set(Socks5ProxyServerHandlerBuilder.this.exchangerContext.join(cmd.host(), false, new NetworkTransfer(ctx)));
 			return ctx;
 		}
 
@@ -169,6 +169,7 @@ public class Socks5ProxyServerHandlerBuilder implements ServerHandlerBuilder {
 	private class BridgeExchangerServerHandler extends ChannelInboundHandlerAdapter {
 
 		public void channelUnregistered(final ChannelHandlerContext ctx) throws Exception {
+			ctx.attr(Socks5ProxyServerHandlerBuilder.this.exchanger).get().induct();
 			Socks5ProxyServerHandlerBuilder.this.resourceCounter.decrement(Socks5ProxyServerHandlerBuilder.this.resource);
 		}
 

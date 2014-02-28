@@ -29,7 +29,6 @@ import com.sissi.persistent.PersistentElementBox;
 import com.sissi.resource.ResourceCounter;
 import com.sissi.server.exchange.Delegation;
 import com.sissi.server.exchange.Exchanger;
-import com.sissi.server.exchange.ExchangerTerminal;
 import com.sissi.write.TransferBuffer;
 
 /**
@@ -71,7 +70,7 @@ public class FSDelegation implements Delegation {
 		try {
 			return new BufferedOutputStream(new FileOutputStream(new File(this.dir, host)));
 		} catch (Exception e) {
-			this.log.equals(e.toString());
+			this.log.warn(e.toString());
 			Trace.trace(this.log, e);
 			throw new RuntimeException(e);
 		}
@@ -83,13 +82,13 @@ public class FSDelegation implements Delegation {
 		Map<String, Object> peek = this.persistentElementBox.peek(BasicDBObjectBuilder.start(PersistentElementBox.fieldHost, exchanger.host()).get().toMap());
 		ByteTransferBuffer buffer = null;
 		try {
-			buffer = new ByteTransferBuffer(new BufferedInputStream(new FileInputStream(new File(FSDelegation.this.dir, peek.get(PersistentElementBox.fieldSid).toString()))), exchanger, Long.valueOf(peek.get(PersistentElementBox.fieldSize).toString()));
+			buffer = new ByteTransferBuffer(new BufferedInputStream(new FileInputStream(new File(FSDelegation.this.dir, peek.get(PersistentElementBox.fieldSid).toString()))), Long.valueOf(peek.get(PersistentElementBox.fieldSize).toString()));
 			while (buffer.hasNext()) {
 				exchanger.write(buffer.next());
 			}
 			return this;
 		} catch (Exception e) {
-			this.log.equals(e.toString());
+			this.log.warn(e.toString());
 			Trace.trace(this.log, e);
 			throw new RuntimeException(e);
 		} finally {
@@ -103,19 +102,18 @@ public class FSDelegation implements Delegation {
 
 		private final AtomicLong current = new AtomicLong();
 
-		private final InputStream input;
+		private final AtomicLong readable = new AtomicLong();
 
-		private final Exchanger exchanger;
+		private final InputStream input;
 
 		private final long total;
 
 		private ByteBuf byteBuf;
 
-		public ByteTransferBuffer(InputStream input, Exchanger exchanger, long total) {
+		public ByteTransferBuffer(InputStream input, long total) {
 			super();
 			this.input = input;
 			this.total = total;
-			this.exchanger = exchanger;
 			FSDelegation.this.resourceCounter.increment(FSDelegation.this.resoureTransfer);
 		}
 
@@ -126,16 +124,16 @@ public class FSDelegation implements Delegation {
 
 		@Override
 		public boolean hasNext() {
-			return !this.exchanger.isClose(ExchangerTerminal.TARGET) && this.current.get() < this.total;
+			return this.readable.get() != -1 && this.current.get() < this.total;
 		}
 
 		@Override
 		public ByteTransferBuffer next() {
 			try {
 				ByteBuf byteBuf = Unpooled.buffer(FSDelegation.this.buffer);
-				int readable = byteBuf.writeBytes(this.input, FSDelegation.this.buffer);
-				if (readable > 0) {
-					this.current.addAndGet(readable);
+				readable.set(byteBuf.writeBytes(this.input, FSDelegation.this.buffer));
+				if (readable.get() > 0) {
+					this.current.addAndGet(readable.get());
 				}
 				this.byteBuf = byteBuf;
 				this.queue.add(this.byteBuf);
@@ -168,6 +166,7 @@ public class FSDelegation implements Delegation {
 
 		@Override
 		public void close() throws IOException {
+			this.readable.set(-1);
 			IOUtils.closeQuietly(this.input);
 			FSDelegation.this.resourceCounter.decrement(FSDelegation.this.resoureTransfer);
 		}

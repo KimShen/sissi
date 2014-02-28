@@ -78,18 +78,6 @@ public class DegelationTransferBuilder implements TransferBuilder {
 			DegelationTransferBuilder.this.resourceCounter.increment(DegelationTransferBuilder.this.resoure);
 		}
 
-		private DelegationTransfer shouldClose() {
-			if (this.si.getFile().size(this.current.get())) {
-				this.close();
-			}
-			return this;
-		}
-
-		private void closeAndDecr() {
-			IOUtils.closeQuietly(this.output);
-			DegelationTransferBuilder.this.resourceCounter.decrement(DegelationTransferBuilder.this.resoure);
-		}
-
 		@Override
 		public DelegationTransfer transfer(TransferBuffer buffer) {
 			ByteBuf buf = ByteBuf.class.cast(buffer.getBuffer());
@@ -102,9 +90,8 @@ public class DegelationTransferBuilder implements TransferBuilder {
 				buf.readBytes(this.buffer, 0, readable);
 				this.output.write(this.buffer, 0, readable);
 				this.current.addAndGet(readable);
-				return this.shouldClose();
+				return this;
 			} catch (Exception e) {
-				this.closeAndDecr();
 				DegelationTransferBuilder.this.log.error(e);
 				Trace.trace(DegelationTransferBuilder.this.log, e);
 				throw new RuntimeException(e);
@@ -118,7 +105,8 @@ public class DegelationTransferBuilder implements TransferBuilder {
 
 		@Override
 		public void close() {
-			this.closeAndDecr();
+			IOUtils.closeQuietly(this.output);
+			DegelationTransferBuilder.this.resourceCounter.decrement(DegelationTransferBuilder.this.resoure);
 			DegelationTransferBuilder.this.persistentElementBox.push(this.si);
 			DegelationTransferBuilder.this.delegationCallback.callback(DegelationTransferBuilder.this.jidBuilder.build(si.parent().getTo()).asStringWithBare());
 		}

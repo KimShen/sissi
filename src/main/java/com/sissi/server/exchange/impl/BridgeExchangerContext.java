@@ -3,7 +3,6 @@ package com.sissi.server.exchange.impl;
 import java.io.Closeable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -53,8 +52,8 @@ public class BridgeExchangerContext implements ExchangerContext {
 	}
 
 	@Override
-	public Exchanger join(String host, Transfer transfer) {
-		BridgeExchanger exchanger = new BridgeExchanger(host, transfer);
+	public Exchanger join(String host, boolean induct, Transfer transfer) {
+		BridgeExchanger exchanger = new BridgeExchanger(host, induct, transfer);
 		this.exchangers.put(host, exchanger);
 		this.config.collection().save(this.build(host, true));
 		return exchanger;
@@ -126,29 +125,33 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 	private class BridgeExchanger implements Exchanger {
 
-		private final AtomicBoolean sourceClose = new AtomicBoolean(true);
-
-		private final AtomicBoolean targetClose = new AtomicBoolean(true);
-
 		private final Transfer target;
+
+		private final boolean induct;
 
 		private final String host;
 
 		private Closeable source;
 
-		private BridgeExchanger(String host, Transfer target) {
+		private BridgeExchanger(String host, boolean induct, Transfer target) {
 			this.host = host;
+			this.induct = induct;
 			this.target = target;
-			this.targetClose.set(false);
 		}
 
 		public String host() {
 			return this.host;
 		}
 
+		public BridgeExchanger induct() {
+			if (this.induct) {
+				this.close(ExchangerTerminal.TARGET);
+			}
+			return this;
+		}
+
 		public BridgeExchanger source(Closeable source) {
 			this.source = source;
-			this.sourceClose.set(false);
 			return this;
 		}
 
@@ -160,21 +163,15 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 		@Override
 		public BridgeExchanger close(ExchangerTerminal closer) {
-			return closer == ExchangerTerminal.SOURCE ? this.close(this.source, this.sourceClose) : this.close(this.target, this.targetClose);
+			return closer == ExchangerTerminal.SOURCE ? this.close(this.source) : this.close(this.target);
 		}
 
-		public boolean isClose(ExchangerTerminal terminal) {
-			return terminal == ExchangerTerminal.SOURCE ? this.sourceClose.get() : this.targetClose.get();
-		}
-
-		private BridgeExchanger close(Closeable closer, AtomicBoolean monitor) {
+		private BridgeExchanger close(Closeable closer) {
 			try {
 				IOUtils.closeQuietly(closer);
 			} catch (Exception e) {
 				BridgeExchangerContext.this.log.debug(e.toString());
 				Trace.trace(BridgeExchangerContext.this.log, e);
-			} finally {
-				monitor.set(true);
 			}
 			return this;
 		}

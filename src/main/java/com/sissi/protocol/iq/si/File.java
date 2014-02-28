@@ -18,8 +18,6 @@ public class File implements Collector {
 
 	public final static String NAME = "file";
 
-	private long total;
-
 	private String name;
 
 	private String size;
@@ -41,10 +39,6 @@ public class File implements Collector {
 		return this;
 	}
 
-	public boolean size(long current) {
-		return current >= this.total;
-	}
-
 	@XmlAttribute
 	public String getSize() {
 		return this.size;
@@ -52,7 +46,6 @@ public class File implements Collector {
 
 	public File setSize(String size) {
 		this.size = size;
-		this.total = Long.valueOf(this.size);
 		return this;
 	}
 
