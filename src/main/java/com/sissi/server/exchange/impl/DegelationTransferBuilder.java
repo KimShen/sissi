@@ -78,7 +78,7 @@ public class DegelationTransferBuilder implements TransferBuilder {
 			DegelationTransferBuilder.this.resourceCounter.increment(DegelationTransferBuilder.this.resoure);
 		}
 
-		private Transfer shouldClose() {
+		private DelegationTransfer shouldClose() {
 			if (this.si.getFile().size(this.current.get())) {
 				this.close();
 			}
@@ -91,7 +91,7 @@ public class DegelationTransferBuilder implements TransferBuilder {
 		}
 
 		@Override
-		public Transfer transfer(TransferBuffer buffer) {
+		public DelegationTransfer transfer(TransferBuffer buffer) {
 			ByteBuf buf = ByteBuf.class.cast(buffer.getBuffer());
 			try {
 				this.lock.lock();

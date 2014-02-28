@@ -32,7 +32,7 @@ public class NetworkTransfer implements Transfer {
 	}
 
 	@Override
-	public Transfer transfer(TransferBuffer buffer) {
+	public NetworkTransfer transfer(TransferBuffer buffer) {
 		this.context.writeAndFlush(ByteBuf.class.cast(buffer.getBuffer())).addListener(new ReleaseGenericFutureListener(buffer)).addListener(this.futureListener);
 		return this;
 	}
