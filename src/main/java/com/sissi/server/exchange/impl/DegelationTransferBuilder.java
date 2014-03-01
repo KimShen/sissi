@@ -42,16 +42,13 @@ public class DegelationTransferBuilder implements TransferBuilder {
 
 	private final Delegation delegation;
 
-	private final int buffer;
-
-	public DegelationTransferBuilder(PersistentElementBox persistentElementBox, DelegationCallback delegationCallback, ResourceCounter resourceCounter, Delegation delegation, JIDBuilder jidBuilder, int buffer) {
+	public DegelationTransferBuilder(PersistentElementBox persistentElementBox, DelegationCallback delegationCallback, ResourceCounter resourceCounter, Delegation delegation, JIDBuilder jidBuilder) {
 		super();
 		this.persistentElementBox = persistentElementBox;
 		this.delegationCallback = delegationCallback;
 		this.resourceCounter = resourceCounter;
 		this.delegation = delegation;
 		this.jidBuilder = jidBuilder;
-		this.buffer = buffer;
 	}
 
 	@Override
@@ -69,8 +66,6 @@ public class DegelationTransferBuilder implements TransferBuilder {
 
 		private final OutputStream output;
 
-		private byte[] buffer = new byte[DegelationTransferBuilder.this.buffer];
-
 		public DelegationTransfer(Si si) {
 			super();
 			this.si = si;
@@ -84,11 +79,7 @@ public class DegelationTransferBuilder implements TransferBuilder {
 			try {
 				this.lock.lock();
 				int readable = buf.readableBytes();
-				if (this.buffer.length < readable) {
-					this.buffer = new byte[(int) (readable * 1.5)];
-				}
-				buf.readBytes(this.buffer, 0, readable);
-				this.output.write(this.buffer, 0, readable);
+				buf.readBytes(this.output, readable);
 				this.current.addAndGet(readable);
 				return this;
 			} catch (Exception e) {

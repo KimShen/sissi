@@ -56,7 +56,6 @@
 	</bean>
 
 	<bean id="exchanger.transfer" class="com.sissi.server.exchange.impl.DegelationTransferBuilder">
-		<constructor-arg value="${exchanger.delegation.buffer}" />
 		<constructor-arg ref="exchanger.delegation.callback" />
 		<constructor-arg ref="exchanger.delegation" />
 		<constructor-arg ref="persistent.si" />

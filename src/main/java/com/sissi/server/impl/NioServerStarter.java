@@ -70,6 +70,7 @@ public class NioServerStarter implements ServerStarter {
 		public void operationComplete(Future<Void> future) throws Exception {
 			if (!future.isSuccess()) {
 				NioServerStarter.this.closeAll();
+				NioServerStarter.this.log.fatal(future.cause());
 				Trace.trace(NioServerStarter.this.log, future.cause());
 			}
 		}

@@ -1,7 +1,7 @@
 package com.sissi.server.exchange.impl;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.util.ReferenceCountUtil;
 
 import java.io.BufferedInputStream;
@@ -130,8 +130,8 @@ public class FSDelegation implements Delegation {
 		@Override
 		public ByteTransferBuffer next() {
 			try {
-				ByteBuf byteBuf = Unpooled.buffer(FSDelegation.this.buffer);
-				readable.set(byteBuf.writeBytes(this.input, FSDelegation.this.buffer));
+				ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.buffer(FSDelegation.this.buffer);
+				readable.set(byteBuf.writeBytes(this.input, byteBuf.capacity()));
 				if (readable.get() > 0) {
 					this.current.addAndGet(readable.get());
 				}
