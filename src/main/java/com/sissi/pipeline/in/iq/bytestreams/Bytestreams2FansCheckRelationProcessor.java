@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.iq.time;
+package com.sissi.pipeline.in.iq.bytestreams;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.CheckRelationProcessor;
@@ -9,16 +9,17 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.Forbidden;
 
 /**
- * @author kim 2014年1月26日
+ * @author kim 2014年2月24日
  */
-public class TimeCheckRelationProcessor extends CheckRelationProcessor {
-
-	public TimeCheckRelationProcessor(boolean free) {
-		super(free);
-	}
+public class Bytestreams2FansCheckRelationProcessor extends CheckRelationProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
+	public Bytestreams2FansCheckRelationProcessor(boolean free) {
+		super(free);
+	}
+
+	@Override
 	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {
 		context.write(protocol.parent().reply().setError(this.error));
 		return false;

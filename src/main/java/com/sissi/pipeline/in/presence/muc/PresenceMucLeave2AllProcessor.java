@@ -9,10 +9,7 @@ import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.PresenceType;
 import com.sissi.ucenter.Relation;
-import com.sissi.ucenter.muc.MucGroupContext;
-import com.sissi.ucenter.muc.MucStatusCollector;
-import com.sissi.ucenter.muc.MucStatusComputer;
-import com.sissi.ucenter.muc.MucStatusJudge;
+import com.sissi.ucenter.muc.MucConfigBuilder;
 import com.sissi.ucenter.muc.RelationMuc;
 
 /**
@@ -20,31 +17,23 @@ import com.sissi.ucenter.muc.RelationMuc;
  */
 public class PresenceMucLeave2AllProcessor extends ProxyProcessor {
 
-	private final MucGroupContext mucGroupContext;
+	private final MucConfigBuilder mucGroupContext;
 
-	private final MucStatusComputer mucStatusComputer = new NothingMucStatusComputer();
-
-	public PresenceMucLeave2AllProcessor(MucGroupContext mucGroupContext) {
+	public PresenceMucLeave2AllProcessor(MucConfigBuilder mucGroupContext) {
 		super();
 		this.mucGroupContext = mucGroupContext;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Presence presence = new Presence();
-		JID group = super.build(protocol.getTo());
-		RelationMuc ourRelation = super.ourRelation(context.jid(), group).cast(RelationMuc.class);
-		for (Relation each : super.myRelations(group)) {
-			JID to = super.build(each.cast(RelationMuc.class).getJID());
-			super.findOne(to, true).write(presence.clear().add(new XUser().setItem(new Item(group, to, ourRelation, this.mucGroupContext), this.mucStatusComputer)).setType(PresenceType.UNAVAILABLE).setFrom(protocol.getTo()));
-		}
-		return true;
-	}
-
-	private class NothingMucStatusComputer implements MucStatusComputer {
-		@Override
-		public NothingMucStatusComputer collect(MucStatusCollector collector, MucStatusJudge judge) {
-			return this;
-		}
+		return false;
+//		Presence presence = new Presence();
+//		JID group = super.build(protocol.getTo());
+//		RelationMuc ourRelation = super.ourRelation(context.jid(), group).cast(RelationMuc.class);
+//		for (Relation each : super.myRelations(group)) {
+//			JID to = super.build(each.cast(RelationMuc.class).getJID());
+//			super.findOne(to, true).write(presence.clear().add(new XUser().setItem(new Item(group, to, ourRelation, this.mucGroupContext), this.mucStatusComputer)).setType(PresenceType.UNAVAILABLE).setFrom(protocol.getTo()));
+//		}
+//		return true;
 	}
 }

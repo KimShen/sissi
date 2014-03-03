@@ -14,6 +14,10 @@ import com.sissi.protocol.iq.last.Last;
  */
 public class LastContacterCheckRelationProcessor extends CheckRelationProcessor {
 
+	public LastContacterCheckRelationProcessor(boolean free) {
+		super(free);
+	}
+
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
 	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {

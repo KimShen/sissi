@@ -15,16 +15,13 @@ public class MessageCheckRelationProcessor extends CheckRelationProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(SubscriptionRequired.DETAIL);
 
-	private final boolean isFree;
-
-	public MessageCheckRelationProcessor(boolean isFree) {
-		super();
-		this.isFree = isFree;
+	public MessageCheckRelationProcessor(boolean free) {
+		super(free);
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.isFree || context.jid().like(super.build(protocol.getTo())) || super.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);
+		return context.jid().like(super.build(protocol.getTo())) || super.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {

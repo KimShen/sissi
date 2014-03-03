@@ -13,7 +13,7 @@ public class XPassword {
 	private String text;
 
 	public String getText() {
-		return text;
+		return this.text != null & !this.text.isEmpty() ? this.text : null;
 	}
 
 	public XPassword setText(String text) {

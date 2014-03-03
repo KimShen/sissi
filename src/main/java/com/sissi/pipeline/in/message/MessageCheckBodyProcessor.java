@@ -3,7 +3,6 @@ package com.sissi.pipeline.in.message;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.message.Body;
 import com.sissi.protocol.message.Message;
 
 /**
@@ -13,7 +12,7 @@ public class MessageCheckBodyProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Body body = Message.class.cast(protocol).getBody();
-		return body != null && body.hasContent();
+		Message message = Message.class.cast(protocol);
+		return (message.getBody() != null && message.getBody().hasContent()) || message.received();
 	}
 }

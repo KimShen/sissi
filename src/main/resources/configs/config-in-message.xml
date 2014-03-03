@@ -6,9 +6,16 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="message.pro.check.relation" class="com.sissi.pipeline.in.message.MessageCheckRelationProcessor" parent="global.pro.proxy">
-		<constructor-arg value="${pipeline.message.free}" />
+		<constructor-arg value="${pipeline.free}" />
 	</bean>
 	<bean id="message.pro.check.body" class="com.sissi.pipeline.in.message.MessageCheckBodyProcessor" />
+	<bean id="message.pro.check.ack" class="com.sissi.pipeline.in.message.MessageCheckAckProcessor" />
+	<bean id="message.pro.persistent" class="com.sissi.pipeline.in.message.MessagePersistentProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="persistent.message" />
+	</bean>
+	<bean id="message.pro.received" class="com.sissi.pipeline.in.message.MessageReceivedProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="persistent.message" />
+	</bean>
 	<bean id="message.pro.2fan" class="com.sissi.pipeline.in.message.Message2FanProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.2self" class="com.sissi.pipeline.in.message.Message2SelfProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
@@ -17,7 +24,10 @@
 				<ref bean="global.pro.check.chained" />
 				<!-- Prevent empty content -->
 				<ref bean="message.pro.check.body" />
-				<!-- Precent garbage message -->
+				<ref bean="message.pro.check.ack" />
+				<ref bean="message.pro.persistent" />
+				<ref bean="message.pro.received" />
+				<!-- Prevent garbage message -->
 				<ref bean="message.pro.check.relation" />
 				<ref bean="message.pro.2self" />
 				<ref bean="message.pro.2fan" />

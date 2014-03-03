@@ -9,6 +9,10 @@ import com.sissi.protocol.Protocol;
  */
 abstract class VCardGetCheckRelationProcessor extends CheckRelationProcessor {
 
+	public VCardGetCheckRelationProcessor(boolean free) {
+		super(free);
+	}
+
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		return !protocol.parent().to() || protocol.parent().to(context.jid().asStringWithBare()) || super.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);

@@ -17,7 +17,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="ucenter.muc.context" class="com.sissi.ucenter.muc.impl.MongoMucGroupContext">
+	<bean id="ucenter.muc.config" class="com.sissi.ucenter.muc.impl.MongoMucConfigBuilder">
 		<constructor-arg ref="ucenter.muc" />
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
@@ -27,14 +27,4 @@
 			</bean>
 		</constructor-arg>
 	</bean>
-	
-	<bean id="ucenter.muc.collector" class="com.sissi.ucenter.muc.impl.ChainedMucStatusCollector">
-		<constructor-arg>
-			<util:list>
-				<bean class="com.sissi.ucenter.muc.impl.Status100MucStatusCollector" />
-				<bean class="com.sissi.ucenter.muc.impl.Status110MucStatusCollector" />
-			</util:list>
-		</constructor-arg>
-	</bean>
-	
 </beans>

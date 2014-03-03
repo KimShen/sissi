@@ -33,6 +33,10 @@ public class Message extends Protocol implements Collector {
 
 	private Subject subject;
 
+	private AckRequest request;
+
+	private AckReceived received;
+
 	public Message() {
 		super();
 	}
@@ -56,7 +60,7 @@ public class Message extends Protocol implements Collector {
 	}
 
 	public String getId() {
-		return super.getId() != null ? super.getId() : UUID.randomUUID().toString();
+		return super.getId() != null ? super.getId() : super.setId(UUID.randomUUID().toString()).getId();
 	}
 
 	@XmlElement
@@ -114,6 +118,46 @@ public class Message extends Protocol implements Collector {
 		return this.x;
 	}
 
+	public boolean request() {
+		return this.getRequest() != null;
+	}
+
+	public Message request(boolean request) {
+		return this.setRequest(request ? AckRequest.REQUEST : null);
+	}
+
+	@XmlElement(name = AckRequest.NAME)
+	public AckRequest getRequest() {
+		return this.request;
+	}
+
+	public Message setRequest(AckRequest request) {
+		this.request = request;
+		return this;
+	}
+
+	public boolean received() {
+		return this.getReceived() != null;
+	}
+
+	@XmlElement(name = AckReceived.NAME)
+	public AckReceived getReceived() {
+		return this.received;
+	}
+
+	public Message setReceived(AckReceived received) {
+		this.received = received;
+		return this;
+	}
+
+	public boolean validLoop() {
+		return !this.received() || !this.request();
+	}
+
+	public boolean validReceived() {
+		return this.received() ? (this.getBody() == null && this.getReceived().id()) : true;
+	}
+
 	public boolean hasContent() {
 		return this.body != null && this.body.hasContent();
 	}
@@ -129,6 +173,12 @@ public class Message extends Protocol implements Collector {
 			return;
 		case Subject.NAME:
 			this.setSubject(Subject.class.cast(ob));
+			return;
+		case AckRequest.NAME:
+			this.setRequest(AckRequest.class.cast(ob));
+			return;
+		case AckReceived.NAME:
+			this.setReceived(AckReceived.class.cast(ob));
 			return;
 		}
 	}

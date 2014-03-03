@@ -9,11 +9,11 @@ import com.sissi.ucenter.field.Fields;
  */
 public interface VCardContext {
 
-	public final static String FIELD_NICKNAME = "nickname";
+	public final static String FIELD_NICKNAME = "NICKNAME";
 
-	public final static String FIELD_LOGOUT = "logout";
+	public final static String FIELD_LOGOUT = "LOGOUT";
 
-	public final static String FIELD_SIGNATURE = "signature";
+	public final static String FIELD_SIGNATURE = "SIGNATURE";
 
 	public boolean exists(String jid);
 

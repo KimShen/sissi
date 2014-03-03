@@ -8,8 +8,8 @@ import com.sissi.protocol.message.Body;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.message.MessageType;
 import com.sissi.protocol.muc.XUser;
-import com.sissi.ucenter.muc.MucGroupConfig;
-import com.sissi.ucenter.muc.MucGroupContext;
+import com.sissi.ucenter.muc.MucConfig;
+import com.sissi.ucenter.muc.MucConfigBuilder;
 
 /**
  * @author kim 2014年2月11日
@@ -18,11 +18,11 @@ public class PresenceMucJoin2SelfMessageProcessor extends ProxyProcessor {
 
 	private final XUser x = new XUser().add("100");
 
-	private final MucGroupContext mucGroupContext;
+	private final MucConfigBuilder mucGroupContext;
 
 	private final Body body;
 
-	public PresenceMucJoin2SelfMessageProcessor(MucGroupContext mucGroupContext, String message) {
+	public PresenceMucJoin2SelfMessageProcessor(MucConfigBuilder mucGroupContext, String message) {
 		super();
 		this.mucGroupContext = mucGroupContext;
 		this.body = new Body(message);
@@ -31,7 +31,8 @@ public class PresenceMucJoin2SelfMessageProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.getTo());
-		return this.mucGroupContext.find(group).allowed(MucGroupConfig.HIDDEN_PURE, null) ? true : this.writeAndReturn(context, group);
+		return false;
+//		return this.mucGroupContext.build(group).allowed(MucConfig.IS_HIDDEN_PURE, null) ? true : this.writeAndReturn(context, group);
 	}
 
 	private boolean writeAndReturn(JIDContext context, JID group) {

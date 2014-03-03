@@ -30,14 +30,16 @@ public class PersistentMessage extends PersistentProtocol {
 	@Override
 	public Map<String, Object> write(Element element) {
 		Map<String, Object> entity = super.write(element);
-		entity.put(this.body, Message.class.cast(element).getBody().getText());
+		Message message = Message.class.cast(element);
+		entity.put(this.body, message.getBody().getText());
+		entity.put(PersistentElementBox.fieldAck, message.request());
 		return entity;
 	}
 
 	@Override
 	public Message read(Map<String, Object> element) {
 		Message message = Message.class.cast(super.read(element, new Message()));
-		return message.setBody(new Body(element.get(this.body).toString())).setDelay(new Delay(super.title, message.getFrom(), element.get(PersistentElementBox.fieldDelay).toString()));
+		return message.setBody(new Body(element.get(this.body).toString())).setDelay(new Delay(super.title, message.getFrom(), element.get(PersistentElementBox.fieldDelay).toString())).request(Boolean.getBoolean(element.get(PersistentElementBox.fieldAck).toString()));
 	}
 
 	public boolean isSupport(Element element) {
@@ -45,6 +47,6 @@ public class PersistentMessage extends PersistentProtocol {
 	}
 
 	private boolean isSupportMessage(Message message) {
-		return message.hasContent() && message.type(MessageType.CHAT, MessageType.GROUPCHAT);
+		return message.hasContent() && message.type(MessageType.CHAT, MessageType.GROUPCHAT) && !message.received();
 	}
 }

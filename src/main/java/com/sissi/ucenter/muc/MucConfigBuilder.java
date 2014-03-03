@@ -5,7 +5,7 @@ import com.sissi.context.JID;
 /**
  * @author kim 2014年2月20日
  */
-public interface MucGroupContext {
+public interface MucConfigBuilder {
 
-	public MucGroupConfig find(JID group);
+	public MucConfig build(JID group);
 }

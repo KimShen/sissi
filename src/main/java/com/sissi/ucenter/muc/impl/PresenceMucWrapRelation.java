@@ -16,41 +16,41 @@ public class PresenceMucWrapRelation implements RelationMuc {
 
 	private final static Map<String, Object> plus = new HashMap<String, Object>();
 
-	private final JID jid;
+	private final JID group;
 
-	private final RelationMuc muc;
+	private final RelationMuc relation;
 
 	private final Presence presence;
 
-	public PresenceMucWrapRelation(JID jid, Presence presence, RelationMuc muc) {
-		this.jid = jid;
-		this.muc = muc;
+	public PresenceMucWrapRelation(JID group, Presence presence, RelationMuc relation) {
+		this.group = group;
+		this.relation = relation;
 		this.presence = presence;
 	}
 
 	@Override
 	public String getJID() {
-		return this.jid.asStringWithBare();
+		return this.group.asStringWithBare();
 	}
 
 	@Override
 	public String getName() {
-		return this.jid.resource();
+		return this.group.resource();
 	}
 
 	@Override
 	public boolean isActivate() {
-		return this.muc.isActivate();
+		return this.relation.isActivate();
 	}
 
 	@Override
 	public String getRole() {
-		return this.muc.getRole();
+		return this.relation.getRole();
 	}
 
 	@Override
 	public String getAffiliation() {
-		return this.muc.getAffiliation();
+		return this.relation.getAffiliation();
 	}
 
 	@Override

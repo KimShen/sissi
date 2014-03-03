@@ -43,7 +43,7 @@ public class ItemStatus {
 
 	@XmlAttribute
 	public String getCode() {
-		return code;
+		return this.code;
 	}
 
 	public static ItemStatus parse(String code) {

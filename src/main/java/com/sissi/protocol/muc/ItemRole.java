@@ -28,12 +28,12 @@ public enum ItemRole {
 	}
 
 	public boolean equals(String role) {
-		return this == ItemRole.parse(role);
+		return this.toString().equals(role);
 	}
 
 	public static ItemRole parse(String role) {
 		try {
-			return role != null ? ItemRole.valueOf(role.toUpperCase()) : null;
+			return ItemRole.valueOf(role.toUpperCase());
 		} catch (Exception e) {
 			return ItemRole.NONE;
 		}
@@ -41,6 +41,6 @@ public enum ItemRole {
 
 	public static String toString(Integer num) {
 		ItemRole sub = MAPPING.get(num);
-		return sub != null ? sub.toString() : VISITOR.toString();
+		return sub != null ? sub.toString() : NONE.toString();
 	}
 }

@@ -27,6 +27,8 @@ public interface PersistentElementBox {
 
 	public final static String fieldSid = "sid";
 
+	public static final String fieldAck = "ack";
+
 	public final static String fieldTo = "to";
 
 	public final static String fieldId = "id";

@@ -5,7 +5,9 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="last.pro.contacter.check" class="com.sissi.pipeline.in.iq.last.LastContacterCheckRelationProcessor" parent="global.pro.proxy" />
+	<bean id="last.pro.contacter.check" class="com.sissi.pipeline.in.iq.last.LastContacterCheckRelationProcessor" parent="global.pro.proxy">
+		<constructor-arg value="${pipeline.free}" />
+	</bean>
 	<bean id="last.pro.contacter.2proxy" class="com.sissi.pipeline.in.iq.last.LastContacterProcessor" parent="global.pro.proxy" />
 	<bean id="last.pro.contacter.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>

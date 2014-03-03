@@ -22,9 +22,11 @@ import com.sissi.protocol.Element;
  */
 public class MongoDelayElementBox implements PersistentElementBox, Output {
 
+	private final DBObject[] activate = new DBObject[] { BasicDBObjectBuilder.start(PersistentElementBox.fieldActivate, true).get(), BasicDBObjectBuilder.start(PersistentElementBox.fieldAck, true).get() };
+
 	private final MongoConfig config;
 
-	private final DBObject[] support;
+	private final String[] support;
 
 	private final List<PersistentElement> elements;
 
@@ -32,16 +34,16 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 		super();
 		this.config = config;
 		this.elements = elements;
-		List<DBObject> support = new ArrayList<DBObject>();
+		List<String> support = new ArrayList<String>();
 		for (Class<? extends Element> clazz : classes) {
-			support.add(BasicDBObjectBuilder.start(PersistentElementBox.fieldClass, clazz.getSimpleName()).get());
+			support.add(clazz.getSimpleName());
 		}
-		this.support = support.toArray(new DBObject[] {});
+		this.support = support.toArray(new String[] {});
 	}
 
 	@Override
 	public Collection<Element> pull(JID jid) {
-		DBObject query = BasicDBObjectBuilder.start().add(PersistentElementBox.fieldTo, jid.asStringWithBare()).add(PersistentElementBox.fieldActivate, true).add("$or", this.support).get();
+		DBObject query = BasicDBObjectBuilder.start().add(PersistentElementBox.fieldTo, jid.asStringWithBare()).add("$or", this.activate).add(PersistentElementBox.fieldClass, BasicDBObjectBuilder.start("$in", this.support).get()).get();
 		Elements elements = new Elements(this.config.collection().find(query));
 		this.config.collection().update(query, BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(PersistentElementBox.fieldActivate, false).get()).get(), false, true);
 		return elements;

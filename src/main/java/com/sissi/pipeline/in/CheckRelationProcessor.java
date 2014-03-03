@@ -12,9 +12,16 @@ abstract public class CheckRelationProcessor extends ProxyProcessor {
 
 	private final String[] relations = new String[] { RosterSubscription.TO.toString(), RosterSubscription.BOTH.toString() };
 
+	private final boolean free;
+
+	public CheckRelationProcessor(boolean free) {
+		super();
+		this.free = free;
+	}
+
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);
+		return this.free || this.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	protected boolean ourRelation(JIDContext context, Protocol protocol) {

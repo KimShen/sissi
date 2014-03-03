@@ -15,7 +15,7 @@
 	</bean>
 
 	<bean id="global.jid" class="com.sissi.context.impl.DomainJIDBuilder">
-		<constructor-arg value="${global.jid.limit}" />
+		<constructor-arg value="${global.jid.length}" />
 		<constructor-arg value="${global.domain.muc}" />
 	</bean>
 

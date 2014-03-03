@@ -19,7 +19,7 @@
 		<maven.global.domain.muc>group.sissi.pw</maven.global.domain.muc>
 		<maven.global.port.main>5222</maven.global.port.main>
 		<maven.global.port.exchanger>6222</maven.global.port.exchanger>
-		<maven.global.jid.limit>50</maven.global.jid.limit>
+		<maven.global.jid.length>50</maven.global.jid.length>
 		<maven.global.idle.all>120</maven.global.idle.all>
 		<maven.global.idle.read>120</maven.global.idle.read>
 		<maven.global.idle.write>120</maven.global.idle.write>
@@ -78,13 +78,14 @@
 		<maven.pipeline.roster.name>10</maven.pipeline.roster.name>
 		<maven.register.title>Welcome 2 register</maven.register.title>
 		<maven.register.instructions>From sissi</maven.register.instructions>
+		<!-- For Pipeline -->
+		<maven.pipeline.free>false</maven.pipeline.free>
+		<maven.pipeline.muc.tip>Room is not anonymous</maven.pipeline.muc.tip>
+		<maven.pipeline.persistent>From Sissi offline</maven.pipeline.persistent>
 		<maven.pipeline.roster.group.length>10</maven.pipeline.roster.group.length>
 		<maven.pipeline.roster.group.default>好友</maven.pipeline.roster.group.default>
 		<maven.pipeline.bind.resource>2</maven.pipeline.bind.resource>
 		<maven.pipeline.bind.content>您有其他客户端上线了</maven.pipeline.bind.content>
-		<maven.pipeline.persistent>From Sissi offline</maven.pipeline.persistent>
-		<maven.pipeline.message.free>false</maven.pipeline.message.free>
-		<maven.pipeline.message.hidden>Room is not anonymous</maven.pipeline.message.hidden>
 	</properties>
 	<dependencies>
 		<!-- For Compile -->

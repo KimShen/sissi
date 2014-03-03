@@ -25,14 +25,16 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.probe.relation" class="com.sissi.pipeline.in.presence.probe.PresenceProbeCheckRelationProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.probe.check" class="com.sissi.pipeline.in.presence.probe.PresenceProbeCheckRelationProcessor" parent="global.pro.proxy">
+		<constructor-arg value="${pipeline.free}" />
+	</bean>
 	<bean id="presence.pro.probe.status.offline" class="com.sissi.pipeline.in.presence.probe.PresenceProbeOfflineStatusProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.probe.status.online" class="com.sissi.pipeline.in.presence.probe.PresenceProbeOnlineStatusProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.probe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<!-- Check relation -->
-				<ref bean="presence.pro.probe.relation" />
+				<ref bean="presence.pro.probe.check" />
 				<!-- Presence unavailable when offline -->
 				<ref bean="presence.pro.probe.status.offline" />
 				<!-- Presence probe when online -->

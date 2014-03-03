@@ -19,8 +19,8 @@ public class Disco2FansCheckRelationProcessor extends CheckRelationProcessor {
 
 	private final Set<String> domains;
 
-	public Disco2FansCheckRelationProcessor(Set<String> domains) {
-		super();
+	public Disco2FansCheckRelationProcessor(Set<String> domains, boolean free) {
+		super(free);
 		this.domains = domains;
 	}
 

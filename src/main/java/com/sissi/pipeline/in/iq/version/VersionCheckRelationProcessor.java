@@ -13,6 +13,10 @@ import com.sissi.protocol.error.detail.Forbidden;
  */
 public class VersionCheckRelationProcessor extends CheckRelationProcessor {
 
+	public VersionCheckRelationProcessor(boolean free) {
+		super(free);
+	}
+
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
 	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {

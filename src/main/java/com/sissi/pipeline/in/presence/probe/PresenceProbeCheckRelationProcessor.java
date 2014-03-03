@@ -11,6 +11,10 @@ import com.sissi.protocol.presence.PresenceType;
  */
 public class PresenceProbeCheckRelationProcessor extends CheckRelationProcessor {
 
+	public PresenceProbeCheckRelationProcessor(boolean free) {
+		super(free);
+	}
+
 	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {
 		context.write(protocol.cast(Presence.class).setType(PresenceType.UNSUBSCRIBED).reply());
 		return false;

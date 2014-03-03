@@ -24,12 +24,12 @@ public enum ItemAffiliation {
 		return super.toString().toLowerCase();
 	}
 
-	public boolean contains(ItemAffiliation affiliation){
+	public boolean contains(ItemAffiliation affiliation) {
 		return this.ordinal() >= affiliation.ordinal();
 	}
-	
+
 	public boolean equals(String affiliation) {
-		return this == ItemAffiliation.parse(affiliation);
+		return this.toString().equals(affiliation);
 	}
 
 	public static ItemAffiliation parse(String affiliation) {
@@ -41,7 +41,7 @@ public enum ItemAffiliation {
 	}
 
 	public static String toString(Integer num) {
-		ItemAffiliation sub = MAPPING.get(num);
-		return sub != null ? sub.toString() : OUTCAST.toString();
+		ItemAffiliation affiliation = MAPPING.get(num);
+		return affiliation != null ? affiliation.toString() : OUTCAST.toString();
 	}
 }

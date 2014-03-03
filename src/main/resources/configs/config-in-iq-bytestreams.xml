@@ -27,11 +27,20 @@
 	<bean id="bytestreams.pro.2robot" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2RobotProcessor">
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
-	<bean id="bytestreams.pro.2fans" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2FansProcessor" parent="global.pro.proxy">
+	<bean id="bytestreams.pro.2fans" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
-			<bean class="com.sissi.protocol.iq.bytestreams.StreamhostComparator">
-				<constructor-arg ref="bytestreams.proxy" />
-			</bean>
+			<util:list>
+				<bean class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2FansProcessor" parent="global.pro.proxy">
+					<constructor-arg>
+						<bean class="com.sissi.protocol.iq.bytestreams.StreamhostComparator">
+							<constructor-arg ref="bytestreams.proxy" />
+						</bean>
+					</constructor-arg>
+				</bean>
+				<bean class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2FansCheckRelationProcessor" parent="global.pro.proxy">
+					<constructor-arg value="${pipeline.free}" />
+				</bean>
+			</util:list>
 		</constructor-arg>
 	</bean>
 	<bean id="bytestreams.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
