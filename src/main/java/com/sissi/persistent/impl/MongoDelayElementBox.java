@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
@@ -24,28 +23,31 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 
 	private final DBObject[] activate = new DBObject[] { BasicDBObjectBuilder.start(PersistentElementBox.fieldActivate, true).get(), BasicDBObjectBuilder.start(PersistentElementBox.fieldAck, true).get() };
 
+	private final int resend;
+
 	private final MongoConfig config;
 
 	private final String[] support;
 
 	private final List<PersistentElement> elements;
 
-	public MongoDelayElementBox(MongoConfig config, Set<Class<? extends Element>> classes, List<PersistentElement> elements) {
+	public MongoDelayElementBox(int resend, MongoConfig config, List<PersistentElement> elements) {
 		super();
+		this.resend = resend;
 		this.config = config;
 		this.elements = elements;
 		List<String> support = new ArrayList<String>();
-		for (Class<? extends Element> clazz : classes) {
-			support.add(clazz.getSimpleName());
+		for (PersistentElement each : elements) {
+			support.add(each.support().getSimpleName());
 		}
 		this.support = support.toArray(new String[] {});
 	}
 
 	@Override
 	public Collection<Element> pull(JID jid) {
-		DBObject query = BasicDBObjectBuilder.start().add(PersistentElementBox.fieldTo, jid.asStringWithBare()).add("$or", this.activate).add(PersistentElementBox.fieldClass, BasicDBObjectBuilder.start("$in", this.support).get()).get();
+		DBObject query = BasicDBObjectBuilder.start().add(PersistentElementBox.fieldTo, jid.asStringWithBare()).add("$or", this.activate).add(PersistentElementBox.fieldClass, BasicDBObjectBuilder.start("$in", this.support).get()).add(PersistentElementBox.fieldRetry, BasicDBObjectBuilder.start("$lt", this.resend).get()).get();
 		Elements elements = new Elements(this.config.collection().find(query));
-		this.config.collection().update(query, BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(PersistentElementBox.fieldActivate, false).get()).get(), false, true);
+		this.config.collection().update(query, BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(PersistentElementBox.fieldActivate, false).get()).add("$inc", BasicDBObjectBuilder.start(PersistentElementBox.fieldRetry, 1).get()).get(), false, true);
 		return elements;
 	}
 

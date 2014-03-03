@@ -31,8 +31,8 @@ public class PersistentSi extends PersistentProtocol {
 
 	private final String delegation;
 
-	public PersistentSi(JIDBuilder jidBuilder, String title, String delegation) {
-		super(Si.class, jidBuilder, title);
+	public PersistentSi(JIDBuilder jidBuilder, String tip, String delegation) {
+		super(Si.class, jidBuilder, tip);
 		this.delegation = delegation;
 	}
 
@@ -56,5 +56,9 @@ public class PersistentSi extends PersistentProtocol {
 	@Override
 	public Element read(Map<String, Object> element) {
 		return IQ.class.cast(super.read(element, new IQ())).setId(element.get(PersistentElementBox.fieldSid).toString()).setFrom(this.delegation).add(new Si().setId(element.get(PersistentElementBox.fieldSid).toString()).setSource(element.get(PersistentElementBox.fieldFrom).toString()).setProfile(this.profile).setFeature(this.feature).setFile(new File().setName(element.get(this.fieldName).toString()).setSize(element.get(PersistentElementBox.fieldSize).toString())));
+	}
+
+	public Class<? extends Element> support() {
+		return Si.class;
 	}
 }

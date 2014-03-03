@@ -18,4 +18,6 @@ public interface PersistentElement {
 	public boolean isSupport(Element element);
 
 	public boolean isSupport(Map<String, Object> element);
+	
+	public Class<? extends Element> support();
 }

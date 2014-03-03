@@ -81,7 +81,8 @@
 		<!-- For Pipeline -->
 		<maven.pipeline.free>false</maven.pipeline.free>
 		<maven.pipeline.muc.tip>Room is not anonymous</maven.pipeline.muc.tip>
-		<maven.pipeline.persistent>From Sissi offline</maven.pipeline.persistent>
+		<maven.pipeline.persistent.resend>3</maven.pipeline.persistent.resend>
+		<maven.pipeline.persistent.tip>From Sissi offline</maven.pipeline.persistent.tip>
 		<maven.pipeline.roster.group.length>10</maven.pipeline.roster.group.length>
 		<maven.pipeline.roster.group.default>好友</maven.pipeline.roster.group.default>
 		<maven.pipeline.bind.resource>2</maven.pipeline.bind.resource>

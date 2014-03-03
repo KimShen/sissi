@@ -16,6 +16,8 @@ public interface PersistentElementBox {
 	public final static String fieldClass = "class";
 
 	public final static String fieldDelay = "delay";
+	
+	public final static String fieldRetry = "retry";
 
 	public final static String fieldFrom = "from";
 

@@ -16,15 +16,15 @@ import com.sissi.protocol.Element;
  */
 abstract class PersistentProtocol implements PersistentElement {
 	
-	protected final String title;
+	protected final String tip;
 
 	protected final JIDBuilder jidBuilder;
 
 	private final Class<? extends Element> support;
 
-	public PersistentProtocol(Class<? extends Element> support, JIDBuilder jidBuilder, String title) {
+	public PersistentProtocol(Class<? extends Element> support, JIDBuilder jidBuilder, String tip) {
 		super();
-		this.title = title;
+		this.tip = tip;
 		this.support = support;
 		this.jidBuilder = jidBuilder;
 	}
@@ -42,6 +42,7 @@ abstract class PersistentProtocol implements PersistentElement {
 		entity.put(PersistentElementBox.fieldClass, element.getClass().getSimpleName());
 		entity.put(PersistentElementBox.fieldType, element.getType());
 		entity.put(PersistentElementBox.fieldActivate, true);
+		entity.put(PersistentElementBox.fieldRetry, 0);
 		return entity;
 	}
 
