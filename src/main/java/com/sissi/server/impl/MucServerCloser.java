@@ -25,6 +25,7 @@ public class MucServerCloser implements ServerCloser {
 
 	@Override
 	public MucServerCloser close(JIDContext context) {
+		// Find group which not unavailable
 		Presence presence = new Presence();
 		for (JID group : this.relationContext.iSubscribedWho(context.jid())) {
 			this.proxy.input(context, presence.setTo(group).setType(PresenceType.UNAVAILABLE));

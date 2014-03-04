@@ -57,6 +57,7 @@
 		<maven.mongo.db>sissi</maven.mongo.db>
 		<maven.mongo.port>27017</maven.mongo.port>
 		<maven.mongo.host>localhost</maven.mongo.host>
+		<maven.mongo.perhost>5000</maven.mongo.perhost>
 		<maven.mongo.collection.log>log</maven.mongo.collection.log>
 		<maven.mongo.collection.muc>muc</maven.mongo.collection.muc>
 		<maven.mongo.collection.user>user</maven.mongo.collection.user>

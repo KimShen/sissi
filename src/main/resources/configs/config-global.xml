@@ -10,8 +10,13 @@
 		<property name="fileEncoding" value="utf-8" />
 	</bean>
 
-	<bean id="global.mongo" class="com.mongodb.MongoClient">
+	<bean id="global.mongo" class="com.mongodb.Mongo">
 		<constructor-arg value="${mongo.host}" />
+		<constructor-arg>
+			<bean class="com.mongodb.MongoOptions">
+				<property name="connectionsPerHost" value="${mongo.perhost}" />
+			</bean>
+		</constructor-arg>
 	</bean>
 
 	<bean id="global.jid" class="com.sissi.context.impl.DomainJIDBuilder">

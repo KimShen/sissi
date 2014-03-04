@@ -33,8 +33,6 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 	private final String fieldMaster = "master";
 
-	private final String fieldActivate = "activate";
-
 	private final String fieldGroups = "groups";
 
 	private final Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
@@ -45,7 +43,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 	private final DBObject entityInitMaster = BasicDBObjectBuilder.start(MongoConfig.FIELD_STATE, 0).get();
 
-	private final DBObject entityInitSlave = BasicDBObjectBuilder.start().add(this.fieldActivate, false).add(MongoConfig.FIELD_STATE, 0).get();
+	private final DBObject entityInitSlave = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ACTIVATE, false).add(MongoConfig.FIELD_STATE, 0).get();
 
 	private final DBObject entityEstablishTo = BasicDBObjectBuilder.start("or", 1).get();
 
@@ -87,7 +85,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 	}
 
 	private DBObject buildQueryWithRole(String role, String jid) {
-		return BasicDBObjectBuilder.start().add(role, jid).add(this.fieldActivate, true).get();
+		return BasicDBObjectBuilder.start().add(role, jid).add(MongoConfig.FIELD_ACTIVATE, true).get();
 	}
 
 	private DBObject buildQueryWithStates(String role, String jid, DBObject[] status) {
@@ -98,7 +96,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 	@Override
 	public MongoRelationRosterContext establish(JID from, Relation relation) {
-		this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.getJID()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(MongoConfig.FIELD_NICK, relation.getName()).add(this.fieldActivate, true).get()).add("$setOnInsert", this.entityInitMaster).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.getJID()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(MongoConfig.FIELD_NICK, relation.getName()).add(MongoConfig.FIELD_ACTIVATE, true).get()).add("$setOnInsert", this.entityInitMaster).get(), true, false, WriteConcern.SAFE);
 		this.config.collection().update(this.buildQuery(relation.getJID(), from.asStringWithBare()), BasicDBObjectBuilder.start("$setOnInsert", this.entityInitSlave).get(), true, false, WriteConcern.SAFE);
 		return this;
 	}
@@ -202,9 +200,9 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 			this.jid = Extracter.asString(db, fieldJID);
 			this.name = Extracter.asString(db, MongoConfig.FIELD_NICK);
 			this.subscription = Extracter.asInt(db, MongoConfig.FIELD_STATE);
+			this.activate = Extracter.asBoolean(db, MongoConfig.FIELD_ACTIVATE);
 			this.ask = Extracter.asBoolean(db, MongoRelationRosterContext.this.fieldAsk);
 			this.groups = Extracter.asStrings(db, MongoRelationRosterContext.this.fieldGroups);
-			this.activate = Extracter.asBoolean(db, MongoRelationRosterContext.this.fieldActivate);
 		}
 
 		public String getJID() {

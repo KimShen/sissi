@@ -18,21 +18,20 @@ public class PresenceMucJoin2SelfMessageProcessor extends ProxyProcessor {
 
 	private final XUser x = new XUser().add("100");
 
-	private final MucConfigBuilder mucGroupContext;
+	private final MucConfigBuilder mucConfigBuilder;
 
 	private final Body body;
 
-	public PresenceMucJoin2SelfMessageProcessor(MucConfigBuilder mucGroupContext, String message) {
+	public PresenceMucJoin2SelfMessageProcessor(MucConfigBuilder mucConfigBuilder, String message) {
 		super();
-		this.mucGroupContext = mucGroupContext;
+		this.mucConfigBuilder = mucConfigBuilder;
 		this.body = new Body(message);
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.getTo());
-		return false;
-//		return this.mucGroupContext.build(group).allowed(MucConfig.IS_HIDDEN_PURE, null) ? true : this.writeAndReturn(context, group);
+		return this.mucConfigBuilder.build(group).allowed(context.jid(), MucConfig.HIDDEN, null) ? true : this.writeAndReturn(context, group);
 	}
 
 	private boolean writeAndReturn(JIDContext context, JID group) {

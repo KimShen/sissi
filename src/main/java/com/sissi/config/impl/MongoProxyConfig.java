@@ -12,7 +12,7 @@ import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
+import com.mongodb.Mongo;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.sissi.config.MongoCollection;
@@ -33,7 +33,7 @@ public class MongoProxyConfig implements MongoConfig {
 
 	private final DBCollection collection;
 
-	public MongoProxyConfig(MongoClient client, String db, String collection) {
+	public MongoProxyConfig(Mongo client, String db, String collection) {
 		super();
 		this.wrap = new MongoWrapCollection();
 		this.collection = client.getDB(db).getCollection(collection);

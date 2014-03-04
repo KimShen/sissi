@@ -7,7 +7,13 @@ import com.sissi.context.JID;
  */
 public interface MucConfig {
 
+	public final static String AFFILIATION = "AFFILIATION";
+
+	public final static String PASSWORD = "PASSWORD";
+
+	public final static String HIDDEN = "HIDDEN";
+
 	public boolean allowed(JID jid, String key, Object value);
-	
+
 	public String mapping(String affiliation);
 }

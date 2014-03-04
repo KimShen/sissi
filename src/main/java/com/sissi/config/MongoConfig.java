@@ -21,6 +21,8 @@ public interface MongoConfig extends Config {
 
 	public static final String FIELD_PRIORITY = "priority";
 
+	public static final String FIELD_ACTIVATE = "activate";
+
 	public static final String FIELD_RESOURCE = "resource";
 
 	public static final String FIELD_USERNAME = "username";

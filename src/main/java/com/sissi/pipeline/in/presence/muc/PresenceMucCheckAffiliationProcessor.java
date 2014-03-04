@@ -7,6 +7,7 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.RegistrationRequired;
+import com.sissi.ucenter.muc.MucConfig;
 import com.sissi.ucenter.muc.MucConfigBuilder;
 
 /**
@@ -16,17 +17,16 @@ public class PresenceMucCheckAffiliationProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(RegistrationRequired.DETAIL);
 
-	private final MucConfigBuilder mucGroupContext;
+	private final MucConfigBuilder mucConfigBuilder;
 
-	public PresenceMucCheckAffiliationProcessor(MucConfigBuilder mucGroupContext) {
+	public PresenceMucCheckAffiliationProcessor(MucConfigBuilder mucConfigBuilder) {
 		super();
-		this.mucGroupContext = mucGroupContext;
+		this.mucConfigBuilder = mucConfigBuilder;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return false;
-		// return this.mucGroupContext.build(super.build(protocol.getTo())).allowed(MucConfig.AFFILIATIONS, context.jid()) ? true : this.writeAndReturn(context, protocol);
+		return this.mucConfigBuilder.build(super.build(protocol.getTo())).allowed(context.jid(), MucConfig.AFFILIATION, context.jid()) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

@@ -16,25 +16,22 @@ public class Item {
 
 	public final static String NAME = "item";
 
-	private MucConfig config;
-
 	private RelationMuc relation;
 
-	private String jid;
+	private MucConfig config;
 
 	public Item() {
 	}
 
-	public Item(String jid, RelationMuc relation, MucConfig config) {
+	public Item(RelationMuc relation, MucConfig config) {
 		super();
-		this.jid = jid;
 		this.config = config;
 		this.relation = relation;
 	}
 
 	@XmlAttribute
 	public String getJid() {
-		return this.jid;
+		return this.relation.getJID();
 	}
 
 	@XmlAttribute
