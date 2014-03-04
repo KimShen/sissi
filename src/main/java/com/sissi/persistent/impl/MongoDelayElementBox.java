@@ -23,11 +23,11 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 
 	private final DBObject[] activate = new DBObject[] { BasicDBObjectBuilder.start(PersistentElementBox.fieldActivate, true).get(), BasicDBObjectBuilder.start(PersistentElementBox.fieldAck, true).get() };
 
+	private final DBObject support;
+
 	private final int resend;
 
 	private final MongoConfig config;
-
-	private final String[] support;
 
 	private final List<PersistentElement> elements;
 
@@ -40,12 +40,12 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 		for (PersistentElement each : elements) {
 			support.add(each.support().getSimpleName());
 		}
-		this.support = support.toArray(new String[] {});
+		this.support = BasicDBObjectBuilder.start("$in", support.toArray(new String[] {})).get();
 	}
 
 	@Override
 	public Collection<Element> pull(JID jid) {
-		DBObject query = BasicDBObjectBuilder.start().add(PersistentElementBox.fieldTo, jid.asStringWithBare()).add("$or", this.activate).add(PersistentElementBox.fieldClass, BasicDBObjectBuilder.start("$in", this.support).get()).add(PersistentElementBox.fieldRetry, BasicDBObjectBuilder.start("$lt", this.resend).get()).get();
+		DBObject query = BasicDBObjectBuilder.start().add(PersistentElementBox.fieldTo, jid.asStringWithBare()).add("$or", this.activate).add(PersistentElementBox.fieldClass, this.support).add(PersistentElementBox.fieldRetry, BasicDBObjectBuilder.start("$lt", this.resend).get()).get();
 		Elements elements = new Elements(this.config.collection().find(query));
 		this.config.collection().update(query, BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(PersistentElementBox.fieldActivate, false).get()).add("$inc", BasicDBObjectBuilder.start(PersistentElementBox.fieldRetry, 1).get()).get(), false, true);
 		return elements;
@@ -68,7 +68,7 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> peek(Map<String, Object> query, Map<String, Object> update) {
-		return this.config.collection().findAndModify(BasicDBObjectBuilder.start(query).add("$or", this.support).get(), BasicDBObjectBuilder.start(update).get()).toMap();
+		return this.config.collection().findAndModify(BasicDBObjectBuilder.start(query).add(PersistentElementBox.fieldClass, this.support).get(), BasicDBObjectBuilder.start(update).get()).toMap();
 	}
 
 	@Override
