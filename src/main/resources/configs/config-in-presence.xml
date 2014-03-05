@@ -64,7 +64,8 @@
 				<constructor-arg>
 					<util:list>
 						<ref bean="presence.pro.muc.check.xmlns" />
-						<ref bean="presence.pro.muc.check.nickname" />
+						<ref bean="presence.pro.muc.check.nickname.contains" />
+						<ref bean="presence.pro.muc.check.nickname.exists" />
 						<ref bean="presence.pro.muc.join" />
 						<ref bean="presence.pro.muc.join.2fans" />
 					</util:list>

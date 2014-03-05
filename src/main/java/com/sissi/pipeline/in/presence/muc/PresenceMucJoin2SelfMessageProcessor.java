@@ -31,7 +31,7 @@ public class PresenceMucJoin2SelfMessageProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.getTo());
-		return this.mucConfigBuilder.build(group).allowed(context.jid(), MucConfig.HIDDEN, null) ? true : this.writeAndReturn(context, group);
+		return this.mucConfigBuilder.build(group).allowed(context.jid(), MucConfig.HIDDEN_NATIVE, null) ? true : this.writeAndReturn(context, group);
 	}
 
 	private boolean writeAndReturn(JIDContext context, JID group) {

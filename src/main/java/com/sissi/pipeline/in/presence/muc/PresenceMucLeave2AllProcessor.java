@@ -30,7 +30,7 @@ public class PresenceMucLeave2AllProcessor extends ProxyProcessor {
 		JID group = super.build(protocol.getTo());
 		RelationMuc relation = super.ourRelation(context.jid(), group).cast(RelationMuc.class);
 		for (Relation each : super.myRelations(group)) {
-			super.findOne(super.build(each.cast(RelationMuc.class).getJID()), true).write(presence.clear().add(new XUser().setItem(new Item(relation, this.mucConfigBuilder.build(group)))).setType(PresenceType.UNAVAILABLE).setFrom(protocol.getTo()));
+			super.findOne(super.build(each.cast(RelationMuc.class).getJID()), true).write(presence.clear().add(new XUser().setItem(new Item(true, relation, this.mucConfigBuilder.build(group)))).setType(PresenceType.UNAVAILABLE).setFrom(protocol.getTo()));
 		}
 		return true;
 	}

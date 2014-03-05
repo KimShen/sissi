@@ -9,15 +9,25 @@
 	<bean id="presence.pro.muc.check.password" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckPasswordProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.config" />
 	</bean>
+	<bean id="presence.pro.muc.check.nickname.exists" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckNicknameExistsProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc" />
+	</bean>
+	<bean id="presence.pro.muc.check.nickname.contains" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckNicknameContainsProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.muc.join" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoinProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc" />
+	</bean>
 	<bean id="presence.pro.muc.check.affiliation" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckAffiliationProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.config" />
 	</bean>
-	<bean id="presence.pro.muc.check.nickname" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckNicknameContainsProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.muc.join" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoinProcessor" parent="global.pro.proxy">
+	<bean id="presence.pro.muc.check.relation" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckRelationProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc" />
+	</bean>
+	<bean id="presence.pro.muc.check.outcast" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckOutcastProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.2self.presence" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfPresenceProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.judger" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.2self.message" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfMessageProcessor" parent="global.pro.proxy">
@@ -26,19 +36,22 @@
 	</bean>
 	<bean id="presence.pro.muc.join.2fans" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.judger" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="presence.pro.muc.check.xmlns" />
-				<ref bean="presence.pro.muc.check.nickname" />
+				<ref bean="presence.pro.muc.check.nickname.contains" />
+				<ref bean="presence.pro.muc.check.nickname.exists" />
 				<ref bean="presence.pro.muc.check.password" />
+				<ref bean="presence.pro.muc.check.outcast" />
 				<ref bean="presence.pro.muc.check.affiliation" />
 				<ref bean="presence.pro.muc.join.2self.presence" />
+				<ref bean="presence.pro.muc.join.2self.message" />
 				<ref bean="presence.pro.muc.join" />
 				<ref bean="presence.pro.muc.join.2fans" />
-				<ref bean="presence.pro.muc.join.2self.message" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -49,13 +62,11 @@
 		<constructor-arg ref="ucenter.muc.config" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
-	<bean id="presence.pro.muc.leave.check" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckOutcastProcessor" parent="global.pro.proxy">
-		<property name="relationContext" ref="ucenter.muc" />
-	</bean>
 	<bean id="presence.pro.muc.leave.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.muc.leave.check" />
+				<ref bean="presence.pro.muc.check.outcast" />
+				<ref bean="presence.pro.muc.check.relation" />
 				<ref bean="presence.pro.muc.leave.2all" />
 				<ref bean="presence.pro.muc.leave" />
 			</util:list>

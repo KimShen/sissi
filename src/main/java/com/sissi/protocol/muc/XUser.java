@@ -8,10 +8,12 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.context.JID;
 import com.sissi.protocol.presence.X;
 import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
+import com.sissi.ucenter.muc.MucStatus;
 
 /**
  * @author kim 2014年2月11日
@@ -19,13 +21,39 @@ import com.sissi.ucenter.field.Fields;
 @Metadata(uri = XUser.XMLNS, localName = X.NAME)
 @XmlType(namespace = XUser.XMLNS)
 @XmlRootElement
-public class XUser extends X implements Field<String> {
+public class XUser extends X implements MucStatus, Field<String> {
 
 	public final static String XMLNS = "http://jabber.org/protocol/muc#user";
 
+	private boolean hidden;
+
 	private Item item;
 
+	private JID jid;
+
+	public XUser() {
+		super();
+	}
+
+	public XUser(boolean hidden) {
+		super();
+		this.hidden = hidden;
+	}
+
+	public XUser(JID jid, boolean hidden) {
+		this(hidden);
+		this.jid = jid;
+	}
+
 	private Set<ItemStatus> statuses;
+
+	public boolean hidden() {
+		return this.hidden;
+	}
+
+	public boolean owner() {
+		return this.jid != null ? this.jid.same(this.item.getJid()) : false;
+	}
 
 	public XUser add(String code) {
 		if (this.statuses == null) {
@@ -38,6 +66,11 @@ public class XUser extends X implements Field<String> {
 	public XUser setItem(Item item) {
 		this.item = item;
 		return this;
+	}
+
+	@Override
+	public Item item() {
+		return this.getItem();
 	}
 
 	@XmlElement
@@ -68,5 +101,9 @@ public class XUser extends X implements Field<String> {
 	@Override
 	public boolean hasChild() {
 		return false;
+	}
+
+	public <T extends MucStatus> T cast(Class<T> clazz) {
+		return clazz.cast(this);
 	}
 }

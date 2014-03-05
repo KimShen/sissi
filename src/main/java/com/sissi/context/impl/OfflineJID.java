@@ -55,7 +55,7 @@ public class OfflineJID implements JID {
 	}
 
 	public boolean isBare() {
-		return false;
+		return true;
 	}
 
 	public boolean isGroup() {

@@ -72,6 +72,28 @@ public class MongoMucConfigBuilder implements MucConfigBuilder {
 			this.configs = configs;
 		}
 
+		private String asString(String key) {
+			Object value = this.configs.get(key);
+			return value != null ? value.toString() : null;
+		}
+
+		private boolean asBoolean(String key) {
+			Object value = this.configs.get(key);
+			return value != null ? Boolean.parseBoolean(value.toString()) : false;
+		}
+
+		public JID user() {
+			return this.user;
+		}
+
+		public boolean level() {
+			return this.creator() || ItemAffiliation.parse(this.relation().getAffiliation()).contains(this.asString(MongoConfig.FIELD_AFFILIATION));
+		}
+
+		public boolean hidden(boolean compute) {
+			return compute ? !this.creator() && this.asBoolean(MongoConfig.FIELD_HIDDEN) : this.asBoolean(MongoConfig.FIELD_HIDDEN);
+		}
+
 		@Override
 		public boolean creator() {
 			return this.user.like(this.creator);

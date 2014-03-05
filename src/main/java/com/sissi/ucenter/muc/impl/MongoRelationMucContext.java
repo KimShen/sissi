@@ -50,7 +50,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	private final DBObject aggregateSort = BasicDBObjectBuilder.start().add("$sort", BasicDBObjectBuilder.start(this.fieldAffiliation, -1).get()).get();
 
-	private final DBObject aggregateProject = BasicDBObjectBuilder.start().add("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ACTIVATE, "$" + MongoConfig.FIELD_ACTIVATE).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_CREATOR).add(this.fieldRoles, "$" + this.fieldRoles).add(this.fieldAffiliation, BasicDBObjectBuilder.start().add("$cond", new Object[] { BasicDBObjectBuilder.start("$eq", new String[] { "$" + this.fieldAffiliations + "." + MongoConfig.FIELD_JID, "$" + this.fieldRoles + "." + MongoConfig.FIELD_JID }).get(), "$" + this.fieldAffiliations + "." + this.fieldAffiliation, null }).get()).get()).get();
+	private final DBObject aggregateProjectRelation = BasicDBObjectBuilder.start().add("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ACTIVATE, "$" + MongoConfig.FIELD_ACTIVATE).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_CREATOR).add(this.fieldRoles, "$" + this.fieldRoles).add(this.fieldAffiliation, BasicDBObjectBuilder.start().add("$cond", new Object[] { BasicDBObjectBuilder.start("$eq", new String[] { "$" + this.fieldAffiliations + "." + MongoConfig.FIELD_JID, "$" + this.fieldRoles + "." + MongoConfig.FIELD_JID }).get(), "$" + this.fieldAffiliations + "." + this.fieldAffiliation, null }).get()).get()).get();
 
 	private final MongoConfig config;
 
@@ -94,7 +94,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	@Override
 	public Relation ourRelation(JID from, JID to) {
-		AggregationOutput output = this.config.collection().aggregate(BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, to.asStringWithBare()).get()).get(), this.aggregateUnwindRoles, this.aggregateUnwindAffiliation, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start().add(this.fieldRoles + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).add(this.fieldRoles + "." + MongoConfig.FIELD_RESOURCE, from.resource()).get()).get(), this.aggregateProject, this.aggregateSort, this.aggregateLimit);
+		AggregationOutput output = this.config.collection().aggregate(BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, to.asStringWithBare()).get()).get(), this.aggregateUnwindRoles, this.aggregateUnwindAffiliation, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start().add(this.fieldRoles + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).add(this.fieldRoles + "." + MongoConfig.FIELD_RESOURCE, from.resource()).get()).get(), this.aggregateProjectRelation, this.aggregateSort, this.aggregateLimit);
 		List<?> result = List.class.cast(output.getCommandResult().get(this.fieldResult));
 		return result.isEmpty() ? new NoneRelation(to) : new MongoRelation(DBObject.class.cast(result.get(0)));
 	}

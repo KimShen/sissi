@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.ucenter.muc.MucConfig;
+import com.sissi.ucenter.muc.MucItem;
 import com.sissi.ucenter.muc.RelationMuc;
 
 /**
@@ -12,7 +13,7 @@ import com.sissi.ucenter.muc.RelationMuc;
  */
 @XmlType(namespace = XMuc.XMLNS)
 @XmlRootElement(name = Item.NAME)
-public class Item {
+public class Item implements MucItem {
 
 	public final static String NAME = "item";
 
@@ -20,18 +21,21 @@ public class Item {
 
 	private MucConfig config;
 
+	private boolean hidden;
+
 	public Item() {
 	}
 
-	public Item(RelationMuc relation, MucConfig config) {
+	public Item(boolean hidden, RelationMuc relation, MucConfig config) {
 		super();
 		this.config = config;
+		this.hidden = hidden;
 		this.relation = relation;
 	}
 
 	@XmlAttribute
 	public String getJid() {
-		return this.relation.getJID();
+		return this.hidden ? null : this.relation.getJID();
 	}
 
 	@XmlAttribute

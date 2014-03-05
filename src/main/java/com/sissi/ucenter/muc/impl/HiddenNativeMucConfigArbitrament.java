@@ -7,16 +7,16 @@ import com.sissi.ucenter.muc.MucConfigParam;
 /**
  * @author kim 2014年3月5日
  */
-public class AffiliationMucConfigArbitrament implements MucConfigArbitrament {
+public class HiddenNativeMucConfigArbitrament implements MucConfigArbitrament {
 
 	@Override
 	public boolean arbitrate(MucConfigParam param, Object request) {
-		return param.level();
+		return param.hidden(false);
 	}
 
 	@Override
 	public String support() {
-		return MucConfig.AFFILIATION;
+		return MucConfig.HIDDEN_NATIVE;
 	}
 
 }

@@ -17,6 +17,8 @@ public interface MongoConfig extends Config {
 
 	public static final String FIELD_INDEX = "index";
 
+	public static final String FIELD_HIDDEN = "hidden";
+
 	public static final String FIELD_CREATOR = "creator";
 
 	public static final String FIELD_PRIORITY = "priority";
@@ -28,6 +30,8 @@ public interface MongoConfig extends Config {
 	public static final String FIELD_USERNAME = "username";
 
 	public static final String FIELD_PASSWORD = "password";
+
+	public static final String FIELD_AFFILIATION = "affiliation";
 
 	public MongoConfig clear();
 
