@@ -8,6 +8,7 @@ import java.util.Map;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sissi.commons.Extracter;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
@@ -61,14 +62,12 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Map<String, Object> peek(Map<String, Object> query) {
-		return this.config.collection().findOne(BasicDBObjectBuilder.start(query).get()).toMap();
+		return Extracter.asMap(this.config.collection().findOne(BasicDBObjectBuilder.start(query).get()));
 	}
 
-	@SuppressWarnings("unchecked")
 	public Map<String, Object> peek(Map<String, Object> query, Map<String, Object> update) {
-		return this.config.collection().findAndModify(BasicDBObjectBuilder.start(query).add(PersistentElementBox.fieldClass, this.support).get(), BasicDBObjectBuilder.start(update).get()).toMap();
+		return Extracter.asMap(this.config.collection().findAndModify(BasicDBObjectBuilder.start(query).add(PersistentElementBox.fieldClass, this.support).get(), BasicDBObjectBuilder.start(update).get()));
 	}
 
 	@Override
@@ -90,8 +89,7 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 			super();
 			try {
 				while (cursor.hasNext()) {
-					@SuppressWarnings("unchecked")
-					Map<String, Object> each = cursor.next().toMap();
+					Map<String, Object> each = Extracter.asMap(cursor.next());
 					for (PersistentElement element : MongoDelayElementBox.this.elements) {
 						if (element.isSupport(each)) {
 							this.add(element.read(each));

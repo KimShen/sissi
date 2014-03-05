@@ -123,7 +123,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 	}
 
 	private JID extract(DBObject db) {
-		DBObject roles = DBObject.class.cast(db.get(this.fieldRoles));
+		DBObject roles = Extracter.asDBObject(db, this.fieldRoles);
 		return this.jidBuilder.build(Extracter.asString(roles, MongoConfig.FIELD_JID)).resource(Extracter.asString(roles, MongoConfig.FIELD_RESOURCE));
 	}
 
@@ -203,7 +203,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 		public MongoRelation(DBObject db) {
 			this.creator = Extracter.asString(db, MongoConfig.FIELD_CREATOR);
 			this.affiliaion = Extracter.asString(db, MongoRelationMucContext.this.fieldAffiliation);
-			DBObject roles = DBObject.class.cast(db.get(MongoRelationMucContext.this.fieldRoles));
+			DBObject roles = Extracter.asDBObject(db, MongoRelationMucContext.this.fieldRoles);
 			this.jid = Extracter.asString(roles, MongoConfig.FIELD_JID);
 			this.name = Extracter.asString(roles, MongoConfig.FIELD_NICK);
 			this.resource = Extracter.asString(roles, MongoConfig.FIELD_RESOURCE);

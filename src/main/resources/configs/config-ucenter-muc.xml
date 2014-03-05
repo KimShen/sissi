@@ -18,6 +18,7 @@
 	</bean>
 
 	<bean id="ucenter.muc.config" class="com.sissi.ucenter.muc.impl.MongoMucConfigBuilder">
+		<constructor-arg ref="global.jid" />
 		<constructor-arg ref="ucenter.muc" />
 		<constructor-arg>
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
@@ -25,6 +26,14 @@
 				<constructor-arg index="1" value="${mongo.db}" />
 				<constructor-arg index="2" value="${mongo.collection.muc}" />
 			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.ucenter.muc.impl.PasswordMucConfigArbitrament" />
+				<bean class="com.sissi.ucenter.muc.impl.AffiliationMucConfigArbitrament">
+					<constructor-arg value="MEMBER" />
+				</bean>
+			</util:list>
 		</constructor-arg>
 	</bean>
 </beans>

@@ -1,6 +1,7 @@
 package com.sissi.pipeline.in.iq.si;
 
 import com.mongodb.BasicDBObjectBuilder;
+import com.sissi.commons.Extracter;
 import com.sissi.context.JIDContext;
 import com.sissi.persistent.PersistentElementBox;
 import com.sissi.pipeline.in.ProxyProcessor;
@@ -32,10 +33,9 @@ public class Si4DelegationProcessor extends ProxyProcessor {
 		this.persistentElementBox = persistentElementBox;
 	}
 
-	@SuppressWarnings("unchecked")
 	public boolean input(JIDContext context, Protocol protocol) {
 		String host = protocol.cast(Si.class).setId(protocol.parent().getId()).host(super.build(protocol.parent().getTo()).asString(this.bare), context.jid().asString(this.bare));
-		context.write(new IQ().add(new Bytestreams().setSid(this.persistentElementBox.peek(BasicDBObjectBuilder.start(PersistentElementBox.fieldSid, protocol.parent().getId()).get().toMap(), BasicDBObjectBuilder.start("$addToSet", BasicDBObjectBuilder.start(PersistentElementBox.fieldHost, host).get()).get().toMap()).get(PersistentElementBox.fieldSid).toString()).add(this.streamhost, true)).setFrom(this.delegation).setId(host).setType(ProtocolType.SET));
+		context.write(new IQ().add(new Bytestreams().setSid(this.persistentElementBox.peek(Extracter.asMap(BasicDBObjectBuilder.start(PersistentElementBox.fieldSid, protocol.parent().getId()).get()), Extracter.asMap(BasicDBObjectBuilder.start("$addToSet", BasicDBObjectBuilder.start(PersistentElementBox.fieldHost, host).get()).get())).get(PersistentElementBox.fieldSid).toString()).add(this.streamhost, true)).setFrom(this.delegation).setId(host).setType(ProtocolType.SET));
 		return true;
 	}
 }

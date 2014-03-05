@@ -27,6 +27,10 @@ public enum ItemAffiliation {
 	public boolean contains(ItemAffiliation affiliation) {
 		return this.ordinal() >= affiliation.ordinal();
 	}
+	
+	public boolean contains(String affiliation) {
+		return this.contains(ItemAffiliation.parse(affiliation));
+	}
 
 	public boolean equals(String affiliation) {
 		return this.toString().equals(affiliation);

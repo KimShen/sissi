@@ -17,7 +17,7 @@ public class PresenceMucCheckNicknameContainsProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return super.build(protocol.getTo()).isBare() ? true : this.writeAndReturn(context, protocol);
+		return super.build(protocol.getTo()).isBare() ? this.writeAndReturn(context, protocol) : true;
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

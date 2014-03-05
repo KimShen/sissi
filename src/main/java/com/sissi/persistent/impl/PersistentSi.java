@@ -3,6 +3,7 @@ package com.sissi.persistent.impl;
 import java.util.Map;
 
 import com.mongodb.BasicDBObjectBuilder;
+import com.sissi.commons.Extracter;
 import com.sissi.context.JIDBuilder;
 import com.sissi.persistent.PersistentElementBox;
 import com.sissi.protocol.Element;
@@ -36,9 +37,8 @@ public class PersistentSi extends PersistentProtocol {
 		this.delegation = delegation;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Map<String, Object> query(Element element) {
-		return BasicDBObjectBuilder.start(PersistentElementBox.fieldId, element.getId()).get().toMap();
+		return Extracter.asMap(BasicDBObjectBuilder.start(PersistentElementBox.fieldId, element.getId()).get());
 	}
 
 	@Override

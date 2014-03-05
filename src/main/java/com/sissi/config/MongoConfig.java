@@ -27,6 +27,8 @@ public interface MongoConfig extends Config {
 
 	public static final String FIELD_USERNAME = "username";
 
+	public static final String FIELD_PASSWORD = "password";
+
 	public MongoConfig clear();
 
 	public MongoCollection collection();

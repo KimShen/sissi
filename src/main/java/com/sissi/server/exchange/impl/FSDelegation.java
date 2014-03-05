@@ -23,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.mongodb.BasicDBObjectBuilder;
+import com.sissi.commons.Extracter;
 import com.sissi.commons.Trace;
 import com.sissi.commons.apache.IOUtils;
 import com.sissi.persistent.PersistentElementBox;
@@ -77,9 +78,8 @@ public class FSDelegation implements Delegation {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Delegation recover(Exchanger exchanger) {
-		Map<String, Object> peek = this.persistentElementBox.peek(BasicDBObjectBuilder.start(PersistentElementBox.fieldHost, exchanger.host()).get().toMap());
+		Map<String, Object> peek = this.persistentElementBox.peek(Extracter.asMap(BasicDBObjectBuilder.start(PersistentElementBox.fieldHost, exchanger.host()).get()));
 		ByteTransferBuffer buffer = null;
 		try {
 			buffer = new ByteTransferBuffer(new BufferedInputStream(new FileInputStream(new File(FSDelegation.this.dir, peek.get(PersistentElementBox.fieldSid).toString()))), Long.valueOf(peek.get(PersistentElementBox.fieldSize).toString()));

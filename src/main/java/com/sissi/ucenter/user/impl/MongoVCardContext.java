@@ -57,10 +57,9 @@ public class MongoVCardContext extends MongoFieldContext implements VCardContext
 		return new BeanField<String>().setName(name).setValue(Extracter.asString(this.config.collection().findOne(this.buildQuery(jid), BasicDBObjectBuilder.start(name, 1).get()), name));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Fields> T get(JID jid, T fields) {
-		Map<String, Object> entity = this.config.collection().findOne(this.buildQuery(jid)).toMap();
+		Map<String, Object> entity = Extracter.asMap(this.config.collection().findOne(this.buildQuery(jid)));
 		for (String element : entity.keySet()) {
 			if (this.parser.containsKey(element)) {
 				fields.add(this.parser.get(element).read(entity.get(element)));
