@@ -17,7 +17,11 @@ public interface MongoConfig extends Config {
 
 	public static final String FIELD_INDEX = "index";
 
+	public static final String FIELD_COUNT = "count";
+
 	public static final String FIELD_HIDDEN = "hidden";
+
+	public static final String FIELD_CONFIGS = "configs";
 
 	public static final String FIELD_CREATOR = "creator";
 

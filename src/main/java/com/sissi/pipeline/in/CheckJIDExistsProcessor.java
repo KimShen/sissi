@@ -7,7 +7,7 @@ import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.detail.ServiceUnavaliable;
+import com.sissi.protocol.error.detail.ServiceUnavailable;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.ucenter.user.VCardContext;
 
@@ -16,7 +16,7 @@ import com.sissi.ucenter.user.VCardContext;
  */
 public class CheckJIDExistsProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ServiceUnavaliable.DETAIL);
+	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ServiceUnavailable.DETAIL);
 
 	private final VCardContext vcardContext;
 

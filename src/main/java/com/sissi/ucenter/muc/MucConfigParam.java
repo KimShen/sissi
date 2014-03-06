@@ -13,8 +13,12 @@ public interface MucConfigParam {
 
 	public boolean level();
 
+	public boolean level(String affiliation);
+
 	public boolean creator();
-	
+
+	public boolean activate();
+
 	public boolean hidden(boolean compute);
 
 	public RelationMuc relation();

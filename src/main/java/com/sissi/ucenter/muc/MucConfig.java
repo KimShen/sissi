@@ -7,10 +7,14 @@ import com.sissi.context.JID;
  */
 public interface MucConfig {
 
+	public final static String COUNT = "COUNT";
+
 	public final static String PASSWORD = "PASSWORD";
-	
+
+	public final static String ACTIVATE = "ACTIVATE";
+
 	public final static String AFFILIATION = "AFFILIATION";
-	
+
 	public final static String HIDDEN_NATIVE = "HIDDEN_NATIVE";
 
 	public final static String HIDDEN_COMPUTER = "HIDDEN_COMPUTE";

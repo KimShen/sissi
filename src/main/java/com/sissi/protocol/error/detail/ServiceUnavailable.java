@@ -7,14 +7,14 @@ import com.sissi.protocol.error.ServerErrorDetail;
 /**
  * @author kim 2014年1月14日
  */
-@XmlRootElement(name = ServiceUnavaliable.NAME)
-public class ServiceUnavaliable extends ServerErrorDetail {
+@XmlRootElement(name = ServiceUnavailable.NAME)
+public class ServiceUnavailable extends ServerErrorDetail {
 
-	public final static ServiceUnavaliable DETAIL = new ServiceUnavaliable();
+	public final static ServiceUnavailable DETAIL = new ServiceUnavailable();
 
 	public final static String NAME = "service-unavailable";
 
-	private ServiceUnavaliable() {
+	private ServiceUnavailable() {
 		super(XMLNS_ELEMENT);
 	}
 }

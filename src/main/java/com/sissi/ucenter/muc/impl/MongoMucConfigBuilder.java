@@ -24,13 +24,11 @@ import com.sissi.ucenter.muc.RelationMuc;
  */
 public class MongoMucConfigBuilder implements MucConfigBuilder {
 
-	private final String fieldConfigs = "configs";
-
 	private final String fieldMapping = "mapping";
 
 	private final Map<String, MucConfigArbitrament> arbitraments = new HashMap<String, MucConfigArbitrament>();
 
-	private final DBObject filter = BasicDBObjectBuilder.start().add(this.fieldConfigs, 1).add(MongoConfig.FIELD_CREATOR, 1).get();
+	private final DBObject filter = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_CONFIGS, 1).add(MongoConfig.FIELD_CREATOR, 1).add(MongoConfig.FIELD_ACTIVATE, 1).get();
 
 	private final MongoConfig config;
 
@@ -51,25 +49,28 @@ public class MongoMucConfigBuilder implements MucConfigBuilder {
 	@Override
 	public MucConfig build(JID group) {
 		DBObject db = this.config.collection().findOne(BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, group.asStringWithBare()).get(), this.filter);
-		return new MongoMucGroupConfig(group, this.jidBuilder.build(Extracter.asString(db, MongoConfig.FIELD_CREATOR)), Extracter.asDBObject(db, this.fieldConfigs));
+		return new MongoMucGroupConfig(group, this.jidBuilder.build(Extracter.asString(db, MongoConfig.FIELD_CREATOR)), Extracter.asBoolean(db, MongoConfig.FIELD_ACTIVATE, true), Extracter.asDBObject(db, MongoConfig.FIELD_CONFIGS));
 	}
 
 	private class MucConfigParamImpl implements MucConfigParam {
 
-		private JID user;
+		private final JID user;
 
-		private JID group;
+		private final JID group;
 
-		private JID creator;
+		private final JID creator;
 
-		private Map<String, Object> configs;
+		private final boolean activate;
 
-		public MucConfigParamImpl(JID user, JID group, JID creator, Map<String, Object> configs) {
+		private final Map<String, Object> configs;
+
+		public MucConfigParamImpl(JID user, JID group, JID creator, boolean activate, Map<String, Object> configs) {
 			super();
 			this.user = user;
 			this.group = group;
 			this.creator = creator;
 			this.configs = configs;
+			this.activate = activate;
 		}
 
 		private String asString(String key) {
@@ -87,7 +88,11 @@ public class MongoMucConfigBuilder implements MucConfigBuilder {
 		}
 
 		public boolean level() {
-			return this.creator() || ItemAffiliation.parse(this.relation().getAffiliation()).contains(this.asString(MongoConfig.FIELD_AFFILIATION));
+			return this.level(this.asString(MongoConfig.FIELD_AFFILIATION));
+		}
+
+		public boolean level(String affiliation) {
+			return this.creator() || ItemAffiliation.parse(this.relation().getAffiliation()).contains(affiliation);
 		}
 
 		public boolean hidden(boolean compute) {
@@ -97,6 +102,10 @@ public class MongoMucConfigBuilder implements MucConfigBuilder {
 		@Override
 		public boolean creator() {
 			return this.user.like(this.creator);
+		}
+
+		public boolean activate() {
+			return this.creator() || this.activate;
 		}
 
 		public RelationMuc relation() {
@@ -116,12 +125,15 @@ public class MongoMucConfigBuilder implements MucConfigBuilder {
 
 		private final int[] mapping;
 
+		private final boolean activate;
+
 		private final Map<String, Object> configs;
 
-		public MongoMucGroupConfig(JID group, JID creator, DBObject configs) {
+		public MongoMucGroupConfig(JID group, JID creator, boolean activate, DBObject configs) {
 			super();
 			this.group = group;
 			this.creator = creator;
+			this.activate = activate;
 			this.configs = Extracter.asMap(configs);
 			this.mapping = Extracter.asInts(configs, MongoMucConfigBuilder.this.fieldMapping);
 		}
@@ -135,7 +147,7 @@ public class MongoMucConfigBuilder implements MucConfigBuilder {
 		@Override
 		public boolean allowed(JID jid, String key, Object value) {
 			MucConfigArbitrament arbitrament = MongoMucConfigBuilder.this.arbitraments.get(key);
-			return arbitrament != null ? arbitrament.arbitrate(new MucConfigParamImpl(jid, this.group, this.creator, this.configs), value) : false;
+			return arbitrament != null ? arbitrament.arbitrate(new MucConfigParamImpl(jid, this.group, this.creator, this.activate, this.configs), value) : false;
 		}
 	}
 }

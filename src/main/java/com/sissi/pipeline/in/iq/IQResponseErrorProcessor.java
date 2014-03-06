@@ -4,14 +4,14 @@ import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.detail.ServiceUnavaliable;
+import com.sissi.protocol.error.detail.ServiceUnavailable;
 
 /**
  * @author kim 2014年1月20日
  */
 public class IQResponseErrorProcessor extends IQResponseProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ServiceUnavaliable.DETAIL);
+	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ServiceUnavailable.DETAIL);
 
 	public IQResponseErrorProcessor() {
 		super(ProtocolType.ERROR.toString(), true);

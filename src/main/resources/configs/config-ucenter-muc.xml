@@ -29,10 +29,14 @@
 		</constructor-arg>
 		<constructor-arg>
 			<util:list>
+				<bean class="com.sissi.ucenter.muc.impl.CountMucConfigArbitrament">
+					<constructor-arg value="MEMBER" />
+				</bean>
+				<bean class="com.sissi.ucenter.muc.impl.ActivateMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.PasswordMucConfigArbitrament" />
+				<bean class="com.sissi.ucenter.muc.impl.AffiliationMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.HiddenNativeMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.HiddenComputeMucConfigArbitrament" />
-				<bean class="com.sissi.ucenter.muc.impl.AffiliationMucConfigArbitrament" />
 			</util:list>
 		</constructor-arg>
 	</bean>

@@ -14,7 +14,7 @@ import com.mongodb.DBObject;
  * @author kim 2014年2月23日
  */
 public class Extracter {
-	
+
 	private final static Map<String, Object> map = Collections.unmodifiableMap(new HashMap<String, Object>());
 
 	public static String asString(DBObject db, String key) {
@@ -44,8 +44,12 @@ public class Extracter {
 	}
 
 	public static boolean asBoolean(DBObject db, String key) {
+		return Extracter.asBoolean(db, key, Boolean.FALSE);
+	}
+
+	public static boolean asBoolean(DBObject db, String key, boolean def) {
 		Object value = Extracter.as(db, key);
-		return value != null ? Boolean.class.cast(value) : Boolean.FALSE;
+		return value != null ? Boolean.class.cast(value) : def;
 	}
 
 	public static DBObject asDBObject(DBObject db, String key) {
