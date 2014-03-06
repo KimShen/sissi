@@ -37,6 +37,8 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 	private final Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
 
+	private final Map<String, RelationUpdate> update = new HashMap<String, RelationUpdate>();
+
 	private final DBObject filterMaster = BasicDBObjectBuilder.start(this.fieldMaster, 1).get();
 
 	private final DBObject filterSlave = BasicDBObjectBuilder.start(this.fieldSlave, 1).get();
@@ -61,8 +63,6 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 	private final JIDBuilder jidBuilder;
 
-	private final Map<String, RelationUpdate> update;
-
 	private RelationInductor relationInductor;
 
 	public MongoRelationRosterContext(String group, MongoConfig config, JIDBuilder jidBuilder) {
@@ -70,10 +70,8 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 		this.config = config;
 		this.jidBuilder = jidBuilder;
 		this.groups = new String[] { group };
-		Map<String, RelationUpdate> update = new HashMap<String, RelationUpdate>();
-		update.put(RosterSubscription.NONE.toString(), new RelationUpdate(this.entityBrokeTo, this.entityBrokeFrom));
-		update.put(RosterSubscription.TO.toString(), new RelationUpdate(this.entityEstablishFrom, this.entityEstablishTo));
-		this.update = Collections.unmodifiableMap(update);
+		this.update.put(RosterSubscription.NONE.toString(), new RelationUpdate(this.entityBrokeTo, this.entityBrokeFrom));
+		this.update.put(RosterSubscription.TO.toString(), new RelationUpdate(this.entityEstablishFrom, this.entityEstablishTo));
 	}
 
 	public void setRelationInductor(RelationInductor relationInductor) {

@@ -16,20 +16,10 @@
 		<constructor-arg ref="global.jid" />
 		<constructor-arg ref="ucenter.config" />
 		<constructor-arg>
-			<util:map>
-				<entry>
-					<key>
-						<util:constant static-field="com.sissi.protocol.iq.vcard.field.Photo.NAME" />
-					</key>
-					<bean class="com.sissi.ucenter.user.impl.PhotoFieldParser" />
-				</entry>
-				<entry>
-					<key>
-						<util:constant static-field="com.sissi.protocol.iq.vcard.field.Nickname.NAME" />
-					</key>
-					<bean class="com.sissi.ucenter.user.impl.NicknameFieldParser" />
-				</entry>
-			</util:map>
+			<util:list>
+				<bean class="com.sissi.ucenter.user.impl.PhotoFieldParser" />
+				<bean class="com.sissi.ucenter.user.impl.NicknameFieldParser" />
+			</util:list>
 		</constructor-arg>
 	</bean>
 

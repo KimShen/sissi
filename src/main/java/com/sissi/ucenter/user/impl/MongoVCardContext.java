@@ -1,6 +1,7 @@
 package com.sissi.ucenter.user.impl;
 
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.mongodb.BasicDBObjectBuilder;
@@ -21,17 +22,19 @@ import com.sissi.ucenter.user.VCardContext;
  */
 public class MongoVCardContext extends MongoFieldContext implements VCardContext {
 
+	private final Map<String, FieldParser<Object>> parser = new HashMap<String, FieldParser<Object>>();
+
 	private final MongoConfig config;
 
 	private final JIDBuilder jidBuilder;
 
-	private final Map<String, FieldParser<Object>> parser;
-
-	public MongoVCardContext(MongoConfig config, JIDBuilder jidBuilder, Map<String, FieldParser<Object>> parser) {
+	public MongoVCardContext(MongoConfig config, JIDBuilder jidBuilder, List<FieldParser<Object>> parser) {
 		super();
 		this.config = config;
 		this.jidBuilder = jidBuilder;
-		this.parser = Collections.unmodifiableMap(parser);
+		for (FieldParser<Object> each : parser) {
+			this.parser.put(each.support(), each);
+		}
 	}
 
 	public boolean exists(String jid) {

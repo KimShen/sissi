@@ -45,6 +45,9 @@
 		<constructor-arg>
 			<util:list>
 				<bean class="com.sissi.ucenter.muc.impl.Code110MucStatusJudger" />
+				<bean class="com.sissi.ucenter.muc.impl.Code170MucStatusJudger">
+					<constructor-arg value="${pipeline.muc.log}" />
+				</bean>
 			</util:list>
 		</constructor-arg>
 	</bean>

@@ -13,4 +13,8 @@ public class NicknameFieldParser implements FieldParser<String> {
 	public Field<?> read(String element) {
 		return new Nickname(element);
 	}
+	
+	public String support(){
+		return Nickname.NAME;
+	}
 }

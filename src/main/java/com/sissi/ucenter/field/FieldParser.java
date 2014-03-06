@@ -6,4 +6,6 @@ package com.sissi.ucenter.field;
 public interface FieldParser<T> {
 
 	public Field<?> read(T elememt);
+	
+	public String support();
 }

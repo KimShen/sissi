@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -208,13 +207,11 @@ public class JAXBWriter implements Writer {
 
 		public final static NamespacePrefixMapper MAPPER = new XmppPrefixMapper();
 
-		private final Map<String, String> mapping;
+		private final Map<String, String> mapping = new HashMap<String, String>();
 
 		private XmppPrefixMapper() {
 			super();
-			Map<String, String> mapping = new HashMap<String, String>();
-			mapping.put(Stream.XMLNS, Stream.NAME);
-			this.mapping = Collections.unmodifiableMap(mapping);
+			this.mapping.put(Stream.XMLNS, Stream.NAME);
 		}
 
 		public String getPreferredPrefix(String namespaceUri, String suggestion, boolean requirePrefix) {

@@ -18,4 +18,7 @@ public class PhotoFieldParser implements FieldParser<Map<String, Object>> {
 		return new Photo(element.get(Type.NAME).toString(), element.get(Binval.NAME).toString());
 	}
 
+	public String support(){
+		return Photo.NAME;
+	}
 }
