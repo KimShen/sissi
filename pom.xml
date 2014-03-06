@@ -81,6 +81,7 @@
 		<maven.register.instructions>From sissi</maven.register.instructions>
 		<!-- For Pipeline -->
 		<maven.pipeline.free>false</maven.pipeline.free>
+		<maven.pipeline.muc.multi>true</maven.pipeline.muc.multi>
 		<maven.pipeline.muc.tip>Room is not anonymous</maven.pipeline.muc.tip>
 		<maven.pipeline.persistent.resend>3</maven.pipeline.persistent.resend>
 		<maven.pipeline.persistent.tip>From Sissi offline</maven.pipeline.persistent.tip>

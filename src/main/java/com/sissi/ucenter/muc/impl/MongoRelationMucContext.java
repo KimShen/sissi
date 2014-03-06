@@ -3,6 +3,7 @@ package com.sissi.ucenter.muc.impl;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,11 +18,12 @@ import com.sissi.commons.Extracter;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
-import com.sissi.context.impl.OfflineJID;
+import com.sissi.context.impl.ShareJIDs;
 import com.sissi.protocol.muc.ItemAffiliation;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationContext;
 import com.sissi.ucenter.impl.NoneRelation;
+import com.sissi.ucenter.muc.MucJIDs;
 import com.sissi.ucenter.muc.RelationMuc;
 import com.sissi.ucenter.muc.RelationMucMapping;
 
@@ -29,6 +31,8 @@ import com.sissi.ucenter.muc.RelationMucMapping;
  * @author kim 2014年2月11日
  */
 public class MongoRelationMucContext implements RelationContext, RelationMucMapping {
+
+	private final String fieldId = "_id";
 
 	private final String fieldRole = "role";
 
@@ -50,7 +54,13 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	private final DBObject aggregateSort = BasicDBObjectBuilder.start().add("$sort", BasicDBObjectBuilder.start(this.fieldAffiliation, -1).get()).get();
 
+	private final DBObject aggregateProjectMapping = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start(this.fieldRoles, "$" + this.fieldRoles).get()).get();
+
+	private final DBObject aggregateGroup = BasicDBObjectBuilder.start("$group", BasicDBObjectBuilder.start().add(this.fieldId, "$" + this.fieldRoles + "." + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_RESOURCE, BasicDBObjectBuilder.start("$push", "$" + this.fieldRoles + "." + MongoConfig.FIELD_RESOURCE).get()).get()).get();
+
 	private final DBObject aggregateProjectRelation = BasicDBObjectBuilder.start().add("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ACTIVATE, "$" + MongoConfig.FIELD_ACTIVATE).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_CREATOR).add(this.fieldRoles, "$" + this.fieldRoles).add(this.fieldAffiliation, BasicDBObjectBuilder.start().add("$cond", new Object[] { BasicDBObjectBuilder.start("$eq", new String[] { "$" + this.fieldAffiliations + "." + MongoConfig.FIELD_JID, "$" + this.fieldRoles + "." + MongoConfig.FIELD_JID }).get(), "$" + this.fieldAffiliations + "." + this.fieldAffiliation, null }).get()).get()).get();
+
+	private final MucJIDs emptyJIDs = new EmptyJIDs();
 
 	private final MongoConfig config;
 
@@ -116,15 +126,59 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 	}
 
 	@Override
-	public JID mapping(JID group) {
-		AggregationOutput output = this.config.collection().aggregate(BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, group.asStringWithBare()).get()).get(), this.aggregateUnwindRoles, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(this.fieldRoles + "." + MongoConfig.FIELD_NICK, group.resource()).get()).get());
-		List<?> result = List.class.cast(output.getCommandResult().get(this.fieldResult));
-		return result.isEmpty() ? OfflineJID.OFFLINE : this.extract(DBObject.class.cast(result.get(0)));
+	@SuppressWarnings("unchecked")
+	public MucJIDs mapping(JID group) {
+		AggregationOutput output = this.config.collection().aggregate(BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, group.asStringWithBare()).get()).get(), this.aggregateUnwindRoles, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(this.fieldRoles + "." + MongoConfig.FIELD_NICK, group.resource()).get()).get(), this.aggregateProjectMapping, this.aggregateGroup);
+		List<DBObject> result = List.class.cast(output.getCommandResult().get(this.fieldResult));
+		return result.isEmpty() ? this.emptyJIDs : this.extract(DBObject.class.cast(result.get(0)));
 	}
 
-	private JID extract(DBObject db) {
-		DBObject roles = Extracter.asDBObject(db, this.fieldRoles);
-		return this.jidBuilder.build(Extracter.asString(roles, MongoConfig.FIELD_JID)).resource(Extracter.asString(roles, MongoConfig.FIELD_RESOURCE));
+	private MucJIDs extract(DBObject db) {
+		return new ShareJIDs(this.jidBuilder.build(Extracter.asString(db, this.fieldId)), Extracter.asStrings(db, MongoConfig.FIELD_RESOURCE));
+	}
+
+	private class EmptyJIDs implements MucJIDs {
+
+		@Override
+		public boolean isEmpty() {
+			return true;
+		}
+
+		@Override
+		public boolean lessThan(Integer counter) {
+			return false;
+		}
+
+		@Override
+		public Iterator<JID> iterator() {
+			return new EmptyIterator();
+		}
+
+		public boolean same(JID jid) {
+			return false;
+		}
+
+		@Override
+		public boolean like(JID jid) {
+			return false;
+		}
+
+		private class EmptyIterator implements Iterator<JID> {
+
+			@Override
+			public boolean hasNext() {
+				return false;
+			}
+
+			@Override
+			public JID next() {
+				return null;
+			}
+
+			@Override
+			public void remove() {
+			}
+		}
 	}
 
 	private class JIDGroup extends HashSet<JID> {

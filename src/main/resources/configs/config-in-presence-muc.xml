@@ -10,6 +10,7 @@
 		<constructor-arg ref="ucenter.muc.config" />
 	</bean>
 	<bean id="presence.pro.muc.check.nickname.exists" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckNicknameExistsProcessor" parent="global.pro.proxy">
+		<constructor-arg index="0" value="${pipeline.muc.multi}" />
 		<constructor-arg ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.muc.check.nickname.contains" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckNicknameContainsProcessor" parent="global.pro.proxy" />
@@ -58,7 +59,8 @@
 	<bean id="presence.pro.muc.leave" class="com.sissi.pipeline.in.presence.muc.PresenceMucLeaveProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
-	<bean id="presence.pro.muc.leave.2all" class="com.sissi.pipeline.in.presence.muc.PresenceMucLeave2AllProcessor" parent="global.pro.proxy">
+	<bean id="presence.pro.muc.leave.2self" class="com.sissi.pipeline.in.presence.muc.PresenceMucLeave2SelfProcessor" />
+	<bean id="presence.pro.muc.leave.2fans" class="com.sissi.pipeline.in.presence.muc.PresenceMucLeave2FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.config" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
@@ -67,8 +69,9 @@
 			<util:list>
 				<ref bean="presence.pro.muc.check.outcast" />
 				<ref bean="presence.pro.muc.check.relation" />
-				<ref bean="presence.pro.muc.leave.2all" />
 				<ref bean="presence.pro.muc.leave" />
+				<ref bean="presence.pro.muc.leave.2fans" />
+				<ref bean="presence.pro.muc.leave.2self" />
 			</util:list>
 		</constructor-arg>
 	</bean>

@@ -283,7 +283,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public JIDContext pong(Element element) {
-			if (this.ping.get() == element.getId().hashCode()) {
+			if (element.getId() != null && this.ping.get() == element.getId().hashCode()) {
 				this.ping.set(pong);
 			}
 			return this;

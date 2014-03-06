@@ -1,9 +1,7 @@
 package com.sissi.addressing.impl;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,6 +19,7 @@ import com.sissi.context.JIDContextBuilder;
 import com.sissi.context.JIDContextParam;
 import com.sissi.context.JIDs;
 import com.sissi.context.impl.JIDContexts;
+import com.sissi.context.impl.ShareJIDs;
 import com.sissi.gc.GC;
 import com.sissi.resource.ResourceCounter;
 import com.sissi.thread.Interval;
@@ -106,7 +105,7 @@ public class MongoAddressing implements Addressing {
 	}
 
 	public JIDs resources(JID jid, boolean usingResource) {
-		return new Resources(jid, this.config.collection().find(this.buildQueryWithSmartResource(jid, usingResource), this.filterResource));
+		return new ShareJIDs(jid, this.config.collection().find(this.buildQueryWithSmartResource(jid, usingResource), this.filterResource));
 	}
 
 	private JIDContexts find(JID jid, boolean usingResource, boolean usingOffline) {
@@ -127,64 +126,6 @@ public class MongoAddressing implements Addressing {
 
 	private boolean exists(Long index) {
 		return this.config.collection().findOne(BasicDBObjectBuilder.start(MongoConfig.FIELD_INDEX, index).get(), MongoAddressing.this.filterIndex) != null;
-	}
-
-	private class Resources implements JIDs {
-
-		private final AtomicInteger counter = new AtomicInteger();
-
-		private final String[] resources;
-
-		private final JID jid;
-
-		private Resources(JID source, DBCursor cursor) {
-			try {
-				this.jid = source.bare();
-				this.resources = new String[cursor.count()];
-				for (int index = 0; cursor.hasNext(); index++) {
-					this.resources[index] = Extracter.asString(cursor.next(), MongoConfig.FIELD_RESOURCE);
-				}
-			} finally {
-				cursor.close();
-			}
-		}
-
-		public Iterator<JID> iterator() {
-			return new JIDIterator();
-		}
-
-		public boolean isEmpty() {
-			return this.resources.length == 0;
-		}
-
-		public boolean lessThan(Integer counter) {
-			return this.resources.length < counter;
-		}
-
-		private boolean hasNext() {
-			return this.counter.get() < this.resources.length;
-		}
-
-		private JID next() {
-			return this.jid.resource(this.resources[this.counter.incrementAndGet() - 1]);
-		}
-
-		private class JIDIterator implements Iterator<JID> {
-
-			@Override
-			public boolean hasNext() {
-				return Resources.this.hasNext();
-			}
-
-			@Override
-			public JID next() {
-				return Resources.this.next();
-			}
-
-			@Override
-			public void remove() {
-			}
-		}
 	}
 
 	private class MongoJIDContexts extends JIDContexts {

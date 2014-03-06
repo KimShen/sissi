@@ -7,5 +7,5 @@ import com.sissi.context.JID;
  */
 public interface RelationMucMapping {
 
-	public JID mapping(JID group);
+	public MucJIDs mapping(JID group);
 }

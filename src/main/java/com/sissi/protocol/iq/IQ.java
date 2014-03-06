@@ -11,6 +11,7 @@ import com.sissi.protocol.Element;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
+import com.sissi.protocol.iq.ack.ServerTime;
 import com.sissi.protocol.iq.bind.Bind;
 import com.sissi.protocol.iq.block.BlockList;
 import com.sissi.protocol.iq.block.Blocked;
@@ -48,10 +49,6 @@ public class IQ extends Protocol implements Collector {
 
 	private List<Protocol> protocols;
 
-	public IQ() {
-		super();
-	}
-
 	public IQ setId(String id) {
 		super.setId(id);
 		return this;
@@ -66,7 +63,7 @@ public class IQ extends Protocol implements Collector {
 		return ProtocolType.parse(this.getType()) != ProtocolType.NONE;
 	}
 
-	@XmlElements({ @XmlElement(name = Client.NAME, type = Client.class), @XmlElement(name = Time.NAME, type = Time.class), @XmlElement(name = Last.NAME, type = LastSeconds.class), @XmlElement(name = Ping.NAME, type = Ping.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = DiscoInfo.NAME, type = DiscoInfo.class), @XmlElement(name = DiscoItems.NAME, type = DiscoItems.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
+	@XmlElements({ @XmlElement(name = ServerTime.NAME, type = ServerTime.class), @XmlElement(name = Client.NAME, type = Client.class), @XmlElement(name = Time.NAME, type = Time.class), @XmlElement(name = Last.NAME, type = LastSeconds.class), @XmlElement(name = Ping.NAME, type = Ping.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = DiscoInfo.NAME, type = DiscoInfo.class), @XmlElement(name = DiscoItems.NAME, type = DiscoItems.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
 	public List<Protocol> getProtocols() {
 		return this.protocols;
 	}

@@ -57,23 +57,6 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.status.available.muc" class="com.sissi.pipeline.in.presence.status.PresenceOnlineMucProcessor" parent="global.pro.proxy">
-		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.ChainedProcessor">
-				<constructor-arg value="true" />
-				<constructor-arg>
-					<util:list>
-						<ref bean="presence.pro.muc.check.xmlns" />
-						<ref bean="presence.pro.muc.check.nickname.contains" />
-						<ref bean="presence.pro.muc.check.nickname.exists" />
-						<ref bean="presence.pro.muc.join" />
-						<ref bean="presence.pro.muc.join.2fans" />
-					</util:list>
-				</constructor-arg>
-			</bean>
-		</constructor-arg>
-		<property name="relationContext" ref="ucenter.muc" />
-	</bean>
 	<bean id="presence.pro.status.available.init.4subscribe" class="com.sissi.pipeline.in.presence.status.PresenceInit4SubscribeProcessor">
 		<constructor-arg ref="ucenter.roster" />
 	</bean>
@@ -111,7 +94,7 @@
 				<ref bean="presence.pro.status.2selfs" />
 				<ref bean="presence.pro.status.2fans" />
 				<!-- Forward presence to muc -->
-				<ref bean="presence.pro.status.available.muc" />
+				<ref bean="presence.pro.muc.join.2fans" />
 			</util:list>
 		</constructor-arg>
 	</bean>

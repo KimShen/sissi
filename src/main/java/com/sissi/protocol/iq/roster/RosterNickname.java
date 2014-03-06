@@ -1,5 +1,6 @@
 package com.sissi.protocol.iq.roster;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
@@ -31,6 +32,7 @@ public class RosterNickname {
 		return this.text;
 	}
 
+	@XmlAttribute
 	public String getXmlns() {
 		return Sissi.XMLNS;
 	}
