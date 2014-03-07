@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.message;
+package com.sissi.pipeline.in.message.muc;
 
 import com.sissi.context.JIDContext;
 import com.sissi.persistent.PersistentElementBox;
@@ -23,7 +23,7 @@ public class MessagePersistentProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		if (this.log) {
-			this.persistentElementBox.push(protocol.parent().setFrom(context.jid()));
+			this.persistentElementBox.push(protocol.parent().setFrom(super.build(protocol.getTo()).resource(super.ourRelation(context.jid(), super.build(protocol.getTo())).getName())));
 		}
 		return true;
 	}

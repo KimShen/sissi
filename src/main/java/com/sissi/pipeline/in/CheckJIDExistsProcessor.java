@@ -33,7 +33,7 @@ public class CheckJIDExistsProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return !protocol.to() || protocol.to(this.domains) || this.presenceIgnore && protocol.clazz(Presence.class) || this.vcardContext.exists(protocol.getTo()) ? true : this.writeAndReturn(context, protocol);
+		return !protocol.to() || protocol.to(this.domains) || this.presenceIgnore && protocol.clazz(Presence.class) || super.build(protocol.getTo()).isGroup() || this.vcardContext.exists(protocol.getTo()) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

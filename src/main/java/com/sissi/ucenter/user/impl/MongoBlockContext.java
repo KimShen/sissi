@@ -75,7 +75,7 @@ public class MongoBlockContext implements BlockContext {
 
 	private class GroupJIDs extends ArrayList<JID> implements JIDs {
 
-		private static final long serialVersionUID = 1L;
+		private final static long serialVersionUID = 1L;
 
 		private GroupJIDs(List<String> bans) {
 			for (String ban : bans) {

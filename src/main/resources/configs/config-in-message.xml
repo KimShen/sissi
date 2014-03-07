@@ -15,6 +15,7 @@
 		<constructor-arg ref="persistent.message" />
 	</bean>
 	<bean id="message.pro.persistent" class="com.sissi.pipeline.in.message.MessagePersistentProcessor" parent="global.pro.proxy">
+		<constructor-arg index="0" value="${pipeline.muc.log}" />
 		<constructor-arg ref="persistent.message" />
 	</bean>
 	<bean id="message.pro.2fan" class="com.sissi.pipeline.in.message.Message2FanProcessor" parent="global.pro.proxy" />
@@ -26,13 +27,25 @@
 				<!-- Prevent empty content -->
 				<ref bean="message.pro.check.body" />
 				<ref bean="message.pro.check.ack" />
-				<ref bean="message.pro.persistent" />
 				<ref bean="message.pro.servertime" />
+				<ref bean="message.pro.persistent" />
 				<ref bean="message.pro.received" />
 				<!-- Prevent garbage message -->
 				<ref bean="message.pro.check.relation" />
 				<ref bean="message.pro.2self" />
 				<ref bean="message.pro.2fan" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="message.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.message" />
+	</bean>
+
+	<bean id="finder.message" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="message.condition.muc" />
+				<ref bean="message.condition.chat" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -42,6 +55,12 @@
 			<bean class="com.sissi.pipeline.in.ClassMatcher">
 				<constructor-arg value="com.sissi.protocol.message.Message" />
 			</bean>
+		</constructor-arg>
+		<constructor-arg ref="message.pro.fork" />
+	</bean>
+	<bean id="message.condition.chat" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.AnyMatcher" />
 		</constructor-arg>
 		<constructor-arg ref="message.pro.chained" />
 	</bean>

@@ -23,9 +23,9 @@ import com.sissi.config.MongoConfig;
  */
 public class MongoProxyConfig implements MongoConfig {
 
-	private static final DBObject clear = BasicDBObjectBuilder.start().get();
+	private final static DBObject clear = BasicDBObjectBuilder.start().get();
 
-	private static final Log log = LogFactory.getLog(MongoProxyConfig.class);
+	private final static Log log = LogFactory.getLog(MongoProxyConfig.class);
 
 	private final Map<String, Object> configs = new HashMap<String, Object>();
 

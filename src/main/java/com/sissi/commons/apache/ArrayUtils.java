@@ -48,12 +48,12 @@ public class ArrayUtils {
 	/**
 	 * An empty immutable <code>int</code> array.
 	 */
-	public static final int[] EMPTY_INT_ARRAY = new int[0];
+	public final static int[] EMPTY_INT_ARRAY = new int[0];
 
 	/**
 	 * The index value when an element is not found in a list or array: <code>-1</code>. This value is returned by methods in this class and can also be used in comparisons with values returned by various method from {@link java.util.List}.
 	 */
-	public static final int INDEX_NOT_FOUND = -1;
+	public final static int INDEX_NOT_FOUND = -1;
 
 	public static int[] toPrimitive(Integer[] array) {
 		if (array == null) {

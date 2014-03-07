@@ -2,6 +2,7 @@ package com.sissi.pipeline.in.message;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.sissi.commons.Extracter;
+import com.sissi.config.MongoConfig;
 import com.sissi.context.JIDContext;
 import com.sissi.persistent.PersistentElementBox;
 import com.sissi.pipeline.in.ProxyProcessor;
@@ -26,7 +27,7 @@ public class MessageReceivedProcessor extends ProxyProcessor {
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		this.persistentElementBox.peek(Extracter.asMap(BasicDBObjectBuilder.start().add(PersistentElementBox.fieldClass, Message.class.getSimpleName()).add(PersistentElementBox.fieldId, protocol.cast(Message.class).getReceived().getId()).get()), Extracter.asMap(BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(PersistentElementBox.fieldAck, false).get()).get()));
+		this.persistentElementBox.peek(Extracter.asMap(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_CLASS, Message.class.getSimpleName()).add(PersistentElementBox.fieldId, protocol.cast(Message.class).getReceived().getId()).get()), Extracter.asMap(BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(PersistentElementBox.fieldAck, false).get()).get()));
 		return true;
 	}
 }

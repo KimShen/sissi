@@ -120,7 +120,7 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	@Override
 	public Set<JID> whoSubscribedMe(JID from) {
-		return new JIDGroup(Extracter.asStrings(this.config.collection().findOne(this.buildQuery(from.asStringWithBare())), this.fieldRoles));
+		return new JIDGroup(Extracter.asList(this.config.collection().findOne(this.buildQuery(from.asStringWithBare())), this.fieldRoles));
 	}
 
 	@Override
@@ -188,15 +188,6 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 	private class JIDGroup extends HashSet<JID> {
 
 		private final static long serialVersionUID = 1L;
-
-		public JIDGroup(String[] jids) {
-			if (jids == null) {
-				return;
-			}
-			for (String jid : jids) {
-				super.add(MongoRelationMucContext.this.jidBuilder.build(jid));
-			}
-		}
 
 		public JIDGroup(List<?> db) {
 			if (db == null) {

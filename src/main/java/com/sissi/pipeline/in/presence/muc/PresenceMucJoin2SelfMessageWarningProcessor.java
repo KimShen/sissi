@@ -14,7 +14,7 @@ import com.sissi.ucenter.muc.MucConfigBuilder;
 /**
  * @author kim 2014年2月11日
  */
-public class PresenceMucJoin2SelfMessageProcessor extends ProxyProcessor {
+public class PresenceMucJoin2SelfMessageWarningProcessor extends ProxyProcessor {
 
 	private final XUser x = new XUser().add("100");
 
@@ -22,7 +22,7 @@ public class PresenceMucJoin2SelfMessageProcessor extends ProxyProcessor {
 
 	private final Body body;
 
-	public PresenceMucJoin2SelfMessageProcessor(MucConfigBuilder mucConfigBuilder, String message) {
+	public PresenceMucJoin2SelfMessageWarningProcessor(MucConfigBuilder mucConfigBuilder, String message) {
 		super();
 		this.mucConfigBuilder = mucConfigBuilder;
 		this.body = new Body(message);

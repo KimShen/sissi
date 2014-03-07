@@ -9,7 +9,7 @@ import com.sissi.server.ServerStatus;
  */
 public class MemoryServerStatus extends HashMap<String, Object> implements ServerStatus {
 
-	private static final long serialVersionUID = 1L;
+	private final static long serialVersionUID = 1L;
 
 	@Override
 	public ServerStatus offer(String key, Object value) {

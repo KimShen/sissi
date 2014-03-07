@@ -79,6 +79,10 @@
 		<maven.pipeline.roster.name>10</maven.pipeline.roster.name>
 		<maven.register.title>Welcome 2 register</maven.register.title>
 		<maven.register.instructions>From sissi</maven.register.instructions>
+		<maven.history.def.limit>20</maven.history.def.limit>
+		<maven.history.def.since>30000</maven.history.def.since>
+		<maven.history.threshold.limit>40</maven.history.threshold.limit>
+		<maven.history.threshold.since>60000</maven.history.threshold.since>
 		<!-- For Pipeline -->
 		<maven.pipeline.free>false</maven.pipeline.free>
 		<maven.pipeline.muc.log>true</maven.pipeline.muc.log>

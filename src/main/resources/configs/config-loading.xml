@@ -8,6 +8,7 @@
 	<import resource="config-addressing.xml" />
 	<import resource="config-broadcast.xml" />
 	<import resource="config-global.xml" />
+	<import resource="config-history.xml" />
 	<import resource="config-in-auth.xml" />
 	<import resource="config-in-base.xml" />
 	<import resource="config-in-iq.xml" />
@@ -26,6 +27,7 @@
 	<import resource="config-in-iq-bytestreams.xml" />
 	<import resource="config-in-stream.xml" />
 	<import resource="config-in-message.xml" />
+	<import resource="config-in-message-muc.xml" />
 	<import resource="config-in-presence.xml" />
 	<import resource="config-in-presence-muc.xml" />
 	<import resource="config-in-starttls.xml" />

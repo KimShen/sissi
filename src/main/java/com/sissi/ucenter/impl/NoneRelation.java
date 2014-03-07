@@ -17,9 +17,9 @@ import com.sissi.ucenter.roster.RelationRoster;
  */
 public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 
-	private static final Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
+	private final static Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
 
-	private static final String zero = "0";
+	private final static String zero = "0";
 
 	private final JID jid;
 

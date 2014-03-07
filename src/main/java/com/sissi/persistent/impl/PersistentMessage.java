@@ -20,7 +20,11 @@ public class PersistentMessage extends PersistentProtocol {
 	private final String body = "body";
 
 	public PersistentMessage(JIDBuilder jidBuilder, String tip) {
-		super(Message.class, jidBuilder, tip);
+		super(Message.class, jidBuilder, tip, false);
+	}
+
+	protected PersistentMessage(JIDBuilder jidBuilder, String tip, boolean full) {
+		super(Message.class, jidBuilder, tip, full);
 	}
 
 	public Map<String, Object> query(Element element) {
@@ -46,8 +50,8 @@ public class PersistentMessage extends PersistentProtocol {
 		return super.isSupport(element) && this.isSupportMessage(Message.class.cast(element));
 	}
 
-	private boolean isSupportMessage(Message message) {
-		return message.hasContent() && message.type(MessageType.CHAT, MessageType.GROUPCHAT) && !message.received();
+	boolean isSupportMessage(Message message) {
+		return message.hasContent() && message.type(MessageType.CHAT) && !message.received();
 	}
 
 	public Class<? extends Element> support() {

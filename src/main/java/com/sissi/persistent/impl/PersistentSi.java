@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.sissi.commons.Extracter;
+import com.sissi.config.MongoConfig;
 import com.sissi.context.JIDBuilder;
 import com.sissi.persistent.PersistentElementBox;
 import com.sissi.protocol.Element;
@@ -33,7 +34,7 @@ public class PersistentSi extends PersistentProtocol {
 	private final String delegation;
 
 	public PersistentSi(JIDBuilder jidBuilder, String tip, String delegation) {
-		super(Si.class, jidBuilder, tip);
+		super(Si.class, jidBuilder, tip, false);
 		this.delegation = delegation;
 	}
 
@@ -45,8 +46,8 @@ public class PersistentSi extends PersistentProtocol {
 	public Map<String, Object> write(Element element) {
 		Si si = Si.class.cast(element);
 		Map<String, Object> entity = super.write(si.parent().reply().setType(ProtocolType.SET.toString()));
+		entity.put(MongoConfig.FIELD_CLASS, element.getClass().getSimpleName());
 		entity.put(PersistentElementBox.fieldHost, new String[] { si.host(this.delegation, super.jidBuilder.build(si.parent().getTo()).asStringWithBare()) });
-		entity.put(PersistentElementBox.fieldClass, element.getClass().getSimpleName());
 		entity.put(PersistentElementBox.fieldSize, si.getFile().getSize());
 		entity.put(PersistentElementBox.fieldSid, si.getId());
 		entity.put(this.fieldName, si.getFile().getName());
@@ -55,7 +56,7 @@ public class PersistentSi extends PersistentProtocol {
 
 	@Override
 	public Element read(Map<String, Object> element) {
-		return IQ.class.cast(super.read(element, new IQ())).setId(element.get(PersistentElementBox.fieldSid).toString()).setFrom(this.delegation).add(new Si().setId(element.get(PersistentElementBox.fieldSid).toString()).setSource(element.get(PersistentElementBox.fieldFrom).toString()).setProfile(this.profile).setFeature(this.feature).setFile(new File().setName(element.get(this.fieldName).toString()).setSize(element.get(PersistentElementBox.fieldSize).toString())));
+		return IQ.class.cast(super.read(element, new IQ())).setId(element.get(PersistentElementBox.fieldSid).toString()).setFrom(this.delegation).add(new Si().setId(element.get(PersistentElementBox.fieldSid).toString()).setSource(element.get(MongoConfig.FIELD_FROM).toString()).setProfile(this.profile).setFeature(this.feature).setFile(new File().setName(element.get(this.fieldName).toString()).setSize(element.get(PersistentElementBox.fieldSize).toString())));
 	}
 
 	public Class<? extends Element> support() {

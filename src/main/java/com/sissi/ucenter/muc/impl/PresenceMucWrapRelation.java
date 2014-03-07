@@ -47,6 +47,10 @@ public class PresenceMucWrapRelation implements RelationMuc {
 		return this.relation.getRole();
 	}
 
+	public String getGroup() {
+		return group.asString();
+	}
+
 	@Override
 	public String getAffiliation() {
 		return this.relation.getAffiliation();

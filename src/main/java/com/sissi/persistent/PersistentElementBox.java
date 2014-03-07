@@ -11,27 +11,17 @@ import com.sissi.protocol.Element;
  */
 public interface PersistentElementBox {
 
-	public final static String fieldActivate = "activate";
-
-	public final static String fieldClass = "class";
-
 	public final static String fieldDelay = "delay";
-	
-	public final static String fieldRetry = "retry";
 
-	public final static String fieldFrom = "from";
+	public final static String fieldRetry = "retry";
 
 	public final static String fieldSize = "size";
 
 	public final static String fieldHost = "host";
 
-	public final static String fieldType = "type";
-
 	public final static String fieldSid = "sid";
 
-	public static final String fieldAck = "ack";
-
-	public final static String fieldTo = "to";
+	public final static String fieldAck = "ack";
 
 	public final static String fieldId = "id";
 

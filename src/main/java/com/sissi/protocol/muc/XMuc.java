@@ -12,6 +12,9 @@ import com.sissi.ucenter.field.Fields;
 /**
  * @author kim 2014年2月11日
  */
+/**
+ * @author kim 2014年3月6日
+ */
 @Metadata(uri = XMuc.XMLNS, localName = X.NAME)
 @XmlType(namespace = XMuc.XMLNS)
 @XmlRootElement
@@ -21,6 +24,8 @@ public class XMuc extends X implements Field<String>, Collector {
 
 	private XPassword password;
 
+	private XHistory history;
+
 	@Override
 	public String getXmlns() {
 		return XMLNS;
@@ -28,6 +33,14 @@ public class XMuc extends X implements Field<String>, Collector {
 
 	public String getPassword() {
 		return this.password != null ? this.password.getText() : null;
+	}
+
+	public boolean isHistory() {
+		return this.history != null;
+	}
+
+	public XHistory history() {
+		return this.history;
 	}
 
 	@Override
@@ -47,6 +60,13 @@ public class XMuc extends X implements Field<String>, Collector {
 
 	@Override
 	public void set(String localName, Object ob) {
-		this.password = XPassword.class.cast(ob);
+		switch (localName) {
+		case XPassword.NAME:
+			this.password = XPassword.class.cast(ob);
+			return;
+		case XHistory.NAME:
+			this.history = XHistory.class.cast(ob);
+			return;
+		}
 	}
 }

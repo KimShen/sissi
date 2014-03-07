@@ -1,5 +1,6 @@
 package com.sissi.commons;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,8 @@ import com.mongodb.DBObject;
  * @author kim 2014年2月23日
  */
 public class Extracter {
+
+	private final static List<?> list = Collections.unmodifiableList(new ArrayList<Object>());
 
 	private final static Map<String, Object> map = Collections.unmodifiableMap(new HashMap<String, Object>());
 
@@ -57,9 +60,14 @@ public class Extracter {
 		return value != null ? DBObject.class.cast(value) : null;
 	}
 
+	public static List<?> asList(DBObject db, String key) {
+		Object value = Extracter.as(db, key);
+		return value != null ? List.class.cast(value) : Extracter.list;
+	}
+
 	@SuppressWarnings("unchecked")
 	public static Map<String, Object> asMap(DBObject db) {
-		return db != null ? db.toMap() : map;
+		return db != null ? db.toMap() : Extracter.map;
 	}
 
 	private static Object as(DBObject db, String key) {

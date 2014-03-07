@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.mongodb.BasicDBObjectBuilder;
-import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.sissi.commons.Elements;
 import com.sissi.commons.Extracter;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
@@ -22,7 +22,7 @@ import com.sissi.protocol.Element;
  */
 public class MongoDelayElementBox implements PersistentElementBox, Output {
 
-	private final DBObject[] activate = new DBObject[] { BasicDBObjectBuilder.start(PersistentElementBox.fieldActivate, true).get(), BasicDBObjectBuilder.start(PersistentElementBox.fieldAck, true).get() };
+	private final DBObject[] activate = new DBObject[] { BasicDBObjectBuilder.start(MongoConfig.FIELD_ACTIVATE, true).get(), BasicDBObjectBuilder.start(PersistentElementBox.fieldAck, true).get() };
 
 	private final DBObject support;
 
@@ -46,9 +46,9 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 
 	@Override
 	public Collection<Element> pull(JID jid) {
-		DBObject query = BasicDBObjectBuilder.start().add(PersistentElementBox.fieldTo, jid.asStringWithBare()).add("$or", this.activate).add(PersistentElementBox.fieldClass, this.support).add(PersistentElementBox.fieldRetry, BasicDBObjectBuilder.start("$lt", this.resend).get()).get();
-		Elements elements = new Elements(this.config.collection().find(query));
-		this.config.collection().update(query, BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(PersistentElementBox.fieldActivate, false).get()).add("$inc", BasicDBObjectBuilder.start(PersistentElementBox.fieldRetry, 1).get()).get(), false, true);
+		DBObject query = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_TO, jid.asStringWithBare()).add("$or", this.activate).add(MongoConfig.FIELD_CLASS, this.support).add(PersistentElementBox.fieldRetry, BasicDBObjectBuilder.start("$lt", this.resend).get()).get();
+		Elements elements = new Elements(this.config.collection().find(query), this.elements);
+		this.config.collection().update(query, BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(MongoConfig.FIELD_ACTIVATE, false).get()).add("$inc", BasicDBObjectBuilder.start(PersistentElementBox.fieldRetry, 1).get()).get(), false, true);
 		return elements;
 	}
 
@@ -67,7 +67,7 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 	}
 
 	public Map<String, Object> peek(Map<String, Object> query, Map<String, Object> update) {
-		return Extracter.asMap(this.config.collection().findAndModify(BasicDBObjectBuilder.start(query).add(PersistentElementBox.fieldClass, this.support).get(), BasicDBObjectBuilder.start(update).get()));
+		return Extracter.asMap(this.config.collection().findAndModify(BasicDBObjectBuilder.start(query).add(MongoConfig.FIELD_CLASS, this.support).get(), BasicDBObjectBuilder.start(update).get()));
 	}
 
 	@Override
@@ -79,26 +79,5 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 	@Override
 	public Output close() {
 		return this;
-	}
-
-	private class Elements extends ArrayList<Element> {
-
-		private final static long serialVersionUID = 1L;
-
-		public Elements(DBCursor cursor) {
-			super();
-			try {
-				while (cursor.hasNext()) {
-					Map<String, Object> each = Extracter.asMap(cursor.next());
-					for (PersistentElement element : MongoDelayElementBox.this.elements) {
-						if (element.isSupport(each)) {
-							this.add(element.read(each));
-						}
-					}
-				}
-			} finally {
-				cursor.close();
-			}
-		}
 	}
 }
