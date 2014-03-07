@@ -21,6 +21,7 @@ public class PresenceMucWrapRelation implements RelationMuc {
 
 	private final RelationMuc relation;
 
+	// RelationMuc may be none
 	public PresenceMucWrapRelation(JID group, XMuc xmuc, RelationMuc relation) {
 		this.xmuc = xmuc;
 		this.group = group;
@@ -67,7 +68,7 @@ public class PresenceMucWrapRelation implements RelationMuc {
 
 	@Override
 	public Map<String, Object> plus() {
-		if (xmuc != null) {
+		if (this.xmuc != null) {
 			Map<String, Object> plus = new HashMap<String, Object>();
 			plus.put("configs.password", xmuc.getPassword());
 			return plus;

@@ -15,7 +15,7 @@ import com.sissi.ucenter.muc.RelationMucMapping;
  */
 public class PersistentMessageMuc extends PersistentMessage {
 
-	private final String fieldSource = "source";
+	private final String fieldItem = "item";
 
 	private final RelationMucMapping relationMucMapping;
 
@@ -29,13 +29,13 @@ public class PersistentMessageMuc extends PersistentMessage {
 	}
 
 	protected Delay delay(Map<String, Object> element, Message message) {
-		return new Delay(super.tip, element.get(this.fieldSource).toString(), element.get(PersistentElementBox.fieldDelay).toString());
+		return new Delay(super.tip, element.get(this.fieldItem).toString(), element.get(PersistentElementBox.fieldDelay).toString());
 	}
 
 	@Override
 	public Map<String, Object> write(Element element) {
 		Map<String, Object> entity = super.write(element);
-		entity.put(this.fieldSource, this.relationMucMapping.mapping(super.jidBuilder.build(element.getFrom())).jid().asString());
+		entity.put(this.fieldItem, this.relationMucMapping.mapping(super.jidBuilder.build(element.getFrom())).jid().asString());
 		return entity;
 	}
 }

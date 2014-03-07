@@ -7,7 +7,7 @@ public interface MucItem {
 
 	public String getJid();
 
-	public String getAffiliation();
-
 	public String getRole();
+
+	public String getAffiliation();
 }
