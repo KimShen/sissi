@@ -25,12 +25,12 @@ public class PresenceWrapRelation implements RelationRoster {
 	}
 
 	@Override
-	public String getJID() {
+	public String jid() {
 		return this.jid.asStringWithBare();
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		return this.jid.resource();
 	}
 
@@ -44,8 +44,8 @@ public class PresenceWrapRelation implements RelationRoster {
 	}
 
 	@Override
-	public boolean isActivate() {
-		return this.relation.isActivate();
+	public boolean activate() {
+		return this.relation.activate();
 	}
 
 	@Override

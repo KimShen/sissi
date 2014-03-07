@@ -42,7 +42,7 @@ public class BroadcastRelationInductor implements RelationInductor {
 	@Override
 	public RelationInductor update(JID master, JID slave) {
 		RelationRoster relation = this.relationContext.ourRelation(master, slave).cast(RelationRoster.class);
-		if (relation.isActivate()) {
+		if (relation.activate()) {
 			this.broadcastProtocol.broadcast(master, new IQ().setId(UUID.randomUUID().toString()).add(new Roster(new GroupItem(relation))).setType(ProtocolType.SET));
 		}
 		return this;

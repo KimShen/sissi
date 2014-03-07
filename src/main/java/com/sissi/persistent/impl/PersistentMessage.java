@@ -27,6 +27,14 @@ public class PersistentMessage extends PersistentProtocol {
 		super(Message.class, jidBuilder, tip, full);
 	}
 
+	protected boolean isSupportMessage(Message message) {
+		return message.hasContent() && message.type(MessageType.CHAT) && !message.received();
+	}
+
+	protected Delay delay(Map<String, Object> element, Message message) {
+		return new Delay(super.tip, message.getFrom(), element.get(PersistentElementBox.fieldDelay).toString());
+	}
+
 	public Map<String, Object> query(Element element) {
 		return Extracter.asMap(BasicDBObjectBuilder.start(PersistentElementBox.fieldId, element.getId()).get());
 	}
@@ -43,15 +51,11 @@ public class PersistentMessage extends PersistentProtocol {
 	@Override
 	public Message read(Map<String, Object> element) {
 		Message message = Message.class.cast(super.read(element, new Message()));
-		return message.setBody(new Body(element.get(this.body).toString())).setDelay(new Delay(super.tip, message.getFrom(), element.get(PersistentElementBox.fieldDelay).toString())).request(Boolean.getBoolean(element.get(PersistentElementBox.fieldAck).toString()));
+		return message.setBody(new Body(element.get(this.body).toString())).setDelay(this.delay(element, message)).request(Boolean.getBoolean(element.get(PersistentElementBox.fieldAck).toString()));
 	}
 
 	public boolean isSupport(Element element) {
 		return super.isSupport(element) && this.isSupportMessage(Message.class.cast(element));
-	}
-
-	boolean isSupportMessage(Message message) {
-		return message.hasContent() && message.type(MessageType.CHAT) && !message.received();
 	}
 
 	public Class<? extends Element> support() {

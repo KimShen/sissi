@@ -21,10 +21,12 @@
 		<constructor-arg ref="persistent.config" />
 	</bean>
 
-	<bean id="persistent.hanlder.message" class="com.sissi.persistent.impl.PersistentMessage" parent="persistent.delay" />
-	<bean id="persistent.hanlder.message.muc" class="com.sissi.persistent.impl.PersistentMessageMuc" parent="persistent.delay" />
 	<bean id="persistent.hanlder.si" class="com.sissi.persistent.impl.PersistentSi" parent="persistent.delay">
 		<constructor-arg value="${exchanger.delegation.domain}" />
+	</bean>
+	<bean id="persistent.hanlder.message" class="com.sissi.persistent.impl.PersistentMessage" parent="persistent.delay" />
+	<bean id="persistent.hanlder.message.muc" class="com.sissi.persistent.impl.PersistentMessageMuc" parent="persistent.delay">
+		<constructor-arg ref="ucenter.muc" />
 	</bean>
 
 	<bean id="persistent.message" class="com.sissi.persistent.impl.MongoDelayElementBox" parent="persistent.box">

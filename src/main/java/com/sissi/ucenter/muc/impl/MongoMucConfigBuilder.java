@@ -92,7 +92,7 @@ public class MongoMucConfigBuilder implements MucConfigBuilder {
 		}
 
 		public boolean level(String affiliation) {
-			return this.creator() || ItemAffiliation.parse(this.relation().getAffiliation()).contains(affiliation);
+			return this.creator() || ItemAffiliation.parse(this.relation().affiliation()).contains(affiliation);
 		}
 
 		public boolean hidden(boolean compute) {

@@ -7,11 +7,11 @@ import java.util.Map;
  */
 public interface Relation {
 
-	public String getJID();
+	public String jid();
 
-	public String getName();
+	public String name();
 
-	public boolean isActivate();
+	public boolean activate();
 
 	public Map<String, Object> plus();
 

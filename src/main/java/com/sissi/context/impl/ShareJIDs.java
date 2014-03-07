@@ -41,6 +41,10 @@ public class ShareJIDs implements JIDs, MucJIDs {
 		}
 	}
 
+	public JID jid() {
+		return this.jid;
+	}
+
 	public Iterator<JID> iterator() {
 		return new JIDIterator();
 	}

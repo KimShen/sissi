@@ -27,19 +27,19 @@ public class ItemWrapRelation implements RelationRoster {
 	}
 
 	@Override
-	public String getJID() {
+	public String jid() {
 		return this.item.getJid();
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		return this.item.getName();
 	}
 
 	@Override
 	public boolean isAsk() {
 		// recover or new
-		return this.relation.isActivate() ? this.relation.isAsk() : true;
+		return this.relation.activate() ? this.relation.isAsk() : true;
 	}
 
 	@Override
@@ -64,8 +64,8 @@ public class ItemWrapRelation implements RelationRoster {
 		return RosterSubscription.parse(this.relation.getSubscription()).in(subscriptions);
 	}
 
-	public boolean isActivate() {
-		return this.relation.isActivate();
+	public boolean activate() {
+		return this.relation.activate();
 	}
 
 	public Map<String, Object> plus() {

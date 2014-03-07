@@ -45,7 +45,7 @@ public class GroupItem extends Item implements Collector {
 	}
 
 	public GroupItem(RelationRoster roster) {
-		this(roster.getJID(), roster.getName());
+		this(roster.jid(), roster.name());
 		this.setAsk(roster.isAsk());
 		this.setSubscription(roster.getSubscription());
 		if (roster.asGroups() != null) {

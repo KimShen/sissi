@@ -94,8 +94,8 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 	@Override
 	public MongoRelationRosterContext establish(JID from, Relation relation) {
-		this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.getJID()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(MongoConfig.FIELD_NICK, relation.getName()).add(MongoConfig.FIELD_ACTIVATE, true).get()).add("$setOnInsert", this.entityInitMaster).get(), true, false, WriteConcern.SAFE);
-		this.config.collection().update(this.buildQuery(relation.getJID(), from.asStringWithBare()), BasicDBObjectBuilder.start("$setOnInsert", this.entityInitSlave).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.jid()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(MongoConfig.FIELD_NICK, relation.name()).add(MongoConfig.FIELD_ACTIVATE, true).get()).add("$setOnInsert", this.entityInitMaster).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(relation.jid(), from.asStringWithBare()), BasicDBObjectBuilder.start("$setOnInsert", this.entityInitSlave).get(), true, false, WriteConcern.SAFE);
 		return this;
 	}
 
@@ -203,11 +203,11 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 			this.groups = Extracter.asStrings(db, MongoRelationRosterContext.this.fieldGroups);
 		}
 
-		public String getJID() {
+		public String jid() {
 			return this.jid;
 		}
 
-		public String getName() {
+		public String name() {
 			return this.name;
 		}
 
@@ -228,7 +228,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 			return RosterSubscription.parse(this.getSubscription()).in(subscriptions);
 		}
 
-		public boolean isActivate() {
+		public boolean activate() {
 			return this.activate;
 		}
 

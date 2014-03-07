@@ -35,14 +35,9 @@ public class XUser extends X implements MucStatus, Field<String> {
 		super();
 	}
 
-	public XUser(boolean hidden) {
-		super();
-		this.hidden = hidden;
-	}
-
 	public XUser(JID jid, boolean hidden) {
-		this(hidden);
 		this.jid = jid;
+		this.hidden = hidden;
 	}
 
 	private Set<ItemStatus> statuses;

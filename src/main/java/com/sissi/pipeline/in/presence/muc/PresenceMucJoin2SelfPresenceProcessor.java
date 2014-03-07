@@ -35,8 +35,8 @@ public class PresenceMucJoin2SelfPresenceProcessor extends ProxyProcessor {
 		MucConfig config = this.mucConfigBuilder.build(group);
 		for (Relation each : super.myRelations(group)) {
 			RelationMuc relation = each.cast(RelationMuc.class);
-			JID to = super.build(relation.getJID());
-			context.write(presence.clear().add(this.mucStatusJudger.judege(new XUser(context.jid(), config.allowed(context.jid(), MucConfig.HIDDEN_NATIVE, null)).setItem(new Item(config.allowed(context.jid(), MucConfig.HIDDEN_COMPUTER, to), relation, this.mucConfigBuilder.build(group)))).cast(XUser.class)).clauses(super.findOne(to, true).status().clauses()).setFrom(group.resource(relation.getName())));
+			JID to = super.build(relation.jid());
+			context.write(presence.clear().add(this.mucStatusJudger.judege(new XUser(context.jid(), config.allowed(context.jid(), MucConfig.HIDDEN_NATIVE, null)).setItem(new Item(config.allowed(context.jid(), MucConfig.HIDDEN_COMPUTER, to), relation, this.mucConfigBuilder.build(group)))).cast(XUser.class)).clauses(super.findOne(to, true).status().clauses()).setFrom(group.resource(relation.name())));
 		}
 		return true;
 	}

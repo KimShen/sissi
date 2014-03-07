@@ -28,32 +28,41 @@ public class PresenceMucWrapRelation implements RelationMuc {
 	}
 
 	@Override
-	public String getJID() {
+	public String jid() {
 		return this.group.asStringWithBare();
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		return this.group.resource();
 	}
 
-	@Override
-	public boolean isActivate() {
-		return this.relation.isActivate();
+	public boolean outcast() {
+		return this.relation.outcast();
 	}
 
 	@Override
-	public String getRole() {
-		return this.relation.getRole();
+	public boolean activate() {
+		return this.relation.activate();
 	}
 
-	public String getGroup() {
-		return group.asString();
+	public boolean name(String name, boolean allowNull) {
+		return this.name().equals(name) || (this.name() == null && allowNull);
 	}
 
 	@Override
-	public String getAffiliation() {
-		return this.relation.getAffiliation();
+	public String role() {
+		return this.relation.role();
+	}
+
+	@Override
+	public String affiliation() {
+		return this.relation.affiliation();
+	}
+
+	public PresenceMucWrapRelation noneRole() {
+		this.relation.noneRole();
+		return this;
 	}
 
 	@Override

@@ -32,6 +32,7 @@
 				<bean class="com.sissi.ucenter.muc.impl.CountMucConfigArbitrament">
 					<constructor-arg value="MEMBER" />
 				</bean>
+				<bean class="com.sissi.ucenter.muc.impl.NicknameMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.ActivateMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.PasswordMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.AffiliationMucConfigArbitrament" />
@@ -48,6 +49,14 @@
 				<bean class="com.sissi.ucenter.muc.impl.Code170MucStatusJudger">
 					<constructor-arg value="${pipeline.muc.log}" />
 				</bean>
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="ucenter.muc.judger.replace" class="com.sissi.ucenter.muc.impl.ChainedMucStatusJudger">
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.ucenter.muc.impl.Code303MucStatusJudger" />
 			</util:list>
 		</constructor-arg>
 	</bean>

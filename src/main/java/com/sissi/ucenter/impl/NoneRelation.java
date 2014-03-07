@@ -43,13 +43,18 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 	}
 
 	@Override
-	public String getJID() {
+	public String jid() {
 		return this.jid.asStringWithBare();
 	}
 
 	@Override
-	public String getName() {
+	public String name() {
 		return null;
+	}
+
+	@Override
+	public boolean name(String name, boolean allowNull) {
+		return false || allowNull;
 	}
 
 	@Override
@@ -57,11 +62,15 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 		return this.subscription;
 	}
 
-	public String getRole() {
+	public String role() {
 		return ItemRole.NONE.toString();
 	}
 
-	public String getAffiliation() {
+	public NoneRelation noneRole() {
+		return this;
+	}
+
+	public String affiliation() {
 		return ItemAffiliation.NONE.toString();
 	}
 
@@ -73,8 +82,12 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 		return false;
 	}
 
-	public boolean isActivate() {
+	public boolean activate() {
 		return this.activate;
+	}
+
+	public boolean outcast() {
+		return false;
 	}
 
 	@Override

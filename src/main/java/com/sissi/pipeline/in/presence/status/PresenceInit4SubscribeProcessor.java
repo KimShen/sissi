@@ -28,7 +28,7 @@ public class PresenceInit4SubscribeProcessor implements Input {
 	private boolean writeAsk(JIDContext context) {
 		Presence presence = new Presence().setType(PresenceType.SUBSCRIBE);
 		for (Relation relation : this.relationRecover.recover(context.jid())) {
-			context.write(presence.setFrom(relation.getJID()), true);
+			context.write(presence.setFrom(relation.jid()), true);
 		}
 		return true;
 	}

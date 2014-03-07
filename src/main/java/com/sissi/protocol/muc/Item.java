@@ -35,16 +35,16 @@ public class Item implements MucItem {
 
 	@XmlAttribute
 	public String getJid() {
-		return this.hidden ? null : this.relation.getJID();
+		return this.hidden ? null : this.relation.jid();
 	}
 
 	@XmlAttribute
 	public String getAffiliation() {
-		return this.relation.getAffiliation();
+		return this.relation.affiliation();
 	}
 
 	@XmlAttribute
 	public String getRole() {
-		return ItemRole.NONE.equals(this.relation.getRole()) ? this.config.mapping(this.getAffiliation()) : this.relation.getRole();
+		return ItemRole.NONE.equals(this.relation.role()) ? this.config.mapping(this.getAffiliation()) : this.relation.role();
 	}
 }

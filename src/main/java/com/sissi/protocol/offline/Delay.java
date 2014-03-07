@@ -32,6 +32,11 @@ public class Delay {
 		return this.hit;
 	}
 
+	public Delay setFrom(String from) {
+		this.from = from;
+		return this;
+	}
+
 	@XmlAttribute
 	public String getFrom() {
 		return this.from;
