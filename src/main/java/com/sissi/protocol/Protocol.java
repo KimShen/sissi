@@ -100,6 +100,15 @@ abstract public class Protocol implements Element {
 		return type.equals(this.getType());
 	}
 
+	public boolean type(ProtocolType... types) {
+		for (ProtocolType each : types) {
+			if (this.type(each)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@XmlAttribute
 	public String getType() {
 		return this.type;

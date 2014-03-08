@@ -31,7 +31,7 @@ public class PresenceMucJoin2SelfMessageHistoryProcessor extends ProxyProcessor 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		XMuc x = protocol.cast(Presence.class).findField(XMuc.NAME, XMuc.class);
-		if (x.isHistory()) {
+		if (x.hasHistory()) {
 			JID group = super.build(protocol.getTo());
 			MucConfig config = this.mucConfigBuilder.build(group);
 			for (Element element : this.historyRecover.pull(group, x.history())) {

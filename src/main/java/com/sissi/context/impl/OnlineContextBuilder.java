@@ -33,7 +33,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final AtomicLong indexes = new AtomicLong();
 
-	private final int priority = -1;
+	private final int priority = 0;
 
 	private final int pong = -1;
 

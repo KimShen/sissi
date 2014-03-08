@@ -6,10 +6,12 @@ import com.sissi.context.JID;
  * @author kim 2014年2月20日
  */
 public interface MucConfig {
-	
+
 	public final static String NICK = "NICK";
 
 	public final static String COUNT = "COUNT";
+
+	public final static String INVITE = "INVITE";
 
 	public final static String PASSWORD = "PASSWORD";
 

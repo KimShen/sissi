@@ -70,7 +70,7 @@ public class PresenceMucWrapRelation implements RelationMuc {
 	public Map<String, Object> plus() {
 		if (this.xmuc != null) {
 			Map<String, Object> plus = new HashMap<String, Object>();
-			plus.put("configs.password", xmuc.getPassword());
+			plus.put("configs.password", xmuc.passowrd());
 			return plus;
 		} else {
 			return plus;

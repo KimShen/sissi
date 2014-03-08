@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlValue;
 import com.sissi.read.Metadata;
 
 /**
- * @author kim 2014年2月22日
+ * @author kim 2014年3月8日
  */
-@Metadata(uri = XMuc.XMLNS, localName = XPassword.NAME)
-@XmlRootElement(name = XPassword.NAME)
-public class XPassword {
+@Metadata(uri = XUser.XMLNS, localName = XReason.NAME)
+@XmlRootElement(name = XReason.NAME)
+public class XReason {
 
-	public final static String NAME = "password";
+	public final static String NAME = "reason";
 
 	private String text;
 
@@ -21,7 +21,7 @@ public class XPassword {
 		return this.text != null & !this.text.isEmpty() ? this.text : null;
 	}
 
-	public XPassword setText(String text) {
+	public XReason setText(String text) {
 		this.text = text;
 		return this;
 	}

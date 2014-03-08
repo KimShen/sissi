@@ -29,7 +29,7 @@ public class PresenceMucCheckPasswordProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		XMuc xmuc = Presence.class.cast(protocol).findField(XMuc.NAME, XMuc.class);
-		return this.mucConfigBuilder.build(super.build(protocol.getTo())).allowed(context.jid(), MucConfig.PASSWORD, xmuc != null ? xmuc.getPassword() : null) ? true : this.writeAndReturn(context, protocol);
+		return this.mucConfigBuilder.build(super.build(protocol.getTo())).allowed(context.jid(), MucConfig.PASSWORD, xmuc != null ? xmuc.passowrd() : null) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

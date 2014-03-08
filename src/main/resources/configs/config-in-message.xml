@@ -44,6 +44,7 @@
 	<bean id="finder.message" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<ref bean="message.condition.muc.2invite" />
 				<ref bean="message.condition.muc" />
 				<ref bean="message.condition.chat" />
 			</util:list>

@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.context.JID;
 import com.sissi.protocol.presence.X;
+import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
@@ -21,9 +22,13 @@ import com.sissi.ucenter.muc.MucStatus;
 @Metadata(uri = XUser.XMLNS, localName = X.NAME)
 @XmlType(namespace = XUser.XMLNS)
 @XmlRootElement
-public class XUser extends X implements MucStatus, Field<String> {
+public class XUser extends X implements MucStatus, Collector, Field<String> {
 
 	public final static String XMLNS = "http://jabber.org/protocol/muc#user";
+
+	private XInvite invite;
+
+	private XPassword password;
 
 	private boolean hidden;
 
@@ -63,14 +68,27 @@ public class XUser extends X implements MucStatus, Field<String> {
 		return this;
 	}
 
-	@Override
-	public Item item() {
-		return this.getItem();
-	}
-
 	@XmlElement
 	public Item getItem() {
 		return this.item;
+	}
+
+	@XmlElement
+	public XInvite getInvite() {
+		return this.invite;
+	}
+
+	public boolean invite() {
+		return this.getInvite() != null;
+	}
+
+	@XmlElement
+	public XPassword getPassword() {
+		return this.password;
+	}
+
+	public boolean password() {
+		return this.getPassword() != null;
 	}
 
 	@XmlElements({ @XmlElement(name = ItemStatus.NAME, type = ItemStatus.class) })
@@ -100,5 +118,17 @@ public class XUser extends X implements MucStatus, Field<String> {
 
 	public <T extends MucStatus> T cast(Class<T> clazz) {
 		return clazz.cast(this);
+	}
+
+	@Override
+	public void set(String localName, Object ob) {
+		switch (localName) {
+		case XInvite.NAME:
+			this.invite = XInvite.class.cast(ob);
+			return;
+		case XPassword.NAME:
+			this.password = XPassword.class.cast(ob);
+			return;
+		}
 	}
 }

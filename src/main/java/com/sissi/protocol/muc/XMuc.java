@@ -31,16 +31,16 @@ public class XMuc extends X implements Field<String>, Collector {
 		return XMLNS;
 	}
 
-	public String getPassword() {
+	public String passowrd() {
 		return this.password != null ? this.password.getText() : null;
-	}
-
-	public boolean isHistory() {
-		return this.history != null;
 	}
 
 	public XHistory history() {
 		return this.history;
+	}
+
+	public boolean hasHistory() {
+		return this.history != null;
 	}
 
 	@Override

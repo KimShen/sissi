@@ -30,7 +30,10 @@
 		<constructor-arg>
 			<util:list>
 				<bean class="com.sissi.ucenter.muc.impl.CountMucConfigArbitrament">
-					<constructor-arg value="MEMBER" />
+					<constructor-arg value="${pipeline.muc.count.level}" />
+				</bean>
+				<bean class="com.sissi.ucenter.muc.impl.InviteMucConfigArbitrament">
+					<constructor-arg value="${pipeline.muc.invite}" />
 				</bean>
 				<bean class="com.sissi.ucenter.muc.impl.NicknameMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.ActivateMucConfigArbitrament" />

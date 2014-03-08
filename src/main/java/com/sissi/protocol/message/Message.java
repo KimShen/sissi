@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.protocol.Protocol;
+import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.offline.Delay;
@@ -60,7 +61,7 @@ public class Message extends Protocol implements Collector {
 	}
 
 	public String getId() {
-		return super.getId() != null ? super.getId() : super.setId(UUID.randomUUID().toString()).getId();
+		return super.getId() != null || this.type(ProtocolType.ERROR, ProtocolType.RESULT) ? super.getId() : super.setId(UUID.randomUUID().toString()).getId();
 	}
 
 	@XmlElement
@@ -118,6 +119,10 @@ public class Message extends Protocol implements Collector {
 		return this.x;
 	}
 
+	public boolean isInvite() {
+		return this.getX() != null && this.getX().invite();
+	}
+
 	public boolean request() {
 		return this.getRequest() != null;
 	}
@@ -165,6 +170,9 @@ public class Message extends Protocol implements Collector {
 	@Override
 	public void set(String localName, Object ob) {
 		switch (localName) {
+		case XUser.NAME:
+			this.setX(XUser.class.cast(ob));
+			return;
 		case Body.NAME:
 			this.setBody(Body.class.cast(ob));
 			return;

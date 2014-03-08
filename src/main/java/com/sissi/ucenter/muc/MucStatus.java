@@ -9,7 +9,7 @@ public interface MucStatus {
 
 	public boolean owner();
 
-	public MucItem item();
+	public MucItem getItem();
 
 	public MucStatus add(String code);
 
