@@ -5,7 +5,10 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="message.pro.muc.persistent" class="com.sissi.pipeline.in.message.muc.MessagePersistentProcessor" parent="global.pro.proxy">
+	<bean id="message.pro.muc.2trace" class="com.sissi.pipeline.in.message.muc.MessageMuc2ThreadProcessor" parent="global.pro.proxy">
+		<constructor-arg value="${pipeline.muc.trace}" />
+	</bean>
+	<bean id="message.pro.muc.2persistent" class="com.sissi.pipeline.in.message.muc.MessageMuc2PersistentProcessor" parent="global.pro.proxy">
 		<constructor-arg index="0" value="${pipeline.muc.log}" />
 		<constructor-arg ref="persistent.message.muc" />
 		<property name="relationContext" ref="ucenter.muc" />
@@ -55,7 +58,8 @@
 			<util:list>
 				<ref bean="message.pro.check.body" />
 				<ref bean="message.pro.servertime" />
-				<ref bean="message.pro.muc.persistent" />
+				<ref bean="message.pro.muc.2trace" />
+				<ref bean="message.pro.muc.2persistent" />
 				<ref bean="message.pro.muc.2all" />
 			</util:list>
 		</constructor-arg>

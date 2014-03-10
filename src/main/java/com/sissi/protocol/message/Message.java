@@ -24,6 +24,8 @@ public class Message extends Protocol implements Collector {
 
 	public final static String NAME = "message";
 
+	private boolean trace;
+
 	private XUser x;
 
 	private Body body;
@@ -39,7 +41,7 @@ public class Message extends Protocol implements Collector {
 	private AckReceived received;
 
 	public Message() {
-		super();
+		this.trace = true;
 	}
 
 	public Message setType(MessageType type) {
@@ -84,6 +86,20 @@ public class Message extends Protocol implements Collector {
 		return this.body;
 	}
 
+	public String thread() {
+		return this.getThread() != null ? this.getThread().getText() : null;
+	}
+
+	public Message noneThread() {
+		this.trace = false;
+		return this;
+	}
+
+	public Message setThread(String thread) {
+		this.thread = thread != null ? new Thread(thread) : null;
+		return this;
+	}
+
 	public Message setThread(Thread thread) {
 		this.thread = thread;
 		return this;
@@ -91,7 +107,7 @@ public class Message extends Protocol implements Collector {
 
 	@XmlElement
 	public Thread getThread() {
-		return this.thread != null && this.thread.hasContent() ? this.thread : new Thread(UUID.randomUUID().toString());
+		return this.thread != null && this.thread.hasContent() ? this.thread : (this.trace ? new Thread(UUID.randomUUID().toString()) : null);
 	}
 
 	public Message setSubject(Subject subject) {
@@ -179,6 +195,9 @@ public class Message extends Protocol implements Collector {
 			return;
 		case Body.NAME:
 			this.setBody(Body.class.cast(ob));
+			return;
+		case Delay.NAME:
+			this.setDelay(Delay.class.cast(ob));
 			return;
 		case Thread.NAME:
 			this.setThread(Thread.class.cast(ob));

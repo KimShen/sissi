@@ -86,6 +86,7 @@
 		<!-- For Pipeline -->
 		<maven.pipeline.free>false</maven.pipeline.free>
 		<maven.pipeline.muc.log>true</maven.pipeline.muc.log>
+		<maven.pipeline.muc.trace>false</maven.pipeline.muc.trace>
 		<maven.pipeline.muc.count>3</maven.pipeline.muc.count>
 		<maven.pipeline.muc.count.level>ADMIN</maven.pipeline.muc.count.level>
 		<maven.pipeline.muc.multi>true</maven.pipeline.muc.multi>

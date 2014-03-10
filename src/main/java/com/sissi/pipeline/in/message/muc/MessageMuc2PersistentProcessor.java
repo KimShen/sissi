@@ -9,13 +9,13 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2014年3月3日
  */
-public class MessagePersistentProcessor extends ProxyProcessor {
+public class MessageMuc2PersistentProcessor extends ProxyProcessor {
 
 	private final PersistentElementBox persistentElementBox;
 
 	private final boolean log;
 
-	public MessagePersistentProcessor(boolean log, PersistentElementBox persistentElementBox) {
+	public MessageMuc2PersistentProcessor(boolean log, PersistentElementBox persistentElementBox) {
 		super();
 		this.log = log;
 		this.persistentElementBox = persistentElementBox;

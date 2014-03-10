@@ -3,12 +3,18 @@ package com.sissi.protocol.offline;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;
 
+import com.sissi.protocol.message.Message;
+import com.sissi.read.Metadata;
+
 /**
  * @author kim 2013-11-22
  */
+@Metadata(uri = Message.XMLNS, localName = Delay.NAME)
 public class Delay {
 
 	private final static String XMLNS = "urn:xmpp:delay";
+
+	public final static String NAME = "delay";
 
 	private String hit;
 

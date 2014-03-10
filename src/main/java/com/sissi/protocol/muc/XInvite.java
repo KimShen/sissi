@@ -22,6 +22,8 @@ public class XInvite implements Collector {
 
 	private XReason reason;
 
+	private XContinue thread;
+
 	public XInvite setFrom(String from) {
 		this.from = from;
 		this.to = null;
@@ -48,8 +50,20 @@ public class XInvite implements Collector {
 		return this.reason;
 	}
 
+	@XmlElement
+	public XContinue getContinue() {
+		return this.thread;
+	}
+
 	@Override
 	public void set(String localName, Object ob) {
-		this.reason = XReason.class.cast(ob);
+		switch (localName) {
+		case XReason.NAME:
+			this.reason = XReason.class.cast(ob);
+			return;
+		case XContinue.NAME:
+			this.thread = XContinue.class.cast(ob);
+			return;
+		}
 	}
 }

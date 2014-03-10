@@ -14,12 +14,12 @@ public class MessageMuc2DeclineProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		XDecline decline = protocol.cast(Message.class).getX().getDecline();
-		super.findOne(super.build(decline.getTo()), true).write(this.prepareAndReturn(context, protocol, decline).reply());
+		super.findOne(super.build(decline.getTo()), true).write(this.prepareAndReturn(context, protocol.cast(Message.class), decline).reply());
 		return true;
 	}
 
-	private Protocol prepareAndReturn(JIDContext context, Protocol protocol, XDecline decline) {
+	private Message prepareAndReturn(JIDContext context, Message message, XDecline decline) {
 		decline.setFrom(context.jid().asString());
-		return protocol;
+		return message.noneThread();
 	}
 }

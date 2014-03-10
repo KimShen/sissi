@@ -14,12 +14,12 @@ public class MessageMuc2InviteProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		XInvite invite = protocol.cast(Message.class).getX().getInvite();
-		super.findOne(super.build(invite.getTo()), true).write(this.prepareAndReturn(context, protocol, invite).reply());
+		super.findOne(super.build(invite.getTo()), true).write(this.prepareAndReturn(context, protocol.cast(Message.class), invite).reply());
 		return true;
 	}
 
-	private Protocol prepareAndReturn(JIDContext context, Protocol protocol, XInvite invite) {
+	private Message prepareAndReturn(JIDContext context, Message message, XInvite invite) {
 		invite.setFrom(context.jid().asString());
-		return protocol;
+		return message.noneThread();
 	}
 }

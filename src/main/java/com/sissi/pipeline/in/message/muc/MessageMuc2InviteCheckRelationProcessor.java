@@ -7,7 +7,6 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.Forbidden;
-import com.sissi.protocol.message.Message;
 import com.sissi.ucenter.muc.MucConfig;
 import com.sissi.ucenter.muc.MucConfigBuilder;
 
@@ -27,7 +26,7 @@ public class MessageMuc2InviteCheckRelationProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.mucConfigBuilder.build(super.build(protocol.getTo())).allowed(context.jid(), MucConfig.INVITE, protocol.cast(Message.class).getX().getInvite().getTo()) ? true : this.writeAndReturn(context, protocol);
+		return this.mucConfigBuilder.build(super.build(protocol.getTo())).allowed(context.jid(), MucConfig.INVITE, null) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

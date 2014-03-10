@@ -30,6 +30,8 @@ public interface MongoConfig extends Config {
 	public final static String FIELD_RESULT = "result";
 
 	public final static String FIELD_HIDDEN = "hidden";
+	
+	public final static String FIELD_THREAD = "thread";
 
 	public final static String FIELD_CONFIGS = "configs";
 

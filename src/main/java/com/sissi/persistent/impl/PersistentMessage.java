@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.sissi.commons.Extracter;
+import com.sissi.config.MongoConfig;
 import com.sissi.context.JIDBuilder;
 import com.sissi.persistent.PersistentElementBox;
 import com.sissi.protocol.Element;
@@ -44,6 +45,7 @@ public class PersistentMessage extends PersistentProtocol {
 		Map<String, Object> entity = super.write(element);
 		Message message = Message.class.cast(element);
 		entity.put(this.body, message.getBody().getText());
+		entity.put(MongoConfig.FIELD_THREAD, message.thread());
 		entity.put(PersistentElementBox.fieldAck, message.request());
 		return entity;
 	}
@@ -51,7 +53,8 @@ public class PersistentMessage extends PersistentProtocol {
 	@Override
 	public Message read(Map<String, Object> element) {
 		Message message = Message.class.cast(super.read(element, new Message()));
-		return message.setBody(new Body(element.get(this.body).toString())).setDelay(this.delay(element, message)).request(Boolean.getBoolean(element.get(PersistentElementBox.fieldAck).toString()));
+		Object thread = element.get(MongoConfig.FIELD_THREAD);
+		return message.setThread(thread != null ? thread.toString() : null).setBody(new Body(element.get(this.body).toString())).setDelay(this.delay(element, message)).request(Boolean.getBoolean(element.get(PersistentElementBox.fieldAck).toString()));
 	}
 
 	public boolean isSupport(Element element) {
