@@ -8,16 +8,16 @@
 	<bean id="presence.pro.muc.check.xmlns" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckXmlnsProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.muc.check.count" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckCountProcessor" parent="global.pro.proxy">
 		<constructor-arg index="0" value="${pipeline.muc.count}" />
-		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
 	<bean id="presence.pro.muc.check.password" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckPasswordProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
 	<bean id="presence.pro.muc.check.activate" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckActivateProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
 	<bean id="presence.pro.muc.check.affiliation" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckAffiliationProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
 	<bean id="presence.pro.muc.check.relation" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckRelationProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc" />
@@ -26,7 +26,7 @@
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.muc.check.nickname.locked" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckNicknameLockedProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
 	<bean id="presence.pro.muc.check.nickname.exists" class="com.sissi.pipeline.in.presence.muc.PresenceMucCheckNicknameExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg index="0" value="${pipeline.muc.multi}" />
@@ -37,14 +37,14 @@
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.2fans" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2FansProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 		<constructor-arg ref="ucenter.muc.judger" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.2replace" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2ReplaceProcessor" parent="global.pro.proxy">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.presence.muc.PresenceMucLeave2AllProcessor" parent="global.pro.proxy">
-				<constructor-arg ref="ucenter.muc.config" />
+				<constructor-arg ref="ucenter.muc.config.builder" />
 				<constructor-arg ref="ucenter.muc.judger.replace" />
 				<property name="relationContext" ref="ucenter.muc" />
 			</bean>
@@ -52,17 +52,17 @@
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.2self.presence" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfPresenceProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 		<constructor-arg ref="ucenter.muc.judger" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.2self.message.warning" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfMessageWarningProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 		<constructor-arg value="${pipeline.muc.tip}" />
 	</bean>
 	<bean id="presence.pro.muc.join.2self.message.history" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfMessageHistoryProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="history.muc" />
-		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
 	<bean id="presence.pro.muc.join.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -89,7 +89,7 @@
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.muc.leave.2all" class="com.sissi.pipeline.in.presence.muc.PresenceMucLeave2AllProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 		<constructor-arg ref="ucenter.muc.judger" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>

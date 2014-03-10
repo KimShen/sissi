@@ -7,7 +7,7 @@ import com.sissi.ucenter.muc.MucConfigParam;
 /**
  * @author kim 2014年3月5日
  */
-public class AffiliationMucConfigArbitrament implements MucConfigArbitrament {
+public class AffiliationCheckMucConfigArbitrament implements MucConfigArbitrament {
 
 	@Override
 	public boolean arbitrate(MucConfigParam param, Object request) {
@@ -16,7 +16,7 @@ public class AffiliationMucConfigArbitrament implements MucConfigArbitrament {
 
 	@Override
 	public String support() {
-		return MucConfig.AFFILIATION;
+		return MucConfig.AFFILIATION_CHECK;
 	}
 
 }

@@ -5,19 +5,19 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="ucenter.muc.config" class="com.sissi.config.impl.MongoProxyConfig">
+		<constructor-arg ref="global.mongo" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.muc}" />
+	</bean>
+
 	<alias name="ucenter.muc.mongo" alias="ucenter.muc" />
 	<bean id="ucenter.muc.mongo" class="com.sissi.ucenter.muc.impl.MongoRelationMucContext">
 		<constructor-arg ref="global.jid" />
-		<constructor-arg>
-			<bean class="com.sissi.config.impl.MongoProxyConfig">
-				<constructor-arg ref="global.mongo" />
-				<constructor-arg index="1" value="${mongo.db}" />
-				<constructor-arg index="2" value="${mongo.collection.muc}" />
-			</bean>
-		</constructor-arg>
+		<constructor-arg ref="ucenter.muc.config" />
 	</bean>
 
-	<bean id="ucenter.muc.config" class="com.sissi.ucenter.muc.impl.MongoMucConfigBuilder">
+	<bean id="ucenter.muc.config.builder" class="com.sissi.ucenter.muc.impl.MongoMucConfigBuilder">
 		<constructor-arg ref="global.jid" />
 		<constructor-arg ref="ucenter.muc" />
 		<constructor-arg>
@@ -38,11 +38,16 @@
 				<bean class="com.sissi.ucenter.muc.impl.NicknameMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.ActivateMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.PasswordMucConfigArbitrament" />
-				<bean class="com.sissi.ucenter.muc.impl.AffiliationMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.HiddenNativeMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.HiddenComputeMucConfigArbitrament" />
+				<bean class="com.sissi.ucenter.muc.impl.AffiliationCheckMucConfigArbitrament" />
+				<bean class="com.sissi.ucenter.muc.impl.AffiliationExistsMucConfigArbitrament" />
 			</util:list>
 		</constructor-arg>
+	</bean>
+
+	<bean id="ucenter.muc.affiliation" class="com.sissi.ucenter.muc.impl.MongoMucAffiliationBuilder">
+		<constructor-arg ref="ucenter.muc.config" />
 	</bean>
 
 	<bean id="ucenter.muc.judger" class="com.sissi.ucenter.muc.impl.ChainedMucStatusJudger">

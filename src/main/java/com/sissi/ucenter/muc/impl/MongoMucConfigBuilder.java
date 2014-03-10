@@ -92,7 +92,7 @@ public class MongoMucConfigBuilder implements MucConfigBuilder {
 		}
 
 		public boolean level(String affiliation) {
-			return this.creator() || ItemAffiliation.parse(this.relation().affiliation()).contains(affiliation);
+			return this.creator() || MongoMucConfigBuilder.this.config.collection().findOne(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.group.asStringWithBare()).add("$or", new DBObject[] { BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + MongoConfig.FIELD_AFFILIATION, BasicDBObjectBuilder.start("$exists", false).get()).get(), BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.user.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATION, affiliation).get()).get() }).get()) != null || MongoMucConfigBuilder.this.config.collection().findOne(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.group.asStringWithBare()).get()) == null;
 		}
 
 		public boolean hidden(boolean compute) {
@@ -136,6 +136,10 @@ public class MongoMucConfigBuilder implements MucConfigBuilder {
 			this.activate = activate;
 			this.configs = Extracter.asMap(configs);
 			this.mapping = Extracter.asInts(configs, MongoMucConfigBuilder.this.fieldMapping);
+		}
+
+		public Object extract(String key) {
+			return this.configs.get(key);
 		}
 
 		@Override

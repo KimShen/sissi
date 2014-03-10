@@ -17,7 +17,9 @@ public interface MucConfig {
 
 	public final static String ACTIVATE = "ACTIVATE";
 
-	public final static String AFFILIATION = "AFFILIATION";
+	public final static String AFFILIATION_EXISTS = "AFFILIATION_EXISTS";
+
+	public final static String AFFILIATION_CHECK = "AFFILIATION_CHECK";
 
 	public final static String HIDDEN_NATIVE = "HIDDEN_NATIVE";
 
@@ -26,4 +28,6 @@ public interface MucConfig {
 	public boolean allowed(JID jid, String key, Object value);
 
 	public String mapping(String affiliation);
+
+	public Object extract(String key);
 }

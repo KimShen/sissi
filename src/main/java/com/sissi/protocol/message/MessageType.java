@@ -5,10 +5,10 @@ package com.sissi.protocol.message;
  */
 public enum MessageType {
 
-	CHAT, GROUPCHAT, HEADLINE, NORMAL;
+	NONE, CHAT, GROUPCHAT, HEADLINE, NORMAL;
 
 	public String toString() {
-		return super.toString().toLowerCase();
+		return this == NONE ? null : super.toString().toLowerCase();
 	}
 
 	public boolean equals(String type) {

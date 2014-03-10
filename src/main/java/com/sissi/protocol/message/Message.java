@@ -48,7 +48,7 @@ public class Message extends Protocol implements Collector {
 	}
 
 	public String getType() {
-		return super.getType() != null ? super.getType() : MessageType.NORMAL.toString();
+		return super.getType() != null ? super.getType() : MessageType.NONE.toString();
 	}
 
 	public boolean type(MessageType... types) {
@@ -119,8 +119,12 @@ public class Message extends Protocol implements Collector {
 		return this.x;
 	}
 
-	public boolean isInvite() {
+	public boolean invite() {
 		return this.getX() != null && this.getX().invite();
+	}
+
+	public boolean decline() {
+		return this.getX() != null && this.getX().decline();
 	}
 
 	public boolean request() {

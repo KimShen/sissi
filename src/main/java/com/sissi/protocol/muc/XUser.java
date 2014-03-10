@@ -28,6 +28,8 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 
 	private XInvite invite;
 
+	private XDecline decline;
+
 	private XPassword password;
 
 	private boolean hidden;
@@ -83,6 +85,15 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 	}
 
 	@XmlElement
+	public XDecline getDecline() {
+		return this.decline;
+	}
+
+	public boolean decline() {
+		return this.getDecline() != null;
+	}
+
+	@XmlElement
 	public XPassword getPassword() {
 		return this.password;
 	}
@@ -125,6 +136,9 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 		switch (localName) {
 		case XInvite.NAME:
 			this.invite = XInvite.class.cast(ob);
+			return;
+		case XDecline.NAME:
+			this.decline = XDecline.class.cast(ob);
 			return;
 		case XPassword.NAME:
 			this.password = XPassword.class.cast(ob);

@@ -8,9 +8,9 @@ import com.sissi.protocol.message.MessageType;
 /**
  * @author kim 2014年3月8日
  */
-public class MessageMuc2InviteMatcher extends ClassMatcher {
+public class MessageMuc2DeclineMatcher extends ClassMatcher {
 
-	public MessageMuc2InviteMatcher() {
+	public MessageMuc2DeclineMatcher() {
 		super(Message.class);
 	}
 
@@ -19,6 +19,6 @@ public class MessageMuc2InviteMatcher extends ClassMatcher {
 	}
 
 	private boolean isInvite(Message message) {
-		return message.type(MessageType.NORMAL, MessageType.NONE) && message.invite();
+		return message.type(MessageType.NORMAL, MessageType.NONE) && message.decline();
 	}
 }
