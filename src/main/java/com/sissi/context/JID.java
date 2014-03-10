@@ -12,9 +12,9 @@ public interface JID {
 	public JID domain(String domain);
 
 	public String resource();
-
+	
 	public JID resource(String resource);
-
+	
 	public boolean same(JID jid);
 
 	public boolean same(String jid);

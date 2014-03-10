@@ -53,10 +53,18 @@
 	<bean id="message.pro.muc.2all" class="com.sissi.pipeline.in.message.muc.MessageMuc2AllProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
+	<bean id="message.pro.muc.2all.check.relation" class="com.sissi.pipeline.in.message.muc.MessageMuc2AllCheckRelationProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc" />
+	</bean>
+	<bean id="message.pro.muc.2all.check.resource" class="com.sissi.pipeline.in.message.muc.MessageMuc2AllCheckResourceProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc" />
+	</bean>
 	<bean id="message.pro.muc.2all.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="message.pro.check.body" />
+				<ref bean="message.pro.muc.2all.check.relation"/>
+				<ref bean="message.pro.muc.2all.check.resource"/>
 				<ref bean="message.pro.servertime" />
 				<ref bean="message.pro.muc.2trace" />
 				<ref bean="message.pro.muc.2persistent" />

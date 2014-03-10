@@ -24,7 +24,7 @@ public class PresenceMucJoin2ReplaceProcessor extends ProxyProcessor {
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.getTo());
 		Relation relation = super.ourRelation(context.jid(), group);
-		if (relation.activate() && !group.same(group.clone().resource(relation.name()))) {
+		if (!group.resource().equals(relation.name())) {
 			this.proxy.input(context, new Presence().setTo(group.resource(relation.name())));
 		}
 		return true;

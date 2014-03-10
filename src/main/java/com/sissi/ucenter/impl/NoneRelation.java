@@ -23,23 +23,16 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 
 	private final JID jid;
 
-	private final boolean activate;
-
 	private final String subscription;
 
-	private NoneRelation(JID jid, boolean activate, String subscription) {
+	public NoneRelation(JID jid, String subscription) {
 		super();
 		this.jid = jid;
-		this.activate = activate;
 		this.subscription = subscription;
 	}
 
-	public NoneRelation(JID jid, String subscription) {
-		this(jid, false, subscription);
-	}
-
 	public NoneRelation(JID jid) {
-		this(jid, true, zero);
+		this(jid, zero);
 	}
 
 	@Override
@@ -83,7 +76,7 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 	}
 
 	public boolean activate() {
-		return this.activate;
+		return false;
 	}
 
 	public boolean outcast() {
