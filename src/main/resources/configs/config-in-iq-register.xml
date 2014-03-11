@@ -5,8 +5,11 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="register.pro.fields" class="com.sissi.pipeline.in.iq.register.RegisterFieldsProcessor">
+	<bean id="register.pro.fields.new" class="com.sissi.pipeline.in.iq.register.RegisterFieldsProcessor">
 		<constructor-arg ref="uncenter.fields.form" />
+	</bean>
+	<bean id="register.pro.fields.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.register.fields" />
 	</bean>
 	<bean id="register.pro.store" abstract="true">
 		<constructor-arg ref="iq.pro.error.none" />
@@ -41,7 +44,7 @@
 		<constructor-arg>
 			<util:list>
 				<!-- Init register fields -->
-				<ref bean="register.condition.field" />
+				<ref bean="register.condition.fields" />
 				<!-- DB operation -->
 				<ref bean="register.condition.store" />
 			</util:list>
@@ -55,15 +58,29 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="finder.register.fields" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="register.condition.fields.muc" />
+				<ref bean="register.condition.fields.new" />
+			</util:list>
+		</constructor-arg>
+	</bean>
 
-	<bean id="register.condition.field" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="register.condition.fields" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.IQActionMatcher">
 				<constructor-arg value="com.sissi.protocol.iq.register.Register" />
 				<constructor-arg value="GET" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="register.pro.fields" />
+		<constructor-arg ref="register.pro.fields.fork" />
+	</bean>
+	<bean id="register.condition.fields.new" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.AnyMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="register.pro.fields.new" />
 	</bean>
 	<bean id="register.condition.store" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

@@ -26,7 +26,7 @@ public interface MongoConfig extends Config {
 	public final static String FIELD_INDEX = "index";
 
 	public final static String FIELD_COUNT = "count";
-
+	
 	public final static String FIELD_RESULT = "result";
 
 	public final static String FIELD_HIDDEN = "hidden";
@@ -47,6 +47,8 @@ public interface MongoConfig extends Config {
 
 	public final static String FIELD_PASSWORD = "password";
 
+	public final static String FIELD_REGISTER = "register";
+	
 	public final static String FIELD_TIMESTAMP = "timestamp";
 
 	public final static String FIELD_AFFILIATION = "affiliation";

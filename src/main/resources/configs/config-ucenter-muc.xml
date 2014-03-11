@@ -11,9 +11,12 @@
 		<constructor-arg index="2" value="${mongo.collection.muc}" />
 	</bean>
 
-	<alias name="ucenter.muc.mongo" alias="ucenter.muc" />
-	<bean id="ucenter.muc.mongo" class="com.sissi.ucenter.muc.impl.MongoRelationMucContext">
+	<bean id="ucenter.muc" class="com.sissi.ucenter.muc.impl.MongoRelationMucContext">
 		<constructor-arg ref="global.jid" />
+		<constructor-arg ref="ucenter.muc.config" />
+	</bean>
+
+	<bean id="ucenter.muc.finder" class="com.sissi.ucenter.muc.impl.MongoMucFinder">
 		<constructor-arg ref="ucenter.muc.config" />
 	</bean>
 
@@ -35,6 +38,7 @@
 				<bean class="com.sissi.ucenter.muc.impl.InviteMucConfigArbitrament">
 					<constructor-arg value="${pipeline.muc.invite}" />
 				</bean>
+				<bean class="com.sissi.ucenter.muc.impl.RegisterMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.NicknameMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.ActivateMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.PasswordMucConfigArbitrament" />

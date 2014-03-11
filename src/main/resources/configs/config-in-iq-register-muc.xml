@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="register.pro.fields.muc" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucFieldsProcessor">
+		<constructor-arg ref="uncenter.fields.form" />
+	</bean>
+	<bean id="register.pro.fields.muc.check.allow" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucFieldsCheckAllowProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.config.builder" />
+		<property name="relationContext" ref="ucenter.muc" />
+	</bean>
+	<bean id="register.pro.fields.muc.check.exists" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucFieldsCheckExistsProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.finder" />
+		<property name="relationContext" ref="ucenter.muc" />
+	</bean>
+	<bean id="register.pro.fields.muc.check.affiliation" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucFieldsCheckAffiliationProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="iq.pro.result.stop" />
+		<property name="relationContext" ref="ucenter.muc" />
+	</bean>
+	<bean id="register.pro.fields.muc.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="register.pro.fields.muc.check.allow" />
+				<ref bean="register.pro.fields.muc.check.exists" />
+				<ref bean="register.pro.fields.muc.check.affiliation" />
+				<ref bean="register.pro.fields.muc" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="register.condition.fields.muc" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.register.muc.RegisterMucFieldsMatcher">
+				<constructor-arg ref="global.jid" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="register.pro.fields.muc.chained" />
+	</bean>
+</beans>

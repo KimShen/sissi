@@ -42,6 +42,10 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="presence.pro.status.2muc" class="com.sissi.pipeline.in.presence.status.PresenceOnlineMucProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="presence.pro.muc.join.2fans" />
+		<property name="relationContext" ref="ucenter.muc" />
+	</bean>
 	<bean id="presence.pro.status.2selfs" class="com.sissi.pipeline.in.presence.status.PresenceStatusProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.2fans" class="com.sissi.pipeline.in.presence.status.PresenceStatusProcessor" parent="global.pro.proxy">
 		<property name="protocolQueue" ref="broadcast.protocol.fans" />
@@ -69,8 +73,8 @@
 	</bean>
 	<bean id="presence.pro.status.available.init.4selfs" class="com.sissi.pipeline.in.presence.status.PresenceInit4SelfsProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.available.init" class="com.sissi.pipeline.in.presence.status.PresenceInitProcessor" />
-	<bean id="presence.pro.status.available.2self.priority" class="com.sissi.pipeline.in.presence.status.PresenceOnlinePriorityProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.status.available.2self.update" class="com.sissi.pipeline.in.presence.status.PresenceOnlineUpdateProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.available.priority" class="com.sissi.pipeline.in.presence.status.PresenceOnlinePriorityProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.available.update" class="com.sissi.pipeline.in.presence.status.PresenceOnlineUpdateProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.available.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
@@ -87,14 +91,14 @@
 				<!-- Update presented -->
 				<ref bean="presence.pro.status.available.init" />
 				<!-- Update priority -->
-				<ref bean="presence.pro.status.available.2self.priority" />
+				<ref bean="presence.pro.status.available.priority" />
 				<!-- Update status -->
-				<ref bean="presence.pro.status.available.2self.update" />
+				<ref bean="presence.pro.status.available.update" />
 				<!-- Forward presence to other resources / fans -->
 				<ref bean="presence.pro.status.2selfs" />
 				<ref bean="presence.pro.status.2fans" />
 				<!-- Forward presence to muc -->
-				<ref bean="presence.pro.muc.join.2fans" />
+				<ref bean="presence.pro.status.2muc" />
 			</util:list>
 		</constructor-arg>
 	</bean>
