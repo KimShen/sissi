@@ -24,6 +24,10 @@ public class Select extends Input {
 	public Select() {
 	}
 
+	public Select(String type, String name, String var, XOption... options) {
+		this(type, name, var, null, options);
+	}
+
 	public Select(String type, String name, String var, XRequired required, XOption... options) {
 		super(XFieldType.parse(type).toString(), name, var, required);
 		if (options != null) {

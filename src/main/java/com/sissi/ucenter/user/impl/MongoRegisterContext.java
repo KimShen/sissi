@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.MongoException;
+import com.mongodb.WriteConcern;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.iq.data.XValue;
@@ -34,7 +35,7 @@ public class MongoRegisterContext extends MongoFieldContext implements RegisterC
 	@Override
 	public boolean register(Fields fields) {
 		try {
-			return this.valid(fields) ? (this.config.collection().save(super.getEntities(fields, BasicDBObjectBuilder.start())).getError() == null) : false;
+			return this.valid(fields) ? (this.config.collection().save(super.getEntities(fields, BasicDBObjectBuilder.start()), WriteConcern.SAFE).getError() == null) : false;
 		} catch (MongoException e) {
 			return false;
 		}

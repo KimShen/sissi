@@ -57,4 +57,8 @@ public class Identity extends DiscoFeature {
 	public String getName() {
 		return this.name;
 	}
+
+	public Identity clone() {
+		return new Identity(this.name, this.type, this.category);
+	}
 }

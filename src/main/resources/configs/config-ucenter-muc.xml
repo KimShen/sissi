@@ -16,6 +16,16 @@
 		<constructor-arg ref="ucenter.muc.config" />
 	</bean>
 
+	<bean id="ucenter.muc.apply" class="com.sissi.ucenter.muc.impl.MongoMucApplyContext">
+		<constructor-arg>
+			<bean class="com.sissi.config.impl.MongoProxyConfig">
+				<constructor-arg ref="global.mongo" />
+				<constructor-arg index="1" value="${mongo.db}" />
+				<constructor-arg index="2" value="${mongo.collection.muc.apply}" />
+			</bean>
+		</constructor-arg>
+	</bean>
+
 	<bean id="ucenter.muc.finder" class="com.sissi.ucenter.muc.impl.MongoMucFinder">
 		<constructor-arg ref="ucenter.muc.config" />
 	</bean>

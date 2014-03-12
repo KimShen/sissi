@@ -5,6 +5,11 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="disco.identify" class="com.sissi.protocol.iq.disco.Identity">
+		<constructor-arg index="0" value="Chat Service" />
+		<constructor-arg index="1" value="text" />
+		<constructor-arg index="2" value="conference" />
+	</bean>
 	<bean id="disco.pro.check" class="com.sissi.pipeline.in.iq.disco.Disco2FansCheckRelationProcessor">
 		<constructor-arg ref="global.domains" />
 		<constructor-arg value="${pipeline.free}" />
@@ -92,14 +97,10 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="disco.pro.info.2muc" class="com.sissi.pipeline.in.iq.disco.DiscoInfoProcessor">
+	<bean id="disco.pro.info.2muc.server" class="com.sissi.pipeline.in.iq.disco.DiscoInfoProcessor">
 		<constructor-arg>
 			<util:list>
-				<bean class="com.sissi.protocol.iq.disco.Identity">
-					<constructor-arg index="0" value="Chat Service" />
-					<constructor-arg index="1" value="text" />
-					<constructor-arg index="2" value="conference" />
-				</bean>
+				<ref bean="disco.identify" />
 				<bean class="com.sissi.protocol.iq.disco.DiscoFeature">
 					<constructor-arg>
 						<util:constant static-field="com.sissi.protocol.muc.XMuc.XMLNS" />
@@ -118,6 +119,14 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="disco.pro.info.2muc.nickname" class="com.sissi.pipeline.in.iq.disco.muc.DiscoInfoMucNicknameProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="disco.identify" />
+		<property name="relationContext" ref="ucenter.muc" />
+	</bean>
+	<bean id="disco.pro.info.2muc.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.disco.info.2muc" />
+	</bean>
+
 	<bean id="disco.pro.info.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy" />
 	<bean id="disco.pro.info.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.disco.info" />
@@ -195,6 +204,14 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="finder.disco.info.2muc" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="disco.condition.info.2muc.nickname" />
+				<ref bean="disco.condition.info.2muc.service" />
+			</util:list>
+		</constructor-arg>
+	</bean>
 	<bean id="finder.disco.items" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
@@ -252,12 +269,26 @@
 	</bean>
 	<bean id="disco.condition.info.2muc" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
-				<constructor-arg index="0" value="com.sissi.protocol.iq.disco.DiscoInfo" />
-				<constructor-arg index="1" value="${global.domain.muc}" />
+			<bean class="com.sissi.pipeline.in.iq.disco.muc.DiscoInfoMucMatcher">
+				<constructor-arg ref="global.jid" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.info.2muc" />
+		<constructor-arg ref="disco.pro.info.2muc.fork" />
+	</bean>
+	<bean id="disco.condition.info.2muc.service" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.AnyMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="disco.pro.info.2muc.server" />
+	</bean>
+	<bean id="disco.condition.info.2muc.nickname" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.disco.muc.DiscoInfoMucNodeMatcher">
+				<constructor-arg index="0" value="${global.domain.muc}" />
+				<constructor-arg index="1" value="x-roomuser-item" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="disco.pro.info.2muc.nickname" />
 	</bean>
 	<bean id="disco.condition.info.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

@@ -12,13 +12,13 @@ import com.sissi.ucenter.muc.MucFinder;
 /**
  * @author kim 2014年3月10日
  */
-public class RegisterMucFieldsCheckExistsProcessor extends ProxyProcessor {
+public class RegisterMucCheckExistsProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
 
 	private final MucFinder mucFinder;
 
-	public RegisterMucFieldsCheckExistsProcessor(MucFinder mucFinder) {
+	public RegisterMucCheckExistsProcessor(MucFinder mucFinder) {
 		super();
 		this.mucFinder = mucFinder;
 	}

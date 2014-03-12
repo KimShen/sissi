@@ -10,11 +10,11 @@ import com.sissi.ucenter.muc.RelationMuc;
 /**
  * @author kim 2014年3月10日
  */
-public class RegisterMucFieldsCheckAffiliationProcessor extends ProxyProcessor {
+public class RegisterMucCheckAffiliationProcessor extends ProxyProcessor {
 
 	private final IQResponseProcessor processor;
 
-	public RegisterMucFieldsCheckAffiliationProcessor(IQResponseProcessor processor) {
+	public RegisterMucCheckAffiliationProcessor(IQResponseProcessor processor) {
 		super();
 		this.processor = processor;
 	}

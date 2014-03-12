@@ -60,6 +60,7 @@
 		<maven.mongo.perhost>5000</maven.mongo.perhost>
 		<maven.mongo.collection.log>log</maven.mongo.collection.log>
 		<maven.mongo.collection.muc>muc</maven.mongo.collection.muc>
+		<maven.mongo.collection.muc.apply>muc.apply</maven.mongo.collection.muc.apply>
 		<maven.mongo.collection.user>user</maven.mongo.collection.user>
 		<maven.mongo.collection.roster>roster</maven.mongo.collection.roster>
 		<maven.mongo.collection.counter>counter</maven.mongo.collection.counter>

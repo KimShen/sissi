@@ -17,6 +17,8 @@ public class DiscoInfo extends Disco {
 
 	public final static String XMLNS = "http://jabber.org/protocol/disco#info";
 
+	private String node;
+
 	public DiscoInfo() {
 		super(XMLNS);
 	}
@@ -25,4 +27,18 @@ public class DiscoInfo extends Disco {
 	public List<DiscoFeature> getDisco() {
 		return super.getDisco();
 	}
+
+	public boolean node() {
+		return this.node != null;
+	}
+
+	public boolean node(String node) {
+		return this.node() && this.node.equals(node);
+	}
+
+	public DiscoInfo setNode(String node) {
+		this.node = node;
+		return this;
+	}
+
 }

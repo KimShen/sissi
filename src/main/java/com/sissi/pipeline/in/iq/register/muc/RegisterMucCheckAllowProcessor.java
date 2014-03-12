@@ -13,13 +13,13 @@ import com.sissi.ucenter.muc.MucConfigBuilder;
 /**
  * @author kim 2014年3月11日
  */
-public class RegisterMucFieldsCheckAllowProcessor extends ProxyProcessor {
+public class RegisterMucCheckAllowProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
 
 	private final MucConfigBuilder mucConfigBuilder;
 
-	public RegisterMucFieldsCheckAllowProcessor(MucConfigBuilder mucConfigBuilder) {
+	public RegisterMucCheckAllowProcessor(MucConfigBuilder mucConfigBuilder) {
 		super();
 		this.mucConfigBuilder = mucConfigBuilder;
 	}

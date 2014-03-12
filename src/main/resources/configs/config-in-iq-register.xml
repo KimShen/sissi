@@ -53,6 +53,7 @@
 	<bean id="finder.register.store" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<ref bean="register.condition.store.muc" />
 				<ref bean="register.condition.store.simple" />
 				<ref bean="register.condition.store.multiple" />
 			</util:list>
@@ -115,5 +116,4 @@
 		</constructor-arg>
 		<constructor-arg ref="register.pro.chained" />
 	</bean>
-
 </beans>

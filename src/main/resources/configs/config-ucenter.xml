@@ -26,7 +26,7 @@
 		<constructor-arg value="false" />
 		<constructor-arg>
 			<util:list>
-				<bean id="uncenter.fields.form.detail" class="com.sissi.protocol.iq.data.XData">
+				<bean class="com.sissi.protocol.iq.data.XData">
 					<constructor-arg value="false" />
 					<constructor-arg value="form" />
 					<constructor-arg>
@@ -57,17 +57,11 @@
 								<constructor-arg index="0" value="text-multi" />
 								<constructor-arg index="1" value="Desc" />
 								<constructor-arg index="2" value="desc" />
-								<constructor-arg>
-									<null />
-								</constructor-arg>
 							</bean>
 							<bean class="com.sissi.protocol.iq.register.form.Select">
 								<constructor-arg index="0" value="list-single" />
 								<constructor-arg index="1" value="Gender" />
 								<constructor-arg index="2" value="gender" />
-								<constructor-arg>
-									<null />
-								</constructor-arg>
 								<constructor-arg>
 									<util:list>
 										<bean class="com.sissi.protocol.iq.data.XOption">
@@ -86,9 +80,6 @@
 								<constructor-arg index="1" value="Title" />
 								<constructor-arg index="2" value="title" />
 								<constructor-arg>
-									<null />
-								</constructor-arg>
-								<constructor-arg>
 									<util:list>
 										<bean class="com.sissi.protocol.iq.data.XOption">
 											<constructor-arg index="0" value="MEMBER" />
@@ -100,6 +91,52 @@
 										</bean>
 									</util:list>
 								</constructor-arg>
+							</bean>
+						</util:list>
+					</constructor-arg>
+				</bean>
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<!-- For Test -->
+	<bean id="uncenter.fields.muc.form" class="com.sissi.ucenter.field.impl.BeanFields">
+		<constructor-arg value="false" />
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.protocol.iq.data.XData">
+					<constructor-arg value="false" />
+					<constructor-arg value="form" />
+					<constructor-arg>
+						<util:list>
+							<bean class="com.sissi.protocol.iq.register.form.Title">
+								<constructor-arg value="This is my muc title" />
+							</bean>
+							<bean class="com.sissi.protocol.iq.register.form.Instructions">
+								<constructor-arg value="This is my muc introduce" />
+							</bean>
+							<bean class="com.sissi.protocol.iq.register.form.Input">
+								<constructor-arg index="0" value="hidden" />
+								<constructor-arg index="1">
+									<null />
+								</constructor-arg>
+								<constructor-arg index="2" value="FORM_TYPE" />
+								<constructor-arg index="3" value="http://jabber.org/protocol/muc#register" />
+							</bean>
+							<bean class="com.sissi.protocol.iq.register.form.Input">
+								<constructor-arg index="0" value="text-single" />
+								<constructor-arg index="1" value="Given name" />
+								<constructor-arg index="2" value="muc#register_first" />
+							</bean>
+							<bean class="com.sissi.protocol.iq.register.form.Input">
+								<constructor-arg index="0" value="text-single" />
+								<constructor-arg index="1" value="Family name" />
+								<constructor-arg index="2" value="muc#register_last" />
+							</bean>
+							<bean class="com.sissi.protocol.iq.register.form.Input">
+								<constructor-arg index="0" value="text-single" />
+								<constructor-arg index="1" value="Desired nickname" />
+								<constructor-arg index="2" value="muc#register_roomnick" />
 							</bean>
 						</util:list>
 					</constructor-arg>
