@@ -14,6 +14,7 @@
 	<bean id="ucenter.muc" class="com.sissi.ucenter.muc.impl.MongoRelationMucContext">
 		<constructor-arg ref="global.jid" />
 		<constructor-arg ref="ucenter.muc.config" />
+		<property name="mucConfigBuilder" ref="ucenter.muc.config.builder" />
 	</bean>
 
 	<bean id="ucenter.muc.apply" class="com.sissi.ucenter.muc.impl.MongoMucApplyContext">
@@ -24,10 +25,6 @@
 				<constructor-arg index="2" value="${mongo.collection.muc.apply}" />
 			</bean>
 		</constructor-arg>
-	</bean>
-
-	<bean id="ucenter.muc.finder" class="com.sissi.ucenter.muc.impl.MongoMucFinder">
-		<constructor-arg ref="ucenter.muc.config" />
 	</bean>
 
 	<bean id="ucenter.muc.config.builder" class="com.sissi.ucenter.muc.impl.MongoMucConfigBuilder">

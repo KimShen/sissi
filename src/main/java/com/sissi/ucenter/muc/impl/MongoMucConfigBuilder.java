@@ -17,12 +17,13 @@ import com.sissi.ucenter.muc.MucConfig;
 import com.sissi.ucenter.muc.MucConfigArbitrament;
 import com.sissi.ucenter.muc.MucConfigBuilder;
 import com.sissi.ucenter.muc.MucConfigParam;
+import com.sissi.ucenter.muc.MucFinder;
 import com.sissi.ucenter.muc.RelationMuc;
 
 /**
  * @author kim 2014年2月20日
  */
-public class MongoMucConfigBuilder implements MucConfigBuilder {
+public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 
 	private final String fieldMapping = "mapping";
 
@@ -50,6 +51,11 @@ public class MongoMucConfigBuilder implements MucConfigBuilder {
 	public MucConfig build(JID group) {
 		DBObject db = this.config.collection().findOne(BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, group.asStringWithBare()).get(), this.filter);
 		return new MongoMucGroupConfig(group, this.jidBuilder.build(Extracter.asString(db, MongoConfig.FIELD_CREATOR)), Extracter.asBoolean(db, MongoConfig.FIELD_ACTIVATE, true), Extracter.asDBObject(db, MongoConfig.FIELD_CONFIGS));
+	}
+
+	@Override
+	public boolean exists(JID group) {
+		return this.config.collection().findOne(BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, group.asStringWithBare()).get()) != null;
 	}
 
 	private class MucConfigParamImpl implements MucConfigParam {
@@ -87,16 +93,16 @@ public class MongoMucConfigBuilder implements MucConfigBuilder {
 			return this.user;
 		}
 
-		public boolean level() {
-			return this.level(this.asString(MongoConfig.FIELD_AFFILIATION));
+		public boolean affiliation() {
+			return this.affiliation(this.asString(MongoConfig.FIELD_AFFILIATION));
 		}
 
-		public boolean level(String affiliation) {
-			return this.creator() || MongoMucConfigBuilder.this.config.collection().findOne(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.group.asStringWithBare()).add("$or", new DBObject[] { BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + MongoConfig.FIELD_AFFILIATION, BasicDBObjectBuilder.start("$exists", false).get()).get(), BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.user.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATION, affiliation).get()).get() }).get()) != null || MongoMucConfigBuilder.this.config.collection().findOne(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.group.asStringWithBare()).get()) == null;
+		public boolean affiliation(String affiliation) {
+			return this.creator() || !MongoMucConfigBuilder.this.exists(this.group) || MongoMucConfigBuilder.this.config.collection().findOne(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.group.asStringWithBare()).add("$or", new DBObject[] { BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + MongoConfig.FIELD_AFFILIATION, BasicDBObjectBuilder.start("$exists", false).get()).get(), BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.user.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATION, affiliation).get()).get() }).get()) != null;
 		}
 
 		public boolean hidden(boolean compute) {
-			return compute ? !this.creator() && this.asBoolean(MongoConfig.FIELD_HIDDEN) : this.asBoolean(MongoConfig.FIELD_HIDDEN);
+			return compute ? !this.creator() && !ItemRole.parse(MongoMucConfigBuilder.this.relationContext.ourRelation(this.user, this.group).cast(RelationMuc.class).role()).contains(ItemRole.MODERATOR) && this.asBoolean(MongoConfig.FIELD_HIDDEN) : this.asBoolean(MongoConfig.FIELD_HIDDEN);
 		}
 
 		@Override
@@ -145,7 +151,7 @@ public class MongoMucConfigBuilder implements MucConfigBuilder {
 		@Override
 		public String mapping(String affiliation) {
 			int ordinal = ItemAffiliation.parse(affiliation).ordinal();
-			return this.mapping != null && (this.mapping.length - 1) > ordinal ? ItemRole.toString(this.mapping[ordinal]) : ItemRole.NONE.toString();
+			return this.mapping != null && (this.mapping.length) > ordinal ? ItemRole.toString(this.mapping[ordinal - 1]) : ItemRole.NONE.toString();
 		}
 
 		@Override

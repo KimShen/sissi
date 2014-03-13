@@ -13,7 +13,7 @@
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="register.pro.muc.check.exists" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckExistsProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc.finder" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="register.pro.muc.check.affiliation" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckAffiliationProcessor" parent="global.pro.proxy">

@@ -13,7 +13,7 @@ public class MessageMuc2DeclineProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		XDecline decline = protocol.cast(Message.class).getX().getDecline();
+		XDecline decline = protocol.cast(Message.class).getUser().getDecline();
 		super.findOne(super.build(decline.getTo()), true).write(this.prepareAndReturn(context, protocol.cast(Message.class), decline).reply());
 		return true;
 	}

@@ -37,7 +37,7 @@
 							<bean class="com.sissi.protocol.iq.register.form.Instructions">
 								<constructor-arg value="This is my introduce" />
 							</bean>
-							<bean class="com.sissi.protocol.iq.register.form.Input">
+							<bean class="com.sissi.protocol.iq.data.XInput">
 								<constructor-arg index="0" value="text-single" />
 								<constructor-arg index="1" value="Useranme" />
 								<constructor-arg index="2" value="username" />
@@ -45,7 +45,7 @@
 									<util:constant static-field="com.sissi.protocol.iq.data.XRequired.FIELD" />
 								</constructor-arg>
 							</bean>
-							<bean class="com.sissi.protocol.iq.register.form.Input">
+							<bean class="com.sissi.protocol.iq.data.XInput">
 								<constructor-arg index="0" value="text-private" />
 								<constructor-arg index="1" value="Password" />
 								<constructor-arg index="2" value="password" />
@@ -53,7 +53,7 @@
 									<util:constant static-field="com.sissi.protocol.iq.data.XRequired.FIELD" />
 								</constructor-arg>
 							</bean>
-							<bean class="com.sissi.protocol.iq.register.form.Input">
+							<bean class="com.sissi.protocol.iq.data.XInput">
 								<constructor-arg index="0" value="text-multi" />
 								<constructor-arg index="1" value="Desc" />
 								<constructor-arg index="2" value="desc" />
@@ -115,7 +115,7 @@
 							<bean class="com.sissi.protocol.iq.register.form.Instructions">
 								<constructor-arg value="This is my muc introduce" />
 							</bean>
-							<bean class="com.sissi.protocol.iq.register.form.Input">
+							<bean class="com.sissi.protocol.iq.data.XInput">
 								<constructor-arg index="0" value="hidden" />
 								<constructor-arg index="1">
 									<null />
@@ -123,17 +123,17 @@
 								<constructor-arg index="2" value="FORM_TYPE" />
 								<constructor-arg index="3" value="http://jabber.org/protocol/muc#register" />
 							</bean>
-							<bean class="com.sissi.protocol.iq.register.form.Input">
+							<bean class="com.sissi.protocol.iq.data.XInput">
 								<constructor-arg index="0" value="text-single" />
 								<constructor-arg index="1" value="Given name" />
 								<constructor-arg index="2" value="muc#register_first" />
 							</bean>
-							<bean class="com.sissi.protocol.iq.register.form.Input">
+							<bean class="com.sissi.protocol.iq.data.XInput">
 								<constructor-arg index="0" value="text-single" />
 								<constructor-arg index="1" value="Family name" />
 								<constructor-arg index="2" value="muc#register_last" />
 							</bean>
-							<bean class="com.sissi.protocol.iq.register.form.Input">
+							<bean class="com.sissi.protocol.iq.data.XInput">
 								<constructor-arg index="0" value="text-single" />
 								<constructor-arg index="1" value="Desired nickname" />
 								<constructor-arg index="2" value="muc#register_roomnick" />

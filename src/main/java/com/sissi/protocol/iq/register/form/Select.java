@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sissi.protocol.iq.data.XInput;
 import com.sissi.protocol.iq.data.XFieldType;
 import com.sissi.protocol.iq.data.XOption;
 import com.sissi.protocol.iq.data.XRequired;
@@ -15,7 +16,7 @@ import com.sissi.protocol.iq.data.XRequired;
  * @author kim 2013年12月5日
  */
 @XmlRootElement(name = Select.NAME)
-public class Select extends Input {
+public class Select extends XInput {
 
 	public final static String NAME = "field";
 

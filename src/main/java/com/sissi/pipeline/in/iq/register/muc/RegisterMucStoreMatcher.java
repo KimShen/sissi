@@ -19,7 +19,6 @@ public class RegisterMucStoreMatcher extends ClassMatcher {
 
 	@Override
 	public boolean match(Protocol protocol) {
-		protocol.setTo("AAAAAAA@group.sissi.pw");
 		return super.match(protocol) && protocol.cast(Register.class).form(true) && this.jidBuilder.build(protocol.getTo()).isGroup();
 	}
 }

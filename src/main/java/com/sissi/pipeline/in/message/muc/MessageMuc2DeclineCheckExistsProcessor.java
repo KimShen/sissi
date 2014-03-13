@@ -26,7 +26,7 @@ public class MessageMuc2DeclineCheckExistsProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.vcardContext.exists(protocol.cast(Message.class).getX().getDecline().getTo()) ? true : this.writeAndReturn(context, protocol);
+		return this.vcardContext.exists(protocol.cast(Message.class).getUser().getDecline().getTo()) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

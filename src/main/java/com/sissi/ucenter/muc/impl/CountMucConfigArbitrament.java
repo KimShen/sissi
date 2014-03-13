@@ -21,7 +21,7 @@ public class CountMucConfigArbitrament implements MucConfigArbitrament {
 	@Override
 	public boolean arbitrate(MucConfigParam param, Object request) {
 		Object count = param.configs().get(MongoConfig.FIELD_COUNT);
-		return param.creator() || param.level(this.affiliation.toString()) || (count == null ? true : Integer.valueOf(count.toString()) < Integer.valueOf(request.toString()));
+		return param.creator() || param.affiliation(this.affiliation.toString()) || (count == null ? true : Integer.valueOf(count.toString()) < Integer.valueOf(request.toString()));
 	}
 
 	@Override

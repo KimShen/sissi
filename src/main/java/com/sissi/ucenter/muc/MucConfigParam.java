@@ -11,9 +11,9 @@ public interface MucConfigParam {
 
 	public JID user();
 
-	public boolean level();
+	public boolean affiliation();
 
-	public boolean level(String affiliation);
+	public boolean affiliation(String affiliation);
 
 	public boolean creator();
 

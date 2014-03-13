@@ -11,7 +11,7 @@ public class AffiliationCheckMucConfigArbitrament implements MucConfigArbitramen
 
 	@Override
 	public boolean arbitrate(MucConfigParam param, Object request) {
-		return param.level();
+		return param.affiliation();
 	}
 
 	@Override

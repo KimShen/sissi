@@ -1,20 +1,17 @@
-package com.sissi.protocol.iq.register.form;
+package com.sissi.protocol.iq.data;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.protocol.iq.data.XFieldType;
-import com.sissi.protocol.iq.data.XRequired;
-import com.sissi.protocol.iq.data.XValue;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 
 /**
  * @author kim 2013年12月4日
  */
-@XmlRootElement(name = Input.NAME)
-public class Input implements Field<XValue> {
+@XmlRootElement(name = XInput.NAME)
+public class XInput implements Field<XValue> {
 
 	public final static String NAME = "field";
 
@@ -28,27 +25,27 @@ public class Input implements Field<XValue> {
 
 	private XRequired required;
 
-	public Input() {
+	public XInput() {
 
 	}
 
-	public Input(String type, String name, String var) {
+	public XInput(String type, String name, String var) {
 		this.type = XFieldType.parse(type).toString();
 		this.name = name;
 		this.var = var;
 	}
 
-	public Input(String type, String name, String var, XRequired required) {
+	public XInput(String type, String name, String var, XRequired required) {
 		this(type, name, var);
 		this.required = required;
 	}
 
-	public Input(String type, String name, String var, String value) {
+	public XInput(String type, String name, String var, String value) {
 		this(type, name, var);
 		this.value = new XValue(value);
 	}
 
-	public Input(String type, String name, String var, String value, XRequired required) {
+	public XInput(String type, String name, String var, String value, XRequired required) {
 		this(type, name, var, required);
 		this.value = new XValue(value);
 	}

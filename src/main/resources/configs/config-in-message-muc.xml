@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="message.pro.muc.check.exists" class="com.sissi.pipeline.in.message.muc.MessageMuc2CheckExistsProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc.finder" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
 	<bean id="message.pro.muc.check.relation" class="com.sissi.pipeline.in.message.muc.MessageMuc2CheckRelationProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="ucenter.muc" />

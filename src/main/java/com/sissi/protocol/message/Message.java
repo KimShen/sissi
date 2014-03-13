@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
+import com.sissi.protocol.iq.data.XData;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.read.Collector;
@@ -26,9 +27,11 @@ public class Message extends Protocol implements Collector {
 
 	private boolean trace;
 
-	private XUser x;
-
 	private Body body;
+
+	private XUser user;
+
+	private XData data;
 
 	private Delay delay;
 
@@ -125,22 +128,32 @@ public class Message extends Protocol implements Collector {
 		return super.getError();
 	}
 
-	public Message setX(XUser x) {
-		this.x = x;
+	public Message setUser(XUser x) {
+		this.user = x;
 		return this;
 	}
 
-	@XmlElement
-	public XUser getX() {
-		return this.x;
+	@XmlElement(name = XUser.NAME)
+	public XUser getUser() {
+		return this.user;
+	}
+
+	public Message setData(XData data) {
+		this.data = data;
+		return this;
+	}
+
+	@XmlElement(name = XData.NAME)
+	public XData getData() {
+		return this.data;
 	}
 
 	public boolean invite() {
-		return this.getX() != null && this.getX().invite();
+		return this.getUser() != null && this.getUser().invite();
 	}
 
 	public boolean decline() {
-		return this.getX() != null && this.getX().decline();
+		return this.getUser() != null && this.getUser().decline();
 	}
 
 	public boolean request() {
@@ -190,11 +203,11 @@ public class Message extends Protocol implements Collector {
 	@Override
 	public void set(String localName, Object ob) {
 		switch (localName) {
-		case XUser.NAME:
-			this.setX(XUser.class.cast(ob));
-			return;
 		case Body.NAME:
 			this.setBody(Body.class.cast(ob));
+			return;
+		case XUser.NAME:
+			this.setUser(XUser.class.cast(ob));
 			return;
 		case Delay.NAME:
 			this.setDelay(Delay.class.cast(ob));

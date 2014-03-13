@@ -5,7 +5,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
-import com.sissi.protocol.iq.register.form.Input;
 import com.sissi.protocol.iq.register.form.Instructions;
 import com.sissi.protocol.iq.register.form.Select;
 import com.sissi.protocol.iq.register.form.Title;
@@ -26,7 +25,7 @@ abstract class XFieldWrap extends BeanFields {
 		super(isEmbed);
 	}
 
-	@XmlElements({ @XmlElement(name = XField.NAME, type = XField.class), @XmlElement(name = XItem.NAME, type = XItem.class), @XmlElement(name = XReported.NAME, type = XReported.class), @XmlElement(name = Input.NAME, type = Input.class), @XmlElement(name = Select.NAME, type = Select.class), @XmlElement(name = Title.NAME, type = Title.class), @XmlElement(name = Instructions.NAME, type = Instructions.class) })
+	@XmlElements({ @XmlElement(name = XField.NAME, type = XField.class), @XmlElement(name = XItem.NAME, type = XItem.class), @XmlElement(name = XReported.NAME, type = XReported.class), @XmlElement(name = XInput.NAME, type = XInput.class), @XmlElement(name = Select.NAME, type = Select.class), @XmlElement(name = Title.NAME, type = Title.class), @XmlElement(name = Instructions.NAME, type = Instructions.class) })
 	public List<Field<?>> getFields() {
 		return super.getFields();
 	}

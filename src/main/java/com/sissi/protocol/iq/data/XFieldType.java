@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public enum XFieldType {
 
-	JID_SINGLE, JID_MULTI, TEXT_SINGLE, TEXT_MULTI, TEXT_PRIVATE, LIST_SINGLE, LIST_MULTI, HIDDEN, FIXED, BOOLEAN;
+	NONE, JID_SINGLE, JID_MULTI, TEXT_SINGLE, TEXT_MULTI, TEXT_PRIVATE, LIST_SINGLE, LIST_MULTI, HIDDEN, FIXED, BOOLEAN;
 
 	private static Map<String, XFieldType> direction = new HashMap<String, XFieldType>();
 
@@ -23,10 +23,11 @@ public enum XFieldType {
 	}
 
 	public String toString() {
-		return reverse.get(this);
+		return this == NONE ? null : reverse.get(this);
 	}
 
 	public static XFieldType parse(String type) {
-		return direction.get(type);
+		XFieldType xType = direction.get(type);
+		return xType != null ? xType : NONE;
 	}
 }

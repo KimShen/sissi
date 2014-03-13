@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import com.sissi.ucenter.muc.MucConfig;
 import com.sissi.ucenter.muc.MucItem;
 import com.sissi.ucenter.muc.RelationMuc;
 
@@ -19,16 +18,13 @@ public class Item implements MucItem {
 
 	private RelationMuc relation;
 
-	private MucConfig config;
-
 	private boolean hidden;
 
 	public Item() {
 	}
 
-	public Item(boolean hidden, RelationMuc relation, MucConfig config) {
+	public Item(boolean hidden, RelationMuc relation) {
 		super();
-		this.config = config;
 		this.hidden = hidden;
 		this.relation = relation;
 	}
@@ -45,6 +41,6 @@ public class Item implements MucItem {
 
 	@XmlAttribute
 	public String getRole() {
-		return ItemRole.NONE.equals(this.relation.role()) ? this.config.mapping(this.getAffiliation()) : this.relation.role();
+		return this.relation.role();
 	}
 }

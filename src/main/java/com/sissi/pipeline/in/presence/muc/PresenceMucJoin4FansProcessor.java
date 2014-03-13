@@ -16,15 +16,15 @@ import com.sissi.ucenter.muc.RelationMuc;
 /**
  * @author kim 2014年2月11日
  */
-public class PresenceMucJoin2FansProcessor extends ProxyProcessor {
+public class PresenceMucJoin4FansProcessor extends ProxyProcessor {
 
 	private final MucConfigBuilder mucConfigBuilder;
 
 	private final MucStatusJudger mucStatusJudger;
 
-	public PresenceMucJoin2FansProcessor(MucConfigBuilder mucConfigBuilder, MucStatusJudger mucStatusJudger) {
+	public PresenceMucJoin4FansProcessor(MucConfigBuilder mucGroupContext, MucStatusJudger mucStatusJudger) {
 		super();
-		this.mucConfigBuilder = mucConfigBuilder;
+		this.mucConfigBuilder = mucGroupContext;
 		this.mucStatusJudger = mucStatusJudger;
 	}
 
@@ -33,10 +33,10 @@ public class PresenceMucJoin2FansProcessor extends ProxyProcessor {
 		Presence presence = new Presence();
 		JID group = super.build(protocol.getTo());
 		MucConfig config = this.mucConfigBuilder.build(group);
-		RelationMuc relation = super.ourRelation(context.jid(), group).cast(RelationMuc.class);
 		for (Relation each : super.myRelations(group)) {
-			JID to = super.build(each.jid());
-			super.findOne(to, true).write(presence.clear().add(this.mucStatusJudger.judege(new XUser(to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).setItem(new Item(config.allowed(to, MucConfig.HIDDEN_COMPUTER, context.jid()), relation))).cast(XUser.class)).clauses(context.status().clauses()).setFrom(protocol.getTo()));
+			RelationMuc relation = each.cast(RelationMuc.class);
+			JID to = super.build(relation.jid());
+			context.write(presence.clear().add(this.mucStatusJudger.judege(new XUser(context.jid(), config.allowed(context.jid(), MucConfig.HIDDEN_NATIVE, null)).setItem(new Item(config.allowed(context.jid(), MucConfig.HIDDEN_COMPUTER, to), relation))).cast(XUser.class)).clauses(super.findOne(to, true).status().clauses()).setFrom(group.resource(relation.name())));
 		}
 		return true;
 	}

@@ -29,7 +29,7 @@ public class MessageMuc2InviteAffiliationProcessor extends ProxyProcessor {
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.getTo());
 		MucConfig config = this.mucConfigBuilder.build(group);
-		return config.allowed(context.jid(), MucConfig.AFFILIATION_EXISTS, null) ? this.writeAndReturn(super.build(protocol.cast(Message.class).getX().getInvite().getTo()), group, config) : true;
+		return config.allowed(context.jid(), MucConfig.AFFILIATION_EXISTS, null) ? this.writeAndReturn(super.build(protocol.cast(Message.class).getUser().getInvite().getTo()), group, config) : true;
 	}
 
 	private boolean writeAndReturn(JID jid, JID group, MucConfig config) {
