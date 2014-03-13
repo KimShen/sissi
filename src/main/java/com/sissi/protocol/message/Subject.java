@@ -25,6 +25,10 @@ public class Subject {
 		this.text.append(text);
 	}
 
+	public String config() {
+		return this.hasContent() ? this.getText() : null;
+	}
+
 	@XmlValue
 	public String getText() {
 		return this.text.toString();

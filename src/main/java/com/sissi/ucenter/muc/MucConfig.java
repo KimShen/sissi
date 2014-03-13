@@ -33,7 +33,7 @@ public interface MucConfig {
 
 	public String mapping(String affiliation);
 
-	public Object pull(String key);
+	public <T> T pull(String key, Class<T> clazz);
 
 	public MucConfig push(String key, Object value);
 }

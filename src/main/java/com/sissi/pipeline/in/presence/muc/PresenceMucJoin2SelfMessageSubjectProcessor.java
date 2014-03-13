@@ -25,7 +25,7 @@ public class PresenceMucJoin2SelfMessageSubjectProcessor extends ProxyProcessor 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.getTo());
-		String subject = mucConfigBuilder.build(group).pull(MongoConfig.FIELD_SUBJECT).toString();
+		String subject = mucConfigBuilder.build(group).pull(MongoConfig.FIELD_SUBJECT, String.class);
 		if (subject != null) {
 			context.write(new Message().noneThread().setSubject(new Subject(subject)).setType(MessageType.GROUPCHAT).setFrom(group.resource(super.ourRelation(context.jid(), group).name())));
 		}

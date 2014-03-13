@@ -15,7 +15,7 @@ import com.sissi.ucenter.muc.MucConfigBuilder;
  */
 public class MessageMuc2SubjectCheckRelationProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
+	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(Forbidden.DETAIL);
 
 	private final MucConfigBuilder mucConfigBuilder;
 

@@ -21,7 +21,7 @@ public class MessageMuc2SubjectConfigProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		this.mucConfigBuilder.build(super.build(protocol.getTo())).push(MongoConfig.FIELD_SUBJECT, protocol.cast(Message.class).getSubject().getText());
+		this.mucConfigBuilder.build(super.build(protocol.getTo())).push(MongoConfig.FIELD_SUBJECT, protocol.cast(Message.class).getSubject().config());
 		return true;
 	}
 }

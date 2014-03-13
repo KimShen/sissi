@@ -144,8 +144,8 @@ public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 			this.mapping = Extracter.asInts(configs, MongoMucConfigBuilder.this.fieldMapping);
 		}
 
-		public Object pull(String key) {
-			return this.configs.get(key);
+		public <T> T pull(String key, Class<T> clazz) {
+			return clazz.cast(this.configs.get(key));
 		}
 
 		public MucConfig push(String key, Object value) {

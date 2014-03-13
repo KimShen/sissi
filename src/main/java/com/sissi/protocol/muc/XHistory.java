@@ -1,9 +1,8 @@
 package com.sissi.protocol.muc;
 
-import java.sql.Date;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -18,6 +17,8 @@ import com.sissi.ucenter.history.HistoryQuery;
 public class XHistory implements HistoryQuery {
 
 	private final static Log log = LogFactory.getLog(XHistory.class);
+
+	private final static String format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
 	public final static String NAME = "history";
 
@@ -50,7 +51,7 @@ public class XHistory implements HistoryQuery {
 	@Override
 	public long since(long limit, long def) {
 		try {
-			return Math.max(Math.max(this.since != null ? Date.class.cast(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.parseObject(this.since)).getTime() : System.currentTimeMillis(), System.currentTimeMillis() - (this.seconds != null ? Long.valueOf(this.seconds) : Long.MIN_VALUE) * 1000), def);
+			return Math.max(Math.max(this.since != null ? new SimpleDateFormat(format).parse(this.since).getTime() : System.currentTimeMillis(), System.currentTimeMillis() - (this.seconds != null ? Long.valueOf(this.seconds) : Long.MIN_VALUE) * 1000), def);
 		} catch (ParseException e) {
 			log.debug(e.toString());
 			Trace.trace(log, e);

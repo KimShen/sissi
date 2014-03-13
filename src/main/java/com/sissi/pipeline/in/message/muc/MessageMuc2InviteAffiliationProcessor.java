@@ -33,7 +33,7 @@ public class MessageMuc2InviteAffiliationProcessor extends ProxyProcessor {
 	}
 
 	private boolean writeAndReturn(JID jid, JID group, MucConfig config) {
-		this.mucAffiliationBuilder.build(group).approve(jid, config.pull(MongoConfig.FIELD_AFFILIATION).toString());
+		this.mucAffiliationBuilder.build(group).approve(jid, config.pull(MongoConfig.FIELD_AFFILIATION, String.class));
 		return true;
 	}
 }
