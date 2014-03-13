@@ -89,6 +89,24 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="message.pro.muc.2subject" class="com.sissi.pipeline.in.message.muc.MessageMuc2SubjectProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc" />
+	</bean>
+	<bean id="message.pro.muc.2subject.check" class="com.sissi.pipeline.in.message.muc.MessageMuc2SubjectCheckRelationProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.config.builder" />
+	</bean>
+	<bean id="message.pro.muc.2subject.config" class="com.sissi.pipeline.in.message.muc.MessageMuc2SubjectConfigProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.config.builder" />
+	</bean>
+	<bean id="message.pro.muc.2subject.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="message.pro.muc.2subject.check" />
+				<ref bean="message.pro.muc.2subject.config" />
+				<ref bean="message.pro.muc.2subject" />
+			</util:list>
+		</constructor-arg>
+	</bean>
 	<bean id="message.pro.muc.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.message.muc" />
 	</bean>
@@ -96,6 +114,7 @@
 	<bean id="finder.message.muc" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<ref bean="message.condition.muc.2subject" />
 				<ref bean="message.condition.muc.2all" />
 				<ref bean="message.condition.muc.2fans" />
 			</util:list>
@@ -137,5 +156,13 @@
 			<bean class="com.sissi.pipeline.in.message.muc.MessageMuc2DeclineMatcher" />
 		</constructor-arg>
 		<constructor-arg ref="message.pro.muc.2decline.chained" />
+	</bean>
+	<bean id="message.condition.muc.2subject" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.message.muc.MessageMuc2SubjectMatcher">
+				<constructor-arg ref="global.jid" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="message.pro.muc.2subject.chained" />
 	</bean>
 </beans>

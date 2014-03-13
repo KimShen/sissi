@@ -67,6 +67,9 @@
 		<constructor-arg ref="history.muc" />
 		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
+	<bean id="presence.pro.muc.join.2self.message.subject" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfMessageSubjectProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.config.builder" />
+	</bean>
 	<bean id="presence.pro.muc.join.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
@@ -84,6 +87,7 @@
 				<ref bean="presence.pro.muc.join.4fans" />
 				<ref bean="presence.pro.muc.join.2fans" />
 				<ref bean="presence.pro.muc.join.2self.message.warning" />
+				<ref bean="presence.pro.muc.join.2self.message.subject" />
 				<ref bean="presence.pro.muc.join.2self.message.history" />
 			</util:list>
 		</constructor-arg>

@@ -12,7 +12,9 @@ public interface MucConfig {
 	public final static String COUNT = "COUNT";
 
 	public final static String INVITE = "INVITE";
-	
+
+	public final static String SUBJECT = "SUBJECT";
+
 	public final static String REGISTER = "REGISTER";
 
 	public final static String PASSWORD = "PASSWORD";
@@ -31,5 +33,7 @@ public interface MucConfig {
 
 	public String mapping(String affiliation);
 
-	public Object extract(String key);
+	public Object pull(String key);
+
+	public MucConfig push(String key, Object value);
 }

@@ -79,6 +79,10 @@ public class Message extends Protocol implements Collector {
 		return this;
 	}
 
+	public boolean body() {
+		return this.getBody() != null;
+	}
+
 	public Message setBody(Body body) {
 		this.body = body;
 		return this;
@@ -111,6 +115,10 @@ public class Message extends Protocol implements Collector {
 	@XmlElement
 	public Thread getThread() {
 		return this.thread != null && this.thread.hasContent() ? this.thread : (this.trace ? new Thread(UUID.randomUUID().toString()) : null);
+	}
+
+	public boolean subject() {
+		return this.getSubject() != null;
 	}
 
 	public Message setSubject(Subject subject) {

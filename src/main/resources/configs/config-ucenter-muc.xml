@@ -45,6 +45,7 @@
 				<bean class="com.sissi.ucenter.muc.impl.InviteMucConfigArbitrament">
 					<constructor-arg value="${pipeline.muc.invite}" />
 				</bean>
+				<bean class="com.sissi.ucenter.muc.impl.SubjectMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.RegisterMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.NicknameMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.ActivateMucConfigArbitrament" />

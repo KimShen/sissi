@@ -38,6 +38,8 @@ public interface MongoConfig extends Config {
 	public final static String FIELD_THREAD = "thread";
 
 	public final static String FIELD_CONFIGS = "configs";
+	
+	public final static String FIELD_SUBJECT = "subject";
 
 	public final static String FIELD_CREATOR = "creator";
 

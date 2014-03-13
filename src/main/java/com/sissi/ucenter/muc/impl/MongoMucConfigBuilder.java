@@ -144,8 +144,13 @@ public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 			this.mapping = Extracter.asInts(configs, MongoMucConfigBuilder.this.fieldMapping);
 		}
 
-		public Object extract(String key) {
+		public Object pull(String key) {
 			return this.configs.get(key);
+		}
+
+		public MucConfig push(String key, Object value) {
+			MongoMucConfigBuilder.this.config.collection().update(BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, this.group.asStringWithBare()).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + key, value).get()).get());
+			return this;
 		}
 
 		@Override
