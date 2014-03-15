@@ -73,10 +73,31 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="ucenter.muc.judger.kick" class="com.sissi.ucenter.muc.impl.ChainedMucStatusJudger">
+		<constructor-arg>
+			<util:list>
+				<ref bean="ucenter.muc.judger" />
+				<bean class="com.sissi.ucenter.muc.impl.CodeFixedMucStatusJudger">
+					<constructor-arg>
+						<util:set>
+							<value>307</value>
+						</util:set>
+					</constructor-arg>
+				</bean>
+			</util:list>
+		</constructor-arg>
+	</bean>
+
 	<bean id="ucenter.muc.judger.replace" class="com.sissi.ucenter.muc.impl.ChainedMucStatusJudger">
 		<constructor-arg>
 			<util:list>
-				<bean class="com.sissi.ucenter.muc.impl.Code303MucStatusJudger" />
+				<bean class="com.sissi.ucenter.muc.impl.CodeFixedMucStatusJudger">
+					<constructor-arg>
+						<util:set>
+							<value>303</value>
+						</util:set>
+					</constructor-arg>
+				</bean>
 			</util:list>
 		</constructor-arg>
 	</bean>

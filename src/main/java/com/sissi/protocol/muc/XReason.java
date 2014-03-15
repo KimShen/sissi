@@ -8,7 +8,7 @@ import com.sissi.read.Metadata;
 /**
  * @author kim 2014年3月8日
  */
-@Metadata(uri = XUser.XMLNS, localName = XReason.NAME)
+@Metadata(uri = { XUser.XMLNS, XMucAdmin.XMLNS }, localName = XReason.NAME)
 @XmlRootElement(name = XReason.NAME)
 public class XReason {
 

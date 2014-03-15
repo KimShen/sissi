@@ -32,6 +32,8 @@ import com.sissi.ucenter.field.impl.BeanFields;
 @XmlRootElement
 public class Presence extends Protocol implements com.sissi.context.Status, Fields, Collector {
 
+	private final static BeanFields empty = new BeanFields(false);
+
 	public final static String XMLNS = "jabber:client";
 
 	public final static String NAME = "presence";
@@ -40,7 +42,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	private PresenceClauses presenceClauses = new PresenceClauses();
 
-	private BeanFields fields = new BeanFields(false);
+	private BeanFields fields;
 
 	private Delay delay;
 
@@ -49,6 +51,10 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	private PresenceStatus status;
 
 	private PresencePriority priority;
+
+	private boolean fields() {
+		return this.fields != null;
+	}
 
 	private boolean status() {
 		return PresenceType.parse(this.getType()).in(PresenceType.AVAILABLE, PresenceType.UNAVAILABLE);
@@ -79,7 +85,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	}
 
 	private XVCard findXVard() {
-		return XVCard.class.cast(this.fields != null ? this.fields.findField(XVCard.NAME, XVCard.class) : null);
+		return XVCard.class.cast(this.fields() ? this.fields.findField(XVCard.NAME, XVCard.class) : null);
 	}
 
 	public Presence setType(PresenceType type) {
@@ -167,14 +173,21 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	@XmlElements({ @XmlElement(name = XVCardPhoto.NAME, type = XVCardPhoto.class), @XmlElement(name = XVCard.NAME, type = XVCard.class), @XmlElement(name = XMuc.NAME, type = XMuc.class), @XmlElement(name = XUser.NAME, type = XUser.class) })
 	public List<Field<?>> getFields() {
-		return this.fields != null ? this.fields.getFields() : null;
+		return this.fields() ? this.fields.getFields() : empty.getFields();
+	}
+
+	public Presence reset() {
+		if (this.fields()) {
+			this.fields.reset();
+		}
+		return this;
 	}
 
 	public Presence clear() {
 		super.clear();
+		this.reset();
 		this.show = null;
 		this.status = null;
-		this.fields = null;
 		return this;
 	}
 
@@ -185,21 +198,21 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	@Override
 	public Iterator<Field<?>> iterator() {
-		return this.fields.iterator();
+		return this.fields() ? this.fields.iterator() : empty.iterator();
 	}
 
 	@Override
 	public boolean isEmbed() {
-		return this.fields.isEmbed();
+		return this.fields() ? this.fields.isEmbed() : empty.isEmbed();
 	}
 
 	public boolean isEmpty() {
-		return this.fields.isEmpty();
+		return this.fields() ? this.fields.isEmpty() : empty.isEmpty();
 	}
 
 	@Override
 	public Presence add(Field<?> field) {
-		if (this.fields == null) {
+		if (!this.fields()) {
 			this.fields = new BeanFields(false);
 		}
 		this.fields.add(field);
@@ -207,12 +220,12 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 	}
 
 	public Fields findFields(String name) {
-		return this.fields.findFields(name);
+		return this.fields() ? this.fields.findFields(name) : empty.findFields(name);
 	}
 
 	@Override
 	public <T extends Field<?>> T findField(String name, Class<T> clazz) {
-		return this.fields.findField(name, clazz);
+		return this.fields() ? this.fields.findField(name, clazz) : empty.findField(name, clazz);
 	}
 
 	@Override

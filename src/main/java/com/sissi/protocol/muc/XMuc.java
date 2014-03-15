@@ -10,9 +10,6 @@ import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 
 /**
- * @author kim 2014年2月11日
- */
-/**
  * @author kim 2014年3月6日
  */
 @Metadata(uri = XMuc.XMLNS, localName = X.NAME)

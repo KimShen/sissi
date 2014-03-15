@@ -30,6 +30,11 @@ public class BeanFields implements Fields {
 		this.fields = field;
 	}
 
+	public BeanFields reset() {
+		this.fields.clear();
+		return this;
+	}
+
 	public BeanFields add(Field<?> field) {
 		if (this.fields == null) {
 			this.fields = new ArrayList<Field<?>>();

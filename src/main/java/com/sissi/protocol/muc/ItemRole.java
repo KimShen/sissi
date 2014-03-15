@@ -23,6 +23,10 @@ public enum ItemRole {
 		return super.toString().toLowerCase();
 	}
 
+	public boolean contains(String role) {
+		return this.contains(ItemRole.parse(role));
+	}
+
 	public boolean contains(ItemRole role) {
 		return this.ordinal() >= role.ordinal();
 	}

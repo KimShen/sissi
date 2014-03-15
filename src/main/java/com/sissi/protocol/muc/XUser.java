@@ -65,7 +65,14 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 		return this;
 	}
 
-	public XUser setItem(Item item) {
+	public XUser add(Set<String> codes) {
+		for (String code : codes) {
+			this.add(code);
+		}
+		return this;
+	}
+
+	public XUser item(Item item) {
 		this.item = item;
 		return this;
 	}

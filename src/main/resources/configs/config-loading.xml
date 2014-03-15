@@ -13,6 +13,7 @@
 	<import resource="config-in-base.xml" />
 	<import resource="config-in-iq.xml" />
 	<import resource="config-in-iq-si.xml" />
+	<import resource="config-in-iq-muc.xml" />
 	<import resource="config-in-iq-last.xml" />
 	<import resource="config-in-iq-ping.xml" />
 	<import resource="config-in-iq-time.xml" />

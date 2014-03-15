@@ -156,7 +156,7 @@ public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 		@Override
 		public String mapping(String affiliation) {
 			int ordinal = ItemAffiliation.parse(affiliation).ordinal();
-			return this.mapping != null && (this.mapping.length) > ordinal ? ItemRole.toString(this.mapping[ordinal - 1]) : ItemRole.NONE.toString();
+			return this.mapping != null && this.mapping.length > ordinal ? ItemRole.toString(this.mapping[ordinal]) : ItemRole.NONE.toString();
 		}
 
 		@Override
