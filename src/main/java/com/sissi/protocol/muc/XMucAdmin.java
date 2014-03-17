@@ -1,7 +1,9 @@
 package com.sissi.protocol.muc;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -25,10 +27,18 @@ public class XMucAdmin extends Protocol implements Collector {
 
 	public final static String NAME = "query";
 
+	private Set<String> snapshoot;
+
 	private List<Item> items;
 
-	public ItemRole role() {
-		return this.item() ? ItemRole.parse(this.items.get(0).getRole()) : ItemRole.NONE;
+	private String role;
+
+	public Item first() {
+		return this.item() ? this.getItem().get(0) : null;
+	}
+
+	public String role() {
+		return this.role;
 	}
 
 	public boolean item() {
@@ -36,19 +46,22 @@ public class XMucAdmin extends Protocol implements Collector {
 	}
 
 	public boolean item(int size) {
-		return this.item() && this.items.size() == size;
+		return this.item() && this.getItem().size() == size;
 	}
 
-	public XMucAdmin add(Item change) {
+	public boolean loop(String nick) {
+		return this.snapshoot != null ? this.snapshoot.contains(nick) : false;
+	}
+
+	public XMucAdmin add(Item item) {
 		if (this.items == null) {
 			this.items = new ArrayList<Item>();
+			this.snapshoot = new HashSet<String>();
 		}
-		this.items.add(change);
+		this.items.add(item);
+		this.snapshoot.add(item.getNick());
+		this.role = this.role == null ? item.getRole() : this.role;
 		return this;
-	}
-
-	public Item first() {
-		return this.item() ? this.items.get(0) : null;
 	}
 
 	@XmlElements({ @XmlElement(name = Item.NAME, type = Item.class) })

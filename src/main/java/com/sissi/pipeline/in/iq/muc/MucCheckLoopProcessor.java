@@ -8,7 +8,6 @@ import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.Conflict;
 import com.sissi.protocol.muc.XMucAdmin;
-import com.sissi.ucenter.muc.RelationMucMapping;
 
 /**
  * @author kim 2014年3月14日
@@ -17,16 +16,9 @@ public class MucCheckLoopProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(Conflict.DETAIL_ELEMENT);
 
-	private final RelationMucMapping mapping;
-
-	public MucCheckLoopProcessor(RelationMucMapping mapping) {
-		super();
-		this.mapping = mapping;
-	}
-
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.mapping.mapping(super.build(protocol.parent().getTo()).resource(protocol.cast(XMucAdmin.class).first().getNick())).same(context.jid()) ? this.writeAndReturn(context, protocol) : true;
+		return protocol.cast(XMucAdmin.class).loop(super.ourRelation(context.jid(), super.build(protocol.parent().getTo())).name()) ? this.writeAndReturn(context, protocol) : true;
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

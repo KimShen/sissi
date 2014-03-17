@@ -31,10 +31,9 @@ public class MucGetProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		XMucAdmin admin = protocol.cast(XMucAdmin.class);
-		String role = admin.first().getRole();
 		JID group = super.build(admin.clear().parent().getTo());
 		MucConfig config = mucConfigBuilder.build(group);
-		for (Relation relation : this.mucRelationContext.myRelations(super.build(protocol.parent().getTo()), role)) {
+		for (Relation relation : this.mucRelationContext.myRelations(group, admin.role())) {
 			admin.add(new Item(config.allowed(context.jid(), MucConfig.HIDDEN_COMPUTER, group.resource(relation.name())), relation.cast(RelationMuc.class)));
 		}
 		context.write(protocol.parent().reply().setType(ProtocolType.RESULT));

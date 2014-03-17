@@ -1,5 +1,6 @@
 package com.sissi.pipeline.in.iq.muc;
 
+import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
@@ -21,8 +22,10 @@ public class MucSetProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Item item = protocol.cast(XMucAdmin.class).first();
-		this.mucRoleBuilder.build(item.getRole()).change(super.build(protocol.parent().getTo()).resource(item.getNick()));
+		JID group = super.build(protocol.parent().getTo());
+		for (Item item : protocol.cast(XMucAdmin.class).getItem()) {
+			this.mucRoleBuilder.build(item.getRole()).change(group.resource(item.getNick()));
+		}
 		return true;
 	}
 }

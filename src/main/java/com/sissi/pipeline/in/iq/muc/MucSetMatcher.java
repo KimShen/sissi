@@ -19,6 +19,6 @@ public class MucSetMatcher extends ClassMatcher {
 	}
 
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && this.jidBuilder.build(protocol.parent().getTo()).isGroup() && protocol.parent().type(ProtocolType.SET) && protocol.cast(XMucAdmin.class).item(1);
+		return super.match(protocol) && this.jidBuilder.build(protocol.parent().getTo()).isGroup() && protocol.parent().type(ProtocolType.SET) && protocol.cast(XMucAdmin.class).item();
 	}
 }

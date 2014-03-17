@@ -35,11 +35,12 @@ public class MucSetBroadcastProcessor extends ProxyProcessor {
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.parent().getTo());
 		MucConfig config = this.mucConfigBuilder.build(group);
-		Item item = protocol.cast(XMucAdmin.class).first().actor(context.jid());
-		for (JID each : this.relationMucMapping.mapping(item.group(group))) {
-			RelationMuc relation = super.ourRelation(each, group).cast(RelationMuc.class).role(item.getRole());
-			for (JID to : super.whoSubscribedMe(group)) {
-				super.findOne(to, true).write(item.presence().reset().add(this.mucStatusJudger.judege(new XUser(to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, each)).relation(relation))).cast(XUser.class)));
+		for (Item item : protocol.cast(XMucAdmin.class).getItem()) {
+			for (JID each : this.relationMucMapping.mapping(item.actor(context.jid()).group(group))) {
+				RelationMuc relation = super.ourRelation(each, group).cast(RelationMuc.class).role(item.getRole());
+				for (JID to : super.whoSubscribedMe(group)) {
+					super.findOne(to, true).write(item.presence().reset().add(this.mucStatusJudger.judege(new XUser(to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, each)).relation(relation))).cast(XUser.class)));
+				}
 			}
 		}
 		return true;

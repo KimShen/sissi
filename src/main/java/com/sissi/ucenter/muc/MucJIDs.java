@@ -7,7 +7,7 @@ import com.sissi.context.JIDs;
  * @author kim 2014年3月6日
  */
 public interface MucJIDs extends JIDs {
-	
+
 	public JID jid();
 
 	public boolean same(JID jid);

@@ -30,14 +30,17 @@ public class MessageMuc2AllProcessor extends ProxyProcessor {
 			IQ iq = new IQ();
 			iq.setTo(super.build(protocol.getTo())).setType(ProtocolType.SET);
 			XMucAdmin xmuc = new XMucAdmin();
-			xmuc.set(null, new Item().nick(params[1]).role(params[2]).reason(params[3]));
+			for (char each : params[1].toCharArray()) {
+				xmuc.set(null, new Item().nick(each + "").role(params[2]).reason(params[3]));
+			}
 			iq.set(null, xmuc);
 			this.input.input(context, xmuc);
 		}
 		if (protocol.cast(Message.class).getBody().getText().startsWith("get")) {
 			String[] params = protocol.cast(Message.class).getBody().getText().split(" ");
 			IQ iq = new IQ();
-			iq.setTo(super.build(protocol.getTo())).setType(ProtocolType.GET);;
+			iq.setTo(super.build(protocol.getTo())).setType(ProtocolType.GET);
+			;
 			XMucAdmin xmuc = new XMucAdmin();
 			xmuc.set(null, new Item().role(params[1]));
 			iq.set(null, xmuc);

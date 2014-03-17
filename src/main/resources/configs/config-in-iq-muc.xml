@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="muc.pro.check.loop" class="com.sissi.pipeline.in.iq.muc.MucCheckLoopProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc" />
+		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="muc.pro.check.exists" class="com.sissi.pipeline.in.iq.muc.MucCheckExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.config.builder" />

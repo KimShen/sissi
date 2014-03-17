@@ -8,6 +8,7 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.NotAllowed;
+import com.sissi.protocol.muc.Item;
 import com.sissi.protocol.muc.ItemRole;
 import com.sissi.protocol.muc.XMucAdmin;
 import com.sissi.ucenter.muc.RelationMuc;
@@ -30,10 +31,12 @@ public class MucCheckRelation4FansProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.parent().getTo());
-		String role = super.ourRelation(context.jid(), group).cast(RelationMuc.class).role();
-		for (JID jid : this.mapping.mapping(group.resource(protocol.cast(XMucAdmin.class).first().getNick()))) {
-			if (ItemRole.parse(super.ourRelation(jid, group).cast(RelationMuc.class).role()).contains(role)) {
-				return this.writeAndReturn(context, protocol);
+		RelationMuc relation = super.ourRelation(context.jid(), group).cast(RelationMuc.class);
+		for (Item item : protocol.cast(XMucAdmin.class).getItem()) {
+			for (JID jid : this.mapping.mapping(group.resource(item.getNick()))) {
+				if (ItemRole.parse(super.ourRelation(jid, group).cast(RelationMuc.class).role()).contains(relation.role())) {
+					return this.writeAndReturn(context, protocol);
+				}
 			}
 		}
 		return true;
