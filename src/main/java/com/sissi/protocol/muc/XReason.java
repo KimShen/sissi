@@ -16,6 +16,15 @@ public class XReason {
 
 	private String text;
 
+	public XReason() {
+		super();
+	}
+
+	public XReason(String text) {
+		super();
+		this.text = text;
+	}
+
 	@XmlValue
 	public String getText() {
 		return this.text != null & !this.text.isEmpty() ? this.text : null;

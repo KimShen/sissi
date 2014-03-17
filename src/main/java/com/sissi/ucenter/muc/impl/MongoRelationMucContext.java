@@ -23,17 +23,17 @@ import com.sissi.context.impl.ShareJIDs;
 import com.sissi.protocol.muc.ItemAffiliation;
 import com.sissi.protocol.muc.ItemRole;
 import com.sissi.ucenter.Relation;
-import com.sissi.ucenter.RelationContext;
 import com.sissi.ucenter.impl.NoneRelation;
 import com.sissi.ucenter.muc.MucConfigBuilder;
 import com.sissi.ucenter.muc.MucJIDs;
+import com.sissi.ucenter.muc.MucRelationContext;
 import com.sissi.ucenter.muc.RelationMuc;
 import com.sissi.ucenter.muc.RelationMucMapping;
 
 /**
  * @author kim 2014年2月11日
  */
-public class MongoRelationMucContext implements RelationContext, RelationMucMapping {
+public class MongoRelationMucContext implements MucRelationContext, RelationMucMapping {
 
 	private final String fieldId = "_id";
 
@@ -53,6 +53,10 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	private final DBObject aggregateGroup = BasicDBObjectBuilder.start("$group", BasicDBObjectBuilder.start().add(this.fieldId, "$" + MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_RESOURCE, BasicDBObjectBuilder.start("$push", "$" + MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_RESOURCE).get()).get()).get();
 
+	private final DBObject aggregateProjectRole = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + this.fieldId + "." + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_CREATOR, "$" + this.fieldId + "." + MongoConfig.FIELD_CREATOR).add(MongoConfig.FIELD_AFFILIATIONS, "$" + this.fieldId + "." + MongoConfig.FIELD_AFFILIATIONS).add(MongoConfig.FIELD_ROLES, "$" + MongoConfig.FIELD_ROLES).get()).get();
+
+	private final DBObject aggregateGroupRole = BasicDBObjectBuilder.start("$group", BasicDBObjectBuilder.start().add(this.fieldId, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_CREATOR).add(MongoConfig.FIELD_AFFILIATIONS, "$" + MongoConfig.FIELD_AFFILIATIONS).get()).add(MongoConfig.FIELD_ROLES, BasicDBObjectBuilder.start("$addToSet", "$" + MongoConfig.FIELD_ROLES).get()).get()).get();
+
 	private final DBObject aggregateProjectRelation = BasicDBObjectBuilder.start().add("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_ACTIVATE, "$" + MongoConfig.FIELD_ACTIVATE).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_CREATOR).add(MongoConfig.FIELD_ROLES, "$" + MongoConfig.FIELD_ROLES).add(MongoConfig.FIELD_AFFILIATION, BasicDBObjectBuilder.start().add("$cond", new Object[] { BasicDBObjectBuilder.start("$eq", new String[] { "$" + MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_JID }).get(), "$" + MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_AFFILIATION, null }).get()).get()).get();
 
 	private final DBObject aggregateProjectSubscribed = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_RESOURCE, "$" + MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_NICK).get()).get();
@@ -62,6 +66,8 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 	private final DBObject entityCountDec = BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + MongoConfig.FIELD_COUNT, -1).get();
 
 	private final MucJIDs emptyJIDs = new EmptyJIDs();
+
+	private final Set<Relation> emptyRelations = new HashSet<Relation>();
 
 	private final MongoConfig config;
 
@@ -121,6 +127,12 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 	@Override
 	public Set<Relation> myRelations(JID from) {
 		return new MongoRelations(this.config.collection().findOne(this.buildQuery(from.asStringWithBare())));
+	}
+
+	public Set<Relation> myRelations(JID from, String role) {
+		AggregationOutput output = this.config.collection().aggregate(this.buildMatcher(from), this.aggregateUnwindRoles, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_ROLE, role).get()).get(), this.aggregateGroupRole, this.aggregateProjectRole);
+		List<?> result = Extracter.asList(output.getCommandResult(), MongoConfig.FIELD_RESULT);
+		return result.isEmpty() ? this.emptyRelations : new MongoRelations(DBObject.class.cast(result.get(0)));
 	}
 
 	@Override

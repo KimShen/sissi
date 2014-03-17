@@ -31,7 +31,7 @@ public class MucCheckRelation4FansProcessor extends ProxyProcessor {
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.parent().getTo());
 		String role = super.ourRelation(context.jid(), group).cast(RelationMuc.class).role();
-		for (JID jid : this.mapping.mapping(group.resource(protocol.cast(XMucAdmin.class).getItem().getNick()))) {
+		for (JID jid : this.mapping.mapping(group.resource(protocol.cast(XMucAdmin.class).first().getNick()))) {
 			if (ItemRole.parse(super.ourRelation(jid, group).cast(RelationMuc.class).role()).contains(role)) {
 				return this.writeAndReturn(context, protocol);
 			}

@@ -77,9 +77,9 @@ public class MongoBlockContext implements BlockContext {
 
 		private final static long serialVersionUID = 1L;
 
-		private GroupJIDs(List<String> bans) {
-			for (String ban : bans) {
-				super.add(MongoBlockContext.this.jidBuilder.build(ban, null));
+		private GroupJIDs(List<String> jids) {
+			for (String jid : jids) {
+				super.add(MongoBlockContext.this.jidBuilder.build(jid, null));
 			}
 		}
 

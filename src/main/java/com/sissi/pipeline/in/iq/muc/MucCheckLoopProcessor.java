@@ -26,7 +26,7 @@ public class MucCheckLoopProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.mapping.mapping(super.build(protocol.parent().getTo()).resource(protocol.cast(XMucAdmin.class).getItem().getNick())).same(context.jid()) ? this.writeAndReturn(context, protocol) : true;
+		return this.mapping.mapping(super.build(protocol.parent().getTo()).resource(protocol.cast(XMucAdmin.class).first().getNick())).same(context.jid()) ? this.writeAndReturn(context, protocol) : true;
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

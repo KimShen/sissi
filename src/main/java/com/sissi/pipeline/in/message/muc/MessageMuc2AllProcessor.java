@@ -5,11 +5,11 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
+import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.message.Message;
-import com.sissi.protocol.muc.XChange;
+import com.sissi.protocol.muc.Item;
 import com.sissi.protocol.muc.XMucAdmin;
-import com.sissi.protocol.muc.XReason;
 
 /**
  * @author kim 2014年3月6日
@@ -25,14 +25,21 @@ public class MessageMuc2AllProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		if (protocol.cast(Message.class).getBody().getText().startsWith("un")) {
+		if (protocol.cast(Message.class).getBody().getText().startsWith("set")) {
 			String[] params = protocol.cast(Message.class).getBody().getText().split(" ");
 			IQ iq = new IQ();
-			iq.setTo(super.build(protocol.getTo()));
+			iq.setTo(super.build(protocol.getTo())).setType(ProtocolType.SET);
 			XMucAdmin xmuc = new XMucAdmin();
-			XChange target = new XChange().setNick(params[1]).setRole(params[2]);
-			target.set(null, new XReason().setText(params[3]));
-			xmuc.set(null, target);
+			xmuc.set(null, new Item().nick(params[1]).role(params[2]).reason(params[3]));
+			iq.set(null, xmuc);
+			this.input.input(context, xmuc);
+		}
+		if (protocol.cast(Message.class).getBody().getText().startsWith("get")) {
+			String[] params = protocol.cast(Message.class).getBody().getText().split(" ");
+			IQ iq = new IQ();
+			iq.setTo(super.build(protocol.getTo())).setType(ProtocolType.GET);;
+			XMucAdmin xmuc = new XMucAdmin();
+			xmuc.set(null, new Item().role(params[1]));
 			iq.set(null, xmuc);
 			this.input.input(context, xmuc);
 		}

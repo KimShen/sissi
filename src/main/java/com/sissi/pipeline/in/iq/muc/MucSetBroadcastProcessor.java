@@ -4,7 +4,7 @@ import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.muc.XChange;
+import com.sissi.protocol.muc.Item;
 import com.sissi.protocol.muc.XMucAdmin;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.ucenter.muc.MucConfig;
@@ -16,7 +16,7 @@ import com.sissi.ucenter.muc.RelationMucMapping;
 /**
  * @author kim 2014年3月14日
  */
-public class MucRoleBroadcastProcessor extends ProxyProcessor {
+public class MucSetBroadcastProcessor extends ProxyProcessor {
 
 	private final MucStatusJudger mucStatusJudger;
 
@@ -24,7 +24,7 @@ public class MucRoleBroadcastProcessor extends ProxyProcessor {
 
 	private final RelationMucMapping relationMucMapping;
 
-	public MucRoleBroadcastProcessor(MucStatusJudger mucStatusJudger, MucConfigBuilder mucConfigBuilder, RelationMucMapping relationMucMapping) {
+	public MucSetBroadcastProcessor(MucStatusJudger mucStatusJudger, MucConfigBuilder mucConfigBuilder, RelationMucMapping relationMucMapping) {
 		super();
 		this.mucStatusJudger = mucStatusJudger;
 		this.mucConfigBuilder = mucConfigBuilder;
@@ -35,11 +35,11 @@ public class MucRoleBroadcastProcessor extends ProxyProcessor {
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.parent().getTo());
 		MucConfig config = this.mucConfigBuilder.build(group);
-		XChange change = protocol.cast(XMucAdmin.class).getItem();
-		for (JID each : this.relationMucMapping.mapping(change.group(group))) {
-			RelationMuc relation = super.ourRelation(each, group).cast(RelationMuc.class).role(change.getRole());
+		Item item = protocol.cast(XMucAdmin.class).first().actor(context.jid());
+		for (JID each : this.relationMucMapping.mapping(item.group(group))) {
+			RelationMuc relation = super.ourRelation(each, group).cast(RelationMuc.class).role(item.getRole());
 			for (JID to : super.whoSubscribedMe(group)) {
-				super.findOne(to, true).write(change.presence().reset().add(this.mucStatusJudger.judege(new XUser(to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(change.item(context.jid()).hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, each)).relation(relation))).cast(XUser.class)));
+				super.findOne(to, true).write(item.presence().reset().add(this.mucStatusJudger.judege(new XUser(to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, each)).relation(relation))).cast(XUser.class)));
 			}
 		}
 		return true;
