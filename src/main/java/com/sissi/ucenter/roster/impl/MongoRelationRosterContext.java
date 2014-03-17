@@ -43,9 +43,9 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 	private final DBObject filterSlave = BasicDBObjectBuilder.start(this.fieldSlave, 1).get();
 
-	private final DBObject entityInitMaster = BasicDBObjectBuilder.start(MongoConfig.FIELD_STATE, 0).get();
+	private final DBObject entityInitMaster = BasicDBObjectBuilder.start(MongoConfig.FIELD_STATUS, 0).get();
 
-	private final DBObject entityInitSlave = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ACTIVATE, false).add(MongoConfig.FIELD_STATE, 0).get();
+	private final DBObject entityInitSlave = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ACTIVATE, false).add(MongoConfig.FIELD_STATUS, 0).get();
 
 	private final DBObject entityEstablishTo = BasicDBObjectBuilder.start("or", 1).get();
 
@@ -55,7 +55,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 	private final DBObject entityBrokeFrom = BasicDBObjectBuilder.start("and", 2).get();
 
-	private final DBObject[] entityStates = new DBObject[] { BasicDBObjectBuilder.start(MongoConfig.FIELD_STATE, 1).get(), BasicDBObjectBuilder.start(MongoConfig.FIELD_STATE, 3).get() };
+	private final DBObject[] entityStates = new DBObject[] { BasicDBObjectBuilder.start(MongoConfig.FIELD_STATUS, 1).get(), BasicDBObjectBuilder.start(MongoConfig.FIELD_STATUS, 3).get() };
 
 	private final String[] groups;
 
@@ -101,8 +101,8 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 
 	@Override
 	public MongoRelationRosterContext update(JID from, JID to, String state) {
-		this.config.collection().update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start(this.fieldAsk, true).get()).add("$bit", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_STATE, this.update.get(state).getTo()).get()).get(), true, false, WriteConcern.SAFE);
-		this.config.collection().update(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_STATE, this.update.get(state).getFrom()).get()).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start(this.fieldAsk, true).get()).add("$bit", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_STATUS, this.update.get(state).getTo()).get()).get(), true, false, WriteConcern.SAFE);
+		this.config.collection().update(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_STATUS, this.update.get(state).getFrom()).get()).get(), true, false, WriteConcern.SAFE);
 		this.relationInductor.update(to, from);
 		return this;
 	}
@@ -197,7 +197,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 			super();
 			this.jid = Extracter.asString(db, fieldJID);
 			this.name = Extracter.asString(db, MongoConfig.FIELD_NICK);
-			this.subscription = Extracter.asInt(db, MongoConfig.FIELD_STATE);
+			this.subscription = Extracter.asInt(db, MongoConfig.FIELD_STATUS);
 			this.activate = Extracter.asBoolean(db, MongoConfig.FIELD_ACTIVATE);
 			this.ask = Extracter.asBoolean(db, MongoRelationRosterContext.this.fieldAsk);
 			this.groups = Extracter.asStrings(db, MongoRelationRosterContext.this.fieldGroups);

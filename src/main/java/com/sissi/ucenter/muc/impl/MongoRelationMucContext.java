@@ -37,6 +37,8 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 
 	private final String fieldId = "_id";
 
+	private final String fieldPath = "path";
+
 	private final Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
 
 	private final DBObject aggregateLimit = BasicDBObjectBuilder.start().add("$limit", 1).get();
@@ -88,20 +90,18 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 	@Override
 	public MongoRelationMucContext establish(JID from, Relation relation) {
 		try {
-			DBObject query = this.buildQuery(relation.jid());
-			query.put(MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_RESOURCE, from.resource());
-			query.put(MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_JID, from.asStringWithBare());
 			// Update
-			this.config.collection().update(query, BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ROLES + ".$." + MongoConfig.FIELD_ROLE, relation.cast(RelationMuc.class).role()).add(MongoConfig.FIELD_ROLES + ".$." + MongoConfig.FIELD_NICK, relation.name()).get()).get(), true, false, WriteConcern.SAFE);
+			this.config.collection().update(BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES + "." + this.fieldPath, from.asString()).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ROLES + ".$." + MongoConfig.FIELD_ROLE, relation.cast(RelationMuc.class).role()).add(MongoConfig.FIELD_ROLES + ".$." + MongoConfig.FIELD_NICK, relation.name()).get()).get(), true, false, WriteConcern.SAFE);
 		} catch (MongoException e) {
 			// Upsert
-			this.config.collection().update(this.buildQuery(relation.jid()), BasicDBObjectBuilder.start().add("$setOnInsert", BasicDBObjectBuilder.start(relation.plus()).add(MongoConfig.FIELD_ACTIVATE, false).add(MongoConfig.FIELD_CREATOR, from.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATIONS, new DBObject[] { BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, from.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATION, ItemAffiliation.OWNER.toString()).get() }).get()).add("$inc", this.entityCountInc).add("$addToSet", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ROLES, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, from.asStringWithBare()).add(MongoConfig.FIELD_RESOURCE, from.resource()).add(MongoConfig.FIELD_NICK, relation.name()).add(MongoConfig.FIELD_ROLE, relation.cast(RelationMuc.class).role()).get()).get()).get(), true, false, WriteConcern.SAFE);
+			this.config.collection().update(this.buildQuery(relation.jid()), BasicDBObjectBuilder.start().add("$setOnInsert", BasicDBObjectBuilder.start(relation.plus()).add(MongoConfig.FIELD_ACTIVATE, false).add(MongoConfig.FIELD_CREATOR, from.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATIONS, new DBObject[] { BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, from.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATION, ItemAffiliation.OWNER.toString()).get() }).get()).add("$inc", this.entityCountInc).add("$addToSet", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ROLES, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, from.asStringWithBare()).add(this.fieldPath, from.asString()).add(MongoConfig.FIELD_RESOURCE, from.resource()).add(MongoConfig.FIELD_NICK, relation.name()).add(MongoConfig.FIELD_ROLE, relation.cast(RelationMuc.class).role()).get()).get()).get(), true, false, WriteConcern.SAFE);
 		}
 		return this;
 	}
 
 	@Override
-	public MongoRelationMucContext update(JID from, JID to, String state) {
+	public MongoRelationMucContext update(JID from, JID to, String status) {
+		this.config.collection().update(BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES + "." + this.fieldPath, from.asString()).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ROLES + ".$." + MongoConfig.FIELD_ROLE, status).get()).get(), true, false, WriteConcern.SAFE);
 		return this;
 	}
 
@@ -302,6 +302,11 @@ public class MongoRelationMucContext implements RelationContext, RelationMucMapp
 		public String role() {
 			ItemRole mapping = ItemRole.parse(MongoRelationMucContext.this.mucConfigBuilder.build(MongoRelationMucContext.this.jidBuilder.build(this.group)).mapping(this.affiliation()));
 			return this.noneRole ? ItemRole.NONE.toString() : ItemRole.parse(this.role).contains(mapping) ? this.role : mapping.toString();
+		}
+
+		public MongoRelation role(String role) {
+			this.role = role;
+			return this;
 		}
 
 		@Override

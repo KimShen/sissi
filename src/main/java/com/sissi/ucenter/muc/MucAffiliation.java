@@ -7,7 +7,5 @@ import com.sissi.context.JID;
  */
 public interface MucAffiliation {
 
-	public MucAffiliation reject(JID jid);
-
 	public MucAffiliation approve(JID jid, String affiliation);
 }

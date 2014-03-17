@@ -5,6 +5,9 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="muc.pro.check.loop" class="com.sissi.pipeline.in.iq.muc.MucCheckLoopProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc" />
+	</bean>
 	<bean id="muc.pro.check.exists" class="com.sissi.pipeline.in.iq.muc.MucCheckExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
@@ -15,41 +18,25 @@
 		<constructor-arg ref="ucenter.muc" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
-	<bean id="muc.pro.kick" class="com.sissi.pipeline.in.iq.muc.MucKickProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc" />
-		<property name="relationContext" ref="ucenter.muc" />
+	<bean id="muc.pro" class="com.sissi.pipeline.in.iq.muc.MucProcessor" parent="global.pro.proxy" />
+	<bean id="muc.pro.role" class="com.sissi.pipeline.in.iq.muc.MucRoleProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.role" />
 	</bean>
-	<bean id="muc.pro.kick.2all" class="com.sissi.pipeline.in.iq.muc.MucKick2AllProcessor" parent="global.pro.proxy">
+	<bean id="muc.pro.role.broadcast" class="com.sissi.pipeline.in.iq.muc.MucRoleBroadcastProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc" />
-		<constructor-arg ref="ucenter.muc.judger.kick" />
+		<constructor-arg ref="ucenter.muc.judger" />
 		<constructor-arg ref="ucenter.muc.config.builder" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
-	<bean id="muc.pro.kick.chain" class="com.sissi.pipeline.in.ChainedProcessor">
+	<bean id="muc.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="muc.pro.kick.2all" />
-				<ref bean="muc.pro.kick" />
-			</util:list>
-		</constructor-arg>
-	</bean>
-	<bean id="muc.pro.fork" class="com.sissi.pipeline.in.ChainedProcessor">
-		<constructor-arg>
-			<util:list>
+				<ref bean="muc.pro.check.loop" />
 				<ref bean="muc.pro.check.exists" />
 				<ref bean="muc.pro.check.relation.4self" />
 				<ref bean="muc.pro.check.relation.4fans" />
-				<bean class="com.sissi.pipeline.in.ForkProcessor">
-					<constructor-arg ref="finder.muc" />
-				</bean>
-			</util:list>
-		</constructor-arg>
-	</bean>
-
-	<bean id="finder.muc" class="com.sissi.pipeline.in.ChainedFinder">
-		<constructor-arg>
-			<util:list>
-				<ref bean="muc.pro.condition.none" />
+				<ref bean="muc.pro.role.broadcast" />
+				<ref bean="muc.pro.role" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -59,14 +46,6 @@
 				<constructor-arg ref="global.jid" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="muc.pro.fork" />
-	</bean>
-	<bean id="muc.pro.condition.none" class="com.sissi.pipeline.in.PairCondition">
-		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.muc.MucSetRoleMatcher">
-				<constructor-arg value="NONE" />
-			</bean>
-		</constructor-arg>
-		<constructor-arg ref="muc.pro.kick.chain" />
+		<constructor-arg ref="muc.pro.chained" />
 	</bean>
 </beans>

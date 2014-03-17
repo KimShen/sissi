@@ -35,11 +35,6 @@ public class MongoMucAffiliationBuilder implements MucAffiliationBuilder {
 		}
 
 		@Override
-		public MucAffiliation reject(JID jid) {
-			return null;
-		}
-
-		@Override
 		public MucAffiliation approve(JID jid, String affiliation) {
 			try {
 				MongoMucAffiliationBuilder.this.config.collection().update(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.group.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, jid.asStringWithBare()).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS + ".$." + MongoConfig.FIELD_AFFILIATION, affiliation).get()).get(), true, false, WriteConcern.SAFE);

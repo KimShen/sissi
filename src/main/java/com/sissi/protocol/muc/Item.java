@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.context.JID;
 import com.sissi.ucenter.muc.MucItem;
 import com.sissi.ucenter.muc.RelationMuc;
 
@@ -69,8 +70,11 @@ public class Item implements MucItem {
 		return this.reason;
 	}
 
-	public Item actor(XActor actor) {
-		this.actor = actor;
+	public Item actor(JID actor) {
+		if (this.actor == null) {
+			this.actor = new XActor();
+		}
+		this.actor.jid(actor);
 		return this;
 	}
 

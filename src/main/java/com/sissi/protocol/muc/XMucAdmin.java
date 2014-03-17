@@ -21,7 +21,7 @@ public class XMucAdmin extends Protocol implements Collector {
 
 	public final static String NAME = "query";
 
-	private XTarget item;
+	private XChange item;
 
 	public ItemRole role() {
 		return ItemRole.parse(this.item.getRole());
@@ -32,7 +32,7 @@ public class XMucAdmin extends Protocol implements Collector {
 	}
 
 	@XmlElement
-	public XTarget getItem() {
+	public XChange getItem() {
 		return this.item;
 	}
 
@@ -43,6 +43,6 @@ public class XMucAdmin extends Protocol implements Collector {
 
 	@Override
 	public void set(String localName, Object ob) {
-		this.item = XTarget.class.cast(ob);
+		this.item = XChange.class.cast(ob);
 	}
 }

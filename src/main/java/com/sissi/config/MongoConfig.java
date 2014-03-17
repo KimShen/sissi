@@ -25,13 +25,13 @@ public interface MongoConfig extends Config {
 
 	public final static String FIELD_CLASS = "class";
 
-	public final static String FIELD_STATE = "state";
-
 	public final static String FIELD_INDEX = "index";
 
 	public final static String FIELD_COUNT = "count";
 	
 	public final static String FIELD_RESULT = "result";
+
+	public final static String FIELD_STATUS = "status";
 
 	public final static String FIELD_HIDDEN = "hidden";
 	

@@ -24,6 +24,11 @@ public class XActor {
 		this.jid = jid.asString();
 	}
 
+	public XActor jid(JID jid) {
+		this.jid = jid.asString();
+		return this;
+	}
+
 	@XmlAttribute
 	public String getJid() {
 		return this.jid;
