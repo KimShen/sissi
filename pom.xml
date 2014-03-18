@@ -92,6 +92,7 @@
 		<maven.pipeline.muc.count.level>ADMIN</maven.pipeline.muc.count.level>
 		<maven.pipeline.muc.multi>true</maven.pipeline.muc.multi>
 		<maven.pipeline.muc.invite>ADMIN</maven.pipeline.muc.invite>
+		<maven.pipeline.muc.activate>false</maven.pipeline.muc.activate>
 		<maven.pipeline.muc.tip>Room is not anonymous</maven.pipeline.muc.tip>
 		<maven.pipeline.persistent.resend>3</maven.pipeline.persistent.resend>
 		<maven.pipeline.persistent.tip>From Sissi offline</maven.pipeline.persistent.tip>

@@ -59,7 +59,6 @@
 		</constructor-arg>
 	</bean>
 	<bean id="message.pro.muc.2all" class="com.sissi.pipeline.in.message.muc.MessageMuc2AllProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="message.pro.muc.2apply.response.chained" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="message.pro.muc.2all.check" class="com.sissi.pipeline.in.message.muc.MessageMuc2AllCheckResourceProcessor" parent="global.pro.proxy">

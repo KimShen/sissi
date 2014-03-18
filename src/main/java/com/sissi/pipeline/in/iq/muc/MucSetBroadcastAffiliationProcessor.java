@@ -16,7 +16,7 @@ import com.sissi.ucenter.muc.RelationMucMapping;
 /**
  * @author kim 2014年3月14日
  */
-public class MucSetBroadcastProcessor extends ProxyProcessor {
+public class MucSetBroadcastAffiliationProcessor extends ProxyProcessor {
 
 	private final MucStatusJudger mucStatusJudger;
 
@@ -24,7 +24,7 @@ public class MucSetBroadcastProcessor extends ProxyProcessor {
 
 	private final RelationMucMapping relationMucMapping;
 
-	public MucSetBroadcastProcessor(MucStatusJudger mucStatusJudger, MucConfigBuilder mucConfigBuilder, RelationMucMapping relationMucMapping) {
+	public MucSetBroadcastAffiliationProcessor(MucStatusJudger mucStatusJudger, MucConfigBuilder mucConfigBuilder, RelationMucMapping relationMucMapping) {
 		super();
 		this.mucStatusJudger = mucStatusJudger;
 		this.mucConfigBuilder = mucConfigBuilder;
@@ -37,9 +37,9 @@ public class MucSetBroadcastProcessor extends ProxyProcessor {
 		MucConfig config = this.mucConfigBuilder.build(group);
 		for (Item item : protocol.cast(XMucAdmin.class).getItem()) {
 			for (JID each : this.relationMucMapping.mapping(item.actor(context.jid()).group(group))) {
-				RelationMuc relation = super.ourRelation(each, group).cast(RelationMuc.class).role(item.getRole());
+				RelationMuc relation = super.ourRelation(each, group).cast(RelationMuc.class).affiliation(item.getAffiliation());
 				for (JID to : super.whoSubscribedMe(group)) {
-					super.findOne(to, true).write(item.presence().reset().add(this.mucStatusJudger.judege(new XUser(to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, each)).relation(relation))).cast(XUser.class)));
+					super.findOne(to, true).write(item.presence().reset().add(this.mucStatusJudger.judege(new XUser(group, to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, each)).relation(relation))).cast(XUser.class)));
 				}
 			}
 		}

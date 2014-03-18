@@ -11,11 +11,11 @@ import com.sissi.ucenter.muc.MucRoleBuilder;
 /**
  * @author kim 2014年3月14日
  */
-public class MucSetProcessor extends ProxyProcessor {
+public class MucSetRoleProcessor extends ProxyProcessor {
 
 	private final MucRoleBuilder mucRoleBuilder;
 
-	public MucSetProcessor(MucRoleBuilder mucRoleBuilder) {
+	public MucSetRoleProcessor(MucRoleBuilder mucRoleBuilder) {
 		super();
 		this.mucRoleBuilder = mucRoleBuilder;
 	}

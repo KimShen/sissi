@@ -7,6 +7,8 @@ import java.util.Set;
  */
 public interface MucStatus {
 
+	public String group();
+	
 	public boolean hidden();
 
 	public boolean owner();

@@ -31,6 +31,11 @@ public class Item implements MucItem, Collector {
 		actions.put(ItemRole.VISITOR.toString(), PresenceType.AVAILABLE);
 		actions.put(ItemRole.MODERATOR.toString(), PresenceType.AVAILABLE);
 		actions.put(ItemRole.PARTICIPANT.toString(), PresenceType.AVAILABLE);
+		actions.put(ItemAffiliation.OUTCAST.toString(), PresenceType.UNAVAILABLE);
+		actions.put(ItemAffiliation.NONE.toString(), PresenceType.AVAILABLE);
+		actions.put(ItemAffiliation.MEMBER.toString(), PresenceType.AVAILABLE);
+		actions.put(ItemAffiliation.ADMIN.toString(), PresenceType.AVAILABLE);
+		actions.put(ItemAffiliation.OWNER.toString(), PresenceType.AVAILABLE);
 	}
 
 	public final static String NAME = "item";
@@ -40,7 +45,7 @@ public class Item implements MucItem, Collector {
 	private String nick;
 
 	private String jid;
-	
+
 	private String affiliation;
 
 	private boolean hidden;
@@ -73,7 +78,7 @@ public class Item implements MucItem, Collector {
 	}
 
 	public Presence presence() {
-		return new Presence().setType(actions.get(this.getRole())).setFrom(this.group);
+		return new Presence().setType(actions.get(this.getRole() == null ? this.getAffiliation() == null ? null : this.getAffiliation() : this.getRole())).setFrom(this.group);
 	}
 
 	public JID group(JID jid) {
@@ -83,6 +88,11 @@ public class Item implements MucItem, Collector {
 	@XmlAttribute
 	public String getJid() {
 		return this.hidden ? null : this.jid;
+	}
+
+	public Item affiliation(String affiliation) {
+		this.affiliation = affiliation;
+		return this;
 	}
 
 	@XmlAttribute

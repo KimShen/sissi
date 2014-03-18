@@ -36,18 +36,25 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 
 	private Item item;
 
+	private JID group;
+
 	private JID jid;
 
 	public XUser() {
 		super();
 	}
 
-	public XUser(JID jid, boolean hidden) {
+	public XUser(JID group, JID jid, boolean hidden) {
 		this.jid = jid;
+		this.group = group;
 		this.hidden = hidden;
 	}
 
 	private Set<ItemStatus> statuses;
+
+	public String group() {
+		return this.group.asStringWithBare();
+	}
 
 	public boolean hidden() {
 		return this.hidden;

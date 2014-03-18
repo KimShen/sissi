@@ -6,7 +6,7 @@ import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.detail.NotAllowed;
+import com.sissi.protocol.error.detail.Forbidden;
 import com.sissi.protocol.iq.data.XField;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.muc.ItemRole;
@@ -17,7 +17,7 @@ import com.sissi.ucenter.muc.MucApplyContext;
  */
 public class MessageMuc2ApplyResponseCheckRoleNoneProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
+	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

@@ -25,6 +25,10 @@ public class ChainedProcessor implements Input {
 		this.processors = processors;
 	}
 
+	public void setTest(Input input) {
+		this.processors.add(input);
+	}
+
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		for (Input each : this.processors) {

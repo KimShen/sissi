@@ -14,6 +14,7 @@
 	<bean id="ucenter.muc" class="com.sissi.ucenter.muc.impl.MongoRelationMucContext">
 		<constructor-arg ref="global.jid" />
 		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg index="0" value="${pipeline.muc.activate}" />
 		<property name="mucConfigBuilder" ref="ucenter.muc.config.builder" />
 	</bean>
 
@@ -115,6 +116,9 @@
 			<util:list>
 				<bean class="com.sissi.ucenter.muc.impl.Code170MucStatusJudger">
 					<constructor-arg value="${pipeline.muc.log}" />
+				</bean>
+				<bean class="com.sissi.ucenter.muc.impl.Code201MucStatusJudger">
+					<constructor-arg ref="ucenter.muc.config" />
 				</bean>
 				<bean class="com.sissi.ucenter.muc.impl.Code307MucStatusJudger" />
 				<bean class="com.sissi.ucenter.muc.impl.Code4SelfMucStatusJudger" />

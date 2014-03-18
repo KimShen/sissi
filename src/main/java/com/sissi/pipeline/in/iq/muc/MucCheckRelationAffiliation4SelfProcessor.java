@@ -7,19 +7,19 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.Forbidden;
-import com.sissi.protocol.muc.ItemRole;
+import com.sissi.protocol.muc.ItemAffiliation;
 import com.sissi.ucenter.muc.RelationMuc;
 
 /**
  * @author kim 2014年3月14日
  */
-public class MucCheckRelation4SelfProcessor extends ProxyProcessor {
+public class MucCheckRelationAffiliation4SelfProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(Forbidden.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return ItemRole.parse(super.ourRelation(context.jid(), super.build(protocol.parent().getTo())).cast(RelationMuc.class).role()).contains(ItemRole.MODERATOR) ? true : this.writeAndReturn(context, protocol);
+		return ItemAffiliation.parse(super.ourRelation(context.jid(), super.build(protocol.parent().getTo())).cast(RelationMuc.class).affiliation()).contains(ItemAffiliation.ADMIN) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

@@ -49,6 +49,11 @@ public class XMucAdmin extends Protocol implements Collector {
 		return this.item() && this.getItem().size() == size;
 	}
 
+	public boolean item(XMucAdminAction action) {
+		Item item = this.first();
+		return item != null ? (action == XMucAdminAction.ROLE ? item.getRole() != null : item.getAffiliation() != null) : false;
+	}
+
 	public boolean loop(String nick) {
 		return this.snapshoot != null ? this.snapshoot.contains(nick) : false;
 	}

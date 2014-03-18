@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.message.muc;
+package com.sissi.pipeline.in.iq.muc;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
@@ -6,16 +6,16 @@ import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.detail.NotAllowed;
+import com.sissi.protocol.error.detail.Forbidden;
 import com.sissi.protocol.muc.ItemRole;
 import com.sissi.ucenter.muc.RelationMuc;
 
 /**
- * @author kim 2014年3月8日
+ * @author kim 2014年3月14日
  */
-public class MessageMuc2ApplyResponseCheckRoleAllowedProcessor extends ProxyProcessor {
+public class MucCheckRelationRole4SelfProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
+	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(Forbidden.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

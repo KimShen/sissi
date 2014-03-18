@@ -17,13 +17,13 @@ import com.sissi.ucenter.muc.RelationMucMapping;
 /**
  * @author kim 2014年3月14日
  */
-public class MucCheckRelation4FansProcessor extends ProxyProcessor {
+public class MucCheckRelationRole4FansProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(NotAllowed.DETAIL);
 
 	private final RelationMucMapping mapping;
 
-	public MucCheckRelation4FansProcessor(RelationMucMapping mapping) {
+	public MucCheckRelationRole4FansProcessor(RelationMucMapping mapping) {
 		super();
 		this.mapping = mapping;
 	}

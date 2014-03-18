@@ -71,6 +71,10 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 		return ItemAffiliation.NONE.toString();
 	}
 
+	public RelationMuc affiliation(String affiliation) {
+		return this;
+	}
+
 	public boolean in(String... subscriptions) {
 		return false;
 	}

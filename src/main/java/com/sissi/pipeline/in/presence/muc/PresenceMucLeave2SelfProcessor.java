@@ -33,7 +33,7 @@ public class PresenceMucLeave2SelfProcessor extends ProxyProcessor {
 		JID group = super.build(protocol.getTo());
 		MucConfig config = this.mucConfigBuilder.build(group);
 		RelationMuc relation = super.ourRelation(context.jid(), group).cast(RelationMuc.class).noneRole();
-		context.write(new Presence().add(this.mucStatusJudger.judege(new XUser(context.jid(), config.allowed(context.jid(), MucConfig.HIDDEN_NATIVE, null)).item(new Item(config.allowed(context.jid(), MucConfig.HIDDEN_COMPUTER, context.jid()), relation))).cast(XUser.class)).setType(PresenceType.UNAVAILABLE).setFrom(protocol.getTo()));
+		context.write(new Presence().add(this.mucStatusJudger.judege(new XUser(group, context.jid(), config.allowed(context.jid(), MucConfig.HIDDEN_NATIVE, null)).item(new Item(config.allowed(context.jid(), MucConfig.HIDDEN_COMPUTER, context.jid()), relation))).cast(XUser.class)).setType(PresenceType.UNAVAILABLE).setFrom(protocol.getTo()));
 		return true;
 	}
 }
