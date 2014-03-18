@@ -31,6 +31,8 @@ public class XField implements Field<Object>, Collector {
 
 	private String type;
 
+	private String label;
+
 	private Object value;
 
 	public XField add(Field<?> field) {
@@ -65,6 +67,16 @@ public class XField implements Field<Object>, Collector {
 
 	public String getName() {
 		return this.var;
+	}
+
+	public XField setLabel(String label) {
+		this.label = label;
+		return this;
+	}
+
+	@XmlAttribute
+	public String getLabel() {
+		return this.label;
 	}
 
 	@XmlAttribute

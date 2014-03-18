@@ -19,7 +19,7 @@ public class RegisterMucFieldsMatcher extends ClassMatcher {
 	}
 
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && this.muc(this.jidBuilder.build(protocol.getTo()));
+		return super.match(protocol) && this.muc(this.jidBuilder.build(protocol.parent().getTo()));
 	}
 
 	private boolean muc(JID jid) {

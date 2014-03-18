@@ -70,10 +70,18 @@ public class XInput implements Field<XValue> {
 		return this.type;
 	}
 
+	public XInput value(String value) {
+		if (this.getValue() == null) {
+			this.value = new XValue();
+		}
+		this.value.setText(value);
+		return this;
+	}
+
 	@Override
 	@XmlElement(name = XValue.NAME)
 	public XValue getValue() {
-		return this.value;
+		return this.value != null && this.value.hasContent() ? this.value : null;
 	}
 
 	@XmlElement
@@ -89,5 +97,9 @@ public class XInput implements Field<XValue> {
 	@Override
 	public boolean hasChild() {
 		return false;
+	}
+
+	public XInput clone() {
+		return new XInput(this.getType(), this.getName(), this.getVar(), this.getValue() != null ? this.getValue().getValue() : null, this.required);
 	}
 }

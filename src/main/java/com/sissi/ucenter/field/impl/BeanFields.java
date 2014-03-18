@@ -88,7 +88,7 @@ public class BeanFields implements Fields {
 	@Override
 	public <T extends Field<?>> T findField(String name, Class<T> clazz) {
 		for (Field<?> each : this) {
-			if (each.getName().equals(name) && clazz.isAssignableFrom(each.getClass())) {
+			if (name.equals(each.getName()) && clazz.isAssignableFrom(each.getClass())) {
 				return clazz.cast(each);
 			}
 		}

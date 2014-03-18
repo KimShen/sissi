@@ -25,7 +25,7 @@ public class RegisterMucCheckExistsProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.mucFinder.exists(super.build(protocol.getTo())) ? true : this.writeAndReturn(context, protocol);
+		return this.mucFinder.exists(super.build(protocol.parent().getTo())) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

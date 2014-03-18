@@ -5,10 +5,10 @@ package com.sissi.protocol.iq.data;
  */
 public enum XDataType {
 
-	FORM, SUBMIT, CANCEL, RESULT;
+	FORM, FORM_TYPE, SUBMIT, CANCEL, RESULT;
 
 	public String toString() {
-		return super.toString().toLowerCase();
+		return this == FORM_TYPE ? super.toString().toUpperCase() : super.toString().toLowerCase();
 	}
 
 	public boolean equals(String type) {

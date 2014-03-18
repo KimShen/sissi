@@ -6,7 +6,7 @@ import com.sissi.ucenter.muc.MucStatusJudger;
 /**
  * @author kim 2014年3月5日
  */
-public class Code110MucStatusJudger implements MucStatusJudger {
+public class Code4SelfMucStatusJudger implements MucStatusJudger {
 
 	@Override
 	public MucStatus judege(MucStatus status) {

@@ -7,5 +7,13 @@ import com.sissi.ucenter.field.Fields;
  */
 public interface MucApplyContext {
 
+	public final static String MUC_JID = "muc#jid";
+
+	public final static String MUC_ROLE = "muc#role";
+
+	public final static String MUC_NICKNAME = "muc#roomnick";
+
+	public final static String MUC_REQUEST_ALLOW = "muc#request_allow";
+
 	public boolean apply(Fields fields);
 }

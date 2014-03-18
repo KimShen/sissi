@@ -10,7 +10,7 @@ public interface Relation {
 	public String jid();
 
 	public String name();
-
+	
 	public boolean activate();
 
 	public Map<String, Object> plus();

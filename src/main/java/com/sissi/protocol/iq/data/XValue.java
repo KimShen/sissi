@@ -12,7 +12,7 @@ import com.sissi.ucenter.field.Fields;
  */
 @Metadata(uri = XData.XMLNS, localName = XValue.NAME)
 @XmlRootElement(name = XValue.NAME)
-public class XValue implements Field<String>{
+public class XValue implements Field<String> {
 
 	public final static String NAME = "value";
 
@@ -41,6 +41,10 @@ public class XValue implements Field<String>{
 	@XmlValue
 	public String getValue() {
 		return this.value;
+	}
+
+	public boolean hasContent() {
+		return this.value != null && !this.value.isEmpty();
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.iq.register.muc;
+package com.sissi.pipeline.in.message.muc;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
@@ -7,26 +7,21 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.NotAllowed;
-import com.sissi.ucenter.muc.MucConfig;
-import com.sissi.ucenter.muc.MucConfigBuilder;
+import com.sissi.protocol.iq.data.XField;
+import com.sissi.protocol.message.Message;
+import com.sissi.protocol.muc.ItemRole;
+import com.sissi.ucenter.muc.MucApplyContext;
 
 /**
- * @author kim 2014年3月11日
+ * @author kim 2014年3月8日
  */
-public class RegisterMucCheckAllowProcessor extends ProxyProcessor {
+public class MessageMuc2ApplyResponseCheckRoleNoneProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
 
-	private final MucConfigBuilder mucConfigBuilder;
-
-	public RegisterMucCheckAllowProcessor(MucConfigBuilder mucConfigBuilder) {
-		super();
-		this.mucConfigBuilder = mucConfigBuilder;
-	}
-
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.mucConfigBuilder.build(super.build(protocol.parent().getTo())).allowed(context.jid(), MucConfig.REGISTER, null) ? true : this.writeAndReturn(context, protocol);
+		return ItemRole.NONE.equals(protocol.cast(Message.class).getData().findField(MucApplyContext.MUC_ROLE, XField.class).getValue().toString()) ? this.writeAndReturn(context, protocol) : true;
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

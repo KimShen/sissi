@@ -8,24 +8,24 @@
 	<bean id="register.pro.fields.muc" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucFieldsProcessor">
 		<constructor-arg ref="uncenter.fields.muc.form" />
 	</bean>
-	<bean id="register.pro.muc.check.allow" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckAllowProcessor" parent="global.pro.proxy">
+	<bean id="register.pro.check.muc.allow" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckAllowProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.config.builder" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
-	<bean id="register.pro.muc.check.exists" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckExistsProcessor" parent="global.pro.proxy">
+	<bean id="register.pro.check.muc.exists" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.config.builder" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
-	<bean id="register.pro.muc.check.affiliation" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckAffiliationProcessor" parent="global.pro.proxy">
+	<bean id="register.pro.check.muc.affiliation" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckAffiliationProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="iq.pro.result.stop" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="register.pro.fields.muc.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="register.pro.muc.check.allow" />
-				<ref bean="register.pro.muc.check.exists" />
-				<ref bean="register.pro.muc.check.affiliation" />
+				<ref bean="register.pro.check.muc.allow" />
+				<ref bean="register.pro.check.muc.exists" />
+				<ref bean="register.pro.check.muc.affiliation" />
 				<ref bean="register.pro.fields.muc" />
 			</util:list>
 		</constructor-arg>
@@ -37,9 +37,9 @@
 		<constructor-arg value="true" />
 		<constructor-arg>
 			<util:list>
-				<ref bean="register.pro.muc.check.allow" />
-				<ref bean="register.pro.muc.check.exists" />
-				<ref bean="register.pro.muc.check.affiliation" />
+				<ref bean="register.pro.check.muc.allow" />
+				<ref bean="register.pro.check.muc.exists" />
+				<ref bean="register.pro.check.muc.affiliation" />
 				<ref bean="register.pro.store.muc" />
 			</util:list>
 		</constructor-arg>

@@ -9,6 +9,7 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.iq.data.XData;
+import com.sissi.protocol.iq.data.XField;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.read.Collector;
@@ -50,6 +51,10 @@ public class Message extends Protocol implements Collector {
 	public Message setType(MessageType type) {
 		super.setType(type.toString());
 		return this;
+	}
+
+	private Message setX(Object x) {
+		return XData.class == x.getClass() ? this.setData(XData.class.cast(x)) : this.setUser(XUser.class.cast(x));
 	}
 
 	public String getType() {
@@ -146,8 +151,12 @@ public class Message extends Protocol implements Collector {
 		return this.user;
 	}
 
-	public Message setData(XData data) {
-		this.data = data;
+	public boolean data(String name) {
+		return this.getData() != null && this.getData().findField(name, XField.class) != null;
+	}
+
+	public Message setData(XData x) {
+		this.data = x;
 		return this;
 	}
 
@@ -211,11 +220,11 @@ public class Message extends Protocol implements Collector {
 	@Override
 	public void set(String localName, Object ob) {
 		switch (localName) {
+		case XData.NAME:
+			this.setX(ob);
+			return;
 		case Body.NAME:
 			this.setBody(Body.class.cast(ob));
-			return;
-		case XUser.NAME:
-			this.setUser(XUser.class.cast(ob));
 			return;
 		case Delay.NAME:
 			this.setDelay(Delay.class.cast(ob));

@@ -42,8 +42,7 @@ public class RestAuthAccessor implements AuthAccessor {
 			BufferedInputStream in = new BufferedInputStream(huc.getInputStream());
 			String password = new ObjectMapper().readValue(in, Response.class).getResult().getUserpswd();
 			if (password != null) {
-				BasicDBObject user = new BasicDBObject("username", username);
-				this.config.collection().update(user, user, true, false);
+				this.config.collection().update(new BasicDBObject("username", username), new BasicDBObject("$set", new BasicDBObject("username", username)), true, false);
 			}
 			return password;
 		} catch (Exception e) {

@@ -21,6 +21,6 @@ public class RegisterMucCheckAffiliationProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return ItemAffiliation.NONE.equals(super.ourRelation(context.jid(), super.build(protocol.getTo())).cast(RelationMuc.class).affiliation()) ? true : this.processor.input(context, protocol.parent());
+		return ItemAffiliation.NONE.equals(super.ourRelation(context.jid(), super.build(protocol.parent().getTo())).cast(RelationMuc.class).affiliation()) ? true : this.processor.input(context, protocol.parent());
 	}
 }

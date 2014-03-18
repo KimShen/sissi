@@ -35,6 +35,6 @@ public class RegisterMucStoreProcessor implements Input {
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
 		context.write(protocol.parent().reply().setError(this.error));
-		return false;
+		return true;
 	}
 }

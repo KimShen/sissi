@@ -84,6 +84,28 @@
 		</constructor-arg>
 	</bean>
 
+	<bean id="ucenter.muc.role.apply" class="com.sissi.ucenter.muc.impl.MappingMucRoleBuilder">
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.ucenter.muc.impl.UpdateMucRole">
+					<constructor-arg value="VISITOR" />
+					<constructor-arg index="1" ref="ucenter.muc" />
+					<constructor-arg index="2" ref="ucenter.muc" />
+				</bean>
+				<bean class="com.sissi.ucenter.muc.impl.UpdateMucRole">
+					<constructor-arg value="MODERATOR" />
+					<constructor-arg index="1" ref="ucenter.muc" />
+					<constructor-arg index="2" ref="ucenter.muc" />
+				</bean>
+				<bean class="com.sissi.ucenter.muc.impl.UpdateMucRole">
+					<constructor-arg value="PARTICIPANT" />
+					<constructor-arg index="1" ref="ucenter.muc" />
+					<constructor-arg index="2" ref="ucenter.muc" />
+				</bean>
+			</util:list>
+		</constructor-arg>
+	</bean>
+
 	<bean id="ucenter.muc.affiliation" class="com.sissi.ucenter.muc.impl.MongoMucAffiliationBuilder">
 		<constructor-arg ref="ucenter.muc.config" />
 	</bean>
@@ -91,25 +113,11 @@
 	<bean id="ucenter.muc.judger" class="com.sissi.ucenter.muc.impl.ChainedMucStatusJudger">
 		<constructor-arg>
 			<util:list>
-				<bean class="com.sissi.ucenter.muc.impl.Code110MucStatusJudger" />
 				<bean class="com.sissi.ucenter.muc.impl.Code170MucStatusJudger">
 					<constructor-arg value="${pipeline.muc.log}" />
 				</bean>
 				<bean class="com.sissi.ucenter.muc.impl.Code307MucStatusJudger" />
-			</util:list>
-		</constructor-arg>
-	</bean>
-
-	<bean id="ucenter.muc.judger.replace" class="com.sissi.ucenter.muc.impl.ChainedMucStatusJudger">
-		<constructor-arg>
-			<util:list>
-				<bean class="com.sissi.ucenter.muc.impl.CodeFixedMucStatusJudger">
-					<constructor-arg>
-						<util:set>
-							<value>303</value>
-						</util:set>
-					</constructor-arg>
-				</bean>
+				<bean class="com.sissi.ucenter.muc.impl.Code4SelfMucStatusJudger" />
 			</util:list>
 		</constructor-arg>
 	</bean>
