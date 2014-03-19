@@ -1,8 +1,5 @@
 package com.sissi.protocol.muc;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,7 +7,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.context.JID;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.protocol.presence.PresenceType;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
 import com.sissi.ucenter.muc.MucItem;
@@ -23,20 +19,6 @@ import com.sissi.ucenter.muc.RelationMuc;
 @XmlType(namespace = XMuc.XMLNS)
 @XmlRootElement(name = Item.NAME)
 public class Item implements MucItem, Collector {
-
-	private final static Map<String, PresenceType> actions = new HashMap<String, PresenceType>();
-
-	static {
-		actions.put(ItemRole.NONE.toString(), PresenceType.UNAVAILABLE);
-		actions.put(ItemRole.VISITOR.toString(), PresenceType.AVAILABLE);
-		actions.put(ItemRole.MODERATOR.toString(), PresenceType.AVAILABLE);
-		actions.put(ItemRole.PARTICIPANT.toString(), PresenceType.AVAILABLE);
-		actions.put(ItemAffiliation.OUTCAST.toString(), PresenceType.UNAVAILABLE);
-		actions.put(ItemAffiliation.NONE.toString(), PresenceType.AVAILABLE);
-		actions.put(ItemAffiliation.MEMBER.toString(), PresenceType.AVAILABLE);
-		actions.put(ItemAffiliation.ADMIN.toString(), PresenceType.AVAILABLE);
-		actions.put(ItemAffiliation.OWNER.toString(), PresenceType.AVAILABLE);
-	}
 
 	public final static String NAME = "item";
 
@@ -77,8 +59,17 @@ public class Item implements MucItem, Collector {
 		return this;
 	}
 
-	public Presence presence() {
-		return new Presence().setType(actions.get(this.getRole() == null ? this.getAffiliation() == null ? null : this.getAffiliation() : this.getRole())).setFrom(this.group);
+	public Presence presence(XMucAdminAction action) {
+		return this.presence(action, this.group);
+	}
+
+	public Presence presence(XMucAdminAction action, JID group) {
+		return new Presence().setType(XMucAdminAction.AFFILIATION == action ? ItemAffiliation.parse(this.getAffiliation()).presence() : ItemRole.parse(this.getRole()).presence()).setFrom(group).cast(Presence.class);
+	}
+
+	public Item jid(JID jid) {
+		this.jid = jid.asStringWithBare();
+		return this;
 	}
 
 	public JID group(JID jid) {

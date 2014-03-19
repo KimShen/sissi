@@ -108,7 +108,6 @@
 	<bean id="presence.pro.muc.leave.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.muc.check.outcast" />
 				<ref bean="presence.pro.muc.check.relation" />
 				<ref bean="presence.pro.muc.leave" />
 				<ref bean="presence.pro.muc.leave.2fans" />

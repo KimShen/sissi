@@ -23,16 +23,23 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 
 	private final JID jid;
 
+	private final String affiliation;
+
 	private final String subscription;
 
-	public NoneRelation(JID jid, String subscription) {
+	private NoneRelation(JID jid, String subscription, ItemAffiliation affiliation) {
 		super();
 		this.jid = jid;
 		this.subscription = subscription;
+		this.affiliation = affiliation.toString();
 	}
 
-	public NoneRelation(JID jid) {
-		this(jid, zero);
+	public NoneRelation(JID jid, String subscription) {
+		this(jid, subscription, ItemAffiliation.NONE);
+	}
+
+	public NoneRelation(JID jid, ItemAffiliation affiliation) {
+		this(jid, zero, affiliation);
 	}
 
 	@Override
@@ -68,7 +75,7 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 	}
 
 	public String affiliation() {
-		return ItemAffiliation.NONE.toString();
+		return this.affiliation;
 	}
 
 	public RelationMuc affiliation(String affiliation) {
@@ -88,7 +95,7 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 	}
 
 	public boolean outcast() {
-		return false;
+		return ItemAffiliation.OUTCAST.equals(this.affiliation());
 	}
 
 	@Override

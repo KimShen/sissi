@@ -27,6 +27,8 @@ public class XMucAdmin extends Protocol implements Collector {
 
 	public final static String NAME = "query";
 
+	private boolean jids = true;
+
 	private Set<String> snapshoot;
 
 	private List<Item> items;
@@ -39,6 +41,10 @@ public class XMucAdmin extends Protocol implements Collector {
 
 	public String role() {
 		return this.role;
+	}
+
+	public boolean jids() {
+		return this.jids;
 	}
 
 	public boolean item() {
@@ -66,6 +72,7 @@ public class XMucAdmin extends Protocol implements Collector {
 		this.items.add(item);
 		this.snapshoot.add(item.getNick());
 		this.role = this.role == null ? item.getRole() : this.role;
+		this.jids = this.jids ? (item.getJid() != null ? true : false) : this.jids;
 		return this;
 	}
 

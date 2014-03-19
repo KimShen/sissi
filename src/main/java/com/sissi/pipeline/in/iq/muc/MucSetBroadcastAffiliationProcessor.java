@@ -6,12 +6,14 @@ import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.muc.Item;
 import com.sissi.protocol.muc.XMucAdmin;
+import com.sissi.protocol.muc.XMucAdminAction;
 import com.sissi.protocol.muc.XUser;
+import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.muc.MucConfig;
 import com.sissi.ucenter.muc.MucConfigBuilder;
+import com.sissi.ucenter.muc.MucRelationContext;
 import com.sissi.ucenter.muc.MucStatusJudger;
 import com.sissi.ucenter.muc.RelationMuc;
-import com.sissi.ucenter.muc.RelationMucMapping;
 
 /**
  * @author kim 2014年3月14日
@@ -22,13 +24,13 @@ public class MucSetBroadcastAffiliationProcessor extends ProxyProcessor {
 
 	private final MucConfigBuilder mucConfigBuilder;
 
-	private final RelationMucMapping relationMucMapping;
+	private final MucRelationContext mucRelationContext;
 
-	public MucSetBroadcastAffiliationProcessor(MucStatusJudger mucStatusJudger, MucConfigBuilder mucConfigBuilder, RelationMucMapping relationMucMapping) {
+	public MucSetBroadcastAffiliationProcessor(MucStatusJudger mucStatusJudger, MucConfigBuilder mucConfigBuilder, MucRelationContext mucRelationContext) {
 		super();
 		this.mucStatusJudger = mucStatusJudger;
 		this.mucConfigBuilder = mucConfigBuilder;
-		this.relationMucMapping = relationMucMapping;
+		this.mucRelationContext = mucRelationContext;
 	}
 
 	@Override
@@ -36,10 +38,10 @@ public class MucSetBroadcastAffiliationProcessor extends ProxyProcessor {
 		JID group = super.build(protocol.parent().getTo());
 		MucConfig config = this.mucConfigBuilder.build(group);
 		for (Item item : protocol.cast(XMucAdmin.class).getItem()) {
-			for (JID each : this.relationMucMapping.mapping(item.actor(context.jid()).group(group))) {
-				RelationMuc relation = super.ourRelation(each, group).cast(RelationMuc.class).affiliation(item.getAffiliation());
+			JID each = super.build(item.getJid());
+			for (Relation relation : this.mucRelationContext.ourRelations(each, group)) {
 				for (JID to : super.whoSubscribedMe(group)) {
-					super.findOne(to, true).write(item.presence().reset().add(this.mucStatusJudger.judege(new XUser(group, to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, each)).relation(relation))).cast(XUser.class)));
+					super.findOne(to, true).write(item.presence(XMucAdminAction.AFFILIATION, group.resource(relation.name())).reset().add(this.mucStatusJudger.judege(new XUser(group, to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, each)).relation(relation.cast(RelationMuc.class).affiliation(item.getAffiliation())))).cast(XUser.class)));
 				}
 			}
 		}

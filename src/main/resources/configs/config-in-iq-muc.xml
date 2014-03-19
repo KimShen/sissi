@@ -6,6 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="muc.pro" class="com.sissi.pipeline.in.iq.muc.MucProcessor" parent="global.pro.proxy" />
+	<bean id="muc.pro.check.jid" class="com.sissi.pipeline.in.iq.muc.MucCheckJIDProcessor" parent="global.pro.proxy" />
 	<bean id="muc.pro.check.loop" class="com.sissi.pipeline.in.iq.muc.MucCheckLoopProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
@@ -55,10 +56,12 @@
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="muc.pro.set.affiliation" class="com.sissi.pipeline.in.iq.muc.MucSetAffiliationProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc.4affiliation" />
 	</bean>
 	<bean id="muc.pro.set.affiliation.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="muc.pro.check.jid" />
 				<ref bean="muc.pro.check.loop" />
 				<ref bean="muc.pro.check.exists" />
 				<ref bean="muc.pro.check.relation.affiliation.4self" />

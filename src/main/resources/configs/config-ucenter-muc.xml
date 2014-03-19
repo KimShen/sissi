@@ -11,10 +11,20 @@
 		<constructor-arg index="2" value="${mongo.collection.muc}" />
 	</bean>
 
-	<bean id="ucenter.muc" class="com.sissi.ucenter.muc.impl.MongoRelationMucContext">
+	<alias name="ucenter.muc.4role" alias="ucenter.muc" />
+	<bean id="ucenter.muc.4role" class="com.sissi.ucenter.muc.impl.MongoRelationMuc4RoleContext">
 		<constructor-arg ref="global.jid" />
 		<constructor-arg ref="ucenter.muc.config" />
 		<constructor-arg index="0" value="${pipeline.muc.activate}" />
+		<property name="mucConfigBuilder" ref="ucenter.muc.config.builder" />
+	</bean>
+
+	<bean id="ucenter.muc.4affiliation" class="com.sissi.ucenter.muc.impl.MongoRelationMuc4AffiliationContext">
+		<constructor-arg ref="global.jid" />
+		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.muc.affiliation" />
+		<constructor-arg index="0" value="${pipeline.muc.activate}" />
+		<constructor-arg index="1" value="${pipeline.muc.cascade}" />
 		<property name="mucConfigBuilder" ref="ucenter.muc.config.builder" />
 	</bean>
 
