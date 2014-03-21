@@ -38,6 +38,10 @@ public class PresenceMucWrapRelation implements RelationMuc {
 		return this.group.resource();
 	}
 
+	public String resource() {
+		return this.group.resource();
+	}
+
 	public boolean outcast() {
 		return this.relation.outcast();
 	}

@@ -98,7 +98,7 @@ public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 		}
 
 		public boolean affiliation(String affiliation) {
-			return this.creator() || !MongoMucConfigBuilder.this.exists(this.group) || MongoMucConfigBuilder.this.config.collection().findOne(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.group.asStringWithBare()).add("$or", new DBObject[] { BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + MongoConfig.FIELD_AFFILIATION, BasicDBObjectBuilder.start("$exists", false).get()).get(), BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.user.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATION, affiliation).get()).get() }).get()) != null;
+			return this.creator() || ItemAffiliation.parse(this.relation().affiliation()).contains(affiliation);
 		}
 
 		public boolean hidden(boolean compute) {

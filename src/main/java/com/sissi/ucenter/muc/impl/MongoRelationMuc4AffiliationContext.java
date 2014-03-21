@@ -24,8 +24,8 @@ public class MongoRelationMuc4AffiliationContext extends MongoRelationMucContext
 	@Override
 	public MongoRelationMucContext update(JID from, JID to, String status) {
 		this.mucAffiliationBuilder.build(to).approve(from, status);
-		if (this.cascade && ItemAffiliation.OUTCAST.equals(status)) {
-			super.remove(from, to);
+		if (this.cascade && (ItemAffiliation.OUTCAST.equals(status) || !ItemAffiliation.parse(status).contains(super.mucConfigBuilder.build(to).pull(MongoConfig.FIELD_AFFILIATION, String.class)))) {
+			super.remove(from, to, true);
 		}
 		return this;
 	}

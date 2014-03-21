@@ -1,5 +1,6 @@
 package com.sissi.pipeline.in.iq.muc;
 
+import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
@@ -41,7 +42,7 @@ public class MucSetBroadcastAffiliationProcessor extends ProxyProcessor {
 			JID each = super.build(item.getJid());
 			for (Relation relation : this.mucRelationContext.ourRelations(each, group)) {
 				for (JID to : super.whoSubscribedMe(group)) {
-					super.findOne(to, true).write(item.presence(XMucAdminAction.AFFILIATION, group.resource(relation.name())).reset().add(this.mucStatusJudger.judege(new XUser(group, to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, each)).relation(relation.cast(RelationMuc.class).affiliation(item.getAffiliation())))).cast(XUser.class)));
+					super.findOne(to, true).write(item.compare(config.pull(MongoConfig.FIELD_AFFILIATION, String.class)).presence(XMucAdminAction.AFFILIATION, group.resource(relation.name())).reset().add(this.mucStatusJudger.judege(new XUser(group, to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, each)).relation(relation.cast(RelationMuc.class).affiliation(item.getAffiliation())))).cast(XUser.class)));
 				}
 			}
 		}

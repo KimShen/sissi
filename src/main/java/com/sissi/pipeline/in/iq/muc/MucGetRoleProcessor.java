@@ -16,13 +16,13 @@ import com.sissi.ucenter.muc.RelationMuc;
 /**
  * @author kim 2014年3月14日
  */
-public class MucGetProcessor extends ProxyProcessor {
+public class MucGetRoleProcessor extends ProxyProcessor {
 
 	private final MucConfigBuilder mucConfigBuilder;
 
 	private final MucRelationContext mucRelationContext;
 
-	public MucGetProcessor(MucConfigBuilder mucConfigBuilder, MucRelationContext mucRelationContext) {
+	public MucGetRoleProcessor(MucConfigBuilder mucConfigBuilder, MucRelationContext mucRelationContext) {
 		super();
 		this.mucConfigBuilder = mucConfigBuilder;
 		this.mucRelationContext = mucRelationContext;

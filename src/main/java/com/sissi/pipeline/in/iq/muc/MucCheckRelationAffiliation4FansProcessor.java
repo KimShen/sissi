@@ -7,25 +7,28 @@ import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
+import com.sissi.protocol.error.detail.ItemNotFound;
 import com.sissi.protocol.error.detail.NotAllowed;
 import com.sissi.protocol.muc.Item;
 import com.sissi.protocol.muc.ItemAffiliation;
 import com.sissi.protocol.muc.XMucAdmin;
 import com.sissi.ucenter.muc.RelationMuc;
-import com.sissi.ucenter.muc.RelationMucMapping;
+import com.sissi.ucenter.user.VCardContext;
 
 /**
  * @author kim 2014年3月14日
  */
 public class MucCheckRelationAffiliation4FansProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(NotAllowed.DETAIL);
+	private final Error notAllowed = new ServerError().setType(ProtocolType.AUTH).add(NotAllowed.DETAIL);
 
-	private final RelationMucMapping mapping;
+	private final Error itemNotFound = new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
 
-	public MucCheckRelationAffiliation4FansProcessor(RelationMucMapping mapping) {
+	private final VCardContext vcardContext;
+
+	public MucCheckRelationAffiliation4FansProcessor(VCardContext vcardContext) {
 		super();
-		this.mapping = mapping;
+		this.vcardContext = vcardContext;
 	}
 
 	@Override
@@ -33,17 +36,16 @@ public class MucCheckRelationAffiliation4FansProcessor extends ProxyProcessor {
 		JID group = super.build(protocol.parent().getTo());
 		RelationMuc relation = super.ourRelation(context.jid(), group).cast(RelationMuc.class);
 		for (Item item : protocol.cast(XMucAdmin.class).getItem()) {
-			for (JID jid : this.mapping.mapping(group.resource(item.getNick()))) {
-				if (ItemAffiliation.parse(super.ourRelation(jid, group).cast(RelationMuc.class).affiliation()).contains(relation.affiliation())) {
-					return this.writeAndReturn(context, protocol);
-				}
+			JID each = super.build(item.getJid());
+			if (item.error(this.vcardContext.exists(each) ? null : this.itemNotFound) || item.error(ItemAffiliation.parse(super.ourRelation(each, group).cast(RelationMuc.class).affiliation()).contains(relation.affiliation()) ? this.notAllowed : null)) {
+				return this.writeAndReturn(context, protocol, item.error());
 			}
 		}
 		return true;
 	}
 
-	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		context.write(protocol.parent().reply().setError(this.error));
+	private boolean writeAndReturn(JIDContext context, Protocol protocol, Error error) {
+		context.write(protocol.parent().reply().setError(error));
 		return false;
 	}
 }

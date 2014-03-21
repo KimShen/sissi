@@ -82,6 +82,10 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 		return this;
 	}
 
+	public String resource() {
+		return this.jid.resource();
+	}
+
 	public boolean in(String... subscriptions) {
 		return false;
 	}

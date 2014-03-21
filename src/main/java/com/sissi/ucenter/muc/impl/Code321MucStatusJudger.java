@@ -4,12 +4,13 @@ import com.sissi.ucenter.muc.MucStatus;
 import com.sissi.ucenter.muc.MucStatusJudger;
 
 /**
- * @author kim 2014年3月5日
+ * @author kim 2014年3月16日
  */
-public class Code4SelfMucStatusJudger implements MucStatusJudger {
+public class Code321MucStatusJudger implements MucStatusJudger {
 
 	@Override
 	public MucStatus judege(MucStatus status) {
-		return status.owner() ? !status.add("110").hidden() ? status.add("100") : status : status;
+		return status.getItem().refuse() ? status.add("321") : status;
 	}
+
 }

@@ -39,9 +39,7 @@ public class NetworkTransfer implements Transfer {
 
 	@Override
 	public void close() {
-		if (this.context != null) {
-			this.context.close().addListener(FailLogedGenericFutureListener.FUTURE);
-		}
+		this.context.close().addListener(FailLogedGenericFutureListener.FUTURE);
 	}
 
 	private class ReleaseGenericFutureListener implements GenericFutureListener<Future<Void>> {
@@ -70,6 +68,7 @@ public class NetworkTransfer implements Transfer {
 
 		public void operationComplete(Future<Void> future) throws Exception {
 			if (!future.isSuccess()) {
+				this.log.error(future.cause().toString());
 				Trace.trace(this.log, future.cause());
 			}
 		}

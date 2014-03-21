@@ -292,7 +292,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		private JIDContext write(Element element, Output output, boolean bare) {
 			try {
 				if (!this.jid().same(element.getFrom())) {
-					output.output(this, element.setTo(bare ? this.jid.asStringWithBare() : this.jid().asString()));
+					output.output(this, this.binding() ? element.setTo(bare ? this.jid.asStringWithBare() : this.jid().asString()) : element);
 				}
 			} finally {
 				this.idle.set(System.currentTimeMillis());

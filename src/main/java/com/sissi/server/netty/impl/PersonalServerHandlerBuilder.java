@@ -131,6 +131,7 @@ public class PersonalServerHandlerBuilder implements ServerHandlerBuilder {
 
 		@Override
 		public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+			PersonalServerHandlerBuilder.this.log.error(cause.toString());
 			Trace.trace(PersonalServerHandlerBuilder.this.log, cause);
 			ctx.close();
 		}

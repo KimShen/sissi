@@ -10,19 +10,22 @@ import com.sissi.protocol.muc.XMucAdminAction;
 /**
  * @author kim 2014年3月14日
  */
-public class MucSetActionMatcher extends ClassMatcher {
-
-	private final JIDBuilder jidBuilder;
+public class MucActionMatcher extends ClassMatcher {
 
 	private final XMucAdminAction action;
 
-	public MucSetActionMatcher(JIDBuilder jidBuilder, String action) {
+	private final JIDBuilder jidBuilder;
+
+	private final ProtocolType type;
+
+	public MucActionMatcher(JIDBuilder jidBuilder, String action, String type) {
 		super(XMucAdmin.class);
 		this.jidBuilder = jidBuilder;
+		this.type = ProtocolType.parse(type);
 		this.action = XMucAdminAction.parse(action);
 	}
 
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && this.jidBuilder.build(protocol.parent().getTo()).isGroup() && protocol.parent().type(ProtocolType.SET) && protocol.cast(XMucAdmin.class).item(this.action);
+		return super.match(protocol) && this.jidBuilder.build(protocol.parent().getTo()).isGroup() && protocol.parent().type(this.type) && protocol.cast(XMucAdmin.class).item(this.action);
 	}
 }

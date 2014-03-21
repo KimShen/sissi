@@ -35,13 +35,9 @@ import com.sissi.ucenter.muc.RelationMucMapping;
  */
 abstract class MongoRelationMucContext implements MucRelationContext, RelationMucMapping {
 
-	private final String fieldPath = "path";
-
 	private final Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
 
 	private final DBObject aggregateLimit = BasicDBObjectBuilder.start().add("$limit", 1).get();
-
-	private final DBObject aggregateUnwindRoles = BasicDBObjectBuilder.start().add("$unwind", "$" + MongoConfig.FIELD_ROLES).get();
 
 	private final DBObject aggregateUnwindAffiliation = BasicDBObjectBuilder.start().add("$unwind", "$" + MongoConfig.FIELD_AFFILIATIONS).get();
 
@@ -49,13 +45,13 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 
 	private final DBObject aggregateProjectMapping = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES, "$" + MongoConfig.FIELD_ROLES).get()).get();
 
-	private final DBObject aggregateProjectRole = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_ID + "." + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_ID + "." + MongoConfig.FIELD_CREATOR).add(MongoConfig.FIELD_AFFILIATIONS, "$" + MongoConfig.FIELD_ID + "." + MongoConfig.FIELD_AFFILIATIONS).add(MongoConfig.FIELD_ROLES, "$" + MongoConfig.FIELD_ROLES).get()).get();
-
-	private final DBObject aggregateGroupRole = BasicDBObjectBuilder.start("$group", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ID, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_CREATOR).add(MongoConfig.FIELD_AFFILIATIONS, "$" + MongoConfig.FIELD_AFFILIATIONS).get()).add(MongoConfig.FIELD_ROLES, BasicDBObjectBuilder.start("$addToSet", "$" + MongoConfig.FIELD_ROLES).get()).get()).get();
-
 	private final DBObject aggregateGroup = BasicDBObjectBuilder.start("$group", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ID, "$" + MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_RESOURCE, BasicDBObjectBuilder.start("$push", "$" + MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_RESOURCE).get()).get()).get();
 
 	private final DBObject aggregateGroupRelations = BasicDBObjectBuilder.start("$group", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ID, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_CREATOR).add(MongoConfig.FIELD_ACTIVATE, "$" + MongoConfig.FIELD_ACTIVATE).add(MongoConfig.FIELD_AFFILIATIONS, "$" + MongoConfig.FIELD_AFFILIATIONS).get()).add(MongoConfig.FIELD_ROLES, BasicDBObjectBuilder.start("$addToSet", "$" + MongoConfig.FIELD_ROLES).get()).get()).get();
+
+	private final DBObject aggregateProjectRole = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_ID + "." + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_ID + "." + MongoConfig.FIELD_CREATOR).add(MongoConfig.FIELD_AFFILIATIONS, "$" + MongoConfig.FIELD_ID + "." + MongoConfig.FIELD_AFFILIATIONS).add(MongoConfig.FIELD_ROLES, "$" + MongoConfig.FIELD_ROLES).get()).get();
+
+	private final DBObject aggregateGroupRole = BasicDBObjectBuilder.start("$group", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ID, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_CREATOR).add(MongoConfig.FIELD_AFFILIATIONS, "$" + MongoConfig.FIELD_AFFILIATIONS).get()).add(MongoConfig.FIELD_ROLES, BasicDBObjectBuilder.start("$addToSet", "$" + MongoConfig.FIELD_ROLES).get()).get()).get();
 
 	private final DBObject aggregateProjectRelation = BasicDBObjectBuilder.start().add("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_ACTIVATE, "$" + MongoConfig.FIELD_ACTIVATE).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_CREATOR).add(MongoConfig.FIELD_ROLES, "$" + MongoConfig.FIELD_ROLES).add(MongoConfig.FIELD_AFFILIATION, BasicDBObjectBuilder.start().add("$cond", new Object[] { BasicDBObjectBuilder.start("$eq", new String[] { "$" + MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_JID }).get(), "$" + MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_AFFILIATION, null }).get()).get()).get();
 
@@ -71,17 +67,21 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 
 	private final DBObject entityCountDec = BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + MongoConfig.FIELD_COUNT, -1).get();
 
-	private final Set<Relation> emptyRelations = new HashSet<Relation>();
-
 	private final MucJIDs emptyJIDs = new EmptyJIDs();
 
-	private final MongoConfig config;
+	protected final Set<Relation> emptyRelations = new HashSet<Relation>();
+
+	protected final DBObject aggregateUnwindRoles = BasicDBObjectBuilder.start().add("$unwind", "$" + MongoConfig.FIELD_ROLES).get();
+
+	protected final String fieldPath = "path";
+
+	protected MucConfigBuilder mucConfigBuilder;
+
+	protected final JIDBuilder jidBuilder;
+
+	protected final MongoConfig config;
 
 	private final boolean activate;
-
-	private final JIDBuilder jidBuilder;
-
-	private MucConfigBuilder mucConfigBuilder;
 
 	public MongoRelationMucContext(boolean activate, MongoConfig config, JIDBuilder jidBuilder) throws Exception {
 		super();
@@ -94,16 +94,35 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 		this.mucConfigBuilder = mucConfigBuilder;
 	}
 
-	protected MongoConfig config() {
-		return this.config;
+	private MucJIDs extract(DBObject db) {
+		return new ShareJIDs(this.jidBuilder.build(Extracter.asString(db, MongoConfig.FIELD_ID)), Extracter.asStrings(db, MongoConfig.FIELD_RESOURCE));
+	}
+
+	private ItemAffiliation affiliation(JID from, JID to) {
+		AggregationOutput output = this.config.collection().aggregate(BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, to.asStringWithBare()).get()).get(), this.aggregateAffiliationLimit, this.aggregateUnwindAffiliation, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).get()).get(), this.aggregateAffiliationProject);
+		List<?> result = Extracter.asList(output.getCommandResult(), MongoConfig.FIELD_RESULT);
+		return result.isEmpty() ? ItemAffiliation.NONE : ItemAffiliation.parse(Extracter.asString(DBObject.class.cast(result.get(0)), MongoConfig.FIELD_AFFILIATION));
+	}
+
+	private DBObject buildQuery(String jid) {
+		return BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, jid).get();
+	}
+
+	private DBObject buildRemove(JID jid, boolean bare) {
+		BasicDBObjectBuilder remove = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, jid.asStringWithBare());
+		if (!bare) {
+			remove.add(MongoConfig.FIELD_RESOURCE, jid.resource());
+		}
+		return BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES, remove.get()).get();
 	}
 
 	protected DBObject buildMatcher(JID group) {
 		return BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, group.asStringWithBare()).get()).get();
 	}
 
-	private DBObject buildQuery(String jid) {
-		return BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, jid).get();
+	protected MongoRelationMucContext remove(JID from, JID to, boolean bare) {
+		this.config.collection().update(this.buildQuery(to.asStringWithBare()), BasicDBObjectBuilder.start().add("$inc", this.entityCountDec).add("$pull", this.buildRemove(from, true)).get(), false, !from.isBare(), WriteConcern.SAFE);
+		return this;
 	}
 
 	@Override
@@ -120,8 +139,7 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 
 	@Override
 	public MongoRelationMucContext remove(JID from, JID to) {
-		this.config.collection().update(this.buildQuery(to.asStringWithBare()), BasicDBObjectBuilder.start().add("$inc", this.entityCountDec).add("$pull", BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, from.asStringWithBare()).add(MongoConfig.FIELD_RESOURCE, from.resource()).get()).get()).get(), false, false, WriteConcern.SAFE);
-		return this;
+		return this.remove(from, to, false);
 	}
 
 	@Override
@@ -165,16 +183,6 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 		AggregationOutput output = this.config.collection().aggregate(this.buildMatcher(group), this.aggregateUnwindRoles, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_NICK, group.resource()).get()).get(), this.aggregateProjectMapping, this.aggregateGroup);
 		List<?> result = Extracter.asList(output.getCommandResult(), MongoConfig.FIELD_RESULT);
 		return result.isEmpty() ? this.emptyJIDs : this.extract(DBObject.class.cast(result.get(0)));
-	}
-
-	private MucJIDs extract(DBObject db) {
-		return new ShareJIDs(this.jidBuilder.build(Extracter.asString(db, MongoConfig.FIELD_ID)), Extracter.asStrings(db, MongoConfig.FIELD_RESOURCE));
-	}
-
-	private ItemAffiliation affiliation(JID from, JID to) {
-		AggregationOutput output = this.config.collection().aggregate(BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, to.asStringWithBare()).get()).get(), this.aggregateAffiliationLimit, this.aggregateUnwindAffiliation, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).get()).get(), this.aggregateAffiliationProject);
-		List<?> result = Extracter.asList(output.getCommandResult(), MongoConfig.FIELD_RESULT);
-		return result.isEmpty() ? ItemAffiliation.NONE : ItemAffiliation.parse(Extracter.asString(DBObject.class.cast(result.get(0)), MongoConfig.FIELD_AFFILIATION));
 	}
 
 	private class EmptyJIDs implements MucJIDs {
@@ -315,6 +323,10 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 
 		public boolean name(String name, boolean allowNull) {
 			return name.equals(this.name()) || (this.name() == null && allowNull);
+		}
+
+		public String resource() {
+			return this.resource;
 		}
 
 		public boolean outcast() {

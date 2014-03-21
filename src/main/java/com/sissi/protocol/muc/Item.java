@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.context.JID;
 import com.sissi.protocol.presence.Presence;
+import com.sissi.protocol.Error;
+import com.sissi.protocol.presence.PresenceType;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
 import com.sissi.ucenter.muc.MucItem;
@@ -30,11 +32,15 @@ public class Item implements MucItem, Collector {
 
 	private String affiliation;
 
+	private boolean refuse;
+
 	private boolean hidden;
 
 	private XReason reason;
 
 	private XActor actor;
+
+	private Error error;
 
 	private JID group;
 
@@ -54,8 +60,25 @@ public class Item implements MucItem, Collector {
 		return this;
 	}
 
+	public boolean refuse() {
+		return this.refuse;
+	}
+
+	public boolean error(Error error) {
+		return (this.error = error) != null;
+	}
+
+	public Error error() {
+		return this.error;
+	}
+
 	public Item hidden(boolean hidden) {
 		this.hidden = hidden;
+		return this;
+	}
+
+	public Item compare(String affiliation) {
+		this.refuse = !ItemAffiliation.parse(this.getAffiliation()).contains(affiliation);
 		return this;
 	}
 
@@ -64,7 +87,7 @@ public class Item implements MucItem, Collector {
 	}
 
 	public Presence presence(XMucAdminAction action, JID group) {
-		return new Presence().setType(XMucAdminAction.AFFILIATION == action ? ItemAffiliation.parse(this.getAffiliation()).presence() : ItemRole.parse(this.getRole()).presence()).setFrom(group).cast(Presence.class);
+		return new Presence().setType(this.refuse ? PresenceType.UNAVAILABLE.toString() : XMucAdminAction.AFFILIATION == action ? ItemAffiliation.parse(this.getAffiliation()).presence() : ItemRole.parse(this.getRole()).presence()).setFrom(group).cast(Presence.class);
 	}
 
 	public Item jid(JID jid) {

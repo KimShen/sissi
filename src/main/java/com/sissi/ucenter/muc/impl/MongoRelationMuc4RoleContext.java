@@ -17,7 +17,7 @@ public class MongoRelationMuc4RoleContext extends MongoRelationMucContext {
 
 	@Override
 	public MongoRelationMucContext update(JID from, JID to, String status) {
-		super.config().collection().update(BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_ID, from.asString()).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ROLES + ".$." + MongoConfig.FIELD_ROLE, status).get()).get(), true, false, WriteConcern.SAFE);
+		super.config.collection().update(BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES + "." + super.fieldPath, from.asString()).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ROLES + ".$." + MongoConfig.FIELD_ROLE, status).get()).get(), true, false, WriteConcern.SAFE);
 		return this;
 	}
 }

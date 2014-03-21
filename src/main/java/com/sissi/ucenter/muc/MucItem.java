@@ -10,4 +10,6 @@ public interface MucItem {
 	public String getRole();
 
 	public String getAffiliation();
+	
+	public boolean refuse();
 }

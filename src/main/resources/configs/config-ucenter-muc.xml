@@ -124,14 +124,16 @@
 	<bean id="ucenter.muc.judger" class="com.sissi.ucenter.muc.impl.ChainedMucStatusJudger">
 		<constructor-arg>
 			<util:list>
+				<bean class="com.sissi.ucenter.muc.impl.CodeSelfMucStatusJudger" />
 				<bean class="com.sissi.ucenter.muc.impl.Code170MucStatusJudger">
 					<constructor-arg value="${pipeline.muc.log}" />
 				</bean>
 				<bean class="com.sissi.ucenter.muc.impl.Code201MucStatusJudger">
 					<constructor-arg ref="ucenter.muc.config" />
 				</bean>
+				<bean class="com.sissi.ucenter.muc.impl.Code301MucStatusJudger" />
 				<bean class="com.sissi.ucenter.muc.impl.Code307MucStatusJudger" />
-				<bean class="com.sissi.ucenter.muc.impl.Code4SelfMucStatusJudger" />
+				<bean class="com.sissi.ucenter.muc.impl.Code321MucStatusJudger" />
 			</util:list>
 		</constructor-arg>
 	</bean>
