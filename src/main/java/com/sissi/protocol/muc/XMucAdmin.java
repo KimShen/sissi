@@ -35,12 +35,18 @@ public class XMucAdmin extends Protocol implements Collector {
 
 	private String role;
 
+	private String affiliaiton;
+
 	public Item first() {
 		return this.item() ? this.getItem().get(0) : null;
 	}
 
 	public String role() {
 		return this.role;
+	}
+
+	public String affiliation() {
+		return this.affiliaiton;
 	}
 
 	public boolean jids() {
@@ -72,6 +78,7 @@ public class XMucAdmin extends Protocol implements Collector {
 		this.items.add(item);
 		this.snapshoot.add(item.getNick());
 		this.role = this.role == null ? item.getRole() : this.role;
+		this.affiliaiton = this.affiliaiton == null ? item.getAffiliation() : this.affiliaiton;
 		this.jids = this.jids ? (item.getJid() != null ? true : false) : this.jids;
 		return this;
 	}

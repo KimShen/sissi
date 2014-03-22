@@ -15,7 +15,7 @@ import com.sissi.ucenter.roster.RelationRoster;
 /**
  * @author kim 2014年2月13日
  */
-public class NoneRelation implements Relation, RelationRoster, RelationMuc {
+public class LimitedRelation implements Relation, RelationRoster, RelationMuc {
 
 	private final static Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
 
@@ -27,18 +27,20 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 
 	private final String subscription;
 
-	private NoneRelation(JID jid, String subscription, ItemAffiliation affiliation) {
+	private boolean noneRole;
+
+	private LimitedRelation(JID jid, String subscription, ItemAffiliation affiliation) {
 		super();
 		this.jid = jid;
 		this.subscription = subscription;
 		this.affiliation = affiliation.toString();
 	}
 
-	public NoneRelation(JID jid, String subscription) {
+	public LimitedRelation(JID jid, String subscription) {
 		this(jid, subscription, ItemAffiliation.NONE);
 	}
 
-	public NoneRelation(JID jid, ItemAffiliation affiliation) {
+	public LimitedRelation(JID jid, ItemAffiliation affiliation) {
 		this(jid, zero, affiliation);
 	}
 
@@ -63,14 +65,15 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 	}
 
 	public String role() {
-		return ItemRole.VISITOR.toString();
+		return this.noneRole ? null : ItemRole.VISITOR.toString();
 	}
 
 	public RelationMuc role(String role) {
 		return this;
 	}
 
-	public NoneRelation noneRole() {
+	public LimitedRelation noneRole() {
+		this.noneRole = true;
 		return this;
 	}
 

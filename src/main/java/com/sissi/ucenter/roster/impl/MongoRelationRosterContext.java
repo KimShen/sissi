@@ -17,7 +17,7 @@ import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.RelationContext;
-import com.sissi.ucenter.impl.NoneRelation;
+import com.sissi.ucenter.impl.LimitedRelation;
 import com.sissi.ucenter.roster.RelationInductor;
 import com.sissi.ucenter.roster.RelationRecover;
 import com.sissi.ucenter.roster.RelationRoster;
@@ -122,7 +122,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationReco
 	@Override
 	public Relation ourRelation(JID from, JID to) {
 		DBObject db = this.config.collection().findOne(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()));
-		return db != null ? new MongoRelationRoster(db, this.fieldSlave) : new NoneRelation(to, RosterSubscription.NONE.toString());
+		return db != null ? new MongoRelationRoster(db, this.fieldSlave) : new LimitedRelation(to, RosterSubscription.NONE.toString());
 	}
 
 	@Override

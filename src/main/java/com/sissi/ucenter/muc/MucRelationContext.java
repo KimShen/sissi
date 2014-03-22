@@ -13,5 +13,5 @@ public interface MucRelationContext extends RelationContext {
 
 	public Set<Relation> ourRelations(JID from, JID to);
 
-	public Set<Relation> myRelations(JID from, String role);
+	public Set<Relation> myRelations(JID from, String status);
 }

@@ -71,6 +71,15 @@ public class MessageMuc2AllProcessor extends ProxyProcessor implements Applicati
 			iq.set(null, xmuc);
 			this.applicationContext.getBean("global.finder", ChainedFinder.class).find(iq).input(context, iq);
 		}
+		if (protocol.cast(Message.class).getBody().getText().startsWith("getAff")) {
+			String[] params = protocol.cast(Message.class).getBody().getText().split(" ");
+			IQ iq = new IQ();
+			iq.setTo(super.build(protocol.getTo())).setType(ProtocolType.GET);
+			XMucAdmin xmuc = new XMucAdmin();
+			xmuc.set(null, new Item().affiliation(params[1]));
+			iq.set(null, xmuc);
+			this.applicationContext.getBean("global.finder", ChainedFinder.class).find(iq).input(context, iq);
+		}
 
 		JID group = super.build(protocol.getTo());
 		protocol.setFrom(group.resource(super.ourRelation(context.jid(), group).name()));

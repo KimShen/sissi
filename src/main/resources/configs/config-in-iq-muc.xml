@@ -86,6 +86,19 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="muc.pro.get.affiliation" class="com.sissi.pipeline.in.iq.muc.MucGetAffiliationProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.4affiliation" />
+	</bean>
+	<bean id="muc.pro.get.affiliation.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.pro.check.loop" />
+				<ref bean="muc.pro.check.exists" />
+				<ref bean="muc.pro.check.relation.affiliation.4self" />
+				<ref bean="muc.pro.get.affiliation" />
+			</util:list>
+		</constructor-arg>
+	</bean>
 	<bean id="muc.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.muc" />
 	</bean>
@@ -116,6 +129,7 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="muc.pro.condition.get.role" />
+				<ref bean="muc.pro.condition.get.affiliation" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -173,5 +187,15 @@
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="muc.pro.get.role.chained" />
+	</bean>
+	<bean id="muc.pro.condition.get.affiliation" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.muc.MucActionMatcher">
+				<constructor-arg ref="global.jid" />
+				<constructor-arg index="1" value="AFFILIATION" />
+				<constructor-arg index="2" value="GET" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="muc.pro.get.affiliation.chained" />
 	</bean>
 </beans>
