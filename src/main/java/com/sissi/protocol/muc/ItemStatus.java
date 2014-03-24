@@ -47,7 +47,13 @@ public class ItemStatus {
 	}
 
 	public static ItemStatus parse(String code) {
-		ItemStatus status = mapping.get(code);
-		return status != null ? status : new ItemStatus(code);
+		ItemStatus status = ItemStatus.mapping.get(code);
+		return status != null ? status : ItemStatus.build(code);
+	}
+
+	private static ItemStatus build(String code) {
+		ItemStatus status = new ItemStatus(code);
+		ItemStatus.mapping.put(code, status);
+		return status;
 	}
 }

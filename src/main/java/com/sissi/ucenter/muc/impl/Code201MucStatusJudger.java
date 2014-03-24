@@ -2,7 +2,6 @@ package com.sissi.ucenter.muc.impl;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
-import com.sissi.commons.Extracter;
 import com.sissi.config.MongoConfig;
 import com.sissi.ucenter.muc.MucStatus;
 import com.sissi.ucenter.muc.MucStatusJudger;
@@ -12,7 +11,7 @@ import com.sissi.ucenter.muc.MucStatusJudger;
  */
 public class Code201MucStatusJudger implements MucStatusJudger {
 
-	private final DBObject filter = BasicDBObjectBuilder.start(MongoConfig.FIELD_ACTIVATE, 1).get();
+	private final DBObject query = BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + MongoConfig.FIELD_ACTIVATE, false).get();
 
 	private final MongoConfig config;
 
@@ -23,6 +22,6 @@ public class Code201MucStatusJudger implements MucStatusJudger {
 
 	@Override
 	public MucStatus judege(MucStatus status) {
-		return status.owner() && !Extracter.asBoolean(this.config.collection().findOne(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, status.group()).add(MongoConfig.FIELD_ACTIVATE, false).get(), this.filter), MongoConfig.FIELD_ACTIVATE, true) ? status.add("201") : status;
+		return status.owner() && this.config.collection().findOne(this.query) != null ? status.add("201") : status;
 	}
 }

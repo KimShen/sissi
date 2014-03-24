@@ -8,12 +8,16 @@ import java.util.Set;
 public interface MucStatus {
 
 	public String group();
-	
-	public boolean hidden();
 
 	public boolean owner();
 
+	public boolean hidden();
+
+	public boolean contain(String code);
+
 	public MucItem getItem();
+
+	public MucStatus clear();
 
 	public MucStatus add(String code);
 

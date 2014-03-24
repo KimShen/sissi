@@ -1,6 +1,8 @@
 package com.sissi.ucenter.muc;
 
 import com.sissi.context.JID;
+import com.sissi.ucenter.field.Field;
+import com.sissi.ucenter.field.Fields;
 
 /**
  * @author kim 2014年2月20日
@@ -33,7 +35,9 @@ public interface MucConfig {
 
 	public String mapping(String affiliation);
 
-	public <T> T pull(String key, Class<T> clazz);
+	public MucConfig push(Fields fields);
 
-	public MucConfig push(String key, Object value);
+	public MucConfig push(Field<?> field);
+
+	public <T> T pull(String key, Class<T> clazz);
 }

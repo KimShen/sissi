@@ -5,6 +5,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.message.Message;
+import com.sissi.ucenter.field.impl.BeanField;
 import com.sissi.ucenter.muc.MucConfigBuilder;
 
 /**
@@ -21,7 +22,7 @@ public class MessageMuc2SubjectConfigProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		this.mucConfigBuilder.build(super.build(protocol.getTo())).push(MongoConfig.FIELD_SUBJECT, protocol.cast(Message.class).getSubject().config());
+		this.mucConfigBuilder.build(super.build(protocol.getTo())).push(new BeanField<Object>().setName(MongoConfig.FIELD_SUBJECT).setValue(protocol.cast(Message.class).getSubject().config()));
 		return true;
 	}
 }

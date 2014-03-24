@@ -33,6 +33,10 @@
 	<bean id="register.pro.store.muc" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucStoreProcessor">
 		<constructor-arg ref="ucenter.muc.apply" />
 	</bean>
+	<bean id="register.pro.store.muc.broadcast" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucStoreBroadcastProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc" />
+		<constructor-arg ref="ucenter.register.muc" />
+	</bean>
 	<bean id="register.pro.store.muc.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg value="true" />
 		<constructor-arg>
@@ -40,6 +44,7 @@
 				<ref bean="register.pro.check.muc.allow" />
 				<ref bean="register.pro.check.muc.exists" />
 				<ref bean="register.pro.check.muc.affiliation" />
+				<ref bean="register.pro.store.muc.broadcast" />
 				<ref bean="register.pro.store.muc" />
 			</util:list>
 		</constructor-arg>

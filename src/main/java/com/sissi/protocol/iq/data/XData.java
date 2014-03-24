@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
+import com.sissi.ucenter.field.Fields;
 
 /**
  * @author kim 2013年12月5日
@@ -16,7 +17,7 @@ import com.sissi.ucenter.field.Field;
 @Metadata(uri = XData.XMLNS, localName = XData.NAME)
 @XmlType(namespace = XData.XMLNS)
 @XmlRootElement(name = XData.NAME)
-public class XData extends XFieldWrap implements Field<Object>, Collector {
+public class XData extends XFieldWrap implements Fields, Field<Object>, Collector {
 
 	public final static String NAME = "x";
 
@@ -79,7 +80,7 @@ public class XData extends XFieldWrap implements Field<Object>, Collector {
 	public String getName() {
 		return NAME;
 	}
-	
+
 	@Override
 	public void set(String localName, Object ob) {
 		super.add(Field.class.cast(ob));

@@ -27,6 +27,8 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 
 	public final static String XMLNS = "http://jabber.org/protocol/muc#user";
 
+	private Set<ItemStatus> statuses;
+
 	private XInvite invite;
 
 	private XDecline decline;
@@ -51,18 +53,20 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 		this.hidden = hidden;
 	}
 
-	private Set<ItemStatus> statuses;
-
 	public String group() {
 		return this.group.asStringWithBare();
+	}
+
+	public boolean owner() {
+		return this.jid != null ? this.jid.same(this.item.getJid()) : false;
 	}
 
 	public boolean hidden() {
 		return this.hidden;
 	}
 
-	public boolean owner() {
-		return this.jid != null ? this.jid.same(this.item.getJid()) : false;
+	public boolean contain(String code) {
+		return this.statuses != null ? this.statuses.contains(ItemStatus.parse(code)) : false;
 	}
 
 	public XUser add(String code) {
@@ -76,6 +80,13 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 	public XUser add(Set<String> codes) {
 		for (String code : codes) {
 			this.add(code);
+		}
+		return this;
+	}
+
+	public XUser clear() {
+		if (this.statuses != null) {
+			this.statuses.clear();
 		}
 		return this;
 	}
