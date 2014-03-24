@@ -137,4 +137,21 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+
+	<bean id="ucenter.muc.broadcast.status" class="com.sissi.ucenter.muc.impl.StatusMucAffiliationBroadcast">
+		<constructor-arg ref="addressing" />
+		<constructor-arg ref="ucenter.muc" />
+		<constructor-arg ref="ucenter.muc.judger" />
+	</bean>
+	<bean id="ucenter.muc.broadcast.invite" class="com.sissi.ucenter.muc.impl.InviteMucAffiliationBroadcast">
+		<constructor-arg ref="message.pro.muc.2invite.chained" />
+	</bean>
+	<bean id="ucenter.muc.broadcast" class="com.sissi.ucenter.muc.impl.ChainedMucAffiliationBroadcast">
+		<constructor-arg>
+			<util:list>
+				<ref bean="ucenter.muc.broadcast.status" />
+				<ref bean="ucenter.muc.broadcast.invite" />
+			</util:list>
+		</constructor-arg>
+	</bean>
 </beans>

@@ -13,7 +13,6 @@ import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.muc.ItemAffiliation;
 import com.sissi.ucenter.Relation;
-import com.sissi.ucenter.impl.LimitedRelation;
 import com.sissi.ucenter.muc.MucAffiliationBuilder;
 
 /**
@@ -55,7 +54,7 @@ public class MongoRelationMuc4AffiliationContext extends MongoRelationMucContext
 		private AffiliationRelations(List<?> affiliations) {
 			for (Object each : affiliations) {
 				DBObject affiliation = Extracter.asDBObject(DBObject.class.cast(each), MongoConfig.FIELD_AFFILIATION);
-				super.add(new LimitedRelation(MongoRelationMuc4AffiliationContext.this.jidBuilder.build(Extracter.asString(affiliation, MongoConfig.FIELD_JID)), ItemAffiliation.parse(Extracter.asString(affiliation, MongoConfig.FIELD_AFFILIATION))).noneRole());
+				super.add(new MucNoneRelation(MongoRelationMuc4AffiliationContext.this.jidBuilder.build(Extracter.asString(affiliation, MongoConfig.FIELD_JID)), ItemAffiliation.parse(Extracter.asString(affiliation, MongoConfig.FIELD_AFFILIATION))));
 			}
 		}
 	}

@@ -50,10 +50,8 @@
 		</constructor-arg>
 	</bean>
 	<bean id="muc.pro.set.affiliation.broadcast" class="com.sissi.pipeline.in.iq.muc.MucSetBroadcastAffiliationProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.muc" />
-		<constructor-arg ref="ucenter.muc.judger" />
+		<constructor-arg ref="ucenter.muc.broadcast" />
 		<constructor-arg ref="ucenter.muc.config.builder" />
-		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="muc.pro.set.affiliation" class="com.sissi.pipeline.in.iq.muc.MucSetAffiliationProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="ucenter.muc.4affiliation" />

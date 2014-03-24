@@ -14,6 +14,7 @@ import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
+import com.sissi.ucenter.muc.MucItem;
 import com.sissi.ucenter.muc.MucStatus;
 
 /**
@@ -84,18 +85,30 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 		return this;
 	}
 
+	public XUser item(MucItem item) {
+		if (item.getClass() == Item.class) {
+			this.item(Item.class.cast(item));
+		}
+		return this;
+	}
+
 	@XmlElement
 	public Item getItem() {
 		return this.item;
 	}
 
-	@XmlElement
-	public XInvite getInvite() {
-		return this.invite;
+	public XUser invite(XInvite invite) {
+		this.invite = invite;
+		return this;
 	}
 
 	public boolean invite() {
 		return this.getInvite() != null;
+	}
+
+	@XmlElement
+	public XInvite getInvite() {
+		return this.invite;
 	}
 
 	@XmlElement

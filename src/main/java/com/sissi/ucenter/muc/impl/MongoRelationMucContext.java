@@ -23,7 +23,7 @@ import com.sissi.context.impl.ShareJIDs;
 import com.sissi.protocol.muc.ItemAffiliation;
 import com.sissi.protocol.muc.ItemRole;
 import com.sissi.ucenter.Relation;
-import com.sissi.ucenter.impl.LimitedRelation;
+import com.sissi.ucenter.impl.NoneRelation;
 import com.sissi.ucenter.muc.MucConfigBuilder;
 import com.sissi.ucenter.muc.MucJIDs;
 import com.sissi.ucenter.muc.MucRelationContext;
@@ -71,13 +71,13 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 
 	protected final String fieldPath = "path";
 
-	protected MucConfigBuilder mucConfigBuilder;
-
 	protected final JIDBuilder jidBuilder;
 
 	protected final MongoConfig config;
 
 	private final boolean activate;
+
+	protected MucConfigBuilder mucConfigBuilder;
 
 	public MongoRelationMucContext(boolean activate, MongoConfig config, JIDBuilder jidBuilder) throws Exception {
 		super();
@@ -142,7 +142,7 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 	public Relation ourRelation(JID from, JID to) {
 		AggregationOutput output = this.config.collection().aggregate(this.buildMatcher(to), this.aggregateUnwindRoles, this.aggregateUnwindAffiliation, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).add(MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_RESOURCE, from.resource()).get()).get(), this.aggregateProjectRelation, this.aggregateSort, this.aggregateLimit);
 		List<?> result = Extracter.asList(output.getCommandResult(), MongoConfig.FIELD_RESULT);
-		return result.isEmpty() ? new LimitedRelation(to, this.affiliation(from, to)) : new MongoRelation(DBObject.class.cast(result.get(0)));
+		return result.isEmpty() ? new MucNoneRelation(from, to, this.affiliation(from, to), true) : new MongoRelation(DBObject.class.cast(result.get(0)));
 	}
 
 	public Set<Relation> ourRelations(JID from, JID to) {
@@ -173,6 +173,30 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 		AggregationOutput output = this.config.collection().aggregate(this.buildMatcher(group), this.aggregateUnwindRoles, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_NICK, group.resource()).get()).get(), this.aggregateProjectMapping, this.aggregateGroup);
 		List<?> result = Extracter.asList(output.getCommandResult(), MongoConfig.FIELD_RESULT);
 		return result.isEmpty() ? this.emptyJIDs : this.extract(DBObject.class.cast(result.get(0)));
+	}
+
+	protected class MucNoneRelation extends NoneRelation {
+
+		private final static String zero = "0";
+
+		private final boolean mapping;
+
+		private final JID group;
+
+		protected MucNoneRelation(JID jid, ItemAffiliation affiliation) {
+			this(jid, null, affiliation, false);
+		}
+
+		public MucNoneRelation(JID jid, JID group, ItemAffiliation affiliation, boolean mapping) {
+			super(jid, zero);
+			super.affiliation(affiliation.toString());
+			this.group = group;
+			this.mapping = mapping;
+		}
+
+		public String role() {
+			return this.mapping ? ItemRole.max(MongoRelationMucContext.this.mucConfigBuilder.build(this.group).mapping(this.affiliation()), super.role()) : super.role();
+		}
 	}
 
 	private class EmptyJIDs implements MucJIDs {

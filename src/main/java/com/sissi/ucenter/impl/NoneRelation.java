@@ -7,7 +7,6 @@ import java.util.Map;
 import com.sissi.context.JID;
 import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.protocol.muc.ItemAffiliation;
-import com.sissi.protocol.muc.ItemRole;
 import com.sissi.ucenter.Relation;
 import com.sissi.ucenter.muc.RelationMuc;
 import com.sissi.ucenter.roster.RelationRoster;
@@ -15,33 +14,23 @@ import com.sissi.ucenter.roster.RelationRoster;
 /**
  * @author kim 2014年2月13日
  */
-public class LimitedRelation implements Relation, RelationRoster, RelationMuc {
+public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 
 	private final static Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
 
-	private final static String zero = "0";
-
 	private final JID jid;
-
-	private final String affiliation;
 
 	private final String subscription;
 
 	private boolean noneRole;
 
-	private LimitedRelation(JID jid, String subscription, ItemAffiliation affiliation) {
-		super();
+	private String role;
+
+	private String affiliation;
+
+	public NoneRelation(JID jid, String subscription) {
 		this.jid = jid;
 		this.subscription = subscription;
-		this.affiliation = affiliation.toString();
-	}
-
-	public LimitedRelation(JID jid, String subscription) {
-		this(jid, subscription, ItemAffiliation.NONE);
-	}
-
-	public LimitedRelation(JID jid, ItemAffiliation affiliation) {
-		this(jid, zero, affiliation);
 	}
 
 	@Override
@@ -65,14 +54,15 @@ public class LimitedRelation implements Relation, RelationRoster, RelationMuc {
 	}
 
 	public String role() {
-		return this.noneRole ? null : ItemRole.VISITOR.toString();
+		return this.noneRole ? null : this.role;
 	}
 
 	public RelationMuc role(String role) {
+		this.role = role;
 		return this;
 	}
 
-	public LimitedRelation noneRole() {
+	public NoneRelation noneRole() {
 		this.noneRole = true;
 		return this;
 	}
@@ -82,6 +72,7 @@ public class LimitedRelation implements Relation, RelationRoster, RelationMuc {
 	}
 
 	public RelationMuc affiliation(String affiliation) {
+		this.affiliation = affiliation;
 		return this;
 	}
 

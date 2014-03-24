@@ -6,8 +6,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.context.JID;
-import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.Error;
+import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.PresenceType;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
@@ -52,6 +52,11 @@ public class Item implements MucItem, Collector {
 		this.relation(relation).hidden = hidden;
 	}
 
+	private Presence presence(XMucAdminAction action, String affiliation) {
+		this.refuse = !ItemAffiliation.parse(this.getAffiliation()).contains(affiliation);
+		return new Presence().setType(this.refuse ? PresenceType.UNAVAILABLE.toString() : XMucAdminAction.AFFILIATION == action ? ItemAffiliation.parse(this.getAffiliation()).presence() : ItemRole.parse(this.getRole()).presence()).setFrom(group).cast(Presence.class);
+	}
+
 	public Item relation(RelationMuc relation) {
 		this.jid = relation.jid();
 		this.role = relation.role();
@@ -77,17 +82,12 @@ public class Item implements MucItem, Collector {
 		return this;
 	}
 
-	public Item compare(String affiliation) {
-		this.refuse = !ItemAffiliation.parse(this.getAffiliation()).contains(affiliation);
-		return this;
+	public Presence presence() {
+		return this.presence(XMucAdminAction.ROLE, null);
 	}
 
-	public Presence presence(XMucAdminAction action) {
-		return this.presence(action, this.group);
-	}
-
-	public Presence presence(XMucAdminAction action, JID group) {
-		return new Presence().setType(this.refuse ? PresenceType.UNAVAILABLE.toString() : XMucAdminAction.AFFILIATION == action ? ItemAffiliation.parse(this.getAffiliation()).presence() : ItemRole.parse(this.getRole()).presence()).setFrom(group).cast(Presence.class);
+	public Presence presence(JID group, String affiliation) {
+		return this.presence(XMucAdminAction.AFFILIATION, affiliation);
 	}
 
 	public Item jid(JID jid) {
@@ -121,7 +121,7 @@ public class Item implements MucItem, Collector {
 
 	@XmlAttribute
 	public String getRole() {
-		return this.role;
+		return this.refuse ? ItemRole.NONE.toString() : this.role;
 	}
 
 	public Item nick(String nick) {
@@ -167,5 +167,9 @@ public class Item implements MucItem, Collector {
 	@Override
 	public void set(String localName, Object ob) {
 		this.reason = XReason.class.cast(ob);
+	}
+
+	public <T extends MucItem> T cast(Class<T> clazz) {
+		return clazz.cast(this);
 	}
 }

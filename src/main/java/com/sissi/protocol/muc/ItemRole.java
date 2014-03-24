@@ -55,6 +55,14 @@ public enum ItemRole {
 		}
 	}
 
+	public static String max(String role, String other) {
+		return ItemRole.max(ItemRole.parse(role), ItemRole.parse(other)).toString();
+	}
+
+	public static ItemRole max(ItemRole role, ItemRole other) {
+		return role.contains(other) ? role : other;
+	}
+
 	public static String toString(Integer num) {
 		ItemRole sub = mapping.get(num);
 		return sub != null ? sub.toString() : NONE.toString();
