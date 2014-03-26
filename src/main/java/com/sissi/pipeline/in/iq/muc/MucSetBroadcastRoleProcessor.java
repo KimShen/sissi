@@ -37,9 +37,9 @@ public class MucSetBroadcastRoleProcessor extends ProxyProcessor {
 		MucConfig config = this.mucConfigBuilder.build(group);
 		for (Item item : protocol.cast(XMucAdmin.class).getItem()) {
 			for (JID each : this.relationMucMapping.mapping(item.actor(context.jid()).group(group))) {
-				RelationMuc relation = super.ourRelation(each, group).cast(RelationMuc.class).role(item.getRole());
+				RelationMuc relation = super.ourRelation(each, group).cast(RelationMuc.class);
 				for (JID to : super.whoSubscribedMe(group)) {
-					super.findOne(to, true).write(item.presence().reset().add(this.mucStatusJudger.judege(new XUser(group, to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, each)).relation(relation))).cast(XUser.class)));
+					super.findOne(to, true).write(item.presence().reset().add(this.mucStatusJudger.judege(new XUser(group, to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, each)).relation(relation.cast(RelationMuc.class).role(item.getRole(), true)))).cast(XUser.class)));
 				}
 			}
 		}

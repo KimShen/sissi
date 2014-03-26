@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="disco.identify" class="com.sissi.protocol.iq.disco.Identity">
-		<constructor-arg index="0" value="Chat Service" />
+		<constructor-arg index="0" value="Chatroom" />
 		<constructor-arg index="1" value="text" />
 		<constructor-arg index="2" value="conference" />
 	</bean>
@@ -144,12 +144,12 @@
 		<constructor-arg>
 			<util:list>
 				<bean class="com.sissi.protocol.iq.disco.Item">
-					<constructor-arg index="0" value="${bytestreams.jid}" />
-					<constructor-arg index="1" value="SOCKS5 Bytestreams Service" />
+					<constructor-arg index="0" value="${global.domain.muc}" />
+					<constructor-arg index="1" value="Chatroom" />
 				</bean>
 				<bean class="com.sissi.protocol.iq.disco.Item">
-					<constructor-arg index="0" value="${global.domain.muc}" />
-					<constructor-arg index="1" value="Chat Service" />
+					<constructor-arg index="0" value="${bytestreams.jid}" />
+					<constructor-arg index="1" value="SOCKS5 Bytestreams Service" />
 				</bean>
 				<bean class="com.sissi.protocol.iq.disco.Item">
 					<constructor-arg index="0" value="${exchanger.delegation.domain}" />
@@ -170,13 +170,7 @@
 	</bean>
 	<bean id="disco.pro.items.2muc" class="com.sissi.pipeline.in.iq.disco.DiscoItemsProcessor">
 		<constructor-arg>
-			<util:list>
-				<bean class="com.sissi.protocol.iq.disco.Item">
-					<!-- TODO -->
-					<constructor-arg index="0" value="for test" />
-					<constructor-arg index="1" value="for test" />
-				</bean>
-			</util:list>
+			<null />
 		</constructor-arg>
 	</bean>
 	<bean id="disco.pro.items.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy" />

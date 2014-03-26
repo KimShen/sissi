@@ -22,6 +22,6 @@ public class Code201MucStatusJudger implements MucStatusJudger {
 
 	@Override
 	public MucStatus judege(MucStatus status) {
-		return status.owner() && this.config.collection().findOne(this.query) != null ? status.add("201") : status;
+		return status.owner() && this.config.collection().findOne(BasicDBObjectBuilder.start(this.query.toMap()).add(MongoConfig.FIELD_JID, status.group()).get()) != null ? status.add("201") : status;
 	}
 }

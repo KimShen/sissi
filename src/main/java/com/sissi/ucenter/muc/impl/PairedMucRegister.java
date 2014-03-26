@@ -3,7 +3,7 @@ package com.sissi.ucenter.muc.impl;
 import com.sissi.protocol.iq.data.XDataType;
 import com.sissi.protocol.iq.data.XFieldType;
 import com.sissi.protocol.iq.data.XInput;
-import com.sissi.protocol.iq.register.muc.RegisterField;
+import com.sissi.protocol.muc.OwnerConfig;
 import com.sissi.protocol.muc.XMuc;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
@@ -16,13 +16,13 @@ public class PairedMucRegister implements MucRegister {
 
 	private final XInput header = new XInput(XFieldType.HIDDEN.toString(), null, XDataType.FORM_TYPE.toString(), XMuc.XMLNS + "#register");
 
-	private final XInput allowed = new XInput(XFieldType.BOOLEAN.toString(), null, RegisterField.REGISTER_ALLOW.toString(), "0");
+	private final XInput allowed = new XInput(XFieldType.BOOLEAN.toString(), null, OwnerConfig.REGISTER_ALLOW.toString(), "0");
 
 	@Override
 	public <T extends Fields> T register(Fields source, T target) {
 		target.add(this.header);
 		for (Field<?> each : source) {
-			if (RegisterField.contains(each.getName())) {
+			if (OwnerConfig.contains(each.getName())) {
 				target.add(each);
 			}
 		}

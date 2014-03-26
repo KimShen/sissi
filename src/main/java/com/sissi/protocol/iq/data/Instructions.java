@@ -1,8 +1,6 @@
-package com.sissi.protocol.iq.register.form;
+package com.sissi.protocol.iq.data;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
-import com.sissi.protocol.iq.data.XValue;
 
 /**
  * @author kim 2013年12月16日

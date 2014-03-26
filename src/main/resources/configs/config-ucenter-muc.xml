@@ -16,6 +16,8 @@
 		<constructor-arg ref="global.jid" />
 		<constructor-arg ref="ucenter.muc.config" />
 		<constructor-arg index="0" value="${pipeline.muc.activate}" />
+		<constructor-arg index="1" value="${pipeline.muc.mapping}" />
+		<property name="finder" ref="ucenter.finder" />
 		<property name="mucConfigBuilder" ref="ucenter.muc.config.builder" />
 	</bean>
 
@@ -25,6 +27,8 @@
 		<constructor-arg ref="ucenter.muc.affiliation" />
 		<constructor-arg index="0" value="${pipeline.muc.activate}" />
 		<constructor-arg index="1" value="${pipeline.muc.cascade}" />
+		<constructor-arg index="2" value="${pipeline.muc.mapping}" />
+		<property name="finder" ref="ucenter.finder" />
 		<property name="mucConfigBuilder" ref="ucenter.muc.config.builder" />
 	</bean>
 
@@ -38,6 +42,7 @@
 		</constructor-arg>
 	</bean>
 
+	<alias name="ucenter.muc.config.builder" alias="ucenter.finder" />
 	<bean id="ucenter.muc.config.builder" class="com.sissi.ucenter.muc.impl.MongoMucConfigBuilder">
 		<constructor-arg ref="global.jid" />
 		<constructor-arg ref="ucenter.muc" />
@@ -48,7 +53,14 @@
 				<constructor-arg index="2" value="${mongo.collection.muc}" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg>
+		<constructor-arg index="3">
+			<util:list>
+				<bean class="com.sissi.ucenter.muc.impl.SubjectMucConfigParser" />
+				<bean class="com.sissi.ucenter.muc.impl.ActivateMucConfigParser" />
+				<bean class="com.sissi.ucenter.muc.impl.AffiliationMucConfigParser" />
+			</util:list>
+		</constructor-arg>
+		<constructor-arg index="4">
 			<util:list>
 				<bean class="com.sissi.ucenter.muc.impl.CountMucConfigArbitrament">
 					<constructor-arg value="${pipeline.muc.count.level}" />

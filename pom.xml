@@ -88,13 +88,15 @@
 		<maven.pipeline.free>false</maven.pipeline.free>
 		<maven.pipeline.muc.log>true</maven.pipeline.muc.log>
 		<maven.pipeline.muc.trace>false</maven.pipeline.muc.trace>
-		<maven.pipeline.muc.count>3</maven.pipeline.muc.count>
+		<maven.pipeline.muc.count>30</maven.pipeline.muc.count>
 		<maven.pipeline.muc.count.level>ADMIN</maven.pipeline.muc.count.level>
 		<maven.pipeline.muc.multi>true</maven.pipeline.muc.multi>
 		<maven.pipeline.muc.invite>ADMIN</maven.pipeline.muc.invite>
 		<maven.pipeline.muc.cascade>true</maven.pipeline.muc.cascade>
 		<maven.pipeline.muc.activate>false</maven.pipeline.muc.activate>
+		<maven.pipeline.muc.mapping>2,2,2,2,4</maven.pipeline.muc.mapping>
 		<maven.pipeline.muc.tip>Room is not anonymous</maven.pipeline.muc.tip>
+		<maven.pipeline.muc.unavailable>false</maven.pipeline.muc.unavailable>
 		<maven.pipeline.persistent.resend>3</maven.pipeline.persistent.resend>
 		<maven.pipeline.persistent.tip>From Sissi offline</maven.pipeline.persistent.tip>
 		<maven.pipeline.roster.group.length>10</maven.pipeline.roster.group.length>

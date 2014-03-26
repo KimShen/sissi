@@ -19,6 +19,7 @@
 				<bean class="com.sissi.server.impl.MucServerCloser">
 					<constructor-arg ref="ucenter.muc" />
 					<constructor-arg ref="presence.pro.muc.leave.chained" />
+					<constructor-arg index="1" value="${pipeline.muc.unavailable}" />
 				</bean>
 			</util:list>
 		</constructor-arg>

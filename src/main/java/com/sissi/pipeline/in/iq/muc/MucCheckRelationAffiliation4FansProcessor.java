@@ -37,7 +37,8 @@ public class MucCheckRelationAffiliation4FansProcessor extends ProxyProcessor {
 		RelationMuc relation = super.ourRelation(context.jid(), group).cast(RelationMuc.class);
 		for (Item item : protocol.cast(XMucAdmin.class).getItem()) {
 			JID each = super.build(item.getJid());
-			if (item.error(this.vcardContext.exists(each) ? null : this.itemNotFound) || item.error(ItemAffiliation.parse(super.ourRelation(each, group).cast(RelationMuc.class).affiliation()).contains(relation.affiliation()) ? this.notAllowed : null)) {
+			//Allow operation self
+			if (!context.jid().like(item.getJid()) && (item.error(this.vcardContext.exists(each) ? null : this.itemNotFound) || item.error(ItemAffiliation.parse(super.ourRelation(each, group).cast(RelationMuc.class).affiliation()).contains(relation.affiliation()) ? this.notAllowed : null))) {
 				return this.writeAndReturn(context, protocol, item.error());
 			}
 		}

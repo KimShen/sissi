@@ -6,6 +6,9 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="iq.pro.result.stop" class="com.sissi.pipeline.in.iq.IQResponseResultProcessor" />
+	<bean id="iq.pro.result.stop.original" class="com.sissi.pipeline.in.iq.IQResponseResultProcessor">
+		<constructor-arg value="false" />
+	</bean>
 	<bean id="iq.pro.result.next" class="com.sissi.pipeline.in.iq.IQResponseResultProcessor">
 		<constructor-arg value="true" />
 		<constructor-arg value="true" />
@@ -55,14 +58,15 @@
 				<ref bean="bind.condition" />
 				<ref bean="last.condition" />
 				<ref bean="time.condition" />
-				<ref bean="muc.pro.condition" />
-				<ref bean="muc.pro.condition.owner" />
 				<ref bean="version.condition" />
 				<ref bean="session.condition" />
 				<ref bean="register.condition" />
 				<ref bean="disco.condition.info" />
 				<ref bean="disco.condition.items" />
 				<ref bean="bytestreams.condition" />
+				<ref bean="sharedgroup.condition" />
+				<ref bean="muc.pro.condition" />
+				<ref bean="muc.pro.condition.owner" />
 			</util:list>
 		</constructor-arg>
 	</bean>

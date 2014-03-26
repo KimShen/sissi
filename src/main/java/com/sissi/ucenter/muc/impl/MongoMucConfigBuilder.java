@@ -19,6 +19,7 @@ import com.sissi.ucenter.muc.MucConfig;
 import com.sissi.ucenter.muc.MucConfigArbitrament;
 import com.sissi.ucenter.muc.MucConfigBuilder;
 import com.sissi.ucenter.muc.MucConfigParam;
+import com.sissi.ucenter.muc.MucConfigParser;
 import com.sissi.ucenter.muc.MucFinder;
 import com.sissi.ucenter.muc.RelationMuc;
 
@@ -31,6 +32,8 @@ public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 
 	private final Map<String, Object> emptyConfigs = new HashMap<String, Object>();
 
+	private final Map<String, MucConfigParser> parsers = new HashMap<String, MucConfigParser>();
+
 	private final Map<String, MucConfigArbitrament> arbitraments = new HashMap<String, MucConfigArbitrament>();
 
 	private final DBObject filter = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_CONFIGS, 1).add(MongoConfig.FIELD_CREATOR, 1).add(MongoConfig.FIELD_ACTIVATE, 1).get();
@@ -41,11 +44,14 @@ public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 
 	private final RelationContext relationContext;
 
-	public MongoMucConfigBuilder(MongoConfig config, JIDBuilder jidBuilder, RelationContext relationContext, List<MucConfigArbitrament> arbitraments) {
+	public MongoMucConfigBuilder(MongoConfig config, JIDBuilder jidBuilder, RelationContext relationContext, List<MucConfigParser> parsers, List<MucConfigArbitrament> arbitraments) {
 		super();
 		this.config = config;
 		this.jidBuilder = jidBuilder;
 		this.relationContext = relationContext;
+		for (MucConfigParser each : parsers) {
+			this.parsers.put(each.support(), each);
+		}
 		for (MucConfigArbitrament each : arbitraments) {
 			this.arbitraments.put(each.support(), each);
 		}
@@ -145,7 +151,10 @@ public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 		}
 
 		public MucConfig push(Field<?> field) {
-			MongoMucConfigBuilder.this.config.collection().update(BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, this.group.asStringWithBare()).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + field.getName(), field.getValue()).get()).get());
+			MucConfigParser parser = MongoMucConfigBuilder.this.parsers.get(field.getName());
+			if (parser != null) {
+				MongoMucConfigBuilder.this.config.collection().update(BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, this.group.asStringWithBare()).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + parser.field(), parser.parse(field)).get()).get());
+			}
 			return this;
 		}
 

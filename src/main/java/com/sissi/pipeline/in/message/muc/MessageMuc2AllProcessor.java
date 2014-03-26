@@ -39,7 +39,7 @@ public class MessageMuc2AllProcessor extends ProxyProcessor implements Applicati
 			iq.setTo(super.build(protocol.getTo())).setType(ProtocolType.SET);
 			XMucAdmin xmuc = new XMucAdmin();
 			for (char each : params[1].toCharArray()) {
-				xmuc.set(null, new Item().nick(each + "").role(params[2]).reason(params[3]));
+				xmuc.set(null, new Item().setNick(each + "").setRole(params[2]).reason(params[3]));
 			}
 			iq.set(null, xmuc);
 			this.applicationContext.getBean("global.finder", ChainedFinder.class).find(iq).input(context, iq);
@@ -49,7 +49,7 @@ public class MessageMuc2AllProcessor extends ProxyProcessor implements Applicati
 			IQ iq = new IQ();
 			iq.setTo(super.build(protocol.getTo())).setType(ProtocolType.GET);
 			XMucAdmin xmuc = new XMucAdmin();
-			xmuc.set(null, new Item().role(params[1]));
+			xmuc.set(null, new Item().setRole(params[1]));
 			iq.set(null, xmuc);
 			this.applicationContext.getBean("global.finder", ChainedFinder.class).find(iq).input(context, iq);
 		}
@@ -66,7 +66,7 @@ public class MessageMuc2AllProcessor extends ProxyProcessor implements Applicati
 			iq.setTo(super.build(protocol.getTo())).setType(ProtocolType.SET);
 			XMucAdmin xmuc = new XMucAdmin();
 			for (char each : params[1].toCharArray()) {
-				xmuc.set(null, new Item().jid(super.build(each + "@sissi.pw")).affiliation(params[2]).reason(params[3]));
+				xmuc.set(null, new Item().jid(super.build(each + "@sissi.pw")).setAffiliation(params[2]).reason(params[3]));
 			}
 			iq.set(null, xmuc);
 			this.applicationContext.getBean("global.finder", ChainedFinder.class).find(iq).input(context, iq);
@@ -76,7 +76,7 @@ public class MessageMuc2AllProcessor extends ProxyProcessor implements Applicati
 			IQ iq = new IQ();
 			iq.setTo(super.build(protocol.getTo())).setType(ProtocolType.GET);
 			XMucAdmin xmuc = new XMucAdmin();
-			xmuc.set(null, new Item().affiliation(params[1]));
+			xmuc.set(null, new Item().setAffiliation(params[1]));
 			iq.set(null, xmuc);
 			this.applicationContext.getBean("global.finder", ChainedFinder.class).find(iq).input(context, iq);
 		}

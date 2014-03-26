@@ -5,7 +5,6 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
-import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.roster.GroupItem;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.ucenter.Relation;
@@ -26,7 +25,7 @@ public class RosterGetProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.write(protocol.parent().reply().setType(ProtocolType.RESULT).cast(IQ.class).add(this.prepare(context, protocol.cast(Roster.class))));
+		context.write(this.prepare(context, protocol.cast(Roster.class).clear()).parent().reply().setType(ProtocolType.RESULT));
 		return false;
 	}
 

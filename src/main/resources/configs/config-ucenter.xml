@@ -31,10 +31,10 @@
 					<constructor-arg value="form" />
 					<constructor-arg>
 						<util:list>
-							<bean class="com.sissi.protocol.iq.register.form.Title">
+							<bean class="com.sissi.protocol.iq.data.Title">
 								<constructor-arg value="This is my title" />
 							</bean>
-							<bean class="com.sissi.protocol.iq.register.form.Instructions">
+							<bean class="com.sissi.protocol.iq.data.Instructions">
 								<constructor-arg value="This is my introduce" />
 							</bean>
 							<bean class="com.sissi.protocol.iq.data.XInput">
@@ -58,7 +58,7 @@
 								<constructor-arg index="1" value="Desc" />
 								<constructor-arg index="2" value="desc" />
 							</bean>
-							<bean class="com.sissi.protocol.iq.register.form.Select">
+							<bean class="com.sissi.protocol.iq.data.Select">
 								<constructor-arg index="0" value="list-single" />
 								<constructor-arg index="1" value="Gender" />
 								<constructor-arg index="2" value="gender" />
@@ -75,7 +75,7 @@
 									</util:list>
 								</constructor-arg>
 							</bean>
-							<bean class="com.sissi.protocol.iq.register.form.Select">
+							<bean class="com.sissi.protocol.iq.data.Select">
 								<constructor-arg index="0" value="list-multi" />
 								<constructor-arg index="1" value="Title" />
 								<constructor-arg index="2" value="title" />
@@ -109,10 +109,10 @@
 					<constructor-arg value="form" />
 					<constructor-arg>
 						<util:list>
-							<bean class="com.sissi.protocol.iq.register.form.Title">
+							<bean class="com.sissi.protocol.iq.data.Title">
 								<constructor-arg value="This is my muc title" />
 							</bean>
-							<bean class="com.sissi.protocol.iq.register.form.Instructions">
+							<bean class="com.sissi.protocol.iq.data.Instructions">
 								<constructor-arg value="This is my muc introduce" />
 							</bean>
 							<bean class="com.sissi.protocol.iq.data.XInput">

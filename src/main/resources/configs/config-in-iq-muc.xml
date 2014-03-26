@@ -60,7 +60,7 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="muc.pro.check.jid" />
-				<ref bean="muc.pro.check.loop" />
+				<!-- <ref bean="muc.pro.check.loop" /> -->
 				<ref bean="muc.pro.check.exists" />
 				<ref bean="muc.pro.check.relation.affiliation.4self" />
 				<ref bean="muc.pro.check.relation.affiliation.4fans" />

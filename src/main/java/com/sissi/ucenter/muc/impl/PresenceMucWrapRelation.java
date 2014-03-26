@@ -64,6 +64,10 @@ public class PresenceMucWrapRelation implements RelationMuc {
 		return this.relation.role(role);
 	}
 
+	public RelationMuc role(String role, boolean force) {
+		return this.role(role);
+	}
+
 	@Override
 	public String affiliation() {
 		return this.relation.affiliation();

@@ -22,12 +22,12 @@ public class MongoRelationMuc4RoleContext extends MongoRelationMucContext {
 
 	private final DBObject aggregateGroupRole = BasicDBObjectBuilder.start("$group", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ID, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_CREATOR).add(MongoConfig.FIELD_AFFILIATIONS, "$" + MongoConfig.FIELD_AFFILIATIONS).get()).add(MongoConfig.FIELD_ROLES, BasicDBObjectBuilder.start("$addToSet", "$" + MongoConfig.FIELD_ROLES).get()).get()).get();
 
-	public MongoRelationMuc4RoleContext(boolean activate, MongoConfig config, JIDBuilder jidBuilder) throws Exception {
-		super(activate, config, jidBuilder);
+	public MongoRelationMuc4RoleContext(boolean activate, String mapping, MongoConfig config, JIDBuilder jidBuilder) throws Exception {
+		super(activate, mapping, config, jidBuilder);
 	}
 
 	public Set<Relation> myRelations(JID from, String role) {
-		AggregationOutput output = this.config.collection().aggregate(this.buildMatcher(from), this.aggregateUnwindRoles, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_ROLE, role).get()).get(), this.aggregateGroupRole, this.aggregateProjectRole);
+		AggregationOutput output = super.config.collection().aggregate(this.buildMatcher(from), this.aggregateUnwindRoles, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_ROLE, role).get()).get(), this.aggregateGroupRole, this.aggregateProjectRole);
 		List<?> result = Extracter.asList(output.getCommandResult(), MongoConfig.FIELD_RESULT);
 		return result.isEmpty() ? this.emptyRelations : new MongoRelations(DBObject.class.cast(result.get(0)));
 	}

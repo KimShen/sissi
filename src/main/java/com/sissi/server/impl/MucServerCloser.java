@@ -15,20 +15,25 @@ public class MucServerCloser implements ServerCloser {
 
 	private final Input proxy;
 
+	private final boolean autoUnavailable;
+
 	private final RelationContext relationContext;
 
-	public MucServerCloser(Input proxy, RelationContext relationContext) {
+	public MucServerCloser(Input proxy, boolean autoUnavailable, RelationContext relationContext) {
 		super();
 		this.proxy = proxy;
+		this.autoUnavailable = autoUnavailable;
 		this.relationContext = relationContext;
 	}
 
 	@Override
 	public MucServerCloser close(JIDContext context) {
-		// Find group which not unavailable
-		Presence presence = new Presence();
-		for (JID group : this.relationContext.iSubscribedWho(context.jid())) {
-			this.proxy.input(context, presence.setTo(group).setType(PresenceType.UNAVAILABLE));
+		if (this.autoUnavailable) {
+			Presence presence = new Presence();
+			for (JID group : this.relationContext.iSubscribedWho(context.jid())) {
+				this.proxy.input(context, presence.setTo(group).setType(PresenceType.UNAVAILABLE));
+			}
+
 		}
 		return this;
 	}

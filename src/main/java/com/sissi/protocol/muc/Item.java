@@ -90,13 +90,18 @@ public class Item implements MucItem, Collector {
 		return this.presence(XMucAdminAction.AFFILIATION, affiliation);
 	}
 
+	public JID group(JID jid) {
+		return this.group = jid.resource(this.getNick());
+	}
+
 	public Item jid(JID jid) {
 		this.jid = jid.asStringWithBare();
 		return this;
 	}
 
-	public JID group(JID jid) {
-		return this.group = jid.resource(this.getNick());
+	public Item setJid(String jid) {
+		this.jid = jid;
+		return this;
 	}
 
 	@XmlAttribute
@@ -104,7 +109,7 @@ public class Item implements MucItem, Collector {
 		return this.hidden ? null : this.jid;
 	}
 
-	public Item affiliation(String affiliation) {
+	public Item setAffiliation(String affiliation) {
 		this.affiliation = affiliation;
 		return this;
 	}
@@ -114,7 +119,7 @@ public class Item implements MucItem, Collector {
 		return this.affiliation;
 	}
 
-	public Item role(String role) {
+	public Item setRole(String role) {
 		this.role = role;
 		return this;
 	}
@@ -124,7 +129,7 @@ public class Item implements MucItem, Collector {
 		return this.refuse ? ItemRole.NONE.toString() : this.role;
 	}
 
-	public Item nick(String nick) {
+	public Item setNick(String nick) {
 		this.nick = nick;
 		return this;
 	}

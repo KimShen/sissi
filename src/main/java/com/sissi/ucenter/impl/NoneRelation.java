@@ -62,6 +62,12 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 		return this;
 	}
 
+	@Override
+	public RelationMuc role(String role, boolean force) {
+		this.role(role);
+		return this;
+	}
+
 	public NoneRelation noneRole() {
 		this.noneRole = true;
 		return this;

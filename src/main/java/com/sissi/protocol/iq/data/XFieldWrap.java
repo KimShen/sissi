@@ -5,9 +5,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
-import com.sissi.protocol.iq.register.form.Instructions;
-import com.sissi.protocol.iq.register.form.Select;
-import com.sissi.protocol.iq.register.form.Title;
 import com.sissi.ucenter.field.Field;
 import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.field.impl.BeanFields;

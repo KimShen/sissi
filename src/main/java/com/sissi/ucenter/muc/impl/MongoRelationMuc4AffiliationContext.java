@@ -26,14 +26,14 @@ public class MongoRelationMuc4AffiliationContext extends MongoRelationMucContext
 
 	private final boolean cascade;
 
-	public MongoRelationMuc4AffiliationContext(boolean activate, boolean cascade, MongoConfig config, JIDBuilder jidBuilder, MucAffiliationBuilder mucAffiliationBuilder) throws Exception {
-		super(activate, config, jidBuilder);
+	public MongoRelationMuc4AffiliationContext(boolean activate, boolean cascade, String mapping, MongoConfig config, JIDBuilder jidBuilder, MucAffiliationBuilder mucAffiliationBuilder) throws Exception {
+		super(activate, mapping, config, jidBuilder);
 		this.mucAffiliationBuilder = mucAffiliationBuilder;
 		this.cascade = cascade;
 	}
 
-	public Set<Relation> myRelations(JID from, String affiliaiton) {
-		AggregationOutput output = super.config.collection().aggregate(super.buildMatcher(from), super.aggregateUnwindAffiliation, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_AFFILIATION, affiliaiton).get()).get(), this.aggregateProject);
+	public Set<Relation> myRelations(JID from, String affiliation) {
+		AggregationOutput output = super.config.collection().aggregate(super.buildMatcher(from), super.aggregateUnwindAffiliation, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_AFFILIATION, affiliation).get()).get(), this.aggregateProject);
 		List<?> result = Extracter.asList(output.getCommandResult(), MongoConfig.FIELD_RESULT);
 		return result.isEmpty() ? super.emptyRelations : new AffiliationRelations(result);
 	}

@@ -4,13 +4,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sissi.protocol.message.Message;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
 
 /**
  * @author kim 2014年3月8日
  */
-@Metadata(uri = XUser.XMLNS, localName = XInvite.NAME)
+@Metadata(uri = { XUser.XMLNS, Message.XMLNS }, localName = XInvite.NAME)
 @XmlRootElement(name = XInvite.NAME)
 public class XInvite implements Collector {
 

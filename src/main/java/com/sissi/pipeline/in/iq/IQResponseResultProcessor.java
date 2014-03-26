@@ -9,11 +9,11 @@ import com.sissi.protocol.ProtocolType;
 public class IQResponseResultProcessor extends IQResponseProcessor {
 
 	public IQResponseResultProcessor() {
-		super(ProtocolType.RESULT.toString(), true);
+		this(true);
 	}
 
 	public IQResponseResultProcessor(boolean clear) {
-		super(ProtocolType.RESULT.toString(), true, false);
+		this(clear, false);
 	}
 
 	public IQResponseResultProcessor(boolean clear, boolean doNext) {

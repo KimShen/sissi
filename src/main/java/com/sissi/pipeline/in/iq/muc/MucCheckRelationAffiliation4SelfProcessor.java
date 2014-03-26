@@ -8,6 +8,7 @@ import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.Forbidden;
 import com.sissi.protocol.muc.ItemAffiliation;
+import com.sissi.protocol.muc.XMucAdmin;
 import com.sissi.ucenter.muc.RelationMuc;
 
 /**
@@ -19,7 +20,7 @@ public class MucCheckRelationAffiliation4SelfProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return ItemAffiliation.parse(super.ourRelation(context.jid(), super.build(protocol.parent().getTo())).cast(RelationMuc.class).affiliation()).contains(ItemAffiliation.ADMIN) ? true : this.writeAndReturn(context, protocol);
+		return ItemAffiliation.parse(super.ourRelation(context.jid(), super.build(protocol.parent().getTo())).cast(RelationMuc.class).affiliation()).contains(ItemAffiliation.parse(protocol.cast(XMucAdmin.class).first().getAffiliation())) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

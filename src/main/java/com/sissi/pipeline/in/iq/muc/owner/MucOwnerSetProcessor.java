@@ -12,18 +12,18 @@ import com.sissi.ucenter.muc.MucConfigBuilder;
 /**
  * @author kim 2014年3月24日
  */
-public class MucOwnerProcessor extends ProxyProcessor {
+public class MucOwnerSetProcessor extends ProxyProcessor {
 
 	private final MucConfigBuilder mucConfigBuilder;
 
-	public MucOwnerProcessor(MucConfigBuilder mucConfigBuilder) {
+	public MucOwnerSetProcessor(MucConfigBuilder mucConfigBuilder) {
 		super();
 		this.mucConfigBuilder = mucConfigBuilder;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		this.mucConfigBuilder.build(super.build(protocol.parent().getTo())).push(Fields.class.cast(protocol.cast(Owner.class).data().add(new BeanField<Boolean>().setName(MongoConfig.FIELD_ACTIVATE).setValue(true))));
+		this.mucConfigBuilder.build(super.build(protocol.parent().getTo())).push(Fields.class.cast(protocol.cast(Owner.class).getX().add(new BeanField<Boolean>().setName(MongoConfig.FIELD_ACTIVATE).setValue(true))));
 		return true;
 	}
 }
