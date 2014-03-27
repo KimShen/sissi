@@ -112,9 +112,11 @@ public class XField implements Field<Object>, Collector {
 	private Object computeValue() {
 		LinkedList<String> fields = new LinkedList<String>();
 		for (Field<?> field : this.fields.findFields(XValue.NAME)) {
-			fields.add(field.getValue().toString());
+			if (field.getValue() != null) {
+				fields.add(field.getValue().toString());
+			}
 		}
-		return fields.size() == 1 ? fields.getFirst() : fields.toArray(new String[] {});
+		return fields.isEmpty() ? null : fields.size() == 1 ? fields.getFirst() : fields.toArray(new String[] {});
 	}
 
 	public void set(String localName, Object ob) {

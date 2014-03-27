@@ -34,7 +34,11 @@ public enum ItemAffiliation {
 	}
 
 	public String toString() {
-		return super.toString().toLowerCase();
+		return this.toString(false);
+	}
+
+	public String toString(boolean allowNull) {
+		return this == NONE && allowNull ? null : super.toString().toLowerCase();
 	}
 
 	public boolean contains(ItemAffiliation affiliation) {

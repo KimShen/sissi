@@ -16,6 +16,15 @@ public class XPassword {
 
 	private String text;
 
+	public XPassword() {
+		super();
+	}
+
+	public XPassword(String text) {
+		super();
+		this.text = text;
+	}
+
 	@XmlValue
 	public String getText() {
 		return this.text != null & !this.text.isEmpty() ? this.text : null;

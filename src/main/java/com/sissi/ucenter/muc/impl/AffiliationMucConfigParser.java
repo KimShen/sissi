@@ -13,7 +13,7 @@ public class AffiliationMucConfigParser implements MucConfigParser {
 
 	@Override
 	public Object parse(Field<?> field) {
-		return ItemAffiliation.parse(field.getValue().toString()).toString();
+		return ItemAffiliation.parse(field.getValue().toString()).toString(true);
 	}
 
 	public String field() {

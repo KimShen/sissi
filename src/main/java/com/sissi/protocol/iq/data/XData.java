@@ -44,7 +44,7 @@ public class XData extends XFieldWrap implements Fields, Field<Object>, Collecto
 	}
 
 	public boolean type(XDataType type) {
-		return XDataType.parse(this.getType()) == type && (type == XDataType.CANCEL ? !this.hasChild() : this.hasChild());
+		return XDataType.parse(this.getType()) == type && (type == XDataType.CANCEL ? !this.hasChild() : true);
 	}
 
 	public XData add(Field<?> field) {
@@ -74,6 +74,10 @@ public class XData extends XFieldWrap implements Fields, Field<Object>, Collecto
 	@Override
 	public List<Field<?>> getValue() {
 		return super.getFields();
+	}
+
+	public boolean hasValue() {
+		return !super.getFields().isEmpty();
 	}
 
 	@Override

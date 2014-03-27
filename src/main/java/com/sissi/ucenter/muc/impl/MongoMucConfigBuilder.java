@@ -107,8 +107,8 @@ public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 			return this.user.like(this.creator);
 		}
 
-		public boolean activate() {
-			return this.creator() || Extracter.asBoolean(this.configs, MongoConfig.FIELD_ACTIVATE, true);
+		public boolean activate(boolean compute) {
+			return compute ? this.creator() || Extracter.asBoolean(this.configs, MongoConfig.FIELD_ACTIVATE, true) : Extracter.asBoolean(this.configs, MongoConfig.FIELD_ACTIVATE, true);
 		}
 
 		public RelationMuc relation() {

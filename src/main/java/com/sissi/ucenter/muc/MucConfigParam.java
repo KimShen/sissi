@@ -17,9 +17,9 @@ public interface MucConfigParam {
 
 	public boolean creator();
 
-	public boolean activate();
-
 	public boolean hidden(boolean compute);
+
+	public boolean activate(boolean compute);
 
 	public RelationMuc relation();
 

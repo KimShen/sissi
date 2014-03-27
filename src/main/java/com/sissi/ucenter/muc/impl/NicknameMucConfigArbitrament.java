@@ -14,7 +14,7 @@ public class NicknameMucConfigArbitrament implements MucConfigArbitrament {
 	@Override
 	public boolean arbitrate(MucConfigParam param, Object request) {
 		Object nick = param.configs().get(MongoConfig.FIELD_NICK);
-		return param.activate() ? (nick != null ? Boolean.valueOf(nick.toString()) ? !param.relation().cast(RelationMuc.class).name(request.toString(), true) : false : false) : false;
+		return param.activate(true) ? (nick != null ? Boolean.valueOf(nick.toString()) ? !param.relation().cast(RelationMuc.class).name(request.toString(), true) : false : false) : false;
 	}
 
 	@Override

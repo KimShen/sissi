@@ -7,15 +7,15 @@ import com.sissi.ucenter.muc.MucConfigParam;
 /**
  * @author kim 2014年3月6日
  */
-public class ActivateMucConfigArbitrament implements MucConfigArbitrament {
+public class ActivateJoinMucConfigArbitrament implements MucConfigArbitrament {
 
 	@Override
 	public boolean arbitrate(MucConfigParam param, Object request) {
-		return param.activate();
+		return param.activate(true);
 	}
 
 	@Override
 	public String support() {
-		return MucConfig.ACTIVATE;
+		return MucConfig.ACTIVATE_JION;
 	}
 }

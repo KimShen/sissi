@@ -19,7 +19,9 @@
 		<constructor-arg ref="persistent.message.muc" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
-	<bean id="message.pro.muc.2invite" class="com.sissi.pipeline.in.message.muc.MessageMuc2InviteProcessor" parent="global.pro.proxy" />
+	<bean id="message.pro.muc.2invite" class="com.sissi.pipeline.in.message.muc.MessageMuc2InviteProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.config.builder" />
+	</bean>
 	<bean id="message.pro.muc.2invite.check.exists" class="com.sissi.pipeline.in.message.muc.MessageMuc2InviteCheckExistsProcessor">
 		<constructor-arg ref="ucenter.vcard" />
 	</bean>

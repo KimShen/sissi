@@ -1,5 +1,6 @@
 package com.sissi.protocol.muc;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -35,6 +36,7 @@ public class Owner extends Protocol implements Collector {
 		return this.data;
 	}
 
+	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;
 	}

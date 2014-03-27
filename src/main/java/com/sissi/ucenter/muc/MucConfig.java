@@ -21,11 +21,13 @@ public interface MucConfig {
 
 	public final static String PASSWORD = "PASSWORD";
 
-	public final static String ACTIVATE = "ACTIVATE";
-
-	public final static String AFFILIATION_EXISTS = "AFFILIATION_EXISTS";
+	public final static String ACTIVATE_JION = "ACTIVATE_JOIN";
+	
+	public final static String ACTIVATE_CONFIG = "ACTIVATE_CONFIG";
 
 	public final static String AFFILIATION_CHECK = "AFFILIATION_CHECK";
+
+	public final static String AFFILIATION_EXISTS = "AFFILIATION_EXISTS";
 
 	public final static String HIDDEN_NATIVE = "HIDDEN_NATIVE";
 

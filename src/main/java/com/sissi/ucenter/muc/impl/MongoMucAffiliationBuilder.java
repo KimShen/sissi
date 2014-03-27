@@ -5,7 +5,6 @@ import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
-import com.sissi.protocol.muc.ItemAffiliation;
 import com.sissi.ucenter.muc.MucAffiliation;
 import com.sissi.ucenter.muc.MucAffiliationBuilder;
 

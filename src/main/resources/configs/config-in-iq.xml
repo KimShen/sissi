@@ -67,6 +67,7 @@
 				<ref bean="sharedgroup.condition" />
 				<ref bean="muc.pro.condition" />
 				<ref bean="muc.pro.condition.owner" />
+				<ref bean="muc.pro.condition.unique" />
 			</util:list>
 		</constructor-arg>
 	</bean>

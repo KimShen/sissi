@@ -65,6 +65,10 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 		return this.hidden;
 	}
 
+	public boolean contain() {
+		return !this.statuses.isEmpty();
+	}
+
 	public boolean contain(String code) {
 		return this.statuses != null ? this.statuses.contains(ItemStatus.parse(code)) : false;
 	}
@@ -134,6 +138,11 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 	@XmlElement
 	public XPassword getPassword() {
 		return this.password;
+	}
+
+	public XUser password(String password) {
+		this.password = password != null ? new XPassword(password) : null;
+		return this;
 	}
 
 	public boolean password() {

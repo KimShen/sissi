@@ -15,6 +15,7 @@
 	<import resource="config-in-iq-si.xml" />
 	<import resource="config-in-iq-muc.xml" />
 	<import resource="config-in-iq-muc-owner.xml" />
+	<import resource="config-in-iq-muc-unique.xml" />
 	<import resource="config-in-iq-last.xml" />
 	<import resource="config-in-iq-ping.xml" />
 	<import resource="config-in-iq-time.xml" />

@@ -12,11 +12,11 @@ import com.sissi.ucenter.muc.MucConfigBuilder;
 /**
  * @author kim 2014年3月24日
  */
-public class MucOwnerSetProcessor extends ProxyProcessor {
+public class MucOwnerSetSubmitProcessor extends ProxyProcessor {
 
 	private final MucConfigBuilder mucConfigBuilder;
 
-	public MucOwnerSetProcessor(MucConfigBuilder mucConfigBuilder) {
+	public MucOwnerSetSubmitProcessor(MucConfigBuilder mucConfigBuilder) {
 		super();
 		this.mucConfigBuilder = mucConfigBuilder;
 	}

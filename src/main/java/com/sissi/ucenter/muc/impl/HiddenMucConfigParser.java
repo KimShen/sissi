@@ -8,19 +8,19 @@ import com.sissi.ucenter.muc.MucConfigParser;
 /**
  * @author kim 2014年3月25日
  */
-public class SubjectMucConfigParser implements MucConfigParser {
+public class HiddenMucConfigParser implements MucConfigParser {
 
 	@Override
 	public Object parse(Field<?> field) {
-		return field.getValue() != null ? field.getValue().toString() : null;
+		return Boolean.valueOf(field.getValue().toString());
 	}
 
 	public String field() {
-		return MongoConfig.FIELD_SUBJECT;
+		return MongoConfig.FIELD_HIDDEN;
 	}
 
 	@Override
 	public String support() {
-		return OwnerConfig.ROOMCONFIG_SUBJECT.toString();
+		return OwnerConfig.ROOMCONFIG_WHOIS.toString();
 	}
 }

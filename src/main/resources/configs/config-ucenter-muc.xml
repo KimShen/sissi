@@ -55,8 +55,10 @@
 		</constructor-arg>
 		<constructor-arg index="3">
 			<util:list>
+				<bean class="com.sissi.ucenter.muc.impl.HiddenMucConfigParser" />
 				<bean class="com.sissi.ucenter.muc.impl.SubjectMucConfigParser" />
 				<bean class="com.sissi.ucenter.muc.impl.ActivateMucConfigParser" />
+				<bean class="com.sissi.ucenter.muc.impl.PasswordMucConfigParser" />
 				<bean class="com.sissi.ucenter.muc.impl.AffiliationMucConfigParser" />
 			</util:list>
 		</constructor-arg>
@@ -71,10 +73,11 @@
 				<bean class="com.sissi.ucenter.muc.impl.SubjectMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.RegisterMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.NicknameMucConfigArbitrament" />
-				<bean class="com.sissi.ucenter.muc.impl.ActivateMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.PasswordMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.HiddenNativeMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.HiddenComputeMucConfigArbitrament" />
+				<bean class="com.sissi.ucenter.muc.impl.ActivateJoinMucConfigArbitrament" />
+				<bean class="com.sissi.ucenter.muc.impl.ActivateConfigMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.AffiliationCheckMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.AffiliationExistsMucConfigArbitrament" />
 			</util:list>
@@ -163,6 +166,14 @@
 			<util:list>
 				<ref bean="ucenter.muc.broadcast.status" />
 				<ref bean="ucenter.muc.broadcast.invite" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="ucenter.muc.reviewer" class="com.sissi.ucenter.muc.impl.ChainedMucConfigReviewer">
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.ucenter.muc.impl.HiddenMucConfigReviewer" />
 			</util:list>
 		</constructor-arg>
 	</bean>
