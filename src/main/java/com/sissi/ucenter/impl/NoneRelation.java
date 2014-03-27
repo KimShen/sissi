@@ -64,8 +64,7 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 
 	@Override
 	public RelationMuc role(String role, boolean force) {
-		this.role(role);
-		return this;
+		return this.role(role);
 	}
 
 	public NoneRelation noneRole() {
@@ -80,6 +79,10 @@ public class NoneRelation implements Relation, RelationRoster, RelationMuc {
 	public RelationMuc affiliation(String affiliation) {
 		this.affiliation = affiliation;
 		return this;
+	}
+
+	public RelationMuc affiliation(String affiliation, boolean force) {
+		return this.affiliation(affiliation);
 	}
 
 	public String resource() {

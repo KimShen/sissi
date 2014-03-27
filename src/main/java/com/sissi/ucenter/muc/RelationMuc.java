@@ -17,6 +17,8 @@ public interface RelationMuc extends Relation {
 
 	public RelationMuc affiliation(String affiliation);
 
+	public RelationMuc affiliation(String affiliation, boolean force);
+
 	public String resource();
 
 	public boolean outcast();

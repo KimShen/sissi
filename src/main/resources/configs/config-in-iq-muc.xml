@@ -27,6 +27,9 @@
 		<constructor-arg ref="ucenter.vcard" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
+	<bean id="muc.pro.check.relation.affiliation.owner" class="com.sissi.pipeline.in.iq.muc.MucCheckRelationAffiliationOwnerProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.4affiliation" />
+	</bean>
 	<bean id="muc.pro.set.role.broadcast" class="com.sissi.pipeline.in.iq.muc.MucSetBroadcastRoleProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc" />
 		<constructor-arg ref="ucenter.muc.judger" />
@@ -64,6 +67,7 @@
 				<ref bean="muc.pro.check.exists" />
 				<ref bean="muc.pro.check.relation.affiliation.4self" />
 				<ref bean="muc.pro.check.relation.affiliation.4fans" />
+				<ref bean="muc.pro.check.relation.affiliation.owner" />
 				<ref bean="muc.pro.set.affiliation.broadcast" />
 				<ref bean="muc.pro.set.affiliation" />
 				<ref bean="muc.pro" />

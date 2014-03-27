@@ -35,7 +35,7 @@ public class StatusMucAffiliationBroadcast implements MucAffiliationBroadcast {
 	public MucAffiliationBroadcast broadcast(JID jid, JID group, JIDContext invoker, MucItem item, MucConfig config) {
 		for (Relation relation : this.mucRelationContext.ourRelations(jid, group)) {
 			for (JID to : this.mucRelationContext.whoSubscribedMe(group)) {
-				this.addressing.findOne(to, true).write(item.presence(group.resource(relation.name()), config.pull(MongoConfig.FIELD_AFFILIATION, String.class)).reset().add(this.mucStatusJudger.judege(new XUser(group, to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, jid)).relation(relation.cast(RelationMuc.class).affiliation(item.getAffiliation())))).cast(XUser.class)));
+				this.addressing.findOne(to, true).write(item.presence(group.resource(relation.name()), config.pull(MongoConfig.FIELD_AFFILIATION, String.class)).reset().add(this.mucStatusJudger.judege(new XUser(group, to, config.allowed(to, MucConfig.HIDDEN_NATIVE, null)).item(item.hidden(config.allowed(to, MucConfig.HIDDEN_COMPUTER, jid)).relation(relation.cast(RelationMuc.class).affiliation(item.getAffiliation(), true)))).cast(XUser.class)));
 			}
 		}
 		return this;

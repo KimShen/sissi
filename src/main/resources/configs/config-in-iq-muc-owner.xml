@@ -59,7 +59,6 @@
 		</constructor-arg>
 	</bean>
 
-
 	<bean id="muc.pro.condition.owner" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.ClassMatcher">

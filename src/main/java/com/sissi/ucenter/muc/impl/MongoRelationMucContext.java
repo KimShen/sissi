@@ -333,6 +333,8 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 
 		private boolean forceRole;
 
+		private boolean forceAffiliation;
+
 		private String affiliation;
 
 		private String role;
@@ -373,12 +375,17 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 		}
 
 		public String affiliation() {
-			return this.creator.equals(this.jid) ? ItemAffiliation.OWNER.toString() : ItemAffiliation.parse(this.affiliation).toString();
+			return this.forceAffiliation ? this.affiliation : this.creator.equals(this.jid) ? ItemAffiliation.OWNER.toString() : ItemAffiliation.parse(this.affiliation).toString();
 		}
 
 		public RelationMuc affiliation(String affiliation) {
 			this.affiliation = affiliation;
 			return this;
+		}
+
+		public RelationMuc affiliation(String affiliation, boolean force) {
+			this.forceAffiliation = force;
+			return this.affiliation(affiliation);
 		}
 
 		@Override
@@ -396,9 +403,8 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 		}
 
 		public MongoRelation role(String role, boolean force) {
-			this.role = role;
 			this.forceRole = force;
-			return this;
+			return this.role(role);
 		}
 
 		@Override

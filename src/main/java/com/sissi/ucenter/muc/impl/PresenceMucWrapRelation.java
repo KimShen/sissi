@@ -77,6 +77,10 @@ public class PresenceMucWrapRelation implements RelationMuc {
 		return this.relation.affiliation(affiliation);
 	}
 
+	public RelationMuc affiliation(String affiliation, boolean force) {
+		return this.affiliation(affiliation);
+	}
+
 	public PresenceMucWrapRelation noneRole() {
 		this.relation.noneRole();
 		return this;

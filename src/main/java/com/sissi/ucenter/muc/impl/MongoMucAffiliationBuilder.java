@@ -5,6 +5,7 @@ import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
 import com.sissi.config.MongoConfig;
 import com.sissi.context.JID;
+import com.sissi.protocol.muc.ItemAffiliation;
 import com.sissi.ucenter.muc.MucAffiliation;
 import com.sissi.ucenter.muc.MucAffiliationBuilder;
 
@@ -37,7 +38,11 @@ public class MongoMucAffiliationBuilder implements MucAffiliationBuilder {
 		@Override
 		public MucAffiliation approve(JID jid, String affiliation) {
 			try {
-				MongoMucAffiliationBuilder.this.config.collection().update(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.group.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, jid.asStringWithBare()).get(), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS + ".$." + MongoConfig.FIELD_AFFILIATION, affiliation).get()).get(), true, false, WriteConcern.SAFE);
+				BasicDBObjectBuilder entity = BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS + ".$." + MongoConfig.FIELD_AFFILIATION, affiliation);
+				if (ItemAffiliation.OWNER.equals(affiliation)) {
+					entity.add(MongoConfig.FIELD_CREATOR, jid.asStringWithBare());
+				}
+				MongoMucAffiliationBuilder.this.config.collection().update(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.group.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, jid.asStringWithBare()).get(), BasicDBObjectBuilder.start().add("$set", entity.get()).get(), true, false, WriteConcern.SAFE);
 			} catch (MongoException e) {
 				MongoMucAffiliationBuilder.this.config.collection().update(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, this.group.asStringWithBare()).get(), BasicDBObjectBuilder.start("$addToSet", BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, jid.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATION, affiliation).get()).get()).get(), true, false, WriteConcern.SAFE);
 			}
