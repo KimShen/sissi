@@ -42,13 +42,17 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="presence.pro.status.2muc" class="com.sissi.pipeline.in.presence.status.PresenceOnlineMucProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="presence.pro.muc.join.2fans" />
-		<property name="relationContext" ref="ucenter.muc" />
-	</bean>
 	<bean id="presence.pro.status.2selfs" class="com.sissi.pipeline.in.presence.status.PresenceStatusProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.2fans" class="com.sissi.pipeline.in.presence.status.PresenceStatusProcessor" parent="global.pro.proxy">
 		<property name="protocolQueue" ref="broadcast.protocol.fans" />
+	</bean>
+	<bean id="presence.pro.status.muc.jion" class="com.sissi.pipeline.in.presence.status.PresenceMucJoinProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="presence.pro.muc.join.chained" />
+		<property name="relationContext" ref="ucenter.muc.4affiliation" />
+	</bean>
+	<bean id="presence.pro.status.muc.status" class="com.sissi.pipeline.in.presence.status.PresenceMucStatusProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="presence.pro.muc.join.2fans" />
+		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.status.forward" class="com.sissi.pipeline.in.presence.status.PresenceForwardProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.forward.route" class="com.sissi.pipeline.in.presence.status.PresenceForwardRouteProcessor" parent="global.pro.proxy" />
@@ -67,11 +71,11 @@
 	<bean id="presence.pro.status.available.init.4delay" class="com.sissi.pipeline.in.presence.status.PresenceInit4DelayProcessor">
 		<constructor-arg ref="persistent.all" />
 	</bean>
+	<bean id="presence.pro.status.available.init.4selfs" class="com.sissi.pipeline.in.presence.status.PresenceInit4SelfsProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.available.init.4fans" class="com.sissi.pipeline.in.presence.status.PresenceInit4FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.vcard" />
 		<property name="presenceQueue" ref="broadcast.presence.self" />
 	</bean>
-	<bean id="presence.pro.status.available.init.4selfs" class="com.sissi.pipeline.in.presence.status.PresenceInit4SelfsProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.available.init" class="com.sissi.pipeline.in.presence.status.PresenceInitProcessor" />
 	<bean id="presence.pro.status.available.priority" class="com.sissi.pipeline.in.presence.status.PresenceOnlinePriorityProcessor" parent="global.pro.proxy" />
 	<bean id="presence.pro.status.available.update" class="com.sissi.pipeline.in.presence.status.PresenceOnlineUpdateProcessor" parent="global.pro.proxy" />
@@ -88,6 +92,10 @@
 				<ref bean="presence.pro.status.available.init.4subscribe" />
 				<!-- Get offline message / presence / si -->
 				<ref bean="presence.pro.status.available.init.4delay" />
+				<ref bean="presence.pro.status.available.init.4fans" />
+				<!-- Forward presence to muc -->
+				<ref bean="presence.pro.status.muc.jion" />
+				<ref bean="presence.pro.status.muc.status" />
 				<!-- Update presented -->
 				<ref bean="presence.pro.status.available.init" />
 				<!-- Update priority -->
@@ -97,8 +105,6 @@
 				<!-- Forward presence to other resources / fans -->
 				<ref bean="presence.pro.status.2selfs" />
 				<ref bean="presence.pro.status.2fans" />
-				<!-- Forward presence to muc -->
-				<ref bean="presence.pro.status.2muc" />
 			</util:list>
 		</constructor-arg>
 	</bean>

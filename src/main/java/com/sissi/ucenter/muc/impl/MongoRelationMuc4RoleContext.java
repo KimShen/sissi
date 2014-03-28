@@ -18,12 +18,21 @@ import com.sissi.ucenter.Relation;
  */
 public class MongoRelationMuc4RoleContext extends MongoRelationMucContext {
 
+	private final DBObject aggregateProjectSubscribed = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_RESOURCE, "$" + MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_NICK).get()).get();
+
 	private final DBObject aggregateProjectRole = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_ID + "." + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_ID + "." + MongoConfig.FIELD_CREATOR).add(MongoConfig.FIELD_AFFILIATIONS, "$" + MongoConfig.FIELD_ID + "." + MongoConfig.FIELD_AFFILIATIONS).add(MongoConfig.FIELD_ROLES, "$" + MongoConfig.FIELD_ROLES).get()).get();
 
 	private final DBObject aggregateGroupRole = BasicDBObjectBuilder.start("$group", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ID, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_CREATOR, "$" + MongoConfig.FIELD_CREATOR).add(MongoConfig.FIELD_AFFILIATIONS, "$" + MongoConfig.FIELD_AFFILIATIONS).get()).add(MongoConfig.FIELD_ROLES, BasicDBObjectBuilder.start("$addToSet", "$" + MongoConfig.FIELD_ROLES).get()).get()).get();
 
 	public MongoRelationMuc4RoleContext(boolean activate, String mapping, MongoConfig config, JIDBuilder jidBuilder) throws Exception {
 		super(activate, mapping, config, jidBuilder);
+	}
+
+	@Override
+	// With Resource(Nickname)
+	public Set<JID> iSubscribedWho(JID from) {
+		DBObject match = BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).add(MongoConfig.FIELD_ROLES + "." + MongoConfig.FIELD_RESOURCE, from.resource()).get()).get();
+		return new JIDGroup(Extracter.asList(this.config.collection().aggregate(match, BasicDBObjectBuilder.start("$unwind", "$" + MongoConfig.FIELD_ROLES).get(), match, this.aggregateProjectSubscribed, super.aggregateLimit).getCommandResult(), MongoConfig.FIELD_RESULT));
 	}
 
 	public Set<Relation> myRelations(JID from, String role) {

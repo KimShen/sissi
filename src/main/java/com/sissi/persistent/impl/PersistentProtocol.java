@@ -44,7 +44,7 @@ abstract class PersistentProtocol implements PersistentElement {
 		entity.put(MongoConfig.FIELD_TYPE, element.getType());
 		entity.put(MongoConfig.FIELD_TIMESTAMP, System.currentTimeMillis());
 		entity.put(MongoConfig.FIELD_CLASS, element.getClass().getSimpleName());
-		entity.put(PersistentElementBox.fieldRetry, 0);
+		entity.put(PersistentElementBox.fieldResend, 0);
 		entity.put(PersistentElementBox.fieldId, element.getId());
 		entity.put(PersistentElementBox.fieldDelay, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
 		JID to = this.jidBuilder.build(element.getTo());

@@ -36,6 +36,8 @@ public class Item implements MucItem, Collector {
 
 	private boolean hidden;
 
+	private XMucAdmin admin;
+
 	private XReason reason;
 
 	private XActor actor;
@@ -50,6 +52,11 @@ public class Item implements MucItem, Collector {
 	public Item(boolean hidden, RelationMuc relation) {
 		super();
 		this.relation(relation).hidden = hidden;
+	}
+
+	Item admin(XMucAdmin admin) {
+		this.admin = admin;
+		return this;
 	}
 
 	private Presence presence(XMucAdminAction action, String affiliation) {
@@ -100,7 +107,7 @@ public class Item implements MucItem, Collector {
 	}
 
 	public Item setJid(String jid) {
-		this.jid = jid;
+		this.admin.add((this.jid = jid) != null);
 		return this;
 	}
 
@@ -130,7 +137,7 @@ public class Item implements MucItem, Collector {
 	}
 
 	public Item setNick(String nick) {
-		this.nick = nick;
+		this.admin.add(this.nick = nick);
 		return this;
 	}
 

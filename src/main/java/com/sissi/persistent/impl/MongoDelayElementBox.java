@@ -46,9 +46,9 @@ public class MongoDelayElementBox implements PersistentElementBox, Output {
 
 	@Override
 	public Collection<Element> pull(JID jid) {
-		DBObject query = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_TO, jid.asStringWithBare()).add("$or", this.activate).add(MongoConfig.FIELD_CLASS, this.support).add(PersistentElementBox.fieldRetry, BasicDBObjectBuilder.start("$lt", this.resend).get()).get();
+		DBObject query = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_TO, jid.asStringWithBare()).add("$or", this.activate).add(MongoConfig.FIELD_CLASS, this.support).add(PersistentElementBox.fieldResend, BasicDBObjectBuilder.start("$lt", this.resend).get()).get();
 		Elements elements = new Elements(this.config.collection().find(query), this.elements);
-		this.config.collection().update(query, BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(MongoConfig.FIELD_ACTIVATE, false).get()).add("$inc", BasicDBObjectBuilder.start(PersistentElementBox.fieldRetry, 1).get()).get(), false, true);
+		this.config.collection().update(query, BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(MongoConfig.FIELD_ACTIVATE, false).get()).add("$inc", BasicDBObjectBuilder.start(PersistentElementBox.fieldResend, 1).get()).get(), false, true);
 		return elements;
 	}
 

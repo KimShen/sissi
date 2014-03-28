@@ -10,10 +10,10 @@ import com.sissi.protocol.Element;
  * @author kim 2013-11-15
  */
 public interface PersistentElementBox {
+	
+	public final static String fieldResend = "resend";
 
 	public final static String fieldDelay = "delay";
-
-	public final static String fieldRetry = "retry";
 
 	public final static String fieldSize = "size";
 

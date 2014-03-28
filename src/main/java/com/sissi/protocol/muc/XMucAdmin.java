@@ -35,6 +35,19 @@ public class XMucAdmin extends Protocol implements Collector {
 
 	private Item first;
 
+	XMucAdmin add(boolean jid) {
+		this.jids = this.jids ? jid : this.jids;
+		return this;
+	}
+
+	XMucAdmin add(String snapshoot) {
+		if (this.snapshoot == null) {
+			this.snapshoot = new HashSet<String>();
+		}
+		this.snapshoot.add(snapshoot);
+		return this;
+	}
+
 	public Item first() {
 		return this.first;
 	}
@@ -71,12 +84,9 @@ public class XMucAdmin extends Protocol implements Collector {
 	public XMucAdmin add(Item item) {
 		if (this.items == null) {
 			this.items = new ArrayList<Item>();
-			this.snapshoot = new HashSet<String>();
 		}
-		this.items.add(item);
-		this.snapshoot.add(item.getNick());
+		this.items.add(item.admin(this));
 		this.first = this.first == null ? item : this.first;
-		this.jids = this.jids ? (item.getJid() != null ? true : false) : this.jids;
 		return this;
 	}
 

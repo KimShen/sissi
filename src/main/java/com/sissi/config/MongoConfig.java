@@ -18,7 +18,9 @@ public interface MongoConfig extends Config {
 	public final static String FIELD_FROM = "from";
 
 	public final static String FIELD_NICK = "nick";
-
+	
+	public final static String FIELD_NICKS = "nicks";
+	
 	public final static String FIELD_TYPE = "type";
 
 	public final static String FIELD_ROLE = "role";

@@ -32,11 +32,13 @@ import com.sissi.ucenter.field.impl.BeanFields;
 @XmlRootElement
 public class Presence extends Protocol implements com.sissi.context.Status, Fields, Collector {
 
-	private final static BeanFields empty = new BeanFields(false);
-
 	public final static String XMLNS = "jabber:client";
 
 	public final static String NAME = "presence";
+
+	private final static XMuc muc = new XMuc();
+
+	private final static BeanFields empty = new BeanFields(false);
 
 	private final static Log log = LogFactory.getLog(Presence.class);
 
@@ -244,6 +246,10 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 			this.priority = PresencePriority.class.cast(ob);
 			return;
 		}
+	}
+
+	public static Presence muc() {
+		return new Presence().add(Presence.muc);
 	}
 
 	private class PresenceClauses implements StatusClauses {
