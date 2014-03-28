@@ -23,6 +23,7 @@
 	<import resource="config-in-iq-block.xml" />
 	<import resource="config-in-iq-roster.xml" />
 	<import resource="config-in-iq-vcard.xml" />
+	<import resource="config-in-iq-vcard-muc.xml" />
 	<import resource="config-in-iq-disco.xml" />
 	<import resource="config-in-iq-version.xml" />
 	<import resource="config-in-iq-session.xml" />

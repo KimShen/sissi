@@ -10,7 +10,7 @@ import com.sissi.ucenter.user.VCardContext;
 /**
  * @author kim 2013年12月10日
  */
-abstract class VCardGetProcessor extends ProxyProcessor {
+abstract public class VCardGetProcessor extends ProxyProcessor {
 
 	protected final VCardContext vcardContext;
 

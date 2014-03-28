@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="vcard.pro.get.4muc" class="com.sissi.pipeline.in.iq.vcard.VCardGet4FansProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.vcard.muc" />
+	</bean>
+	<bean id="vcard.condition.get.4muc" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.vcard.muc.VCardGetMatcher">
+				<constructor-arg ref="global.jid" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="vcard.pro.get.4muc" />
+	</bean>
+</beans>

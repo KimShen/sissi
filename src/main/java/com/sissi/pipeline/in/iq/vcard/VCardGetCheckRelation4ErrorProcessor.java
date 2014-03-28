@@ -11,12 +11,12 @@ import com.sissi.protocol.error.detail.Forbidden;
  * @author kim 2014年1月26日
  */
 public class VCardGetCheckRelation4ErrorProcessor extends VCardGetCheckRelationProcessor {
+	
+	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
 	public VCardGetCheckRelation4ErrorProcessor(boolean free) {
 		super(free);
 	}
-
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
 	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {
 		context.write(protocol.parent().reply().setError(this.error));

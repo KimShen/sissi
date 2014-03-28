@@ -10,6 +10,17 @@
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.muc}" />
 	</bean>
+	
+	<alias name="vcard.mongo.muc" alias="ucenter.vcard.muc" />
+	<bean id="vcard.mongo.muc" class="com.sissi.ucenter.muc.impl.MongoVCardContext">
+		<constructor-arg ref="global.jid" />
+		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.ucenter.muc.impl.SubjectFieldParser" />
+			</util:list>
+		</constructor-arg>
+	</bean>
 
 	<alias name="ucenter.muc.4role" alias="ucenter.muc" />
 	<bean id="ucenter.muc.4role" class="com.sissi.ucenter.muc.impl.MongoRelationMuc4RoleContext">
