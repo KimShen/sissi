@@ -4,28 +4,25 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.protocol.message.Message;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
 
 /**
  * @author kim 2014年3月8日
  */
-@Metadata(uri = { XUser.XMLNS, Message.XMLNS }, localName = XInvite.NAME)
-@XmlRootElement(name = XInvite.NAME)
-public class XInvite implements Collector {
+@Metadata(uri = XUser.XMLNS, localName = Decline.NAME)
+@XmlRootElement(name = Decline.NAME)
+public class Decline implements Collector {
 
-	public final static String NAME = "invite";
+	public final static String NAME = "decline";
 
 	private String to;
 
 	private String from;
 
-	private XReason reason;
+	private Reason reason;
 
-	private XContinue thread;
-
-	public XInvite setFrom(String from) {
+	public Decline setFrom(String from) {
 		this.from = from;
 		this.to = null;
 		return this;
@@ -41,30 +38,18 @@ public class XInvite implements Collector {
 		return this.to;
 	}
 
-	public XInvite setTo(String to) {
+	public Decline setTo(String to) {
 		this.to = to;
 		return this;
 	}
 
 	@XmlElement
-	public XReason getReason() {
+	public Reason getReason() {
 		return this.reason;
-	}
-
-	@XmlElement
-	public XContinue getContinue() {
-		return this.thread;
 	}
 
 	@Override
 	public void set(String localName, Object ob) {
-		switch (localName) {
-		case XReason.NAME:
-			this.reason = XReason.class.cast(ob);
-			return;
-		case XContinue.NAME:
-			this.thread = XContinue.class.cast(ob);
-			return;
-		}
+		this.reason = Reason.class.cast(ob);
 	}
 }

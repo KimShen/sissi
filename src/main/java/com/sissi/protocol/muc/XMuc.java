@@ -19,9 +19,9 @@ public class XMuc extends X implements Field<String>, Collector {
 
 	public final static String XMLNS = "http://jabber.org/protocol/muc";
 
-	private XPassword password;
+	private Password password;
 
-	private XHistory history;
+	private History history;
 
 	@Override
 	public String getXmlns() {
@@ -32,7 +32,7 @@ public class XMuc extends X implements Field<String>, Collector {
 		return this.password != null ? this.password.getText() : null;
 	}
 
-	public XHistory history() {
+	public History history() {
 		return this.history;
 	}
 
@@ -58,11 +58,11 @@ public class XMuc extends X implements Field<String>, Collector {
 	@Override
 	public void set(String localName, Object ob) {
 		switch (localName) {
-		case XPassword.NAME:
-			this.password = XPassword.class.cast(ob);
+		case Password.NAME:
+			this.password = Password.class.cast(ob);
 			return;
-		case XHistory.NAME:
-			this.history = XHistory.class.cast(ob);
+		case History.NAME:
+			this.history = History.class.cast(ob);
 			return;
 		}
 	}

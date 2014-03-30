@@ -5,15 +5,50 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="vcard.pro.get.4muc" class="com.sissi.pipeline.in.iq.vcard.VCardGet4FansProcessor" parent="global.pro.proxy">
+	<bean id="vcard.pro.get.muc.4room" class="com.sissi.pipeline.in.iq.vcard.VCardGet4FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.vcard.muc" />
 	</bean>
-	<bean id="vcard.condition.get.4muc" class="com.sissi.pipeline.in.PairCondition">
+	<bean id="vcard.pro.get.muc.4fans" class="com.sissi.pipeline.in.iq.vcard.muc.VCardGet4FansProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc" />
+		<constructor-arg ref="ucenter.vcard" />
+	</bean>
+	<bean id="vcard.pro.get.muc.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.vcard.get.muc" />
+	</bean>
+
+	<bean id="finder.vcard.get.muc" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="vcard.condition.get.muc.4fans" />
+				<ref bean="vcard.condition.get.muc.4room" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="vcard.condition.get.muc" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.iq.vcard.muc.VCardGetMatcher">
 				<constructor-arg ref="global.jid" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="vcard.pro.get.4muc" />
+		<constructor-arg ref="vcard.pro.get.muc.fork" />
+	</bean>
+	<bean id="vcard.condition.get.muc.4room" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.vcard.muc.VCardGetActionMatcher">
+				<constructor-arg value="true" />
+				<constructor-arg ref="global.jid" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="vcard.pro.get.muc.4room" />
+	</bean>
+	<bean id="vcard.condition.get.muc.4fans" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.vcard.muc.VCardGetActionMatcher">
+				<constructor-arg value="false" />
+				<constructor-arg ref="global.jid" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="vcard.pro.get.muc.4fans" />
 	</bean>
 </beans>

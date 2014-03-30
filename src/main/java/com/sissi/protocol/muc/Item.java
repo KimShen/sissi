@@ -38,9 +38,9 @@ public class Item implements MucItem, Collector {
 
 	private XMucAdmin admin;
 
-	private XReason reason;
+	private Reason reason;
 
-	private XActor actor;
+	private Actor actor;
 
 	private Error error;
 
@@ -118,6 +118,9 @@ public class Item implements MucItem, Collector {
 
 	public Item setAffiliation(String affiliation) {
 		this.affiliation = affiliation;
+		if (this.admin != null) {
+			this.admin.valid(this.getRole() == null);
+		}
 		return this;
 	}
 
@@ -128,6 +131,9 @@ public class Item implements MucItem, Collector {
 
 	public Item setRole(String role) {
 		this.role = role;
+		if (this.admin != null) {
+			this.admin.valid(this.getAffiliation() == null);
+		}
 		return this;
 	}
 
@@ -152,33 +158,33 @@ public class Item implements MucItem, Collector {
 
 	public Item reason(String reason) {
 		if (this.getReason() == null) {
-			this.reason = new XReason(reason);
+			this.reason = new Reason(reason);
 		}
 		this.getReason().setText(reason);
 		return this;
 	}
 
 	@XmlElement
-	public XReason getReason() {
+	public Reason getReason() {
 		return this.reason;
 	}
 
 	public Item actor(JID actor) {
 		if (this.actor == null) {
-			this.actor = new XActor();
+			this.actor = new Actor();
 		}
 		this.actor.jid(actor);
 		return this;
 	}
 
 	@XmlElement
-	public XActor getActor() {
+	public Actor getActor() {
 		return this.hidden ? null : this.actor;
 	}
 
 	@Override
 	public void set(String localName, Object ob) {
-		this.reason = XReason.class.cast(ob);
+		this.reason = Reason.class.cast(ob);
 	}
 
 	public <T extends MucItem> T cast(Class<T> clazz) {

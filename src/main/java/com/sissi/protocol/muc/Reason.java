@@ -8,19 +8,19 @@ import com.sissi.read.Metadata;
 /**
  * @author kim 2014年3月8日
  */
-@Metadata(uri = { XUser.XMLNS, XMucAdmin.XMLNS }, localName = XReason.NAME)
-@XmlRootElement(name = XReason.NAME)
-public class XReason {
+@Metadata(uri = { Owner.XMLNS, XMucAdmin.XMLNS }, localName = Reason.NAME)
+@XmlRootElement(name = Reason.NAME)
+public class Reason {
 
 	public final static String NAME = "reason";
 
 	private String text;
 
-	public XReason() {
+	public Reason() {
 		super();
 	}
 
-	public XReason(String text) {
+	public Reason(String text) {
 		super();
 		this.text = text;
 	}
@@ -30,7 +30,7 @@ public class XReason {
 		return this.text != null & !this.text.isEmpty() ? this.text : null;
 	}
 
-	public XReason setText(String text) {
+	public Reason setText(String text) {
 		this.text = text;
 		return this;
 	}

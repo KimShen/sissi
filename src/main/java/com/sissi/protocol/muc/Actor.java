@@ -8,23 +8,23 @@ import com.sissi.context.JID;
 /**
  * @author kim 2014年3月14日
  */
-@XmlRootElement(name = XActor.NAME)
-public class XActor {
+@XmlRootElement(name = Actor.NAME)
+public class Actor {
 
 	public final static String NAME = "actor";
 
 	private String jid;
 
-	public XActor() {
+	public Actor() {
 		super();
 	}
 
-	public XActor(JID jid) {
+	public Actor(JID jid) {
 		super();
 		this.jid = jid.asString();
 	}
 
-	public XActor jid(JID jid) {
+	public Actor jid(JID jid) {
 		this.jid = jid.asString();
 		return this;
 	}

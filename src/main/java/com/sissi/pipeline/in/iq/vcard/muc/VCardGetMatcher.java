@@ -1,6 +1,5 @@
 package com.sissi.pipeline.in.iq.vcard.muc;
 
-import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 import com.sissi.pipeline.in.ClassMatcher;
 import com.sissi.protocol.Protocol;
@@ -20,10 +19,6 @@ public class VCardGetMatcher extends ClassMatcher {
 
 	@Override
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && this.support(this.jidBuilder.build(protocol.parent().getTo()));
-	}
-
-	private boolean support(JID jid) {
-		return jid.isGroup() && jid.isBare();
+		return super.match(protocol) && this.jidBuilder.build(protocol.parent().getTo()).isGroup();
 	}
 }

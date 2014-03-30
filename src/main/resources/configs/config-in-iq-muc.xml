@@ -13,6 +13,7 @@
 	<bean id="muc.pro.check.exists" class="com.sissi.pipeline.in.iq.muc.MucCheckExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
+	<bean id="muc.pro.check.conflict" class="com.sissi.pipeline.in.iq.muc.MucCheckConflictProcessor" />
 	<bean id="muc.pro.check.relation.role.4self" class="com.sissi.pipeline.in.iq.muc.MucCheckRelationRole4SelfProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
@@ -44,6 +45,7 @@
 			<util:list>
 				<ref bean="muc.pro.check.loop" />
 				<ref bean="muc.pro.check.exists" />
+				<ref bean="muc.pro.check.conflict" />
 				<ref bean="muc.pro.check.relation.role.4self" />
 				<ref bean="muc.pro.check.relation.role.4fans" />
 				<ref bean="muc.pro.set.role.broadcast" />
@@ -65,6 +67,7 @@
 				<ref bean="muc.pro.check.jid" />
 				<!-- <ref bean="muc.pro.check.loop" /> -->
 				<ref bean="muc.pro.check.exists" />
+				<ref bean="muc.pro.check.conflict" />
 				<ref bean="muc.pro.check.relation.affiliation.4self" />
 				<ref bean="muc.pro.check.relation.affiliation.4fans" />
 				<ref bean="muc.pro.check.relation.affiliation.owner" />

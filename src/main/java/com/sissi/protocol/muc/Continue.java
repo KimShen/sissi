@@ -7,8 +7,8 @@ import com.sissi.read.Metadata;
 /**
  * @author kim 2014年3月10日
  */
-@Metadata(uri = XUser.XMLNS, localName = XContinue.NAME)
-public class XContinue {
+@Metadata(uri = XUser.XMLNS, localName = Continue.NAME)
+public class Continue {
 
 	public final static String NAME = "continue";
 
@@ -19,7 +19,7 @@ public class XContinue {
 		return thread;
 	}
 
-	public XContinue setThread(String thread) {
+	public Continue setThread(String thread) {
 		this.thread = thread;
 		return this;
 	}

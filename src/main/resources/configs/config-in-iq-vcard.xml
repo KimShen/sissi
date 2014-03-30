@@ -58,7 +58,7 @@
 	<bean id="finder.vcard.get" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
-				<ref bean="vcard.condition.get.4muc" />
+				<ref bean="vcard.condition.get.muc" />
 				<ref bean="vcard.condition.get.4fans" />
 				<ref bean="vcard.condition.get.4self" />
 			</util:list>

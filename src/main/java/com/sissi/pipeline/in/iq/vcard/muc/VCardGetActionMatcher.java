@@ -1,28 +1,32 @@
-package com.sissi.pipeline.in.iq.disco.muc;
+package com.sissi.pipeline.in.iq.vcard.muc;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 import com.sissi.pipeline.in.ClassMatcher;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.disco.DiscoInfo;
+import com.sissi.protocol.iq.vcard.VCard;
 
 /**
- * @author kim 2014年3月12日
+ * @author kim 2013年12月3日
  */
-public class DiscoInfoMucNodeMatcher extends ClassMatcher {
+public class VCardGetActionMatcher extends ClassMatcher {
 
 	private final JIDBuilder jidBuilder;
 
-	public DiscoInfoMucNodeMatcher(JIDBuilder jidBuilder) {
-		super(DiscoInfo.class);
+	private final boolean bare;
+
+	public VCardGetActionMatcher(JIDBuilder jidBuilder, boolean bare) {
+		super(VCard.class);
 		this.jidBuilder = jidBuilder;
+		this.bare = bare;
 	}
 
+	@Override
 	public boolean match(Protocol protocol) {
 		return super.match(protocol) && this.support(this.jidBuilder.build(protocol.parent().getTo()));
 	}
 
 	private boolean support(JID jid) {
-		return jid.isGroup() && !jid.isBare();
+		return jid.isGroup() && jid.isBare() == this.bare;
 	}
 }

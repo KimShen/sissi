@@ -22,6 +22,8 @@ public class Owner extends Protocol implements Collector {
 
 	private XData data;
 
+	private Destory destory;
+
 	public Owner() {
 		super();
 	}
@@ -41,8 +43,24 @@ public class Owner extends Protocol implements Collector {
 		return XMLNS;
 	}
 
+	public boolean destory() {
+		return this.getDestory() != null;
+	}
+
+	@XmlElement
+	public Destory getDestory() {
+		return this.destory;
+	}
+
 	@Override
 	public void set(String localName, Object ob) {
-		this.data = XData.class.cast(ob);
+		switch (localName) {
+		case XData.NAME:
+			this.data = XData.class.cast(ob);
+			return;
+		case Destory.NAME:
+			this.destory = Destory.class.cast(ob);
+			return;
+		}
 	}
 }

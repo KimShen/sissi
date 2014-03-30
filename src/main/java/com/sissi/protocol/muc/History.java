@@ -13,10 +13,10 @@ import com.sissi.ucenter.history.HistoryQuery;
 /**
  * @author kim 2014年2月22日
  */
-@Metadata(uri = XMuc.XMLNS, localName = XHistory.NAME)
-public class XHistory implements HistoryQuery {
+@Metadata(uri = XMuc.XMLNS, localName = History.NAME)
+public class History implements HistoryQuery {
 
-	private final static Log log = LogFactory.getLog(XHistory.class);
+	private final static Log log = LogFactory.getLog(History.class);
 
 	private final static String format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
@@ -28,17 +28,17 @@ public class XHistory implements HistoryQuery {
 
 	private String since;
 
-	public XHistory setMaxstanzas(String maxstanzas) {
+	public History setMaxstanzas(String maxstanzas) {
 		this.maxstanzas = maxstanzas;
 		return this;
 	}
 
-	public XHistory setSeconds(String seconds) {
+	public History setSeconds(String seconds) {
 		this.seconds = seconds;
 		return this;
 	}
 
-	public XHistory setSince(String since) {
+	public History setSince(String since) {
 		this.since = since;
 		return this;
 	}

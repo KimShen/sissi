@@ -11,7 +11,7 @@ public class Code301MucStatusJudger implements MucStatusJudger {
 
 	@Override
 	public MucStatus judege(MucStatus status) {
-		return ItemAffiliation.OUTCAST.equals(status.getItem().getAffiliation()) ? status.add("301") : status;
+		return ItemAffiliation.OUTCAST.equals(status.getItem().getAffiliation()) && status.contain("201") ? status.add("301") : status;
 	}
 
 }

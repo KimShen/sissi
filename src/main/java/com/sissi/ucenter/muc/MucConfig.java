@@ -22,7 +22,7 @@ public interface MucConfig {
 	public final static String PASSWORD = "PASSWORD";
 
 	public final static String ACTIVATE_JION = "ACTIVATE_JOIN";
-	
+
 	public final static String ACTIVATE_CONFIG = "ACTIVATE_CONFIG";
 
 	public final static String AFFILIATION_CHECK = "AFFILIATION_CHECK";
@@ -36,6 +36,8 @@ public interface MucConfig {
 	public boolean allowed(JID jid, String key, Object value);
 
 	public String mapping(String affiliation);
+
+	public MucConfig destory();
 
 	public MucConfig push(Fields fields);
 

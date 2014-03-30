@@ -27,6 +27,8 @@ public class XMucAdmin extends Protocol implements Collector {
 
 	public final static String NAME = "query";
 
+	private boolean valid = true;
+
 	private boolean jids = true;
 
 	private Set<String> snapshoot;
@@ -34,6 +36,11 @@ public class XMucAdmin extends Protocol implements Collector {
 	private List<Item> items;
 
 	private Item first;
+
+	XMucAdmin valid(boolean valid) {
+		this.valid = this.valid ? valid : this.valid;
+		return this;
+	}
 
 	XMucAdmin add(boolean jid) {
 		this.jids = this.jids ? jid : this.jids;
@@ -62,6 +69,10 @@ public class XMucAdmin extends Protocol implements Collector {
 
 	public boolean jids() {
 		return this.jids;
+	}
+
+	public boolean vaild() {
+		return this.valid;
 	}
 
 	public boolean item() {

@@ -11,7 +11,7 @@ public class Code307MucStatusJudger implements MucStatusJudger {
 
 	@Override
 	public MucStatus judege(MucStatus status) {
-		return ItemRole.NONE.equals(status.getItem().getRole()) ? status.add("307") : status;
+		return ItemRole.NONE.equals(status.getItem().getRole()) && status.contain("201") ? status.add("307") : status;
 	}
 
 }

@@ -17,7 +17,7 @@
 		<constructor-arg ref="ucenter.muc.config" />
 		<constructor-arg>
 			<util:list>
-				<bean class="com.sissi.ucenter.muc.impl.SubjectFieldParser" />
+				<bean class="com.sissi.ucenter.muc.impl.NicknameFieldParser" />
 			</util:list>
 		</constructor-arg>
 	</bean>

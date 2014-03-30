@@ -139,8 +139,17 @@ public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 			this.mapping = Extracter.asInts(configs, MongoMucConfigBuilder.this.fieldMapping);
 		}
 
+		private DBObject build() {
+			return BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, this.group.asStringWithBare()).get();
+		}
+
 		public <T> T pull(String key, Class<T> clazz) {
 			return this.configs != null ? clazz.cast(this.configs.get(key)) : null;
+		}
+
+		public MucConfig destory() {
+			MongoMucConfigBuilder.this.config.collection().remove(this.build());
+			return this;
 		}
 
 		public MucConfig push(Fields fields) {
@@ -153,7 +162,7 @@ public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 		public MucConfig push(Field<?> field) {
 			MucConfigParser parser = MongoMucConfigBuilder.this.parsers.get(field.getName());
 			if (parser != null) {
-				MongoMucConfigBuilder.this.config.collection().update(BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, this.group.asStringWithBare()).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + parser.field(), parser.parse(field)).get()).get());
+				MongoMucConfigBuilder.this.config.collection().update(this.build(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + parser.field(), parser.parse(field)).get()).get());
 			}
 			return this;
 		}

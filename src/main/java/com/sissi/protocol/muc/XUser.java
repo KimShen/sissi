@@ -29,11 +29,13 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 
 	private Set<ItemStatus> statuses;
 
-	private XInvite invite;
+	private Invite invite;
 
-	private XDecline decline;
+	private Decline decline;
 
-	private XPassword password;
+	private Destory destory;
+
+	private Password password;
 
 	private boolean hidden;
 
@@ -112,7 +114,7 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 		return this.item;
 	}
 
-	public XUser invite(XInvite invite) {
+	public XUser invite(Invite invite) {
 		this.invite = invite;
 		return this;
 	}
@@ -122,12 +124,12 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 	}
 
 	@XmlElement
-	public XInvite getInvite() {
+	public Invite getInvite() {
 		return this.invite;
 	}
 
 	@XmlElement
-	public XDecline getDecline() {
+	public Decline getDecline() {
 		return this.decline;
 	}
 
@@ -136,17 +138,27 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 	}
 
 	@XmlElement
-	public XPassword getPassword() {
+	public Password getPassword() {
 		return this.password;
 	}
 
 	public XUser password(String password) {
-		this.password = password != null ? new XPassword(password) : null;
+		this.password = password != null ? new Password(password) : null;
 		return this;
 	}
 
 	public boolean password() {
 		return this.getPassword() != null;
+	}
+
+	public XUser destory(Destory destory) {
+		this.destory = destory;
+		return this;
+	}
+
+	@XmlElement
+	public Destory getDestory() {
+		return destory;
 	}
 
 	@XmlElements({ @XmlElement(name = ItemStatus.NAME, type = ItemStatus.class) })
@@ -181,14 +193,14 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 	@Override
 	public void set(String localName, Object ob) {
 		switch (localName) {
-		case XInvite.NAME:
-			this.invite = XInvite.class.cast(ob);
+		case Invite.NAME:
+			this.invite = Invite.class.cast(ob);
 			return;
-		case XDecline.NAME:
-			this.decline = XDecline.class.cast(ob);
+		case Decline.NAME:
+			this.decline = Decline.class.cast(ob);
 			return;
-		case XPassword.NAME:
-			this.password = XPassword.class.cast(ob);
+		case Password.NAME:
+			this.password = Password.class.cast(ob);
 			return;
 		}
 	}

@@ -10,7 +10,7 @@ public class Code321MucStatusJudger implements MucStatusJudger {
 
 	@Override
 	public MucStatus judege(MucStatus status) {
-		return status.getItem().refuse() ? status.add("321") : status;
+		return status.getItem().refuse() && status.contain("201") ? status.add("321") : status;
 	}
 
 }
