@@ -27,6 +27,7 @@
 	<import resource="config-in-iq-disco.xml" />
 	<import resource="config-in-iq-version.xml" />
 	<import resource="config-in-iq-session.xml" />
+	<import resource="config-in-iq-private.xml" />
 	<import resource="config-in-iq-register.xml" />
 	<import resource="config-in-iq-sharedgroup.xml" />
 	<import resource="config-in-iq-register-muc.xml" />

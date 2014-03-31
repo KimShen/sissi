@@ -15,7 +15,6 @@
 		<constructor-arg ref="persistent.message" />
 	</bean>
 	<bean id="message.pro.persistent" class="com.sissi.pipeline.in.message.MessagePersistentProcessor" parent="global.pro.proxy">
-		<constructor-arg index="0" value="${pipeline.muc.log}" />
 		<constructor-arg ref="persistent.message" />
 	</bean>
 	<bean id="message.pro.2fan" class="com.sissi.pipeline.in.message.Message2FanProcessor" parent="global.pro.proxy" />

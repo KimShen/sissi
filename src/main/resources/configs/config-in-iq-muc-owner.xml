@@ -28,14 +28,14 @@
 	<bean id="muc.pro.owner.set.destory" class="com.sissi.pipeline.in.iq.muc.owner.MucOwnerSetDestoryProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
-	<bean id="muc.pro.owner.set.destory.offline" class="com.sissi.pipeline.in.iq.muc.owner.MucOwnerSetDestoryLeaveProcessor" parent="global.pro.proxy">
+	<bean id="muc.pro.owner.set.destory.leave" class="com.sissi.pipeline.in.iq.muc.owner.MucOwnerSetDestoryLeaveProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="muc.pro.owner.set.destory.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="muc.pro.owner.check" />
-				<ref bean="muc.pro.owner.set.destory.offline" />
+				<ref bean="muc.pro.owner.set.destory.leave" />
 				<ref bean="muc.pro.owner.set.destory" />
 				<ref bean="iq.pro.result.stop" />
 			</util:list>

@@ -60,6 +60,7 @@
 				<ref bean="time.condition" />
 				<ref bean="version.condition" />
 				<ref bean="session.condition" />
+				<ref bean="private.condition" />
 				<ref bean="register.condition" />
 				<ref bean="disco.condition.info" />
 				<ref bean="disco.condition.items" />

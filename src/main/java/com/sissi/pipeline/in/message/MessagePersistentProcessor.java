@@ -12,19 +12,14 @@ public class MessagePersistentProcessor extends ProxyProcessor {
 
 	private final PersistentElementBox persistentElementBox;
 
-	private final boolean log;
-
-	public MessagePersistentProcessor(boolean log, PersistentElementBox persistentElementBox) {
+	public MessagePersistentProcessor(PersistentElementBox persistentElementBox) {
 		super();
-		this.log = log;
 		this.persistentElementBox = persistentElementBox;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		if (this.log) {
-			this.persistentElementBox.push(protocol.parent().setFrom(context.jid()));
-		}
+		this.persistentElementBox.push(protocol.parent().setFrom(context.jid()));
 		return true;
 	}
 }
