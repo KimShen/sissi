@@ -17,7 +17,7 @@ import com.sissi.ucenter.muc.MucConfigBuilder;
  */
 public class PresenceMucCheckPasswordProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(NotAuthorized.DETAIL_ELEMENT);
+	private final Error error = new ServerError().setCode("401").setType(ProtocolType.AUTH).add(NotAuthorized.DETAIL_ELEMENT);
 
 	private final MucConfigBuilder mucConfigBuilder;
 

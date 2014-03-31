@@ -278,17 +278,18 @@
 	</bean>
 	<bean id="disco.condition.info.2muc.service" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.ToProxyMatcher">
-				<constructor-arg index="0" value="com.sissi.protocol.iq.disco.DiscoInfo" />
-				<constructor-arg index="1" value="${global.domain.muc}" />
+			<bean class="com.sissi.pipeline.in.iq.disco.muc.DiscoInfoMucActionMatcher">
+				<constructor-arg ref="global.jid" />
+				<constructor-arg value="true" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="disco.pro.info.2muc.server" />
 	</bean>
 	<bean id="disco.condition.info.2muc.nickname" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.iq.disco.muc.DiscoInfoMucNodeMatcher">
+			<bean class="com.sissi.pipeline.in.iq.disco.muc.DiscoInfoMucActionMatcher">
 				<constructor-arg ref="global.jid" />
+				<constructor-arg value="false" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="disco.pro.info.2muc.nickname" />

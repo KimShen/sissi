@@ -16,7 +16,7 @@ import com.sissi.ucenter.muc.MucConfigBuilder;
  */
 public class PresenceMucCheckNicknameLockedProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAcceptable.DETAIL);
+	private final Error error = new ServerError().setCode("409").setType(ProtocolType.CANCEL).add(NotAcceptable.DETAIL);
 
 	private final MucConfigBuilder mucConfigBuilder;
 

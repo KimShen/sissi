@@ -14,7 +14,7 @@ import com.sissi.ucenter.muc.RelationMucMapping;
  */
 public class PresenceMucCheckRelationProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
+	private final Error error = new ServerError().setCode("407").setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
 	private final RelationMucMapping relationMucMapping;
 

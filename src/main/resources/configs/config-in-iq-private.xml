@@ -8,7 +8,7 @@
 	<bean id="private.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
 			<bean class="com.sissi.pipeline.in.ClassMatcher">
-				<constructor-arg value="com.sissi.protocol.iq.pri.Pri" />
+				<constructor-arg value="com.sissi.protocol.iq.privated.Privated" />
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="iq.pro.result.stop.original" />

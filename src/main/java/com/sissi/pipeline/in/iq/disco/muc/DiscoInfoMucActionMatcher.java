@@ -9,13 +9,16 @@ import com.sissi.protocol.iq.disco.DiscoInfo;
 /**
  * @author kim 2014年3月12日
  */
-public class DiscoInfoMucNodeMatcher extends ClassMatcher {
+public class DiscoInfoMucActionMatcher extends ClassMatcher {
 
 	private final JIDBuilder jidBuilder;
 
-	public DiscoInfoMucNodeMatcher(JIDBuilder jidBuilder) {
+	private final boolean bare;
+
+	public DiscoInfoMucActionMatcher(JIDBuilder jidBuilder, boolean bare) {
 		super(DiscoInfo.class);
 		this.jidBuilder = jidBuilder;
+		this.bare = bare;
 	}
 
 	public boolean match(Protocol protocol) {
@@ -23,6 +26,6 @@ public class DiscoInfoMucNodeMatcher extends ClassMatcher {
 	}
 
 	private boolean support(JID jid) {
-		return jid.isGroup() && !jid.isBare();
+		return jid.isGroup() && jid.isBare() == this.bare;
 	}
 }

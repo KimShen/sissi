@@ -15,7 +15,7 @@ import com.sissi.ucenter.muc.MucConfigBuilder;
  */
 public class PresenceMucCheckCountProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.WAIT).add(ServiceUnavailable.DETAIL);
+	private final Error error = new ServerError().setCode("503").setType(ProtocolType.WAIT).add(ServiceUnavailable.DETAIL);
 
 	private final MucConfigBuilder mucConfigBuilder;
 

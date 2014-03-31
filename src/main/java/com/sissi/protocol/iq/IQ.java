@@ -22,7 +22,7 @@ import com.sissi.protocol.iq.disco.DiscoItems;
 import com.sissi.protocol.iq.last.Last;
 import com.sissi.protocol.iq.last.Last.LastSeconds;
 import com.sissi.protocol.iq.ping.Ping;
-import com.sissi.protocol.iq.pri.Pri;
+import com.sissi.protocol.iq.privated.Privated;
 import com.sissi.protocol.iq.register.Register;
 import com.sissi.protocol.iq.roster.Roster;
 import com.sissi.protocol.iq.session.Session;
@@ -69,7 +69,7 @@ public class IQ extends Protocol implements Collector {
 		return ProtocolType.parse(this.getType()) != ProtocolType.NONE;
 	}
 
-	@XmlElements({ @XmlElement(name = Pri.NAME, type = Pri.class), @XmlElement(name = Unique.NAME, type = Unique.class), @XmlElement(name = Sharedgroup.NAME, type = Sharedgroup.class), @XmlElement(name = Owner.NAME, type = Owner.class), @XmlElement(name = XMucAdmin.NAME, type = XMucAdmin.class), @XmlElement(name = ServerTime.NAME, type = ServerTime.class), @XmlElement(name = Client.NAME, type = Client.class), @XmlElement(name = Time.NAME, type = Time.class), @XmlElement(name = Last.NAME, type = LastSeconds.class), @XmlElement(name = Ping.NAME, type = Ping.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = DiscoInfo.NAME, type = DiscoInfo.class), @XmlElement(name = DiscoItems.NAME, type = DiscoItems.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
+	@XmlElements({ @XmlElement(name = Privated.NAME, type = Privated.class), @XmlElement(name = Unique.NAME, type = Unique.class), @XmlElement(name = Sharedgroup.NAME, type = Sharedgroup.class), @XmlElement(name = Owner.NAME, type = Owner.class), @XmlElement(name = XMucAdmin.NAME, type = XMucAdmin.class), @XmlElement(name = ServerTime.NAME, type = ServerTime.class), @XmlElement(name = Client.NAME, type = Client.class), @XmlElement(name = Time.NAME, type = Time.class), @XmlElement(name = Last.NAME, type = LastSeconds.class), @XmlElement(name = Ping.NAME, type = Ping.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = DiscoInfo.NAME, type = DiscoInfo.class), @XmlElement(name = DiscoItems.NAME, type = DiscoItems.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
 	public List<Protocol> getProtocols() {
 		return this.protocols;
 	}

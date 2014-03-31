@@ -15,7 +15,7 @@ import com.sissi.ucenter.muc.MucConfigBuilder;
  */
 public class PresenceMucCheckActivateProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
+	private final Error error = new ServerError().setCode("405").setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
 
 	private final MucConfigBuilder mucConfigBuilder;
 

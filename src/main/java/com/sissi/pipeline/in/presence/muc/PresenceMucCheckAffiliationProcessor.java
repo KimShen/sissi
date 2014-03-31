@@ -15,7 +15,7 @@ import com.sissi.ucenter.muc.MucConfigBuilder;
  */
 public class PresenceMucCheckAffiliationProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(RegistrationRequired.DETAIL);
+	private final Error error = new ServerError().setCode("407").setType(ProtocolType.AUTH).add(RegistrationRequired.DETAIL);
 
 	private final MucConfigBuilder mucConfigBuilder;
 
