@@ -88,6 +88,11 @@ public class Message extends Protocol implements Collector {
 		return this.getBody() != null;
 	}
 
+	public Message body(String body) {
+		this.body = body != null ? new Body(body) : null;
+		return this;
+	}
+
 	public Message setBody(Body body) {
 		this.body = body;
 		return this;

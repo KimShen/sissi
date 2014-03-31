@@ -25,7 +25,7 @@ public class PersistentMessageMuc extends PersistentMessage {
 	}
 
 	protected boolean isSupportMessage(Message message) {
-		return message.hasContent() && message.type(MessageType.GROUPCHAT);
+		return message.body() && message.type(MessageType.GROUPCHAT);
 	}
 
 	protected Delay delay(Map<String, Object> element, Message message) {

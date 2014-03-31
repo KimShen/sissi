@@ -14,6 +14,15 @@ public class Continue {
 
 	private String thread;
 
+	public Continue() {
+		super();
+	}
+
+	public Continue(String thread) {
+		super();
+		this.thread = thread;
+	}
+
 	@XmlAttribute
 	public String getThread() {
 		return thread;

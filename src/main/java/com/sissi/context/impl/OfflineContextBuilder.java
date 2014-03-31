@@ -189,7 +189,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public JIDContext write(Element element) {
-			OfflineContextBuilder.this.output.output(this, element);
+			OfflineContextBuilder.this.output.output(this, element.setTo(this.jid.asString()));
 			return this;
 		}
 

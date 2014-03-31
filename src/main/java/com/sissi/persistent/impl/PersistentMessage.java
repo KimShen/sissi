@@ -7,7 +7,6 @@ import com.sissi.commons.Extracter;
 import com.sissi.context.JIDBuilder;
 import com.sissi.persistent.PersistentElementBox;
 import com.sissi.protocol.Element;
-import com.sissi.protocol.message.Body;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.message.MessageType;
 import com.sissi.protocol.offline.Delay;
@@ -28,7 +27,7 @@ public class PersistentMessage extends PersistentProtocol {
 	}
 
 	protected boolean isSupportMessage(Message message) {
-		return message.hasContent() && message.type(MessageType.CHAT) && !message.received();
+		return message.body() && message.type(MessageType.CHAT) && !message.received();
 	}
 
 	protected Delay delay(Map<String, Object> element, Message message) {
@@ -43,15 +42,15 @@ public class PersistentMessage extends PersistentProtocol {
 	public Map<String, Object> write(Element element) {
 		Map<String, Object> entity = super.write(element);
 		Message message = Message.class.cast(element);
-		entity.put(this.body, message.getBody().getText());
 		entity.put(PersistentElementBox.fieldAck, message.request());
+		entity.put(this.body, message.hasContent() ? message.getBody().getText() : null);
 		return entity;
 	}
 
 	@Override
 	public Message read(Map<String, Object> element) {
 		Message message = Message.class.cast(super.read(element, new Message()));
-		return message.setBody(new Body(element.get(this.body).toString())).setDelay(this.delay(element, message)).request(Boolean.getBoolean(element.get(PersistentElementBox.fieldAck).toString()));
+		return message.body(super.toString(element, this.body)).setDelay(this.delay(element, message)).request(Boolean.getBoolean(element.get(PersistentElementBox.fieldAck).toString()));
 	}
 
 	public boolean isSupport(Element element) {

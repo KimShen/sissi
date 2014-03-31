@@ -63,7 +63,7 @@ abstract class PersistentProtocol implements PersistentElement {
 		return this.support == element.getClass();
 	}
 
-	private String toString(Map<String, Object> element, String key) {
+	protected String toString(Map<String, Object> element, String key) {
 		Object value = element.get(key);
 		return value != null ? value.toString() : null;
 	}

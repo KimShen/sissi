@@ -46,9 +46,27 @@ public class Invite implements Collector {
 		return this;
 	}
 
+	public String reason() {
+		return this.reason != null ? this.reason.getText() : null;
+	}
+
+	public Invite reason(String reason) {
+		this.reason = reason != null ? new Reason(reason) : null;
+		return this;
+	}
+
 	@XmlElement
 	public Reason getReason() {
 		return this.reason;
+	}
+
+	public String continued() {
+		return this.thread != null ? this.thread.getThread() : null;
+	}
+	
+	public Invite continued(String thread) {
+		this.thread = thread != null ? new Continue(thread) : null;
+		return this;
 	}
 
 	@XmlElement
