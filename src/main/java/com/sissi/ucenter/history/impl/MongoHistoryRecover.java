@@ -12,7 +12,7 @@ import com.sissi.persistent.PersistentElement;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.message.MessageType;
-import com.sissi.protocol.muc.History.HistoryDirection;
+import com.sissi.protocol.offline.History.HistoryDirection;
 import com.sissi.ucenter.history.HistoryQuery;
 import com.sissi.ucenter.history.HistoryRecover;
 

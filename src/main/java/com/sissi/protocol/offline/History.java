@@ -1,4 +1,4 @@
-package com.sissi.protocol.muc;
+package com.sissi.protocol.offline;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,13 +7,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.Trace;
+import com.sissi.protocol.message.Message;
+import com.sissi.protocol.muc.XMuc;
 import com.sissi.read.Metadata;
 import com.sissi.ucenter.history.HistoryQuery;
 
 /**
  * @author kim 2014年2月22日
  */
-@Metadata(uri = XMuc.XMLNS, localName = History.NAME)
+@Metadata(uri = { Message.XMLNS, XMuc.XMLNS }, localName = History.NAME)
 public class History implements HistoryQuery {
 
 	private final static Log log = LogFactory.getLog(History.class);

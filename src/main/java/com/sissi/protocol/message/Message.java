@@ -12,6 +12,7 @@ import com.sissi.protocol.iq.data.XData;
 import com.sissi.protocol.iq.data.XField;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.offline.Delay;
+import com.sissi.protocol.offline.History;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
 
@@ -40,6 +41,8 @@ public class Message extends Protocol implements Collector {
 
 	private Subject subject;
 
+	private History history;
+
 	private AckRequest request;
 
 	private AckReceived received;
@@ -50,6 +53,11 @@ public class Message extends Protocol implements Collector {
 
 	public Message setType(MessageType type) {
 		super.setType(type.toString());
+		return this;
+	}
+
+	private Message setHistory(History history) {
+		this.history = history;
 		return this;
 	}
 
@@ -210,6 +218,14 @@ public class Message extends Protocol implements Collector {
 		return this.received;
 	}
 
+	public boolean history() {
+		return this.getHistory() != null;
+	}
+
+	public History getHistory() {
+		return this.history;
+	}
+
 	public boolean validLoop() {
 		return !this.received() || !this.request();
 	}
@@ -239,6 +255,9 @@ public class Message extends Protocol implements Collector {
 			return;
 		case Subject.NAME:
 			this.setSubject(Subject.class.cast(ob));
+			return;
+		case History.NAME:
+			this.setHistory(History.class.cast(ob));
 			return;
 		case AckRequest.NAME:
 			this.setRequest(AckRequest.class.cast(ob));

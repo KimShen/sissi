@@ -3,6 +3,7 @@ package com.sissi.protocol.muc;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.protocol.offline.History;
 import com.sissi.protocol.presence.X;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;

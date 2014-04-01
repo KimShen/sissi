@@ -172,7 +172,7 @@
 		<constructor-arg ref="ucenter.muc.judger" />
 	</bean>
 	<bean id="ucenter.muc.broadcast.invite" class="com.sissi.ucenter.muc.impl.InviteMucAffiliationBroadcast">
-		<constructor-arg ref="message.pro.muc.2invite.chained" />
+		<constructor-arg ref="message.pro.muc.invite.chained" />
 	</bean>
 	<bean id="ucenter.muc.broadcast" class="com.sissi.ucenter.muc.impl.ChainedMucAffiliationBroadcast">
 		<constructor-arg>

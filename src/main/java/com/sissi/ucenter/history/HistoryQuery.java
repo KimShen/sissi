@@ -1,6 +1,6 @@
 package com.sissi.ucenter.history;
 
-import com.sissi.protocol.muc.History.HistoryDirection;
+import com.sissi.protocol.offline.History.HistoryDirection;
 
 /**
  * @author kim 2014年3月6日
