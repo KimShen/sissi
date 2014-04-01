@@ -21,6 +21,8 @@ public interface MucConfig {
 
 	public final static String PASSWORD = "PASSWORD";
 
+	public final static String PERSISTENT = "PERSISTENT";
+
 	public final static String ACTIVATE_JION = "ACTIVATE_JOIN";
 
 	public final static String ACTIVATE_CONFIG = "ACTIVATE_CONFIG";

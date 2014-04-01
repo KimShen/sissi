@@ -70,6 +70,7 @@
 				<bean class="com.sissi.ucenter.muc.impl.SubjectMucConfigParser" />
 				<bean class="com.sissi.ucenter.muc.impl.ActivateMucConfigParser" />
 				<bean class="com.sissi.ucenter.muc.impl.PasswordMucConfigParser" />
+				<bean class="com.sissi.ucenter.muc.impl.PersistentMucConfigParser" />
 				<bean class="com.sissi.ucenter.muc.impl.AffiliationMucConfigParser" />
 			</util:list>
 		</constructor-arg>
@@ -85,6 +86,7 @@
 				<bean class="com.sissi.ucenter.muc.impl.RegisterMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.NicknameMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.PasswordMucConfigArbitrament" />
+				<bean class="com.sissi.ucenter.muc.impl.PersistentMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.HiddenNativeMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.HiddenComputeMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.ActivateJoinMucConfigArbitrament" />
