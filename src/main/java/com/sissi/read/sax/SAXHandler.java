@@ -17,6 +17,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.sissi.commons.Trace;
 import com.sissi.read.Collector;
+import com.sissi.read.Counter;
 import com.sissi.read.Mapping;
 
 /**
@@ -45,11 +46,14 @@ public class SAXHandler extends DefaultHandler {
 
 	private final Mapping mapping;
 
+	private final Counter counter;
+
 	private Object current;
 
-	public SAXHandler(Mapping mapping, SAXFuture future) {
+	public SAXHandler(Mapping mapping, SAXFuture future, Counter counter) {
 		super();
 		this.future = future;
+		this.counter = counter;
 		this.mapping = mapping;
 	}
 
@@ -127,6 +131,7 @@ public class SAXHandler extends DefaultHandler {
 	}
 
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+		this.counter.recount();
 		log.debug("Process uri: " + uri + " localName: " + localName);
 		if (this.generateNode(attributes, uri, localName)) {
 			this.propertyCopy(attributes, this.stack.getFirst());

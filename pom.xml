@@ -19,7 +19,8 @@
 		<maven.global.domain.muc>conference.${maven.global.domain}</maven.global.domain.muc>
 		<maven.global.port.main>5222</maven.global.port.main>
 		<maven.global.port.exchanger>6222</maven.global.port.exchanger>
-		<maven.global.jid.length>80</maven.global.jid.length>
+		<maven.global.jid.maxlength>80</maven.global.jid.maxlength>
+		<maven.global.xml.maxlength>20000</maven.global.xml.maxlength>
 		<maven.global.idle.all>120</maven.global.idle.all>
 		<maven.global.idle.read>120</maven.global.idle.read>
 		<maven.global.idle.write>120</maven.global.idle.write>

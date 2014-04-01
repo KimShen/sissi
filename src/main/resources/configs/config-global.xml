@@ -20,7 +20,7 @@
 	</bean>
 
 	<bean id="global.jid" class="com.sissi.context.impl.DomainJIDBuilder">
-		<constructor-arg value="${global.jid.length}" />
+		<constructor-arg value="${global.jid.maxlength}" />
 		<constructor-arg value="${global.domain.muc}" />
 	</bean>
 
@@ -63,6 +63,7 @@
 	<bean id="global.reader" class="com.sissi.read.sax.SAXReader">
 		<constructor-arg ref="thread.executor" />
 		<constructor-arg ref="global.counter" />
+		<constructor-arg index="0" value="${global.xml.maxlength}" />
 	</bean>
 
 	<bean id="global.output.block" abstract="true">
