@@ -5,17 +5,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.sissi.read.Metadata;
 
 /**
- * @author kim 2014年3月3日
+ * @author kim 2014年4月1日
  */
-@Metadata(uri = Ack.XMLNS, localName = AckReceived.NAME)
+@Metadata(uri = Ack.XMLNS, localName = AckReaded.NAME)
 @XmlRootElement
-public class AckReceived extends Ack {
+public class AckReaded extends Ack {
 
-	public final static String NAME = "received";
+	public final static String NAME = "readed";
 
 	private String id;
 
-	public AckReceived setId(String id) {
+	public AckReaded setId(String id) {
 		this.id = id;
 		return this;
 	}

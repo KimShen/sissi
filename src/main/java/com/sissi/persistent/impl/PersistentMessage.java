@@ -27,7 +27,7 @@ public class PersistentMessage extends PersistentProtocol {
 	}
 
 	protected boolean isSupportMessage(Message message) {
-		return message.body() && message.type(MessageType.CHAT) && !message.received();
+		return message.body() && message.type(MessageType.CHAT) && !message.received() && !message.readed();
 	}
 
 	protected Delay delay(Map<String, Object> element, Message message) {

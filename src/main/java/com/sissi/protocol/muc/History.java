@@ -24,12 +24,19 @@ public class History implements HistoryQuery {
 
 	private String maxstanzas;
 
+	private String direction;
+
 	private String seconds;
 
 	private String since;
 
 	public History setMaxstanzas(String maxstanzas) {
 		this.maxstanzas = maxstanzas;
+		return this;
+	}
+
+	public History setDirection(String direction) {
+		this.direction = direction;
 		return this;
 	}
 
@@ -56,6 +63,23 @@ public class History implements HistoryQuery {
 			log.debug(e.toString());
 			Trace.trace(log, e);
 			return def;
+		}
+	}
+
+	public boolean direction(HistoryDirection direction) {
+		return HistoryDirection.parse(this.direction) == direction;
+	}
+
+	public enum HistoryDirection {
+
+		UP, DOWN;
+
+		public static HistoryDirection parse(String type) {
+			try {
+				return type == null ? DOWN : HistoryDirection.valueOf(type.toUpperCase());
+			} catch (Exception e) {
+				return DOWN;
+			}
 		}
 	}
 }

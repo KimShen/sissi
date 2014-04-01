@@ -40,6 +40,8 @@ public class Message extends Protocol implements Collector {
 
 	private Subject subject;
 
+	private AckReaded readed;
+
 	private AckRequest request;
 
 	private AckReceived received;
@@ -50,6 +52,21 @@ public class Message extends Protocol implements Collector {
 
 	public Message setType(MessageType type) {
 		super.setType(type.toString());
+		return this;
+	}
+
+	private Message setRequest(AckRequest request) {
+		this.request = request;
+		return this;
+	}
+
+	private Message setReceived(AckReceived received) {
+		this.received = received;
+		return this;
+	}
+
+	private Message setReaded(AckReaded readed) {
+		this.readed = readed;
 		return this;
 	}
 
@@ -178,6 +195,15 @@ public class Message extends Protocol implements Collector {
 		return this.getUser() != null && this.getUser().decline();
 	}
 
+	public boolean readed() {
+		return this.getReaded() != null;
+	}
+
+	@XmlElement(name = AckReaded.NAME)
+	public AckReaded getReaded() {
+		return this.readed;
+	}
+
 	public boolean request() {
 		return this.getRequest() != null;
 	}
@@ -191,11 +217,6 @@ public class Message extends Protocol implements Collector {
 		return this.request;
 	}
 
-	public Message setRequest(AckRequest request) {
-		this.request = request;
-		return this;
-	}
-
 	public boolean received() {
 		return this.getReceived() != null;
 	}
@@ -203,11 +224,6 @@ public class Message extends Protocol implements Collector {
 	@XmlElement(name = AckReceived.NAME)
 	public AckReceived getReceived() {
 		return this.received;
-	}
-
-	public Message setReceived(AckReceived received) {
-		this.received = received;
-		return this;
 	}
 
 	public boolean validLoop() {
@@ -239,6 +255,9 @@ public class Message extends Protocol implements Collector {
 			return;
 		case Subject.NAME:
 			this.setSubject(Subject.class.cast(ob));
+			return;
+		case AckReaded.NAME:
+			this.setReaded(AckReaded.class.cast(ob));
 			return;
 		case AckRequest.NAME:
 			this.setRequest(AckRequest.class.cast(ob));

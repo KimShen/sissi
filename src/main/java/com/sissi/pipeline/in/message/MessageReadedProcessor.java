@@ -12,22 +12,22 @@ import com.sissi.protocol.message.Message;
 /**
  * @author kim 2014年3月3日
  */
-public class MessageReceivedProcessor extends ProxyProcessor {
+public class MessageReadedProcessor extends ProxyProcessor {
 
 	private final PersistentElementBox persistentElementBox;
 
-	public MessageReceivedProcessor(PersistentElementBox persistentElementBox) {
+	public MessageReadedProcessor(PersistentElementBox persistentElementBox) {
 		super();
 		this.persistentElementBox = persistentElementBox;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return protocol.cast(Message.class).received() ? this.writeAndReturn(context, protocol) : true;
+		return protocol.cast(Message.class).readed() ? this.writeAndReturn(context, protocol) : true;
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		this.persistentElementBox.peek(Extracter.asMap(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_CLASS, Message.class.getSimpleName()).add(PersistentElementBox.fieldId, protocol.cast(Message.class).getReceived().getId()).get()), Extracter.asMap(BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(PersistentElementBox.fieldAck, true).get()).get()));
-		return false;
+		this.persistentElementBox.peek(Extracter.asMap(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_CLASS, Message.class.getSimpleName()).add(PersistentElementBox.fieldId, protocol.cast(Message.class).getReceived().getId()).get()), Extracter.asMap(BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(PersistentElementBox.fieldReaded, true).get()).get()));
+		return true;
 	}
 }

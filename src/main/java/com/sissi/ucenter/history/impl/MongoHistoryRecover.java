@@ -12,6 +12,7 @@ import com.sissi.persistent.PersistentElement;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.message.MessageType;
+import com.sissi.protocol.muc.History.HistoryDirection;
 import com.sissi.ucenter.history.HistoryQuery;
 import com.sissi.ucenter.history.HistoryRecover;
 
@@ -44,6 +45,6 @@ public class MongoHistoryRecover implements HistoryRecover {
 	}
 
 	private DBObject build(JID group, HistoryQuery query) {
-		return BasicDBObjectBuilder.start().add(MongoConfig.FIELD_TO, group.asStringWithBare()).add(MongoConfig.FIELD_CLASS, Message.class.getSimpleName()).add(MongoConfig.FIELD_TYPE, MessageType.GROUPCHAT.toString()).add(MongoConfig.FIELD_TIMESTAMP, BasicDBObjectBuilder.start("$gt", query.since(this.threshold.since(), this.def.since())).get()).get();
+		return BasicDBObjectBuilder.start().add(MongoConfig.FIELD_TO, group.asStringWithBare()).add(MongoConfig.FIELD_CLASS, Message.class.getSimpleName()).add(MongoConfig.FIELD_TYPE, MessageType.GROUPCHAT.toString()).add(MongoConfig.FIELD_TIMESTAMP, BasicDBObjectBuilder.start(query.direction(HistoryDirection.DOWN) ? "$gte" : "$lte", query.since(this.threshold.since(), this.def.since())).get()).get();
 	}
 }

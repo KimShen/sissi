@@ -2,6 +2,7 @@ package com.sissi.persistent.impl;
 
 import java.util.Map;
 
+import com.sissi.config.MongoConfig;
 import com.sissi.context.JIDBuilder;
 import com.sissi.persistent.PersistentElementBox;
 import com.sissi.protocol.Element;
@@ -37,5 +38,9 @@ public class PersistentMessageMuc extends PersistentMessage {
 		Map<String, Object> entity = super.write(element);
 		entity.put(this.fieldItem, this.relationMucMapping.mapping(super.jidBuilder.build(element.getFrom())).jid().asString());
 		return entity;
+	}
+
+	public boolean isSupport(Map<String, Object> storage) {
+		return super.isSupport(storage) && MessageType.GROUPCHAT.equals(super.toString(storage, MongoConfig.FIELD_TYPE));
 	}
 }

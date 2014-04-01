@@ -44,4 +44,8 @@ public class PersistentMessageInvite extends PersistentMessage {
 		Message message = Message.class.cast(super.read(element, new Message()));
 		return message.setUser(new XUser().invite(new Invite().reason(super.toString(element, this.reason)).continued(super.toString(element, this.continued)).setFrom(element.get(this.invite).toString()))).setDelay(super.delay(element, message)).request(Boolean.getBoolean(element.get(PersistentElementBox.fieldAck).toString()));
 	}
+
+	public boolean isSupport(Map<String, Object> storage) {
+		return super.isSupport(storage) && this.invite.equals(super.toString(storage, MongoConfig.FIELD_TYPE));
+	}
 }
