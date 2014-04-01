@@ -13,6 +13,6 @@ public class MessageCheckBodyProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		Message message = Message.class.cast(protocol);
-		return (message.getBody() != null && message.getBody().hasContent()) || message.received() || message.readed();
+		return (message.getBody() != null && message.getBody().hasContent()) || message.received();
 	}
 }

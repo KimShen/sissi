@@ -27,7 +27,7 @@ public class PersistentMessage extends PersistentProtocol {
 	}
 
 	protected boolean isSupportMessage(Message message) {
-		return message.body() && message.type(MessageType.CHAT) && !message.received() && !message.readed();
+		return message.body() && message.type(MessageType.CHAT) && !message.received();
 	}
 
 	protected Delay delay(Map<String, Object> element, Message message) {
@@ -42,7 +42,7 @@ public class PersistentMessage extends PersistentProtocol {
 	public Map<String, Object> write(Element element) {
 		Map<String, Object> entity = super.write(element);
 		Message message = Message.class.cast(element);
-		entity.put(PersistentElementBox.fieldAck, message.request());
+		entity.put(PersistentElementBox.fieldAck, !message.request());
 		entity.put(this.body, message.hasContent() ? message.getBody().getText() : null);
 		return entity;
 	}

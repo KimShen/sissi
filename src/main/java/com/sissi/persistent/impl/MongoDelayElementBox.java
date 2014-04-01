@@ -22,7 +22,7 @@ import com.sissi.protocol.Element;
  */
 public class MongoDelayElementBox implements PersistentElementBox, Output {
 
-	private final DBObject[] activate = new DBObject[] { BasicDBObjectBuilder.start(MongoConfig.FIELD_ACTIVATE, true).get(), BasicDBObjectBuilder.start(PersistentElementBox.fieldAck, true).get() };
+	private final DBObject[] activate = new DBObject[] { BasicDBObjectBuilder.start(MongoConfig.FIELD_ACTIVATE, true).get(), BasicDBObjectBuilder.start(PersistentElementBox.fieldAck, false).get() };
 
 	private final DBObject support;
 
