@@ -7,7 +7,7 @@ import com.sissi.protocol.Protocol;
 /**
  * @author kim 2014年3月8日
  */
-public class MessageMuc2ApplyResponseProcessor extends ProxyProcessor {
+public class MessageMuc2ApplyCancelProcessor extends ProxyProcessor {
 
 	// private final XMuc muc = new XMuc();
 

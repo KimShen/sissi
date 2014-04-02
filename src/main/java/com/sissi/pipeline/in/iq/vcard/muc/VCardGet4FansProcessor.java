@@ -1,5 +1,6 @@
 package com.sissi.pipeline.in.iq.vcard.muc;
 
+import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.iq.vcard.VCardGetProcessor;
 import com.sissi.protocol.Protocol;
@@ -21,6 +22,7 @@ public class VCardGet4FansProcessor extends VCardGetProcessor {
 
 	@Override
 	protected VCard get(JIDContext context, Protocol protocol) {
-		return super.vcardContext.get(this.mapping.mapping(super.build(protocol.parent().getTo())).jid(), protocol.cast(VCard.class));
+		JID group = super.build(protocol.parent().getTo());
+		return super.vcardContext.get(group.resource(this.mapping.mapping(group).jid().asStringWithBare()), protocol.cast(VCard.class));
 	}
 }

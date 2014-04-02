@@ -64,6 +64,10 @@ public interface MongoConfig extends Config {
 	public final static String FIELD_TIMESTAMP = "timestamp";
 
 	public final static String FIELD_PERSISTENT = "persistent";
+	
+	public final static String FIELD_INFORMATION = "information";
+	
+	public final static String FIELD_INFORMATIONS = "informations";
 
 	public final static String FIELD_AFFILIATION = "affiliation";
 

@@ -10,7 +10,7 @@
 	</bean>
 	<bean id="vcard.pro.get.muc.4fans" class="com.sissi.pipeline.in.iq.vcard.muc.VCardGet4FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc" />
-		<constructor-arg ref="ucenter.vcard" />
+		<constructor-arg ref="ucenter.vcard.muc" />
 	</bean>
 	<bean id="vcard.pro.get.muc.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.vcard.get.muc" />

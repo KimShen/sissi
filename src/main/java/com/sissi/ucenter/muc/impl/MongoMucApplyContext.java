@@ -1,8 +1,11 @@
 package com.sissi.ucenter.muc.impl;
 
 import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DBObject;
+import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
 import com.sissi.config.MongoConfig;
+import com.sissi.context.JID;
 import com.sissi.ucenter.field.Fields;
 import com.sissi.ucenter.impl.MongoFieldContext;
 import com.sissi.ucenter.muc.MucApplyContext;
@@ -20,11 +23,13 @@ public class MongoMucApplyContext extends MongoFieldContext implements MucApplyC
 	}
 
 	@Override
-	public boolean apply(Fields fields) {
+	public boolean apply(JID from, JID to, Fields fields) {
+		DBObject entity = super.getEntities(fields, BasicDBObjectBuilder.start());
 		try {
-			return this.config.collection().save(super.getEntities(fields, BasicDBObjectBuilder.start()), WriteConcern.SAFE).getError() == null ? true : false;
-		} catch (Exception e) {
-			return false;
+			this.config.collection().update(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, to.asStringWithBare()).add(MongoConfig.FIELD_INFORMATIONS + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(MongoConfig.FIELD_INFORMATIONS + ".$." + MongoConfig.FIELD_INFORMATION, entity).get()).get(), true, false, WriteConcern.SAFE);
+		} catch (MongoException e) {
+			this.config.collection().update(BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, to.asStringWithBare()).get(), BasicDBObjectBuilder.start().add("$addToSet", BasicDBObjectBuilder.start(MongoConfig.FIELD_INFORMATIONS, BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, from.asStringWithBare()).add(MongoConfig.FIELD_ACTIVATE, System.currentTimeMillis()).add(MongoConfig.FIELD_INFORMATION, entity).get()).get()).get());
 		}
+		return true;
 	}
 }

@@ -13,14 +13,14 @@ import com.sissi.ucenter.muc.MucApplyContext;
 /**
  * @author kim 2014年3月8日
  */
-public class MessageMuc2ApplyResponseCheckJIDProcessor extends ProxyProcessor {
+public class MessageMuc2ApplyCheckRoleExistsProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(BadRequest.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		Message message = protocol.cast(Message.class);
-		return message.data(MucApplyContext.MUC_JID) ? true : this.writeAndReturn(context, protocol);
+		return message.data(MucApplyContext.MUC_JID) && message.data(MucApplyContext.MUC_ROLE) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

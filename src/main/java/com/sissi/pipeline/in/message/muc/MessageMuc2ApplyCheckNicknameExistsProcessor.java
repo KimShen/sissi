@@ -13,7 +13,7 @@ import com.sissi.ucenter.muc.MucApplyContext;
 /**
  * @author kim 2014年3月8日
  */
-public class MessageMuc2ApplyResponseCheckNicknameExistsProcessor extends ProxyProcessor {
+public class MessageMuc2ApplyCheckNicknameExistsProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(BadRequest.DETAIL);
 

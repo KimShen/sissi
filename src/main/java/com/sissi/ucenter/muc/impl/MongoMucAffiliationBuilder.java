@@ -38,7 +38,7 @@ public class MongoMucAffiliationBuilder implements MucAffiliationBuilder {
 		@Override
 		public MucAffiliation approve(JID jid, String affiliation) {
 			try {
-				BasicDBObjectBuilder entity = BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS + ".$." + MongoConfig.FIELD_AFFILIATION, affiliation);
+				BasicDBObjectBuilder entity = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_AFFILIATIONS + ".$." + MongoConfig.FIELD_AFFILIATION, affiliation);
 				if (ItemAffiliation.OWNER.equals(affiliation)) {
 					entity.add(MongoConfig.FIELD_CREATOR, jid.asStringWithBare());
 				}

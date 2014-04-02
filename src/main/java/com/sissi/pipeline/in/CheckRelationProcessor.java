@@ -21,7 +21,7 @@ abstract public class CheckRelationProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.free || this.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);
+		return this.free || context.jid().like(protocol.parent().getTo()) || this.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	protected boolean ourRelation(JIDContext context, Protocol protocol) {

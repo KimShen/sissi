@@ -10,14 +10,16 @@
 		<constructor-arg index="1" value="${mongo.db}" />
 		<constructor-arg index="2" value="${mongo.collection.muc}" />
 	</bean>
-	
+
 	<alias name="vcard.mongo.muc" alias="ucenter.vcard.muc" />
 	<bean id="vcard.mongo.muc" class="com.sissi.ucenter.muc.impl.MongoVCardContext">
 		<constructor-arg ref="global.jid" />
+		<constructor-arg ref="ucenter.vcard" />
 		<constructor-arg ref="ucenter.muc.config" />
 		<constructor-arg>
 			<util:list>
 				<bean class="com.sissi.ucenter.muc.impl.NicknameFieldParser" />
+				<bean class="com.sissi.ucenter.muc.impl.MucActivateFieldParser" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -48,7 +50,7 @@
 			<bean class="com.sissi.config.impl.MongoProxyConfig">
 				<constructor-arg ref="global.mongo" />
 				<constructor-arg index="1" value="${mongo.db}" />
-				<constructor-arg index="2" value="${mongo.collection.muc.apply}" />
+				<constructor-arg index="2" value="${mongo.collection.muc}" />
 			</bean>
 		</constructor-arg>
 	</bean>

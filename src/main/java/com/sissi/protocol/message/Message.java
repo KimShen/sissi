@@ -9,6 +9,7 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.iq.data.XData;
+import com.sissi.protocol.iq.data.XDataType;
 import com.sissi.protocol.iq.data.XField;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.offline.Delay;
@@ -176,6 +177,10 @@ public class Message extends Protocol implements Collector {
 
 	public boolean data(String name) {
 		return this.getData() != null && this.getData().findField(name, XField.class) != null;
+	}
+
+	public boolean dataType(String type) {
+		return this.getData() != null && this.getData().type(XDataType.parse(type));
 	}
 
 	public Message setData(XData x) {

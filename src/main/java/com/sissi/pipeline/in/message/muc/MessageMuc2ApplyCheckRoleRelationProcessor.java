@@ -17,7 +17,7 @@ import com.sissi.ucenter.muc.RelationMuc;
 /**
  * @author kim 2014年3月8日
  */
-public class MessageMuc2ApplyResponseCheckRoleRelationProcessor extends ProxyProcessor {
+public class MessageMuc2ApplyCheckRoleRelationProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
 

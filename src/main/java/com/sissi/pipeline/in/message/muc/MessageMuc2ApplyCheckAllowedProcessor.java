@@ -10,7 +10,7 @@ import com.sissi.ucenter.muc.MucApplyContext;
 /**
  * @author kim 2014年3月8日
  */
-public class MessageMuc2ApplyResponseCheckAllowedProcessor extends ProxyProcessor {
+public class MessageMuc2ApplyCheckAllowedProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

@@ -1,5 +1,6 @@
 package com.sissi.ucenter.muc;
 
+import com.sissi.context.JID;
 import com.sissi.ucenter.field.Fields;
 
 /**
@@ -15,5 +16,5 @@ public interface MucApplyContext {
 
 	public final static String MUC_REQUEST_ALLOW = "muc#request_allow";
 
-	public boolean apply(Fields fields);
+	public boolean apply(JID from, JID to, Fields fields);
 }

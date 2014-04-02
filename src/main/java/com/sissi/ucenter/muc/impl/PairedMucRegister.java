@@ -19,6 +19,7 @@ public class PairedMucRegister implements MucRegister {
 	private final XInput allowed = new XInput(XFieldType.BOOLEAN.toString(), null, OwnerConfig.REGISTER_ALLOW.toString(), "0");
 
 	@Override
+	//Convert XField to XInput
 	public <T extends Fields> T register(Fields source, T target) {
 		target.add(this.header);
 		for (Field<?> each : source) {

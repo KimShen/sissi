@@ -16,7 +16,7 @@
 		<constructor-arg ref="ucenter.muc.config.builder" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
-	<bean id="register.pro.check.muc.affiliation" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckAffiliationProcessor" parent="global.pro.proxy">
+	<bean id="register.pro.check.muc.relation" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckRelationProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="iq.pro.result.stop" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
@@ -25,12 +25,12 @@
 			<util:list>
 				<ref bean="register.pro.check.muc.allow" />
 				<ref bean="register.pro.check.muc.exists" />
-				<ref bean="register.pro.check.muc.affiliation" />
+				<ref bean="register.pro.check.muc.relation" />
 				<ref bean="register.pro.fields.muc" />
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="register.pro.store.muc" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucStoreProcessor">
+	<bean id="register.pro.store.muc" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucStoreProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.apply" />
 	</bean>
 	<bean id="register.pro.store.muc.broadcast" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucStoreBroadcastProcessor" parent="global.pro.proxy">
@@ -43,7 +43,7 @@
 			<util:list>
 				<ref bean="register.pro.check.muc.allow" />
 				<ref bean="register.pro.check.muc.exists" />
-				<ref bean="register.pro.check.muc.affiliation" />
+				<ref bean="register.pro.check.muc.relation" />
 				<ref bean="register.pro.store.muc.broadcast" />
 				<ref bean="register.pro.store.muc" />
 			</util:list>

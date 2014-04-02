@@ -4,17 +4,15 @@ import com.sissi.pipeline.in.ClassMatcher;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.message.MessageType;
+import com.sissi.protocol.muc.OwnerConfig;
 
 /**
  * @author kim 2014年3月18日
  */
-public class MessageMuc2ApplyMatcher extends ClassMatcher {
+public class MessageMuc2RegisterMatcher extends ClassMatcher {
 
-	private final String type;
-
-	public MessageMuc2ApplyMatcher(String type) {
+	public MessageMuc2RegisterMatcher() {
 		super(Message.class);
-		this.type = type;
 	}
 
 	public boolean match(Protocol protocol) {
@@ -22,6 +20,6 @@ public class MessageMuc2ApplyMatcher extends ClassMatcher {
 	}
 
 	private boolean isApply(Message message) {
-		return message.type(MessageType.NORMAL, MessageType.NONE) && message.dataType(this.type);
+		return message.type(MessageType.NORMAL, MessageType.NONE) && message.data(OwnerConfig.REGISTER_ALLOW.toString());
 	}
 }
