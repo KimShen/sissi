@@ -24,7 +24,7 @@
 	<bean id="global.pro.check.error.pong" class="com.sissi.pipeline.in.CheckErrorPongProcessor">
 		<constructor-arg ref="global.domains" />
 	</bean>
-	<bean id="global.pro.check.error.route" class="com.sissi.pipeline.in.CheckErrorRouteProcessor" parent="global.pro.proxy" />
+	<bean id="global.pro.check.error.ignore" class="com.sissi.pipeline.in.CheckErrorIgnoreProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.format" class="com.sissi.pipeline.in.CheckJIDMalformedProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.exists" class="com.sissi.pipeline.in.CheckJIDExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg value="true" />
@@ -37,7 +37,7 @@
 			<util:list>
 				<!-- Process protocol that type = error -->
 				<ref bean="global.pro.check.error.pong" />
-				<!-- <ref bean="global.pro.check.error.route" /> -->
+				<ref bean="global.pro.check.error.ignore" />
 				<!-- Assert legal JID format -->
 				<ref bean="global.pro.check.jid.format" />
 				<!-- Assert attribute "to" is localhost / domain / proxy or any exists jid -->

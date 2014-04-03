@@ -17,6 +17,10 @@ public class DiscoItems extends Disco {
 
 	public final static String XMLNS = "http://jabber.org/protocol/disco#items";
 
+	private final static String rooms = "http://jabber.org/protocol/muc#rooms";
+
+	private boolean node;
+
 	public DiscoItems() {
 		super(XMLNS);
 	}
@@ -24,5 +28,14 @@ public class DiscoItems extends Disco {
 	@XmlElements({ @XmlElement(name = Item.NAME, type = Item.class) })
 	public List<DiscoFeature> getDisco() {
 		return super.getDisco();
+	}
+
+	public boolean node() {
+		return this.node;
+	}
+
+	public DiscoItems setNode(String node) {
+		this.node = rooms.equals(node);
+		return this;
 	}
 }

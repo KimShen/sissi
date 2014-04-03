@@ -7,7 +7,7 @@ import com.sissi.protocol.ProtocolType;
 /**
  * @author kim 2014年2月21日
  */
-public class CheckErrorRouteProcessor extends ProxyProcessor {
+public class CheckErrorIgnoreProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
@@ -15,7 +15,6 @@ public class CheckErrorRouteProcessor extends ProxyProcessor {
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		super.findOne(super.build(protocol.getTo()), true).write(protocol.setFrom(context.jid()));
 		return false;
 	}
 }
