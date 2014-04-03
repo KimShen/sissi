@@ -13,12 +13,9 @@ public class DiscoInfoMucActionMatcher extends ClassMatcher {
 
 	private final JIDBuilder jidBuilder;
 
-	private final boolean bare;
-
-	public DiscoInfoMucActionMatcher(JIDBuilder jidBuilder, boolean bare) {
+	public DiscoInfoMucActionMatcher(JIDBuilder jidBuilder) {
 		super(DiscoInfo.class);
 		this.jidBuilder = jidBuilder;
-		this.bare = bare;
 	}
 
 	public boolean match(Protocol protocol) {
@@ -26,6 +23,6 @@ public class DiscoInfoMucActionMatcher extends ClassMatcher {
 	}
 
 	private boolean support(JID jid) {
-		return jid.isGroup() && jid.isBare() == this.bare;
+		return jid.isGroup() && jid.isBare();
 	}
 }

@@ -11,18 +11,38 @@
 		<constructor-arg index="2" value="${mongo.collection.muc}" />
 	</bean>
 
-	<alias name="vcard.mongo.muc" alias="ucenter.vcard.muc" />
-	<bean id="vcard.mongo.muc" class="com.sissi.ucenter.muc.impl.MongoVCardContext">
+	<alias name="vcard.mongo.muc.4fans" alias="ucenter.vcard.muc.4fans" />
+	<bean id="vcard.mongo.muc.4fans" class="com.sissi.ucenter.muc.impl.MongoVCard4FansContext">
 		<constructor-arg ref="global.jid" />
 		<constructor-arg ref="ucenter.vcard" />
 		<constructor-arg ref="ucenter.muc.config" />
 		<constructor-arg>
 			<util:list>
-				<bean class="com.sissi.ucenter.muc.impl.NicknameFieldParser" />
 				<bean class="com.sissi.ucenter.muc.impl.MucActivateFieldParser" />
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<alias name="vcard.mongo.muc.4room" alias="ucenter.vcard.muc.4room" />
+	<bean id="vcard.mongo.muc.4room" class="com.sissi.ucenter.muc.impl.MongoVCard4RoomContext">
+		<constructor-arg ref="global.jid" />
+		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.ucenter.muc.impl.NicknameFieldParser" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<alias name="vcard.mongo.muc.4info" alias="ucenter.vcard.muc.4room" />
+	<bean id="vcard.mongo.muc.4info" class="com.sissi.ucenter.muc.impl.MongoVCard4RoomContext">
+		<constructor-arg ref="global.jid" />
+		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg>
+			<util:list>
+				<bean class="com.sissi.ucenter.muc.impl.MucOnlineFieldParser" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	
 
 	<alias name="ucenter.muc.4role" alias="ucenter.muc" />
 	<bean id="ucenter.muc.4role" class="com.sissi.ucenter.muc.impl.MongoRelationMuc4RoleContext">

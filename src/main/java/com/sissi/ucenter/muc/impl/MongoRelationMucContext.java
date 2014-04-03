@@ -36,8 +36,6 @@ import com.sissi.ucenter.muc.RelationMucMapping;
  */
 abstract class MongoRelationMucContext implements MucRelationContext, RelationMucMapping {
 
-	private final Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
-
 	private final DBObject aggregateSort = BasicDBObjectBuilder.start().add("$sort", BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATION, -1).get()).get();
 
 	private final DBObject aggregateProjectMapping = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start(MongoConfig.FIELD_ROLES, "$" + MongoConfig.FIELD_ROLES).get()).get();
@@ -61,6 +59,8 @@ abstract class MongoRelationMucContext implements MucRelationContext, RelationMu
 	private final MucJIDs emptyJIDs = new EmptyJIDs();
 
 	protected final Set<Relation> emptyRelations = new HashSet<Relation>();
+	
+	protected final Map<String, Object> fieldPlus = Collections.unmodifiableMap(new HashMap<String, Object>());
 
 	protected final DBObject aggregateLimit = BasicDBObjectBuilder.start().add("$limit", 1).get();
 

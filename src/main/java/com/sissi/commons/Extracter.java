@@ -25,6 +25,11 @@ public class Extracter {
 		return value != null ? value.toString() : null;
 	}
 
+	public static String asString(DBObject db, String key, String def) {
+		Object value = Extracter.as(db, key);
+		return value != null ? value.toString() : def;
+	}
+
 	@SuppressWarnings("unchecked")
 	public static String[] asStrings(DBObject db, String key) {
 		List<String> value = List.class.cast(db.get(key));

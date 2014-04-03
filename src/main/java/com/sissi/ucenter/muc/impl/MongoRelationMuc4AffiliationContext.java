@@ -2,10 +2,12 @@ package com.sissi.ucenter.muc.impl;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.sissi.commons.Extracter;
 import com.sissi.config.MongoConfig;
@@ -20,6 +22,8 @@ import com.sissi.ucenter.muc.MucAffiliationBuilder;
  */
 public class MongoRelationMuc4AffiliationContext extends MongoRelationMucContext {
 
+	private final String emptyName = "n/a";
+
 	private final DBObject aggregateUnwind = BasicDBObjectBuilder.start("$unwind", "$" + MongoConfig.FIELD_NICKS).get();
 
 	private final DBObject aggregateSort = BasicDBObjectBuilder.start("$sort", BasicDBObjectBuilder.start(MongoConfig.FIELD_RESOURCE, -1).get()).get();
@@ -27,6 +31,8 @@ public class MongoRelationMuc4AffiliationContext extends MongoRelationMucContext
 	private final DBObject aggregateProject = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_AFFILIATION, "$" + MongoConfig.FIELD_AFFILIATIONS).get()).get();
 
 	private final DBObject aggregateProjectSubscribed = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_RESOURCE, "$" + MongoConfig.FIELD_NICKS + "." + MongoConfig.FIELD_NICK).get()).get();
+
+	private final DBObject filter = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, 1).add(MongoConfig.FIELD_CONFIGS + "." + MongoConfig.FIELD_SUBJECT, 1).add(MongoConfig.FIELD_CREATOR, 1).get();
 
 	private final MucAffiliationBuilder mucAffiliationBuilder;
 
@@ -43,6 +49,10 @@ public class MongoRelationMuc4AffiliationContext extends MongoRelationMucContext
 		return new JIDGroup(Extracter.asList(this.config.collection().aggregate(match, this.aggregateUnwindAffiliation, match, this.aggregateUnwind, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_NICKS + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).get()).get(), this.aggregateProjectSubscribed, this.aggregateSort, this.aggregateLimit).getCommandResult(), MongoConfig.FIELD_RESULT));
 	}
 
+	public Set<Relation> myRelations(JID from) {
+		return new Relations(this.config.collection().find(BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).get(), this.filter));
+	}
+
 	public Set<Relation> myRelations(JID from, String affiliation) {
 		AggregationOutput output = super.config.collection().aggregate(super.buildMatcher(from), super.aggregateUnwindAffiliation, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_AFFILIATION, affiliation).get()).get(), this.aggregateProject);
 		List<?> result = Extracter.asList(output.getCommandResult(), MongoConfig.FIELD_RESULT);
@@ -56,6 +66,57 @@ public class MongoRelationMuc4AffiliationContext extends MongoRelationMucContext
 			super.remove(from, to, true);
 		}
 		return this;
+	}
+
+	private final class AfflilationRelation implements Relation {
+
+		private final DBObject db;
+
+		private AfflilationRelation(DBObject db) {
+			super();
+			this.db = db;
+		}
+
+		@Override
+		public String jid() {
+			return Extracter.asString(this.db, MongoConfig.FIELD_JID);
+		}
+
+		@Override
+		public String name() {
+			return Extracter.asString(Extracter.asDBObject(this.db, MongoConfig.FIELD_CONFIGS), MongoConfig.FIELD_SUBJECT, MongoRelationMuc4AffiliationContext.this.emptyName);
+		}
+
+		@Override
+		public boolean activate() {
+			return true;
+		}
+
+		@Override
+		public Map<String, Object> plus() {
+			return MongoRelationMuc4AffiliationContext.super.fieldPlus;
+		}
+
+		@Override
+		public <T extends Relation> T cast(Class<T> clazz) {
+			return clazz.cast(this);
+		}
+
+	}
+
+	private final class Relations extends HashSet<Relation> {
+
+		private static final long serialVersionUID = 1L;
+
+		public Relations(DBCursor cursor) {
+			try {
+				while (cursor.hasNext()) {
+					super.add(new AfflilationRelation(cursor.next()));
+				}
+			} finally {
+				cursor.close();
+			}
+		}
 	}
 
 	private final class AffiliationRelations extends HashSet<Relation> {

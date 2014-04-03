@@ -6,11 +6,11 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="vcard.pro.get.muc.4room" class="com.sissi.pipeline.in.iq.vcard.VCardGet4FansProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.vcard.muc" />
+		<constructor-arg ref="ucenter.vcard.muc.4room" />
 	</bean>
 	<bean id="vcard.pro.get.muc.4fans" class="com.sissi.pipeline.in.iq.vcard.muc.VCardGet4FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc" />
-		<constructor-arg ref="ucenter.vcard.muc" />
+		<constructor-arg ref="ucenter.vcard.muc.4fans" />
 	</bean>
 	<bean id="vcard.pro.get.muc.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.vcard.get.muc" />

@@ -20,23 +20,18 @@ import com.sissi.ucenter.user.VCardContext;
 /**
  * @author kim 2013年12月10日
  */
-public class MongoVCardContext extends MongoFieldContext implements VCardContext {
+public class MongoVCard4RoomContext extends MongoFieldContext implements VCardContext {
 
 	private final Map<String, FieldParser<Object>> parser = new HashMap<String, FieldParser<Object>>();
 
-	private final DBObject aggregateUnwind = BasicDBObjectBuilder.start("$unwind", "$" + MongoConfig.FIELD_INFORMATIONS).get();
-
-	private final DBObject aggregateProject = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_ACTIVATE, "$" + MongoConfig.FIELD_INFORMATIONS + "." + MongoConfig.FIELD_ACTIVATE).add(MongoConfig.FIELD_INFORMATION, "$" + MongoConfig.FIELD_INFORMATIONS + "." + MongoConfig.FIELD_INFORMATION).get()).get();
+	private final DBObject filter = BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS, 1).get();
 
 	private final MongoConfig config;
 
-	private final VCardContext proxy;
-
 	private final JIDBuilder jidBuilder;
 
-	public MongoVCardContext(MongoConfig config, VCardContext proxy, JIDBuilder jidBuilder, List<FieldParser<Object>> parser) {
+	public MongoVCard4RoomContext(MongoConfig config, JIDBuilder jidBuilder, List<FieldParser<Object>> parser) {
 		super();
-		this.proxy = proxy;
 		this.config = config;
 		this.jidBuilder = jidBuilder;
 		for (FieldParser<Object> each : parser) {
@@ -45,11 +40,7 @@ public class MongoVCardContext extends MongoFieldContext implements VCardContext
 	}
 
 	private DBObject buildQuery(JID jid) {
-		return this.buildQuery(jid.asStringWithBare());
-	}
-
-	private DBObject buildQuery(String jid) {
-		return BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, jid).get();
+		return BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, jid.asStringWithBare()).get();
 	}
 
 	public boolean exists(String jid) {
@@ -70,14 +61,12 @@ public class MongoVCardContext extends MongoFieldContext implements VCardContext
 	}
 
 	public Field<String> get(JID jid, String name) {
-		return new BeanField<String>().setName(name).setValue(null);
+		return new BeanField<String>().setName(name).setValue(Extracter.asString(this.config.collection().findOne(this.buildQuery(jid), BasicDBObjectBuilder.start(name, 1).get()), name));
 	}
 
 	@Override
 	public <T extends Fields> T get(JID jid, T fields) {
-		this.proxy.get(this.jidBuilder.build(jid.resource()), fields);
-		List<?> vards = Extracter.asList(this.config.collection().aggregate(BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, jid.asStringWithBare()).get()).get(), this.aggregateUnwind, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_INFORMATIONS + "." + MongoConfig.FIELD_JID, jid.resource()).get()).get(), this.aggregateProject).getCommandResult(), MongoConfig.FIELD_RESULT);
-		Map<String, Object> entity = Extracter.asMap(vards.isEmpty() ? null : DBObject.class.cast(vards.get(0)));
+		Map<String, Object> entity = Extracter.asMap(Extracter.asDBObject(this.config.collection().findOne(this.buildQuery(jid), this.filter), MongoConfig.FIELD_CONFIGS));
 		for (String element : entity.keySet()) {
 			if (this.parser.containsKey(element)) {
 				fields.add(this.parser.get(element).read(entity));
