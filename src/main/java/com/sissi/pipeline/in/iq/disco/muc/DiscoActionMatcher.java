@@ -4,18 +4,20 @@ import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 import com.sissi.pipeline.in.ClassMatcher;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.disco.DiscoInfo;
 
 /**
  * @author kim 2014年3月12日
  */
-public class DiscoInfoMucActionMatcher extends ClassMatcher {
+public class DiscoActionMatcher extends ClassMatcher {
 
 	private final JIDBuilder jidBuilder;
 
-	public DiscoInfoMucActionMatcher(JIDBuilder jidBuilder) {
-		super(DiscoInfo.class);
+	private final boolean bare;
+
+	public DiscoActionMatcher(Class<? extends Protocol> clazz, JIDBuilder jidBuilder, boolean bare) {
+		super(clazz);
 		this.jidBuilder = jidBuilder;
+		this.bare = bare;
 	}
 
 	public boolean match(Protocol protocol) {
@@ -23,6 +25,6 @@ public class DiscoInfoMucActionMatcher extends ClassMatcher {
 	}
 
 	private boolean support(JID jid) {
-		return jid.isGroup() && jid.isBare();
+		return jid.isGroup() && jid.isBare() == this.bare;
 	}
 }

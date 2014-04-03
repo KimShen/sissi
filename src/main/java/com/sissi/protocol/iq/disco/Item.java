@@ -20,6 +20,11 @@ public class Item extends DiscoFeature {
 	public Item() {
 	}
 
+	public Item(String jid) {
+		super();
+		this.jid = jid;
+	}
+
 	public Item(String jid, String name) {
 		super();
 		this.jid = jid;
