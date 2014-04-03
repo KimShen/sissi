@@ -42,7 +42,7 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	
+
 
 	<alias name="ucenter.muc.4role" alias="ucenter.muc" />
 	<bean id="ucenter.muc.4role" class="com.sissi.ucenter.muc.impl.MongoRelationMuc4RoleContext">
@@ -90,6 +90,7 @@
 			<util:list>
 				<bean class="com.sissi.ucenter.muc.impl.HiddenMucConfigParser" />
 				<bean class="com.sissi.ucenter.muc.impl.SubjectMucConfigParser" />
+				<bean class="com.sissi.ucenter.muc.impl.PublicMucConfigParser" />
 				<bean class="com.sissi.ucenter.muc.impl.ActivateMucConfigParser" />
 				<bean class="com.sissi.ucenter.muc.impl.PasswordMucConfigParser" />
 				<bean class="com.sissi.ucenter.muc.impl.PersistentMucConfigParser" />
@@ -104,6 +105,7 @@
 				<bean class="com.sissi.ucenter.muc.impl.InviteMucConfigArbitrament">
 					<constructor-arg value="${pipeline.muc.invite}" />
 				</bean>
+				<bean class="com.sissi.ucenter.muc.impl.PublicMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.SubjectMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.RegisterMucConfigArbitrament" />
 				<bean class="com.sissi.ucenter.muc.impl.NicknameMucConfigArbitrament" />

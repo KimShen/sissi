@@ -168,12 +168,25 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="disco.pro.items.2muc.check" class="com.sissi.pipeline.in.iq.disco.muc.DiscoItemsCheckPublicProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.config.builder" />
+	</bean>
+	<bean id="disco.pro.items.2muc.domain" class="com.sissi.pipeline.in.iq.disco.muc.DiscoItems4DomainMucProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc.4affiliation" />
+	</bean>
 	<bean id="disco.pro.items.2muc.room" class="com.sissi.pipeline.in.iq.disco.muc.DiscoItems4RoomMucProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
-	<bean id="disco.pro.items.2muc.domain" class="com.sissi.pipeline.in.iq.disco.muc.DiscoItems4DomainMucProcessor">
-		<property name="relationContext" ref="ucenter.muc.4affiliation" />
+	<bean id="disco.pro.items.2muc.room.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<!-- Check relation -->
+				<ref bean="disco.pro.items.2muc.check" />
+				<ref bean="disco.pro.items.2muc.room" />
+			</util:list>
+		</constructor-arg>
 	</bean>
+
 	<bean id="disco.pro.items.2fans" class="com.sissi.pipeline.in.iq.disco.Disco2FansProcessor" parent="global.pro.proxy" />
 	<bean id="disco.pro.items.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.disco.items" />
@@ -332,7 +345,7 @@
 				<constructor-arg value="true" />
 			</bean>
 		</constructor-arg>
-		<constructor-arg ref="disco.pro.items.2muc.room" />
+		<constructor-arg ref="disco.pro.items.2muc.room.chained" />
 	</bean>
 	<bean id="disco.condition.items.2fans" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>

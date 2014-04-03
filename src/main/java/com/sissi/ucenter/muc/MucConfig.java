@@ -15,6 +15,8 @@ public interface MucConfig {
 
 	public final static String INVITE = "INVITE";
 
+	public final static String PUBLIC = "PUBLIC";
+
 	public final static String SUBJECT = "SUBJECT";
 
 	public final static String REGISTER = "REGISTER";
