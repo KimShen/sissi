@@ -27,6 +27,7 @@
 	<bean id="persistent.hanlder.message" class="com.sissi.persistent.impl.PersistentMessage" parent="persistent.delay" />
 	<bean id="persistent.hanlder.message.muc" class="com.sissi.persistent.impl.PersistentMessageMuc" parent="persistent.delay">
 		<constructor-arg ref="ucenter.muc" />
+		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
 	<bean id="persistent.hanlder.message.invite" class="com.sissi.persistent.impl.PersistentMessageInvite" parent="persistent.delay" />
 

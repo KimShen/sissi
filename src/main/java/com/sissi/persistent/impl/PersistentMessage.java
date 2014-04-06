@@ -16,7 +16,9 @@ import com.sissi.protocol.offline.Delay;
  */
 public class PersistentMessage extends PersistentProtocol {
 
-	private final String body = "body";
+	private final String fieldBody = "body";
+
+	private final String fieldThread = "thread";
 
 	public PersistentMessage(JIDBuilder jidBuilder, String tip) {
 		super(Message.class, jidBuilder, tip, false);
@@ -43,14 +45,15 @@ public class PersistentMessage extends PersistentProtocol {
 		Map<String, Object> entity = super.write(element);
 		Message message = Message.class.cast(element);
 		entity.put(PersistentElementBox.fieldAck, !message.request());
-		entity.put(this.body, message.hasContent() ? message.getBody().getText() : null);
+		entity.put(this.fieldThread, message.thread());
+		entity.put(this.fieldBody, message.hasContent() ? message.getBody().getText() : null);
 		return entity;
 	}
 
 	@Override
 	public Message read(Map<String, Object> element) {
 		Message message = Message.class.cast(super.read(element, new Message()));
-		return message.body(super.toString(element, this.body)).setDelay(this.delay(element, message)).request(Boolean.getBoolean(element.get(PersistentElementBox.fieldAck).toString()));
+		return message.body(super.toString(element, this.fieldBody)).setDelay(this.delay(element, message)).setThread(super.toString(element, this.fieldThread)).request(Boolean.getBoolean(element.get(PersistentElementBox.fieldAck).toString()));
 	}
 
 	public boolean isSupport(Element element) {

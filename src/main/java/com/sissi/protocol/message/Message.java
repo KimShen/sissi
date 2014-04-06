@@ -93,6 +93,10 @@ public class Message extends Protocol implements Collector {
 		return super.getId() != null || this.type(ProtocolType.ERROR, ProtocolType.RESULT) ? super.getId() : super.setId(UUID.randomUUID().toString()).getId();
 	}
 
+	public boolean delay() {
+		return this.getDelay() != null;
+	}
+
 	@XmlElement
 	public Delay getDelay() {
 		return this.delay;

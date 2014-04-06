@@ -6,7 +6,7 @@ import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.detail.JIDMalformed;
+import com.sissi.protocol.error.detail.BadRequest;
 import com.sissi.protocol.muc.XMuc;
 import com.sissi.protocol.presence.Presence;
 
@@ -15,7 +15,7 @@ import com.sissi.protocol.presence.Presence;
  */
 public class PresenceMucCheckXmlnsProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.MODIFY).add(JIDMalformed.DETAIL);
+	private final Error error = new ServerError().setType(ProtocolType.MODIFY).add(BadRequest.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

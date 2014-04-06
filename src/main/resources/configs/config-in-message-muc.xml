@@ -45,6 +45,9 @@
 		</constructor-arg>
 	</bean>
 	<bean id="message.pro.muc.decline" class="com.sissi.pipeline.in.message.muc.MessageMuc2DeclineProcessor" parent="global.pro.proxy" />
+	<bean id="message.pro.muc.decline.affiliation" class="com.sissi.pipeline.in.message.muc.MessageMuc2DeclineAffiliationProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc.4affiliation" />
+	</bean>
 	<bean id="message.pro.muc.decline.check.exists" class="com.sissi.pipeline.in.message.muc.MessageMuc2DeclineCheckExistsProcessor">
 		<constructor-arg ref="ucenter.vcard" />
 	</bean>
@@ -56,6 +59,7 @@
 			<util:list>
 				<ref bean="message.pro.muc.decline.check.exists" />
 				<ref bean="message.pro.muc.decline.check.relation" />
+				<ref bean="message.pro.muc.decline.affiliation" />
 				<ref bean="message.pro.muc.decline" />
 			</util:list>
 		</constructor-arg>
@@ -63,8 +67,8 @@
 	<bean id="message.pro.muc.2all" class="com.sissi.pipeline.in.message.muc.MessageMuc2AllProcessor" parent="global.pro.proxy">
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
-	<bean id="message.pro.muc.2all.check" class="com.sissi.pipeline.in.message.muc.MessageMuc2AllCheckResourceProcessor" parent="global.pro.proxy">
-		<property name="relationContext" ref="ucenter.muc" />
+	<bean id="message.pro.muc.2all.check" class="com.sissi.pipeline.in.message.muc.MessageMuc2AllCheckDelayProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
 	<bean id="message.pro.muc.2all.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
@@ -83,10 +87,13 @@
 		<constructor-arg ref="ucenter.muc" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
+	<bean id="message.pro.muc.2fans.check" class="com.sissi.pipeline.in.message.muc.MessageMuc2FansCheckTypeProcessor" />
 	<bean id="message.pro.muc.2fans.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="message.pro.muc.check.exists" />
 				<ref bean="message.pro.muc.check.relation" />
+				<ref bean="message.pro.muc.2fans.check" />
 				<ref bean="message.pro.muc.2fans" />
 			</util:list>
 		</constructor-arg>

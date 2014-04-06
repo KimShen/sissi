@@ -59,6 +59,11 @@ public class MongoRelationMuc4AffiliationContext extends MongoRelationMucContext
 		return result.isEmpty() ? super.emptyRelations : new AffiliationRelations(result);
 	}
 
+	public MongoRelationMucContext remove(JID from, JID to) {
+		super.config.collection().update(super.buildQuery(to.asStringWithBare()), BasicDBObjectBuilder.start("$pull", BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS, BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, from.asStringWithBare()).get()).get()).get());
+		return this;
+	}
+
 	@Override
 	public MongoRelationMucContext update(JID from, JID to, String status) {
 		this.mucAffiliationBuilder.build(to).approve(from, status);

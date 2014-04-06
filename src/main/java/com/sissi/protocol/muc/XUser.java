@@ -59,7 +59,7 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 		return this.group.asStringWithBare();
 	}
 
-	public boolean owner() {
+	public boolean loop() {
 		return this.jid != null ? this.jid.same(this.item.getJid()) : false;
 	}
 

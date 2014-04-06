@@ -51,8 +51,11 @@
 			<bean class="com.sissi.pipeline.in.ChainedProcessor">
 				<constructor-arg>
 					<util:list>
-						<ref bean="presence.pro.muc.leave.2fans" />
-						<ref bean="presence.pro.muc.leave.2self" />
+						<bean class="com.sissi.pipeline.in.presence.muc.PresenceMucLeave2FansProcessor" parent="global.pro.proxy">
+							<constructor-arg ref="ucenter.muc.config.builder" />
+							<constructor-arg ref="ucenter.muc.judger.replace" />
+							<property name="relationContext" ref="ucenter.muc" />
+						</bean>
 					</util:list>
 				</constructor-arg>
 			</bean>
@@ -83,9 +86,9 @@
 				<ref bean="presence.pro.muc.check.count" />
 				<ref bean="presence.pro.muc.check.affiliation" />
 				<ref bean="presence.pro.muc.join.2replace" />
+				<ref bean="presence.pro.muc.join.2fans" />
 				<ref bean="presence.pro.muc.join" />
 				<ref bean="presence.pro.muc.join.4fans" />
-				<ref bean="presence.pro.muc.join.2fans" />
 				<ref bean="presence.pro.muc.join.2self.message.warning" />
 				<ref bean="presence.pro.muc.join.2self.message.subject" />
 				<ref bean="presence.pro.muc.join.2self.message.history" />
@@ -109,9 +112,8 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="presence.pro.muc.check.relation" />
-				<ref bean="presence.pro.muc.leave" />
 				<ref bean="presence.pro.muc.leave.2fans" />
-				<ref bean="presence.pro.muc.leave.2self" />
+				<ref bean="presence.pro.muc.leave" />
 			</util:list>
 		</constructor-arg>
 	</bean>

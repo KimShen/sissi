@@ -23,7 +23,7 @@ public class Invite implements Collector {
 
 	private Reason reason;
 
-	private Continue thread;
+	private Continue continued;
 
 	public Invite setFrom(String from) {
 		this.from = from;
@@ -61,17 +61,17 @@ public class Invite implements Collector {
 	}
 
 	public String continued() {
-		return this.thread != null ? this.thread.getThread() : null;
+		return this.continued != null ? this.continued.getThread() : null;
 	}
 	
 	public Invite continued(String thread) {
-		this.thread = thread != null ? new Continue(thread) : null;
+		this.continued = thread != null ? new Continue(thread) : null;
 		return this;
 	}
 
 	@XmlElement
 	public Continue getContinue() {
-		return this.thread;
+		return this.continued;
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class Invite implements Collector {
 			this.reason = Reason.class.cast(ob);
 			return;
 		case Continue.NAME:
-			this.thread = Continue.class.cast(ob);
+			this.continued = Continue.class.cast(ob);
 			return;
 		}
 	}

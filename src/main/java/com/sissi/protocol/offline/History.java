@@ -69,7 +69,7 @@ public class History implements HistoryQuery {
 	}
 
 	public boolean direction(HistoryDirection direction) {
-		return HistoryDirection.parse(this.direction) == direction;
+		return (this.since == null || this.seconds == null) ? direction == HistoryDirection.UP : HistoryDirection.parse(this.direction) == direction;
 	}
 
 	public enum HistoryDirection {

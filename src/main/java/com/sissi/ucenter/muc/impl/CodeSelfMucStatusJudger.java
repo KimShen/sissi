@@ -10,6 +10,6 @@ public class CodeSelfMucStatusJudger implements MucStatusJudger {
 
 	@Override
 	public MucStatus judege(MucStatus status) {
-		return status.owner() && status.contain("201") ? !status.add("110").hidden() ? status.add("100") : status : status;
+		return status.loop() && !status.contain("201") ? !status.add("110").hidden() ? status.add("100") : status : status;
 	}
 }

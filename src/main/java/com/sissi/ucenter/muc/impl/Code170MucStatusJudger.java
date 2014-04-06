@@ -17,6 +17,6 @@ public class Code170MucStatusJudger implements MucStatusJudger {
 
 	@Override
 	public MucStatus judege(MucStatus status) {
-		return status.owner() && status.contain("201") && this.log ? status.add("170") : status;
+		return status.loop() && status.contain("201") && this.log ? status.add("170") : status;
 	}
 }

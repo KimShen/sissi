@@ -9,7 +9,7 @@ public interface MucStatus {
 
 	public String group();
 
-	public boolean owner();
+	public boolean loop();
 
 	public boolean hidden();
 
