@@ -30,7 +30,7 @@ public class Nickname implements Field<String> {
 
 	@XmlValue
 	public String getValue() {
-		return value.toString();
+		return this.value != null ? value.toString() : null;
 	}
 
 	public Nickname setText(String text) {

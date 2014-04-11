@@ -26,7 +26,7 @@
 			<bean class="com.sissi.context.impl.OfflineContextBuilder">
 				<constructor-arg ref="ucenter.vcard" />
 				<!-- TODO: Repeat db option with message.pro.persistent -->
-				<constructor-arg ref="persistent.message" />
+				<constructor-arg ref="persistent.message.delay" />
 				<constructor-arg value="${global.lang}" />
 				<constructor-arg value="${global.domain}" />
 			</bean>

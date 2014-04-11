@@ -9,6 +9,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
+import com.sissi.protocol.offline.Delay;
 import com.sissi.read.Collector;
 import com.sissi.read.Metadata;
 
@@ -27,7 +28,7 @@ public class Si extends Protocol implements Collector {
 	private String profile;
 
 	private String source;
-
+	
 	private Feature feature;
 
 	private File file;

@@ -15,6 +15,6 @@ public class MessageMuc2ApplyCheckAllowedProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		Message message = protocol.cast(Message.class);
-		return Boolean.valueOf(message.getData().findField(MucApplyContext.MUC_REQUEST_ALLOW, XField.class).getValue().toString());
+		return Boolean.valueOf(message.getData().findField(MucApplyContext.MUC_REQUEST_ALLOW, XField.class).getValue().toString() != "0");
 	}
 }

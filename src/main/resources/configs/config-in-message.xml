@@ -10,12 +10,13 @@
 	</bean>
 	<bean id="message.pro.check.ack" class="com.sissi.pipeline.in.message.MessageCheckAckProcessor" />
 	<bean id="message.pro.check.body" class="com.sissi.pipeline.in.message.MessageCheckBodyProcessor" />
-	<bean id="message.pro.servertime" class="com.sissi.pipeline.in.message.MessageServerTimeProcessor" />
+	<bean id="message.pro.time.delay" class="com.sissi.pipeline.in.message.MessageTimeDelayProcessor" />
+	<bean id="message.pro.time.received" class="com.sissi.pipeline.in.message.MessageTimeReceivedProcessor" />
 	<bean id="message.pro.received" class="com.sissi.pipeline.in.message.MessageReceivedProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="persistent.message" />
+		<constructor-arg ref="persistent.message.delay" />
 	</bean>
 	<bean id="message.pro.persistent" class="com.sissi.pipeline.in.message.MessagePersistentProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="persistent.message" />
+		<constructor-arg ref="persistent.message.log" />
 	</bean>
 	<bean id="message.pro.2fan" class="com.sissi.pipeline.in.message.Message2FanProcessor" parent="global.pro.proxy" />
 	<bean id="message.pro.2self" class="com.sissi.pipeline.in.message.Message2SelfProcessor" parent="global.pro.proxy" />
@@ -25,9 +26,10 @@
 				<ref bean="global.pro.check.chained" />
 				<!-- Prevent empty content -->
 				<ref bean="message.pro.check.relation" />
+				<ref bean="message.pro.time.received" />
+				<ref bean="message.pro.time.delay" />
 				<ref bean="message.pro.check.body" />
 				<ref bean="message.pro.check.ack" />
-				<ref bean="message.pro.servertime" />
 				<ref bean="message.pro.persistent" />
 				<ref bean="message.pro.received" />
 				<ref bean="message.pro.2self" />

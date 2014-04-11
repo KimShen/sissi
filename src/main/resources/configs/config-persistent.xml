@@ -25,13 +25,22 @@
 		<constructor-arg value="${exchanger.delegation.domain}" />
 	</bean>
 	<bean id="persistent.hanlder.message" class="com.sissi.persistent.impl.PersistentMessage" parent="persistent.delay" />
+	<bean id="persistent.hanlder.message.log" class="com.sissi.persistent.impl.PersistentMessageLog" parent="persistent.delay" />
 	<bean id="persistent.hanlder.message.muc" class="com.sissi.persistent.impl.PersistentMessageMuc" parent="persistent.delay">
 		<constructor-arg ref="ucenter.muc" />
 		<constructor-arg ref="ucenter.muc.config.builder" />
 	</bean>
 	<bean id="persistent.hanlder.message.invite" class="com.sissi.persistent.impl.PersistentMessageInvite" parent="persistent.delay" />
 
-	<bean id="persistent.message" class="com.sissi.persistent.impl.MongoDelayElementBox" parent="persistent.box">
+	<bean id="persistent.message.log" class="com.sissi.persistent.impl.MongoDelayElementBox" parent="persistent.box">
+		<constructor-arg>
+			<util:list>
+				<ref bean="persistent.hanlder.message.log" />
+				<ref bean="persistent.hanlder.message.invite" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="persistent.message.delay" class="com.sissi.persistent.impl.MongoDelayElementBox" parent="persistent.box">
 		<constructor-arg>
 			<util:list>
 				<ref bean="persistent.hanlder.message" />
@@ -56,7 +65,7 @@
 	<bean id="persistent.all" class="com.sissi.persistent.impl.MongoDelayElementBox" parent="persistent.box">
 		<constructor-arg>
 			<util:list>
-				<ref bean="persistent.hanlder.message" />
+				<ref bean="persistent.hanlder.message.log" />
 				<ref bean="persistent.hanlder.message.invite" />
 				<ref bean="persistent.hanlder.si" />
 			</util:list>

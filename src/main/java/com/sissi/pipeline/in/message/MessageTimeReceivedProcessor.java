@@ -12,7 +12,7 @@ import com.sissi.protocol.iq.ack.ServerTime;
 /**
  * @author kim 2014年3月6日
  */
-public class MessageServerTimeProcessor implements Input {
+public class MessageTimeReceivedProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

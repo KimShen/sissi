@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.sissi.commons.Extracter;
@@ -35,6 +36,10 @@ public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 	private final Map<String, MucConfigParser> parsers = new HashMap<String, MucConfigParser>();
 
 	private final Map<String, MucConfigArbitrament> arbitraments = new HashMap<String, MucConfigArbitrament>();
+
+	private final DBObject aggregateUnwind = BasicDBObjectBuilder.start().add("$unwind", "$" + MongoConfig.FIELD_AFFILIATIONS).get();
+
+	private final DBObject aggregateProject = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start(MongoConfig.FIELD_NICK, "$" + MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_NICK).get()).get();
 
 	private final DBObject filter = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_CONFIGS, 1).add(MongoConfig.FIELD_CREATOR, 1).add(MongoConfig.FIELD_ACTIVATE, 1).get();
 
@@ -165,6 +170,12 @@ public class MongoMucConfigBuilder implements MucFinder, MucConfigBuilder {
 				MongoMucConfigBuilder.this.config.collection().update(this.build(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(MongoConfig.FIELD_CONFIGS + "." + parser.field(), parser.parse(field)).get()).get());
 			}
 			return this;
+		}
+
+		public String reserve(JID jid) {
+			AggregationOutput output = MongoMucConfigBuilder.this.config.collection().aggregate(BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_JID, this.group.asStringWithBare()).get()).get(), MongoMucConfigBuilder.this.aggregateUnwind, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, jid.asStringWithBare()).get()).get(), MongoMucConfigBuilder.this.aggregateProject);
+			List<?> result = Extracter.asList(output.getCommandResult(), MongoConfig.FIELD_RESULT);
+			return result.isEmpty() ? null : Extracter.asString(DBObject.class.cast(result.get(0)), MongoConfig.FIELD_NICK);
 		}
 
 		@Override

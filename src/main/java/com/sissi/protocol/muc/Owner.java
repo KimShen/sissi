@@ -47,6 +47,11 @@ public class Owner extends Protocol implements Collector {
 		return this.getDestory() != null;
 	}
 
+	public Owner destory(Destory destory) {
+		this.destory = destory;
+		return this;
+	}
+
 	@XmlElement
 	public Destory getDestory() {
 		return this.destory;

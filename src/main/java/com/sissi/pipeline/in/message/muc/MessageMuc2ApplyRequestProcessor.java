@@ -35,6 +35,7 @@ public class MessageMuc2ApplyRequestProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
+		//需要根据FORM_TYPE区分申请表单,如注册或其他事项
 		JID group = super.build(protocol.parent().getTo());
 		XData data = protocol.cast(Message.class).noneThread().getData().setType(XDataType.FORM).add(this.jid.clone().value(context.jid().asString())).add(this.nick.clone().value(this.mucRelationContext.ourRelation(context.jid(), group).name())).add(this.allow);
 		data.findField(XDataType.FORM_TYPE.toString(), XField.class).setType(XFieldType.HIDDEN);

@@ -12,9 +12,16 @@ public class MessageMuc2ApplyMatcher extends ClassMatcher {
 
 	private final String type;
 
+	private final String node;
+
 	public MessageMuc2ApplyMatcher(String type) {
+		this(type, null);
+	}
+
+	public MessageMuc2ApplyMatcher(String type, String node) {
 		super(Message.class);
 		this.type = type;
+		this.node = node;
 	}
 
 	public boolean match(Protocol protocol) {
@@ -22,6 +29,6 @@ public class MessageMuc2ApplyMatcher extends ClassMatcher {
 	}
 
 	private boolean isApply(Message message) {
-		return message.type(MessageType.NORMAL, MessageType.NONE) && message.dataType(this.type);
+		return message.type(MessageType.NORMAL, MessageType.NONE) && message.dataType(this.type) && this.node != null ? message.data(this.node) : true;
 	}
 }

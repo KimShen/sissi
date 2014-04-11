@@ -155,7 +155,7 @@ public class Message extends Protocol implements Collector {
 	}
 
 	public Message setSubject(Subject subject) {
-		this.subject = subject;
+		this.subject = subject.hasContent() ? subject : null;
 		return this;
 	}
 

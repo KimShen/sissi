@@ -19,6 +19,7 @@ public class MucCheckRelationAffiliation4SelfProcessor extends ProxyProcessor {
 	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(Forbidden.DETAIL);
 
 	@Override
+	//Refactor: outcast && and not self
 	public boolean input(JIDContext context, Protocol protocol) {
 		return ItemAffiliation.parse(super.ourRelation(context.jid(), super.build(protocol.parent().getTo())).cast(RelationMuc.class).affiliation()).contains(ItemAffiliation.parse(protocol.cast(XMucAdmin.class).first().getAffiliation())) ? true : this.writeAndReturn(context, protocol);
 	}

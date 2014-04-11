@@ -27,6 +27,8 @@ public interface MongoConfig extends Config {
 
 	public final static String FIELD_ROLES = "roles";
 
+	public final static String FIELD_GROUP = "group";
+
 	public final static String FIELD_CLASS = "class";
 
 	public final static String FIELD_INDEX = "index";
@@ -48,6 +50,8 @@ public interface MongoConfig extends Config {
 	public final static String FIELD_MAPPING = "mapping";
 
 	public final static String FIELD_SUBJECT = "subject";
+
+	public final static String FIELD_ACCOUNR = "account";
 
 	public final static String FIELD_CREATOR = "creator";
 

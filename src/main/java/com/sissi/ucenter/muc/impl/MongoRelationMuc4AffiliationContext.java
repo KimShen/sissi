@@ -24,13 +24,9 @@ public class MongoRelationMuc4AffiliationContext extends MongoRelationMucContext
 
 	private final String emptyName = "n/a";
 
-	private final DBObject aggregateUnwind = BasicDBObjectBuilder.start("$unwind", "$" + MongoConfig.FIELD_NICKS).get();
-
-	private final DBObject aggregateSort = BasicDBObjectBuilder.start("$sort", BasicDBObjectBuilder.start(MongoConfig.FIELD_RESOURCE, -1).get()).get();
-
 	private final DBObject aggregateProject = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_AFFILIATION, "$" + MongoConfig.FIELD_AFFILIATIONS).get()).get();
 
-	private final DBObject aggregateProjectSubscribed = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_RESOURCE, "$" + MongoConfig.FIELD_NICKS + "." + MongoConfig.FIELD_NICK).get()).get();
+	private final DBObject aggregateProjectSubscribed = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, "$" + MongoConfig.FIELD_JID).add(MongoConfig.FIELD_RESOURCE, "$" + MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_NICK).get()).get();
 
 	private final DBObject filter = BasicDBObjectBuilder.start().add(MongoConfig.FIELD_JID, 1).add(MongoConfig.FIELD_CONFIGS + "." + MongoConfig.FIELD_SUBJECT, 1).add(MongoConfig.FIELD_CREATOR, 1).get();
 
@@ -45,8 +41,8 @@ public class MongoRelationMuc4AffiliationContext extends MongoRelationMucContext
 	}
 
 	public Set<JID> iSubscribedWho(JID from) {
-		DBObject match = BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).get()).get();
-		return new JIDGroup(Extracter.asList(this.config.collection().aggregate(match, this.aggregateUnwindAffiliation, match, this.aggregateUnwind, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(MongoConfig.FIELD_NICKS + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).get()).get(), this.aggregateProjectSubscribed, this.aggregateSort, this.aggregateLimit).getCommandResult(), MongoConfig.FIELD_RESULT));
+		DBObject match = BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).add(MongoConfig.FIELD_NICK, BasicDBObjectBuilder.start(MongoConfig.FIELD_NICK, BasicDBObjectBuilder.start("$exists", true).get()).get()).get()).get();
+		return new JIDGroup(Extracter.asList(this.config.collection().aggregate(match, this.aggregateUnwindAffiliation, match, this.aggregateProjectSubscribed).getCommandResult(), MongoConfig.FIELD_RESULT));
 	}
 
 	public Set<Relation> myRelations(JID from) {

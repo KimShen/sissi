@@ -7,19 +7,19 @@ import com.sissi.ucenter.Relation;
  */
 public interface RelationMuc extends Relation {
 
-	public String role();
-
 	public RelationMuc role(String role);
 
 	public RelationMuc role(String role, boolean force);
-
-	public String affiliation();
 
 	public RelationMuc affiliation(String affiliation);
 
 	public RelationMuc affiliation(String affiliation, boolean force);
 
+	public String role();
+
 	public String resource();
+
+	public String affiliation();
 
 	public boolean outcast();
 

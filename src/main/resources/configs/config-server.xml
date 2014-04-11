@@ -54,7 +54,7 @@
 				<constructor-arg ref="ucenter.vcard" />
 				<constructor-arg ref="server.heart" />
 				<constructor-arg ref="global.status.user" />
-				<constructor-arg ref="persistent.message" />
+				<constructor-arg ref="persistent.message.delay" />
 				<constructor-arg index="0" value="${pipeline.auth.retry}" />
 				<constructor-arg index="1" value="${global.lang}" />
 				<constructor-arg index="2" value="${global.domain}" />

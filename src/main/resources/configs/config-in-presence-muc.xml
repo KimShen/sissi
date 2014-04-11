@@ -47,19 +47,8 @@
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.2replace" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2ReplaceProcessor" parent="global.pro.proxy">
-		<constructor-arg>
-			<bean class="com.sissi.pipeline.in.ChainedProcessor">
-				<constructor-arg>
-					<util:list>
-						<bean class="com.sissi.pipeline.in.presence.muc.PresenceMucLeave2FansProcessor" parent="global.pro.proxy">
-							<constructor-arg ref="ucenter.muc.config.builder" />
-							<constructor-arg ref="ucenter.muc.judger.replace" />
-							<property name="relationContext" ref="ucenter.muc" />
-						</bean>
-					</util:list>
-				</constructor-arg>
-			</bean>
-		</constructor-arg>
+		<constructor-arg ref="ucenter.muc.config.builder" />
+		<constructor-arg ref="ucenter.muc.judger.replace" />
 		<property name="relationContext" ref="ucenter.muc" />
 	</bean>
 	<bean id="presence.pro.muc.join.2self.message.warning" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfMessageWarningProcessor" parent="global.pro.proxy">

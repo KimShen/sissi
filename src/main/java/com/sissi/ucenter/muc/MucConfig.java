@@ -37,9 +37,11 @@ public interface MucConfig {
 
 	public final static String HIDDEN_COMPUTER = "HIDDEN_COMPUTE";
 
-	public boolean allowed(JID jid, String key, Object value);
+	public String reserve(JID jid);
 
 	public String mapping(String affiliation);
+
+	public boolean allowed(JID jid, String key, Object value);
 
 	public MucConfig destory();
 

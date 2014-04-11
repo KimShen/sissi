@@ -6,14 +6,14 @@ import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.detail.Forbidden;
+import com.sissi.protocol.error.detail.NotAcceptable;
 
 /**
  * @author kim 2014年3月10日
  */
 public class MessageMuc2CheckRelationProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
+	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAcceptable.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

@@ -49,6 +49,12 @@ public class Item implements MucItem, Collector {
 	public Item() {
 	}
 
+	public Item(boolean hidden, String nick, RelationMuc relation) {
+		super();
+		this.relation(relation).hidden = hidden;
+		this.nick = nick;
+	}
+
 	public Item(boolean hidden, RelationMuc relation) {
 		super();
 		this.relation(relation).hidden = hidden;

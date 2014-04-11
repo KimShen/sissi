@@ -22,16 +22,6 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<alias name="vcard.mongo.muc.4room" alias="ucenter.vcard.muc.4room" />
-	<bean id="vcard.mongo.muc.4room" class="com.sissi.ucenter.muc.impl.MongoVCard4RoomContext">
-		<constructor-arg ref="global.jid" />
-		<constructor-arg ref="ucenter.muc.config" />
-		<constructor-arg>
-			<util:list>
-				<bean class="com.sissi.ucenter.muc.impl.NicknameFieldParser" />
-			</util:list>
-		</constructor-arg>
-	</bean>
 	<alias name="vcard.mongo.muc.4info" alias="ucenter.vcard.muc.4room" />
 	<bean id="vcard.mongo.muc.4info" class="com.sissi.ucenter.muc.impl.MongoVCard4RoomContext">
 		<constructor-arg ref="global.jid" />
@@ -39,6 +29,7 @@
 		<constructor-arg>
 			<util:list>
 				<bean class="com.sissi.ucenter.muc.impl.MucOnlineFieldParser" />
+				<bean class="com.sissi.ucenter.muc.impl.NicknameFieldParser" />
 			</util:list>
 		</constructor-arg>
 	</bean>

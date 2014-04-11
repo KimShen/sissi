@@ -119,6 +119,9 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="disco.pro.info.2muc.reserve" class="com.sissi.pipeline.in.iq.disco.muc.DiscoInfoMucReserveProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.config.builder" />
+	</bean>
 	<bean id="disco.pro.info.2muc.room" class="com.sissi.pipeline.in.iq.disco.muc.DiscoInfoMucProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="disco.identify" />
 		<constructor-arg ref="vcard.mongo.muc.4info" />
@@ -144,12 +147,12 @@
 		<constructor-arg>
 			<util:list>
 				<bean class="com.sissi.protocol.iq.disco.Item">
-					<constructor-arg index="0" value="${global.domain.muc}" />
-					<constructor-arg index="1" value="Chatroom" />
-				</bean>
-				<bean class="com.sissi.protocol.iq.disco.Item">
 					<constructor-arg index="0" value="${bytestreams.jid}" />
 					<constructor-arg index="1" value="SOCKS5 Bytestreams Service" />
+				</bean>
+				<bean class="com.sissi.protocol.iq.disco.Item">
+					<constructor-arg index="0" value="${global.domain.muc}" />
+					<constructor-arg index="1" value="Chatroom" />
 				</bean>
 				<bean class="com.sissi.protocol.iq.disco.Item">
 					<constructor-arg index="0" value="${exchanger.delegation.domain}" />
@@ -223,6 +226,7 @@
 	<bean id="finder.disco.info.2muc" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<ref bean="disco.condition.info.2muc.reserve" />
 				<ref bean="disco.condition.info.2muc.service" />
 				<ref bean="disco.condition.info.2muc.room" />
 			</util:list>
@@ -302,6 +306,14 @@
 			</bean>
 		</constructor-arg>
 		<constructor-arg ref="disco.pro.info.2muc.server" />
+	</bean>
+	<bean id="disco.condition.info.2muc.reserve" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.disco.muc.DiscoInfoMucNodeMatcher">
+				<constructor-arg ref="global.jid" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="disco.pro.info.2muc.reserve" />
 	</bean>
 	<bean id="disco.condition.info.2muc.room" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg>
