@@ -5,7 +5,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.context.JIDs;
 
 /**
- * 寻址
+ * 寻址策略
  * 
  * @author kim 2014年1月15日
  */
