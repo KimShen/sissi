@@ -12,9 +12,11 @@ import com.sissi.protocol.Element;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.ucenter.user.BlockContext;
+import com.sissi.ucenter.block.BlockContext;
 
 /**
+ * 黑名单策略
+ * 
  * @author kim 2013年12月9日
  */
 abstract class BlockOutputBuilder implements OutputBuilder {
@@ -38,16 +40,30 @@ abstract class BlockOutputBuilder implements OutputBuilder {
 
 		@Override
 		public boolean output(JIDContext context, Element node) {
-			JID contacter = this.contacter(context.jid(), node);
-			if (this.isEmpty(context.jid(), contacter) || !BlockOutputBuilder.this.blockSupports.contains(node.getClass())) {
+			JID applicant = this.applicant(context.jid(), node);
+			if (this.isEmpty(context.jid(), applicant) || !BlockOutputBuilder.this.blockSupports.contains(node.getClass())) {
 				return true;
 			}
-			return !BlockOutputBuilder.this.context.isBlock(this.user(context.jid(), node), contacter);
+			return !BlockOutputBuilder.this.context.isBlock(this.verifier(context.jid(), node), applicant);
 		}
 
-		abstract protected JID user(JID current, Element node);
+		/**
+		 * 请求者
+		 * 
+		 * @param current
+		 * @param node
+		 * @return
+		 */
+		abstract protected JID applicant(JID current, Element node);
 
-		abstract protected JID contacter(JID current, Element node);
+		/**
+		 * 校验者
+		 * 
+		 * @param current
+		 * @param node
+		 * @return
+		 */
+		abstract protected JID verifier(JID current, Element node);
 
 		private boolean isEmpty(JID jid) {
 			return (jid == null || jid.user() == null);

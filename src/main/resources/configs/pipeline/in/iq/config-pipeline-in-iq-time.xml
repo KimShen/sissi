@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<alias name="global.pro.check.relation" alias="time.pro.check" />
+	<alias name="global.pro.forward" alias="time.pro" />
+	<bean id="time.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="time.pro.check" />
+				<ref bean="time.pro" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<alias name="time.condition" alias="condition.time" />
+	<bean id="time.condition" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="time.condition.matcher" />
+		<constructor-arg ref="time.pro.chained" />
+	</bean>
+	<bean id="time.condition.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.iq.time.Time" />
+	</bean>
+</beans>

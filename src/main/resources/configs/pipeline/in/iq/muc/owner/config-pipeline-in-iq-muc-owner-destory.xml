@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="muc.pro.owner.destory" class="com.sissi.pipeline.in.iq.muc.owner.destory.MucOwnerDestoryProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.room" />
+	</bean>
+	<bean id="muc.pro.owner.destory.leave" class="com.sissi.pipeline.in.iq.muc.owner.destory.MucOwnerDestoryLeaveProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+	<bean id="muc.pro.owner.destory.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.pro.owner.check" />
+				<ref bean="muc.pro.owner.destory.leave" />
+				<ref bean="muc.pro.owner.destory" />
+				<ref bean="iq.pro.result.stop" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="muc.condition.owner.destory" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="muc.condition.owner.destory.matcher" />
+		<constructor-arg ref="muc.pro.owner.destory.chained" />
+	</bean>
+	<bean id="muc.condition.owner.destory.matcher" class="com.sissi.pipeline.in.iq.muc.owner.destory.MucOwnerDestoryMatcher" />
+
+</beans>

@@ -9,15 +9,15 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.field.Field;
+import com.sissi.field.Fields;
+import com.sissi.field.impl.BeanFields;
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.data.XData;
 import com.sissi.protocol.iq.register.simple.Password;
 import com.sissi.protocol.iq.register.simple.Username;
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
-import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.field.Fields;
-import com.sissi.ucenter.field.impl.BeanFields;
 
 /**
  * @author kim 2013年12月3日

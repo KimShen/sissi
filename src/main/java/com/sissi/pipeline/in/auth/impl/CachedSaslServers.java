@@ -14,6 +14,9 @@ import com.sissi.resource.ResourceCounter;
  */
 public class CachedSaslServers implements SaslServers {
 
+	/**
+	 * WeakHashMap
+	 */
 	private final Map<JIDContext, SaslServer> cached = new WeakHashMap<JIDContext, SaslServer>();
 
 	private final String resource = this.getClass().getSimpleName();

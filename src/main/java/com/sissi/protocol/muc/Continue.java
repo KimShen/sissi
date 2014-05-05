@@ -2,7 +2,7 @@ package com.sissi.protocol.muc;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-import com.sissi.read.Metadata;
+import com.sissi.io.read.Metadata;
 
 /**
  * @author kim 2014年3月10日

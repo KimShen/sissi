@@ -9,13 +9,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.context.JID;
+import com.sissi.field.Field;
+import com.sissi.field.Fields;
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.presence.X;
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
-import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.field.Fields;
-import com.sissi.ucenter.muc.MucItem;
-import com.sissi.ucenter.muc.MucStatus;
+import com.sissi.ucenter.relation.muc.MucItem;
+import com.sissi.ucenter.relation.muc.status.CodeStatus;
 
 /**
  * @author kim 2014年2月11日
@@ -23,9 +23,16 @@ import com.sissi.ucenter.muc.MucStatus;
 @Metadata(uri = XUser.XMLNS, localName = X.NAME)
 @XmlType(namespace = XUser.XMLNS)
 @XmlRootElement
-public class XUser extends X implements MucStatus, Collector, Field<String> {
+public class XUser extends X implements CodeStatus, Collector, Field<String> {
 
 	public final static String XMLNS = "http://jabber.org/protocol/muc#user";
+
+	@SuppressWarnings("serial")
+	private final static Set<ItemStatus> creator = new HashSet<ItemStatus>() {
+		{
+			add(ItemStatus.parse("201"));
+		}
+	};
 
 	private Set<ItemStatus> statuses;
 
@@ -163,7 +170,7 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 
 	@XmlElements({ @XmlElement(name = ItemStatus.NAME, type = ItemStatus.class) })
 	public Set<ItemStatus> getStatuses() {
-		return this.statuses;
+		return this.statuses == null ? this.statuses : this.statuses.contains(ItemStatus.parse("201")) ? creator : this.statuses;
 	}
 
 	@Override
@@ -186,7 +193,7 @@ public class XUser extends X implements MucStatus, Collector, Field<String> {
 		return false;
 	}
 
-	public <T extends MucStatus> T cast(Class<T> clazz) {
+	public <T extends CodeStatus> T cast(Class<T> clazz) {
 		return clazz.cast(this);
 	}
 

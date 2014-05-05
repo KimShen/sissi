@@ -8,9 +8,11 @@ import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.Forbidden;
 import com.sissi.protocol.muc.ItemAffiliation;
-import com.sissi.ucenter.muc.RelationMuc;
+import com.sissi.ucenter.relation.muc.MucRelation;
 
 /**
+ * 岗位校验(OWNER,并且房间已激活)
+ * 
  * @author kim 2014年3月27日
  */
 public class MucOwnerCheckRelationProcessor extends ProxyProcessor {
@@ -19,7 +21,7 @@ public class MucOwnerCheckRelationProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		RelationMuc relation = super.ourRelation(context.jid(), super.build(protocol.parent().getTo())).cast(RelationMuc.class);
+		MucRelation relation = super.ourRelation(context.jid(), super.build(protocol.parent().getTo())).cast(MucRelation.class);
 		return relation.activate() && ItemAffiliation.OWNER.equals(relation.affiliation()) ? true : this.writeAndReturn(context, protocol);
 	}
 

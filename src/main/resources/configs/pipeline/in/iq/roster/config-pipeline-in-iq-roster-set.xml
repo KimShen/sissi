@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="roster.pro.establish.set" class="com.sissi.pipeline.in.iq.roster.set.RosterSetProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.set.trim.item" class="com.sissi.pipeline.in.iq.roster.set.RosterSetTrimItemProcessor" />
+	<bean id="roster.pro.establish.set.trim.name" class="com.sissi.pipeline.in.iq.roster.set.RosterSetTrimNameProcessor">
+		<constructor-arg value="${ucenter.roster.length.name}" />
+	</bean>
+	<bean id="roster.pro.establish.set.trim.group" class="com.sissi.pipeline.in.iq.roster.set.RosterSetTrimGroupProcessor">
+		<constructor-arg value="${ucenter.roster.length.group}" />
+	</bean>
+	<bean id="roster.pro.establish.set.check.loop" class="com.sissi.pipeline.in.iq.roster.set.RosterSetCheckLoopProcessor" parent="global.pro.proxy" />
+	<bean id="roster.pro.establish.set.check.exists" class="com.sissi.pipeline.in.iq.roster.set.RosterSetCheckExistsProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.vcard.user" />
+	</bean>
+	<bean id="roster.pro.establish.set.2selfs" class="com.sissi.pipeline.in.iq.roster.set.RosterSet2SelfsProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="roster.group" />
+	</bean>
+	<bean id="roster.pro.establish.set.2fans" class="com.sissi.pipeline.in.iq.roster.set.RosterSet2FansProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="presence.pro.roster.subscribe.chained" />
+	</bean>
+	<bean id="roster.pro.establish.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="roster.pro.establish.set.check.loop" />
+				<ref bean="roster.pro.establish.set.check.exists" />
+				<ref bean="roster.pro.establish.set.trim.item" />
+				<ref bean="roster.pro.establish.set.trim.name" />
+				<ref bean="roster.pro.establish.set.trim.group" />
+				<ref bean="roster.pro.establish.set" />
+				<ref bean="roster.pro.establish.set.2selfs" />
+				<!-- Avoid if send roster but not send presence -->
+				<!-- <ref bean="roster.pro.establish.set.2fans" /> -->
+				<ref bean="iq.pro.result.stop" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="roster.condition.establish.set" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="roster.condition.establish.set.matcher" />
+		<constructor-arg ref="roster.pro.establish.set.chained" />
+	</bean>
+	<bean id="roster.condition.establish.set.matcher" class="com.sissi.pipeline.in.iq.roster.RosterMatcher">
+		<constructor-arg value="SET" />
+		<constructor-arg value="UPDATE" />
+	</bean>
+</beans>

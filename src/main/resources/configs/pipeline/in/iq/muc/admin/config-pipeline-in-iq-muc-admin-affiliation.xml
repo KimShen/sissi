@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="muc.admin.pro.affiliation.check.jid" class="com.sissi.pipeline.in.iq.muc.admin.affiliation.MucCheckAffiliationJIDProcessor" parent="global.pro.proxy" />
+	<bean id="muc.admin.pro.affiliation.check.4self" class="com.sissi.pipeline.in.iq.muc.admin.affiliation.MucCheckAffiliation4SelfProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+	<bean id="muc.admin.pro.affiliation.check.items" class="com.sissi.pipeline.in.iq.muc.admin.affiliation.MucCheckAffiliationItemsProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.validator.chained" />
+	</bean>
+	<bean id="muc.admin.pro.affiliation.check.owner" class="com.sissi.pipeline.in.iq.muc.admin.affiliation.MucCheckAffiliationOwnerProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.relation.4affiliation" />
+	</bean>
+	<bean id="muc.admin.pro.affiliation.set" class="com.sissi.pipeline.in.iq.muc.admin.affiliation.MucSetAffiliationProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc.relation.4affiliation" />
+	</bean>
+	<bean id="muc.admin.pro.affiliation.set.broadcast" class="com.sissi.pipeline.in.iq.muc.admin.affiliation.MucSetAffiliationBroadcastProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.affiliation.broadcast.chained" />
+		<constructor-arg ref="ucenter.muc.relation.4role" />
+		<constructor-arg ref="ucenter.muc.room" />
+	</bean>
+	<bean id="muc.admin.pro.affiliation.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.admin.pro.check.exists" />
+				<ref bean="muc.admin.pro.check.conflict" />
+				<ref bean="muc.admin.pro.affiliation.check.jid" />
+				<ref bean="muc.admin.pro.affiliation.check.4self" />
+				<ref bean="muc.admin.pro.affiliation.check.items" />
+				<!-- Close after test: muc.admin.pro.affiliation.check.owner -->
+				<ref bean="muc.admin.pro.affiliation.check.owner" />
+				<ref bean="muc.admin.pro.affiliation.set.broadcast" />
+				<ref bean="muc.admin.pro.affiliation.set" />
+				<ref bean="iq.pro.result.stop" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="muc.admin.pro.affiliation.get" class="com.sissi.pipeline.in.iq.muc.admin.affiliation.MucGetAffiliationProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.relation.4affiliation" />
+	</bean>
+	<bean id="muc.admin.pro.affiliation.get.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<!-- 服务也应该 SHOULD 返回成员列表给任何房客 -->
+				<ref bean="muc.admin.pro.check.exists" />
+				<!-- Close after test: muc.admin.pro.affiliation.check.4self -->
+				<ref bean="muc.admin.pro.affiliation.check.4self" />
+				<ref bean="muc.admin.pro.affiliation.get" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="muc.admin.condition.affiliation.set" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="muc.admin.condition.affiliation.set.matcher" />
+		<constructor-arg ref="muc.admin.pro.affiliation.set.chained" />
+	</bean>
+	<bean id="muc.admin.condition.affiliation.set.matcher" class="com.sissi.pipeline.in.iq.muc.admin.MucActionMatcher">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg index="1" value="AFFILIATION" />
+		<constructor-arg index="2" value="SET" />
+	</bean>
+	<bean id="muc.admin.condition.affiliation.get" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="muc.admin.condition.affiliation.get.matcher" />
+		<constructor-arg ref="muc.admin.pro.affiliation.get.chained" />
+	</bean>
+	<bean id="muc.admin.condition.affiliation.get.matcher" class="com.sissi.pipeline.in.iq.muc.admin.MucActionMatcher">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg index="1" value="AFFILIATION" />
+		<constructor-arg index="2" value="GET" />
+	</bean>
+</beans>

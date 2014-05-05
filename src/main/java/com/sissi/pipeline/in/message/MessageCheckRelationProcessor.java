@@ -9,19 +9,16 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.SubscriptionRequired;
 
 /**
+ * 订阅关系校验
+ * 
  * @author kim 2013-11-18
  */
 public class MessageCheckRelationProcessor extends CheckRelationProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(SubscriptionRequired.DETAIL);
 
-	public MessageCheckRelationProcessor(boolean free) {
-		super(free);
-	}
-
-	@Override
-	public boolean input(JIDContext context, Protocol protocol) {
-		return context.jid().like(super.build(protocol.getTo())) || super.ourRelation(context, protocol) ? true : this.writeAndReturn(context, protocol);
+	public MessageCheckRelationProcessor(boolean shortcut) {
+		super(shortcut);
 	}
 
 	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {

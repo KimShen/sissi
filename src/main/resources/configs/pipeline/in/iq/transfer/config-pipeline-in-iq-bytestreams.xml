@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="bytestreams.proxy" class="com.sissi.protocol.iq.bytestreams.BytestreamsProxy">
+		<constructor-arg index="0" value="${server.exchanger.bytestreams.jid}" />
+		<constructor-arg index="1" value="${server.exchanger.bytestreams.name}" />
+		<constructor-arg index="2" value="${server.exchanger.bytestreams.host}" />
+		<constructor-arg index="3" value="${server.exchanger.bytestreams.port}" />
+	</bean>
+
+	<bean id="bytestreams.pro.2delegation.push" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2DelegationPushProcessor">
+		<constructor-arg ref="server.exchanger.context" />
+		<constructor-arg ref="server.server.exchanger.delegation" />
+	</bean>
+	<bean id="bytestreams.pro.2delegation.pull" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2DelegationPullProcessor">
+		<constructor-arg ref="bytestreams.pro.2delegation.pull.used" />
+	</bean>
+	<bean id="bytestreams.pro.2delegation.pull.used" class="com.sissi.protocol.iq.bytestreams.StreamhostUsed">
+		<property name="jid" value="${server.exchanger.bytestreams.jid}" />
+	</bean>
+	<bean id="bytestreams.pro.2activate" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ActivateProcessor" />
+	<bean id="bytestreams.pro.2proxy" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2ProxyProcessor">
+		<constructor-arg ref="bytestreams.proxy" />
+	</bean>
+	<bean id="bytestreams.pro.2fans" class="com.sissi.pipeline.in.iq.bytestreams.Bytestreams2FansProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="bytestreams.pro.2fans.comparator" />
+	</bean>
+	<bean id="bytestreams.pro.2fans.comparator" class="com.sissi.protocol.iq.bytestreams.StreamhostComparator">
+		<constructor-arg ref="bytestreams.proxy" />
+	</bean>
+	<alias name="global.pro.check.relation" alias="bytestreams.pro.2fans.check" />
+	<bean id="bytestreams.pro.2fans.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="bytestreams.pro.2fans" />
+				<ref bean="bytestreams.pro.2fans.check" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="bytestreams.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.bytestreams" />
+	</bean>
+	<bean id="bytestreams.pro.delegation.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.bytestreams.delegation" />
+	</bean>
+
+	<bean id="finder.bytestreams" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="bytestreams.condition.2activate" />
+				<ref bean="bytestreams.condition.2server" />
+				<ref bean="bytestreams.condition.2proxy" />
+				<!-- 2delegation must before 2fan and after others -->
+				<ref bean="bytestreams.condition.2delegation" />
+				<ref bean="bytestreams.condition.2fans" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="finder.bytestreams.delegation" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="bytestreams.condition.2delegation.push" />
+				<ref bean="bytestreams.condition.2delegation.pull" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<alias name="bytestreams.condition" alias="condition.bytestreams" />
+	<bean id="bytestreams.condition" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="bytestreams.condition.matcher" />
+		<constructor-arg ref="bytestreams.pro.fork" />
+	</bean>
+	<bean id="bytestreams.condition.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
+	</bean>
+	<bean id="bytestreams.condition.2delegation" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="bytestreams.condition.2delegation.matcher" />
+		<constructor-arg ref="bytestreams.pro.delegation.fork" />
+	</bean>
+	<bean id="bytestreams.condition.2delegation.matcher" class="com.sissi.pipeline.in.iq.ToDelegationMatcher">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg ref="addressing" />
+		<constructor-arg index="0" value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
+	</bean>
+	<bean id="bytestreams.condition.2delegation.push" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="bytestreams.condition.2delegation.push.matcher" />
+		<constructor-arg ref="bytestreams.pro.2delegation.push" />
+	</bean>
+	<bean id="bytestreams.condition.2delegation.push.matcher" class="com.sissi.pipeline.in.iq.bytestreams.BytestreamsUsedMatcher" />
+	<bean id="bytestreams.condition.2delegation.pull" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<util:constant static-field="com.sissi.pipeline.in.AnyMatcher.INSTANCE" />
+		</constructor-arg>
+		<constructor-arg ref="bytestreams.pro.2delegation.pull" />
+	</bean>
+	<bean id="bytestreams.condition.2fans" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<util:constant static-field="com.sissi.pipeline.in.AnyMatcher.INSTANCE" />
+		</constructor-arg>
+		<constructor-arg ref="bytestreams.pro.2fans.chained" />
+	</bean>
+	<bean id="bytestreams.condition.2server" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="bytestreams.condition.2server.matcher" />
+		<constructor-arg ref="bytestreams.pro.2proxy" />
+	</bean>
+	<bean id="bytestreams.condition.2server.matcher" class="com.sissi.pipeline.in.iq.ToServerMatcher">
+		<constructor-arg index="0" value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
+		<constructor-arg index="1" value="${domain.server}" />
+	</bean>
+	<bean id="bytestreams.condition.2proxy" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="bytestreams.condition.2proxy.matcher" />
+		<constructor-arg ref="bytestreams.pro.2proxy" />
+	</bean>
+	<bean id="bytestreams.condition.2proxy.matcher" class="com.sissi.pipeline.in.iq.ToProxyMatcher">
+		<constructor-arg index="0" value="com.sissi.protocol.iq.bytestreams.Bytestreams" />
+		<constructor-arg index="1" value="${server.exchanger.bytestreams.jid}" />
+	</bean>
+	<bean id="bytestreams.condition.2activate" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="bytestreams.condition.2activate.matcher" />
+		<constructor-arg ref="bytestreams.pro.2activate" />
+	</bean>
+	<bean id="bytestreams.condition.2activate.matcher" class="com.sissi.pipeline.in.iq.bytestreams.BytestreamsActivateMatcher" />
+</beans>

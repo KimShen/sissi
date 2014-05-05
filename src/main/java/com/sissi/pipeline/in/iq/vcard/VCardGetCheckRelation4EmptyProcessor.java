@@ -5,6 +5,8 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 
 /**
+ * 返回IQ.type = result
+ * 
  * @author kim 2014年1月26日
  */
 public class VCardGetCheckRelation4EmptyProcessor extends VCardGetCheckRelationProcessor {

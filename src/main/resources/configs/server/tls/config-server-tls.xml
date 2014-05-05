@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="server.tls" class="com.sissi.server.tls.impl.CertificateContextBuilder">
+		<constructor-arg index="0" ref="server.tls.key" />
+		<constructor-arg index="1" ref="server.tls.trust" />
+	</bean>
+
+	<bean id="server.tls.key" class="com.sissi.server.tls.impl.Certificate">
+		<constructor-arg index="0" value="${server.tls.file.key}" />
+		<constructor-arg index="1" value="${server.tls.password.key}" />
+	</bean>
+	<bean id="server.tls.trust" class="com.sissi.server.tls.impl.Certificate">
+		<constructor-arg index="0" value="${server.tls.file.trust}" />
+		<constructor-arg index="1" value="${server.tls.password.trust}" />
+	</bean>
+</beans>

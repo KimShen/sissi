@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="server.exchanger.context" class="com.sissi.server.exchange.impl.BridgeExchangerContext">
+		<constructor-arg index="0" value="${server.exchanger.gc.timeout}" />
+		<constructor-arg ref="counter" />
+		<constructor-arg ref="commons.thread.runner" />
+		<constructor-arg ref="server.exchanger.context.config" />
+		<constructor-arg ref="server.exchanger.context.interval" />
+	</bean>
+	<bean id="server.exchanger.context.interval" class="com.sissi.commons.thread.Interval">
+		<constructor-arg value="${server.exchanger.gc.interval}" />
+		<constructor-arg value="${server.exchanger.gc.unit}" />
+	</bean>
+	<bean id="server.exchanger.context.config" class="com.sissi.config.impl.MongoProxyConfig">
+		<constructor-arg ref="mongo" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.exchanger}" />
+	</bean>
+</beans>

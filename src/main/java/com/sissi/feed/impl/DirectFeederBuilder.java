@@ -28,6 +28,11 @@ public class DirectFeederBuilder implements FeederBuilder {
 			this.context = context;
 		}
 
+		/*
+		 * 查询处理该XMPP协议的协议栈并推送Pipeline
+		 * 
+		 * @see com.sissi.feed.Feeder#feed(com.sissi.protocol.Protocol)
+		 */
 		@Override
 		public Feeder feed(Protocol protocol) {
 			this.finder.find(protocol).input(this.context, protocol);

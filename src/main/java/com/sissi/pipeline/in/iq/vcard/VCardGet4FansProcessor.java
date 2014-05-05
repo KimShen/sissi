@@ -3,9 +3,10 @@ package com.sissi.pipeline.in.iq.vcard;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.vcard.VCard;
-import com.sissi.ucenter.user.VCardContext;
+import com.sissi.ucenter.vcard.VCardContext;
 
 /**
+ * 指定JID VCard
  * @author kim 2013年12月10日
  */
 public class VCardGet4FansProcessor extends VCardGetProcessor {

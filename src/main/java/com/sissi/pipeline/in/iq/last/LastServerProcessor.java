@@ -5,23 +5,25 @@ import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.last.Last;
-import com.sissi.server.ServerStatus;
+import com.sissi.server.status.ServerStatus;
 
 /**
+ * 服务器域 IDLE
+ * 
  * @author kim 2014年2月10日
  */
 public class LastServerProcessor extends ProxyProcessor {
 
-	private final ServerStatus serverStatus;
+	private final ServerStatus status;
 
-	public LastServerProcessor(ServerStatus serverStatus) {
+	public LastServerProcessor(ServerStatus status) {
 		super();
-		this.serverStatus = serverStatus;
+		this.status = status;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		context.write(protocol.cast(Last.class).seconds().seconds(this.serverStatus.take(ServerStatus.STATUS_STARTED, String.class)).parent().reply().reply().setType(ProtocolType.RESULT));
+		context.write(protocol.cast(Last.class).seconds().seconds(this.status.peek(ServerStatus.STATUS_STARTED, String.class)).parent().reply().reply().setType(ProtocolType.RESULT));
 		return false;
 	}
 }

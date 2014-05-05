@@ -7,36 +7,39 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.muc.Item;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.ucenter.Relation;
-import com.sissi.ucenter.muc.MucConfig;
-import com.sissi.ucenter.muc.MucConfigBuilder;
-import com.sissi.ucenter.muc.MucStatusJudger;
-import com.sissi.ucenter.muc.RelationMuc;
+import com.sissi.ucenter.relation.Relation;
+import com.sissi.ucenter.relation.muc.MucRelation;
+import com.sissi.ucenter.relation.muc.room.Room;
+import com.sissi.ucenter.relation.muc.room.RoomBuilder;
+import com.sissi.ucenter.relation.muc.room.RoomConfig;
+import com.sissi.ucenter.relation.muc.status.CodeStatusAdder;
 
 /**
+ * 对当前JID推送其他房客出席消息
+ * 
  * @author kim 2014年2月11日
  */
 public class PresenceMucJoin4FansProcessor extends ProxyProcessor {
 
-	private final MucConfigBuilder mucConfigBuilder;
+	private final RoomBuilder room;
 
-	private final MucStatusJudger mucStatusJudger;
+	private final CodeStatusAdder judeger;
 
-	public PresenceMucJoin4FansProcessor(MucConfigBuilder mucGroupContext, MucStatusJudger mucStatusJudger) {
+	public PresenceMucJoin4FansProcessor(RoomBuilder room, CodeStatusAdder judeger) {
 		super();
-		this.mucConfigBuilder = mucGroupContext;
-		this.mucStatusJudger = mucStatusJudger;
+		this.room = room;
+		this.judeger = judeger;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Presence presence = new Presence();
 		JID group = super.build(protocol.getTo());
-		MucConfig config = this.mucConfigBuilder.build(group);
+		Room room = this.room.build(group);
+		Presence presence = new Presence();
 		for (Relation each : super.myRelations(group)) {
-			RelationMuc relation = each.cast(RelationMuc.class);
+			MucRelation relation = each.cast(MucRelation.class);
 			JID to = super.build(relation.jid());
-			context.write(presence.clear().add(this.mucStatusJudger.judege(new XUser(group, context.jid(), config.allowed(context.jid(), MucConfig.HIDDEN_NATIVE, null)).item(new Item(config.allowed(context.jid(), MucConfig.HIDDEN_COMPUTER, to), relation))).cast(XUser.class)).clauses(super.findOne(to, true).status().clauses()).setFrom(group.resource(relation.name())));
+			context.write(presence.clear().add(this.judeger.add(new XUser(group, context.jid(), room.allowed(context.jid(), RoomConfig.WHOISEXISTS)).item(new Item(room.allowed(context.jid(), RoomConfig.WHOISALLOW, to), relation))).cast(XUser.class)).clauses(super.findOne(to, true).status().clauses()).setFrom(group.resource(relation.name())));
 		}
 		return true;
 	}

@@ -50,13 +50,13 @@ abstract public class Protocol implements Element {
 		return this.from;
 	}
 
-	public Protocol setFrom(String from) {
-		this.from = from;
+	public Protocol setFrom(JID from) {
+		this.from = from.asString();
 		return this;
 	}
 
-	public Protocol setFrom(JID from) {
-		this.from = from.asString();
+	public Protocol setFrom(String from) {
+		this.from = from;
 		return this;
 	}
 
@@ -155,6 +155,10 @@ abstract public class Protocol implements Element {
 		this.lang = null;
 		this.error = null;
 		return this;
+	}
+
+	public boolean valid() {
+		return ProtocolType.parse(this.getType()) != ProtocolType.NONE;
 	}
 
 	public boolean clazz(Class<? extends Protocol> clazz) {

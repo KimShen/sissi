@@ -1,18 +1,20 @@
 package com.sissi.pipeline.in.iq.register;
 
-import com.sissi.pipeline.in.iq.IQResponseProcessor;
+import com.sissi.field.Fields;
+import com.sissi.field.impl.BeanFields;
+import com.sissi.pipeline.Input;
 import com.sissi.protocol.iq.data.XData;
-import com.sissi.ucenter.field.Fields;
-import com.sissi.ucenter.field.impl.BeanFields;
-import com.sissi.ucenter.user.RegisterContext;
+import com.sissi.ucenter.register.RegisterContext;
 
 /**
+ * 复杂表单
+ * 
  * @author kim 2013年12月5日
  */
 public class RegisterStoreMultiProcessor extends RegisterStoreProcessor {
 
-	public RegisterStoreMultiProcessor(RegisterContext registerContext, IQResponseProcessor processor) {
-		super(registerContext, processor);
+	public RegisterStoreMultiProcessor(RegisterContext registerContext, Input input) {
+		super(registerContext, input);
 	}
 
 	@Override

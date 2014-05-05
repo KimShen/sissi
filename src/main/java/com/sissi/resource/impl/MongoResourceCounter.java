@@ -6,13 +6,21 @@ import com.sissi.config.MongoConfig;
 import com.sissi.resource.ResourceCounter;
 
 /**
+ * 索引策略: {"resource":Xxx}
+ * 
  * @author kim 2014年1月15日
  */
 public class MongoResourceCounter implements ResourceCounter {
 
-	private final DBObject incr = BasicDBObjectBuilder.start("$inc", BasicDBObjectBuilder.start("incr", 1).get()).get();
+	/**
+	 * {"$inc":{"count":1}}
+	 */
+	private final DBObject incr = BasicDBObjectBuilder.start("$inc", BasicDBObjectBuilder.start("count", 1).get()).get();
 
-	private final DBObject decr = BasicDBObjectBuilder.start("$inc", BasicDBObjectBuilder.start("decr", 1).get()).get();
+	/**
+	 * {"$inc":{"count":1}}
+	 */
+	private final DBObject decr = BasicDBObjectBuilder.start("$inc", BasicDBObjectBuilder.start("count", -1).get()).get();
 
 	private final String resource = "resource";
 
@@ -20,7 +28,7 @@ public class MongoResourceCounter implements ResourceCounter {
 
 	public MongoResourceCounter(MongoConfig config) {
 		super();
-		this.config = config.clear();
+		this.config = config.reset();
 	}
 
 	@Override
@@ -34,11 +42,7 @@ public class MongoResourceCounter implements ResourceCounter {
 	}
 
 	private ResourceCounter statistics(DBObject op, String resource) {
-		this.config.collection().update(this.buildQuery(resource), op, true, false);
+		this.config.collection().update(BasicDBObjectBuilder.start(this.resource, resource).get(), op, true, false);
 		return this;
-	}
-
-	public DBObject buildQuery(String resource) {
-		return BasicDBObjectBuilder.start(this.resource, resource).get();
 	}
 }

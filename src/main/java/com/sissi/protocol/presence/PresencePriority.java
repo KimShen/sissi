@@ -6,7 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.Trace;
-import com.sissi.read.Metadata;
+import com.sissi.io.read.Metadata;
 
 /**
  * @author kim 2013年12月25日

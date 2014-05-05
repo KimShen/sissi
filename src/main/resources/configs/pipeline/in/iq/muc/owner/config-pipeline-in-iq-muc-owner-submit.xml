@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="muc.pro.owner.submit" class="com.sissi.pipeline.in.iq.muc.owner.submit.MucOwnerSubmitProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.room" />
+	</bean>
+	<bean id="muc.pro.owner.submit.warning" class="com.sissi.pipeline.in.iq.muc.owner.submit.MucOwnerSubmitWarningProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.status.extract.chained" />
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+	<bean id="muc.pro.owner.submit.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.pro.owner.check" />
+				<ref bean="muc.pro.owner.submit" />
+				<ref bean="muc.pro.owner.submit.warning" />
+				<ref bean="iq.pro.result.stop" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="muc.condition.owner.submit" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="muc.condition.owner.submit.matcher" />
+		<constructor-arg ref="muc.pro.owner.submit.chained" />
+	</bean>
+	<bean id="muc.condition.owner.submit.matcher" class="com.sissi.pipeline.in.iq.muc.owner.MucOwnerSetMatcher">
+		<constructor-arg value="SUBMIT" />
+	</bean>
+</beans>

@@ -6,6 +6,8 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.roster.RosterSubscription;
 
 /**
+ * 订阅更新
+ * 
  * @author kim 2013-11-18
  */
 public class PresenceRosterSubscribedProcessor extends ProxyProcessor {

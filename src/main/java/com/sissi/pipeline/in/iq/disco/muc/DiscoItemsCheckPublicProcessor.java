@@ -1,29 +1,29 @@
 package com.sissi.pipeline.in.iq.disco.muc;
 
-import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
-import com.sissi.ucenter.muc.MucConfig;
-import com.sissi.ucenter.muc.MucConfigBuilder;
+import com.sissi.ucenter.relation.muc.room.RoomBuilder;
+import com.sissi.ucenter.relation.muc.room.RoomConfig;
 
 /**
+ * MUC公开房间校验
+ * 
  * @author kim 2014年3月14日
  */
 public class DiscoItemsCheckPublicProcessor extends ProxyProcessor {
 
-	private final MucConfigBuilder mucConfigBuilder;
+	private final RoomBuilder room;
 
-	public DiscoItemsCheckPublicProcessor(MucConfigBuilder mucConfigBuilder) {
+	public DiscoItemsCheckPublicProcessor(RoomBuilder room) {
 		super();
-		this.mucConfigBuilder = mucConfigBuilder;
+		this.room = room;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		JID group = super.build(protocol.parent().getTo());
-		return this.mucConfigBuilder.build(group).allowed(context.jid(), MucConfig.PUBLIC, null) ? true : this.writeAndReturn(context, protocol);
+		return this.room.build(super.build(protocol.parent().getTo())).allowed(context.jid(), RoomConfig.PUBLICROOM, null) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

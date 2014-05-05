@@ -6,16 +6,17 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.mongodb.DBCursor;
-import com.sissi.commons.Extracter;
-import com.sissi.config.MongoConfig;
+import com.sissi.config.Dictionary;
+import com.sissi.config.impl.MongoUtils;
 import com.sissi.context.JID;
 import com.sissi.context.JIDs;
-import com.sissi.ucenter.muc.MucJIDs;
 
 /**
+ * 线程安全的JIDs实现
+ * 
  * @author kim 2014年3月6日
  */
-public class ShareJIDs implements JIDs, MucJIDs {
+public class ShareJIDs implements JIDs {
 
 	private final AtomicInteger counter = new AtomicInteger();
 
@@ -27,7 +28,7 @@ public class ShareJIDs implements JIDs, MucJIDs {
 		this.jid = source.bare();
 		try {
 			while (cursor.hasNext()) {
-				this.resources.add(Extracter.asString(cursor.next(), MongoConfig.FIELD_RESOURCE));
+				this.resources.add(MongoUtils.asString(cursor.next(), Dictionary.FIELD_RESOURCE));
 			}
 		} finally {
 			cursor.close();

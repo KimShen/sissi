@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="server.ha.keepalive" class="com.sissi.server.ha.impl.PingKeepalive">
+		<constructor-arg ref="counter" />
+		<constructor-arg ref="commons.thread.runner" />
+		<constructor-arg ref="server.ha.keepalive.interval" />
+	</bean>
+	<bean id="server.ha.keepalive.interval" class="com.sissi.commons.thread.Interval">
+		<constructor-arg value="${server.keepalive.interval}" />
+		<constructor-arg value="${server.keepalive.unit}" />
+	</bean>
+</beans>

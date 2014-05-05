@@ -3,10 +3,10 @@ package com.sissi.protocol.iq.vcard.field;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import com.sissi.field.Field;
+import com.sissi.field.Fields;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.iq.vcard.VCard;
-import com.sissi.read.Metadata;
-import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.field.Fields;
 
 /**
  * @author kim 2013年12月5日

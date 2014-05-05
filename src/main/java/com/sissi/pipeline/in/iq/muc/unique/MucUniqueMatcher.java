@@ -6,6 +6,8 @@ import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.muc.Unique;
 
 /**
+ * <iq to='sissi.pw' type='get'><unique xmlns='http://jabber.org/protocol/muc#unique'/></iq>
+ * 
  * @author kim 2014年3月27日
  */
 public class MucUniqueMatcher extends ClassMatcher {

@@ -1,21 +1,22 @@
 package com.sissi.pipeline.in;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import com.sissi.pipeline.InputMatcher;
 import com.sissi.protocol.Protocol;
 
 /**
+ * 匹配Class簇
+ * 
  * @author kim 2013年12月6日
  */
 public class ClassesMatcher implements InputMatcher {
 
-	private final Set<Class<? extends Protocol>> clazzes = new HashSet<Class<? extends Protocol>>();
+	private final Set<Class<? extends Protocol>> clazzes;
 
-	public ClassesMatcher(Set<Class<? extends Protocol>> protocol) {
+	public ClassesMatcher(Set<Class<? extends Protocol>> protocols) {
 		super();
-		this.clazzes.addAll(protocol);
+		this.clazzes = protocols;
 	}
 
 	@Override

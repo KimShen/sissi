@@ -6,11 +6,13 @@ import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.PresenceType;
 
 /**
+ * Presence.type = unavailable, 已加入黑名单
+ * 
  * @author kim 2013年12月6日
  */
-public class Blocked2SelfsPresenceProcessor extends Block2SelfsPresenceProcessor {
+public class Blocked2SelfsPresenceProcessor extends ToSelfsPresenceProcessor {
 
-	private final Presence unavailable = new Presence().setType(PresenceType.UNAVAILABLE);
+	private final Presence unavailable = new Presence().type(PresenceType.UNAVAILABLE);
 
 	@Override
 	protected Status build(JIDContext context) {

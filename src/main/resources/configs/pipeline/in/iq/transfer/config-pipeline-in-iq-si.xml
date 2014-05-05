@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="si.host" class="com.sissi.protocol.iq.bytestreams.Streamhost">
+		<constructor-arg ref="bytestreams.proxy" />
+	</bean>
+
+	<bean id="si.pro.delay" class="com.sissi.pipeline.in.iq.si.SiTimeDelayProcessor" />
+	<alias name="global.pro.forward" alias="si.pro.2fans" />
+	<bean id="si.pro.2fans.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="si.pro.delay" />
+				<ref bean="si.pro.2fans" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="si.pro.2delegation" class="com.sissi.pipeline.in.iq.si.Si2DelegationProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="server.exchanger.context" />
+		<constructor-arg ref="server.server.exchanger.delegation.transfer" />
+		<constructor-arg value="${server.exchanger.delegation.resource}" />
+	</bean>
+	<bean id="si.pro.2delegation.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="si.pro.delay" />
+				<ref bean="si.pro.2delegation" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="si.pro.4delegation" class="com.sissi.pipeline.in.iq.si.Si4DelegationProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="persistent.si" />
+		<constructor-arg index="0" value="${server.exchanger.delegation.resource}" />
+		<constructor-arg index="1" value="${domain.server.delegation}" />
+		<constructor-arg ref="si.host" />
+	</bean>
+	<bean id="si.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.si" />
+	</bean>
+
+	<bean id="finder.si" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="si.condition.4delegation" />
+				<ref bean="si.condition.2delegation" />
+				<!-- AnyMatcher -->
+				<ref bean="si.condition.2fans" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<alias name="si.condition" alias="condition.si" />
+	<bean id="si.condition" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="si.condition.matcher" />
+		<constructor-arg ref="si.pro.fork" />
+	</bean>
+	<bean id="si.condition.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.iq.si.Si" />
+	</bean>
+	<bean id="si.condition.2fans" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<util:constant static-field="com.sissi.pipeline.in.AnyMatcher.INSTANCE" />
+		</constructor-arg>
+		<constructor-arg ref="si.pro.2fans.chained" />
+	</bean>
+	<bean id="si.condition.2delegation" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="si.condition.2delegation.matcher" />
+		<constructor-arg ref="si.pro.2delegation.chained" />
+	</bean>
+	<bean id="si.condition.2delegation.matcher" class="com.sissi.pipeline.in.iq.ToDelegationMatcher">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg ref="addressing" />
+		<constructor-arg index="0" value="com.sissi.protocol.iq.si.Si" />
+	</bean>
+	<bean id="si.condition.4delegation" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="si.condition.4delegation.matcher" />
+		<constructor-arg ref="si.pro.4delegation" />
+	</bean>
+	<bean id="si.condition.4delegation.matcher" class="com.sissi.pipeline.in.iq.si.Si4DelegationMatcher">
+		<constructor-arg value="${domain.server.delegation}" />
+	</bean>
+
+	<import resource="config-pipeline-in-iq-bytestreams.xml" />
+</beans>

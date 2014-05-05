@@ -14,21 +14,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = ItemStatus.NAME)
 public class ItemStatus {
 
-	public final static ItemStatus STATUS_100 = new ItemStatus("100");
-
-	public final static ItemStatus STATUS_110 = new ItemStatus("110");
-
-	public final static ItemStatus STATUS_210 = new ItemStatus("210");
-
 	public final static String NAME = "status";
 
 	private static Map<String, ItemStatus> mapping = new HashMap<String, ItemStatus>();
-
-	static {
-		mapping.put("100", STATUS_100);
-		mapping.put("110", STATUS_110);
-		mapping.put("210", STATUS_210);
-	}
 
 	private String code;
 
@@ -48,10 +36,10 @@ public class ItemStatus {
 
 	public static ItemStatus parse(String code) {
 		ItemStatus status = ItemStatus.mapping.get(code);
-		return status != null ? status : ItemStatus.build(code);
+		return status != null ? status : ItemStatus.cached(code);
 	}
 
-	private static ItemStatus build(String code) {
+	private static ItemStatus cached(String code) {
 		ItemStatus status = new ItemStatus(code);
 		ItemStatus.mapping.put(code, status);
 		return status;

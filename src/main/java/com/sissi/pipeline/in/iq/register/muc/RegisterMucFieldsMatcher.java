@@ -7,6 +7,8 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.register.Register;
 
 /**
+ * 不含资源的MUC房间
+ * 
  * @author kim 2014年3月11日
  */
 public class RegisterMucFieldsMatcher extends ClassMatcher {
@@ -19,10 +21,10 @@ public class RegisterMucFieldsMatcher extends ClassMatcher {
 	}
 
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && this.muc(this.jidBuilder.build(protocol.parent().getTo()));
+		return super.match(protocol) && this.support(this.jidBuilder.build(protocol.parent().getTo()));
 	}
 
-	private boolean muc(JID jid) {
+	private boolean support(JID jid) {
 		return jid.isGroup() && jid.isBare();
 	}
 }

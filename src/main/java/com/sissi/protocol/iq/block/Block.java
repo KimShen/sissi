@@ -3,8 +3,8 @@ package com.sissi.protocol.iq.block;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import com.sissi.io.read.Collector;
 import com.sissi.protocol.Protocol;
-import com.sissi.read.Collector;
 
 /**
  * @author kim 2013年12月6日

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="muc.admin.pro.role.check.loop" class="com.sissi.pipeline.in.iq.muc.admin.role.MucCheckRoleLoopProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+	<bean id="muc.admin.pro.role.check.4self" class="com.sissi.pipeline.in.iq.muc.admin.role.MucCheckRole4SelfProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+	<bean id="muc.admin.pro.role.check.4fans" class="com.sissi.pipeline.in.iq.muc.admin.role.MucCheckRole4FansProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.relation.mapping" />
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+	<bean id="muc.admin.pro.role.set" class="com.sissi.pipeline.in.iq.muc.admin.role.MucSetRoleProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.role" />
+	</bean>
+	<bean id="muc.admin.pro.role.set.broadcast" class="com.sissi.pipeline.in.iq.muc.admin.role.MucSetRoleBroadcastProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.relation.mapping" />
+		<constructor-arg ref="ucenter.muc.status.adder.join" />
+		<constructor-arg ref="ucenter.muc.room" />
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+	<bean id="muc.admin.pro.role.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.admin.pro.check.exists" />
+				<ref bean="muc.admin.pro.check.conflict" />
+				<ref bean="muc.admin.pro.role.check.loop" />
+				<ref bean="muc.admin.pro.role.check.4self" />
+				<ref bean="muc.admin.pro.role.check.4fans" />
+				<ref bean="muc.admin.pro.role.set.broadcast" />
+				<ref bean="muc.admin.pro.role.set" />
+				<ref bean="iq.pro.result.stop" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="muc.admin.pro.role.get" class="com.sissi.pipeline.in.iq.muc.admin.role.MucGetRoleProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.relation.4role" />
+		<constructor-arg ref="ucenter.muc.room" />
+	</bean>
+	<bean id="muc.admin.pro.role.get.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.admin.pro.check.exists" />
+				<ref bean="muc.admin.pro.role.check.loop" />
+				<ref bean="muc.admin.pro.role.check.4self" />
+				<ref bean="muc.admin.pro.role.get" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="muc.admin.condition.role.set" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="muc.admin.condition.role.set.matcher" />
+		<constructor-arg ref="muc.admin.pro.role.set.chained" />
+	</bean>
+	<bean id="muc.admin.condition.role.set.matcher" class="com.sissi.pipeline.in.iq.muc.admin.MucActionMatcher">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg index="1" value="ROLE" />
+		<constructor-arg index="2" value="SET" />
+	</bean>
+
+	<bean id="muc.admin.condition.role.get" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="muc.admin.condition.role.get.matcher" />
+		<constructor-arg ref="muc.admin.pro.role.get.chained" />
+	</bean>
+	<bean id="muc.admin.condition.role.get.matcher" class="com.sissi.pipeline.in.iq.muc.admin.MucActionMatcher">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg index="1" value="ROLE" />
+		<constructor-arg index="2" value="GET" />
+	</bean>
+</beans>

@@ -5,9 +5,11 @@ import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.vcard.VCard;
-import com.sissi.ucenter.user.VCardContext;
+import com.sissi.ucenter.vcard.VCardContext;
 
 /**
+ * <iq from='stpeter@jabber.org/roundabout' id='v3' to='jer@jabber.org' type='get'><vCard xmlns='vcard-temp'/></iq>
+ * 
  * @author kim 2013年12月10日
  */
 abstract public class VCardGetProcessor extends ProxyProcessor {

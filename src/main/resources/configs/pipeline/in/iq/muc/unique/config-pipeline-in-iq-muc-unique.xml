@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="muc.pro.unique" class="com.sissi.pipeline.in.iq.muc.unique.MucUniqueProcessor" />
+
+	<alias name="muc.condition.unique" alias="condition.muc.unique" />
+	<bean id="muc.condition.unique" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="muc.condition.unique.matcher" />
+		<constructor-arg ref="muc.pro.unique" />
+	</bean>
+	<bean id="muc.condition.unique.matcher" class="com.sissi.pipeline.in.iq.muc.unique.MucUniqueMatcher">
+		<constructor-arg value="${domain.server.muc}" />
+	</bean>
+</beans>

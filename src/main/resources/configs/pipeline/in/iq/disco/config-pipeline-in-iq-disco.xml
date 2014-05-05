@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="disco.pro.check" class="com.sissi.pipeline.in.iq.disco.DiscoCheckRelationProcessor">
+		<constructor-arg ref="global.domains" />
+		<constructor-arg value="${ucenter.relation.shortcut}" />
+	</bean>
+	<bean id="disco.pro.info.2delegation" class="com.sissi.pipeline.in.iq.disco.DiscoInfoProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="disco.identify.delegation" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="disco.pro.info.2server" class="com.sissi.pipeline.in.iq.disco.DiscoInfoProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="disco.identify.server" />
+				<ref bean="disco.feature.disco.info" />
+				<ref bean="disco.feature.disco.items" />
+				<ref bean="disco.feature.vcard" />
+				<ref bean="disco.feature.block" />
+				<ref bean="disco.feature.ping" />
+				<ref bean="disco.feature.last" />
+				<ref bean="disco.feature.time" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="disco.pro.info.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoInfoProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="disco.identify.bytestreams" />
+				<ref bean="disco.feature.bytestreams" />
+				<ref bean="disco.feature.file" />
+				<ref bean="disco.feature.si" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="disco.pro.info.2offline" class="com.sissi.pipeline.in.iq.disco.DiscoInfoProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="disco.feature.bytestreams" />
+				<ref bean="disco.feature.file" />
+				<ref bean="disco.feature.si" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<alias name="global.pro.forward" alias="disco.pro.info.2fans" />
+	<bean id="disco.pro.info.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.disco.info" />
+	</bean>
+	<bean id="disco.pro.info.fork.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="disco.pro.check" />
+				<ref bean="disco.pro.info.fork" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="disco.pro.items.2server" class="com.sissi.pipeline.in.iq.disco.DiscoItemsProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="disco.item.bytestreams" />
+				<ref bean="disco.item.delegateion" />
+				<ref bean="disco.item.muc" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="disco.pro.items.2proxy" class="com.sissi.pipeline.in.iq.disco.DiscoItemsProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="disco.item.bytestreams" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<alias name="global.pro.forward" alias="disco.pro.items.2fans" />
+	<bean id="disco.pro.items.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.disco.items" />
+	</bean>
+	<bean id="disco.pro.items.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="disco.pro.check" />
+				<ref bean="disco.pro.items.fork" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="finder.disco.info" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="disco.condition.info.2delegation" />
+				<ref bean="disco.condition.info.2server" />
+				<ref bean="disco.condition.info.2proxy" />
+				<ref bean="disco.condition.info.2muc" />
+				<ref bean="disco.condition.info.2offline" />
+				<!-- AnyMatcher,需要放在最后 -->
+				<ref bean="disco.condition.info.2fans" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="finder.disco.items" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="disco.condition.items.2server" />
+				<ref bean="disco.condition.items.2proxy" />
+				<ref bean="disco.condition.items.2muc" />
+				<!-- To Fans的JID != MUC JID -->
+				<ref bean="disco.condition.items.2muc.fans" />
+				<!-- AnyMatcher,需要放在最后 -->
+				<ref bean="disco.condition.items.2fans" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<alias name="disco.condition.info" alias="condition.disco.info" />
+	<bean id="disco.condition.info" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="disco.condition.info.matcher" />
+		<constructor-arg ref="disco.pro.info.fork" />
+	</bean>
+	<bean id="disco.condition.info.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.iq.disco.DiscoInfo" />
+	</bean>
+	<alias name="disco.condition.items" alias="condition.disco.items" />
+	<bean id="disco.condition.items" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="disco.condition.items.matcher" />
+		<constructor-arg ref="disco.pro.items.chained" />
+	</bean>
+	<bean id="disco.condition.items.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.iq.disco.DiscoItems" />
+	</bean>
+	<bean id="disco.condition.info.2delegation" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="disco.condition.info.2delegation.matcher" />
+		<constructor-arg ref="disco.pro.info.2delegation" />
+	</bean>
+	<bean id="disco.condition.info.2delegation.matcher" class="com.sissi.pipeline.in.iq.ToProxyMatcher">
+		<constructor-arg index="0" value="com.sissi.protocol.iq.disco.DiscoInfo" />
+		<constructor-arg index="1" value="${domain.server.delegation}" />
+	</bean>
+	<bean id="disco.condition.info.2server" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.iq.ToServerMatcher">
+				<constructor-arg index="0" value="com.sissi.protocol.iq.disco.DiscoInfo" />
+				<constructor-arg index="1" value="${domain.server}" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="disco.pro.info.2server" />
+	</bean>
+	<bean id="disco.condition.info.2proxy" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="disco.condition.info.2proxy.matcher" />
+		<constructor-arg ref="disco.pro.info.2proxy" />
+	</bean>
+	<bean id="disco.condition.info.2proxy.matcher" class="com.sissi.pipeline.in.iq.ToProxyMatcher">
+		<constructor-arg index="0" value="com.sissi.protocol.iq.disco.DiscoInfo" />
+		<constructor-arg index="1" value="${server.exchanger.bytestreams.jid}" />
+	</bean>
+	<bean id="disco.condition.info.2fans" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<util:constant static-field="com.sissi.pipeline.in.AnyMatcher.INSTANCE" />
+		</constructor-arg>
+		<constructor-arg ref="disco.pro.info.2fans" />
+	</bean>
+	<bean id="disco.condition.info.2offline" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="disco.condition.info.2offline.matcher" />
+		<constructor-arg ref="disco.pro.info.2offline" />
+	</bean>
+	<bean id="disco.condition.info.2offline.matcher" class="com.sissi.pipeline.in.iq.disco.DiscoInfo2OfflineMatcher">
+		<constructor-arg ref="addressing" />
+		<constructor-arg ref="context.jid" />
+	</bean>
+	<bean id="disco.condition.items.2server" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="disco.condition.items.2server.matcher" />
+		<constructor-arg ref="disco.pro.items.2server" />
+	</bean>
+	<bean id="disco.condition.items.2server.matcher" class="com.sissi.pipeline.in.iq.ToServerMatcher">
+		<constructor-arg index="0" value="com.sissi.protocol.iq.disco.DiscoItems" />
+		<constructor-arg index="1" value="${domain.server}" />
+	</bean>
+	<bean id="disco.condition.items.2proxy" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="disco.condition.items.2proxy.matcher" />
+		<constructor-arg ref="disco.pro.items.2proxy" />
+	</bean>
+	<bean id="disco.condition.items.2proxy.matcher" class="com.sissi.pipeline.in.iq.ToProxyMatcher">
+		<constructor-arg index="0" value="com.sissi.protocol.iq.disco.DiscoItems" />
+		<constructor-arg index="1" value="${server.exchanger.bytestreams.jid}" />
+	</bean>
+	<bean id="disco.condition.items.2fans" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<util:constant static-field="com.sissi.pipeline.in.AnyMatcher.INSTANCE" />
+		</constructor-arg>
+		<constructor-arg ref="disco.pro.items.2fans" />
+	</bean>
+
+	<import resource="config-pipeline-in-iq-disco-feature.xml" />
+	<import resource="config-pipeline-in-iq-disco-item.xml" />
+	<import resource="config-pipeline-in-iq-disco-muc.xml" />
+</beans>

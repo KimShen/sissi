@@ -5,6 +5,8 @@ import java.util.UUID;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
@@ -14,8 +16,6 @@ import com.sissi.protocol.iq.data.XField;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.offline.Delay;
 import com.sissi.protocol.offline.History;
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013-10-27
@@ -73,7 +73,7 @@ public class Message extends Protocol implements Collector {
 	}
 
 	private Message setX(Object x) {
-		return XData.class == x.getClass() ? this.setData(XData.class.cast(x)) : this.setUser(XUser.class.cast(x));
+		return XData.class == x.getClass() ? this.setData(XData.class.cast(x)) : this.muc(XUser.class.cast(x));
 	}
 
 	public String getType() {
@@ -154,14 +154,19 @@ public class Message extends Protocol implements Collector {
 		return this.getSubject() != null;
 	}
 
-	public Message setSubject(Subject subject) {
-		this.subject = subject.hasContent() ? subject : null;
+	public Message subject(String subject) {
+		this.subject = subject != null ? new Subject(subject) : null;
+		return this;
+	}
+
+	public Message subject(Subject subject) {
+		this.subject = subject;
 		return this;
 	}
 
 	@XmlElement
 	public Subject getSubject() {
-		return this.subject;
+		return this.subject != null && this.subject.hasContent() ? this.subject : null;
 	}
 
 	@XmlElement
@@ -169,13 +174,13 @@ public class Message extends Protocol implements Collector {
 		return super.getError();
 	}
 
-	public Message setUser(XUser x) {
+	public Message muc(XUser x) {
 		this.user = x;
 		return this;
 	}
 
 	@XmlElement(name = XUser.NAME)
-	public XUser getUser() {
+	public XUser getMuc() {
 		return this.user;
 	}
 
@@ -198,11 +203,11 @@ public class Message extends Protocol implements Collector {
 	}
 
 	public boolean invite() {
-		return this.getUser() != null && this.getUser().invite();
+		return this.getMuc() != null && this.getMuc().invite();
 	}
 
 	public boolean decline() {
-		return this.getUser() != null && this.getUser().decline();
+		return this.getMuc() != null && this.getMuc().decline();
 	}
 
 	public boolean request() {
@@ -235,10 +240,20 @@ public class Message extends Protocol implements Collector {
 		return this.history;
 	}
 
-	public boolean validLoop() {
+	/**
+	 * 是否同时存在Received/Request(冲突)
+	 * 
+	 * @return
+	 */
+	public boolean notConflict() {
 		return !this.received() || !this.request();
 	}
 
+	/**
+	 * 是否同时存在Received/Body且存在Received.id
+	 * 
+	 * @return
+	 */
 	public boolean validReceived() {
 		return this.received() ? (this.getBody() == null && this.getReceived().id()) : true;
 	}
@@ -263,7 +278,7 @@ public class Message extends Protocol implements Collector {
 			this.setThread(Thread.class.cast(ob));
 			return;
 		case Subject.NAME:
-			this.setSubject(Subject.class.cast(ob));
+			this.subject(Subject.class.cast(ob));
 			return;
 		case History.NAME:
 			this.setHistory(History.class.cast(ob));

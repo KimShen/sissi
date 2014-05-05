@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="server.getout.chained" class="com.sissi.server.getout.impl.ChainedGetout">
+		<constructor-arg>
+			<util:list>
+				<ref bean="server.getout.muc" />
+				<ref bean="server.getout.presence" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="server.getout.muc" class="com.sissi.server.getout.impl.MucGetout">
+		<constructor-arg ref="ucenter.muc.relation.4role" />
+		<constructor-arg ref="presence.pro.muc.leave.chained" />
+	</bean>
+	<bean id="server.getout.presence" class="com.sissi.server.getout.impl.PresenceGetout">
+		<constructor-arg ref="ucenter.vcard.user" />
+		<constructor-arg ref="presence.pro.status.unavailable.chained" />
+	</bean>
+</beans>

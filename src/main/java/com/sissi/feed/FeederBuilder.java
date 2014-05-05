@@ -8,5 +8,10 @@ import com.sissi.pipeline.InputFinder;
  */
 public interface FeederBuilder {
 
+	/**
+	 * @param context
+	 * @param finder XMPP协议栈
+	 * @return
+	 */
 	public Feeder build(JIDContext context, InputFinder finder);
 }

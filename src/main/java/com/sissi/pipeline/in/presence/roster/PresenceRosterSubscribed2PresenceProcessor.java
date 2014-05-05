@@ -7,6 +7,8 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
 
 /**
+ * Presence type = subscribed时向To广播
+ * 
  * @author kim 2013-11-18
  */
 public class PresenceRosterSubscribed2PresenceProcessor extends ProxyProcessor {

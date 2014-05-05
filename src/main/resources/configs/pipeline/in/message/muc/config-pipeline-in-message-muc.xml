@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<alias name="global.pro.check.muc.exists" alias="message.pro.muc.check.exists" />
+	<bean id="message.pro.muc.check.relation" class="com.sissi.pipeline.in.message.muc.MessageMuc2CheckRelationProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+
+	<bean id="message.pro.muc.nonethread" class="com.sissi.pipeline.in.message.muc.MessageMuc2NoneThreadProcessor" />
+	<bean id="message.pro.muc.persistent" class="com.sissi.pipeline.in.message.muc.MessageMuc2PersistentProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="persistent.message.muc" />
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+	<bean id="message.pro.muc.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.message.muc" />
+	</bean>
+
+	<bean id="finder.message.muc" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="message.condition.invite" />
+				<ref bean="message.condition.decline" />
+				<ref bean="message.condition.muc.subject" />
+				<ref bean="message.condition.muc.history" />
+				<ref bean="message.condition.muc.2all" />
+				<ref bean="message.condition.muc.2fans" />
+				<ref bean="message.condition.apply.response" />
+				<ref bean="message.condition.apply.request" />
+				<ref bean="message.condition.apply.cancel" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="message.condition.muc" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="message.condition.muc.matcher" />
+		<constructor-arg ref="message.pro.muc.fork" />
+	</bean>
+	<bean id="message.condition.muc.matcher" class="com.sissi.pipeline.in.MucMatcher">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg index="0" value="com.sissi.protocol.message.Message" />
+	</bean>
+
+	<import resource="config-pipeline-in-message-muc-2all.xml" />
+	<import resource="config-pipeline-in-message-muc-2fans.xml" />
+	<import resource="config-pipeline-in-message-muc-history.xml" />
+	<import resource="config-pipeline-in-message-muc-subject.xml" />
+	<import resource="apply/config-pipeline-in-message-muc-apply.xml" />
+	<import resource="invite/config-pipeline-in-message-muc-invite.xml" />
+</beans>

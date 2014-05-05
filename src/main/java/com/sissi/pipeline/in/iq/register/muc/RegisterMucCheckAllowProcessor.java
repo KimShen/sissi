@@ -7,26 +7,28 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.NotAllowed;
-import com.sissi.ucenter.muc.MucConfig;
-import com.sissi.ucenter.muc.MucConfigBuilder;
+import com.sissi.ucenter.relation.muc.room.RoomBuilder;
+import com.sissi.ucenter.relation.muc.room.RoomConfig;
 
 /**
+ * 禁止注册校验(房间配置)
+ * 
  * @author kim 2014年3月11日
  */
 public class RegisterMucCheckAllowProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
 
-	private final MucConfigBuilder mucConfigBuilder;
+	private final RoomBuilder room;
 
-	public RegisterMucCheckAllowProcessor(MucConfigBuilder mucConfigBuilder) {
+	public RegisterMucCheckAllowProcessor(RoomBuilder room) {
 		super();
-		this.mucConfigBuilder = mucConfigBuilder;
+		this.room = room;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.mucConfigBuilder.build(super.build(protocol.parent().getTo())).allowed(context.jid(), MucConfig.REGISTER, null) ? true : this.writeAndReturn(context, protocol);
+		return this.room.build(super.build(protocol.parent().getTo())).allowed(context.jid(), RoomConfig.ALLOWREGISTER) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

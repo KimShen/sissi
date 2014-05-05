@@ -8,14 +8,16 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.Forbidden;
 
 /**
+ * 返回错误
+ * 
  * @author kim 2014年1月26日
  */
 public class VCardGetCheckRelation4ErrorProcessor extends VCardGetCheckRelationProcessor {
-	
+
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
-	public VCardGetCheckRelation4ErrorProcessor(boolean free) {
-		super(free);
+	public VCardGetCheckRelation4ErrorProcessor(boolean shortcut) {
+		super(shortcut);
 	}
 
 	protected boolean writeAndReturn(JIDContext context, Protocol protocol) {

@@ -7,20 +7,21 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.Trace;
+import com.sissi.io.read.Metadata;
+import com.sissi.persistent.RecoverDirection;
+import com.sissi.persistent.RecoverQuery;
 import com.sissi.protocol.message.Message;
 import com.sissi.protocol.muc.XMuc;
-import com.sissi.read.Metadata;
-import com.sissi.ucenter.history.HistoryQuery;
 
 /**
  * @author kim 2014年2月22日
  */
 @Metadata(uri = { Message.XMLNS, XMuc.XMLNS }, localName = History.NAME)
-public class History implements HistoryQuery {
+public class History implements RecoverQuery {
 
 	private final static Log log = LogFactory.getLog(History.class);
 
-	private final static String format = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+	private final static String format = "yyyy-MM-dd'T'HH:mm:ssZ";
 
 	public final static String NAME = "history";
 
@@ -57,10 +58,15 @@ public class History implements HistoryQuery {
 		return this.maxstanzas != null ? Math.min(Integer.valueOf(this.maxstanzas), limit) : def;
 	}
 
+	/*
+	 * 1,Seconds 2,Since 3,Def
+	 * 
+	 * @see com.sissi.persistent.RecoverQuery#since(long, long)
+	 */
 	@Override
 	public long since(long limit, long def) {
 		try {
-			return Math.max(Math.max(this.since != null ? new SimpleDateFormat(format).parse(this.since).getTime() : System.currentTimeMillis(), System.currentTimeMillis() - (this.seconds != null ? Long.valueOf(this.seconds) : Long.MIN_VALUE) * 1000), def);
+			return this.seconds != null ? (System.currentTimeMillis() - Long.valueOf(this.seconds)) : this.since != null ? new SimpleDateFormat(format).parse(this.since).getTime() : def;
 		} catch (ParseException e) {
 			log.debug(e.toString());
 			Trace.trace(log, e);
@@ -68,20 +74,7 @@ public class History implements HistoryQuery {
 		}
 	}
 
-	public boolean direction(HistoryDirection direction) {
-		return (this.since == null || this.seconds == null) ? direction == HistoryDirection.UP : HistoryDirection.parse(this.direction) == direction;
-	}
-
-	public enum HistoryDirection {
-
-		UP, DOWN;
-
-		public static HistoryDirection parse(String type) {
-			try {
-				return type == null ? DOWN : HistoryDirection.valueOf(type.toUpperCase());
-			} catch (Exception e) {
-				return DOWN;
-			}
-		}
+	public boolean direction(RecoverDirection direction) {
+		return RecoverDirection.parse(this.direction) == direction;
 	}
 }

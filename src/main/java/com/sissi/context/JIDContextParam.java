@@ -9,7 +9,7 @@ public interface JIDContextParam {
 
 	public final static String KEY_ADDRESS = "ADDRESS";
 
-	public final static String KEY_SERVERTLS = "TLS";
+	public final static String KEY_STARTTLS = "TLS";
 
 	public <T> T find(String key, Class<T> clazz);
 }

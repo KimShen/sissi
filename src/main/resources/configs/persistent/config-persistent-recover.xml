@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="persistent.recover" class="com.sissi.persistent.impl.MongoRecover">
+		<constructor-arg ref="persistent.config" />
+		<constructor-arg index="1" ref="persistent.recover.def" />
+		<constructor-arg index="2" ref="persistent.recover.threshold" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="persistent.element.message.muc" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="persistent.recover.def" class="com.sissi.persistent.impl.DefaultParams">
+		<constructor-arg index="0" value="${persistent.recover.limit.def}" />
+		<constructor-arg index="1" value="${persistent.recover.since.def}" />
+	</bean>
+	<bean id="persistent.recover.threshold" class="com.sissi.persistent.impl.DefaultParams">
+		<constructor-arg index="0" value="${persistent.recover.limit.threshold}" />
+		<constructor-arg index="1" value="${persistent.recover.since.threshold}" />
+	</bean>
+</beans>

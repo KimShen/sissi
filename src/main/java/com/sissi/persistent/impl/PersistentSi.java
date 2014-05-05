@@ -2,11 +2,8 @@ package com.sissi.persistent.impl;
 
 import java.util.Map;
 
-import com.mongodb.BasicDBObjectBuilder;
-import com.sissi.commons.Extracter;
-import com.sissi.config.MongoConfig;
+import com.sissi.config.Dictionary;
 import com.sissi.context.JIDBuilder;
-import com.sissi.persistent.PersistentElementBox;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.IQ;
@@ -21,11 +18,11 @@ import com.sissi.protocol.iq.si.File;
 import com.sissi.protocol.iq.si.Si;
 
 /**
+ * Si</p>索引策略:{"sid":1}
+ * 
  * @author kim 2014年2月25日
  */
 public class PersistentSi extends PersistentProtocol {
-
-	private final String fieldName = "name";
 
 	private final String profile = "http://jabber.org/protocol/si/profile/file-transfer";
 
@@ -33,30 +30,39 @@ public class PersistentSi extends PersistentProtocol {
 
 	private final String delegation;
 
+	/**
+	 * @param jidBuilder
+	 * @param tip
+	 * @param delegation 代理域
+	 */
 	public PersistentSi(JIDBuilder jidBuilder, String tip, String delegation) {
-		super(Si.class, jidBuilder, tip, false);
+		super(Si.class, jidBuilder, tip, true);
 		this.delegation = delegation;
-	}
-
-	public Map<String, Object> query(Element element) {
-		return Extracter.asMap(BasicDBObjectBuilder.start(PersistentElementBox.fieldId, element.getId()).get());
 	}
 
 	@Override
 	public Map<String, Object> write(Element element) {
 		Si si = Si.class.cast(element);
 		Map<String, Object> entity = super.write(si.parent().reply().setType(ProtocolType.SET.toString()));
-		entity.put(MongoConfig.FIELD_CLASS, element.getClass().getSimpleName());
-		entity.put(PersistentElementBox.fieldHost, new String[] { si.host(this.delegation, super.jidBuilder.build(si.parent().getTo()).asStringWithBare()) });
-		entity.put(PersistentElementBox.fieldSize, si.getFile().getSize());
-		entity.put(PersistentElementBox.fieldSid, si.getId());
-		entity.put(this.fieldName, si.getFile().getName());
+		entity.put(Dictionary.FIELD_SID, si.getId());
+		entity.put(Dictionary.FIELD_SIZE, si.getFile().getSize());
+		entity.put(Dictionary.FIELD_NAME, si.getFile().getName());
+		entity.put(Dictionary.FIELD_CLASS, element.getClass().getSimpleName());
+		entity.put(Dictionary.FIELD_HOST, new String[] { si.host(this.delegation, super.jidBuilder.build(si.parent().getTo()).asStringWithBare()) });
+		if (si.delay()) {
+			entity.put(Dictionary.FIELD_DELAY, si.getDelay().getStamp());
+		}
 		return entity;
 	}
 
+	/*
+	 * IQ.id.from.add(new Si().id.source.profile.feature.file(new File().name.size))
+	 * 
+	 * @see com.sissi.persistent.PersistentElement#read(java.util.Map)
+	 */
 	@Override
 	public Element read(Map<String, Object> element) {
-		return IQ.class.cast(super.read(element, new IQ())).setId(element.get(PersistentElementBox.fieldSid).toString()).setFrom(this.delegation).add(new Si().setId(element.get(PersistentElementBox.fieldSid).toString()).setSource(element.get(MongoConfig.FIELD_FROM).toString()).setProfile(this.profile).setFeature(this.feature).setFile(new File().setName(element.get(this.fieldName).toString()).setSize(element.get(PersistentElementBox.fieldSize).toString())));
+		return IQ.class.cast(super.read(element, new IQ())).setId(element.get(Dictionary.FIELD_SID).toString()).setFrom(this.delegation).add(new Si().setId(element.get(Dictionary.FIELD_SID).toString()).setSource(element.get(Dictionary.FIELD_FROM).toString()).setProfile(this.profile).setFeature(this.feature).setFile(new File().setName(element.get(Dictionary.FIELD_NAME).toString()).setSize(element.get(Dictionary.FIELD_SIZE).toString())).delay(super.toString(element, Dictionary.FIELD_DELAY)));
 	}
 
 	public Class<? extends Element> support() {

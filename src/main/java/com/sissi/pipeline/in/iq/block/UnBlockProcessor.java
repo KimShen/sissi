@@ -5,9 +5,11 @@ import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.block.BlockListItem;
 import com.sissi.protocol.iq.block.UnBlock;
-import com.sissi.ucenter.user.BlockContext;
+import com.sissi.ucenter.block.BlockContext;
 
 /**
+ * 黑名单移除
+ * 
  * @author kim 2013年12月6日
  */
 public class UnBlockProcessor extends ProxyProcessor {
@@ -19,6 +21,11 @@ public class UnBlockProcessor extends ProxyProcessor {
 		this.blockContext = blockContext;
 	}
 
+	/*
+	 * Unblock不含Item则表示全部移除
+	 * 
+	 * @see com.sissi.pipeline.Input#input(com.sissi.context.JIDContext, com.sissi.protocol.Protocol)
+	 */
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		UnBlock ub = protocol.cast(UnBlock.class);

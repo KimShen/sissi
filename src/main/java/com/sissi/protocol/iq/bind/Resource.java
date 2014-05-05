@@ -2,8 +2,8 @@ package com.sissi.protocol.iq.bind;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
-import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013-10-30

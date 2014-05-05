@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="server.server.exchanger.delegation" class="com.sissi.server.exchange.impl.FSDelegation">
+		<constructor-arg index="0" value="${server.exchanger.delegation.dir}" />
+		<constructor-arg index="1" value="${server.exchanger.delegation.buffer}" />
+		<constructor-arg index="2" ref="counter" />
+		<constructor-arg index="3" ref="persistent.si" />
+	</bean>
+
+	<bean id="server.server.exchanger.delegation.transfer" class="com.sissi.server.exchange.impl.DegelationTransferBuilder">
+		<constructor-arg ref="server.server.exchanger.delegation.recall" />
+		<constructor-arg ref="server.server.exchanger.delegation" />
+		<constructor-arg ref="persistent.si" />
+		<constructor-arg ref="counter" />
+		<constructor-arg ref="context.jid" />
+	</bean>
+
+	<bean id="server.server.exchanger.delegation.recall" class="com.sissi.server.exchange.impl.ResendCall">
+		<constructor-arg ref="persistent.si" />
+		<constructor-arg ref="addressing" />
+		<constructor-arg ref="context.jid" />
+	</bean>
+</beans>

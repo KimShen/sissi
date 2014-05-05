@@ -14,6 +14,11 @@ import org.apache.commons.logging.LogFactory;
 import com.sissi.commons.Trace;
 import com.sissi.context.JID;
 import com.sissi.context.StatusClauses;
+import com.sissi.field.Field;
+import com.sissi.field.Fields;
+import com.sissi.field.impl.BeanFields;
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.muc.Destory;
@@ -23,11 +28,6 @@ import com.sissi.protocol.muc.ItemRole;
 import com.sissi.protocol.muc.XMuc;
 import com.sissi.protocol.muc.XUser;
 import com.sissi.protocol.offline.Delay;
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
-import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.field.Fields;
-import com.sissi.ucenter.field.impl.BeanFields;
 
 /**
  * @author kim 2013-10-28
@@ -94,11 +94,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return XVCard.class.cast(this.fields() ? this.fields.findField(XVCard.NAME, XVCard.class) : null);
 	}
 
-	public Presence destory(Destory destory) {
-		return this.setType(PresenceType.UNAVAILABLE).add(new XUser().destory(destory).item(new Item().setAffiliation(ItemAffiliation.NONE.toString()).setRole(ItemRole.NONE.toString())));
-	}
-
-	public Presence setType(PresenceType type) {
+	public Presence type(PresenceType type) {
 		super.setType(type.toString());
 		if (!this.status()) {
 			this.fields = null;
@@ -107,6 +103,10 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 			this.status = null;
 		}
 		return this;
+	}
+
+	public Presence destory(Destory destory) {
+		return this.type(PresenceType.UNAVAILABLE).add(new XUser().destory(destory).item(new Item().setAffiliation(ItemAffiliation.NONE.toString()).setRole(ItemRole.NONE.toString())));
 	}
 
 	public Presence setFrom(JID from) {
@@ -227,6 +227,10 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		}
 		this.fields.add(field);
 		return this;
+	}
+
+	public Presence clone() {
+		return new Presence().clauses(this.clauses()).setFrom(this.getFrom()).setTo(this.getTo()).setType(this.getType()).cast(Presence.class);
 	}
 
 	public Fields findFields(String name) {

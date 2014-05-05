@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="auth.sasl" class="com.sissi.pipeline.in.auth.impl.CachedSaslServers">
+		<constructor-arg ref="counter" />
+	</bean>
+
+	<util:list id="auth.callback.chained">
+		<ref bean="auth.callback.digest" />
+		<ref bean="auth.callback.plain" />
+	</util:list>
+	<bean id="auth.callback.plain" class="com.sissi.pipeline.in.auth.impl.PlainAuthCallback">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg ref="ucenter.accessor" />
+	</bean>
+	<bean id="auth.callback.digest" class="com.sissi.pipeline.in.auth.impl.DigestAuthCallback">
+		<constructor-arg>
+			<ref bean="auth.sasl" />
+		</constructor-arg>
+		<constructor-arg ref="context.jid" />
+		<constructor-arg ref="ucenter.accessor" />
+	</bean>
+
+	<bean id="auth.pro.abort" class="com.sissi.pipeline.in.auth.impl.AuthAbortProcessor" />
+	<bean id="auth.pro.failed" class="com.sissi.pipeline.in.auth.impl.AuthFailedProcessor" />
+	<bean id="auth.pro.digest" class="com.sissi.pipeline.in.auth.impl.DigestAuthProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="auth.sasl" />
+		<constructor-arg ref="auth.pro.failed" />
+	</bean>
+	<bean id="auth.pro.mechanism" class="com.sissi.pipeline.in.auth.impl.AuthMechanismProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="auth.callback.chained" />
+	</bean>
+	<bean id="auth.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.auth" />
+	</bean>
+
+	<bean id="finder.auth" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="auth.condition.mechanism" />
+				<ref bean="auth.condition.digest" />
+				<ref bean="auth.condition.abort" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<alias name="auth.condition" alias="condition.auth" />
+	<bean id="auth.condition" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="auth.condition.matcher" />
+		<constructor-arg ref="auth.pro.fork" />
+	</bean>
+	<bean id="auth.condition.matcher" class="com.sissi.pipeline.in.ClassesMatcher">
+		<constructor-arg>
+			<util:list>
+				<value>com.sissi.protocol.iq.auth.Auth</value>
+				<value>com.sissi.protocol.iq.auth.Abort</value>
+				<value>com.sissi.protocol.iq.auth.Response</value>
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="auth.condition.mechanism" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="auth.condition.mechanism.matcher" />
+		<constructor-arg ref="auth.pro.mechanism" />
+	</bean>
+	<bean id="auth.condition.mechanism.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.iq.auth.Auth" />
+	</bean>
+	<alias name="auth.condition.abort" alias="condition.auth.abort" />
+	<bean id="auth.condition.abort" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="auth.condition.abort.matcher" />
+		<constructor-arg ref="auth.pro.abort" />
+	</bean>
+	<bean id="auth.condition.abort.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.iq.auth.Abort" />
+	</bean>
+	<bean id="auth.condition.digest" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="auth.condition.digest.matcher" />
+		<constructor-arg ref="auth.pro.digest" />
+	</bean>
+	<bean id="auth.condition.digest.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.iq.auth.Response" />
+	</bean>
+</beans>

@@ -4,8 +4,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 
 /**
  * @author kim 2014年3月30日
@@ -28,6 +28,11 @@ public class Destory implements Collector {
 	@XmlAttribute
 	public String getJid() {
 		return this.jid;
+	}
+
+	public Destory reason(String reason) {
+		this.reason = reason != null ? new Reason(reason) : null;
+		return this;
 	}
 
 	@XmlElement

@@ -7,6 +7,8 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.disco.DiscoItems;
 
 /**
+ * <query xmlns='http://jabber.org/protocol/disco#items' node='http://jabber.org/protocol/muc#rooms'/>
+ * 
  * @author kim 2014年4月3日
  */
 public class DiscoItems4FansMatcher extends ClassMatcher {

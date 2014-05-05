@@ -10,6 +10,8 @@ import com.sissi.protocol.error.detail.BadRequest;
 import com.sissi.protocol.message.Message;
 
 /**
+ * ACK有效性校验
+ * 
  * @author kim 2014年3月3日
  */
 public class MessageCheckAckProcessor extends ProxyProcessor {
@@ -22,7 +24,7 @@ public class MessageCheckAckProcessor extends ProxyProcessor {
 	}
 
 	private boolean valid(Message message) {
-		return message.validLoop() && message.validReceived();
+		return message.notConflict() && message.validReceived();
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

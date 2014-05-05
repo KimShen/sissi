@@ -3,6 +3,7 @@ package com.sissi.server.exchange.impl;
 import java.io.Closeable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,60 +11,73 @@ import org.apache.commons.logging.LogFactory;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.sissi.commons.Extracter;
+import com.mongodb.WriteConcern;
 import com.sissi.commons.Trace;
 import com.sissi.commons.apache.IOUtils;
+import com.sissi.commons.thread.Interval;
+import com.sissi.commons.thread.Runner;
+import com.sissi.config.Dictionary;
 import com.sissi.config.MongoConfig;
-import com.sissi.gc.GC;
+import com.sissi.config.impl.MongoUtils;
+import com.sissi.pipeline.Transfer;
+import com.sissi.pipeline.TransferBuffer;
 import com.sissi.resource.ResourceCounter;
 import com.sissi.server.exchange.Exchanger;
 import com.sissi.server.exchange.ExchangerContext;
-import com.sissi.server.exchange.ExchangerTerminal;
-import com.sissi.thread.Interval;
-import com.sissi.thread.Runner;
-import com.sissi.write.Transfer;
-import com.sissi.write.TransferBuffer;
+import com.sissi.server.exchange.Terminal;
 
 /**
+ * 索引策略: {"host":1},{"date":1}
+ * 
  * @author kim 2013年12月22日
  */
 public class BridgeExchangerContext implements ExchangerContext {
 
-	private final String fieldHost = "host";
-
-	private final String fieldDate = "date";
+	private final String date = "date";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
+	/**
+	 * {"host":1}
+	 */
+	private final DBObject filter = BasicDBObjectBuilder.start(Dictionary.FIELD_HOST, 1).get();
+
 	private final Map<String, Exchanger> exchangers = new ConcurrentHashMap<String, Exchanger>();
 
-	private final DBObject filter = BasicDBObjectBuilder.start(this.fieldHost, 1).get();
+	private final ResourceCounter resourceCounter;
 
 	private final MongoConfig config;
+
+	private final Interval interval;
 
 	private final long timeout;
 
 	public BridgeExchangerContext(long timeout, Runner runner, Interval interval, MongoConfig config, ResourceCounter resourceCounter) {
 		super();
 		this.timeout = timeout;
-		this.config = config.clear();
-		runner.executor(1, new LeakGC(interval, resourceCounter));
-		runner.executor(1, new TimeoutGC(interval, resourceCounter));
+		this.interval = interval;
+		this.config = config.reset();
+		this.resourceCounter = resourceCounter;
+		runner.executor(1, new Timeout());
 	}
 
 	@Override
-	public Exchanger join(String host, boolean induct, Transfer transfer) {
-		BridgeExchanger exchanger = new BridgeExchanger(host, induct, transfer);
-		this.exchangers.put(host, exchanger);
-		this.config.collection().save(this.build(host, true));
+	public Exchanger wait(String host, boolean cascade, Transfer transfer) {
+		BridgeExchanger exchanger = new BridgeExchanger(host, cascade, transfer);
+		if (MongoUtils.effect(this.config.collection().save(this.build(host, true), WriteConcern.SAFE))) {
+			this.exchangers.put(host, exchanger);
+		}
 		return exchanger;
 	}
 
 	@Override
-	public Exchanger active(String host) {
-		Exchanger exchanger = this.exchangers.remove(host);
-		this.config.collection().remove(this.build(host, false));
-		return exchanger;
+	public Exchanger activate(String host) {
+		if (MongoUtils.effect(this.config.collection().remove(this.build(host, false), WriteConcern.SAFE))) {
+			// Double check 4 multi thread
+			Exchanger exchanger = this.exchangers.remove(host);
+			return exchanger != null ? exchanger : new NothingExchanger(host);
+		}
+		return new NothingExchanger(host);
 	}
 
 	@Override
@@ -71,55 +85,65 @@ public class BridgeExchangerContext implements ExchangerContext {
 		return this.config.collection().findOne(this.build(host, false)) != null;
 	}
 
+	/**
+	 * {"host":host,"date":Xxx}
+	 * 
+	 * @param host
+	 * @param date
+	 * @return
+	 */
 	private DBObject build(String host, boolean date) {
-		BasicDBObjectBuilder builder = BasicDBObjectBuilder.start(this.fieldHost, host);
+		BasicDBObjectBuilder builder = BasicDBObjectBuilder.start(Dictionary.FIELD_HOST, host);
 		if (date) {
-			builder.add(this.fieldDate, System.currentTimeMillis());
+			builder.add(this.date, System.currentTimeMillis());
 		}
 		return builder.get();
 	}
 
-	private class LeakGC extends GC {
+	/**
+	 * 终止发起方在超时时间内尚未激活的Exchanger
+	 * 
+	 * @author kim 2014年4月20日
+	 */
+	private class Timeout implements Runnable {
 
-		public LeakGC(Interval interval, ResourceCounter resourceCounter) {
-			super(interval, LeakGC.class, resourceCounter);
-		}
+		private final long sleep = BridgeExchangerContext.this.interval.convert(TimeUnit.MILLISECONDS);
+
+		private final String resource = Timeout.class.getSimpleName();
 
 		@Override
-		public boolean gc() {
-			for (String host : BridgeExchangerContext.this.exchangers.keySet()) {
-				if (!BridgeExchangerContext.this.exists(host)) {
-					BridgeExchangerContext.this.exchangers.get(host).close(ExchangerTerminal.TARGET).close(ExchangerTerminal.SOURCE);
-					BridgeExchangerContext.this.log.warn("Find leak exchanger: " + host);
+		public void run() {
+			try {
+				BridgeExchangerContext.this.resourceCounter.increment(this.resource);
+				while (true) {
+					try {
+						this.timeout();
+						Thread.sleep(this.sleep);
+					} catch (Exception e) {
+						log.error(e.toString());
+						Trace.trace(log, e);
+					}
 				}
+			} finally {
+				BridgeExchangerContext.this.resourceCounter.decrement(this.resource);
 			}
-			return true;
-		}
-	}
-
-	private class TimeoutGC extends GC {
-
-		public TimeoutGC(Interval interval, ResourceCounter resourceCounter) {
-			super(interval, TimeoutGC.class, resourceCounter);
 		}
 
-		@Override
-		public boolean gc() {
-			DBCursor cursor = BridgeExchangerContext.this.config.collection().find(BasicDBObjectBuilder.start(BridgeExchangerContext.this.fieldDate, BasicDBObjectBuilder.start("$gt", System.currentTimeMillis() - BridgeExchangerContext.this.timeout).get()).get(), BridgeExchangerContext.this.filter);
+		private Timeout timeout() {
+			DBCursor cursor = BridgeExchangerContext.this.config.collection().find(BasicDBObjectBuilder.start(BridgeExchangerContext.this.date, BasicDBObjectBuilder.start("$lt", System.currentTimeMillis() - BridgeExchangerContext.this.timeout).get()).get(), BridgeExchangerContext.this.filter);
 			try {
 				while (cursor.hasNext()) {
-					Exchanger exchanger = BridgeExchangerContext.this.active(Extracter.asString(DBObject.class.cast(cursor.next()), BridgeExchangerContext.this.fieldHost));
-					// Double check for multi thread
+					Exchanger exchanger = BridgeExchangerContext.this.activate(MongoUtils.asString(DBObject.class.cast(cursor.next()), Dictionary.FIELD_HOST));
+					// Double check 4 multi thread
 					if (exchanger != null) {
-						BridgeExchangerContext.this.log.warn("Find leak context: " + exchanger.host());
-						exchanger.close(ExchangerTerminal.SOURCE);
-						exchanger.close(ExchangerTerminal.TARGET);
+						BridgeExchangerContext.this.log.warn("Timeout socks: " + exchanger.host());
+						exchanger.close(Terminal.ALL);
 					}
 				}
 			} finally {
 				cursor.close();
 			}
-			return true;
+			return this;
 		}
 	}
 
@@ -127,27 +151,28 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 		private final Transfer target;
 
-		private final boolean induct;
+		/**
+		 * 是否允许关闭Target
+		 */
+		private final boolean cascade;
 
 		private final String host;
 
 		private Closeable source;
 
-		private BridgeExchanger(String host, boolean induct, Transfer target) {
+		/**
+		 * @param host
+		 * @param cascade 是否允许关闭Target
+		 * @param target 接收方
+		 */
+		private BridgeExchanger(String host, boolean cascade, Transfer target) {
 			this.host = host;
-			this.induct = induct;
+			this.cascade = cascade;
 			this.target = target;
 		}
 
 		public String host() {
 			return this.host;
-		}
-
-		public BridgeExchanger induct() {
-			if (this.induct) {
-				this.close(ExchangerTerminal.TARGET);
-			}
-			return this;
 		}
 
 		public BridgeExchanger source(Closeable source) {
@@ -162,17 +187,64 @@ public class BridgeExchangerContext implements ExchangerContext {
 		}
 
 		@Override
-		public BridgeExchanger close(ExchangerTerminal closer) {
-			return closer == ExchangerTerminal.SOURCE ? this.close(this.source) : this.close(this.target);
+		public BridgeExchanger close(Terminal terminal) {
+			switch (terminal) {
+			case ALL:
+				return this.close(Terminal.SOURCE).close(Terminal.TARGET);
+			case SOURCE:
+				return this.close(this.source);
+			case TARGET:
+				return this.cascade ? this.close(this.target) : this;
+			}
+			return this;
 		}
 
+		/**
+		 * 无论是否成功都将隐式激活(Activate)
+		 * 
+		 * @param closer
+		 * @return
+		 */
 		private BridgeExchanger close(Closeable closer) {
 			try {
 				IOUtils.closeQuietly(closer);
 			} catch (Exception e) {
-				BridgeExchangerContext.this.log.debug(e.toString());
+				BridgeExchangerContext.this.log.warn(e.toString());
 				Trace.trace(BridgeExchangerContext.this.log, e);
+			} finally {
+				BridgeExchangerContext.this.activate(this.host);
 			}
+			return this;
+		}
+	}
+
+	private final class NothingExchanger implements Exchanger {
+
+		private final String host;
+
+		public NothingExchanger(String host) {
+			super();
+			this.host = host;
+		}
+
+		@Override
+		public String host() {
+			return this.host;
+		}
+
+		@Override
+		public NothingExchanger source(Closeable source) {
+			return this;
+		}
+
+		@Override
+		public NothingExchanger write(TransferBuffer buffer) {
+			BridgeExchangerContext.this.log.info("Nothing on " + this.host + ", please check");
+			return this;
+		}
+
+		@Override
+		public NothingExchanger close(Terminal terminal) {
 			return this;
 		}
 	}

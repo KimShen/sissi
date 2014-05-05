@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="presence.pro.init" class="com.sissi.pipeline.in.presence.init.PresenceInitProcessor" />
+	<bean id="presence.pro.init.4fans" class="com.sissi.pipeline.in.presence.init.PresenceInit4FansProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.vcard.user" />
+		<property name="presenceQueue" ref="broadcast.presence.self" />
+	</bean>
+	<bean id="presence.pro.init.4selfs" class="com.sissi.pipeline.in.presence.init.PresenceInit4SelfsProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.init.4delay" class="com.sissi.pipeline.in.presence.init.PresenceInit4DelayProcessor">
+		<constructor-arg ref="persistent.offline" />
+	</bean>
+	<bean id="presence.pro.init.4subscribe" class="com.sissi.pipeline.in.presence.init.PresenceInit4SubscribeProcessor">
+		<constructor-arg ref="ucenter.relation.roster.user" />
+	</bean>
+	<bean id="presence.pro.init.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg value="true" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.pro.init.4fans" />
+				<ref bean="presence.pro.init.4selfs" />
+				<ref bean="presence.pro.init.4delay" />
+				<ref bean="presence.pro.init.4subscribe" />
+				<ref bean="presence.pro.init" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+</beans>

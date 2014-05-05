@@ -8,6 +8,8 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.JIDMalformed;
 
 /**
+ * JID有效性校验
+ * 
  * @author kim 2014年1月24日
  */
 public class CheckJIDMalformedProcessor extends ProxyProcessor {

@@ -7,6 +7,8 @@ import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 
 /**
+ * 数据集合代理
+ * 
  * @author kim 2014年1月22日
  */
 public interface MongoCollection {
@@ -22,6 +24,8 @@ public interface MongoCollection {
 	public WriteResult update(DBObject query, DBObject entity, boolean upsert, boolean batch, WriteConcern concern);
 
 	public WriteResult remove(DBObject query);
+
+	public WriteResult remove(DBObject query, WriteConcern concern);
 
 	public DBCursor find(DBObject query);
 

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="ucenter.muc.register.field" class="com.sissi.field.impl.BeanFields">
+		<constructor-arg value="false" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="ucenter.muc.register.field.xdata" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="ucenter.muc.register.field.xdata" class="com.sissi.protocol.iq.data.XData">
+		<constructor-arg value="false" />
+		<constructor-arg value="form" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="ucenter.muc.register.field.xdata.title" />
+				<ref bean="ucenter.muc.register.field.xdata.introduce" />
+				<ref bean="ucenter.muc.register.field.xdata.formtype" />
+				<ref bean="ucenter.muc.register.field.xdata.first" />
+				<ref bean="ucenter.muc.register.field.xdata.last" />
+				<ref bean="ucenter.muc.register.field.xdata.nick" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="ucenter.muc.register.field.xdata.title" class="com.sissi.protocol.iq.data.Title">
+		<constructor-arg value="This is my muc title" />
+	</bean>
+	<bean id="ucenter.muc.register.field.xdata.introduce" class="com.sissi.protocol.iq.data.Instructions">
+		<constructor-arg value="This is my muc introduce" />
+	</bean>
+	<bean id="ucenter.muc.register.field.xdata.formtype" class="com.sissi.protocol.iq.data.XInput">
+		<constructor-arg index="0" value="hidden" />
+		<constructor-arg index="1">
+			<null />
+		</constructor-arg>
+		<constructor-arg index="2" value="FORM_TYPE" />
+		<constructor-arg index="3">
+			<util:constant static-field="com.sissi.ucenter.relation.muc.register.RegisterConfig.XMLNS" />
+		</constructor-arg>
+	</bean>
+	<bean id="ucenter.muc.register.field.xdata.first" class="com.sissi.protocol.iq.data.XInput">
+		<constructor-arg index="0" value="text-single" />
+		<constructor-arg index="1" value="Given name" />
+		<constructor-arg index="2" value="muc#register_first" />
+	</bean>
+	<bean id="ucenter.muc.register.field.xdata.last" class="com.sissi.protocol.iq.data.XInput">
+		<constructor-arg index="0" value="text-single" />
+		<constructor-arg index="1" value="Family name" />
+		<constructor-arg index="2" value="muc#register_last" />
+	</bean>
+	<bean id="ucenter.muc.register.field.xdata.nick" class="com.sissi.protocol.iq.data.XInput">
+		<constructor-arg index="0" value="text-single" />
+		<constructor-arg index="1" value="Desired nickname" />
+		<constructor-arg index="2" value="muc#register_roomnick" />
+	</bean>
+</beans>

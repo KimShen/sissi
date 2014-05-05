@@ -4,6 +4,8 @@ import com.sissi.pipeline.InputMatcher;
 import com.sissi.protocol.Protocol;
 
 /**
+ * 匹配Class
+ * 
  * @author kim 2013-11-4
  */
 public class ClassMatcher implements InputMatcher {

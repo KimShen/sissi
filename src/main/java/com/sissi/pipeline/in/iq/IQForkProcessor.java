@@ -9,7 +9,7 @@ import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.detail.BadRequest;
+import com.sissi.protocol.error.detail.Forbidden;
 import com.sissi.protocol.iq.IQ;
 
 /**
@@ -17,7 +17,7 @@ import com.sissi.protocol.iq.IQ;
  */
 public class IQForkProcessor implements Input {
 
-	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(BadRequest.DETAIL);
+	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(Forbidden.DETAIL);
 
 	private final Set<Class<? extends Protocol>> ignores;
 
@@ -25,6 +25,11 @@ public class IQForkProcessor implements Input {
 
 	private final Input noChild;
 
+	/**
+	 * @param ignores 忽略context.auth的IQ子节
+	 * @param finder
+	 * @param noChild 如果不存在匹配
+	 */
 	public IQForkProcessor(Set<Class<? extends Protocol>> ignores, InputFinder finder, Input noChild) {
 		super();
 		this.finder = finder;

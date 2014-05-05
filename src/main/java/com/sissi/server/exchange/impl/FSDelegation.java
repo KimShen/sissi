@@ -23,23 +23,26 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.mongodb.BasicDBObjectBuilder;
-import com.sissi.commons.Extracter;
 import com.sissi.commons.Trace;
 import com.sissi.commons.apache.IOUtils;
-import com.sissi.persistent.PersistentElementBox;
+import com.sissi.config.Dictionary;
+import com.sissi.config.impl.MongoUtils;
+import com.sissi.persistent.Persistent;
+import com.sissi.pipeline.TransferBuffer;
 import com.sissi.resource.ResourceCounter;
 import com.sissi.server.exchange.Delegation;
 import com.sissi.server.exchange.Exchanger;
-import com.sissi.write.TransferBuffer;
 
 /**
+ * 基于文件系统的离线文件代理. 索引策略:{"host":1}
+ * 
  * @author kim 2014年2月26日
  */
 public class FSDelegation implements Delegation {
 
-	private final String resoureTransfer = this.getClass().getSimpleName() + ".Transfer";
+	private final String transfer = this.getClass().getSimpleName() + "_transfer";
 
-	private final String resoureChunk = this.getClass().getSimpleName() + ".Chunk";
+	private final String chunk = this.getClass().getSimpleName() + "_chunk";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -47,14 +50,20 @@ public class FSDelegation implements Delegation {
 
 	private final int buffer;
 
+	private final Persistent persistent;
+
 	private final ResourceCounter resourceCounter;
 
-	private final PersistentElementBox persistentElementBox;
-
-	public FSDelegation(File dir, int buffer, ResourceCounter resourceCounter, PersistentElementBox persistentElementBox) {
+	/**
+	 * @param dir
+	 * @param buffer Push缓冲区大小
+	 * @param resourceCounter
+	 * @param persistent
+	 */
+	public FSDelegation(File dir, int buffer, ResourceCounter resourceCounter, Persistent persistent) {
 		super();
-		this.persistentElementBox = persistentElementBox;
 		this.resourceCounter = resourceCounter;
+		this.persistent = persistent;
 		this.buffer = buffer;
 		this.dir = this.mkdir(dir);
 	}
@@ -66,10 +75,15 @@ public class FSDelegation implements Delegation {
 		return dir;
 	}
 
+	/*
+	 * BufferedOutputStream
+	 * 
+	 * @see com.sissi.server.exchange.Delegation#allocate(java.lang.String)
+	 */
 	@Override
-	public OutputStream allocate(String host) {
+	public OutputStream allocate(String sid) {
 		try {
-			return new BufferedOutputStream(new FileOutputStream(new File(this.dir, host)));
+			return new BufferedOutputStream(new FileOutputStream(new File(this.dir, sid)));
 		} catch (Exception e) {
 			this.log.warn(e.toString());
 			Trace.trace(this.log, e);
@@ -78,14 +92,12 @@ public class FSDelegation implements Delegation {
 	}
 
 	@Override
-	public Delegation recover(Exchanger exchanger) {
-		Map<String, Object> peek = this.persistentElementBox.peek(Extracter.asMap(BasicDBObjectBuilder.start(PersistentElementBox.fieldHost, exchanger.host()).get()));
+	public Delegation push(Exchanger exchanger) {
+		// {"host":Xxx}
+		Map<String, Object> peek = this.persistent.peek(MongoUtils.asMap(BasicDBObjectBuilder.start(Dictionary.FIELD_HOST, exchanger.host()).get()));
 		ByteTransferBuffer buffer = null;
 		try {
-			buffer = new ByteTransferBuffer(new BufferedInputStream(new FileInputStream(new File(FSDelegation.this.dir, peek.get(PersistentElementBox.fieldSid).toString()))), Long.valueOf(peek.get(PersistentElementBox.fieldSize).toString()));
-			while (buffer.hasNext()) {
-				exchanger.write(buffer.next());
-			}
+			buffer = new ByteTransferBuffer(new BufferedInputStream(new FileInputStream(new File(FSDelegation.this.dir, peek.get(Dictionary.FIELD_SID).toString()))), Long.valueOf(peek.get(Dictionary.FIELD_SIZE).toString())).write(exchanger);
 			return this;
 		} catch (Exception e) {
 			this.log.warn(e.toString());
@@ -100,9 +112,15 @@ public class FSDelegation implements Delegation {
 
 		private final BlockingQueue<ByteBuf> queue = new LinkedBlockingQueue<ByteBuf>();
 
-		private final AtomicLong current = new AtomicLong();
-
+		/**
+		 * 已经读取字节
+		 */
 		private final AtomicLong readable = new AtomicLong();
+
+		/**
+		 * 本次读取字节
+		 */
+		private final AtomicLong current = new AtomicLong();
 
 		private final InputStream input;
 
@@ -110,11 +128,28 @@ public class FSDelegation implements Delegation {
 
 		private ByteBuf byteBuf;
 
+		/**
+		 * @param input
+		 * @param total Si长度
+		 */
 		public ByteTransferBuffer(InputStream input, long total) {
 			super();
 			this.input = input;
 			this.total = total;
-			FSDelegation.this.resourceCounter.increment(FSDelegation.this.resoureTransfer);
+			FSDelegation.this.resourceCounter.increment(FSDelegation.this.transfer);
+		}
+
+		/**
+		 * 写入Exchanger
+		 * 
+		 * @param exchanger
+		 * @return
+		 */
+		public ByteTransferBuffer write(Exchanger exchanger) {
+			while (this.hasNext()) {
+				exchanger.write(this.next());
+			}
+			return this;
 		}
 
 		@Override
@@ -122,26 +157,34 @@ public class FSDelegation implements Delegation {
 			return this.byteBuf;
 		}
 
+		/**
+		 * 流读至末尾或已读取超出Si长度
+		 * 
+		 * @return
+		 */
 		@Override
 		public boolean hasNext() {
-			return this.readable.get() != -1 && this.current.get() < this.total;
+			return this.current.get() != -1 && this.readable.get() < this.total;
 		}
 
 		@Override
 		public ByteTransferBuffer next() {
 			try {
 				ByteBuf byteBuf = PooledByteBufAllocator.DEFAULT.buffer(FSDelegation.this.buffer);
-				readable.set(byteBuf.writeBytes(this.input, byteBuf.capacity()));
-				if (readable.get() > 0) {
-					this.current.addAndGet(readable.get());
+				if (this.set(byteBuf.writeBytes(this.input, byteBuf.capacity())).get() > 0) {
+					this.readable.addAndGet(current.get());
 				}
-				this.byteBuf = byteBuf;
-				this.queue.add(this.byteBuf);
-				FSDelegation.this.resourceCounter.increment(FSDelegation.this.resoureChunk);
+				this.queue.add(this.byteBuf = byteBuf);
+				FSDelegation.this.resourceCounter.increment(FSDelegation.this.chunk);
 				return this;
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
+		}
+
+		private AtomicLong set(long current) {
+			this.current.set(current);
+			return this.current;
 		}
 
 		@Override
@@ -156,19 +199,20 @@ public class FSDelegation implements Delegation {
 					ReferenceCountUtil.release(byteBuf);
 				}
 			} catch (Exception e) {
-				FSDelegation.this.log.warn("Find leak bytebuf");
+				FSDelegation.this.log.warn(e.toString());
 				Trace.trace(FSDelegation.this.log, e);
 			} finally {
-				FSDelegation.this.resourceCounter.decrement(FSDelegation.this.resoureChunk);
+				this.notify();
+				FSDelegation.this.resourceCounter.decrement(FSDelegation.this.chunk);
 			}
 			return this;
 		}
 
 		@Override
 		public void close() throws IOException {
-			this.readable.set(-1);
+			this.current.set(-1);
 			IOUtils.closeQuietly(this.input);
-			FSDelegation.this.resourceCounter.decrement(FSDelegation.this.resoureTransfer);
+			FSDelegation.this.resourceCounter.decrement(FSDelegation.this.transfer);
 		}
 	}
 }

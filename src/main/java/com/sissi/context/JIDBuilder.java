@@ -5,7 +5,20 @@ package com.sissi.context;
  */
 public interface JIDBuilder {
 
+	/**
+	 * Build 4 parse
+	 * 
+	 * @param jid
+	 * @return
+	 */
 	public JID build(String jid);
 
+	/**
+	 * Build 4 wrap
+	 * 
+	 * @param username
+	 * @param resource
+	 * @return
+	 */
 	public JID build(String username, String resource);
 }

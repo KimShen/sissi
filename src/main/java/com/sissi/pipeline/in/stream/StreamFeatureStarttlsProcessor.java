@@ -11,6 +11,11 @@ import com.sissi.protocol.feature.Starttls;
  */
 public class StreamFeatureStarttlsProcessor implements Input {
 
+	/*
+	 * 已经启动TLS或已经验证身份则不重复开启
+	 * 
+	 * @see com.sissi.pipeline.Input#input(com.sissi.context.JIDContext, com.sissi.protocol.Protocol)
+	 */
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		return context.encrypted() || context.auth() ? true : this.writeFeature(protocol.cast(Stream.class));

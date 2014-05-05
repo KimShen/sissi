@@ -8,9 +8,11 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.roster.RosterSubscription;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.PresenceType;
-import com.sissi.ucenter.roster.RelationRoster;
+import com.sissi.ucenter.relation.roster.RosterRelation;
 
 /**
+ * 自动批准,Presence type = subscribed
+ * 
  * @author kim 2014年1月24日
  */
 public class PresenceRosterSubscribe2ReplyFansProcessor extends ProxyProcessor {
@@ -27,11 +29,11 @@ public class PresenceRosterSubscribe2ReplyFansProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID to = super.build(protocol.getTo());
-		return super.ourRelation(context.jid(), to).cast(RelationRoster.class).in(this.relations) ? this.writeAndReturn(context, to, Presence.class.cast(protocol)) : true;
+		return super.ourRelation(context.jid(), to).cast(RosterRelation.class).in(this.relations) ? this.writeAndReturn(context, to, Presence.class.cast(protocol)) : true;
 	}
 
 	private boolean writeAndReturn(JIDContext context, JID to, Presence presence) {
-		this.proxy.input(super.findOne(to), presence.setType(PresenceType.SUBSCRIBED).setTo(context.jid().asStringWithBare()));
+		this.proxy.input(super.findOne(to), presence.type(PresenceType.SUBSCRIBED).setTo(context.jid().asStringWithBare()));
 		return false;
 	}
 }

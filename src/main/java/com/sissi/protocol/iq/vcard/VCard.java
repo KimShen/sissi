@@ -9,16 +9,16 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.field.Field;
+import com.sissi.field.Fields;
+import com.sissi.field.impl.BeanFields;
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.data.XInput;
 import com.sissi.protocol.iq.vcard.field.Nickname;
 import com.sissi.protocol.iq.vcard.field.Photo;
 import com.sissi.protocol.iq.vcard.field.muc.Activate;
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
-import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.field.Fields;
-import com.sissi.ucenter.field.impl.BeanFields;
 
 /**
  * @author kim 2013年12月5日

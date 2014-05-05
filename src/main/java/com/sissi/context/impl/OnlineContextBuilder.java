@@ -17,20 +17,25 @@ import com.sissi.context.JIDContextBuilder;
 import com.sissi.context.JIDContextParam;
 import com.sissi.context.Status;
 import com.sissi.context.StatusBuilder;
+import com.sissi.field.impl.BeanField;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
-import com.sissi.server.ServerHeart;
-import com.sissi.server.tls.ServerTls;
-import com.sissi.ucenter.field.impl.BeanField;
-import com.sissi.ucenter.user.VCardContext;
+import com.sissi.server.ha.Keepalive;
+import com.sissi.server.tls.StartTls;
+import com.sissi.ucenter.vcard.VCardContext;
 
 /**
+ * 在线JIDContext
+ * 
  * @author kim 2013-11-19
  */
 public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
+	/**
+	 * Identify
+	 */
 	private final AtomicLong indexes = new AtomicLong();
 
 	private final int priority = 0;
@@ -41,31 +46,41 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 	private final VCardContext vCardContext;
 
-	private final ServerHeart serverHeart;
+	private final Keepalive keepalive;
 
-	private final int authRetry;
+	private final String lang;
 
 	private final Output offline;
 
 	private final String domain;
 
-	private final String lang;
+	private final int retry;
 
-	public OnlineContextBuilder(int authRetry, String lang, String domain, Output offline, StatusBuilder statusBuilder, VCardContext vCardContext, ServerHeart serverHeart) {
+	/**
+	 * @param retry 身份验证最大重试次数
+	 * @param lang 默认语言
+	 * @param domain 默认域
+	 * @param getout
+	 * @param offline
+	 * @param statusBuilder
+	 * @param vCardContext
+	 * @param serverHeart
+	 */
+	public OnlineContextBuilder(int retry, String lang, String domain, Output offline, StatusBuilder statusBuilder, VCardContext vCardContext, Keepalive keepalive) {
 		super();
 		this.statusBuilder = statusBuilder;
 		this.vCardContext = vCardContext;
-		this.serverHeart = serverHeart;
-		this.authRetry = authRetry;
+		this.keepalive = keepalive;
 		this.offline = offline;
 		this.domain = domain;
+		this.retry = retry;
 		this.lang = lang;
 	}
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
 		UserContext context = new UserContext(param);
-		// two-way reference
+		// 绑定JIDContext相关的出席状态
 		context.statusCurrent = context.statusOnline = this.statusBuilder.build(context);
 		return context;
 	}
@@ -78,22 +93,46 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		private final AtomicLong idle = new AtomicLong(System.currentTimeMillis());
 
+		/**
+		 * 预关闭标记
+		 */
 		private final AtomicBoolean prepareClose = new AtomicBoolean();
 
+		/**
+		 * 是否已出席
+		 */
 		private final AtomicBoolean presence = new AtomicBoolean();
 
+		/**
+		 * 同步出席锁
+		 */
 		private final ReentrantLock presenceLock = new ReentrantLock();
 
-		private final AtomicInteger authRetry = new AtomicInteger();
-
+		/**
+		 * 是否已验证身份
+		 */
 		private final AtomicBoolean auth = new AtomicBoolean();
 
+		/**
+		 * 已身份验证次数(Retry)
+		 */
+		private final AtomicInteger retry = new AtomicInteger();
+
+		/**
+		 * 是否已绑定
+		 */
 		private final AtomicBoolean binding = new AtomicBoolean();
 
 		private final JIDContextParam param;
 
+		/**
+		 * 优先级
+		 */
 		private int priority = OnlineContextBuilder.this.priority;
 
+		/**
+		 * 默认使用离线JID(已连接未验证身份)
+		 */
 		private JID jid = OfflineJID.OFFLINE;
 
 		private Status statusCurrent;
@@ -131,7 +170,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public UserContext auth(boolean canAccess) {
 			this.auth.set(canAccess);
 			if (!canAccess) {
-				this.authRetry.incrementAndGet();
+				this.retry.incrementAndGet();
 			}
 			return this;
 		}
@@ -142,7 +181,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		public boolean authRetry() {
-			return OnlineContextBuilder.this.authRetry >= this.authRetry.get();
+			return OnlineContextBuilder.this.retry >= this.retry.get();
 		}
 
 		public UserContext jid(JID jid) {
@@ -156,16 +195,17 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public boolean encrypt() {
-			return this.param.find(JIDContextParam.KEY_SERVERTLS, ServerTls.class).startTls(this.domain());
+			return this.param.find(JIDContextParam.KEY_STARTTLS, StartTls.class).startTls(this.domain());
 		}
 
 		public boolean encrypted() {
-			return this.param.find(JIDContextParam.KEY_SERVERTLS, ServerTls.class).isTls(this.domain());
+			return this.param.find(JIDContextParam.KEY_STARTTLS, StartTls.class).isTls(this.domain());
 		}
 
 		public JIDContext online() {
 			try {
 				this.presenceLock.lock();
+				// Exchange
 				this.outputCurrent = this.outputOnline;
 				this.statusCurrent = this.statusOnline;
 				this.presence.set(true);
@@ -175,9 +215,15 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			}
 		}
 
+		public boolean onlined() {
+			return this.presence.get();
+		}
+
 		public JIDContext offline() {
 			try {
 				this.presenceLock.lock();
+				// Exchange
+				OnlineContextBuilder.this.vCardContext.set(this.jid(), new BeanField<String>().name(VCardContext.FIELD_LOGOUT).value(String.valueOf(System.currentTimeMillis())));
 				this.outputCurrent = OnlineContextBuilder.this.offline;
 				this.statusCurrent = OfflineStatus.STATUS;
 				this.presence.set(false);
@@ -187,10 +233,11 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			}
 		}
 
-		public boolean presence() {
-			return this.presence.get();
-		}
-
+		/*
+		 * 优先级(-127-127)
+		 * 
+		 * @see com.sissi.context.JIDContext#priority(int)
+		 */
 		@Override
 		public JIDContext priority(int priority) {
 			this.priority = priority < -128 ? -128 : priority > 127 ? 127 : priority;
@@ -226,8 +273,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		}
 
 		public JIDContext domain(String domain) {
-			this.domain = domain;
-			this.jid.domain(this.domain);
+			this.jid.domain(this.domain = domain);
 			return this;
 		}
 
@@ -241,7 +287,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			this.ping.set(OnlineContextBuilder.this.pong);
 			this.prepareClose.set(false);
 			this.presence.set(false);
-			this.authRetry.set(0);
+			this.retry.set(0);
 			return this;
 		}
 
@@ -249,6 +295,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		public boolean close() {
 			try {
 				if (this.closePrepare()) {
+					// 清除出席状态,关闭输出流
 					this.statusOnline.clear();
 					this.outputOnline.close();
 				}
@@ -262,12 +309,15 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			return this.ping.get() != pong ? this.close() : false;
 		}
 
+		/*
+		 * 预关闭,仅允许Input,禁止Output
+		 * 
+		 * @see com.sissi.context.JIDContext#closePrepare()
+		 */
 		public boolean closePrepare() {
 			try {
 				if (this.prepareClose.compareAndSet(false, true)) {
-					this.outputCurrent = OnlineContextBuilder.this.offline;
-					this.statusCurrent = OfflineStatus.STATUS;
-					OnlineContextBuilder.this.vCardContext.set(this.jid(), new BeanField<String>().setName(VCardContext.FIELD_LOGOUT).setValue(String.valueOf(System.currentTimeMillis())));
+					this.offline();
 				}
 				return true;
 			} catch (Exception e) {
@@ -277,24 +327,33 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 
 		@Override
 		public JIDContext ping() {
-			this.ping.set(OnlineContextBuilder.this.serverHeart.ping(this).hashCode());
+			OnlineContextBuilder.this.keepalive.ping(this);
+			return this;
+		}
+
+		public JIDContext ping(int ping) {
+			this.ping.set(ping);
 			return this;
 		}
 
 		@Override
 		public JIDContext pong(Element element) {
+			// XMPP节存在ID且与内置PING.id相同则重置PING
 			if (element.getId() != null && this.ping.get() == element.getId().hashCode()) {
-				this.ping.set(pong);
+				this.ping.set(OnlineContextBuilder.this.pong);
 			}
 			return this;
 		}
 
 		private JIDContext write(Element element, Output output, boolean bare) {
 			try {
+				// 忽略相同JID的消息回路
 				if (!this.jid().same(element.getFrom())) {
+					// Binding -> 自动分配From
 					output.output(this, this.binding() ? element.setTo(bare ? this.jid.asStringWithBare() : this.jid().asString()) : element);
 				}
 			} finally {
+				// 更新IDLE
 				this.idle.set(System.currentTimeMillis());
 			}
 			return this;

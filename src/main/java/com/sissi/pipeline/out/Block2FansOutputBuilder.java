@@ -2,11 +2,13 @@ package com.sissi.pipeline.out;
 
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
+import com.sissi.pipeline.Transfer;
 import com.sissi.protocol.Element;
-import com.sissi.ucenter.user.BlockContext;
-import com.sissi.write.Transfer;
+import com.sissi.ucenter.block.BlockContext;
 
 /**
+ * 阻止推送给黑名单JID的XMPP节
+ * 
  * @author kim 2013年12月6日
  */
 public class Block2FansOutputBuilder extends BlockOutputBuilder {
@@ -23,12 +25,12 @@ public class Block2FansOutputBuilder extends BlockOutputBuilder {
 	private class Block2FansOutput extends BlockOutput {
 
 		@Override
-		protected JID user(JID current, Element node) {
+		protected JID applicant(JID current, Element node) {
 			return Block2FansOutputBuilder.super.jidBuilder.build(node.getFrom());
 		}
 
 		@Override
-		protected JID contacter(JID current, Element node) {
+		protected JID verifier(JID current, Element node) {
 			return current;
 		}
 	}

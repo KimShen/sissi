@@ -11,9 +11,9 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
 
 /**
  * @author kim 2014年3月14日
@@ -37,6 +37,12 @@ public class XMucAdmin extends Protocol implements Collector {
 
 	private Item first;
 
+	/**
+	 * 有效性校验(回调)
+	 * 
+	 * @param valid
+	 * @return
+	 */
 	XMucAdmin valid(boolean valid) {
 		this.valid = this.valid ? valid : this.valid;
 		return this;

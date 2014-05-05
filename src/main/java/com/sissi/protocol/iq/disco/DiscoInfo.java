@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.iq.data.XData;
-import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月5日

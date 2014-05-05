@@ -11,6 +11,8 @@ import com.sissi.protocol.muc.XMuc;
 import com.sissi.protocol.presence.Presence;
 
 /**
+ * Xmlns校验
+ * 
  * @author kim 2014年2月11日
  */
 public class PresenceMucCheckXmlnsProcessor extends ProxyProcessor {
@@ -19,7 +21,7 @@ public class PresenceMucCheckXmlnsProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return protocol.cast(Presence.class).findFields(XMuc.NAME).isEmpty() ? this.writeAndReturn(context, protocol) : true;
+		return protocol.cast(Presence.class).findField(XMuc.NAME, XMuc.class) != null ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

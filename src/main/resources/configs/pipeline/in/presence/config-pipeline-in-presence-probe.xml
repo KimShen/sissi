@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="presence.pro.probe.check" class="com.sissi.pipeline.in.presence.probe.PresenceProbeCheckRelationProcessor" parent="global.pro.proxy">
+		<constructor-arg value="${ucenter.relation.shortcut}" />
+	</bean>
+	<bean id="presence.pro.probe.online" class="com.sissi.pipeline.in.presence.probe.PresenceProbeOnlineProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.probe.offline" class="com.sissi.pipeline.in.presence.probe.PresenceProbeOfflineProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.probe.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.pro.probe.check" />
+				<!-- Offline must before online -->
+				<ref bean="presence.pro.probe.offline" />
+				<ref bean="presence.pro.probe.online" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="presence.condition.probe" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="presence.condition.probe.matcher" />
+		<constructor-arg ref="presence.pro.probe.chained" />
+	</bean>
+	<bean id="presence.condition.probe.matcher" class="com.sissi.pipeline.in.presence.PresenceMatcher">
+		<constructor-arg value="true" />
+		<constructor-arg>
+			<util:set>
+				<value>PROBE</value>
+			</util:set>
+		</constructor-arg>
+	</bean>
+</beans>

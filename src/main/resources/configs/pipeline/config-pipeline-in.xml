@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<import resource="in/config-pipeline-in-base.xml" />
+	<import resource="in/config-pipeline-in-auth.xml" />
+	<import resource="in/config-pipeline-in-stream.xml" />
+	<import resource="in/config-pipeline-in-starttls.xml" />
+	<import resource="in/iq/config-pipeline-in-iq.xml" />
+	<import resource="in/message/config-pipeline-in-message.xml" />
+	<import resource="in/presence/config-pipeline-in-presence.xml" />
+</beans>

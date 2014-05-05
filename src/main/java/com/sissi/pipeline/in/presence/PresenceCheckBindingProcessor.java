@@ -8,6 +8,8 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.NotAuthorized;
 
 /**
+ * 绑定校验
+ * 
  * @author kim 2014年1月14日
  */
 public class PresenceCheckBindingProcessor implements Input {

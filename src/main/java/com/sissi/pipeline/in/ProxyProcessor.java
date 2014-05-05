@@ -12,8 +12,8 @@ import com.sissi.context.JIDs;
 import com.sissi.context.Status;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
-import com.sissi.ucenter.Relation;
-import com.sissi.ucenter.RelationContext;
+import com.sissi.ucenter.relation.Relation;
+import com.sissi.ucenter.relation.RelationContext;
 
 /**
  * @author kim 2013-11-16

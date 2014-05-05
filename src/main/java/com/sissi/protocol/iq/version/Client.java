@@ -5,9 +5,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
 
 /**
  * @author kim 2014年2月20日

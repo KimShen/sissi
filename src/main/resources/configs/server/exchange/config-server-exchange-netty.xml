@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="server.exchanger.netty.channel" class="com.sissi.server.netty.impl.Socks5ProxyServerHandlerChannelInitializer">
+		<constructor-arg index="0" value="${server.exchanger.idle.write}" />
+		<constructor-arg index="1" value="${server.exchanger.idle.read}" />
+		<constructor-arg index="2" value="${server.exchanger.idle.all}" />
+		<constructor-arg ref="server.exchanger.netty.handler" />
+	</bean>
+	<bean id="server.exchanger.netty.handler" class="com.sissi.server.netty.impl.Socks5ProxyServerHandlerBuilder">
+		<constructor-arg ref="server.exchanger.context" />
+		<constructor-arg ref="bytestreams.proxy" />
+		<constructor-arg ref="counter" />
+	</bean>
+
+	<bean id="server.exchanger.netty.loop" class="com.sissi.server.netty.impl.NioServerLoopGroup" />
+
+	<bean id="server.exchanger.netty" class="com.sissi.server.netty.impl.NioServer">
+		<constructor-arg ref="server.exchanger.status" />
+		<constructor-arg ref="server.exchanger.netty.channel" />
+		<constructor-arg ref="server.exchanger.netty.loop" />
+		<constructor-arg value="${domain.port.exchange}" />
+	</bean>
+</beans>

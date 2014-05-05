@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="message.pro.decline" class="com.sissi.pipeline.in.message.decline.MessageDeclineProcessor" parent="global.pro.proxy" />
+	<bean id="message.pro.decline.affiliation" class="com.sissi.pipeline.in.message.decline.MessageDeclineAffiliationProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc.relation.4affiliation" />
+	</bean>
+	<bean id="message.pro.decline.check.exists" class="com.sissi.pipeline.in.message.decline.MessageDeclineCheckExistsProcessor">
+		<constructor-arg ref="ucenter.vcard.user" />
+	</bean>
+	<bean id="message.pro.decline.check.relation" class="com.sissi.pipeline.in.message.decline.MessageDeclineCheckRelationProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.room" />
+	</bean>
+	<bean id="message.pro.decline.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="message.pro.decline.check.exists" />
+				<ref bean="message.pro.decline.check.relation" />
+				<ref bean="message.pro.decline.affiliation" />
+				<ref bean="message.pro.decline" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="message.condition.decline" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="message.condition.decline.matcher" />
+		<constructor-arg ref="message.pro.decline.chained" />
+	</bean>
+	<bean id="message.condition.decline.matcher" class="com.sissi.pipeline.in.message.decline.MessageDeclineMatcher" />
+</beans>

@@ -2,7 +2,7 @@ package com.sissi.protocol.iq.bytestreams;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
-import com.sissi.read.Metadata;
+import com.sissi.io.read.Metadata;
 
 /**
  * @author kim 2013年12月19日

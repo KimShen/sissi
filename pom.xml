@@ -10,51 +10,63 @@
 		<maven.project.name>sissi</maven.project.name>
 		<maven.project.compile.version>1.7</maven.project.compile.version>
 		<maven.project.spring.version>3.2.4.RELEASE</maven.project.spring.version>
-		<maven.project.entry>com.sissi.server.impl.MainServer</maven.project.entry>
+		<maven.project.entry>com.sissi.server.impl.Main</maven.project.entry>
 		<maven.project.build.sourceEncoding>UTF-8</maven.project.build.sourceEncoding>
 		<!-- For Server -->
+		<maven.domain.server>sissi.pw</maven.domain.server>
+		<maven.domain.server.muc>conference.${domain.server}</maven.domain.server.muc>
+		<maven.domain.server.delegation>${maven.server.exchanger.delegation.user}@${domain.server}/delegation</maven.domain.server.delegation>
+		<maven.domain.port>5222</maven.domain.port>
+		<maven.domain.port.exchange>6222</maven.domain.port.exchange>
+
 		<maven.global.lang>zh_CN</maven.global.lang>
 		<maven.global.version>1.0</maven.global.version>
-		<maven.global.domain>sissi.pw</maven.global.domain>
-		<maven.global.domain.muc>conference.${maven.global.domain}</maven.global.domain.muc>
-		<maven.global.port.main>5222</maven.global.port.main>
-		<maven.global.port.exchanger>6222</maven.global.port.exchanger>
-		<maven.global.jid.maxlength>80</maven.global.jid.maxlength>
-		<maven.global.xml.maxlength>5242880</maven.global.xml.maxlength>
-		<maven.global.idle.all>120</maven.global.idle.all>
-		<maven.global.idle.read>120</maven.global.idle.read>
-		<maven.global.idle.write>120</maven.global.idle.write>
-		<maven.global.heart.unit>MILLISECONDS</maven.global.heart.unit>
-		<maven.global.heart.interval>30000</maven.global.heart.interval>
-		<!-- For Loop -->
-		<maven.looper.num>2</maven.looper.num>
-		<maven.looper.unit>MILLISECONDS</maven.looper.unit>
-		<maven.looper.interval>30000</maven.looper.interval>
-		<!-- For Addressing -->
+		<maven.global.maxlength.jid>80</maven.global.maxlength.jid>
+		<maven.global.maxlength.xml>5242880</maven.global.maxlength.xml>
+		<maven.global.maxlength.queue>50</maven.global.maxlength.queue>
+
+		<maven.server.idle.all>120</maven.server.idle.all>
+		<maven.server.idle.read>120</maven.server.idle.read>
+		<maven.server.idle.write>120</maven.server.idle.write>
+		<maven.server.keepalive.unit>MILLISECONDS</maven.server.keepalive.unit>
+		<maven.server.keepalive.interval>30000</maven.server.keepalive.interval>
+		<maven.server.tls.file.key>tls.store</maven.server.tls.file.key>
+		<maven.server.tls.password.key>client</maven.server.tls.password.key>
+		<maven.server.tls.file.trust>tls.store</maven.server.tls.file.trust>
+		<maven.server.tls.password.trust>client</maven.server.tls.password.trust>
+		<maven.server.exchanger.gc.timeout>30000</maven.server.exchanger.gc.timeout>
+		<maven.server.exchanger.gc.unit>MILLISECONDS</maven.server.exchanger.gc.unit>
+		<maven.server.exchanger.gc.interval>30000</maven.server.exchanger.gc.interval>
+		<maven.server.exchanger.idle.all>120</maven.server.exchanger.idle.all>
+		<maven.server.exchanger.idle.read>120</maven.server.exchanger.idle.read>
+		<maven.server.exchanger.idle.write>120</maven.server.exchanger.idle.write>
+		<maven.server.exchanger.delegation.buffer>20480</maven.server.exchanger.delegation.buffer>
+		<maven.server.exchanger.delegation.user>delegation</maven.server.exchanger.delegation.user>
+		<maven.server.exchanger.delegation.resource>true</maven.server.exchanger.delegation.resource>
+		<maven.server.exchanger.delegation.dir>/Users/kim/Downloads</maven.server.exchanger.delegation.dir>
+		<maven.server.exchanger.bytestreams.jid>proxy.sissi.pw</maven.server.exchanger.bytestreams.jid>
+		<maven.server.exchanger.bytestreams.host>sissi.pw</maven.server.exchanger.bytestreams.host>
+		<maven.server.exchanger.bytestreams.port>${maven.domain.port.exchange}</maven.server.exchanger.bytestreams.port>
+		<maven.server.exchanger.bytestreams.name>Socks 5 Bytestreams Proxy</maven.server.exchanger.bytestreams.name>
+
+		<maven.looper.count.global>20</maven.looper.count.global>
+		<maven.looper.unit.global>MILLISECONDS</maven.looper.unit.global>
+		<maven.looper.interval.global>50</maven.looper.interval.global>
+		<maven.looper.count.personal>2</maven.looper.count.personal>
+		<maven.looper.unit.personal>MILLISECONDS</maven.looper.unit.personal>
+		<maven.looper.interval.personal>30000</maven.looper.interval.personal>
+
 		<maven.addressing.gc.unit>MILLISECONDS</maven.addressing.gc.unit>
 		<maven.addressing.gc.interval>30000</maven.addressing.gc.interval>
-		<!-- For Exchanger -->
-		<maven.exchanger.timeout>30000</maven.exchanger.timeout>
-		<maven.exchanger.gc.unit>MILLISECONDS</maven.exchanger.gc.unit>
-		<maven.exchanger.gc.interval>30000</maven.exchanger.gc.interval>
-		<maven.exchanger.idle.all>120</maven.exchanger.idle.all>
-		<maven.exchanger.idle.read>120</maven.exchanger.idle.read>
-		<maven.exchanger.idle.write>120</maven.exchanger.idle.write>
-		<!-- Adium must contain resource for SI -->
-		<maven.exchanger.delegation.bare>true</maven.exchanger.delegation.bare>
-		<maven.exchanger.delegation.buffer>20480</maven.exchanger.delegation.buffer>
-		<maven.exchanger.delegation.user>delegation</maven.exchanger.delegation.user>
-		<maven.exchanger.delegation.dir>/Users/kim/Downloads</maven.exchanger.delegation.dir>
-		<maven.exchanger.delegation.domain>${maven.exchanger.delegation.user}@${maven.global.domain}/delegation</maven.exchanger.delegation.domain>
-		<!-- For Thread -->
-		<maven.executor.core>1000</maven.executor.core>
-		<maven.executor.unit>SECONDS</maven.executor.unit>
-		<maven.executor.maximum>1000</maven.executor.maximum>
-		<maven.executor.keepalive>300</maven.executor.keepalive>
-		<!-- For Log -->
+
+		<maven.thread.core>1000</maven.thread.core>
+		<maven.thread.unit>SECONDS</maven.thread.unit>
+		<maven.thread.maximum>1000</maven.thread.maximum>
+		<maven.thread.keepalive>300</maven.thread.keepalive>
+
 		<maven.log.level>INFO</maven.log.level>
 		<maven.log.appender>Console</maven.log.appender>
-		<!-- For Mongo -->
+
 		<maven.mongo.db>sissi</maven.mongo.db>
 		<maven.mongo.port>27017</maven.mongo.port>
 		<maven.mongo.host>localhost</maven.mongo.host>
@@ -68,41 +80,38 @@
 		<maven.mongo.collection.exchanger>exchanger</maven.mongo.collection.exchanger>
 		<maven.mongo.collection.persistent>persistent</maven.mongo.collection.persistent>
 		<maven.mongo.collection.addressing>addressing</maven.mongo.collection.addressing>
-		<!-- For Protocol -->
-		<maven.tls.key.file>tls.store</maven.tls.key.file>
-		<maven.tls.key.password>client</maven.tls.key.password>
-		<maven.tls.trust.file>tls.store</maven.tls.trust.file>
-		<maven.tls.trust.password>client</maven.tls.trust.password>
-		<maven.bytestreams.jid>proxy.sissi.pw</maven.bytestreams.jid>
-		<maven.bytestreams.host>sissi.pw</maven.bytestreams.host>
-		<maven.bytestreams.port>${maven.global.port.exchanger}</maven.bytestreams.port>
-		<maven.bytestreams.name>Socks 5 Bytestreams Proxy</maven.bytestreams.name>
-		<maven.pipeline.auth.retry>2</maven.pipeline.auth.retry>
-		<maven.pipeline.roster.name>10</maven.pipeline.roster.name>
-		<maven.register.title>Welcome 2 register</maven.register.title>
-		<maven.register.instructions>From sissi</maven.register.instructions>
-		<maven.history.def.limit>20</maven.history.def.limit>
-		<maven.history.def.since>30000</maven.history.def.since>
-		<maven.history.threshold.limit>40</maven.history.threshold.limit>
-		<maven.history.threshold.since>60000</maven.history.threshold.since>
-		<!-- For Pipeline -->
-		<maven.pipeline.free>false</maven.pipeline.free>
-		<maven.pipeline.muc.log>true</maven.pipeline.muc.log>
-		<maven.pipeline.muc.trace>false</maven.pipeline.muc.trace>
-		<maven.pipeline.muc.count>30</maven.pipeline.muc.count>
-		<maven.pipeline.muc.count.level>ADMIN</maven.pipeline.muc.count.level>
-		<maven.pipeline.muc.multi>true</maven.pipeline.muc.multi>
-		<maven.pipeline.muc.invite>ADMIN</maven.pipeline.muc.invite>
-		<maven.pipeline.muc.cascade>true</maven.pipeline.muc.cascade>
-		<maven.pipeline.muc.activate>false</maven.pipeline.muc.activate>
-		<maven.pipeline.muc.mapping>2,2,2,2,4</maven.pipeline.muc.mapping>
-		<maven.pipeline.muc.tip>Room is not anonymous</maven.pipeline.muc.tip>
-		<maven.pipeline.persistent.resend>3</maven.pipeline.persistent.resend>
-		<maven.pipeline.persistent.tip>From Sissi offline</maven.pipeline.persistent.tip>
-		<maven.pipeline.roster.group.length>10</maven.pipeline.roster.group.length>
-		<maven.pipeline.roster.group.default>好友</maven.pipeline.roster.group.default>
-		<maven.pipeline.bind.resource>2</maven.pipeline.bind.resource>
-		<maven.pipeline.bind.content>您有其他客户端上线了</maven.pipeline.bind.content>
+
+		<maven.login.auth.retry>2</maven.login.auth.retry>
+		<maven.login.bind.resource>2</maven.login.bind.resource>
+		<maven.login.bind.kick>您有其他客户端上线了</maven.login.bind.kick>
+
+		<maven.persistent.resend>3</maven.persistent.resend>
+		<maven.persistent.tip>From Sissi offline</maven.persistent.tip>
+
+		<maven.ucenter.roster.group>fans</maven.ucenter.roster.group>
+		<maven.ucenter.relation.shortcut>false</maven.ucenter.relation.shortcut>
+		<maven.ucenter.roster.length.name>10</maven.ucenter.roster.length.name>
+		<maven.ucenter.roster.length.group>10</maven.ucenter.roster.length.group>
+		<maven.ucenter.register.muc>注册通知</maven.ucenter.register.muc>
+		<maven.ucenter.register.title>Welcome 2 register</maven.ucenter.register.title>
+		<maven.ucenter.register.instructions>From sissi</maven.ucenter.register.instructions>
+		<maven.persistent.recover.limit.def>20</maven.persistent.recover.limit.def>
+		<maven.persistent.recover.since.def>30000</maven.persistent.recover.since.def>
+		<maven.persistent.recover.limit.threshold>40</maven.persistent.recover.limit.threshold>
+		<maven.persistent.recover.since.threshold>60000</maven.persistent.recover.since.threshold>
+		<maven.ucenter.muc.log>true</maven.ucenter.muc.log>
+		<maven.ucenter.muc.trace>false</maven.ucenter.muc.trace>
+		<maven.ucenter.muc.apply>Apply</maven.ucenter.muc.apply>
+		<maven.ucenter.muc.maxuser>50</maven.ucenter.muc.maxuser>
+		<maven.ucenter.muc.maxuser.privilege>ADMIN</maven.ucenter.muc.maxuser.privilege>
+		<maven.ucenter.muc.invite>ADMIN</maven.ucenter.muc.invite>
+		<maven.ucenter.muc.multi>true</maven.ucenter.muc.multi>
+		<maven.ucenter.muc.cascade>true</maven.ucenter.muc.cascade>
+		<maven.ucenter.muc.mapping>2,2,2,4,4</maven.ucenter.muc.mapping>
+		<maven.ucenter.muc.subject.role>ADMIN</maven.ucenter.muc.subject.role>
+		<maven.ucenter.muc.subject.smart>true</maven.ucenter.muc.subject.smart>
+		<maven.ucenter.muc.tip.cancel>Room is destory</maven.ucenter.muc.tip.cancel>
+		<maven.ucenter.muc.tip.anonymous>Room is not anonymous</maven.ucenter.muc.tip.anonymous>
 	</properties>
 	<dependencies>
 		<!-- For Compile -->
@@ -186,16 +195,16 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<excludes>
-					<exclude>${maven.tls.key.file}</exclude>
-					<exclude>${maven.tls.trust.file}</exclude>
+					<exclude>${maven.server.tls.file.key}</exclude>
+					<exclude>${maven.server.tls.file.trust}</exclude>
 				</excludes>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>false</filtering>
 				<includes>
-					<include>${maven.tls.key.file}</include>
-					<include>${maven.tls.trust.file}</include>
+					<include>${maven.server.tls.file.key}</include>
+					<include>${maven.server.tls.file.trust}</include>
 				</includes>
 			</resource>
 		</resources>

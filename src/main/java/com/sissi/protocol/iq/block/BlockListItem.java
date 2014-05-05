@@ -4,8 +4,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.context.JID;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Item;
-import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月16日
@@ -21,9 +22,8 @@ public class BlockListItem extends Item {
 		super();
 	}
 
-	public BlockListItem setJid(String jid) {
-		super.setJid(jid);
-		return this;
+	public BlockListItem(JID jid) {
+		super.setJid(jid.asStringWithBare());
 	}
 
 	@XmlAttribute

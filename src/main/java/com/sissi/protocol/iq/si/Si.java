@@ -7,11 +7,11 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 import com.sissi.protocol.offline.Delay;
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月13日
@@ -28,8 +28,10 @@ public class Si extends Protocol implements Collector {
 	private String profile;
 
 	private String source;
-	
+
 	private Feature feature;
+
+	private Delay delay;
 
 	private File file;
 
@@ -76,6 +78,20 @@ public class Si extends Protocol implements Collector {
 	@XmlElement
 	public Feature getFeature() {
 		return this.feature;
+	}
+
+	public boolean delay() {
+		return this.getDelay() != null;
+	}
+
+	@XmlElement
+	public Delay getDelay() {
+		return this.delay;
+	}
+
+	public Si delay(String timestamp) {
+		this.delay = timestamp != null ? new Delay().setStamp(timestamp) : null;
+		return this;
 	}
 
 	@XmlAttribute

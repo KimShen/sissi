@@ -9,14 +9,16 @@ import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.ServiceUnavailable;
 import com.sissi.protocol.presence.Presence;
-import com.sissi.ucenter.user.VCardContext;
+import com.sissi.ucenter.vcard.VCardContext;
 
 /**
+ * JID真实性校验(不作用于MUC JID)
+ * 
  * @author kim 2014年1月24日
  */
 public class CheckJIDExistsProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ServiceUnavailable.DETAIL);
+	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ServiceUnavailable.DETAIL, "JID not exists");
 
 	private final VCardContext vcardContext;
 
@@ -24,7 +26,12 @@ public class CheckJIDExistsProcessor extends ProxyProcessor {
 
 	private final Set<String> domains;
 
-	public CheckJIDExistsProcessor(boolean presenceIgnore, Set<String> domains, VCardContext vcardContext) {
+	/**
+	 * @param domains 需要忽略的域
+	 * @param presenceIgnore
+	 * @param vcardContext
+	 */
+	public CheckJIDExistsProcessor(Set<String> domains, boolean presenceIgnore, VCardContext vcardContext) {
 		super();
 		this.domains = domains;
 		this.vcardContext = vcardContext;

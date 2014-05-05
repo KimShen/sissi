@@ -7,6 +7,8 @@ import com.sissi.protocol.Stream;
 import com.sissi.protocol.iq.auth.Failure;
 
 /**
+ * <failure xmlns='urn:ietf:params:xml:ns:xmpp-sasl'/>
+ * 
  * @author kim 2013-10-24
  */
 public class AuthFailedProcessor implements Input {

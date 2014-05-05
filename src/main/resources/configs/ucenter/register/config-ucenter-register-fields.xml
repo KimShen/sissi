@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="uncenter.register.fields.simple" class="com.sissi.field.impl.BeanFields">
+		<constructor-arg value="false" />
+		<constructor-arg>
+			<util:list>
+				<util:constant static-field="com.sissi.protocol.iq.register.simple.Username.FIELD" />
+				<util:constant static-field="com.sissi.protocol.iq.register.simple.Password.FIELD" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="uncenter.register.fields.form" class="com.sissi.field.impl.BeanFields">
+		<constructor-arg value="false" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="uncenter.register.fields.form.xdata" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata" class="com.sissi.protocol.iq.data.XData">
+		<constructor-arg value="false" />
+		<constructor-arg value="form" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="uncenter.register.fields.form.xdata.title" />
+				<ref bean="uncenter.register.fields.form.xdata.instructions" />
+				<ref bean="uncenter.register.fields.form.xdata.username" />
+				<ref bean="uncenter.register.fields.form.xdata.password" />
+				<ref bean="uncenter.register.fields.form.xdata.desc" />
+				<ref bean="uncenter.register.fields.form.xdata.gender" />
+				<ref bean="uncenter.register.fields.form.xdata.level" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata.title" class="com.sissi.protocol.iq.data.Title">
+		<constructor-arg value="This is my title" />
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata.instructions" class="com.sissi.protocol.iq.data.Instructions">
+		<constructor-arg value="This is my introduce" />
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata.username" class="com.sissi.protocol.iq.data.XInput">
+		<constructor-arg index="0" value="text-single" />
+		<constructor-arg index="1" value="Useranme" />
+		<constructor-arg index="2" value="username" />
+		<constructor-arg>
+			<util:constant static-field="com.sissi.protocol.iq.data.XRequired.FIELD" />
+		</constructor-arg>
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata.password" class="com.sissi.protocol.iq.data.XInput">
+		<constructor-arg index="0" value="text-private" />
+		<constructor-arg index="1" value="Password" />
+		<constructor-arg index="2" value="password" />
+		<constructor-arg>
+			<util:constant static-field="com.sissi.protocol.iq.data.XRequired.FIELD" />
+		</constructor-arg>
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata.desc" class="com.sissi.protocol.iq.data.XInput">
+		<constructor-arg index="0" value="text-multi" />
+		<constructor-arg index="1" value="Desc" />
+		<constructor-arg index="2" value="desc" />
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata.gender" class="com.sissi.protocol.iq.data.Select">
+		<constructor-arg index="0" value="list-single" />
+		<constructor-arg index="1" value="Gender" />
+		<constructor-arg index="2" value="gender" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="uncenter.register.fields.form.xdata.gender.male" />
+				<ref bean="uncenter.register.fields.form.xdata.gender.female" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata.gender.male" class="com.sissi.protocol.iq.data.XOption">
+		<constructor-arg index="0" value="Male" />
+		<constructor-arg index="1" value="M" />
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata.gender.female" class="com.sissi.protocol.iq.data.XOption">
+		<constructor-arg index="0" value="Female" />
+		<constructor-arg index="1" value="F" />
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata.level" class="com.sissi.protocol.iq.data.Select">
+		<constructor-arg index="0" value="list-multi" />
+		<constructor-arg index="1" value="Level" />
+		<constructor-arg index="2" value="level" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="uncenter.register.fields.form.xdata.level.member" />
+				<ref bean="uncenter.register.fields.form.xdata.level.visitor" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata.level.member" class="com.sissi.protocol.iq.data.XOption">
+		<constructor-arg index="0" value="MEMBER" />
+		<constructor-arg index="1" value="member" />
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata.level.visitor" class="com.sissi.protocol.iq.data.XOption">
+		<constructor-arg index="0" value="VISITOR" />
+		<constructor-arg index="1" value="visitor" />
+	</bean>
+</beans>

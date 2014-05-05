@@ -4,10 +4,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.data.XData;
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
 
 /**
  * @author kim 2014年3月24日

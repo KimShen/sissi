@@ -5,46 +5,14 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<import resource="config-addressing.xml" />
-	<import resource="config-broadcast.xml" />
-	<import resource="config-global.xml" />
-	<import resource="config-history.xml" />
-	<import resource="config-in-auth.xml" />
-	<import resource="config-in-base.xml" />
-	<import resource="config-in-iq.xml" />
-	<import resource="config-in-iq-si.xml" />
-	<import resource="config-in-iq-muc.xml" />
-	<import resource="config-in-iq-muc-owner.xml" />
-	<import resource="config-in-iq-muc-unique.xml" />
-	<import resource="config-in-iq-last.xml" />
-	<import resource="config-in-iq-ping.xml" />
-	<import resource="config-in-iq-time.xml" />
-	<import resource="config-in-iq-bind.xml" />
-	<import resource="config-in-iq-block.xml" />
-	<import resource="config-in-iq-roster.xml" />
-	<import resource="config-in-iq-vcard.xml" />
-	<import resource="config-in-iq-vcard-muc.xml" />
-	<import resource="config-in-iq-disco.xml" />
-	<import resource="config-in-iq-version.xml" />
-	<import resource="config-in-iq-session.xml" />
-	<import resource="config-in-iq-private.xml" />
-	<import resource="config-in-iq-register.xml" />
-	<import resource="config-in-iq-sharedgroup.xml" />
-	<import resource="config-in-iq-register-muc.xml" />
-	<import resource="config-in-iq-bytestreams.xml" />
-	<import resource="config-in-stream.xml" />
-	<import resource="config-in-message.xml" />
-	<import resource="config-in-message-muc.xml" />
-	<import resource="config-in-presence.xml" />
-	<import resource="config-in-presence-muc.xml" />
-	<import resource="config-in-starttls.xml" />
-	<import resource="config-ucenter.xml" />
-	<import resource="config-ucenter-muc.xml" />
-	<import resource="config-ucenter-user.xml" />
-	<import resource="config-ucenter-roster.xml" />
-	<import resource="config-thread.xml" />
-	<import resource="config-server.xml" />
-	<import resource="config-exchanger.xml" />
-	<import resource="config-persistent.xml" />
+	<import resource="route/config-route.xml" />
+	<import resource="server/config-server.xml" />
+	<import resource="global/config-global.xml" />
+	<import resource="context/config-context.xml" />
+	<import resource="ucenter/config-ucenter.xml" />
+	<import resource="commons/config-commons.xml" />
+	<import resource="ucenter/config-ucenter.xml" />
+	<import resource="pipeline/config-pipeline.xml" />
+	<import resource="persistent/config-persistent.xml" />
 	<import resource="../externals/config-external.xml" />
 </beans>

@@ -9,12 +9,17 @@ import com.sissi.protocol.iq.bytestreams.Bytestreams;
 import com.sissi.protocol.iq.bytestreams.Streamhost;
 
 /**
+ * 用户-用户间转发
+ * 
  * @author kim 2013年12月18日
  */
 public class Bytestreams2FansProcessor extends ProxyProcessor {
 
 	private final Comparator<Streamhost> comparator;
 
+	/**
+	 * @param comparator 主机排序
+	 */
 	public Bytestreams2FansProcessor(Comparator<Streamhost> comparator) {
 		super();
 		this.comparator = comparator;

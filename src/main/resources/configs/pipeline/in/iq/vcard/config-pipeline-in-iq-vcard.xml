@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="vcard.pro.set" class="com.sissi.pipeline.in.iq.vcard.VCardSetProcessor">
+		<constructor-arg ref="ucenter.vcard.user" />
+	</bean>
+	<bean id="vcard.pro.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="vcard.pro.set" />
+				<ref bean="iq.pro.result.stop" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="vcard.pro.get.check.4error" class="com.sissi.pipeline.in.iq.vcard.VCardGetCheckRelation4ErrorProcessor" parent="global.pro.proxy">
+		<constructor-arg value="${ucenter.relation.shortcut}" />
+	</bean>
+	<bean id="vcard.pro.get.check.4empty" class="com.sissi.pipeline.in.iq.vcard.VCardGetCheckRelation4EmptyProcessor" parent="global.pro.proxy">
+		<constructor-arg value="${ucenter.relation.shortcut}" />
+	</bean>
+	<bean id="vcard.pro.get.4fans" class="com.sissi.pipeline.in.iq.vcard.VCardGet4FansProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.vcard.user" />
+	</bean>
+	<bean id="vcard.pro.get.4fans.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<!-- <ref bean="vcard.pro.get.check.4error" /> -->
+				<ref bean="vcard.pro.get.check.4empty" />
+				<ref bean="vcard.pro.get.4fans" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="vcard.pro.get.4self" class="com.sissi.pipeline.in.iq.vcard.VCardGet4SelfProcessor">
+		<constructor-arg ref="ucenter.vcard.user" />
+	</bean>
+	<bean id="vcard.pro.get.4self.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<!-- <ref bean="vcard.pro.get.check.4error" /> -->
+				<ref bean="vcard.pro.get.check.4empty" />
+				<ref bean="vcard.pro.get.4self" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="vcard.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.vcard" />
+	</bean>
+	<bean id="vcard.pro.get.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.vcard.get" />
+	</bean>
+
+	<bean id="finder.vcard" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="vcard.condition.get" />
+				<ref bean="vcard.condition.set" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="finder.vcard.get" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<!-- Muc first -->
+				<ref bean="vcard.condition.get.muc" />
+				<ref bean="vcard.condition.get.4fans" />
+				<ref bean="vcard.condition.get.4self" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<alias name="vcard.condition" alias="condition.vcard" />
+	<bean id="vcard.condition" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="vcard.condition.matcher" />
+		<constructor-arg ref="vcard.pro.fork" />
+	</bean>
+	<bean id="vcard.condition.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.iq.vcard.VCard" />
+	</bean>
+	<bean id="vcard.condition.set" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="vcard.condition.set.matcher" />
+		<constructor-arg ref="vcard.pro.set.chained" />
+	</bean>
+	<bean id="vcard.condition.set.matcher" class="com.sissi.pipeline.in.iq.IQActionMatcher">
+		<constructor-arg value="com.sissi.protocol.iq.vcard.VCard" />
+		<constructor-arg value="SET" />
+	</bean>
+	<bean id="vcard.condition.get" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="vcard.condition.get.matcher" />
+		<constructor-arg ref="vcard.pro.get.fork" />
+	</bean>
+	<bean id="vcard.condition.get.matcher" class="com.sissi.pipeline.in.iq.IQActionMatcher">
+		<constructor-arg value="com.sissi.protocol.iq.vcard.VCard" />
+		<constructor-arg value="GET" />
+	</bean>
+	<bean id="vcard.condition.get.4fans" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="vcard.condition.get.4fans.matcher" />
+		<constructor-arg ref="vcard.pro.get.4fans.chained" />
+	</bean>
+	<bean id="vcard.condition.get.4fans.matcher" class="com.sissi.pipeline.in.iq.vcard.VCardGetMatcher">
+		<constructor-arg value="false" />
+	</bean>
+	<bean id="vcard.condition.get.4self" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="vcard.condition.get.4self.matcher" />
+		<constructor-arg ref="vcard.pro.get.4self.chained" />
+	</bean>
+	<bean id="vcard.condition.get.4self.matcher" class="com.sissi.pipeline.in.iq.vcard.VCardGetMatcher">
+		<constructor-arg value="true" />
+	</bean>
+
+	<import resource="config-pipeline-in-iq-vcard-muc.xml" />
+</beans>

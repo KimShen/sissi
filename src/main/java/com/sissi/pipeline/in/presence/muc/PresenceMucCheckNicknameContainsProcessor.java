@@ -9,6 +9,8 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.JIDMalformed;
 
 /**
+ * 昵称有效性校验
+ * 
  * @author kim 2014年2月11日
  */
 public class PresenceMucCheckNicknameContainsProcessor extends ProxyProcessor {

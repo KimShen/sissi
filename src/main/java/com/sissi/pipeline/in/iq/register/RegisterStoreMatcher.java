@@ -5,19 +5,24 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.register.Register;
 
 /**
+ * 匹配表单类型(复杂表单/简易表单)
+ * 
  * @author kim 2013-11-4
  */
 public class RegisterStoreMatcher extends ClassMatcher {
 
-	private final boolean form;
+	private final boolean multi;
 
-	public RegisterStoreMatcher(boolean form) {
+	/**
+	 * @param multi 是否为复杂表单
+	 */
+	public RegisterStoreMatcher(boolean multi) {
 		super(Register.class);
-		this.form = form;
+		this.multi = multi;
 	}
 
 	@Override
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && protocol.cast(Register.class).form(this.form);
+		return super.match(protocol) && protocol.cast(Register.class).form(this.multi);
 	}
 }

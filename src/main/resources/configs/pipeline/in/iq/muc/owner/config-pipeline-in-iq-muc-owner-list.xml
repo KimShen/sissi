@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="muc.pro.owner.get.list.base.title" class="com.sissi.protocol.iq.data.Title">
+		<constructor-arg value="This is my title" />
+	</bean>
+	<bean id="muc.pro.owner.get.list.base.instructions" class="com.sissi.protocol.iq.data.Instructions">
+		<constructor-arg value="This is my introduce" />
+	</bean>
+	<bean id="muc.pro.owner.get.list.base.formtype" class="com.sissi.protocol.iq.data.XInput">
+		<constructor-arg index="0" value="hidden" />
+		<constructor-arg index="1">
+			<null />
+		</constructor-arg>
+		<constructor-arg index="2" value="FORM_TYPE" />
+		<constructor-arg index="3" value="http://jabber.org/protocol/muc#roomconfig" />
+	</bean>
+	<bean id="muc.pro.owner.get.list.option.whois" class="com.sissi.protocol.iq.data.Select">
+		<constructor-arg index="0" value="list-single" />
+		<constructor-arg index="1" value="Hidden" />
+		<constructor-arg index="2" value="muc#roomconfig_whois" />
+		<constructor-arg index="3" value="false" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.pro.owner.get.list.option.whois.true" />
+				<ref bean="muc.pro.owner.get.list.option.whois.false" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="muc.pro.owner.get.list.option.whois.true" class="com.sissi.protocol.iq.data.XOption">
+		<constructor-arg index="0" value="HIDDEN" />
+		<constructor-arg index="1" value="true" />
+	</bean>
+	<bean id="muc.pro.owner.get.list.option.whois.false" class="com.sissi.protocol.iq.data.XOption">
+		<constructor-arg index="0" value="PUBlIC" />
+		<constructor-arg index="1" value="false" />
+	</bean>
+
+	<bean id="muc.pro.owner.get.list.option.roomname" class="com.sissi.protocol.iq.data.XInput">
+		<constructor-arg index="0" value="text-single" />
+		<constructor-arg index="1" value="Subject" />
+		<constructor-arg index="2" value="muc#roomconfig_roomname" />
+	</bean>
+	<bean id="muc.pro.owner.get.list.option.roomsecret" class="com.sissi.protocol.iq.data.XInput">
+		<constructor-arg index="0" value="text-single" />
+		<constructor-arg index="1" value="Password" />
+		<constructor-arg index="2" value="muc#roomconfig_roomsecret" />
+	</bean>
+	<bean id="muc.pro.owner.get.list.option.affiliation" class="com.sissi.protocol.iq.data.Select">
+		<constructor-arg index="0" value="list-single" />
+		<constructor-arg index="1" value="Affiliation" />
+		<constructor-arg index="2" value="muc#roomconfig_affiliation" />
+		<constructor-arg index="3" value="NONE" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.pro.owner.get.list.option.affiliation.none" />
+				<ref bean="muc.pro.owner.get.list.option.affiliation.admin" />
+				<ref bean="muc.pro.owner.get.list.option.affiliation.member" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="muc.pro.owner.get.list.option.affiliation.member" class="com.sissi.protocol.iq.data.XOption">
+		<constructor-arg index="0" value="MEMBER" />
+		<constructor-arg index="1" value="MEMBER" />
+	</bean>
+	<bean id="muc.pro.owner.get.list.option.affiliation.admin" class="com.sissi.protocol.iq.data.XOption">
+		<constructor-arg index="0" value="ADMIN" />
+		<constructor-arg index="1" value="ADMIN" />
+	</bean>
+	<bean id="muc.pro.owner.get.list.option.affiliation.none" class="com.sissi.protocol.iq.data.XOption">
+		<constructor-arg index="0" value="NONE" />
+		<constructor-arg index="1" value="NONE" />
+	</bean>
+	<bean id="muc.pro.owner.get.list" class="com.sissi.protocol.iq.data.XData">
+		<constructor-arg value="false" />
+		<constructor-arg value="form" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.pro.owner.get.list.base.title" />
+				<ref bean="muc.pro.owner.get.list.base.instructions" />
+				<ref bean="muc.pro.owner.get.list.base.formtype" />
+				<ref bean="muc.pro.owner.get.list.option.roomname" />
+				<ref bean="muc.pro.owner.get.list.option.roomsecret" />
+				<ref bean="muc.pro.owner.get.list.option.affiliation" />
+				<ref bean="muc.pro.owner.get.list.option.whois" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+</beans>

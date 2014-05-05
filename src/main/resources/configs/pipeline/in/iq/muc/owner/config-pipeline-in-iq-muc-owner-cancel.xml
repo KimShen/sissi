@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="muc.pro.owner.cancel" class="com.sissi.pipeline.in.iq.muc.owner.cancel.MucOwnerCancelProcessor">
+		<constructor-arg ref="muc.pro.owner.destory.chained" />
+		<constructor-arg value="${ucenter.muc.tip.cancel}" />
+	</bean>
+
+	<bean id="muc.condition.owner.cancel" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="muc.condition.owner.cancel.matcher" />
+		<constructor-arg ref="muc.pro.owner.cancel" />
+	</bean>
+	<bean id="muc.condition.owner.cancel.matcher" class="com.sissi.pipeline.in.iq.muc.owner.MucOwnerSetMatcher">
+		<constructor-arg value="CANCEL" />
+	</bean>
+</beans>

@@ -10,5 +10,10 @@ public interface Output {
 
 	public boolean output(JIDContext context, Element element);
 
+	/**
+	 * 关闭
+	 * 
+	 * @return
+	 */
 	public Output close();
 }

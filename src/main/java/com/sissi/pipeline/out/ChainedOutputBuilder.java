@@ -6,8 +6,8 @@ import java.util.List;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Output;
 import com.sissi.pipeline.OutputBuilder;
+import com.sissi.pipeline.Transfer;
 import com.sissi.protocol.Element;
-import com.sissi.write.Transfer;
 
 /**
  * @author kim 2013年12月6日
@@ -47,11 +47,11 @@ public class ChainedOutputBuilder implements OutputBuilder {
 		}
 
 		@Override
-		public boolean output(JIDContext context, Element node) {
+		public boolean output(JIDContext context, Element element) {
 			for (Output output : this.outputs) {
-				boolean canNext = output.output(context, node);
-				if (!canNext) {
-					return canNext;
+				boolean next = output.output(context, element);
+				if (!next) {
+					return next;
 				}
 			}
 			return true;

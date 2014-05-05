@@ -7,10 +7,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlValue;
 
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.IQ;
-import com.sissi.read.Metadata;
 
 /**
  * @author kim 2014年3月27日

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="ucenter.relation.ucenter.roster.group" class="com.sissi.protocol.iq.roster.Group">
+		<constructor-arg value="${ucenter.roster.group}" />
+	</bean>
+	<bean id="ucenter.relation.roster.config" class="com.sissi.config.impl.MongoProxyConfig">
+		<constructor-arg ref="mongo" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.roster}" />
+	</bean>
+	<bean id="ucenter.relation.roster.ourrelation" class="com.sissi.ucenter.relation.roster.impl.MongoOurRelation">
+		<constructor-arg ref="ucenter.relation.roster.config" />
+		<constructor-arg value="${ucenter.roster.group}" />
+	</bean>
+	<bean id="ucenter.relation.roster.cascase" class="com.sissi.ucenter.relation.roster.impl.BroadcastRelationCascade">
+		<constructor-arg ref="broadcast.protocol.selfs" />
+		<constructor-arg ref="ucenter.relation.ucenter.roster.group" />
+		<constructor-arg ref="ucenter.relation.roster.ourrelation" />
+	</bean>
+
+	<bean id="ucenter.relation.roster.user" class="com.sissi.ucenter.relation.roster.impl.MongoRelationRosterContext">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg ref="ucenter.relation.roster.config" />
+		<constructor-arg ref="ucenter.relation.roster.cascase" />
+		<constructor-arg ref="ucenter.relation.roster.ourrelation" />
+		<constructor-arg value="${ucenter.roster.group}" />
+	</bean>
+</beans>

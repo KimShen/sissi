@@ -3,7 +3,7 @@ package com.sissi.protocol.offline;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;
 
-import com.sissi.read.Metadata;
+import com.sissi.io.read.Metadata;
 
 /**
  * @author kim 2013-11-22

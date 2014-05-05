@@ -1,7 +1,7 @@
 package com.sissi.protocol.starttls;
 
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
-import com.sissi.read.Metadata;
 
 /**
  * @author kim 2013年12月17日

@@ -8,6 +8,8 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.InvaildNamespace;
 
 /**
+ * <stream:stream to='sissi.pw' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams' version='1.0'></p>Xmlns校验
+ * 
  * @author kim 2014年1月2日
  */
 public class StreamCheckXmlnsProcessor implements Input {
@@ -21,6 +23,6 @@ public class StreamCheckXmlnsProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return protocol.cast(Stream.class).stream() ? true : !context.write(Stream.closeWhenOpening(new ServerError().add(InvaildNamespace.DETAIL)).setFrom(this.domain).setTo(protocol.getFrom())).close();
+		return protocol.cast(Stream.class).xmlns() ? true : !context.write(Stream.closeWhenOpening(new ServerError().add(InvaildNamespace.DETAIL)).setFrom(this.domain).setTo(protocol.getFrom())).close();
 	}
 }

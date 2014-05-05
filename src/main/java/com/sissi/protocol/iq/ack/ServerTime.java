@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.FastDateFormat;
 
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Sissi;
@@ -17,6 +17,8 @@ import com.sissi.protocol.Sissi;
 public class ServerTime extends Protocol {
 
 	public final static String NAME = "server";
+
+	private final static FastDateFormat format = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ssZ");
 
 	private String time;
 
@@ -40,6 +42,6 @@ public class ServerTime extends Protocol {
 	}
 
 	public static ServerTime now() {
-		return new ServerTime(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
+		return new ServerTime(format.format(new Date()));
 	}
 }

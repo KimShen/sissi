@@ -76,6 +76,7 @@ public class ServerError implements Error {
 		this.code = error.getCode();
 		this.type = error.getType();
 		this.details = error.getDetails();
+		// 包装ServerErrorText
 		this.text = error.getText() != null ? new ServerErrorText(error.getText().getLang(), error.getText().getText(), this.details != null && !this.details.isEmpty() ? this.details.get(0).getXmlns() : null) : null;
 	}
 
@@ -106,10 +107,6 @@ public class ServerError implements Error {
 
 	@Override
 	public ServerError setTo(String to) {
-		return this;
-	}
-
-	public ServerError setError(Error error) {
 		return this;
 	}
 
@@ -157,6 +154,10 @@ public class ServerError implements Error {
 		return this;
 	}
 
+	public ServerError add(ErrorDetail detail, String text) {
+		return this.add(detail, null, text);
+	}
+
 	public ServerError add(ErrorDetail detail, String lang, String text) {
 		this.add(detail);
 		this.text = new ServerErrorText(lang, text, detail.getXmlns());
@@ -169,7 +170,8 @@ public class ServerError implements Error {
 		return this.text;
 	}
 
-	@XmlElements({ @XmlElement(name = UnExpectedRequest.NAME, type = UnExpectedRequest.class), @XmlElement(name = SubscriptionRequired.NAME, type = SubscriptionRequired.class), @XmlElement(name = RemoteServerTimeout.NAME, type = RemoteServerTimeout.class), @XmlElement(name = RemoteServerNotFound.NAME, type = RemoteServerNotFound.class), @XmlElement(name = RegistrationRequired.NAME, type = RegistrationRequired.class), @XmlElement(name = Redirect.NAME, type = Redirect.class), @XmlElement(name = RecipientUnavaliable.NAME, type = RecipientUnavaliable.class), @XmlElement(name = JIDMalformed.NAME, type = JIDMalformed.class), @XmlElement(name = ServiceUnavailable.NAME, type = ServiceUnavailable.class), @XmlElement(name = ItemNotFound.NAME, type = ItemNotFound.class), @XmlElement(name = Gone.NAME, type = Gone.class), @XmlElement(name = Forbidden.NAME, type = Forbidden.class), @XmlElement(name = FeatureNotImplemented.NAME, type = FeatureNotImplemented.class), @XmlElement(name = BadRequest.NAME, type = BadRequest.class), @XmlElement(name = NotAllowed.NAME, type = NotAllowed.class), @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class), @XmlElement(name = UnSupportedVersion.NAME, type = UnSupportedVersion.class), @XmlElement(name = UnSupportedStanzaType.NAME, type = UnSupportedStanzaType.class), @XmlElement(name = UnSupportedFeature.NAME, type = UnSupportedFeature.class), @XmlElement(name = UnSupportedEncoding.NAME, type = UnSupportedEncoding.class), @XmlElement(name = SystemShutdown.NAME, type = SystemShutdown.class), @XmlElement(name = SeeOtherHost.NAME, type = SeeOtherHost.class), @XmlElement(name = RestrictedXml.NAME, type = RestrictedXml.class), @XmlElement(name = com.sissi.protocol.error.detail.ResourceConstraint.NAME, type = com.sissi.protocol.error.detail.ResourceConstraint.class), @XmlElement(name = Reset.NAME, type = Reset.class), @XmlElement(name = PolicyViolation.NAME, type = PolicyViolation.class), @XmlElement(name = NotWellFormed.NAME, type = NotWellFormed.class), @XmlElement(name = InvalidXml.NAME, type = InvalidXml.class), @XmlElement(name = InvalidFrom.NAME, type = InvalidFrom.class), @XmlElement(name = InternalServerError.NAME, type = InternalServerError.class), @XmlElement(name = Conflict.NAME, type = Conflict.class), @XmlElement(name = BadNamespacePrefix.NAME, type = BadNamespacePrefix.class), @XmlElement(name = BadFormat.NAME, type = BadFormat.class), @XmlElement(name = HostGone.NAME, type = HostGone.class), @XmlElement(name = HostUnknown.NAME, type = HostUnknown.class), @XmlElement(name = InvaildNamespace.NAME, type = InvaildNamespace.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class), @XmlElement(name = ImproperAddressing.NAME, type = ImproperAddressing.class) })
+	@XmlElements({ @XmlElement(name = UnExpectedRequest.NAME, type = UnExpectedRequest.class), @XmlElement(name = SubscriptionRequired.NAME, type = SubscriptionRequired.class), @XmlElement(name = RemoteServerTimeout.NAME, type = RemoteServerTimeout.class), @XmlElement(name = RemoteServerNotFound.NAME, type = RemoteServerNotFound.class), @XmlElement(name = RegistrationRequired.NAME, type = RegistrationRequired.class), @XmlElement(name = Redirect.NAME, type = Redirect.class), @XmlElement(name = RecipientUnavaliable.NAME, type = RecipientUnavaliable.class), @XmlElement(name = JIDMalformed.NAME, type = JIDMalformed.class), @XmlElement(name = ServiceUnavailable.NAME, type = ServiceUnavailable.class), @XmlElement(name = ItemNotFound.NAME, type = ItemNotFound.class), @XmlElement(name = Gone.NAME, type = Gone.class), @XmlElement(name = Forbidden.NAME, type = Forbidden.class), @XmlElement(name = FeatureNotImplemented.NAME, type = FeatureNotImplemented.class), @XmlElement(name = BadRequest.NAME, type = BadRequest.class), @XmlElement(name = NotAllowed.NAME, type = NotAllowed.class), @XmlElement(name = NotAcceptable.NAME, type = NotAcceptable.class), @XmlElement(name = UnSupportedVersion.NAME, type = UnSupportedVersion.class), @XmlElement(name = UnSupportedStanzaType.NAME, type = UnSupportedStanzaType.class), @XmlElement(name = UnSupportedFeature.NAME, type = UnSupportedFeature.class), @XmlElement(name = UnSupportedEncoding.NAME, type = UnSupportedEncoding.class), @XmlElement(name = SystemShutdown.NAME, type = SystemShutdown.class), @XmlElement(name = SeeOtherHost.NAME, type = SeeOtherHost.class), @XmlElement(name = RestrictedXml.NAME, type = RestrictedXml.class), @XmlElement(name = com.sissi.protocol.error.detail.ResourceConstraint.NAME, type = com.sissi.protocol.error.detail.ResourceConstraint.class), @XmlElement(name = Reset.NAME, type = Reset.class), @XmlElement(name = PolicyViolation.NAME, type = PolicyViolation.class),
+			@XmlElement(name = NotWellFormed.NAME, type = NotWellFormed.class), @XmlElement(name = InvalidXml.NAME, type = InvalidXml.class), @XmlElement(name = InvalidFrom.NAME, type = InvalidFrom.class), @XmlElement(name = InternalServerError.NAME, type = InternalServerError.class), @XmlElement(name = Conflict.NAME, type = Conflict.class), @XmlElement(name = BadNamespacePrefix.NAME, type = BadNamespacePrefix.class), @XmlElement(name = BadFormat.NAME, type = BadFormat.class), @XmlElement(name = HostGone.NAME, type = HostGone.class), @XmlElement(name = HostUnknown.NAME, type = HostUnknown.class), @XmlElement(name = InvaildNamespace.NAME, type = InvaildNamespace.class), @XmlElement(name = NotAuthorized.NAME, type = NotAuthorized.class), @XmlElement(name = ImproperAddressing.NAME, type = ImproperAddressing.class) })
 	public List<ErrorDetail> getDetails() {
 		return this.details;
 	}

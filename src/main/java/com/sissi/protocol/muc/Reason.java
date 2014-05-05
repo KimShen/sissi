@@ -3,12 +3,12 @@ package com.sissi.protocol.muc;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
-import com.sissi.read.Metadata;
+import com.sissi.io.read.Metadata;
 
 /**
  * @author kim 2014年3月8日
  */
-@Metadata(uri = { Owner.XMLNS, XMucAdmin.XMLNS }, localName = Reason.NAME)
+@Metadata(uri = { Owner.XMLNS, XUser.XMLNS, XMucAdmin.XMLNS }, localName = Reason.NAME)
 @XmlRootElement(name = Reason.NAME)
 public class Reason {
 

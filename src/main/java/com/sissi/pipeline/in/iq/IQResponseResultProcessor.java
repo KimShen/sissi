@@ -4,6 +4,8 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 
 /**
+ * IQ Response, type = result
+ * 
  * @author kim 2014年1月20日
  */
 public class IQResponseResultProcessor extends IQResponseProcessor {

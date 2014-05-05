@@ -10,6 +10,8 @@ import com.sissi.protocol.error.detail.BadRequest;
 import com.sissi.protocol.presence.Presence;
 
 /**
+ * 类型合法性校验
+ * 
  * @author kim 2014年1月14日
  */
 public class PresenceCheckTypeProcessor implements Input {

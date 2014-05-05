@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<alias name="global.pro.check.muc.exists" alias="muc.admin.pro.check.exists" />
+	<bean id="muc.admin.pro.check.conflict" class="com.sissi.pipeline.in.iq.muc.admin.MucCheckConflictProcessor" />
+
+	<bean id="muc.admin.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.muc.admin" />
+	</bean>
+	<bean id="muc.admin.pro.fork.set" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.muc.admin.set" />
+	</bean>
+	<bean id="muc.admin.pro.fork.get" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.muc.admin.get" />
+	</bean>
+
+	<bean id="finder.muc.admin" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.admin.condition.set" />
+				<ref bean="muc.admin.condition.get" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="finder.muc.admin.set" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.admin.condition.role.set" />
+				<ref bean="muc.admin.condition.affiliation.set" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="finder.muc.admin.get" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.admin.condition.role.get" />
+				<ref bean="muc.admin.condition.affiliation.get" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<alias name="muc.admin.condition" alias="condition.muc.admin"/>
+	<bean id="muc.admin.condition" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="muc.admin.condition.matcher" />
+		<constructor-arg ref="muc.admin.pro.fork" />
+	</bean>
+	<bean id="muc.admin.condition.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.muc.XMucAdmin" />
+	</bean>
+
+	<bean id="muc.admin.condition.set" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="muc.admin.condition.set.matcher" />
+		<constructor-arg ref="muc.admin.pro.fork.set" />
+	</bean>
+	<bean id="muc.admin.condition.set.matcher" class="com.sissi.pipeline.in.iq.muc.admin.MucSetMatcher">
+		<constructor-arg ref="context.jid" />
+	</bean>
+
+	<bean id="muc.admin.condition.get" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="muc.admin.condition.get.matcher" />
+		<constructor-arg ref="muc.admin.pro.fork.get" />
+	</bean>
+	<bean id="muc.admin.condition.get.matcher" class="com.sissi.pipeline.in.iq.muc.admin.MucGetMatcher">
+		<constructor-arg ref="context.jid" />
+	</bean>
+	
+	<import resource="config-pipeline-in-iq-muc-admin-role.xml"/>
+	<import resource="config-pipeline-in-iq-muc-admin-affiliation.xml"/>
+</beans>

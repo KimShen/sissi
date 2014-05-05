@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="disco.item.bytestreams" class="com.sissi.protocol.iq.disco.Item">
+		<constructor-arg index="0" value="${server.exchanger.bytestreams.jid}" />
+		<constructor-arg index="1" value="SOCKS5 Bytestreams Service" />
+	</bean>
+	<bean id="disco.item.delegateion" class="com.sissi.protocol.iq.disco.Item">
+		<constructor-arg index="0" value="${domain.server.delegation}" />
+		<constructor-arg index="1" value="Delegate Bytestreams Service" />
+	</bean>
+	<bean id="disco.item.muc" class="com.sissi.protocol.iq.disco.Item">
+		<constructor-arg index="0" value="${domain.server.muc}" />
+		<constructor-arg index="1" value="Chatroom" />
+	</bean>
+</beans>

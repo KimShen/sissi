@@ -8,6 +8,8 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.presence.Presence;
 
 /**
+ * MUC房间状态更新
+ * 
  * @author kim 2014年2月18日
  */
 public class PresenceMucStatusProcessor extends ProxyProcessor {
@@ -21,8 +23,8 @@ public class PresenceMucStatusProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		if (context.presence()) {
-			Presence presence = new Presence().clauses(protocol.cast(Presence.class).clauses());
+		if (context.onlined()) {
+			Presence presence = protocol.cast(Presence.class).clone();
 			for (JID group : super.iSubscribedWho(context.jid())) {
 				this.input.input(context, presence.setTo(group));
 			}

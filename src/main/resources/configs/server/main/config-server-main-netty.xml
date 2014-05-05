@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="server.main.netty.handler" class="com.sissi.server.netty.impl.MainServerHandlerBuilder">
+		<constructor-arg ref="server.getout.chained" />
+		<constructor-arg ref="context.online" />
+		<constructor-arg ref="global.finder" />
+		<constructor-arg ref="server.tls" />
+		<constructor-arg ref="addressing" />
+		<constructor-arg ref="io.reader" />
+		<constructor-arg ref="feeder" />
+		<constructor-arg ref="looper" />
+		<constructor-arg ref="output" />
+		<constructor-arg ref="counter" />
+	</bean>
+
+	<bean id="server.main.netty.channel" class="com.sissi.server.netty.impl.MainServerHandlerChannelInitializer">
+		<constructor-arg index="0" value="${server.idle.read}" />
+		<constructor-arg index="1" value="${server.idle.write}" />
+		<constructor-arg index="2" value="${server.idle.all}" />
+		<constructor-arg ref="server.main.netty.handler" />
+	</bean>
+
+	<bean id="server.main.netty.loop" class="com.sissi.server.netty.impl.NioServerLoopGroup" />
+
+	<bean id="server.main.netty" class="com.sissi.server.netty.impl.NioServer">
+		<constructor-arg ref="server.status" />
+		<constructor-arg ref="server.main.netty.loop" />
+		<constructor-arg ref="server.main.netty.channel" />
+		<constructor-arg value="${domain.port}" />
+	</bean>
+
+</beans>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="presence.pro.directed" class="com.sissi.pipeline.in.presence.directed.PresenceDirectedProcessor" parent="global.pro.proxy" />
+
+	<bean id="presence.condition.directed" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="presence.condition.directed.matcher" />
+		<constructor-arg ref="presence.pro.directed" />
+	</bean>
+
+	<bean id="presence.condition.directed.matcher" class="com.sissi.pipeline.in.presence.PresenceMatcher">
+		<constructor-arg value="true" />
+		<constructor-arg>
+			<util:set>
+				<value>AVAILABLE</value>
+				<value>UNAVAILABLE</value>
+			</util:set>
+		</constructor-arg>
+	</bean>
+</beans>

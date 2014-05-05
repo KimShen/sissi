@@ -8,6 +8,8 @@ import com.sissi.protocol.starttls.Failure;
 import com.sissi.protocol.starttls.Proceed;
 
 /**
+ * <starttls xmlns='urn:ietf:params:xml:ns:xmpp-tls'/>
+ * 
  * @author kim 2013年12月17日
  */
 public class StarttlsProcessor implements Input {

@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 
+import com.sissi.io.read.Collector;
 import com.sissi.protocol.Protocol;
-import com.sissi.read.Collector;
 
 /**
  * @author kim 2014年1月16日

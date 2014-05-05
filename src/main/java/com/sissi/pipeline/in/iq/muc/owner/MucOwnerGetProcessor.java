@@ -9,6 +9,8 @@ import com.sissi.protocol.iq.data.XData;
 import com.sissi.protocol.muc.Owner;
 
 /**
+ * 表单列表
+ * 
  * @author kim 2014年3月24日
  */
 public class MucOwnerGetProcessor extends ProxyProcessor {

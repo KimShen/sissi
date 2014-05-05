@@ -7,25 +7,27 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.ItemNotFound;
-import com.sissi.ucenter.muc.MucFinder;
+import com.sissi.ucenter.vcard.VCardContext;
 
 /**
+ * MUC JID真实性校验
+ * 
  * @author kim 2014年3月10日
  */
 public class MessageMuc2CheckExistsProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
 
-	private final MucFinder mucFinder;
+	private final VCardContext vcardContext;
 
-	public MessageMuc2CheckExistsProcessor(MucFinder mucFinder) {
+	public MessageMuc2CheckExistsProcessor(VCardContext vcardContext) {
 		super();
-		this.mucFinder = mucFinder;
+		this.vcardContext = vcardContext;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.mucFinder.exists(super.build(protocol.getTo())) ? true : this.writeAndReturn(context, protocol);
+		return this.vcardContext.exists(super.build(protocol.getTo())) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

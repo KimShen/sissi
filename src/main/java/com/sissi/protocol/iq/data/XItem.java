@@ -2,7 +2,7 @@ package com.sissi.protocol.iq.data;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.ucenter.field.Field;
+import com.sissi.field.Field;
 
 /**
  * @author kim 2014年2月8日

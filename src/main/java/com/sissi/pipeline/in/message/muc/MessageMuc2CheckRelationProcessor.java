@@ -9,6 +9,8 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.NotAcceptable;
 
 /**
+ * 房间关系校验
+ * 
  * @author kim 2014年3月10日
  */
 public class MessageMuc2CheckRelationProcessor extends ProxyProcessor {

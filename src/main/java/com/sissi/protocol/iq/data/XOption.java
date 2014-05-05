@@ -4,10 +4,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
-import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.field.Fields;
+import com.sissi.field.Field;
+import com.sissi.field.Fields;
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 
 /**
  * @author kim 2013年12月5日

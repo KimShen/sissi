@@ -5,6 +5,8 @@ import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 
 /**
+ * 回路校验
+ * 
  * @author kim 2013年12月17日
  */
 public class PresenceCheckLoopProcessor extends ProxyProcessor {

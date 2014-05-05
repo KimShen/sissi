@@ -5,6 +5,8 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 
 /**
+ * 匹配指定Type的IQ子节
+ * 
  * @author kim 2013-11-4
  */
 public class IQActionMatcher extends ClassMatcher {

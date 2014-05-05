@@ -8,6 +8,8 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.HostUnknown;
 
 /**
+ * <stream:stream to='sissi.pw' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams' version='1.0'></p>To有效性校验
+ * 
  * @author kim 2014年1月3日
  */
 public class StreamCheckDomainProcessor implements Input {
@@ -25,10 +27,6 @@ public class StreamCheckDomainProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return protocol.to(this.domain, this.localip, this.localhost) ? true : this.close(context, protocol);
-	}
-
-	private boolean close(JIDContext context, Protocol protocol) {
-		return !context.write(Stream.closeWhenOpening(new ServerError().add(HostUnknown.DETAIL)).setFrom(this.domain).setTo(protocol.getFrom())).close();
+		return protocol.to(this.domain, this.localip, this.localhost) ? true : !context.write(Stream.closeWhenOpening(new ServerError().add(HostUnknown.DETAIL)).setFrom(this.domain).setTo(protocol.getFrom())).close();
 	}
 }

@@ -4,9 +4,11 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.roster.RosterSubscription;
-import com.sissi.ucenter.roster.RelationRoster;
+import com.sissi.ucenter.relation.roster.RosterRelation;
 
 /**
+ * Presence type = subscribed关系校验(NONE,FROM)
+ * 
  * @author kim 2014年1月26日
  */
 public class PresenceRosterSubscribedCheckRelationProcessor extends ProxyProcessor {
@@ -15,7 +17,7 @@ public class PresenceRosterSubscribedCheckRelationProcessor extends ProxyProcess
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		RelationRoster roster = super.ourRelation(super.build(protocol.getTo()), context.jid()).cast(RelationRoster.class);
-		return roster.in(this.relations) && roster.isAsk();
+		RosterRelation roster = super.ourRelation(super.build(protocol.getTo()), context.jid()).cast(RosterRelation.class);
+		return roster.in(this.relations) && roster.ask();
 	}
 }

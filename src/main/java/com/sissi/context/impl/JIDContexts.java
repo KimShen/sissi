@@ -94,19 +94,19 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 		return this;
 	}
 
+	public boolean onlined() {
+		boolean onlined = true;
+		for (JIDContext each : this) {
+			onlined = each.onlined() ? onlined : false;
+		}
+		return onlined;
+	}
+
 	public JIDContext offline() {
 		for (JIDContext each : this) {
 			each.offline();
 		}
 		return this;
-	}
-
-	public boolean presence() {
-		boolean presented = true;
-		for (JIDContext each : this) {
-			presented = each.presence() ? presented : false;
-		}
-		return presented;
 	}
 
 	@Override
@@ -169,6 +169,13 @@ public class JIDContexts extends ArrayList<JIDContext> implements JIDContext {
 	public JIDContext ping() {
 		for (JIDContext each : this) {
 			each.ping();
+		}
+		return this;
+	}
+
+	public JIDContext ping(int ping) {
+		for (JIDContext each : this) {
+			each.ping(ping);
 		}
 		return this;
 	}

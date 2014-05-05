@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="register.pro.check.muc.allow" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckAllowProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.room" />
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+	<bean id="register.pro.check.muc.exists" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckExistsProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.vcard.muc.4room" />
+	</bean>
+	<bean id="register.pro.check.muc.relation" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucCheckRelationProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="iq.pro.result.stop" />
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+	<bean id="register.pro.fields.muc" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucFieldsProcessor">
+		<constructor-arg ref="ucenter.muc.register.field" />
+	</bean>
+	<bean id="register.pro.fields.muc.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="register.pro.check.muc.allow" />
+				<ref bean="register.pro.check.muc.exists" />
+				<ref bean="register.pro.check.muc.relation" />
+				<ref bean="register.pro.fields.muc" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="register.pro.store.muc" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucStoreProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.apply.register.submit" />
+	</bean>
+	<bean id="register.pro.store.muc.broadcast" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucStoreBroadcastProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.muc.relation.4role" />
+		<constructor-arg ref="ucenter.muc.register" />
+		<constructor-arg value="${ucenter.register.muc}" />
+	</bean>
+	<bean id="register.pro.store.muc.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg value="true" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="register.pro.check.muc.allow" />
+				<ref bean="register.pro.check.muc.exists" />
+				<ref bean="register.pro.check.muc.relation" />
+				<ref bean="register.pro.store.muc.broadcast" />
+				<ref bean="register.pro.store.muc" />
+				<ref bean="iq.pro.result.stop" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="register.condition.fields.muc" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="register.condition.fields.muc.matcher" />
+		<constructor-arg ref="register.pro.fields.muc.chained" />
+	</bean>
+	<bean id="register.condition.fields.muc.matcher" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucFieldsMatcher">
+		<constructor-arg ref="context.jid" />
+	</bean>
+	<bean id="register.condition.store.muc" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="register.condition.store.muc.matcher" />
+		<constructor-arg ref="register.pro.store.muc.chained" />
+	</bean>
+	<bean id="register.condition.store.muc.matcher" class="com.sissi.pipeline.in.iq.register.muc.RegisterMucStoreMatcher">
+		<constructor-arg ref="context.jid" />
+	</bean>
+</beans>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<util:set id="global.domains">
+		<value>127.0.0.1</value>
+		<value>localhost</value>
+		<value>${domain.server}</value>
+		<value>${domain.server.muc}</value>
+		<value>${domain.server.delegation}</value>
+		<value>${server.exchanger.bytestreams.jid}</value>
+	</util:set>
+
+	<bean id="global.pro.proxy" abstract="true">
+		<property name="jidBuilder" ref="context.jid" />
+		<property name="addressing" ref="addressing" />
+		<property name="relationContext" ref="ucenter.relation.roster.user" />
+		<property name="protocolQueue" ref="broadcast.protocol.selfs" />
+		<property name="presenceQueue" ref="broadcast.presence.selfs" />
+	</bean>
+
+	<bean id="global.pro.check.relation" class="com.sissi.pipeline.in.CheckRelationProcessor" parent="global.pro.proxy">
+		<constructor-arg value="${ucenter.relation.shortcut}" />
+	</bean>
+	<bean id="global.pro.check.error.pong" class="com.sissi.pipeline.in.CheckErrorPongProcessor" />
+	<bean id="global.pro.check.error.loop" class="com.sissi.pipeline.in.CheckErrorLoopProcessor" />
+	<bean id="global.pro.check.jid.format" class="com.sissi.pipeline.in.CheckJIDMalformedProcessor" parent="global.pro.proxy" />
+	<bean id="global.pro.check.jid.exists" class="com.sissi.pipeline.in.CheckJIDExistsProcessor" parent="global.pro.proxy">
+		<constructor-arg value="true" />
+		<constructor-arg ref="ucenter.vcard.user" />
+		<constructor-arg ref="global.domains" />
+	</bean>
+	<bean id="global.pro.check.muc.exists" class="com.sissi.pipeline.in.MucCheckExistsProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.vcard.muc.4room" />
+	</bean>
+	<bean id="global.pro.check.muc.outcast" class="com.sissi.pipeline.in.MucCheckOutcastProcessor" parent="global.pro.proxy">
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+	<bean id="global.pro.check.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg value="true" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="global.pro.check.error.pong" />
+				<ref bean="global.pro.check.error.loop" />
+				<ref bean="global.pro.check.jid.format" />
+				<ref bean="global.pro.check.jid.exists" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="global.pro.forward" class="com.sissi.pipeline.in.ForwardProcessor" parent="global.pro.proxy" />
+
+	<bean id="global.finder" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="condition.iq" />
+				<ref bean="condition.auth" />
+				<ref bean="condition.stream" />
+				<ref bean="condition.message" />
+				<ref bean="condition.presence" />
+				<ref bean="condition.starttls" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+</beans>

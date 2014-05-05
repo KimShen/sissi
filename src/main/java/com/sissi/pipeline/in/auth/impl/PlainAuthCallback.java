@@ -12,7 +12,7 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.auth.AuthCallback;
 import com.sissi.protocol.iq.auth.Auth;
 import com.sissi.protocol.iq.auth.Success;
-import com.sissi.ucenter.user.AuthAccessor;
+import com.sissi.ucenter.access.AuthAccessor;
 
 /**
  * @author kim 2013-10-24
@@ -36,7 +36,7 @@ public class PlainAuthCallback implements AuthCallback {
 	@Override
 	public boolean auth(Auth auth, JIDContext context) {
 		AuthCertificate certificate = new AuthCertificate(auth);
-		return context.auth(certificate.pass(this.authAccessor.access(certificate.getUser()))).auth() ? this.writeSuccessProtocol(context, certificate) : false;
+		return context.auth(certificate.pass(this.authAccessor.access(certificate.getUser()))).auth() ? this.writeAndReturn(context, certificate) : false;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class PlainAuthCallback implements AuthCallback {
 		return MECHANISM.equals(mechanism);
 	}
 
-	private boolean writeSuccessProtocol(JIDContext context, AuthCertificate certificate) {
+	private boolean writeAndReturn(JIDContext context, AuthCertificate certificate) {
 		context.jid(this.jidBuilder.build(certificate.getUser(), null)).write(Success.INSTANCE);
 		return true;
 	}

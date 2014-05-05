@@ -25,7 +25,7 @@ public enum RosterSubscription {
 	}
 
 	public boolean equals(String subscribe) {
-		return this.toString().equals(subscribe);
+		return this.toString().equals(subscribe.toLowerCase());
 	}
 
 	public boolean in(RosterSubscription... subscriptions) {
@@ -36,7 +36,7 @@ public enum RosterSubscription {
 		}
 		return false;
 	}
-	
+
 	public boolean in(String... subscriptions) {
 		for (String subscription : subscriptions) {
 			if (this.equals(subscription)) {

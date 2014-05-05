@@ -4,8 +4,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Sissi;
-import com.sissi.read.Metadata;
 
 /**
  * @author kim 2014年2月17日

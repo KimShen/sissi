@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="presence.pro.status.2fans" class="com.sissi.pipeline.in.presence.status.PresenceBroadcastProcessor" parent="global.pro.proxy">
+		<property name="protocolQueue" ref="broadcast.protocol.fans" />
+	</bean>
+	<bean id="presence.pro.status.2selfs" class="com.sissi.pipeline.in.presence.status.PresenceBroadcastProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.available.muc.recover" class="com.sissi.pipeline.in.presence.status.PresenceMucRecoverProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.vcard.user" />
+		<constructor-arg ref="presence.pro.muc.join.chained" />
+		<property name="relationContext" ref="ucenter.muc.relation.4affiliation" />
+	</bean>
+	<bean id="presence.pro.status.available.muc.status" class="com.sissi.pipeline.in.presence.status.PresenceMucStatusProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="presence.pro.muc.join.2fans" />
+		<property name="relationContext" ref="ucenter.muc.relation.4role" />
+	</bean>
+	<bean id="presence.pro.status.available.update" class="com.sissi.pipeline.in.presence.status.PresenceOnlineUpdateProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.available.priority" class="com.sissi.pipeline.in.presence.status.PresenceOnlinePriorityProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.available.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.pro.init.chained" />
+				<ref bean="presence.pro.status.available.muc.status" />
+				<ref bean="presence.pro.status.available.muc.recover" />
+				<ref bean="presence.pro.status.available.update" />
+				<ref bean="presence.pro.status.available.priority" />
+				<ref bean="presence.pro.status.2fans" />
+				<ref bean="presence.pro.status.2selfs" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="presence.pro.status.unavailable.status" class="com.sissi.pipeline.in.presence.status.PresenceOfflineStatusProcessor" />
+	<bean id="presence.pro.status.unavailable.close" class="com.sissi.pipeline.in.presence.status.PresenceOfflineCloseProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.status.unavailable.signature" class="com.sissi.pipeline.in.presence.status.PresenceOfflineSignatureProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.vcard.user" />
+	</bean>
+	<bean id="presence.pro.status.unavailable.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.pro.status.unavailable.status" />
+				<ref bean="presence.pro.status.2fans" />
+				<ref bean="presence.pro.status.2selfs" />
+				<ref bean="presence.pro.status.unavailable.signature" />
+				<!-- Close Xmpp -->
+				<!-- <ref bean="presence.pro.status.unavailable.close" /> -->
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="presence.pro.status.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.presence.status" />
+	</bean>
+
+	<bean id="finder.presence.status" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="presence.condition.status.available" />
+				<ref bean="presence.condition.status.unavailable" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="presence.condition.status" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="presence.condition.status.matcher" />
+		<constructor-arg ref="presence.pro.status.fork" />
+	</bean>
+	<bean id="presence.condition.status.matcher" class="com.sissi.pipeline.in.presence.PresenceMatcher">
+		<constructor-arg value="false" />
+		<constructor-arg>
+			<util:set>
+				<value>AVAILABLE</value>
+				<value>UNAVAILABLE</value>
+			</util:set>
+		</constructor-arg>
+	</bean>
+	<bean id="presence.condition.status.available" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="presence.condition.status.available.matcher" />
+		<constructor-arg ref="presence.pro.status.available.chained" />
+	</bean>
+	<bean id="presence.condition.status.available.matcher" class="com.sissi.pipeline.in.presence.PresenceMatcher">
+		<constructor-arg value="false" />
+		<constructor-arg>
+			<util:set>
+				<value>AVAILABLE</value>
+			</util:set>
+		</constructor-arg>
+	</bean>
+	<bean id="presence.condition.status.unavailable" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="presence.condition.status.unavailable.matcher" />
+		<constructor-arg ref="presence.pro.status.unavailable.chained" />
+	</bean>
+	<bean id="presence.condition.status.unavailable.matcher" class="com.sissi.pipeline.in.presence.PresenceMatcher">
+		<constructor-arg value="false" />
+		<constructor-arg>
+			<util:set>
+				<value>UNAVAILABLE</value>
+			</util:set>
+		</constructor-arg>
+	</bean>
+</beans>

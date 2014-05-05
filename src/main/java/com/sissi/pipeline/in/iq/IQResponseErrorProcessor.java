@@ -7,6 +7,8 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.ServiceUnavailable;
 
 /**
+ * IQ Response, type = error
+ * 
  * @author kim 2014年1月20日
  */
 public class IQResponseErrorProcessor extends IQResponseProcessor {
@@ -21,8 +23,8 @@ public class IQResponseErrorProcessor extends IQResponseProcessor {
 		super(ProtocolType.ERROR.toString(), true, false);
 	}
 
-	public IQResponseErrorProcessor(boolean clear, boolean doNext) {
-		super(ProtocolType.ERROR.toString(), clear, doNext);
+	public IQResponseErrorProcessor(boolean clear, boolean next) {
+		super(ProtocolType.ERROR.toString(), clear, next);
 	}
 
 	protected Protocol prepare(Protocol response) {

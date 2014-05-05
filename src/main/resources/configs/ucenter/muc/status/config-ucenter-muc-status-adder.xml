@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="ucenter.muc.status.adder.join" class="com.sissi.ucenter.relation.muc.status.adder.ChainedCodeStatusAdder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="ucenter.muc.status.adder.code.170" />
+				<ref bean="ucenter.muc.status.adder.code.201" />
+				<ref bean="ucenter.muc.status.adder.code.301" />
+				<ref bean="ucenter.muc.status.adder.code.307" />
+				<ref bean="ucenter.muc.status.adder.code.321" />
+				<ref bean="ucenter.muc.status.adder.code.loop" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="ucenter.muc.status.adder.replace" class="com.sissi.ucenter.relation.muc.status.adder.ChainedCodeStatusAdder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="ucenter.muc.status.adder.code.303" />
+				<ref bean="ucenter.muc.status.adder.code.loop" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="ucenter.muc.status.adder.code.170" class="com.sissi.ucenter.relation.muc.status.adder.Code170StatusAdder">
+		<constructor-arg value="${ucenter.muc.log}" />
+	</bean>
+	<bean id="ucenter.muc.status.adder.code.201" class="com.sissi.ucenter.relation.muc.status.adder.Code201StatusAdder">
+		<constructor-arg ref="ucenter.muc.config" />
+	</bean>
+	<bean id="ucenter.muc.status.adder.code.301" class="com.sissi.ucenter.relation.muc.status.adder.Code301StatusAdder" />
+	<bean id="ucenter.muc.status.adder.code.303" class="com.sissi.ucenter.relation.muc.status.adder.CodeFixedStatusAdder">
+		<constructor-arg>
+			<util:set>
+				<value>303</value>
+			</util:set>
+		</constructor-arg>
+	</bean>
+
+	<bean id="ucenter.muc.status.adder.code.307" class="com.sissi.ucenter.relation.muc.status.adder.Code307StatusAdder" />
+	<bean id="ucenter.muc.status.adder.code.321" class="com.sissi.ucenter.relation.muc.status.adder.Code321StatusAdder" />
+	<bean id="ucenter.muc.status.adder.code.loop" class="com.sissi.ucenter.relation.muc.status.adder.CodeLoopStatusAdder" />
+</beans>

@@ -48,7 +48,7 @@ public class ChainedFinder implements InputFinder {
 
 		@Override
 		public boolean input(JIDContext context, Protocol current) {
-			this.log.warn("Nothing for " + current.getClass() + ", please check");
+			this.log.warn("Nothing on " + current.getClass() + ", please check");
 			return false;
 		}
 	}

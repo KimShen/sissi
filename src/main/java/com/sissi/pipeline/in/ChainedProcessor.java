@@ -11,17 +11,21 @@ import com.sissi.protocol.Protocol;
  */
 public class ChainedProcessor implements Input {
 
-	private final boolean isNext;
+	private final boolean next;
 
 	private final List<Input> processors;
 
 	public ChainedProcessor(List<Input> processors) {
-		this(Boolean.FALSE, processors);
+		this(false, processors);
 	}
 
-	public ChainedProcessor(boolean isNext, List<Input> processors) {
+	/**
+	 * @param next 执行完毕后如果input返回true是否继续执行Pipeline
+	 * @param processors
+	 */
+	public ChainedProcessor(boolean next, List<Input> processors) {
 		super();
-		this.isNext = isNext;
+		this.next = next;
 		this.processors = processors;
 	}
 
@@ -32,6 +36,6 @@ public class ChainedProcessor implements Input {
 				return false;
 			}
 		}
-		return this.isNext;
+		return this.next;
 	}
 }

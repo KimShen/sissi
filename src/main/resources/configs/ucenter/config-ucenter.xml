@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="ucenter.config" class="com.sissi.config.impl.MongoProxyConfig">
+		<constructor-arg ref="mongo" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.user}" />
+	</bean>
+
+	<import resource="muc/config-ucenter-muc.xml" />
+	<import resource="vcard/config-ucenter-vcard.xml" />
+	<import resource="block/config-ucenter-block.xml" />
+	<import resource="status/config-ucenter-status.xml" />
+	<import resource="roster/config-ucenter-roster.xml" />
+	<import resource="access/config-ucenter-access.xml" />
+	<import resource="register/config-ucenter-register.xml" />
+</beans>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="persistent.config" class="com.sissi.config.impl.MongoProxyConfig">
+		<constructor-arg ref="mongo" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.persistent}" />
+	</bean>
+
+	<bean id="persistent" abstract="true">
+		<constructor-arg value="${persistent.resend}" />
+		<constructor-arg ref="persistent.config" />
+	</bean>
+	<bean id="persistent.element" abstract="true">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg value="${persistent.tip}" />
+	</bean>
+
+	<bean id="persistent.offline" class="com.sissi.persistent.impl.MongoPersistent" parent="persistent">
+		<constructor-arg>
+			<util:list>
+				<ref bean="persistent.element.si" />
+				<ref bean="persistent.element.message.delay" />
+				<ref bean="persistent.element.message.invite" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<import resource="config-persistent-si.xml" />
+	<import resource="config-persistent-recover.xml" />
+	<import resource="config-persistent-message.xml" />
+	<import resource="config-persistent-message-muc.xml" />
+</beans>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="iq.pro.check" class="com.sissi.pipeline.in.iq.IQCheckProcessor" />
+	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
+		<constructor-arg ref="finder.iq" />
+		<constructor-arg>
+			<set>
+				<value>com.sissi.protocol.iq.register.Register</value>
+			</set>
+		</constructor-arg>
+		<constructor-arg ref="iq.pro.fork.nochild" />
+	</bean>
+	<bean id="iq.pro.fork.nochild" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="pong.pro" />
+				<ref bean="iq.pro.result.stop" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="iq.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="global.pro.check.chained" />
+				<ref bean="iq.pro.check" />
+				<ref bean="iq.pro.fork" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="finder.iq" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="condition.si" />
+				<ref bean="condition.ping" />
+				<ref bean="condition.bind" />
+				<ref bean="condition.last" />
+				<ref bean="condition.time" />
+				<ref bean="condition.vcard" />
+				<ref bean="condition.block" />
+				<ref bean="condition.roster" />
+				<ref bean="condition.version" />
+				<ref bean="condition.session" />
+				<ref bean="condition.private" />
+				<ref bean="condition.register" />
+				<ref bean="condition.muc.owner" />
+				<ref bean="condition.muc.admin" />
+				<ref bean="condition.muc.unique" />
+				<ref bean="condition.disco.info" />
+				<ref bean="condition.disco.items" />
+				<ref bean="condition.bytestreams" />
+				<ref bean="condition.sharedgroup" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<alias name="iq.condition" alias="condition.iq" />
+	<bean id="iq.condition" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.ClassMatcher">
+				<constructor-arg value="com.sissi.protocol.iq.IQ" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="iq.pro.chained" />
+	</bean>
+	<bean id="iq.condition.result" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.AnyMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="iq.pro.result.stop" />
+	</bean>
+	<bean id="iq.condition.error" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<bean class="com.sissi.pipeline.in.AnyMatcher" />
+		</constructor-arg>
+		<constructor-arg ref="iq.pro.error.noneclear" />
+	</bean>
+
+	<import resource="config-pipeline-in-iq-bind.xml" />
+	<import resource="config-pipeline-in-iq-last.xml" />
+	<import resource="config-pipeline-in-iq-time.xml" />
+	<import resource="config-pipeline-in-iq-ping.xml" />
+	<import resource="config-pipeline-in-iq-block.xml" />
+
+	<import resource="config-pipeline-in-iq-private.xml" />
+	<import resource="config-pipeline-in-iq-version.xml" />
+	<import resource="config-pipeline-in-iq-session.xml" />
+	<import resource="config-pipeline-in-iq-response.xml" />
+	<import resource="config-pipeline-in-iq-sharedgroup.xml" />
+	<import resource="vcard/config-pipeline-in-iq-vcard.xml" />
+	<import resource="disco/config-pipeline-in-iq-disco.xml" />
+	<import resource="roster/config-pipeline-in-iq-roster.xml" />
+	<import resource="transfer/config-pipeline-in-iq-transfer.xml" />
+	<import resource="register/config-pipeline-in-iq-register.xml" />
+	<import resource="muc/owner/config-pipeline-in-iq-muc-owner.xml" />
+	<import resource="muc/admin/config-pipeline-in-iq-muc-admin.xml" />
+	<import resource="muc/unique/config-pipeline-in-iq-muc-unique.xml" />
+</beans>

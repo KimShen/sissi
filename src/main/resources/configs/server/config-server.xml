@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="server" class="com.sissi.server.impl.ChainedServer">
+		<constructor-arg>
+			<util:list>
+				<ref bean="server.exchanger.netty" />
+				<ref bean="server.main.netty" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<import resource="ha/config-server-ha.xml" />
+	<import resource="tls/config-server-tls.xml" />
+	<import resource="main/config-server-main.xml" />
+	<import resource="getout/config-server-getout.xml" />
+	<import resource="status/config-server-status.xml" />
+	<import resource="exchange/config-server-exchange.xml" />
+</beans>

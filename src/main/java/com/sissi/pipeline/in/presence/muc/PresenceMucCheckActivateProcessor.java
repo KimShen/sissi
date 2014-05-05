@@ -7,26 +7,28 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.ItemNotFound;
-import com.sissi.ucenter.muc.MucConfig;
-import com.sissi.ucenter.muc.MucConfigBuilder;
+import com.sissi.ucenter.relation.muc.room.RoomBuilder;
+import com.sissi.ucenter.relation.muc.room.RoomConfig;
 
 /**
+ * 激活校验
+ * 
  * @author kim 2014年3月6日
  */
 public class PresenceMucCheckActivateProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().setCode("405").setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
 
-	private final MucConfigBuilder mucConfigBuilder;
+	private final RoomBuilder room;
 
-	public PresenceMucCheckActivateProcessor(MucConfigBuilder mucConfigBuilder) {
+	public PresenceMucCheckActivateProcessor(RoomBuilder room) {
 		super();
-		this.mucConfigBuilder = mucConfigBuilder;
+		this.room = room;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.mucConfigBuilder.build(super.build(protocol.getTo())).allowed(context.jid(), MucConfig.ACTIVATE_JION, null) ? true : this.writeAndReturn(context, protocol);
+		return this.room.build(super.build(protocol.getTo())).allowed(context.jid(), RoomConfig.ACTIVATED) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

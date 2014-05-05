@@ -3,12 +3,12 @@ package com.sissi.protocol.muc;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.field.Field;
+import com.sissi.field.Fields;
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.offline.History;
 import com.sissi.protocol.presence.X;
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
-import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.field.Fields;
 
 /**
  * @author kim 2014年3月6日
@@ -35,6 +35,11 @@ public class XMuc extends X implements Field<String>, Collector {
 
 	public History history() {
 		return this.history;
+	}
+
+	public XMuc history(History history) {
+		this.history = history;
+		return this;
 	}
 
 	public boolean hasHistory() {

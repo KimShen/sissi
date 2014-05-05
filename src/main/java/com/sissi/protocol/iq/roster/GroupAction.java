@@ -1,14 +1,16 @@
 package com.sissi.protocol.iq.roster;
 
 /**
+ * 是否为更新操作(或删除操作)
+ * 
  * @author kim 2014年1月16日
  */
 public enum GroupAction {
 
-	SET, REMOVE;
+	UPDATE, REMOVE;
 
 	public static GroupAction parse(String action) {
-		return action == null ? SET : GroupAction.valueOf(action.toUpperCase());
+		return action == null ? UPDATE : RosterSubscription.REMOVE.equals(action) ? REMOVE : UPDATE;
 	}
 
 	public String toString() {

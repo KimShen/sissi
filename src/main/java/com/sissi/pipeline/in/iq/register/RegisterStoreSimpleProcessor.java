@@ -1,16 +1,18 @@
 package com.sissi.pipeline.in.iq.register;
 
-import com.sissi.pipeline.in.iq.IQResponseProcessor;
-import com.sissi.ucenter.field.Fields;
-import com.sissi.ucenter.user.RegisterContext;
+import com.sissi.field.Fields;
+import com.sissi.pipeline.Input;
+import com.sissi.ucenter.register.RegisterContext;
 
 /**
+ * 简易表单
+ * 
  * @author kim 2013年12月3日
  */
 public class RegisterStoreSimpleProcessor extends RegisterStoreProcessor {
 
-	public RegisterStoreSimpleProcessor(RegisterContext registerContext, IQResponseProcessor processor) {
-		super(registerContext, processor);
+	public RegisterStoreSimpleProcessor(RegisterContext registerContext, Input input) {
+		super(registerContext, input);
 	}
 
 	@Override

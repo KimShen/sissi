@@ -6,6 +6,8 @@ import com.sissi.pipeline.in.ClassMatcher;
 import com.sissi.protocol.Protocol;
 
 /**
+ * 匹配To无任何资源在线
+ * 
  * @author kim 2014年2月24日
  */
 public class ToDelegationMatcher extends ClassMatcher {

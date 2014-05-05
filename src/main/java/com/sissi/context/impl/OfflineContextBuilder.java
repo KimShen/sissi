@@ -14,9 +14,11 @@ import com.sissi.context.StatusClauses;
 import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.presence.PresenceType;
-import com.sissi.ucenter.user.VCardContext;
+import com.sissi.ucenter.vcard.VCardContext;
 
 /**
+ * 离线JIDContext
+ * 
  * @author kim 2013-11-19
  */
 public class OfflineContextBuilder implements JIDContextBuilder {
@@ -33,14 +35,13 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	private final String lang;
 
-	public OfflineContextBuilder(String lang, String domain, Output output) throws Exception {
-		super();
-		this.lang = lang;
-		this.domain = domain;
-		this.output = output;
-		this.vCardContext = null;
-	}
-
+	/**
+	 * @param lang 默认语言
+	 * @param domain 默认域
+	 * @param output
+	 * @param vCardContext
+	 * @throws Exception
+	 */
 	public OfflineContextBuilder(String lang, String domain, Output output, VCardContext vCardContext) throws Exception {
 		super();
 		this.lang = lang;
@@ -51,7 +52,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 	@Override
 	public JIDContext build(JID jid, JIDContextParam param) {
-		return new OfflineContext(jid, this.vCardContext != null);
+		return new OfflineContext(jid);
 	}
 
 	private class OfflineContext implements JIDContext {
@@ -60,9 +61,14 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 
 		private final Status status;
 
-		public OfflineContext(JID jid, boolean signature) {
+		/**
+		 * 使用VCard加载离线签名及最后活跃时间
+		 * 
+		 * @param jid
+		 */
+		public OfflineContext(JID jid) {
+			this.status = new OfflineStatus(new OfflineStatusClauses(OfflineContextBuilder.this.vCardContext.get(jid, VCardContext.FIELD_SIGNATURE).getValue()));
 			this.jid = jid;
-			this.status = signature ? new OfflineStatus(new SignatureClauses(OfflineContextBuilder.this.vCardContext.get(jid, VCardContext.FIELD_SIGNATURE).getValue())) : OfflineStatus.STATUS;
 		}
 
 		public long index() {
@@ -149,12 +155,12 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 			return this;
 		}
 
-		public JIDContext offline() {
-			return this;
+		public boolean onlined() {
+			return true;
 		}
 
-		public boolean presence() {
-			return false;
+		public JIDContext offline() {
+			return this;
 		}
 
 		public long idle() {
@@ -180,6 +186,10 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		public JIDContext ping() {
+			return this;
+		}
+
+		public JIDContext ping(int ping) {
 			return this;
 		}
 
@@ -217,11 +227,11 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 	}
 
-	private class SignatureClauses implements StatusClauses {
+	private class OfflineStatusClauses implements StatusClauses {
 
 		private final String signature;
 
-		private SignatureClauses(String signature) {
+		private OfflineStatusClauses(String signature) {
 			this.signature = signature;
 		}
 

@@ -8,6 +8,8 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.UnSupportedVersion;
 
 /**
+ * <stream:stream to='sissi.pw' xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams' version='1.0'></p>Version校验
+ * 
  * @author kim 2014年1月4日
  */
 public class StreamCheckVersionProcessor implements Input {

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="message.pro.check.relation" class="com.sissi.pipeline.in.message.MessageCheckRelationProcessor" parent="global.pro.proxy">
+		<constructor-arg value="${ucenter.relation.shortcut}" />
+	</bean>
+	<bean id="message.pro.check.ack" class="com.sissi.pipeline.in.message.MessageCheckAckProcessor" />
+	<bean id="message.pro.check.body" class="com.sissi.pipeline.in.message.MessageCheckBodyProcessor" />
+	<bean id="message.pro.call" class="com.sissi.pipeline.in.message.MessageTimeCallProcessor" />
+	<bean id="message.pro.delay" class="com.sissi.pipeline.in.message.MessageTimeDelayProcessor" />
+	<bean id="message.pro.received" class="com.sissi.pipeline.in.message.MessageReceivedProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="persistent.message.offline" />
+	</bean>
+	<bean id="message.pro.persistent" class="com.sissi.pipeline.in.message.MessagePersistentProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="persistent.message.log" />
+	</bean>
+
+	<alias name="global.pro.forward" alias="message.pro.2fan" />
+	<bean id="message.pro.2self" class="com.sissi.pipeline.in.message.Message2SelfProcessor" parent="global.pro.proxy" />
+	<bean id="message.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="global.pro.check.chained" />
+				<ref bean="message.pro.check.relation" />
+				<ref bean="message.pro.call" />
+				<ref bean="message.pro.delay" />
+				<ref bean="message.pro.received" />
+				<ref bean="message.pro.check.body" />
+				<ref bean="message.pro.check.ack" />
+				<ref bean="message.pro.persistent" />
+				<ref bean="message.pro.2self" />
+				<ref bean="message.pro.2fan" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="message.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.message" />
+	</bean>
+
+	<bean id="finder.message" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="message.condition.muc" />
+				<!-- AnyMatcher -->
+				<ref bean="message.condition.chat" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<alias name="message.condition" alias="condition.message" />
+	<bean id="message.condition" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="message.condition.matcher" />
+		<constructor-arg ref="message.pro.fork" />
+	</bean>
+	<bean id="message.condition.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.message.Message" />
+	</bean>
+	<bean id="message.condition.chat" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg>
+			<util:constant static-field="com.sissi.pipeline.in.AnyMatcher.INSTANCE" />
+		</constructor-arg>
+		<constructor-arg ref="message.pro.chained" />
+	</bean>
+
+	<import resource="muc/config-pipeline-in-message-muc.xml" />
+</beans>

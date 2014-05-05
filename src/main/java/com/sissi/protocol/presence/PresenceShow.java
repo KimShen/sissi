@@ -2,7 +2,7 @@ package com.sissi.protocol.presence;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.read.Metadata;
+import com.sissi.io.read.Metadata;
 
 /**
  * @author kim 2013-11-2

@@ -2,8 +2,8 @@ package com.sissi.protocol.iq.register.simple;
 
 import javax.xml.bind.annotation.XmlValue;
 
-import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.field.Fields;
+import com.sissi.field.Field;
+import com.sissi.field.Fields;
 
 /**
  * @author kim 2013年12月16日

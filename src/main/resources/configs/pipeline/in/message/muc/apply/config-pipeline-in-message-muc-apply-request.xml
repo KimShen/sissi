@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="message.pro.apply.request.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="message.pro.muc.check.exists" />
+				<ref bean="message.pro.muc.check.relation" />
+				<ref bean="message.pro.apply" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="message.condition.apply.request" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="message.condition.apply.request.matcher" />
+		<constructor-arg ref="message.pro.apply.request.chained" />
+	</bean>
+	<bean id="message.condition.apply.request.matcher" class="com.sissi.pipeline.in.message.apply.MessageApplyMatcher">
+		<constructor-arg value="SUBMIT" />
+	</bean>
+</beans>

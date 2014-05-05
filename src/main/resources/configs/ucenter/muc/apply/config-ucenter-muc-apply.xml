@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="ucenter.muc.apply.forward" class="com.sissi.ucenter.relation.muc.apply.impl.ForwardApplyContext">
+		<constructor-arg ref="ucenter.muc.relation.4role" />
+	</bean>
+
+	<bean id="ucenter.muc.apply.chained" class="com.sissi.ucenter.relation.muc.apply.impl.ChainedApplyContext">
+		<constructor-arg>
+			<util:list>
+				<ref bean="ucenter.muc.apply.register.reject" />
+				<ref bean="ucenter.muc.apply.register.approve" />
+				<ref bean="ucenter.muc.apply.forward" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<import resource="config-ucenter-muc-apply-register.xml" />
+</beans>

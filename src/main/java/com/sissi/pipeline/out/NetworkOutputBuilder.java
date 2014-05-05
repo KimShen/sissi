@@ -14,12 +14,12 @@ import org.apache.commons.logging.LogFactory;
 import com.sissi.commons.Trace;
 import com.sissi.commons.apache.IOUtils;
 import com.sissi.context.JIDContext;
+import com.sissi.io.write.Writer;
 import com.sissi.pipeline.Output;
 import com.sissi.pipeline.OutputBuilder;
+import com.sissi.pipeline.Transfer;
+import com.sissi.pipeline.TransferBuffer;
 import com.sissi.protocol.Element;
-import com.sissi.write.Transfer;
-import com.sissi.write.TransferBuffer;
-import com.sissi.write.Writer;
 
 /**
  * @author kim 2013年12月1日
@@ -50,12 +50,11 @@ public class NetworkOutputBuilder implements OutputBuilder {
 		}
 
 		@Override
-		public boolean output(JIDContext context, Element node) {
+		public boolean output(JIDContext context, Element element) {
 			ByteBufOutputTransferBuffer output = new ByteBufOutputTransferBuffer();
 			BufferedOutputStream buf = new BufferedOutputStream(output);
 			try {
-				NetworkOutputBuilder.this.writer.write(context, buf, node);
-				buf.flush();
+				NetworkOutputBuilder.this.writer.write(context, buf, element).flush();
 				this.transfer.transfer(output);
 			} catch (Exception e) {
 				NetworkOutputBuilder.this.log.error(e.toString());

@@ -11,8 +11,8 @@ import com.sissi.protocol.ProtocolType;
 abstract public class IQResponseProcessor implements Input {
 
 	private final ProtocolType type;
-	
-	private final boolean doNext;
+
+	private final boolean next;
 
 	private final boolean clear;
 
@@ -24,17 +24,22 @@ abstract public class IQResponseProcessor implements Input {
 		this(type, true, false);
 	}
 
-	public IQResponseProcessor(String type, boolean clear, boolean doNext) {
+	/**
+	 * @param type
+	 * @param clear Protocol.clear
+	 * @param next 如果Input返回true是否继续执行Pipeline
+	 */
+	public IQResponseProcessor(String type, boolean clear, boolean next) {
 		this.type = ProtocolType.parse(type);
 		this.clear = clear;
-		this.doNext = doNext;
+		this.next = next;
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		Protocol response = this.prepare(protocol.parent().reply().setType(this.type));
 		context.write(this.clear ? response.clear() : response);
-		return this.doNext;
+		return this.next;
 	}
 
 	abstract protected Protocol prepare(Protocol response);

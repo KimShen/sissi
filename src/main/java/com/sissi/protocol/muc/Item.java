@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.context.JID;
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Error;
 import com.sissi.protocol.presence.Presence;
 import com.sissi.protocol.presence.PresenceType;
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
-import com.sissi.ucenter.muc.MucItem;
-import com.sissi.ucenter.muc.RelationMuc;
+import com.sissi.ucenter.relation.muc.MucItem;
+import com.sissi.ucenter.relation.muc.MucRelation;
 
 /**
  * @author kim 2014年2月11日
@@ -32,7 +32,7 @@ public class Item implements MucItem, Collector {
 
 	private String affiliation;
 
-	private boolean refuse;
+	private boolean limit;
 
 	private boolean hidden;
 
@@ -49,13 +49,13 @@ public class Item implements MucItem, Collector {
 	public Item() {
 	}
 
-	public Item(boolean hidden, String nick, RelationMuc relation) {
+	public Item(boolean hidden, String nick, MucRelation relation) {
 		super();
 		this.relation(relation).hidden = hidden;
 		this.nick = nick;
 	}
 
-	public Item(boolean hidden, RelationMuc relation) {
+	public Item(boolean hidden, MucRelation relation) {
 		super();
 		this.relation(relation).hidden = hidden;
 	}
@@ -66,11 +66,11 @@ public class Item implements MucItem, Collector {
 	}
 
 	private Presence presence(XMucAdminAction action, String affiliation) {
-		this.refuse = !ItemAffiliation.parse(this.getAffiliation()).contains(affiliation);
-		return new Presence().setType(this.refuse ? PresenceType.UNAVAILABLE.toString() : XMucAdminAction.AFFILIATION == action ? ItemAffiliation.parse(this.getAffiliation()).presence() : ItemRole.parse(this.getRole()).presence()).setFrom(group).cast(Presence.class);
+		this.limit = !ItemAffiliation.parse(this.getAffiliation()).contains(affiliation);
+		return new Presence().setType(this.limit ? PresenceType.UNAVAILABLE.toString() : XMucAdminAction.AFFILIATION == action ? ItemAffiliation.parse(this.getAffiliation()).presence() : ItemRole.parse(this.getRole()).presence()).setFrom(this.group).cast(Presence.class);
 	}
 
-	public Item relation(RelationMuc relation) {
+	public Item relation(MucRelation relation) {
 		this.jid = relation.jid();
 		this.role = relation.role();
 		this.nick = relation.name();
@@ -78,8 +78,8 @@ public class Item implements MucItem, Collector {
 		return this;
 	}
 
-	public boolean refuse() {
-		return this.refuse;
+	public boolean forbidden() {
+		return this.limit;
 	}
 
 	public boolean error(Error error) {
@@ -99,7 +99,7 @@ public class Item implements MucItem, Collector {
 		return this.presence(XMucAdminAction.ROLE, null);
 	}
 
-	public Presence presence(JID group, String affiliation) {
+	public Presence presence(String affiliation) {
 		return this.presence(XMucAdminAction.AFFILIATION, affiliation);
 	}
 
@@ -145,7 +145,7 @@ public class Item implements MucItem, Collector {
 
 	@XmlAttribute
 	public String getRole() {
-		return this.refuse ? ItemRole.NONE.toString() : this.role;
+		return this.limit ? ItemRole.NONE.toString() : this.role;
 	}
 
 	public Item setNick(String nick) {

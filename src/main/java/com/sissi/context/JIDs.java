@@ -5,7 +5,31 @@ package com.sissi.context;
  */
 public interface JIDs extends Iterable<JID> {
 
+	public JID jid();
+
 	public boolean isEmpty();
 
+	/**
+	 * Full JID的比较
+	 * 
+	 * @param jid
+	 * @return
+	 */
+	public boolean same(JID jid);
+
+	/**
+	 * Bare JID的比较
+	 * 
+	 * @param jid
+	 * @return
+	 */
+	public boolean like(JID jid);
+
+	/**
+	 * 是否小于指定数量
+	 * 
+	 * @param counter
+	 * @return
+	 */
 	public boolean lessThan(Integer counter);
 }

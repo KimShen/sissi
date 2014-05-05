@@ -9,6 +9,8 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.Conflict;
 
 /**
+ * Resource重复绑定则终止当前JIDContext
+ * 
  * @author kim 2014年1月3日
  */
 public class BindAddressCloseCurrentProcessor extends ProxyProcessor {

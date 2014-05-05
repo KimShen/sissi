@@ -5,6 +5,7 @@ import io.netty.util.ReferenceCountUtil;
 
 import java.io.OutputStream;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.logging.Log;
@@ -13,17 +14,19 @@ import org.apache.commons.logging.LogFactory;
 import com.sissi.commons.Trace;
 import com.sissi.commons.apache.IOUtils;
 import com.sissi.context.JIDBuilder;
-import com.sissi.persistent.PersistentElementBox;
+import com.sissi.persistent.Persistent;
+import com.sissi.pipeline.Transfer;
+import com.sissi.pipeline.TransferBuffer;
+import com.sissi.pipeline.TransferBuilder;
+import com.sissi.pipeline.TransferParam;
 import com.sissi.protocol.iq.si.Si;
 import com.sissi.resource.ResourceCounter;
 import com.sissi.server.exchange.Delegation;
-import com.sissi.server.exchange.DelegationCallback;
-import com.sissi.write.Transfer;
-import com.sissi.write.TransferBuffer;
-import com.sissi.write.TransferBuilder;
-import com.sissi.write.TransferParam;
+import com.sissi.server.exchange.Recall;
 
 /**
+ * 离线代理传输
+ * 
  * @author kim 2014年2月25日
  */
 public class DegelationTransferBuilder implements TransferBuilder {
@@ -32,39 +35,45 @@ public class DegelationTransferBuilder implements TransferBuilder {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private final PersistentElementBox persistentElementBox;
-
-	private final DelegationCallback delegationCallback;
-
 	private final ResourceCounter resourceCounter;
+
+	private final Persistent persistent;
 
 	private final JIDBuilder jidBuilder;
 
 	private final Delegation delegation;
 
-	public DegelationTransferBuilder(PersistentElementBox persistentElementBox, DelegationCallback delegationCallback, ResourceCounter resourceCounter, Delegation delegation, JIDBuilder jidBuilder) {
+	private final Recall recall;
+
+	public DegelationTransferBuilder(Persistent persistent, ResourceCounter resourceCounter, Delegation delegation, JIDBuilder jidBuilder, Recall recall) {
 		super();
-		this.persistentElementBox = persistentElementBox;
-		this.delegationCallback = delegationCallback;
 		this.resourceCounter = resourceCounter;
+		this.persistent = persistent;
 		this.delegation = delegation;
 		this.jidBuilder = jidBuilder;
+		this.recall = recall;
 	}
 
 	@Override
-	public Transfer build(TransferParam param) {
+	public DelegationTransfer build(TransferParam param) {
 		return new DelegationTransfer(param.find(TransferParam.KEY_SI, Si.class));
 	}
 
 	private class DelegationTransfer implements Transfer {
 
-		private final AtomicLong current = new AtomicLong();
+		/**
+		 * 已读字节
+		 */
+		private final AtomicLong readable = new AtomicLong();
 
-		private final ReentrantLock lock = new ReentrantLock();
-
-		private final Si si;
+		/**
+		 * 有序锁
+		 */
+		private final Lock lock = new ReentrantLock(true);
 
 		private final OutputStream output;
+
+		private final Si si;
 
 		public DelegationTransfer(Si si) {
 			super();
@@ -80,7 +89,7 @@ public class DegelationTransferBuilder implements TransferBuilder {
 				this.lock.lock();
 				int readable = buf.readableBytes();
 				buf.readBytes(this.output, readable);
-				this.current.addAndGet(readable);
+				this.readable.addAndGet(readable);
 				return this;
 			} catch (Exception e) {
 				DegelationTransferBuilder.this.log.error(e);
@@ -97,9 +106,9 @@ public class DegelationTransferBuilder implements TransferBuilder {
 		@Override
 		public void close() {
 			IOUtils.closeQuietly(this.output);
+			DegelationTransferBuilder.this.persistent.push(this.si);
 			DegelationTransferBuilder.this.resourceCounter.decrement(DegelationTransferBuilder.this.resoure);
-			DegelationTransferBuilder.this.persistentElementBox.push(this.si);
-			DegelationTransferBuilder.this.delegationCallback.callback(DegelationTransferBuilder.this.jidBuilder.build(si.parent().getTo()).asStringWithBare());
+			DegelationTransferBuilder.this.recall.call(DegelationTransferBuilder.this.jidBuilder.build(si.parent().getTo()).asStringWithBare());
 		}
 	}
 }

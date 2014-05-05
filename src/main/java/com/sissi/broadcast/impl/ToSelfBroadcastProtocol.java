@@ -5,15 +5,16 @@ import com.sissi.broadcast.BroadcastProtocol;
 import com.sissi.context.JID;
 import com.sissi.context.JIDBuilder;
 import com.sissi.protocol.Protocol;
-import com.sissi.ucenter.RelationContext;
 
 /**
+ * 对JID指定资源进行XMPP节广播
+ * 
  * @author kim 2014年1月15日
  */
-public class ToSelfBroadcastProtocol extends ToAnyBroadcastProtocol implements BroadcastProtocol {
+public class ToSelfBroadcastProtocol extends BaseBroadcastProtocol implements BroadcastProtocol {
 
-	public ToSelfBroadcastProtocol(JIDBuilder jidBuilder, Addressing addressing, RelationContext relationContext) {
-		super(jidBuilder, addressing, relationContext);
+	public ToSelfBroadcastProtocol(JIDBuilder jidBuilder, Addressing addressing) {
+		super(jidBuilder, addressing);
 	}
 
 	@Override

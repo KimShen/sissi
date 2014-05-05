@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<alias name="ucenter.muc.relation.4role" alias="ucenter.muc.relation.mapping" />
+	<bean id="ucenter.muc.relation.4role" class="com.sissi.ucenter.relation.muc.impl.MongoMucRelation4RoleContext">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.vcard.muc.4room" />
+		<constructor-arg value="${ucenter.muc.mapping}" />
+	</bean>
+	<bean id="ucenter.muc.relation.4affiliation" class="com.sissi.ucenter.relation.muc.impl.MongoMucRelation4AffiliationContext">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg ref="ucenter.muc.config" />
+		<constructor-arg ref="ucenter.vcard.muc.4room" />
+		<constructor-arg ref="ucenter.muc.affiliation" />
+		<constructor-arg index="0" value="${ucenter.muc.cascade}" />
+		<constructor-arg index="1" value="${ucenter.muc.mapping}" />
+	</bean>
+</beans>

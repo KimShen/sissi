@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="presence.pro.check.binding" class="com.sissi.pipeline.in.presence.PresenceCheckBindingProcessor" />
+	<bean id="presence.pro.check.loop" class="com.sissi.pipeline.in.presence.PresenceCheckLoopProcessor" parent="global.pro.proxy" />
+	<bean id="presence.pro.check.type" class="com.sissi.pipeline.in.presence.PresenceCheckTypeProcessor" />
+	<bean id="presence.pro.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="global.pro.check.chained" />
+				<ref bean="presence.pro.check.binding" />
+				<ref bean="presence.pro.check.type" />
+				<ref bean="presence.pro.check.loop" />
+				<ref bean="presence.pro.fork" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="presence.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.presence" />
+	</bean>
+
+	<bean id="finder.presence" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<!-- Muc first -->
+				<ref bean="presence.condition.muc" />
+				<ref bean="presence.condition.probe" />
+				<ref bean="presence.condition.status" />
+				<ref bean="presence.condition.roster" />
+				<ref bean="presence.condition.directed" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<alias name="presence.condition" alias="condition.presence" />
+	<bean id="presence.condition" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="presence.condition.matcher" />
+		<constructor-arg ref="presence.pro.chained" />
+	</bean>
+	<bean id="presence.condition.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.presence.Presence" />
+	</bean>
+
+	<import resource="config-pipeline-in-presence-muc.xml" />
+	<import resource="config-pipeline-in-presence-init.xml" />
+	<import resource="config-pipeline-in-presence-probe.xml" />
+	<import resource="config-pipeline-in-presence-roster.xml" />
+	<import resource="config-pipeline-in-presence-status.xml" />
+	<import resource="config-pipeline-in-presence-directed.xml" />
+</beans>

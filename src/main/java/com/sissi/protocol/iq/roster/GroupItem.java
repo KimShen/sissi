@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.sissi.context.JID;
+import com.sissi.io.read.Collector;
+import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Item;
 import com.sissi.protocol.presence.PresenceType;
-import com.sissi.read.Collector;
-import com.sissi.read.Metadata;
-import com.sissi.ucenter.roster.RelationRoster;
+import com.sissi.ucenter.relation.roster.RosterRelation;
 
 /**
  * @author kim 2013-10-31
@@ -44,12 +44,12 @@ public class GroupItem extends Item implements Collector {
 		this(jid.asStringWithBare(), null);
 	}
 
-	public GroupItem(RelationRoster roster) {
+	public GroupItem(RosterRelation roster) {
 		this(roster.jid(), roster.name());
-		this.setAsk(roster.isAsk());
-		this.setSubscription(roster.getSubscription());
-		if (roster.asGroups() != null) {
-			for (String group : roster.asGroups()) {
+		this.setAsk(roster.ask());
+		this.setSubscription(roster.subscription());
+		if (roster.groups() != null) {
+			for (String group : roster.groups()) {
 				this.add(new Group(group));
 			}
 		}

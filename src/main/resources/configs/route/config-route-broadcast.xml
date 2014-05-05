@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="broadcast" abstract="true">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg ref="addressing" />
+	</bean>
+	<bean id="broadcast.presence.self" class="com.sissi.broadcast.impl.ToSelfBroadcastPresence" parent="broadcast" />
+	<bean id="broadcast.presence.selfs" class="com.sissi.broadcast.impl.ToSelfsBroadcastPresence" parent="broadcast" />
+	<bean id="broadcast.protocol.self" class="com.sissi.broadcast.impl.ToSelfBroadcastProtocol" parent="broadcast" />
+	<bean id="broadcast.protocol.selfs" class="com.sissi.broadcast.impl.ToSelfsBroadcastProtocol" parent="broadcast" />
+	<bean id="broadcast.protocol.fans" class="com.sissi.broadcast.impl.ToFansBroadcastProtocol" parent="broadcast">
+		<constructor-arg ref="ucenter.relation.roster.user" />
+	</bean>
+</beans>

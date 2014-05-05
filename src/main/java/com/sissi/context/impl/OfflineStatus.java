@@ -5,10 +5,15 @@ import com.sissi.context.StatusClauses;
 import com.sissi.protocol.presence.PresenceType;
 
 /**
+ * 离线出席状态
+ * 
  * @author kim 2014年1月26日
  */
 class OfflineStatus implements Status {
 
+	/**
+	 * 全局离线出席状态
+	 */
 	public final static OfflineStatus STATUS = new OfflineStatus();
 
 	private final StatusClauses status;
@@ -17,6 +22,11 @@ class OfflineStatus implements Status {
 		this.status = new EmptyClauses();
 	}
 
+	/**
+	 * 指定JID离线出席状态
+	 * 
+	 * @param status
+	 */
 	OfflineStatus(StatusClauses status) {
 		this.status = status;
 	}

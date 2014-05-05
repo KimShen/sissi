@@ -6,6 +6,8 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 
 /**
+ * 初始JIDContext.domain
+ * 
  * @author kim 2014年1月5日
  */
 public class StreamContextDomainProcessor implements Input {

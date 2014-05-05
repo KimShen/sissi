@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="output.block" abstract="true">
+		<constructor-arg ref="ucenter.block" />
+		<constructor-arg ref="context.jid" />
+	</bean>
+	<bean id="output.block.4fans" class="com.sissi.pipeline.out.Block4FansOutputBuilder" parent="output.block" />
+	<bean id="output.block.2fans" class="com.sissi.pipeline.out.Block2FansOutputBuilder" parent="output.block" />
+	<bean id="output.network" class="com.sissi.pipeline.out.NetworkOutputBuilder">
+		<constructor-arg ref="io.writer" />
+	</bean>
+
+	<bean id="output" class="com.sissi.pipeline.out.ChainedOutputBuilder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="output.block.4fans" />
+				<ref bean="output.block.2fans" />
+				<ref bean="output.network" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+</beans>

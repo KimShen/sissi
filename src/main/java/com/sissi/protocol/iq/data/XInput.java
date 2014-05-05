@@ -4,8 +4,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.sissi.ucenter.field.Field;
-import com.sissi.ucenter.field.Fields;
+import com.sissi.field.Field;
+import com.sissi.field.Fields;
 
 /**
  * @author kim 2013年12月4日

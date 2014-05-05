@@ -12,6 +12,8 @@ import com.sissi.protocol.iq.data.XDataType;
 import com.sissi.protocol.iq.register.Register;
 
 /**
+ * 表单校验
+ * 
  * @author kim 2014年2月8日
  */
 public class RegisterStoreCheckProcessor implements Input {
@@ -20,8 +22,7 @@ public class RegisterStoreCheckProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		XData xdata = protocol.cast(Register.class).findField(XData.NAME, XData.class);
-		return xdata.type(XDataType.SUBMIT) ? true : this.writeAndReturn(context, protocol);
+		return protocol.cast(Register.class).findField(XData.NAME, XData.class).type(XDataType.SUBMIT) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

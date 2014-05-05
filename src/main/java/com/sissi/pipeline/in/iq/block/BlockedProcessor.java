@@ -4,9 +4,11 @@ import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.block.Blocked;
-import com.sissi.ucenter.user.BlockContext;
+import com.sissi.ucenter.block.BlockContext;
 
 /**
+ * 加入黑名单
+ * 
  * @author kim 2013年12月5日
  */
 public class BlockedProcessor extends ProxyProcessor {
