@@ -50,8 +50,8 @@ public class MongoMucRelation4RoleContext extends MongoMucRelationContext {
 	public Set<JID> iSubscribedWho(JID from) {
 		// {"$match":{"roles.jid":from.bare,"roles.resource":from.resource}}
 		DBObject match = BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start().add(Dictionary.FIELD_ROLES + "." + Dictionary.FIELD_JID, from.asStringWithBare()).add(Dictionary.FIELD_ROLES + "." + Dictionary.FIELD_RESOURCE, from.resource()).get()).get();
-		// match, {"$unwind":"$roles"}, match, {"$project":{"jid":"$jid","resource":"$roles.nick"}}, {"$limit":1}
-		return new JIDGroup(MongoUtils.asList(this.config.collection().aggregate(match, super.unwindRoles, match, this.projectSubscribed, super.limit).getCommandResult(), Dictionary.FIELD_RESULT));
+		// match, {"$unwind":"$roles"}, match, {"$project":{"jid":"$jid","resource":"$roles.nick"}}
+		return new JIDGroup(MongoUtils.asList(this.config.collection().aggregate(match, super.unwindRoles, match, this.projectSubscribed).getCommandResult(), Dictionary.FIELD_RESULT));
 	}
 
 	/*

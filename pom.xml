@@ -49,7 +49,7 @@
 		<maven.server.exchanger.bytestreams.port>${maven.domain.port.exchange}</maven.server.exchanger.bytestreams.port>
 		<maven.server.exchanger.bytestreams.name>Socks 5 Bytestreams Proxy</maven.server.exchanger.bytestreams.name>
 
-		<maven.looper.count.global>20</maven.looper.count.global>
+		<maven.looper.count.global>40</maven.looper.count.global>
 		<maven.looper.unit.global>MILLISECONDS</maven.looper.unit.global>
 		<maven.looper.interval.global>50</maven.looper.interval.global>
 		<maven.looper.count.personal>2</maven.looper.count.personal>
@@ -102,6 +102,7 @@
 		<maven.ucenter.muc.maxuser>50</maven.ucenter.muc.maxuser>
 		<maven.ucenter.muc.maxuser.privilege>ADMIN</maven.ucenter.muc.maxuser.privilege>
 		<maven.ucenter.muc.invite>ADMIN</maven.ucenter.muc.invite>
+		<maven.ucenter.muc.resend>true</maven.ucenter.muc.resend>
 		<maven.ucenter.muc.multi>true</maven.ucenter.muc.multi>
 		<maven.ucenter.muc.cascade>true</maven.ucenter.muc.cascade>
 		<maven.ucenter.muc.mapping>2,2,2,4,4</maven.ucenter.muc.mapping>

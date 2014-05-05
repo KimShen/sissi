@@ -46,7 +46,9 @@
 	</bean>
 	<bean id="presence.pro.muc.join.2replace" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2ReplaceProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.muc.room" />
+		<constructor-arg ref="presence.pro.muc.join.4fans" />
 		<constructor-arg ref="ucenter.muc.status.adder.replace" />
+		<constructor-arg index="1" value="${ucenter.muc.resend}" />
 		<property name="relationContext" ref="ucenter.muc.relation.4role" />
 	</bean>
 	<bean id="presence.pro.muc.join.2self.message.warning" class="com.sissi.pipeline.in.presence.muc.PresenceMucJoin2SelfMessageWarningProcessor" parent="global.pro.proxy">
