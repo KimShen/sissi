@@ -6,6 +6,11 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="presence.pro.init" class="com.sissi.pipeline.in.presence.init.PresenceInitProcessor" />
+	<bean id="presence.pro.init.4muc" class="com.sissi.pipeline.in.presence.init.PresenceInit4MucProcessor" parent="global.pro.proxy">
+		<constructor-arg ref="ucenter.vcard.user" />
+		<constructor-arg ref="presence.pro.muc.join.chained" />
+		<property name="relationContext" ref="ucenter.muc.relation.4affiliation" />
+	</bean>
 	<bean id="presence.pro.init.4fans" class="com.sissi.pipeline.in.presence.init.PresenceInit4FansProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.vcard.user" />
 		<property name="presenceQueue" ref="broadcast.presence.self" />
@@ -17,10 +22,11 @@
 	<bean id="presence.pro.init.4subscribe" class="com.sissi.pipeline.in.presence.init.PresenceInit4SubscribeProcessor">
 		<constructor-arg ref="ucenter.relation.roster.user" />
 	</bean>
-	<bean id="presence.pro.init.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+	<bean id="presence.pro.init.chained" class="com.sissi.pipeline.in.presence.init.PresenceInitChainedProcessor">
 		<constructor-arg value="true" />
 		<constructor-arg>
 			<util:list>
+				<ref bean="presence.pro.init.4muc" />
 				<ref bean="presence.pro.init.4fans" />
 				<ref bean="presence.pro.init.4selfs" />
 				<ref bean="presence.pro.init.4delay" />

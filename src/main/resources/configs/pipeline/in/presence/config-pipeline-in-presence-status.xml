@@ -9,12 +9,7 @@
 		<property name="protocolQueue" ref="broadcast.protocol.fans" />
 	</bean>
 	<bean id="presence.pro.status.2selfs" class="com.sissi.pipeline.in.presence.status.PresenceBroadcastProcessor" parent="global.pro.proxy" />
-	<bean id="presence.pro.status.available.muc.recover" class="com.sissi.pipeline.in.presence.status.PresenceMucRecoverProcessor" parent="global.pro.proxy">
-		<constructor-arg ref="ucenter.vcard.user" />
-		<constructor-arg ref="presence.pro.muc.join.chained" />
-		<property name="relationContext" ref="ucenter.muc.relation.4affiliation" />
-	</bean>
-	<bean id="presence.pro.status.available.muc.status" class="com.sissi.pipeline.in.presence.status.PresenceMucStatusProcessor" parent="global.pro.proxy">
+	<bean id="presence.pro.status.available.muc" class="com.sissi.pipeline.in.presence.status.PresenceOnlineMucProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="presence.pro.muc.join.2fans" />
 		<property name="relationContext" ref="ucenter.muc.relation.4role" />
 	</bean>
@@ -24,8 +19,7 @@
 		<constructor-arg>
 			<util:list>
 				<ref bean="presence.pro.init.chained" />
-				<ref bean="presence.pro.status.available.muc.status" />
-				<ref bean="presence.pro.status.available.muc.recover" />
+				<ref bean="presence.pro.status.available.muc" />
 				<ref bean="presence.pro.status.available.update" />
 				<ref bean="presence.pro.status.available.priority" />
 				<ref bean="presence.pro.status.2fans" />

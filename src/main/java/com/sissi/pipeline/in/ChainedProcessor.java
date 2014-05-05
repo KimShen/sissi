@@ -11,9 +11,9 @@ import com.sissi.protocol.Protocol;
  */
 public class ChainedProcessor implements Input {
 
-	private final boolean next;
-
 	private final List<Input> processors;
+	
+	protected final boolean next;
 
 	public ChainedProcessor(List<Input> processors) {
 		this(false, processors);

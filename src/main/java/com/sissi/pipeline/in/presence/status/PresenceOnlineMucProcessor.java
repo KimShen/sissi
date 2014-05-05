@@ -12,11 +12,11 @@ import com.sissi.protocol.presence.Presence;
  * 
  * @author kim 2014年2月18日
  */
-public class PresenceMucStatusProcessor extends ProxyProcessor {
+public class PresenceOnlineMucProcessor extends ProxyProcessor {
 
 	private final Input input;
 
-	public PresenceMucStatusProcessor(Input input) {
+	public PresenceOnlineMucProcessor(Input input) {
 		super();
 		this.input = input;
 	}

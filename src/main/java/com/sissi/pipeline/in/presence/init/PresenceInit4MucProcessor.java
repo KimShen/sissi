@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.presence.status;
+package com.sissi.pipeline.in.presence.init;
 
 import org.apache.commons.lang.time.FastDateFormat;
 
@@ -17,7 +17,7 @@ import com.sissi.ucenter.vcard.VCardContext;
  * 
  * @author kim 2014年2月18日
  */
-public class PresenceMucRecoverProcessor extends ProxyProcessor {
+public class PresenceInit4MucProcessor extends ProxyProcessor {
 
 	private final FastDateFormat format = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ssZ");
 
@@ -25,7 +25,7 @@ public class PresenceMucRecoverProcessor extends ProxyProcessor {
 
 	private final VCardContext vcardContext;
 
-	public PresenceMucRecoverProcessor(Input proxy, VCardContext vcardContext) {
+	public PresenceInit4MucProcessor(Input proxy, VCardContext vcardContext) {
 		super();
 		this.proxy = proxy;
 		this.vcardContext = vcardContext;
@@ -38,12 +38,10 @@ public class PresenceMucRecoverProcessor extends ProxyProcessor {
 	 */
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		if (!context.onlined()) {
-			Presence presence = Presence.muc();
-			presence.findField(XMuc.NAME, XMuc.class).history(new History().setSince(this.format.format(Long.valueOf(this.vcardContext.get(context.jid(), VCardContext.FIELD_LOGOUT, String.valueOf(System.currentTimeMillis())).getValue()))));
-			for (JID jid : super.iSubscribedWho(context.jid())) {
-				this.proxy.input(context, presence.setTo(jid));
-			}
+		Presence presence = Presence.muc();
+		presence.findField(XMuc.NAME, XMuc.class).history(new History().setSince(this.format.format(Long.valueOf(this.vcardContext.get(context.jid(), VCardContext.FIELD_LOGOUT, String.valueOf(System.currentTimeMillis())).getValue()))));
+		for (JID jid : super.iSubscribedWho(context.jid())) {
+			this.proxy.input(context, presence.setTo(jid));
 		}
 		return true;
 	}

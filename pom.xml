@@ -56,9 +56,6 @@
 		<maven.looper.unit.personal>MILLISECONDS</maven.looper.unit.personal>
 		<maven.looper.interval.personal>30000</maven.looper.interval.personal>
 
-		<maven.addressing.gc.unit>MILLISECONDS</maven.addressing.gc.unit>
-		<maven.addressing.gc.interval>30000</maven.addressing.gc.interval>
-
 		<maven.thread.core>1000</maven.thread.core>
 		<maven.thread.unit>SECONDS</maven.thread.unit>
 		<maven.thread.maximum>1000</maven.thread.maximum>

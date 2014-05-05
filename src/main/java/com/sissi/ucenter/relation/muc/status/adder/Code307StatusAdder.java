@@ -1,6 +1,6 @@
 package com.sissi.ucenter.relation.muc.status.adder;
 
-import com.sissi.protocol.muc.ItemRole;
+import com.sissi.protocol.muc.ItemAffiliation;
 import com.sissi.ucenter.relation.muc.status.CodeStatus;
 import com.sissi.ucenter.relation.muc.status.CodeStatusAdder;
 
@@ -13,7 +13,7 @@ public class Code307StatusAdder implements CodeStatusAdder {
 
 	@Override
 	public CodeStatus add(CodeStatus status) {
-		return ItemRole.NONE.equals(status.getItem().getRole()) ? status.add("307") : status;
+		return ItemAffiliation.OUTCAST.equals(status.getItem().getAffiliation()) ? status.add("307") : status;
 	}
 
 }
