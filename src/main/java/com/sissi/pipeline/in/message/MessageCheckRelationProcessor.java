@@ -15,7 +15,7 @@ import com.sissi.protocol.error.detail.SubscriptionRequired;
  */
 public class MessageCheckRelationProcessor extends CheckRelationProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(SubscriptionRequired.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(SubscriptionRequired.DETAIL);
 
 	public MessageCheckRelationProcessor(boolean shortcut) {
 		super(shortcut);

@@ -26,7 +26,7 @@ public class Subject {
 	}
 
 	public String config() {
-		return this.hasContent() ? this.getText() : null;
+		return this.content() ? this.getText() : null;
 	}
 
 	@XmlValue
@@ -39,7 +39,7 @@ public class Subject {
 		return this;
 	}
 
-	public boolean hasContent() {
+	public boolean content() {
 		return this.text.length() > 0;
 	}
 }

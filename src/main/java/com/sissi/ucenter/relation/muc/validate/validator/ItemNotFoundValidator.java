@@ -18,7 +18,7 @@ import com.sissi.ucenter.vcard.VCardContext;
  */
 public class ItemNotFoundValidator implements ItemValidator {
 
-	private final ItemStatus status = new WrongItemStatus(new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL));
+	private final ItemStatus status = new WrongItemStatus(new ServerError().type(ProtocolType.CANCEL).add(ItemNotFound.DETAIL));
 
 	private final VCardContext vcardContext;
 

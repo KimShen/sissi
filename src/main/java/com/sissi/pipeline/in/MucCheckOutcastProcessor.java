@@ -16,7 +16,7 @@ import com.sissi.ucenter.relation.muc.MucRelation;
  */
 public class MucCheckOutcastProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setCode("403").setType(ProtocolType.AUTH).add(Forbidden.DETAIL);
+	private final Error error = new ServerError().setCode("403").type(ProtocolType.AUTH).add(Forbidden.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

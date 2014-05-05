@@ -16,11 +16,11 @@ import com.sissi.protocol.iq.roster.Roster;
  */
 public class RosterSetCheckLoopProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return context.jid().like(protocol.cast(Roster.class).getFirstItem().getJid()) ? this.writeAndReturn(context, protocol) : true;
+		return context.jid().like(protocol.cast(Roster.class).first().getJid()) ? this.writeAndReturn(context, protocol) : true;
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

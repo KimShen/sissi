@@ -16,7 +16,7 @@ import com.sissi.ucenter.relation.roster.RosterRelation;
  */
 public class CheckRelationProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
 	private final String[] relations = new String[] { RosterSubscription.TO.toString(), RosterSubscription.BOTH.toString() };
 

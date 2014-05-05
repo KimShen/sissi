@@ -16,7 +16,7 @@ import com.sissi.protocol.error.detail.ResourceConstraint;
  */
 public class BindAddressCheckLimitProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ResourceConstraint.DETAIL_ELEMENT);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(ResourceConstraint.DETAIL_ELEMENT);
 
 	private final int limit;
 

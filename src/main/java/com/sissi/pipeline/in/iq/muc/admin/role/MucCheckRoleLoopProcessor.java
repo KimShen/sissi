@@ -16,7 +16,7 @@ import com.sissi.protocol.muc.XMucAdmin;
  */
 public class MucCheckRoleLoopProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(Conflict.DETAIL_ELEMENT);
+	private final Error error = new ServerError().type(ProtocolType.AUTH).add(Conflict.DETAIL_ELEMENT);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

@@ -20,11 +20,11 @@ public class AckReceived extends Ack {
 		return this;
 	}
 
-	public boolean id() {
-		return this.getId() != null;
+	public boolean valid() {
+		return this.id() != null;
 	}
 
-	public String getId() {
+	public String id() {
 		return this.id;
 	}
 }

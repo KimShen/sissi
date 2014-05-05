@@ -17,7 +17,7 @@ import com.sissi.ucenter.relation.muc.room.RoomConfig;
  */
 public class MessageMuc2SubjectCheckRelationProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(Forbidden.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.AUTH).add(Forbidden.DETAIL);
 
 	private final RoomBuilder room;
 

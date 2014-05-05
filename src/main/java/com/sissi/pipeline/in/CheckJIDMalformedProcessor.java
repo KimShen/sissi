@@ -14,7 +14,7 @@ import com.sissi.protocol.error.detail.JIDMalformed;
  */
 public class CheckJIDMalformedProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.MODIFY).add(JIDMalformed.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.MODIFY).add(JIDMalformed.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

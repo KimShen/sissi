@@ -35,7 +35,7 @@ public class Unique extends Protocol {
 	public static class UniqueSequence implements Element {
 
 		private Unique unique;
-
+ 
 		public UniqueSequence() {
 			super();
 		}
@@ -103,5 +103,4 @@ public class Unique extends Protocol {
 			return this.unique.parent().cast(IQ.class).clear().add(this);
 		}
 	}
-
 }

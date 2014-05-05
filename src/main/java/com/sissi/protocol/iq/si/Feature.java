@@ -23,7 +23,7 @@ public class Feature implements Collector {
 
 	private XData x;
 
-	public Feature setX(XData x) {
+	public Feature x(XData x) {
 		this.x = x;
 		return this;
 	}

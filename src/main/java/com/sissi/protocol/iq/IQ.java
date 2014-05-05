@@ -12,7 +12,7 @@ import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Element;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.iq.ack.ServerTime;
+import com.sissi.protocol.iq.ack.ServerAck;
 import com.sissi.protocol.iq.bind.Bind;
 import com.sissi.protocol.iq.block.BlockList;
 import com.sissi.protocol.iq.block.Blocked;
@@ -64,7 +64,7 @@ public class IQ extends Protocol implements Collector {
 		return this;
 	}
 
-	@XmlElements({ @XmlElement(name = Privated.NAME, type = Privated.class), @XmlElement(name = Unique.NAME, type = Unique.class), @XmlElement(name = Sharedgroup.NAME, type = Sharedgroup.class), @XmlElement(name = Owner.NAME, type = Owner.class), @XmlElement(name = XMucAdmin.NAME, type = XMucAdmin.class), @XmlElement(name = ServerTime.NAME, type = ServerTime.class), @XmlElement(name = Client.NAME, type = Client.class), @XmlElement(name = Time.NAME, type = Time.class), @XmlElement(name = Last.NAME, type = Last.class), @XmlElement(name = Last.NAME, type = LastSeconds.class), @XmlElement(name = Ping.NAME, type = Ping.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = DiscoInfo.NAME, type = DiscoInfo.class), @XmlElement(name = DiscoItems.NAME, type = DiscoItems.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
+	@XmlElements({ @XmlElement(name = Privated.NAME, type = Privated.class), @XmlElement(name = Unique.NAME, type = Unique.class), @XmlElement(name = Sharedgroup.NAME, type = Sharedgroup.class), @XmlElement(name = Owner.NAME, type = Owner.class), @XmlElement(name = XMucAdmin.NAME, type = XMucAdmin.class), @XmlElement(name = ServerAck.NAME, type = ServerAck.class), @XmlElement(name = Client.NAME, type = Client.class), @XmlElement(name = Time.NAME, type = Time.class), @XmlElement(name = Last.NAME, type = Last.class), @XmlElement(name = Last.NAME, type = LastSeconds.class), @XmlElement(name = Ping.NAME, type = Ping.class), @XmlElement(name = Si.NAME, type = Si.class), @XmlElement(name = VCard.NAME, type = VCard.class), @XmlElement(name = Bind.NAME, type = Bind.class), @XmlElement(name = Session.NAME, type = Session.class), @XmlElement(name = Roster.NAME, type = Roster.class), @XmlElement(name = Register.NAME, type = Register.class), @XmlElement(name = DiscoInfo.NAME, type = DiscoInfo.class), @XmlElement(name = DiscoItems.NAME, type = DiscoItems.class), @XmlElement(name = Bytestreams.NAME, type = Bytestreams.class), @XmlElement(name = Blocked.NAME, type = Blocked.class), @XmlElement(name = UnBlock.NAME, type = UnBlock.class), @XmlElement(name = BlockList.NAME, type = BlockList.class) })
 	public List<Protocol> getProtocols() {
 		return this.protocols;
 	}
@@ -90,7 +90,7 @@ public class IQ extends Protocol implements Collector {
 		return this;
 	}
 
-	public List<Protocol> listChildren() {
+	public List<Protocol> list() {
 		return this.protocols != null ? this.protocols : empty;
 	}
 

@@ -14,7 +14,7 @@ import com.sissi.protocol.error.detail.Forbidden;
  */
 public class VCardGetCheckRelation4ErrorProcessor extends VCardGetCheckRelationProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(Forbidden.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(Forbidden.DETAIL);
 
 	public VCardGetCheckRelation4ErrorProcessor(boolean shortcut) {
 		super(shortcut);

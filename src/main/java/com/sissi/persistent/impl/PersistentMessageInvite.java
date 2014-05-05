@@ -43,7 +43,7 @@ public class PersistentMessageInvite extends PersistentMessage {
 	@Override
 	public Message read(Map<String, Object> element) {
 		Message message = Message.class.cast(super.read(element, new Message()));
-		return message.muc(new XUser().invite(new Invite().reason(super.toString(element, Dictionary.FIELD_REASON)).continued(super.toString(element, Dictionary.FIELD_CONTINUE)).setFrom(element.get(Dictionary.FIELD_INVITE).toString()))).setDelay(super.delay(element, message)).request(Boolean.valueOf(element.get(Dictionary.FIELD_ACK).toString()));
+		return message.muc(new XUser().invite(new Invite().reason(super.toString(element, Dictionary.FIELD_REASON)).continued(super.toString(element, Dictionary.FIELD_CONTINUE)).setFrom(element.get(Dictionary.FIELD_INVITE).toString()))).delay(super.delay(element, message)).request(Boolean.valueOf(element.get(Dictionary.FIELD_ACK).toString()));
 	}
 
 	/*

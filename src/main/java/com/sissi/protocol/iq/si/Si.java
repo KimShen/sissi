@@ -89,14 +89,14 @@ public class Si extends Protocol implements Collector {
 		return this.delay;
 	}
 
-	public Si delay(String timestamp) {
-		this.delay = timestamp != null ? new Delay().setStamp(timestamp) : null;
-		return this;
-	}
-
 	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;
+	}
+
+	public Si delay(String timestamp) {
+		this.delay = timestamp != null ? new Delay().setStamp(timestamp) : null;
+		return this;
 	}
 
 	public String host(String from, String to) {

@@ -20,7 +20,7 @@ import com.sissi.ucenter.relation.muc.MucRelationContext;
  */
 public class MucCheckAffiliationOwnerProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(Conflict.DETAIL_ELEMENT);
+	private final Error error = new ServerError().type(ProtocolType.AUTH).add(Conflict.DETAIL_ELEMENT);
 
 	private final MucRelationContext relationContext;
 

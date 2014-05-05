@@ -17,7 +17,7 @@ import com.sissi.protocol.iq.IQ;
  */
 public class IQForkProcessor implements Input {
 
-	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(Forbidden.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.AUTH).add(Forbidden.DETAIL);
 
 	private final Set<Class<? extends Protocol>> ignores;
 
@@ -39,7 +39,7 @@ public class IQForkProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		for (Protocol sub : protocol.cast(IQ.class).listChildren()) {
+		for (Protocol sub : protocol.cast(IQ.class).list()) {
 			return (context.auth() || this.ignores.contains(sub.getClass())) ? this.finder.find(sub).input(context, sub) : this.writeAndReturn(context, protocol);
 		}
 		return this.noChild.input(context, protocol);

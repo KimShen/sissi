@@ -18,7 +18,7 @@ import com.sissi.ucenter.relation.muc.MucRelationMapping;
  */
 public class MessageMuc2FansProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAcceptable.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(NotAcceptable.DETAIL);
 
 	private final MucRelationMapping mapping;
 

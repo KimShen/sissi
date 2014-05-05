@@ -17,7 +17,7 @@ import com.sissi.ucenter.relation.muc.apply.RequestConfig;
  */
 public class MessageApplyCheckJIDProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(BadRequest.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(BadRequest.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

@@ -16,7 +16,7 @@ import com.sissi.protocol.message.Message;
  */
 public class MessageCheckAckProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(BadRequest.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(BadRequest.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
@@ -24,7 +24,7 @@ public class MessageCheckAckProcessor extends ProxyProcessor {
 	}
 
 	private boolean valid(Message message) {
-		return message.notConflict() && message.validReceived();
+		return message.noneConflict() && message.validReceived();
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

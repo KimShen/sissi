@@ -2,6 +2,7 @@ package com.sissi.protocol.iq.disco;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -34,6 +35,22 @@ public class DiscoItems extends Disco {
 		return this.node;
 	}
 
+	/**
+	 * 用于Error.reply
+	 * 
+	 * @return
+	 */
+	@XmlAttribute
+	public String getNode() {
+		return rooms;
+	}
+
+	/**
+	 * 客户端协议填充
+	 * 
+	 * @param node
+	 * @return
+	 */
 	public DiscoItems setNode(String node) {
 		this.node = rooms.equals(node);
 		return this;

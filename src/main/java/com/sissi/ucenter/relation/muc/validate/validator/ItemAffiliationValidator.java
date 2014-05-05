@@ -20,7 +20,7 @@ import com.sissi.ucenter.relation.muc.validate.status.WrongItemStatus;
  */
 public class ItemAffiliationValidator implements ItemValidator {
 
-	private final ItemStatus status = new WrongItemStatus(new ServerError().setType(ProtocolType.AUTH).add(NotAllowed.DETAIL));
+	private final ItemStatus status = new WrongItemStatus(new ServerError().type(ProtocolType.AUTH).add(NotAllowed.DETAIL));
 
 	private final RelationContext relationContext;
 

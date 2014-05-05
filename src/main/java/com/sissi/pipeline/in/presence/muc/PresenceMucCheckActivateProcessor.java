@@ -17,7 +17,7 @@ import com.sissi.ucenter.relation.muc.room.RoomConfig;
  */
 public class PresenceMucCheckActivateProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setCode("405").setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
+	private final Error error = new ServerError().setCode("405").type(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
 
 	private final RoomBuilder room;
 

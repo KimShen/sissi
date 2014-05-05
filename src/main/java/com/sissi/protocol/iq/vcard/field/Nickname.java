@@ -38,10 +38,6 @@ public class Nickname implements Field<String> {
 		return this;
 	}
 
-	public boolean hasContent() {
-		return this.value != null;
-	}
-
 	@Override
 	public String getName() {
 		return NAME;

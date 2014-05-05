@@ -3,6 +3,8 @@ package com.sissi.protocol.iq.bytestreams;
 import java.util.Comparator;
 
 /**
+ * 排序策略, Proxy最优先策略
+ * 
  * @author kim 2013年12月25日
  */
 public class StreamhostComparator implements Comparator<Streamhost> {

@@ -42,7 +42,7 @@ public class PersistentMessage extends PersistentProtocol {
 	}
 
 	/*
-	 * {"ack",!message.request(),"thread":message.thread(),"body":message.hasContent() ? message.getBody().getText() : null}
+	 * {"ack",!message.request(),"thread":message.thread(),"body":message.content() ? message.getBody().getText() : null}
 	 * 
 	 * @see com.sissi.persistent.impl.PersistentProtocol#write(com.sissi.protocol.Element)
 	 */
@@ -52,7 +52,7 @@ public class PersistentMessage extends PersistentProtocol {
 		Message message = Message.class.cast(element);
 		entity.put(Dictionary.FIELD_ACK, !message.request());
 		entity.put(Dictionary.FIELD_THREAD, message.thread());
-		entity.put(Dictionary.FIELD_BODY, message.hasContent() ? message.getBody().getText() : null);
+		entity.put(Dictionary.FIELD_BODY, message.content() ? message.getBody().getText() : null);
 		return entity;
 	}
 
@@ -64,7 +64,7 @@ public class PersistentMessage extends PersistentProtocol {
 	@Override
 	public Message read(Map<String, Object> element) {
 		Message message = Message.class.cast(super.read(element, new Message()));
-		return message.body(super.toString(element, Dictionary.FIELD_BODY)).setDelay(this.delay(element, message)).setThread(super.toString(element, Dictionary.FIELD_THREAD)).request(Boolean.valueOf(element.get(Dictionary.FIELD_ACK).toString()));
+		return message.body(super.toString(element, Dictionary.FIELD_BODY)).delay(this.delay(element, message)).setThread(super.toString(element, Dictionary.FIELD_THREAD)).request(Boolean.valueOf(element.get(Dictionary.FIELD_ACK).toString()));
 	}
 
 	/*

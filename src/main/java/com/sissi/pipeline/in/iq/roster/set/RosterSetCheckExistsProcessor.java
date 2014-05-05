@@ -17,7 +17,7 @@ import com.sissi.ucenter.vcard.VCardContext;
  */
 public class RosterSetCheckExistsProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
 
 	private final VCardContext vcardContext;
 
@@ -28,7 +28,7 @@ public class RosterSetCheckExistsProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.vcardContext.exists(protocol.cast(Roster.class).getFirstItem().getJid()) ? true : this.writeAndReturn(context, protocol);
+		return this.vcardContext.exists(protocol.cast(Roster.class).first().getJid()) ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

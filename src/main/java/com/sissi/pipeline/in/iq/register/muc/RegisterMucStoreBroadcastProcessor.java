@@ -37,7 +37,7 @@ public class RegisterMucStoreBroadcastProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		Message message = new Message().noneThread().subject(this.subject).setFrom(protocol.parent().getTo()).cast(Message.class).setData(this.register.register(protocol.cast(Register.class).findField(XData.NAME, XData.class), new XData().setType(XDataType.FORM)).add(new XInput(XFieldType.HIDDEN.toString(), null, RequestConfig.GROUP.toString(), protocol.parent().getTo())).add(new XInput(XFieldType.HIDDEN.toString(), null, RequestConfig.JID.toString(), context.jid().asStringWithBare())));
+		Message message = new Message().noneThread().subject(this.subject).setFrom(protocol.parent().getTo()).cast(Message.class).data(this.register.register(protocol.cast(Register.class).findField(XData.NAME, XData.class), new XData().setType(XDataType.FORM)).add(new XInput(XFieldType.HIDDEN.toString(), null, RequestConfig.GROUP.toString(), protocol.parent().getTo())).add(new XInput(XFieldType.HIDDEN.toString(), null, RequestConfig.JID.toString(), context.jid().asStringWithBare())));
 		for (Relation relation : this.relationContext.myRelations(super.build(protocol.parent().getTo()), ItemRole.MODERATOR.toString())) {
 			super.findOne(super.build(relation.jid()), true).write(message);
 		}

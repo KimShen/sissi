@@ -47,7 +47,13 @@ public class Group {
 		return this;
 	}
 
-	public Group trimName(Integer length) {
+	/**
+	 * 压缩Group名称
+	 * 
+	 * @param length
+	 * @return
+	 */
+	public Group trim(Integer length) {
 		if (this.getValue() != null && this.getValue().length() > length) {
 			this.value = this.value.substring(0, length);
 		}

@@ -22,7 +22,7 @@ import com.sissi.server.exchange.ExchangerContext;
  */
 public class Si2DelegationProcessor extends ProxyProcessor {
 
-	private final Feature feature = new Feature().setX(new XData().setType(XDataType.SUBMIT).add(new XField().setVar("stream-method").add(new XValue(Bytestreams.XMLNS))));
+	private final Feature feature = new Feature().x(new XData().setType(XDataType.SUBMIT).add(new XField().setVar("stream-method").add(new XValue(Bytestreams.XMLNS))));
 
 	private final ExchangerContext exchangerContext;
 

@@ -37,11 +37,11 @@ public class Bytestreams extends Protocol implements Collector {
 
 	private String mode;
 
-	public boolean isUsed() {
+	public boolean used() {
 		return this.streamhostUsed != null;
 	}
 
-	public boolean isActivate() {
+	public boolean activated() {
 		return this.activate != null;
 	}
 

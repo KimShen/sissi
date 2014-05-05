@@ -17,7 +17,7 @@ import com.sissi.ucenter.relation.muc.room.RoomConfig;
  */
 public class PresenceMucCheckMaxUsersProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setCode("503").setType(ProtocolType.WAIT).add(ServiceUnavailable.DETAIL);
+	private final Error error = new ServerError().setCode("503").type(ProtocolType.WAIT).add(ServiceUnavailable.DETAIL);
 
 	private final RoomBuilder room;
 

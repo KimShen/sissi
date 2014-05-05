@@ -17,7 +17,7 @@ import com.sissi.ucenter.relation.muc.room.RoomConfig;
  */
 public class PresenceMucCheckAffiliationProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setCode("407").setType(ProtocolType.AUTH).add(RegistrationRequired.DETAIL);
+	private final Error error = new ServerError().setCode("407").type(ProtocolType.AUTH).add(RegistrationRequired.DETAIL);
 
 	private final RoomBuilder room;
 

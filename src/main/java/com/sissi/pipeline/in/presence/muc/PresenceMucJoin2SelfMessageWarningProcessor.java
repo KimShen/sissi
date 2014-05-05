@@ -37,7 +37,7 @@ public class PresenceMucJoin2SelfMessageWarningProcessor extends ProxyProcessor 
 	}
 
 	private boolean writeAndReturn(JIDContext context, JID group) {
-		context.write(new Message().noneThread().setBody(this.body).muc(this.x).setType(MessageType.GROUPCHAT).setFrom(group.asStringWithBare()));
+		context.write(new Message().noneThread().body(this.body).muc(this.x).setType(MessageType.GROUPCHAT).setFrom(group.asStringWithBare()));
 		return true;
 	}
 }

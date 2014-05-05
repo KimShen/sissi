@@ -17,7 +17,7 @@ public class LastJIDProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JIDContext to = super.findOne(protocol.parent().to() ? super.build(protocol.parent().getTo()) : context.jid(), true);
-		context.write(protocol.cast(Last.class).seconds().seconds(to.idle()).setText(to.status().clauses().find(StatusClauses.KEY_STATUS)).parent().reply().setType(ProtocolType.RESULT));
+		context.write(protocol.cast(Last.class).seconds().seconds(to.idle()).text(to.status().clauses().find(StatusClauses.KEY_STATUS)).parent().reply().setType(ProtocolType.RESULT));
 		return false;
 	}
 }

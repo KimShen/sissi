@@ -16,6 +16,6 @@ public class BytestreamsUsedMatcher extends ClassMatcher {
 	}
 
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && protocol.cast(Bytestreams.class).isUsed();
+		return super.match(protocol) && protocol.cast(Bytestreams.class).used();
 	}
 }

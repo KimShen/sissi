@@ -14,7 +14,7 @@ public class RosterRemoveProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		super.remove(context.jid(), super.build(protocol.cast(Roster.class).getFirstItem().getJid()));
+		super.remove(context.jid(), super.build(protocol.cast(Roster.class).first().getJid()));
 		return true;
 	}
 }

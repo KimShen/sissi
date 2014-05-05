@@ -17,7 +17,7 @@ import com.sissi.ucenter.relation.muc.MucRelationMapping;
  */
 public class PresenceMucCheckNicknameExistsProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setCode("409").setType(ProtocolType.CANCEL).add(Conflict.DETAIL_ELEMENT);
+	private final Error error = new ServerError().setCode("409").type(ProtocolType.CANCEL).add(Conflict.DETAIL_ELEMENT);
 
 	private final MucRelationMapping mapping;
 

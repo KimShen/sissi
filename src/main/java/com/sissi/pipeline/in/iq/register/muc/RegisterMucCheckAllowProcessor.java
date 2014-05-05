@@ -17,7 +17,7 @@ import com.sissi.ucenter.relation.muc.room.RoomConfig;
  */
 public class RegisterMucCheckAllowProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
 
 	private final RoomBuilder room;
 

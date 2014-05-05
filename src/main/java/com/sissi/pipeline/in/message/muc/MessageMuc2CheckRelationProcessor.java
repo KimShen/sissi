@@ -15,7 +15,7 @@ import com.sissi.protocol.error.detail.NotAcceptable;
  */
 public class MessageMuc2CheckRelationProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(NotAcceptable.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(NotAcceptable.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

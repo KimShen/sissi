@@ -119,14 +119,14 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return this;
 	}
 
+	public Presence delay(Delay delay) {
+		this.delay = delay;
+		return this;
+	}
+
 	@XmlElement
 	public Delay getDelay() {
 		return this.delay;
-	}
-
-	public Presence setDelay(Delay delay) {
-		this.delay = delay;
-		return this;
 	}
 
 	public int priority(int def) {
@@ -155,7 +155,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return xp != null ? xp.getValue() : null;
 	}
 
-	public Presence setShow(PresenceShow show) {
+	public Presence show(PresenceShow show) {
 		this.show = show;
 		return this;
 	}
@@ -165,7 +165,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 		return this;
 	}
 
-	public Presence setStatus(PresenceStatus status) {
+	public Presence status(PresenceStatus status) {
 		this.status = status;
 		return this;
 	}
@@ -249,10 +249,10 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 			this.add(Field.class.cast(ob));
 			return;
 		case PresenceStatus.NAME:
-			this.setStatus((PresenceStatus) ob);
+			this.status((PresenceStatus) ob);
 			return;
 		case PresenceShow.NAME:
-			this.setShow((PresenceShow) ob);
+			this.show((PresenceShow) ob);
 			return;
 		case PresencePriority.NAME:
 			this.priority = PresencePriority.class.cast(ob);

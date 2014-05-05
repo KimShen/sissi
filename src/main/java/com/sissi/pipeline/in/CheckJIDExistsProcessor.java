@@ -18,7 +18,7 @@ import com.sissi.ucenter.vcard.VCardContext;
  */
 public class CheckJIDExistsProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ServiceUnavailable.DETAIL, "JID not exists");
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(ServiceUnavailable.DETAIL, "JID not exists");
 
 	private final VCardContext vcardContext;
 

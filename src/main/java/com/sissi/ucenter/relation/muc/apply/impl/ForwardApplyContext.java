@@ -33,7 +33,7 @@ public class ForwardApplyContext implements ApplySupport {
 	@Override
 	public boolean apply(JID invoker, JID group, Fields fields) {
 		fields.add(this.jid.clone().value(invoker.asString())).add(this.nick.clone().value(this.relationContext.ourRelation(invoker, group).name())).add(this.allow);
-		fields.findField(XDataType.FORM_TYPE.toString(), XField.class).setType(XFieldType.HIDDEN);
+		fields.findField(XDataType.FORM_TYPE.toString(), XField.class).type(XFieldType.HIDDEN);
 		return true;
 	}
 

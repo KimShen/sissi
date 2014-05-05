@@ -61,7 +61,7 @@ public class Last extends Protocol {
 			return this;
 		}
 
-		public LastSeconds setText(String text) {
+		public LastSeconds text(String text) {
 			this.text = text;
 			return this;
 		}

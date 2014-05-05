@@ -13,7 +13,7 @@ import com.sissi.protocol.error.detail.ServiceUnavailable;
  */
 public class IQResponseErrorProcessor extends IQResponseProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ServiceUnavailable.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(ServiceUnavailable.DETAIL);
 
 	public IQResponseErrorProcessor() {
 		super(ProtocolType.ERROR.toString(), true);

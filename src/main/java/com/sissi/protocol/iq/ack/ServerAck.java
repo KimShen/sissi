@@ -13,8 +13,8 @@ import com.sissi.protocol.Sissi;
 /**
  * @author kim 2014年2月17日
  */
-@XmlRootElement(name = ServerTime.NAME)
-public class ServerTime extends Protocol {
+@XmlRootElement(name = ServerAck.NAME)
+public class ServerAck extends Protocol {
 
 	public final static String NAME = "server";
 
@@ -22,18 +22,18 @@ public class ServerTime extends Protocol {
 
 	private String time;
 
-	private ServerTime() {
+	private ServerAck() {
 		super();
 	}
 
-	private ServerTime(String time) {
+	private ServerAck(String time) {
 		super();
 		this.time = time;
 	}
 
 	@XmlAttribute
 	public String getTime() {
-		return time;
+		return this.time;
 	}
 
 	@XmlAttribute
@@ -41,7 +41,7 @@ public class ServerTime extends Protocol {
 		return Sissi.XMLNS;
 	}
 
-	public static ServerTime now() {
-		return new ServerTime(format.format(new Date()));
+	public static ServerAck now() {
+		return new ServerAck(format.format(new Date()));
 	}
 }

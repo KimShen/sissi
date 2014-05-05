@@ -48,13 +48,17 @@ public class Roster extends Protocol implements Collector {
 		return this;
 	}
 
+	public GroupItem first() {
+		return this.firstItem != null ? this.firstItem : this.firstCached();
+	}
+
+	private GroupItem firstCached() {
+		return !this.item.isEmpty() ? (this.firstItem = this.item.get(0)) : (this.firstItem = null);
+	}
+
 	@XmlElements({ @XmlElement(name = GroupItem.NAME, type = GroupItem.class) })
 	public List<GroupItem> getItem() {
 		return this.item;
-	}
-
-	public GroupItem getFirstItem() {
-		return this.firstItem != null ? this.firstItem : this.getFirstItemCached();
 	}
 
 	@Override
@@ -68,16 +72,18 @@ public class Roster extends Protocol implements Collector {
 		return this;
 	}
 
-	public Roster trimItem(Integer item) {
+	/**
+	 * 压缩GroupItem数量
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public Roster trim(Integer item) {
 		if (this.item != null && this.item.size() > item) {
-			GroupItem need = this.getFirstItem();
+			GroupItem need = this.first();
 			this.item.clear();
 			this.item.add(need);
 		}
 		return this;
-	}
-
-	private GroupItem getFirstItemCached() {
-		return !this.item.isEmpty() ? (this.firstItem = this.item.get(0)) : (this.firstItem = null);
 	}
 }

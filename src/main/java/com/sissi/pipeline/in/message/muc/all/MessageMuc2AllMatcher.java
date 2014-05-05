@@ -8,7 +8,7 @@ import com.sissi.protocol.message.Message;
 import com.sissi.protocol.message.MessageType;
 
 /**
- * To.resource.bare && type = groupchat && message.hasContent
+ * To.resource.bare && type = groupchat && message.content
  * 
  * @author kim 2014年3月6日
  */
@@ -30,6 +30,6 @@ public class MessageMuc2AllMatcher extends ClassMatcher {
 	}
 
 	private boolean support(Message message) {
-		return message.type(MessageType.GROUPCHAT) && message.hasContent();
+		return message.type(MessageType.GROUPCHAT) && message.content();
 	}
 }

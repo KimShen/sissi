@@ -26,7 +26,7 @@ public class PersistentSi extends PersistentProtocol {
 
 	private final String profile = "http://jabber.org/protocol/si/profile/file-transfer";
 
-	private final Feature feature = new Feature().setX(new XData().setType(XDataType.FORM).add(new XField().setType(XFieldType.LIST_SINGLE).setVar("stream-method").add(new XOption(Bytestreams.XMLNS))));
+	private final Feature feature = new Feature().x(new XData().setType(XDataType.FORM).add(new XField().type(XFieldType.LIST_SINGLE).setVar("stream-method").add(new XOption(Bytestreams.XMLNS))));
 
 	private final String delegation;
 

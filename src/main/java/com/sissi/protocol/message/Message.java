@@ -52,28 +52,28 @@ public class Message extends Protocol implements Collector {
 		this.trace = true;
 	}
 
-	public Message setType(MessageType type) {
-		super.setType(type.toString());
-		return this;
-	}
-
-	private Message setHistory(History history) {
+	private Message history(History history) {
 		this.history = history;
 		return this;
 	}
 
-	private Message setRequest(AckRequest request) {
+	private Message request(AckRequest request) {
 		this.request = request;
 		return this;
 	}
 
-	private Message setReceived(AckReceived received) {
+	private Message received(AckReceived received) {
 		this.received = received;
 		return this;
 	}
 
-	private Message setX(Object x) {
-		return XData.class == x.getClass() ? this.setData(XData.class.cast(x)) : this.muc(XUser.class.cast(x));
+	private Message x(Object x) {
+		return XData.class == x.getClass() ? this.data(XData.class.cast(x)) : this.muc(XUser.class.cast(x));
+	}
+
+	public Message setType(MessageType type) {
+		super.setType(type.toString());
+		return this;
 	}
 
 	public String getType() {
@@ -102,7 +102,7 @@ public class Message extends Protocol implements Collector {
 		return this.delay;
 	}
 
-	public Message setDelay(Delay delay) {
+	public Message delay(Delay delay) {
 		this.delay = delay;
 		return this;
 	}
@@ -116,7 +116,7 @@ public class Message extends Protocol implements Collector {
 		return this;
 	}
 
-	public Message setBody(Body body) {
+	public Message body(Body body) {
 		this.body = body;
 		return this;
 	}
@@ -135,19 +135,19 @@ public class Message extends Protocol implements Collector {
 		return this;
 	}
 
+	public Message thread(Thread thread) {
+		this.thread = thread;
+		return this;
+	}
+
 	public Message setThread(String thread) {
 		this.thread = thread != null ? new Thread(thread) : null;
 		return this;
 	}
 
-	public Message setThread(Thread thread) {
-		this.thread = thread;
-		return this;
-	}
-
 	@XmlElement
 	public Thread getThread() {
-		return this.thread != null && this.thread.hasContent() ? this.thread : (this.trace ? new Thread(UUID.randomUUID().toString()) : null);
+		return this.thread != null && this.thread.content() ? this.thread : (this.trace ? new Thread(UUID.randomUUID().toString()) : null);
 	}
 
 	public boolean subject() {
@@ -166,7 +166,7 @@ public class Message extends Protocol implements Collector {
 
 	@XmlElement
 	public Subject getSubject() {
-		return this.subject != null && this.subject.hasContent() ? this.subject : null;
+		return this.subject != null && this.subject.content() ? this.subject : null;
 	}
 
 	@XmlElement
@@ -192,7 +192,7 @@ public class Message extends Protocol implements Collector {
 		return this.getData() != null && this.getData().type(XDataType.parse(type));
 	}
 
-	public Message setData(XData x) {
+	public Message data(XData x) {
 		this.data = x;
 		return this;
 	}
@@ -215,7 +215,7 @@ public class Message extends Protocol implements Collector {
 	}
 
 	public Message request(boolean request) {
-		return this.setRequest(request ? AckRequest.REQUEST : null);
+		return this.request(request ? AckRequest.REQUEST : null);
 	}
 
 	@XmlElement(name = AckRequest.NAME)
@@ -245,7 +245,7 @@ public class Message extends Protocol implements Collector {
 	 * 
 	 * @return
 	 */
-	public boolean notConflict() {
+	public boolean noneConflict() {
 		return !this.received() || !this.request();
 	}
 
@@ -255,39 +255,39 @@ public class Message extends Protocol implements Collector {
 	 * @return
 	 */
 	public boolean validReceived() {
-		return this.received() ? (this.getBody() == null && this.getReceived().id()) : true;
+		return this.received() ? (this.getBody() == null && this.getReceived().valid()) : true;
 	}
 
-	public boolean hasContent() {
-		return this.body != null && this.body.hasContent();
+	public boolean content() {
+		return this.body != null && this.body.content();
 	}
 
 	@Override
 	public void set(String localName, Object ob) {
 		switch (localName) {
 		case XData.NAME:
-			this.setX(ob);
+			this.x(ob);
 			return;
 		case Body.NAME:
-			this.setBody(Body.class.cast(ob));
+			this.body(Body.class.cast(ob));
 			return;
 		case Delay.NAME:
-			this.setDelay(Delay.class.cast(ob));
+			this.delay(Delay.class.cast(ob));
 			return;
 		case Thread.NAME:
-			this.setThread(Thread.class.cast(ob));
+			this.thread(Thread.class.cast(ob));
 			return;
 		case Subject.NAME:
 			this.subject(Subject.class.cast(ob));
 			return;
 		case History.NAME:
-			this.setHistory(History.class.cast(ob));
+			this.history(History.class.cast(ob));
 			return;
 		case AckRequest.NAME:
-			this.setRequest(AckRequest.class.cast(ob));
+			this.request(AckRequest.class.cast(ob));
 			return;
 		case AckReceived.NAME:
-			this.setReceived(AckReceived.class.cast(ob));
+			this.received(AckReceived.class.cast(ob));
 			return;
 		}
 	}

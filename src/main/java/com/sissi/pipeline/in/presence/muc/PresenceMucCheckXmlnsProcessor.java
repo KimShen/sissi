@@ -17,7 +17,7 @@ import com.sissi.protocol.presence.Presence;
  */
 public class PresenceMucCheckXmlnsProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.MODIFY).add(BadRequest.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.MODIFY).add(BadRequest.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

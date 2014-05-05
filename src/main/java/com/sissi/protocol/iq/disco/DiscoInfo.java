@@ -32,7 +32,7 @@ public class DiscoInfo extends Disco {
 		return super.getDisco();
 	}
 
-	public DiscoInfo setData(XData data) {
+	public DiscoInfo data(XData data) {
 		this.data = data;
 		return this;
 	}
@@ -42,19 +42,26 @@ public class DiscoInfo extends Disco {
 		return this.data;
 	}
 
-	public boolean node() {
-		return this.node != null;
-	}
-
 	public boolean node(String node) {
-		return this.node() && this.node.equals(node);
+		return this.node != null && this.node.equals(node);
 	}
 
+	/**
+	 * 用于Error.reply
+	 * 
+	 * @return
+	 */
 	@XmlAttribute
 	public String getNode() {
 		return this.node;
 	}
 
+	/**
+	 * 客户端协议填充
+	 * 
+	 * @param node
+	 * @return
+	 */
 	public DiscoInfo setNode(String node) {
 		this.node = node;
 		return this;

@@ -43,7 +43,7 @@ public class XValue implements Field<String> {
 		return this.value;
 	}
 
-	public boolean hasContent() {
+	public boolean content() {
 		return this.value != null && !this.value.isEmpty();
 	}
 

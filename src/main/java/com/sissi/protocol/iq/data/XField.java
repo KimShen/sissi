@@ -60,7 +60,7 @@ public class XField implements Field<Object>, Collector {
 		return this;
 	}
 
-	public XField setType(XFieldType type) {
+	public XField type(XFieldType type) {
 		this.type = type.toString();
 		return this;
 	}

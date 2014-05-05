@@ -29,6 +29,6 @@ public class BindAddressCloseOthersProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return super.resources(context.jid(), true).isEmpty() ? true : super.findOne(context.jid(), true, true).write(new Message().setBody(this.body).setType(MessageType.HEADLINE).setFrom(context.domain())).write(Stream.closeGraceFully()).close();
+		return super.resources(context.jid(), true).isEmpty() ? true : super.findOne(context.jid(), true, true).write(new Message().body(this.body).setType(MessageType.HEADLINE).setFrom(context.domain())).write(Stream.closeGraceFully()).close();
 	}
 }

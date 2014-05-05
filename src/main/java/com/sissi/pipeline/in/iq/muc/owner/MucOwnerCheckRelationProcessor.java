@@ -17,7 +17,7 @@ import com.sissi.ucenter.relation.muc.MucRelation;
  */
 public class MucOwnerCheckRelationProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(Forbidden.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.AUTH).add(Forbidden.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

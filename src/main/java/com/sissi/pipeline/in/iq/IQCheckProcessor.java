@@ -15,7 +15,7 @@ import com.sissi.protocol.error.detail.BadRequest;
  */
 public class IQCheckProcessor implements Input {
 
-	private final Error error = new ServerError().setType(ProtocolType.MODIFY).add(BadRequest.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.MODIFY).add(BadRequest.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

@@ -81,7 +81,7 @@ public class XInput implements Field<XValue> {
 	@Override
 	@XmlElement(name = XValue.NAME)
 	public XValue getValue() {
-		return this.value != null && this.value.hasContent() ? this.value : null;
+		return this.value != null && this.value.content() ? this.value : null;
 	}
 
 	@XmlElement

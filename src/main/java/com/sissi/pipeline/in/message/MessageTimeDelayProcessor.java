@@ -21,7 +21,7 @@ public class MessageTimeDelayProcessor extends ProxyProcessor {
 	
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		protocol.cast(Message.class).setDelay(new Delay().setStamp(this.format.format(new Date())));
+		protocol.cast(Message.class).delay(new Delay().setStamp(this.format.format(new Date())));
 		return true;
 	}
 }

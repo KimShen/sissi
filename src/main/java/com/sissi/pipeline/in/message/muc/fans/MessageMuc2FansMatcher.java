@@ -7,7 +7,7 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.message.Message;
 
 /**
- * 匹配包含资源的MUC JID && Message.hasContent
+ * 匹配包含资源的MUC JID && Message.content
  * 
  * @author kim 2014年3月6日
  */
@@ -21,7 +21,7 @@ public class MessageMuc2FansMatcher extends ClassMatcher {
 	}
 
 	public boolean match(Protocol protocol) {
-		return super.match(protocol) && this.support(this.jidBuilder.build(protocol.getTo())) && protocol.cast(Message.class).hasContent();
+		return super.match(protocol) && this.support(this.jidBuilder.build(protocol.getTo())) && protocol.cast(Message.class).content();
 	}
 
 	private boolean support(JID jid) {

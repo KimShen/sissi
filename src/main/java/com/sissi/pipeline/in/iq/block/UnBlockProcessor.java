@@ -29,7 +29,7 @@ public class UnBlockProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		UnBlock ub = protocol.cast(UnBlock.class);
-		return ub.isUnBlockAll() ? this.unblockAndReturn(context) : this.unblockAndReturn(context, ub.getItem());
+		return ub.unBlockAll() ? this.unblockAndReturn(context) : this.unblockAndReturn(context, ub.getItem());
 	}
 
 	private boolean unblockAndReturn(JIDContext context, BlockListItem item) {

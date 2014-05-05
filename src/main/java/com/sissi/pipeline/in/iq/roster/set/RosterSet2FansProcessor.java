@@ -24,7 +24,7 @@ public class RosterSet2FansProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		this.proxy.input(context, new Presence().type(PresenceType.SUBSCRIBE).setTo(protocol.cast(Roster.class).getFirstItem().getJid()));
+		this.proxy.input(context, new Presence().type(PresenceType.SUBSCRIBE).setTo(protocol.cast(Roster.class).first().getJid()));
 		return true;
 	}
 }

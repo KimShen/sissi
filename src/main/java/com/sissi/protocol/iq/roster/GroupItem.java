@@ -36,10 +36,6 @@ public class GroupItem extends Item implements Collector {
 		super();
 	}
 
-	private GroupItem(String jid, String name) {
-		super(jid, name);
-	}
-
 	public GroupItem(JID jid) {
 		this(jid.asStringWithBare(), null);
 	}
@@ -53,6 +49,10 @@ public class GroupItem extends Item implements Collector {
 				this.add(new Group(group));
 			}
 		}
+	}
+
+	private GroupItem(String jid, String name) {
+		super(jid, name);
 	}
 
 	public GroupItem add(Group group) {
@@ -128,7 +128,7 @@ public class GroupItem extends Item implements Collector {
 	public GroupItem trimGroup(Integer length) {
 		if (this.groups != null) {
 			for (Group group : this.groups) {
-				group.trimName(length);
+				group.trim(length);
 			}
 		}
 		return this;

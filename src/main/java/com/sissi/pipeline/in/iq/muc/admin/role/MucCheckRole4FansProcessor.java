@@ -21,7 +21,7 @@ import com.sissi.ucenter.relation.muc.MucRelationMapping;
  */
 public class MucCheckRole4FansProcessor extends ProxyProcessor {
 
-	private final Error error = new ServerError().setType(ProtocolType.AUTH).add(NotAllowed.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.AUTH).add(NotAllowed.DETAIL);
 
 	private final MucRelationMapping mapping;
 

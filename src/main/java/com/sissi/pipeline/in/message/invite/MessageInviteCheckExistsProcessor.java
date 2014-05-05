@@ -17,7 +17,7 @@ import com.sissi.ucenter.vcard.VCardContext;
  */
 public class MessageInviteCheckExistsProcessor implements Input {
 
-	private final Error error = new ServerError().setType(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(ItemNotFound.DETAIL);
 
 	private final VCardContext vcardContext;
 
