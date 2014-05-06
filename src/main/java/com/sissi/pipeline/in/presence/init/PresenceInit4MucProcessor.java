@@ -39,7 +39,7 @@ public class PresenceInit4MucProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		Presence presence = Presence.muc();
-		presence.findField(XMuc.NAME, XMuc.class).history(new History().setSince(this.format.format(Long.valueOf(this.vcardContext.get(context.jid(), VCardContext.FIELD_LOGOUT, String.valueOf(System.currentTimeMillis())).getValue()))));
+		presence.findField(XMuc.NAME, XMuc.class).history(new History().setSince(this.format.format(Long.valueOf(this.vcardContext.pull(context.jid(), VCardContext.FIELD_LOGOUT, String.valueOf(System.currentTimeMillis())).getValue()))));
 		for (JID jid : super.iSubscribedWho(context.jid())) {
 			this.proxy.input(context, presence.setTo(jid));
 		}

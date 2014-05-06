@@ -21,7 +21,7 @@
 	</bean>
 	<bean id="muc.pro.owner.get.list.option.whois" class="com.sissi.protocol.iq.data.Select">
 		<constructor-arg index="0" value="list-single" />
-		<constructor-arg index="1" value="Hidden" />
+		<constructor-arg index="1" value="Anonymity JID" />
 		<constructor-arg index="2" value="muc#roomconfig_whois" />
 		<constructor-arg index="3" value="false" />
 		<constructor-arg>
@@ -32,14 +32,13 @@
 		</constructor-arg>
 	</bean>
 	<bean id="muc.pro.owner.get.list.option.whois.true" class="com.sissi.protocol.iq.data.XOption">
-		<constructor-arg index="0" value="HIDDEN" />
+		<constructor-arg index="0" value="YES" />
 		<constructor-arg index="1" value="true" />
 	</bean>
 	<bean id="muc.pro.owner.get.list.option.whois.false" class="com.sissi.protocol.iq.data.XOption">
-		<constructor-arg index="0" value="PUBlIC" />
+		<constructor-arg index="0" value="NO" />
 		<constructor-arg index="1" value="false" />
 	</bean>
-
 	<bean id="muc.pro.owner.get.list.option.roomname" class="com.sissi.protocol.iq.data.XInput">
 		<constructor-arg index="0" value="text-single" />
 		<constructor-arg index="1" value="Subject" />
@@ -52,7 +51,7 @@
 	</bean>
 	<bean id="muc.pro.owner.get.list.option.affiliation" class="com.sissi.protocol.iq.data.Select">
 		<constructor-arg index="0" value="list-single" />
-		<constructor-arg index="1" value="Affiliation" />
+		<constructor-arg index="1" value="Affiliation Limit" />
 		<constructor-arg index="2" value="muc#roomconfig_affiliation" />
 		<constructor-arg index="3" value="NONE" />
 		<constructor-arg>
@@ -75,6 +74,26 @@
 		<constructor-arg index="0" value="NONE" />
 		<constructor-arg index="1" value="NONE" />
 	</bean>
+	<bean id="muc.pro.owner.get.list.option.persistentroom" class="com.sissi.protocol.iq.data.Select">
+		<constructor-arg index="0" value="list-single" />
+		<constructor-arg index="1" value="Persistent Room" />
+		<constructor-arg index="2" value="muc#roomconfig_persistentroom" />
+		<constructor-arg index="3" value="false" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="muc.pro.owner.get.list.option.persistentroom.true" />
+				<ref bean="muc.pro.owner.get.list.option.persistentroom.false" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="muc.pro.owner.get.list.option.persistentroom.true" class="com.sissi.protocol.iq.data.XOption">
+		<constructor-arg index="0" value="YES" />
+		<constructor-arg index="1" value="true" />
+	</bean>
+	<bean id="muc.pro.owner.get.list.option.persistentroom.false" class="com.sissi.protocol.iq.data.XOption">
+		<constructor-arg index="0" value="NO" />
+		<constructor-arg index="1" value="false" />
+	</bean>
 	<bean id="muc.pro.owner.get.list" class="com.sissi.protocol.iq.data.XData">
 		<constructor-arg value="false" />
 		<constructor-arg value="form" />
@@ -85,8 +104,9 @@
 				<ref bean="muc.pro.owner.get.list.base.formtype" />
 				<ref bean="muc.pro.owner.get.list.option.roomname" />
 				<ref bean="muc.pro.owner.get.list.option.roomsecret" />
-				<ref bean="muc.pro.owner.get.list.option.affiliation" />
 				<ref bean="muc.pro.owner.get.list.option.whois" />
+				<ref bean="muc.pro.owner.get.list.option.affiliation" />
+				<ref bean="muc.pro.owner.get.list.option.persistentroom"/>
 			</util:list>
 		</constructor-arg>
 	</bean>

@@ -5,10 +5,13 @@ import com.mongodb.DBObject;
 import com.sissi.config.Dictionary;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoUtils;
+import com.sissi.context.JID;
 import com.sissi.context.JIDContext;
 import com.sissi.context.Status;
 import com.sissi.context.StatusBuilder;
 import com.sissi.context.StatusClauses;
+import com.sissi.field.impl.BeanField;
+import com.sissi.ucenter.vcard.VCardContext;
 
 /**
  * 索引策略:{"index":-1,"jid":1,"resource":1}
@@ -22,15 +25,18 @@ public class MongoStatusBuilder implements StatusBuilder {
 	 */
 	private final DBObject filter = BasicDBObjectBuilder.start().add(StatusClauses.KEY_AVATOR, 1).add(StatusClauses.KEY_SHOW, 1).add(StatusClauses.KEY_STATUS, 1).add(StatusClauses.KEY_TYPE, 1).add(StatusClauses.KEY_PRIORITY, 1).get();
 
+	private final VCardContext vcardContext;
+
 	private final MongoConfig config;
 
-	public MongoStatusBuilder(MongoConfig config) {
-		this(config, true);
+	public MongoStatusBuilder(VCardContext vcardContext, MongoConfig addressing) {
+		this(vcardContext, addressing, true);
 	}
 
-	public MongoStatusBuilder(MongoConfig config, boolean reset) {
+	public MongoStatusBuilder(VCardContext vcardContext, MongoConfig addressing, boolean reset) {
 		super();
-		this.config = reset ? config.reset() : config;
+		this.vcardContext = vcardContext;
+		this.config = reset ? addressing.reset() : addressing;
 	}
 
 	@Override
@@ -60,12 +66,16 @@ public class MongoStatusBuilder implements StatusBuilder {
 	 * @return
 	 */
 	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
-		this.config.collection().update(this.buildQuery(context), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(Dictionary.FIELD_PRIORITY, context.priority()).get()).get());
+		if (MongoUtils.effect(this.config.collection().update(this.buildQuery(context), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(Dictionary.FIELD_PRIORITY, context.priority()).get()).get()))) {
+			if (avator != null) {
+				this.vcardContext.push(context.jid(), new BeanField<String>().name(VCardContext.FIELD_AVATOR).value(avator));
+			}
+		}
 		return this;
 	}
 
 	private StatusClauses get(JIDContext context) {
-		return new MongoClauses(this.config.collection().findOne(this.buildQuery(context), this.filter));
+		return new MongoClauses(context.jid(), this.config.collection().findOne(this.buildQuery(context), this.filter));
 	}
 
 	/**
@@ -107,14 +117,24 @@ public class MongoStatusBuilder implements StatusBuilder {
 
 		private final DBObject status;
 
-		public MongoClauses(DBObject status) {
+		private final JID jid;
+
+		public MongoClauses(JID jid, DBObject status) {
 			super();
+			this.jid = jid;
 			this.status = status;
 		}
 
 		@Override
 		public String find(String key) {
-			return MongoUtils.asString(this.status, key);
+			switch (key) {
+			case StatusClauses.KEY_AVATOR: {
+				String avator = MongoUtils.asString(this.status, key);
+				return avator != null ? avator : MongoStatusBuilder.this.vcardContext.pull(this.jid, VCardContext.FIELD_AVATOR, avator).getValue();
+			}
+			default:
+				return MongoUtils.asString(this.status, key);
+			}
 		}
 	}
 }

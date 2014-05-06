@@ -20,7 +20,7 @@ import com.sissi.ucenter.relation.muc.affiliation.AffiliationBuilder;
 import com.sissi.ucenter.vcard.VCardContext;
 
 /**
- * 索引策略1: {affiliations.jid":1,"affiliations.nick":1}</p>索引策略2: {"affiliations.jid":1}</p>索引策略3: {"jid":1}</p>索引策略4: {"affiliations.affiliation":1}
+ * 索引策略1: {affiliations.jid":1,"affiliations.nick":1}</p>索引策略2: {"affiliations.jid":1}</p>索引策略3: {"jid":1}</p>索引策略4: {"affiliations.affiliation":1}</p>索引策略5: {"configs.persistent":1}
  * 
  * @author kim 2014年4月25日
  */
@@ -32,14 +32,19 @@ public class MongoMucRelation4AffiliationContext extends MongoMucRelationContext
 	private final String name = "n/a";
 
 	/**
+	 * {"$match":"configs.persistent":true}
+	 */
+	private final DBObject matchPersistent = BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_CONFIGS + "." + Dictionary.FIELD_PERSISTENT, true).get()).get();
+
+	/**
 	 * {"$project":{"affiliation":"$affiliations"}}
 	 */
-	private final DBObject aggregateProjectAffiliation = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(Dictionary.FIELD_AFFILIATION, "$" + Dictionary.FIELD_AFFILIATIONS).get()).get();
+	private final DBObject projectAffiliation = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(Dictionary.FIELD_AFFILIATION, "$" + Dictionary.FIELD_AFFILIATIONS).get()).get();
 
 	/**
 	 * {"$project":{"jid":"$jid","resource":"$affiliations.nick"}}
 	 */
-	private final DBObject aggregateProjectSubscribed = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(Dictionary.FIELD_JID, "$" + Dictionary.FIELD_JID).add(Dictionary.FIELD_RESOURCE, "$" + Dictionary.FIELD_AFFILIATIONS + "." + Dictionary.FIELD_NICK).get()).get();
+	private final DBObject projectSubscribed = BasicDBObjectBuilder.start("$project", BasicDBObjectBuilder.start().add(Dictionary.FIELD_JID, "$" + Dictionary.FIELD_JID).add(Dictionary.FIELD_RESOURCE, "$" + Dictionary.FIELD_AFFILIATIONS + "." + Dictionary.FIELD_NICK).get()).get();
 
 	/**
 	 * {"configs":1}
@@ -80,7 +85,7 @@ public class MongoMucRelation4AffiliationContext extends MongoMucRelationContext
 	public Set<JID> iSubscribedWho(JID from) {
 		// {"$match":{"affiliations.jid",from.bare,"affiliations.nick":{"$exists":true}}}
 		DBObject match = BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_NICK, BasicDBObjectBuilder.start("$exists", true).get()).get()).get();
-		return new JIDGroup(MongoUtils.asList(this.config.collection().aggregate(match, super.unwindAffiliation, match, this.aggregateProjectSubscribed).getCommandResult(), Dictionary.FIELD_RESULT));
+		return new JIDGroup(MongoUtils.asList(this.config.collection().aggregate(this.matchPersistent, match, super.unwindAffiliation, match, this.projectSubscribed).getCommandResult(), Dictionary.FIELD_RESULT));
 	}
 
 	/*
@@ -100,7 +105,7 @@ public class MongoMucRelation4AffiliationContext extends MongoMucRelationContext
 	 */
 	public Set<Relation> myRelations(JID from, String affiliation) {
 		// {"$match":{"jid":group.bare}}, {"$unwind":"$affiliations"}, {"$match":{"affiliations.affiliation":Xxx}}, {"$project":{"affiliation":"$affiliations"}}
-		AggregationOutput output = super.config.collection().aggregate(super.buildMatcher(from), super.unwindAffiliation, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_AFFILIATIONS + "." + Dictionary.FIELD_AFFILIATION, affiliation).get()).get(), this.aggregateProjectAffiliation);
+		AggregationOutput output = super.config.collection().aggregate(super.buildMatcher(from), super.unwindAffiliation, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_AFFILIATIONS + "." + Dictionary.FIELD_AFFILIATION, affiliation).get()).get(), this.projectAffiliation);
 		List<?> result = MongoUtils.asList(output.getCommandResult(), Dictionary.FIELD_RESULT);
 		return result.isEmpty() ? super.relations : new AffiliationRelations(result);
 	}

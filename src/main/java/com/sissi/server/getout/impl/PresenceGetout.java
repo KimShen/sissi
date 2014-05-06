@@ -26,7 +26,7 @@ public class PresenceGetout implements Getout {
 
 	@Override
 	public PresenceGetout getout(JIDContext context) {
-		this.proxy.input(context, new Presence().setFrom(context.jid()).status(this.vCardContext.get(context.jid(), VCardContext.FIELD_SIGNATURE).getValue()).type(PresenceType.UNAVAILABLE));
+		this.proxy.input(context, new Presence().setFrom(context.jid()).status(this.vCardContext.pull(context.jid(), VCardContext.FIELD_SIGNATURE).getValue()).type(PresenceType.UNAVAILABLE));
 		return this;
 	}
 }

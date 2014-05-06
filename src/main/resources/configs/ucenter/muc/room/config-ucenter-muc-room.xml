@@ -15,6 +15,7 @@
 				<ref bean="ucenter.muc.room.parser.activate" />
 				<ref bean="ucenter.muc.room.parser.password" />
 				<ref bean="ucenter.muc.room.parser.affiliation" />
+				<ref bean="ucenter.muc.room.parser.persistentroom" />
 				<ref bean="ucenter.muc.room.parser.subject.owner" />
 				<ref bean="ucenter.muc.room.parser.subject.message" />
 			</util:list>
@@ -37,30 +38,7 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
-	<bean id="ucenter.muc.room.parser.whois" class="com.sissi.ucenter.relation.muc.room.config.WhoisConfigParser" />
-	<bean id="ucenter.muc.room.parser.activate" class="com.sissi.ucenter.relation.muc.room.config.ActivateConfigParser" />
-	<bean id="ucenter.muc.room.parser.password" class="com.sissi.ucenter.relation.muc.room.config.PasswordConfigParser" />
-	<bean id="ucenter.muc.room.parser.affiliation" class="com.sissi.ucenter.relation.muc.room.config.AffiliationConfigParser" />
-	<bean id="ucenter.muc.room.parser.subject.owner" class="com.sissi.ucenter.relation.muc.room.config.SubjectOwnerParser" />
-	<bean id="ucenter.muc.room.parser.subject.message" class="com.sissi.ucenter.relation.muc.room.config.SubjectMessageParser" />
 
-	<bean id="ucenter.muc.room.approver.maxusers" class="com.sissi.ucenter.relation.muc.room.approve.MaxUsersConfigApprover">
-		<constructor-arg value="${ucenter.muc.maxuser.privilege}" />
-	</bean>
-	<bean id="ucenter.muc.room.approver.subject" class="com.sissi.ucenter.relation.muc.room.approve.SubjectConfigApprover">
-		<constructor-arg value="${ucenter.muc.subject.role}" />
-	</bean>
-	<bean id="ucenter.muc.room.approver.public" class="com.sissi.ucenter.relation.muc.room.approve.PublicConfigApprover" />
-	<bean id="ucenter.muc.room.approver.register" class="com.sissi.ucenter.relation.muc.room.approve.RegisterConfigApprover" />
-	<bean id="ucenter.muc.room.approver.nickname" class="com.sissi.ucenter.relation.muc.room.approve.NicknameConfigApprover" />
-	<bean id="ucenter.muc.room.approver.password" class="com.sissi.ucenter.relation.muc.room.approve.PasswordConfigApprover" />
-	<bean id="ucenter.muc.room.approver.activated" class="com.sissi.ucenter.relation.muc.room.approve.ActivatedConfigApprover" />
-	<bean id="ucenter.muc.room.approver.configed" class="com.sissi.ucenter.relation.muc.room.approve.ConfigedParamsConfigApprover" />
-	<bean id="ucenter.muc.room.approver.whois.exists" class="com.sissi.ucenter.relation.muc.room.approve.WhoisExistsConfigApprover" />
-	<bean id="ucenter.muc.room.approver.whois.allowed" class="com.sissi.ucenter.relation.muc.room.approve.WhoisAllowedConfigApprover" />
-	<bean id="ucenter.muc.room.approver.affiliation.invite" class="com.sissi.ucenter.relation.muc.room.approve.AffiliationInviteConfigApprover">
-		<constructor-arg value="${ucenter.muc.invite}" />
-	</bean>
-	<bean id="ucenter.muc.room.approver.affiliation.exists" class="com.sissi.ucenter.relation.muc.room.approve.AffiliationExistsConfigApprover" />
-	<bean id="ucenter.muc.room.approver.affiliation.allowed" class="com.sissi.ucenter.relation.muc.room.approve.AffiliationAllowedConfigApprover" />
+	<import resource="config-ucenter-muc-room-config.xml" />
+	<import resource="config-ucenter-muc-room-approve.xml" />
 </beans>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="ucenter.muc.room.parser.whois" class="com.sissi.ucenter.relation.muc.room.config.WhoisConfigParser" />
+	<bean id="ucenter.muc.room.parser.activate" class="com.sissi.ucenter.relation.muc.room.config.ActivateConfigParser" />
+	<bean id="ucenter.muc.room.parser.password" class="com.sissi.ucenter.relation.muc.room.config.PasswordConfigParser" />
+	<bean id="ucenter.muc.room.parser.affiliation" class="com.sissi.ucenter.relation.muc.room.config.AffiliationConfigParser" />
+	<bean id="ucenter.muc.room.parser.persistentroom" class="com.sissi.ucenter.relation.muc.room.config.PersistentRoomConfigParser" />
+	<bean id="ucenter.muc.room.parser.subject.owner" class="com.sissi.ucenter.relation.muc.room.config.SubjectOwnerParser" />
+	<bean id="ucenter.muc.room.parser.subject.message" class="com.sissi.ucenter.relation.muc.room.config.SubjectMessageParser" />
+</beans>

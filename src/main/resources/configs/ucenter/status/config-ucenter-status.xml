@@ -7,5 +7,6 @@
 
 	<bean id="ucenter.status" class="com.sissi.context.impl.MongoStatusBuilder">
 		<constructor-arg ref="addressing.config" />
+		<constructor-arg ref="ucenter.vcard.user" />
 	</bean>
 </beans>

@@ -44,7 +44,7 @@ public class PresenceMucJoin2ReplaceProcessor extends ProxyProcessor {
 		JID group = super.build(protocol.getTo());
 		String nickname = group.resource();
 		MucRelation relation = super.ourRelation(context.jid(), group).cast(MucRelation.class);
-		// 如果已进入房间
+		// relation.activate(),如果已进入房间. group.resource().equals(relation.name()), 昵称未变
 		return relation.activate() ? group.resource().equals(relation.name()) ? this.resend ? this.proxy.input(context, protocol) : false : this.writeAndReturn(context, group, nickname, relation) : true;
 	}
 

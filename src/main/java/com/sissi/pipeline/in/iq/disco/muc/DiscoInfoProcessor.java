@@ -40,7 +40,7 @@ public class DiscoInfoProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.parent().getTo());
-		protocol.cast(DiscoInfo.class).data(this.vcardContext.get(group, new XData().setType(XDataType.RESULT).add(this.form))).add(this.identity.clone().setName(group.user())).add(this.feature);
+		protocol.cast(DiscoInfo.class).data(this.vcardContext.pull(group, new XData().setType(XDataType.RESULT).add(this.form))).add(this.identity.clone().setName(group.user())).add(this.feature);
 		context.write(protocol.parent().setType(ProtocolType.RESULT).reply());
 		return true;
 	}

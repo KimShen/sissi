@@ -23,7 +23,7 @@ public class PresenceOfflineSignatureProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		this.vcardContext.set(context.jid(), new BeanField<String>().name(VCardContext.FIELD_SIGNATURE).value(protocol.cast(Presence.class).getStatusAsText()));
+		this.vcardContext.push(context.jid(), new BeanField<String>().name(VCardContext.FIELD_SIGNATURE).value(protocol.cast(Presence.class).getStatusAsText()));
 		return true;
 	}
 }

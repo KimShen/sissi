@@ -54,7 +54,7 @@ public class PresenceInit4FansProcessor extends ProxyProcessor {
 	 * @param from
 	 */
 	private void writeOffline(JIDContext context, JID from) {
-		context.write(new Presence().setFrom(from).status(this.vCardContext.get(from, VCardContext.FIELD_SIGNATURE).getValue()).type(PresenceType.UNAVAILABLE), true);
+		context.write(new Presence().setFrom(from).status(this.vCardContext.pull(from, VCardContext.FIELD_SIGNATURE).getValue()).type(PresenceType.UNAVAILABLE), true);
 	}
 
 	/**

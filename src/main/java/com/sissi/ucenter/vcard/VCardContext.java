@@ -12,6 +12,8 @@ import com.sissi.field.Fields;
 public interface VCardContext {
 
 	public final static String FIELD_LOGOUT = "LOGOUT";
+	
+	public final static String FIELD_AVATOR = "AVATOR";
 
 	public final static String FIELD_NICKNAME = "NICKNAME";
 
@@ -40,7 +42,7 @@ public interface VCardContext {
 	 * @param fields
 	 * @return
 	 */
-	public VCardContext set(JID jid, Fields fields);
+	public VCardContext push(JID jid, Fields fields);
 
 	/**
 	 * 更新VCard
@@ -49,7 +51,7 @@ public interface VCardContext {
 	 * @param field
 	 * @return
 	 */
-	public VCardContext set(JID jid, Field<String> field);
+	public VCardContext push(JID jid, Field<String> field);
 
 	/**
 	 * 获取VCard
@@ -58,9 +60,9 @@ public interface VCardContext {
 	 * @param name
 	 * @return
 	 */
-	public Field<String> get(JID jid, String name);
+	public Field<String> pull(JID jid, String name);
 
-	public Field<String> get(JID jid, String name, String def);
+	public Field<String> pull(JID jid, String name, String def);
 
 	/**
 	 * 获取VCard
@@ -69,5 +71,5 @@ public interface VCardContext {
 	 * @param fields
 	 * @return
 	 */
-	public <T extends Fields> T get(JID jid, T fields);
+	public <T extends Fields> T pull(JID jid, T fields);
 }

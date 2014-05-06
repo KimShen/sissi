@@ -26,7 +26,7 @@
 		<constructor-arg value="true" />
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.init.4muc" />
+				<ref bean="presence.pro.init.4muc" /> 
 				<ref bean="presence.pro.init.4fans" />
 				<ref bean="presence.pro.init.4selfs" />
 				<ref bean="presence.pro.init.4delay" />

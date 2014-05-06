@@ -18,8 +18,9 @@
 	<bean id="presence.pro.status.available.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.init.chained" />
+				<!-- presence.pro.status.available.muc需要放置在presence.pro.init.chained前避免首次登陆重复推送 -->
 				<ref bean="presence.pro.status.available.muc" />
+				<ref bean="presence.pro.init.chained" />
 				<ref bean="presence.pro.status.available.update" />
 				<ref bean="presence.pro.status.available.priority" />
 				<ref bean="presence.pro.status.2fans" />

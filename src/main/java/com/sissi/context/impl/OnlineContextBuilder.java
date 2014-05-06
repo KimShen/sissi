@@ -223,7 +223,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			try {
 				this.presenceLock.lock();
 				// Exchange
-				OnlineContextBuilder.this.vCardContext.set(this.jid(), new BeanField<String>().name(VCardContext.FIELD_LOGOUT).value(String.valueOf(System.currentTimeMillis())));
+				OnlineContextBuilder.this.vCardContext.push(this.jid(), new BeanField<String>().name(VCardContext.FIELD_LOGOUT).value(String.valueOf(System.currentTimeMillis())));
 				this.outputCurrent = OnlineContextBuilder.this.offline;
 				this.statusCurrent = OfflineStatus.STATUS;
 				this.presence.set(false);

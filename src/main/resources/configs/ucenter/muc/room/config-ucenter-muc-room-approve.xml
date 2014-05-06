@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="ucenter.muc.room.approver.maxusers" class="com.sissi.ucenter.relation.muc.room.approve.MaxUsersConfigApprover">
+		<constructor-arg value="${ucenter.muc.maxuser.privilege}" />
+	</bean>
+	<bean id="ucenter.muc.room.approver.subject" class="com.sissi.ucenter.relation.muc.room.approve.SubjectConfigApprover">
+		<constructor-arg value="${ucenter.muc.subject.role}" />
+	</bean>
+	<bean id="ucenter.muc.room.approver.public" class="com.sissi.ucenter.relation.muc.room.approve.PublicConfigApprover" />
+	<bean id="ucenter.muc.room.approver.register" class="com.sissi.ucenter.relation.muc.room.approve.RegisterConfigApprover" />
+	<bean id="ucenter.muc.room.approver.nickname" class="com.sissi.ucenter.relation.muc.room.approve.NicknameConfigApprover" />
+	<bean id="ucenter.muc.room.approver.password" class="com.sissi.ucenter.relation.muc.room.approve.PasswordConfigApprover" />
+	<bean id="ucenter.muc.room.approver.activated" class="com.sissi.ucenter.relation.muc.room.approve.ActivatedConfigApprover" />
+	<bean id="ucenter.muc.room.approver.configed" class="com.sissi.ucenter.relation.muc.room.approve.ConfigedParamsConfigApprover" />
+	<bean id="ucenter.muc.room.approver.whois.exists" class="com.sissi.ucenter.relation.muc.room.approve.WhoisExistsConfigApprover" />
+	<bean id="ucenter.muc.room.approver.whois.allowed" class="com.sissi.ucenter.relation.muc.room.approve.WhoisAllowedConfigApprover" />
+	<bean id="ucenter.muc.room.approver.affiliation.invite" class="com.sissi.ucenter.relation.muc.room.approve.AffiliationInviteConfigApprover">
+		<constructor-arg value="${ucenter.muc.invite}" />
+	</bean>
+	<bean id="ucenter.muc.room.approver.affiliation.exists" class="com.sissi.ucenter.relation.muc.room.approve.AffiliationExistsConfigApprover" />
+	<bean id="ucenter.muc.room.approver.affiliation.allowed" class="com.sissi.ucenter.relation.muc.room.approve.AffiliationAllowedConfigApprover" />
+</beans>

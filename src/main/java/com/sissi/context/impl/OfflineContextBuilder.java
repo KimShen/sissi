@@ -67,7 +67,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		 * @param jid
 		 */
 		public OfflineContext(JID jid) {
-			this.status = new OfflineStatus(new OfflineStatusClauses(OfflineContextBuilder.this.vCardContext.get(jid, VCardContext.FIELD_SIGNATURE).getValue()));
+			this.status = new OfflineStatus(new OfflineStatusClauses(OfflineContextBuilder.this.vCardContext.pull(jid, VCardContext.FIELD_SIGNATURE).getValue()));
 			this.jid = jid;
 		}
 
@@ -164,7 +164,7 @@ public class OfflineContextBuilder implements JIDContextBuilder {
 		}
 
 		public long idle() {
-			String idle = OfflineContextBuilder.this.vCardContext.get(this.jid(), VCardContext.FIELD_LOGOUT).getValue();
+			String idle = OfflineContextBuilder.this.vCardContext.pull(this.jid(), VCardContext.FIELD_LOGOUT).getValue();
 			return idle == null ? 0L : Long.valueOf(idle);
 		}
 

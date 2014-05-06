@@ -25,6 +25,6 @@ public class VCardGet4FansProcessor extends VCardGetProcessor {
 	@Override
 	protected VCard get(JIDContext context, Protocol protocol) {
 		JID group = super.build(protocol.parent().getTo());
-		return super.vcardContext.get(group.resource(this.mapping.mapping(group).jid().asStringWithBare()), protocol.cast(VCard.class));
+		return super.vcardContext.pull(group.resource(this.mapping.mapping(group).jid().asStringWithBare()), protocol.cast(VCard.class));
 	}
 }

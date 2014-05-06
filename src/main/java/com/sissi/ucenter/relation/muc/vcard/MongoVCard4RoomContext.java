@@ -68,12 +68,12 @@ public class MongoVCard4RoomContext extends MongoFieldsContext implements VCardC
 		return this.config.collection().findOne(this.buildQuery(jid)) != null;
 	}
 
-	public VCardContext set(JID jid, Field<String> field) {
+	public VCardContext push(JID jid, Field<String> field) {
 		return this;
 	}
 
 	@Override
-	public VCardContext set(JID jid, Fields fields) {
+	public VCardContext push(JID jid, Fields fields) {
 		return this;
 	}
 
@@ -82,12 +82,12 @@ public class MongoVCard4RoomContext extends MongoFieldsContext implements VCardC
 	 * 
 	 * @see com.sissi.ucenter.vcard.VCardContext#get(com.sissi.context.JID, java.lang.String)
 	 */
-	public Field<String> get(JID jid, String name) {
+	public Field<String> pull(JID jid, String name) {
 		return new BeanField<String>().name(name).value(MongoUtils.asString(MongoUtils.asDBObject(this.config.collection().findOne(this.buildQuery(jid), BasicDBObjectBuilder.start(Dictionary.FIELD_CONFIGS + "." + name, 1).get()), Dictionary.FIELD_CONFIGS), name));
 	}
 
-	public Field<String> get(JID jid, String name, String def) {
-		Field<String> value = this.get(jid, name);
+	public Field<String> pull(JID jid, String name, String def) {
+		Field<String> value = this.pull(jid, name);
 		return value.getValue() != null ? value : new BeanField<String>().name(name).value(def);
 	}
 
@@ -97,7 +97,7 @@ public class MongoVCard4RoomContext extends MongoFieldsContext implements VCardC
 	 * @see com.sissi.ucenter.vcard.VCardContext#get(com.sissi.context.JID, com.sissi.field.Fields)
 	 */
 	@Override
-	public <T extends Fields> T get(JID jid, T fields) {
+	public <T extends Fields> T pull(JID jid, T fields) {
 		Map<String, Object> entity = MongoUtils.asMap(MongoUtils.asDBObject(this.config.collection().findOne(this.buildQuery(jid), this.filter), Dictionary.FIELD_CONFIGS));
 		for (String element : entity.keySet()) {
 			if (this.parser.containsKey(element)) {

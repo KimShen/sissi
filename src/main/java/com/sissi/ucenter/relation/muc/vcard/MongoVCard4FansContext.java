@@ -68,12 +68,12 @@ public class MongoVCard4FansContext extends MongoFieldsContext implements VCardC
 		return this.config.collection().findOne(BasicDBObjectBuilder.start(Dictionary.FIELD_AFFILIATIONS + "." + Dictionary.FIELD_JID, jid.asStringWithBare()).get()) != null;
 	}
 
-	public VCardContext set(JID jid, Field<String> field) {
+	public VCardContext push(JID jid, Field<String> field) {
 		return this;
 	}
 
 	@Override
-	public VCardContext set(JID jid, Fields fields) {
+	public VCardContext push(JID jid, Fields fields) {
 		return this;
 	}
 
@@ -82,7 +82,7 @@ public class MongoVCard4FansContext extends MongoFieldsContext implements VCardC
 	 * 
 	 * @see com.sissi.ucenter.vcard.VCardContext#get(com.sissi.context.JID, java.lang.String)
 	 */
-	public Field<String> get(JID jid, String name) {
+	public Field<String> pull(JID jid, String name) {
 		return null;
 	}
 
@@ -91,14 +91,14 @@ public class MongoVCard4FansContext extends MongoFieldsContext implements VCardC
 	 * 
 	 * @see com.sissi.ucenter.vcard.VCardContext#get(com.sissi.context.JID, java.lang.String, java.lang.String)
 	 */
-	public Field<String> get(JID jid, String name, String def) {
+	public Field<String> pull(JID jid, String name, String def) {
 		return null;
 	}
 
 	@Override
-	public <T extends Fields> T get(JID jid, T fields) {
+	public <T extends Fields> T pull(JID jid, T fields) {
 		// ucenter.vcard.user获取个人信息
-		this.proxy.get(this.jidBuilder.build(jid.resource()), fields);
+		this.proxy.pull(this.jidBuilder.build(jid.resource()), fields);
 		// 激活时间和个人信息{"$match":{"jid":jid.bare},{"$unwind":"$informations"},{"$match":{"informations.jid":jid.resource},{"$project":{"activate":"$informations.activate","information" :"$informations.information"}}
 		List<?> vcards = MongoUtils.asList(this.config.collection().aggregate(BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_JID, jid.asStringWithBare()).get()).get(), this.unwind, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_INFORMATIONS + "." + Dictionary.FIELD_JID, jid.resource()).get()).get(), this.project).getCommandResult(), Dictionary.FIELD_RESULT);
 		Map<String, Object> entity = MongoUtils.asMap(vcards.isEmpty() ? null : DBObject.class.cast(vcards.get(0)));

@@ -66,13 +66,13 @@ public class MongoVCardContext extends MongoFieldsContext implements VCardContex
 	 * 
 	 * @see com.sissi.ucenter.vcard.VCardContext#set(com.sissi.context.JID, com.sissi.field.Field)
 	 */
-	public VCardContext set(JID jid, Field<String> field) {
+	public VCardContext push(JID jid, Field<String> field) {
 		this.config.collection().update(this.buildQuery(jid), BasicDBObjectBuilder.start("$set", super.entity(field, BasicDBObjectBuilder.start())).get());
 		return this;
 	}
 
 	@Override
-	public VCardContext set(JID jid, Fields fields) {
+	public VCardContext push(JID jid, Fields fields) {
 		this.config.collection().update(this.buildQuery(jid), BasicDBObjectBuilder.start("$set", super.entities(fields, BasicDBObjectBuilder.start())).get());
 		return this;
 	}
@@ -82,12 +82,12 @@ public class MongoVCardContext extends MongoFieldsContext implements VCardContex
 	 * 
 	 * @see com.sissi.ucenter.vcard.VCardContext#get(com.sissi.context.JID, java.lang.String)
 	 */
-	public Field<String> get(JID jid, String name) {
+	public Field<String> pull(JID jid, String name) {
 		return new BeanField<String>().name(name).value(MongoUtils.asString(this.config.collection().findOne(this.buildQuery(jid), BasicDBObjectBuilder.start(name, 1).get()), name));
 	}
 
-	public Field<String> get(JID jid, String name, String def) {
-		Field<String> value = this.get(jid, name);
+	public Field<String> pull(JID jid, String name, String def) {
+		Field<String> value = this.pull(jid, name);
 		return value.getValue() != null ? value : new BeanField<String>().value(def);
 	}
 
@@ -97,7 +97,7 @@ public class MongoVCardContext extends MongoFieldsContext implements VCardContex
 	 * @see com.sissi.ucenter.vcard.VCardContext#get(com.sissi.context.JID, com.sissi.field.Fields)
 	 */
 	@Override
-	public <T extends Fields> T get(JID jid, T fields) {
+	public <T extends Fields> T pull(JID jid, T fields) {
 		Map<String, Object> entity = MongoUtils.asMap(this.config.collection().findOne(this.buildQuery(jid)));
 		for (String element : entity.keySet()) {
 			if (this.parser.containsKey(element)) {
