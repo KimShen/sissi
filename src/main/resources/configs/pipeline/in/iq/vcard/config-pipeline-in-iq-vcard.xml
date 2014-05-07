@@ -8,9 +8,11 @@
 	<bean id="vcard.pro.set" class="com.sissi.pipeline.in.iq.vcard.VCardSetProcessor">
 		<constructor-arg ref="ucenter.vcard.user" />
 	</bean>
+	<bean id="vcard.pro.set.check" class="com.sissi.pipeline.in.iq.vcard.VCardSetCheckRelationProcessor" parent="global.pro.proxy" />
 	<bean id="vcard.pro.set.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="vcard.pro.set.check" />
 				<ref bean="vcard.pro.set" />
 				<ref bean="iq.pro.result.stop" />
 			</util:list>

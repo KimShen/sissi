@@ -348,10 +348,12 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		private JIDContext write(Element element, Output output, boolean bare) {
 			try {
 				// 忽略相同JID的消息回路
-				if (!this.jid().same(element.getFrom())) {
-					// Binding -> 自动分配From
-					output.output(this, this.binding() ? element.setTo(bare ? this.jid.asStringWithBare() : this.jid().asString()) : element);
+				if (this.jid().same(element.getFrom())) {
+					OnlineContextBuilder.this.log.info("Loop write: " + this.jid.asString() + "on" + element.getClass());
+					return this;
 				}
+				// Binding -> 自动分配From
+				output.output(this, this.binding() ? element.setTo(bare ? this.jid.asStringWithBare() : this.jid().asString()) : element);
 			} finally {
 				// 更新IDLE
 				this.idle.set(System.currentTimeMillis());

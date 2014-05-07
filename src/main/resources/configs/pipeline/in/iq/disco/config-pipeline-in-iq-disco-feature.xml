@@ -12,7 +12,7 @@
 	</bean>
 	<bean id="disco.identify.server" class="com.sissi.protocol.iq.disco.Identity">
 		<constructor-arg index="0" value="Sissi Service" />
-		<constructor-arg index="1" value="server" />
+		<constructor-arg index="1" value="im" />
 		<constructor-arg index="2" value="server" />
 	</bean>
 	<bean id="disco.identify.delegation" class="com.sissi.protocol.iq.disco.Identity">

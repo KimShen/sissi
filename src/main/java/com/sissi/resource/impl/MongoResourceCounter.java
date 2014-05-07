@@ -15,12 +15,12 @@ public class MongoResourceCounter implements ResourceCounter {
 	/**
 	 * {"$inc":{"count":1}}
 	 */
-	private final DBObject incr = BasicDBObjectBuilder.start("$inc", BasicDBObjectBuilder.start("count", 1).get()).get();
+	private final DBObject incr = BasicDBObjectBuilder.start("$inc", BasicDBObjectBuilder.start("inc", 1).get()).get();
 
 	/**
 	 * {"$inc":{"count":1}}
 	 */
-	private final DBObject decr = BasicDBObjectBuilder.start("$inc", BasicDBObjectBuilder.start("count", -1).get()).get();
+	private final DBObject decr = BasicDBObjectBuilder.start("$inc", BasicDBObjectBuilder.start("dec", 1).get()).get();
 
 	private final String resource = "resource";
 
