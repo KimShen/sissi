@@ -26,7 +26,19 @@
 		<constructor-arg value="${ucenter.relation.shortcut}" />
 	</bean>
 	<bean id="global.pro.check.error.pong" class="com.sissi.pipeline.in.CheckErrorPongProcessor" />
-	<bean id="global.pro.check.error.loop" class="com.sissi.pipeline.in.CheckErrorLoopProcessor" />
+	<bean id="global.pro.check.error.trace" class="com.sissi.pipeline.in.CheckErrorTraceProcessor">
+		<constructor-arg ref="global.pro.forward" />
+		<constructor-arg ref="server.exchanger.tracer.si" />
+	</bean>
+	<bean id="global.pro.check.error.chained" class="com.sissi.pipeline.in.CheckErrorChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="global.pro.check.error.pong" />
+				<ref bean="global.pro.check.error.trace" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="global.pro.check.jid.from" class="com.sissi.pipeline.in.CheckJIDFromProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.format" class="com.sissi.pipeline.in.CheckJIDMalformedProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.exists" class="com.sissi.pipeline.in.CheckJIDExistsProcessor" parent="global.pro.proxy">
 		<constructor-arg value="true" />
@@ -43,10 +55,10 @@
 		<constructor-arg value="true" />
 		<constructor-arg>
 			<util:list>
-				<ref bean="global.pro.check.error.pong" />
-				<ref bean="global.pro.check.error.loop" />
+				<ref bean="global.pro.check.error.chained" />
 				<ref bean="global.pro.check.jid.format" />
 				<ref bean="global.pro.check.jid.exists" />
+				<ref bean="global.pro.check.jid.from" />
 			</util:list>
 		</constructor-arg>
 	</bean>

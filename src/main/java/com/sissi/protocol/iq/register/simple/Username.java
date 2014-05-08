@@ -20,4 +20,8 @@ public class Username extends ValueField {
 	public String getName() {
 		return NAME;
 	}
+
+	public boolean valid() {
+		return this.getValue() != null & !this.getValue().isEmpty();
+	}
 }

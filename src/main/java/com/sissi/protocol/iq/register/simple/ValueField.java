@@ -17,8 +17,9 @@ abstract class ValueField implements Field<String> {
 		return this.value;
 	}
 
-	public void setText(String text) {
+	public ValueField setText(String text) {
 		this.value = text;
+		return this;
 	}
 
 	@Override

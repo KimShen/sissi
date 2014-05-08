@@ -129,7 +129,7 @@ public class MongoProxyConfig implements MongoConfig {
 		}
 
 		public DBObject findAndModify(DBObject query, DBObject entity) {
-			this.log("findOne", query);
+			this.log("findAndModify", query, entity);
 			return MongoProxyConfig.this.collection.findAndModify(query, entity);
 		}
 

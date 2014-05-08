@@ -9,11 +9,15 @@
 		<constructor-arg ref="bytestreams.proxy" />
 	</bean>
 
+	<bean id="si.pro.trace" class="com.sissi.pipeline.in.iq.si.SiTraceProcessor">
+		<constructor-arg ref="server.exchanger.tracer.si" />
+	</bean>
 	<bean id="si.pro.delay" class="com.sissi.pipeline.in.iq.si.SiTimeDelayProcessor" />
 	<alias name="global.pro.forward" alias="si.pro.2fans" />
 	<bean id="si.pro.2fans.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="si.pro.trace" />
 				<ref bean="si.pro.delay" />
 				<ref bean="si.pro.2fans" />
 			</util:list>

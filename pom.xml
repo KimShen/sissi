@@ -74,9 +74,10 @@
 		<maven.mongo.collection.user>user</maven.mongo.collection.user>
 		<maven.mongo.collection.roster>roster</maven.mongo.collection.roster>
 		<maven.mongo.collection.counter>counter</maven.mongo.collection.counter>
-		<maven.mongo.collection.exchanger>exchanger</maven.mongo.collection.exchanger>
 		<maven.mongo.collection.persistent>persistent</maven.mongo.collection.persistent>
 		<maven.mongo.collection.addressing>addressing</maven.mongo.collection.addressing>
+		<maven.mongo.collection.exchanger>exchanger</maven.mongo.collection.exchanger>
+		<maven.mongo.collection.exchanger.tracer>exchanger.tracer.si</maven.mongo.collection.exchanger.tracer>
 
 		<maven.login.auth.retry>2</maven.login.auth.retry>
 		<maven.login.bind.resource>2</maven.login.bind.resource>

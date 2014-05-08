@@ -3,7 +3,6 @@ package com.sissi.pipeline.in;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.ProtocolType;
 
 /**
  * 如果Protocol.type = error则尝试context.pong
@@ -19,7 +18,7 @@ public class CheckErrorPongProcessor implements Input {
 	 */
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return protocol.type(ProtocolType.ERROR) ? this.pong(context, protocol) : true;
+		return this.pong(context, protocol);
 	}
 
 	private boolean pong(JIDContext context, Protocol protocol) {

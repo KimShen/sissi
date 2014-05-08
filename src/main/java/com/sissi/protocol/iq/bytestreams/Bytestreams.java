@@ -3,7 +3,9 @@ package com.sissi.protocol.iq.bytestreams;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,9 +13,12 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.sissi.config.Dictionary;
 import com.sissi.io.read.Collector;
 import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
+import com.sissi.protocol.iq.si.Si;
+import com.sissi.server.exchange.Tracer;
 
 /**
  * @author kim 2013年12月18日
@@ -21,7 +26,7 @@ import com.sissi.protocol.Protocol;
 @Metadata(uri = Bytestreams.XMLNS, localName = Bytestreams.NAME)
 @XmlType(namespace = Bytestreams.XMLNS)
 @XmlRootElement(name = Bytestreams.NAME)
-public class Bytestreams extends Protocol implements Collector {
+public class Bytestreams extends Protocol implements Tracer, Collector {
 
 	public final static String XMLNS = "http://jabber.org/protocol/bytestreams";
 
@@ -58,6 +63,10 @@ public class Bytestreams extends Protocol implements Collector {
 	@XmlAttribute
 	public String getMode() {
 		return this.mode;
+	}
+
+	public boolean sid() {
+		return this.getSid() != null;
 	}
 
 	@XmlAttribute
@@ -106,6 +115,28 @@ public class Bytestreams extends Protocol implements Collector {
 			Collections.sort(this.streamhosts, comparator);
 		}
 		return this;
+	}
+
+	@Override
+	public String id() {
+		return this.parent().getId();
+	}
+
+	@Override
+	public String target() {
+		return this.parent().getTo();
+	}
+
+	@Override
+	public String initiator() {
+		return this.parent().getFrom();
+	}
+
+	@Override
+	public Map<String, Object> plus() {
+		Map<String, Object> plus = new HashMap<String, Object>();
+		plus.put(Dictionary.FIELD_HOST, new Si().setId(this.getSid()).host(this.parent().getFrom(), this.parent().getTo()));
+		return plus;
 	}
 
 	@Override

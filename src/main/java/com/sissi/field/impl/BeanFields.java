@@ -31,7 +31,9 @@ public class BeanFields implements Fields {
 	}
 
 	public BeanFields reset() {
-		this.fields.clear();
+		if (this.fields != null) {
+			this.fields.clear();
+		}
 		return this;
 	}
 

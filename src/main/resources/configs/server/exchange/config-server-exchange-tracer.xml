@@ -5,9 +5,12 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<import resource="config-server-exchange-netty.xml" />
-	<import resource="config-server-exchange-status.xml" />
-	<import resource="config-server-exchange-tracer.xml" />
-	<import resource="config-server-exchange-context.xml" />
-	<import resource="config-server-exchange-delegation.xml" />
+	<bean id="server.exchanger.tracer.si" class="com.sissi.server.exchange.impl.MongoTracerContext">
+		<constructor-arg ref="server.exchanger.tracer.si.config" />
+	</bean>
+	<bean id="server.exchanger.tracer.si.config" class="com.sissi.config.impl.MongoProxyConfig">
+		<constructor-arg ref="mongo" />
+		<constructor-arg index="1" value="${mongo.db}" />
+		<constructor-arg index="2" value="${mongo.collection.exchanger.tracer}" />
+	</bean>
 </beans>

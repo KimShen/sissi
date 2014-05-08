@@ -1,5 +1,8 @@
 package com.sissi.protocol.iq.si;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -7,11 +10,13 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import com.sissi.config.Dictionary;
 import com.sissi.io.read.Collector;
 import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.Stream;
 import com.sissi.protocol.offline.Delay;
+import com.sissi.server.exchange.Tracer;
 
 /**
  * @author kim 2013年12月13日
@@ -19,7 +24,7 @@ import com.sissi.protocol.offline.Delay;
 @Metadata(uri = Si.XMLNS, localName = Si.NAME)
 @XmlType(namespace = Stream.XMLNS)
 @XmlRootElement
-public class Si extends Protocol implements Collector {
+public class Si extends Protocol implements Tracer, Collector {
 
 	public final static String XMLNS = "http://jabber.org/protocol/si";
 
@@ -58,6 +63,10 @@ public class Si extends Protocol implements Collector {
 	public Si setProfile(String profile) {
 		this.profile = profile;
 		return this;
+	}
+
+	public boolean file() {
+		return this.getFile() != null;
 	}
 
 	public Si setFile(File file) {
@@ -101,6 +110,26 @@ public class Si extends Protocol implements Collector {
 
 	public String host(String from, String to) {
 		return DigestUtils.sha1Hex(this.getId() + from + to);
+	}
+
+	@Override
+	public String id() {
+		return this.parent().getId();
+	}
+
+	public String target() {
+		return this.parent().getTo();
+	}
+
+	public String initiator() {
+		return this.parent().getFrom();
+	}
+
+	public Map<String, Object> plus() {
+		Map<String, Object> plus = new HashMap<String, Object>();
+		plus.put(Dictionary.FIELD_NAME, this.getFile().getName());
+		plus.put(Dictionary.FIELD_SIZE, this.getFile().getSize());
+		return plus;
 	}
 
 	@Override

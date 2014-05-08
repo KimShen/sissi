@@ -8,28 +8,51 @@
 	<bean id="register.pro.fields.init" class="com.sissi.pipeline.in.iq.register.RegisterFieldsProcessor">
 		<constructor-arg ref="uncenter.register.fields.form" />
 	</bean>
+	<bean id="register.pro.fields.init.check" class="com.sissi.pipeline.in.iq.register.RegisterCheckAllowedProcessor" />
 	<bean id="register.pro.fields.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.register.fields" />
+	</bean>
+	<bean id="register.pro.fields.init.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+		<constructor-arg>
+			<util:list>
+				<ref bean="register.pro.fields.init.check" />
+				<ref bean="register.pro.fields.init" />
+			</util:list>
+		</constructor-arg>
 	</bean>
 	<bean id="register.pro.store" abstract="true">
 		<constructor-arg ref="ucenter.register.user" />
 		<constructor-arg ref="iq.pro.error.noneclear" />
 	</bean>
 	<bean id="register.pro.store.simple" class="com.sissi.pipeline.in.iq.register.RegisterStoreSimpleProcessor" parent="register.pro.store" />
+	<bean id="register.pro.store.simple.check.exists" class="com.sissi.pipeline.in.iq.register.RegisterCheckSimpleExistsProcessor">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg ref="ucenter.vcard.user" />
+	</bean>
+	<bean id="register.pro.store.simple.check.username" class="com.sissi.pipeline.in.iq.register.RegisterCheckSimpleUsernameProcessor" />
 	<bean id="register.pro.store.simple.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="register.pro.store.simple.check.username" />
+				<ref bean="register.pro.store.simple.check.exists" />
 				<ref bean="register.pro.store.simple" />
 				<ref bean="iq.pro.result.stop" />
 			</util:list>
 		</constructor-arg>
 	</bean>
 	<bean id="register.pro.store.multiple" class="com.sissi.pipeline.in.iq.register.RegisterStoreMultiProcessor" parent="register.pro.store" />
-	<bean id="register.pro.store.multiple.check" class="com.sissi.pipeline.in.iq.register.RegisterStoreCheckProcessor" />
+	<bean id="register.pro.store.multiple.check.form" class="com.sissi.pipeline.in.iq.register.RegisterCheckMultiFormProcessor" />
+	<bean id="register.pro.store.multiple.check.exists" class="com.sissi.pipeline.in.iq.register.RegisterCheckMultiExistsProcessor">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg ref="ucenter.vcard.user" />
+	</bean>
+	<bean id="register.pro.store.multiple.check.username" class="com.sissi.pipeline.in.iq.register.RegisterCheckMultiUsernameProcessor" />
 	<bean id="register.pro.store.multiple.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="register.pro.store.multiple.check" />
+				<ref bean="register.pro.store.multiple.check.form" />
+				<ref bean="register.pro.store.multiple.check.username" />
+				<ref bean="register.pro.store.multiple.check.exists" />
 				<ref bean="register.pro.store.multiple" />
 				<ref bean="iq.pro.result.stop" />
 			</util:list>
@@ -71,7 +94,7 @@
 		</constructor-arg>
 	</bean>
 
-	<alias name="register.condition" alias="condition.register"/>
+	<alias name="register.condition" alias="condition.register" />
 	<bean id="register.condition" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg ref="register.condition.matcher" />
 		<constructor-arg ref="register.pro.fork" />
@@ -91,7 +114,7 @@
 		<constructor-arg>
 			<util:constant static-field="com.sissi.pipeline.in.AnyMatcher.INSTANCE" />
 		</constructor-arg>
-		<constructor-arg ref="register.pro.fields.init" />
+		<constructor-arg ref="register.pro.fields.init.chained" />
 	</bean>
 	<bean id="register.condition.store" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg ref="register.condition.store.matcher" />

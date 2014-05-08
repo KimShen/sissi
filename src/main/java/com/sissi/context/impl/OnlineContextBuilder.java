@@ -349,7 +349,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 			try {
 				// 忽略相同JID的消息回路
 				if (this.jid().same(element.getFrom())) {
-					OnlineContextBuilder.this.log.info("Loop write: " + this.jid.asString() + "on" + element.getClass());
+					OnlineContextBuilder.this.log.debug("Loop write: " + this.jid.asString() + " on " + element.getClass());
 					return this;
 				}
 				// Binding -> 自动分配From

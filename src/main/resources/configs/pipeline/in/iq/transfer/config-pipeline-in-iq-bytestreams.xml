@@ -36,8 +36,8 @@
 	<bean id="bytestreams.pro.2fans.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="bytestreams.pro.2fans" />
 				<ref bean="bytestreams.pro.2fans.check" />
+				<ref bean="bytestreams.pro.2fans" />
 			</util:list>
 		</constructor-arg>
 	</bean>
