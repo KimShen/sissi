@@ -2,6 +2,7 @@ package com.sissi.pipeline.in.iq.register;
 
 import com.sissi.field.Fields;
 import com.sissi.pipeline.Input;
+import com.sissi.protocol.iq.register.simple.Username;
 import com.sissi.ucenter.register.RegisterContext;
 
 /**
@@ -18,5 +19,10 @@ public class RegisterStoreSimpleProcessor extends RegisterStoreProcessor {
 	@Override
 	protected Fields process(Fields field) {
 		return field;
+	}
+
+	@Override
+	protected String username(Fields fields) {
+		return fields.findField(Username.NAME, Username.class).getValue();
 	}
 }

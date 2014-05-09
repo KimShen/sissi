@@ -28,6 +28,7 @@
 		<constructor-arg value="form" />
 		<constructor-arg>
 			<util:list>
+				<ref bean="uncenter.register.fields.form.xdata.type" />
 				<ref bean="uncenter.register.fields.form.xdata.title" />
 				<ref bean="uncenter.register.fields.form.xdata.instructions" />
 				<ref bean="uncenter.register.fields.form.xdata.username" />
@@ -36,6 +37,16 @@
 				<ref bean="uncenter.register.fields.form.xdata.gender" />
 				<ref bean="uncenter.register.fields.form.xdata.level" />
 			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="uncenter.register.fields.form.xdata.type" class="com.sissi.protocol.iq.data.XInput">
+		<constructor-arg index="0" value="hidden" />
+		<constructor-arg index="1">
+			<null />
+		</constructor-arg>
+		<constructor-arg index="2" value="FORM_TYPE" />
+		<constructor-arg>
+			<util:constant static-field="com.sissi.protocol.iq.register.Register.XMLNS" />
 		</constructor-arg>
 	</bean>
 	<bean id="uncenter.register.fields.form.xdata.title" class="com.sissi.protocol.iq.data.Title">

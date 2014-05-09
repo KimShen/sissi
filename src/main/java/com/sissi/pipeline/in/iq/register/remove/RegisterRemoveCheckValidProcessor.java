@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.iq.register;
+package com.sissi.pipeline.in.iq.register.remove;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;
@@ -7,22 +7,20 @@ import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.BadRequest;
-import com.sissi.protocol.iq.data.XData;
-import com.sissi.protocol.iq.data.XDataType;
 import com.sissi.protocol.iq.register.Register;
 
 /**
- * 表单提价类型校验
+ * 错误请求校验(禁止同时出现Remove和其他属性)
  * 
- * @author kim 2014年2月8日
+ * @author kim 2014年5月9日
  */
-public class RegisterCheckMultiFormProcessor implements Input {
+public class RegisterRemoveCheckValidProcessor implements Input {
 
-	private final Error error = new ServerError().type(ProtocolType.MODIFY).add(BadRequest.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(BadRequest.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return protocol.cast(Register.class).findField(XData.NAME, XData.class).type(XDataType.SUBMIT) ? true : this.writeAndReturn(context, protocol);
+		return protocol.cast(Register.class).valid() ? true : this.writeAndReturn(context, protocol);
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

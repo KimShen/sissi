@@ -17,7 +17,7 @@ import com.sissi.ucenter.vcard.VCardContext;
  * 
  * @author kim 2014年5月8日
  */
-public class RegisterCheckSimpleExistsProcessor implements Input {
+public class RegisterStoreCheckSimpleExistsProcessor implements Input {
 
 	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(Conflict.DETAIL_ELEMENT);
 
@@ -25,7 +25,7 @@ public class RegisterCheckSimpleExistsProcessor implements Input {
 
 	private final JIDBuilder jidBuilder;
 
-	public RegisterCheckSimpleExistsProcessor(VCardContext vcardContext, JIDBuilder jidBuilder) {
+	public RegisterStoreCheckSimpleExistsProcessor(VCardContext vcardContext, JIDBuilder jidBuilder) {
 		super();
 		this.vcardContext = vcardContext;
 		this.jidBuilder = jidBuilder;
@@ -33,7 +33,8 @@ public class RegisterCheckSimpleExistsProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.vcardContext.exists(this.jidBuilder.build(protocol.cast(Register.class).findField(Username.NAME, Username.class).getValue(), null)) ? this.writeAndReturn(context, protocol) : true;
+		String username = protocol.cast(Register.class).findField(Username.NAME, Username.class).getValue();
+		return !username.equals(context.jid().user()) && this.vcardContext.exists(this.jidBuilder.build(username, null)) ? this.writeAndReturn(context, protocol) : true;
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {

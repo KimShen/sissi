@@ -3,8 +3,10 @@ package com.sissi.ucenter.register.impl;
 import java.util.Set;
 
 import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
+import com.sissi.config.Dictionary;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoUtils;
 import com.sissi.context.JIDBuilder;
@@ -16,9 +18,13 @@ import com.sissi.ucenter.impl.MongoFieldsContext;
 import com.sissi.ucenter.register.RegisterContext;
 
 /**
+ * 索引策略: {"username":1}
+ * 
  * @author kim 2013年12月3日
  */
 public class MongoRegisterContext extends MongoFieldsContext implements RegisterContext {
+
+	private final DBObject remove = BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(Dictionary.FIELD_ACTIVATE, false).get()).get();
 
 	private final MongoConfig config;
 
@@ -42,12 +48,16 @@ public class MongoRegisterContext extends MongoFieldsContext implements Register
 	}
 
 	@Override
-	public boolean register(Fields fields) {
+	public boolean register(String username, Fields fields) {
 		try {
-			return this.valid(fields) ? MongoUtils.effect(this.config.collection().save(super.entities(fields, BasicDBObjectBuilder.start()), WriteConcern.SAFE)) : false;
+			return this.valid(fields) ? MongoUtils.effect(this.config.collection().update(BasicDBObjectBuilder.start(Dictionary.FIELD_USERNAME, username).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(super.entities(fields, BasicDBObjectBuilder.start()).toMap()).add(Dictionary.FIELD_ACTIVATE, true).get()).get(), true, false, WriteConcern.SAFE)) : false;
 		} catch (MongoException e) {
 			return false;
 		}
+	}
+
+	public boolean unregister(String username) {
+		return MongoUtils.effect(this.config.collection().update(BasicDBObjectBuilder.start(Dictionary.FIELD_USERNAME, username).get(), this.remove, false, false, WriteConcern.SAFE));
 	}
 
 	private boolean valid(Fields fields) {

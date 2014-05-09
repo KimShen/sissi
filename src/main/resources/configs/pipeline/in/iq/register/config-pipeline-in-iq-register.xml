@@ -5,17 +5,17 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="register.pro.check" class="com.sissi.pipeline.in.iq.register.RegisterCheckAllowedProcessor" />
 	<bean id="register.pro.fields.init" class="com.sissi.pipeline.in.iq.register.RegisterFieldsProcessor">
 		<constructor-arg ref="uncenter.register.fields.form" />
 	</bean>
-	<bean id="register.pro.fields.init.check" class="com.sissi.pipeline.in.iq.register.RegisterCheckAllowedProcessor" />
 	<bean id="register.pro.fields.fork" class="com.sissi.pipeline.in.ForkProcessor">
 		<constructor-arg ref="finder.register.fields" />
 	</bean>
 	<bean id="register.pro.fields.init.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
-				<ref bean="register.pro.fields.init.check" />
+				<ref bean="register.pro.check" />
 				<ref bean="register.pro.fields.init" />
 			</util:list>
 		</constructor-arg>
@@ -25,15 +25,17 @@
 		<constructor-arg ref="iq.pro.error.noneclear" />
 	</bean>
 	<bean id="register.pro.store.simple" class="com.sissi.pipeline.in.iq.register.RegisterStoreSimpleProcessor" parent="register.pro.store" />
-	<bean id="register.pro.store.simple.check.exists" class="com.sissi.pipeline.in.iq.register.RegisterCheckSimpleExistsProcessor">
+	<bean id="register.pro.store.simple.check.exists" class="com.sissi.pipeline.in.iq.register.RegisterStoreCheckSimpleExistsProcessor">
 		<constructor-arg ref="context.jid" />
 		<constructor-arg ref="ucenter.vcard.user" />
 	</bean>
-	<bean id="register.pro.store.simple.check.username" class="com.sissi.pipeline.in.iq.register.RegisterCheckSimpleUsernameProcessor" />
+	<bean id="register.pro.store.simple.check.allowed" class="com.sissi.pipeline.in.iq.register.RegisterStoreCheckAllowedProcessor" />
+	<bean id="register.pro.store.simple.check.username" class="com.sissi.pipeline.in.iq.register.RegisterStoreCheckSimpleUsernameProcessor" />
 	<bean id="register.pro.store.simple.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="register.pro.store.simple.check.username" />
+				<ref bean="register.pro.store.simple.check.allowed" />
 				<ref bean="register.pro.store.simple.check.exists" />
 				<ref bean="register.pro.store.simple" />
 				<ref bean="iq.pro.result.stop" />
@@ -41,18 +43,19 @@
 		</constructor-arg>
 	</bean>
 	<bean id="register.pro.store.multiple" class="com.sissi.pipeline.in.iq.register.RegisterStoreMultiProcessor" parent="register.pro.store" />
-	<bean id="register.pro.store.multiple.check.form" class="com.sissi.pipeline.in.iq.register.RegisterCheckMultiFormProcessor" />
-	<bean id="register.pro.store.multiple.check.exists" class="com.sissi.pipeline.in.iq.register.RegisterCheckMultiExistsProcessor">
+	<bean id="register.pro.store.multiple.check.form" class="com.sissi.pipeline.in.iq.register.RegisterStoreCheckMultiFormProcessor" />
+	<bean id="register.pro.store.multiple.check.exists" class="com.sissi.pipeline.in.iq.register.RegisterStoreCheckMultiExistsProcessor">
 		<constructor-arg ref="context.jid" />
 		<constructor-arg ref="ucenter.vcard.user" />
 	</bean>
-	<bean id="register.pro.store.multiple.check.username" class="com.sissi.pipeline.in.iq.register.RegisterCheckMultiUsernameProcessor" />
+	<bean id="register.pro.store.multiple.check.username" class="com.sissi.pipeline.in.iq.register.RegisterStoreCheckMultiUsernameProcessor" />
 	<bean id="register.pro.store.multiple.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="register.pro.store.multiple.check.form" />
 				<ref bean="register.pro.store.multiple.check.username" />
 				<ref bean="register.pro.store.multiple.check.exists" />
+				<ref bean="register.pro.check" />
 				<ref bean="register.pro.store.multiple" />
 				<ref bean="iq.pro.result.stop" />
 			</util:list>
@@ -68,6 +71,8 @@
 	<bean id="finder.register" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>
 			<util:list>
+				<!-- Remove first -->
+				<ref bean="register.condition.remove" />
 				<ref bean="register.condition.fields" />
 				<ref bean="register.condition.store" />
 			</util:list>
@@ -140,4 +145,5 @@
 	</bean>
 
 	<import resource="config-pipeline-in-iq-register-muc.xml" />
+	<import resource="config-pipeline-in-iq-register-remove.xml" />
 </beans>

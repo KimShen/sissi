@@ -6,7 +6,7 @@ import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.error.ServerError;
-import com.sissi.protocol.error.detail.BadRequest;
+import com.sissi.protocol.error.detail.NotAcceptable;
 import com.sissi.protocol.iq.data.XData;
 import com.sissi.protocol.iq.data.XField;
 import com.sissi.protocol.iq.register.Register;
@@ -17,9 +17,9 @@ import com.sissi.protocol.iq.register.simple.Username;
  * 
  * @author kim 2014年5月8日
  */
-public class RegisterCheckMultiUsernameProcessor implements Input {
+public class RegisterStoreCheckMultiUsernameProcessor implements Input {
 
-	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(BadRequest.DETAIL);
+	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(NotAcceptable.DETAIL);
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

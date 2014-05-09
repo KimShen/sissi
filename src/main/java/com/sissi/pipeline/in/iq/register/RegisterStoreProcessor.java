@@ -28,8 +28,11 @@ abstract class RegisterStoreProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return this.registerContext.register(this.process(protocol.cast(Register.class))) ? true : this.proxy.input(context, protocol.parent());
+		Register register = protocol.cast(Register.class);
+		return this.registerContext.register(this.username(register), this.process(register)) ? true : this.proxy.input(context, protocol.parent());
 	}
 
 	abstract protected Fields process(Fields fields);
+
+	abstract protected String username(Fields fields);
 }

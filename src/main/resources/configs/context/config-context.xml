@@ -18,5 +18,6 @@
 	<bean id="context.jid" class="com.sissi.context.impl.LengthLimitJIDBuilder">
 		<constructor-arg value="${global.maxlength.jid}" />
 		<constructor-arg value="${domain.server.muc}" />
+		<constructor-arg value="${domain.server}" />
 	</bean>
 </beans>

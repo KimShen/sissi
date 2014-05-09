@@ -19,7 +19,7 @@ import com.sissi.ucenter.vcard.VCardContext;
  * 
  * @author kim 2014年5月8日
  */
-public class RegisterCheckMultiExistsProcessor implements Input {
+public class RegisterStoreCheckMultiExistsProcessor implements Input {
 
 	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(Conflict.DETAIL_ELEMENT);
 
@@ -27,7 +27,7 @@ public class RegisterCheckMultiExistsProcessor implements Input {
 
 	private final JIDBuilder jidBuilder;
 
-	public RegisterCheckMultiExistsProcessor(VCardContext vcardContext, JIDBuilder jidBuilder) {
+	public RegisterStoreCheckMultiExistsProcessor(VCardContext vcardContext, JIDBuilder jidBuilder) {
 		super();
 		this.vcardContext = vcardContext;
 		this.jidBuilder = jidBuilder;

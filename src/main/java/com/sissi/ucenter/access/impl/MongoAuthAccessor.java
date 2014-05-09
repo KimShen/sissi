@@ -28,6 +28,6 @@ public class MongoAuthAccessor implements AuthAccessor {
 	 */
 	@Override
 	public String access(String username) {
-		return MongoUtils.asString(this.config.collection().findOne(BasicDBObjectBuilder.start(Dictionary.FIELD_USERNAME, username).get(), this.filter), Dictionary.FIELD_PASSWORD);
+		return MongoUtils.asString(this.config.collection().findOne(BasicDBObjectBuilder.start().add(Dictionary.FIELD_USERNAME, username).add(Dictionary.FIELD_ACTIVATE, true).get(), this.filter), Dictionary.FIELD_PASSWORD);
 	}
 }

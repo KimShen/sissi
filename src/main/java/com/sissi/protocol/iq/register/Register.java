@@ -36,6 +36,8 @@ public class Register extends Protocol implements Fields, Collector {
 
 	private String instructions;
 
+	private Remove remove;
+
 	public Register() {
 	}
 
@@ -68,13 +70,33 @@ public class Register extends Protocol implements Fields, Collector {
 		return this;
 	}
 
+	public boolean valid() {
+		return this.remove() ^ !this.fields.isEmpty();
+	}
+
+	public boolean remove() {
+		return this.getRemove() != null;
+	}
+
+	@XmlElement
+	public Remove getRemove() {
+		return this.remove;
+	}
+
 	@XmlElements({ @XmlElement(name = XData.NAME, type = XData.class), @XmlElement(name = Username.NAME, type = Username.class), @XmlElement(name = Password.NAME, type = Password.class), @XmlElement(name = Registered.NAME, type = Registered.class) })
 	public List<Field<?>> getFields() {
 		return this.fields.getFields();
 	}
 
 	public void set(String localName, Object ob) {
-		this.fields.add(Field.class.cast(ob));
+		switch (localName) {
+		case Remove.NAME:
+			this.remove = Remove.class.cast(ob);
+			return;
+		default:
+			this.fields.add(Field.class.cast(ob));
+			return;
+		}
 	}
 
 	public Register clear() {

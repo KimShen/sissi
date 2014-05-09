@@ -4,6 +4,8 @@ import com.sissi.field.Fields;
 import com.sissi.field.impl.BeanFields;
 import com.sissi.pipeline.Input;
 import com.sissi.protocol.iq.data.XData;
+import com.sissi.protocol.iq.data.XField;
+import com.sissi.protocol.iq.register.simple.Username;
 import com.sissi.ucenter.register.RegisterContext;
 
 /**
@@ -20,5 +22,10 @@ public class RegisterStoreMultiProcessor extends RegisterStoreProcessor {
 	@Override
 	protected Fields process(Fields fields) {
 		return new BeanFields(false, fields.findField(XData.NAME, XData.class).getFields());
+	}
+
+	@Override
+	protected String username(Fields fields) {
+		return fields.findField(XData.NAME, XData.class).findField(Username.NAME, XField.class).getValue().toString();
 	}
 }

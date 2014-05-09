@@ -16,14 +16,18 @@ public class LengthLimitJIDBuilder implements JIDBuilder {
 
 	private final String group;
 
+	private final String domain;
+
 	/**
 	 * @param limit JID长度限制
 	 * @param group MUC域
+	 * @param domain 服务器域
 	 */
-	public LengthLimitJIDBuilder(int limit, String group) {
+	public LengthLimitJIDBuilder(int limit, String group, String domain) {
 		super();
 		this.limit = limit;
 		this.group = group;
+		this.domain = domain;
 	}
 
 	@Override
@@ -82,7 +86,7 @@ public class LengthLimitJIDBuilder implements JIDBuilder {
 		}
 
 		public String domain() {
-			return this.domain;
+			return this.domain != null ? this.domain : LengthLimitJIDBuilder.this.domain;
 		}
 
 		public User domain(String domain) {
@@ -118,7 +122,7 @@ public class LengthLimitJIDBuilder implements JIDBuilder {
 		}
 
 		public boolean isGroup() {
-			return LengthLimitJIDBuilder.this.group.equals(this.domain);
+			return LengthLimitJIDBuilder.this.group.equals(this.domain());
 		}
 
 		public boolean same(JID jid) {
@@ -159,7 +163,7 @@ public class LengthLimitJIDBuilder implements JIDBuilder {
 		}
 
 		public String asStringWithBare() {
-			return this.stringWithBare != null ? this.stringWithBare : (this.domain != null ? this.stringWithBare(true) : this.stringWithBare(false));
+			return this.stringWithBare != null ? this.stringWithBare : (this.domain() != null ? this.stringWithBare(true) : this.stringWithBare(false));
 		}
 
 		/**
