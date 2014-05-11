@@ -8,7 +8,22 @@
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
-				<value>classpath:config-*.properties</value>
+				<value>classpath:config-external.properties</value>
+				<value>classpath:config-domain.properties</value>
+				<value>classpath:config-global.properties</value>
+				<value>classpath:config-loop.properties</value>
+				<value>classpath:config-login.properties</value>
+				<value>classpath:config-mongo.properties</value>
+				<value>classpath:config-mongo-collection.properties</value>
+				<value>classpath:config-persistent.properties</value>
+				<value>classpath:config-server-ha.properties</value>
+				<value>classpath:config-server-tls.properties</value>
+				<value>classpath:config-server-exchanger.properties</value>
+				<value>classpath:config-thread.properties</value>
+				<value>classpath:config-ucenter.properties</value>
+				<value>classpath:config-ucenter-muc.properties</value>
+				<value>classpath:config-ucenter-roster.properties</value>
+				<value>classpath:config-ucenter-register.properties</value>
 			</list>
 		</property>
 		<property name="fileEncoding" value="utf-8" />
