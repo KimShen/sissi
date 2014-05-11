@@ -6,16 +6,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author kim 2013年12月16日
  */
 
-@XmlRootElement(name = Instructions.NAME)
-public class Instructions extends XValue {
+@XmlRootElement(name = XInstructions.NAME)
+public class XInstructions extends XValue {
 
 	public final static String NAME = "instructions";
 
-	public Instructions() {
+	public XInstructions() {
 		super();
 	}
 
-	public Instructions(String value) {
+	public XInstructions(String value) {
 		super(value);
 	}
 }

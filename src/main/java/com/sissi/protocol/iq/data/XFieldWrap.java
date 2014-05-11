@@ -23,7 +23,7 @@ abstract class XFieldWrap extends BeanFields {
 		super(isEmbed);
 	}
 
-	@XmlElements({ @XmlElement(name = XField.NAME, type = XField.class), @XmlElement(name = XItem.NAME, type = XItem.class), @XmlElement(name = XReported.NAME, type = XReported.class), @XmlElement(name = XInput.NAME, type = XInput.class), @XmlElement(name = Select.NAME, type = Select.class), @XmlElement(name = Title.NAME, type = Title.class), @XmlElement(name = Instructions.NAME, type = Instructions.class) ,@XmlElement(name = Nickname.NAME, type = Nickname.class)})
+	@XmlElements({ @XmlElement(name = XField.NAME, type = XField.class), @XmlElement(name = XItem.NAME, type = XItem.class), @XmlElement(name = XReported.NAME, type = XReported.class), @XmlElement(name = XInput.NAME, type = XInput.class), @XmlElement(name = XSelect.NAME, type = XSelect.class), @XmlElement(name = XTitle.NAME, type = XTitle.class), @XmlElement(name = XInstructions.NAME, type = XInstructions.class) ,@XmlElement(name = Nickname.NAME, type = Nickname.class)})
 	public List<Field<?>> getFields() {
 		return super.getFields();
 	}

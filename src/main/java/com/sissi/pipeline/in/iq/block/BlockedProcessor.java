@@ -3,7 +3,8 @@ package com.sissi.pipeline.in.iq.block;
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.block.Blocked;
+import com.sissi.protocol.iq.block.Block;
+import com.sissi.protocol.iq.block.BlockListItem;
 import com.sissi.ucenter.block.BlockContext;
 
 /**
@@ -22,7 +23,9 @@ public class BlockedProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		this.blockContext.block(context.jid(), super.build(protocol.cast(Blocked.class).getItem().getJid()));
+		for (BlockListItem item : protocol.cast(Block.class).getItem()) {
+			this.blockContext.block(context.jid(), super.build(item.getJid()));
+		}
 		return true;
 	}
 }

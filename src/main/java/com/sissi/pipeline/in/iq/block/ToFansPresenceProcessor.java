@@ -6,6 +6,7 @@ import com.sissi.context.Status;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.block.Block;
+import com.sissi.protocol.iq.block.BlockListItem;
 import com.sissi.protocol.presence.Presence;
 
 /**
@@ -18,10 +19,12 @@ abstract class ToFansPresenceProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		Presence presence = new Presence();
-		JID to = super.build(protocol.cast(Block.class).getItem().getJid());
-		// From: 当前JID所有资源, To: Block.item.jid
-		for (JID resource : super.resources(context.jid())) {
-			super.broadcast(to, presence.setFrom(resource).clauses(this.build(context).clauses()));
+		for (BlockListItem item : protocol.cast(Block.class).getItem()) {
+			JID to = super.build(item.getJid());
+			// From: 当前JID所有资源, To: Block.item.jid
+			for (JID resource : super.resources(context.jid())) {
+				super.broadcast(to, presence.setFrom(resource).clauses(this.build(context).clauses()));
+			}
 		}
 		return true;
 	}

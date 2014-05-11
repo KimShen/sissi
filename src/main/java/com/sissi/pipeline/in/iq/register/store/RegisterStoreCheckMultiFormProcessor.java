@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.iq.register;
+package com.sissi.pipeline.in.iq.register.store;
 
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.Input;

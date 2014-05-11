@@ -8,16 +8,19 @@
 	<bean id="block.pro.blocked" class="com.sissi.pipeline.in.iq.block.BlockedProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="ucenter.block" />
 	</bean>
+	<bean id="block.pro.blocked.check" class="com.sissi.pipeline.in.iq.block.BlockedCheckProcessor" />
 	<bean id="block.pro.blocked.2selfs.item" class="com.sissi.pipeline.in.iq.block.ToSelfsItemProcessor" parent="global.pro.proxy" />
 	<bean id="block.pro.blocked.2selfs.presence" class="com.sissi.pipeline.in.iq.block.Blocked2SelfsPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="block.pro.blocked.2fans.presence" class="com.sissi.pipeline.in.iq.block.Blocked2FansPresenceProcessor" parent="global.pro.proxy" />
 	<bean id="block.pro.blocked.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="block.pro.blocked.check" />
 				<ref bean="block.pro.blocked.2selfs.presence" />
 				<ref bean="block.pro.blocked.2fans.presence" />
 				<ref bean="block.pro.blocked.2selfs.item" />
 				<ref bean="block.pro.blocked" />
+				<ref bean="iq.pro.result.stop" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -34,6 +37,7 @@
 				<ref bean="block.pro.unblock.2selfs.item" />
 				<ref bean="block.pro.unblock.2fans.presence" />
 				<ref bean="block.pro.unblock.2selfs.presence" />
+				<ref bean="iq.pro.result.stop" />
 			</util:list>
 		</constructor-arg>
 	</bean>

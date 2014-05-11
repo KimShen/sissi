@@ -80,7 +80,7 @@
 		<maven.mongo.collection.exchanger.tracer>exchanger.tracer.si</maven.mongo.collection.exchanger.tracer>
 
 		<maven.login.auth.retry>2</maven.login.auth.retry>
-		<maven.login.bind.resource>2</maven.login.bind.resource>
+		<maven.login.bind.resource>5</maven.login.bind.resource>
 		<maven.login.bind.kick>您有其他客户端上线了</maven.login.bind.kick>
 
 		<maven.persistent.resend>3</maven.persistent.resend>
@@ -92,6 +92,7 @@
 		<maven.ucenter.roster.length.group>10</maven.ucenter.roster.length.group>
 		<maven.ucenter.register.muc>注册通知</maven.ucenter.register.muc>
 		<maven.ucenter.register.title>Welcome 2 register</maven.ucenter.register.title>
+		<manve.ucenter.register.redirect>http://${maven.domain.server}</manve.ucenter.register.redirect>
 		<maven.ucenter.register.instructions>From sissi</maven.ucenter.register.instructions>
 		<maven.persistent.recover.limit.def>20</maven.persistent.recover.limit.def>
 		<maven.persistent.recover.since.def>30000</maven.persistent.recover.since.def>

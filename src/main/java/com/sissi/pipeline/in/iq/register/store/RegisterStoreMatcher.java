@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.iq.register;
+package com.sissi.pipeline.in.iq.register.store;
 
 import com.sissi.pipeline.in.ClassMatcher;
 import com.sissi.protocol.Protocol;

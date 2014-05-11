@@ -1,5 +1,7 @@
 package com.sissi.pipeline.in.iq.block;
 
+import java.util.List;
+
 import com.sissi.context.JIDContext;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
@@ -32,8 +34,10 @@ public class UnBlockProcessor extends ProxyProcessor {
 		return ub.unBlockAll() ? this.unblockAndReturn(context) : this.unblockAndReturn(context, ub.getItem());
 	}
 
-	private boolean unblockAndReturn(JIDContext context, BlockListItem item) {
-		this.blockContext.unblock(context.jid(), super.build(item.getJid()));
+	private boolean unblockAndReturn(JIDContext context, List<BlockListItem> item) {
+		for (BlockListItem each : item) {
+			this.blockContext.unblock(context.jid(), super.build(each.getJid()));
+		}
 		return true;
 	}
 

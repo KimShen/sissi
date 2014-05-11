@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.iq.register;
+package com.sissi.pipeline.in.iq.register.store;
 
 import com.sissi.field.Fields;
 import com.sissi.pipeline.Input;

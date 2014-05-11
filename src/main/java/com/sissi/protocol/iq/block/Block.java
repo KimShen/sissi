@@ -1,5 +1,8 @@
 package com.sissi.protocol.iq.block;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -13,10 +16,22 @@ public class Block extends Protocol implements Collector {
 
 	public final static String XMLNS = "urn:xmpp:blocking";
 
-	private BlockListItem item;
+	private List<BlockListItem> item;
+
+	public boolean item() {
+		return this.getItem() != null && !this.getItem().isEmpty();
+	}
+
+	public Block add(BlockListItem item) {
+		if (this.item == null) {
+			this.item = new ArrayList<BlockListItem>();
+		}
+		this.item.add(item);
+		return this;
+	}
 
 	@XmlElement
-	public BlockListItem getItem() {
+	public List<BlockListItem> getItem() {
 		return this.item;
 	}
 
@@ -25,8 +40,12 @@ public class Block extends Protocol implements Collector {
 		return XMLNS;
 	}
 
+	public Protocol parent() {
+		return super.parent().setFrom((String) null);
+	}
+
 	@Override
 	public void set(String localName, Object ob) {
-		this.item = BlockListItem.class.cast(ob);
+		this.add(BlockListItem.class.cast(ob));
 	}
 }

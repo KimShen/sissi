@@ -1,6 +1,5 @@
 package com.sissi.protocol.iq.block;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -16,23 +15,11 @@ import com.sissi.protocol.Item;
 @XmlRootElement(name = Item.NAME)
 public class BlockListItem extends Item {
 
-	private String subscription;
-
 	public BlockListItem() {
 		super();
 	}
 
 	public BlockListItem(JID jid) {
 		super.setJid(jid.asStringWithBare());
-	}
-
-	@XmlAttribute
-	public String getSubscription() {
-		return this.subscription;
-	}
-
-	public BlockListItem setSubscription(String subscription) {
-		this.subscription = subscription;
-		return this;
 	}
 }

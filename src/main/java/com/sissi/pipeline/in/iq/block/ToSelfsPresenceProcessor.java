@@ -6,6 +6,7 @@ import com.sissi.context.Status;
 import com.sissi.pipeline.in.ProxyProcessor;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.block.Block;
+import com.sissi.protocol.iq.block.BlockListItem;
 import com.sissi.protocol.presence.Presence;
 
 /**
@@ -18,10 +19,12 @@ abstract class ToSelfsPresenceProcessor extends ProxyProcessor {
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		Presence presence = new Presence();
-		JID to = super.build(protocol.cast(Block.class).getItem().getJid());
-		for (JID resource : super.resources(to)) {
-			// super.findOne(to, true, true) -> Block.item.jid指定资源的JIDContext
-			super.broadcast(context.jid(), presence.setFrom(resource).clauses(this.build(super.findOne(to, true, true)).clauses()));
+		for (BlockListItem item : protocol.cast(Block.class).getItem()) {
+			JID to = super.build(item.getJid());
+			for (JID resource : super.resources(to)) {
+				// super.findOne(to, true, true) -> Block.item.jid指定资源的JIDContext
+				super.broadcast(context.jid(), presence.setFrom(resource).clauses(this.build(super.findOne(to, true, true)).clauses()));
+			}
 		}
 		return true;
 	}

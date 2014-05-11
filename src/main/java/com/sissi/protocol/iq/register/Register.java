@@ -17,6 +17,7 @@ import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.iq.data.XData;
 import com.sissi.protocol.iq.register.simple.Password;
+import com.sissi.protocol.iq.register.simple.Redirect;
 import com.sissi.protocol.iq.register.simple.Registered;
 import com.sissi.protocol.iq.register.simple.Username;
 
@@ -83,7 +84,7 @@ public class Register extends Protocol implements Fields, Collector {
 		return this.remove;
 	}
 
-	@XmlElements({ @XmlElement(name = XData.NAME, type = XData.class), @XmlElement(name = Username.NAME, type = Username.class), @XmlElement(name = Password.NAME, type = Password.class), @XmlElement(name = Registered.NAME, type = Registered.class) })
+	@XmlElements({ @XmlElement(name = XData.NAME, type = XData.class), @XmlElement(name = Username.NAME, type = Username.class), @XmlElement(name = Password.NAME, type = Password.class), @XmlElement(name = Registered.NAME, type = Registered.class), @XmlElement(name = Redirect.NAME, type = Redirect.class) })
 	public List<Field<?>> getFields() {
 		return this.fields.getFields();
 	}

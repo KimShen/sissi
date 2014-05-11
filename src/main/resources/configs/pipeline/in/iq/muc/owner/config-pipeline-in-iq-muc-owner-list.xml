@@ -5,10 +5,10 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="muc.pro.owner.get.list.base.title" class="com.sissi.protocol.iq.data.Title">
+	<bean id="muc.pro.owner.get.list.base.title" class="com.sissi.protocol.iq.data.XTitle">
 		<constructor-arg value="This is my title" />
 	</bean>
-	<bean id="muc.pro.owner.get.list.base.instructions" class="com.sissi.protocol.iq.data.Instructions">
+	<bean id="muc.pro.owner.get.list.base.instructions" class="com.sissi.protocol.iq.data.XInstructions">
 		<constructor-arg value="This is my introduce" />
 	</bean>
 	<bean id="muc.pro.owner.get.list.base.formtype" class="com.sissi.protocol.iq.data.XInput">
@@ -19,7 +19,7 @@
 		<constructor-arg index="2" value="FORM_TYPE" />
 		<constructor-arg index="3" value="http://jabber.org/protocol/muc#roomconfig" />
 	</bean>
-	<bean id="muc.pro.owner.get.list.option.whois" class="com.sissi.protocol.iq.data.Select">
+	<bean id="muc.pro.owner.get.list.option.whois" class="com.sissi.protocol.iq.data.XSelect">
 		<constructor-arg index="0" value="list-single" />
 		<constructor-arg index="1" value="Anonymity JID" />
 		<constructor-arg index="2" value="muc#roomconfig_whois" />
@@ -49,7 +49,7 @@
 		<constructor-arg index="1" value="Password" />
 		<constructor-arg index="2" value="muc#roomconfig_roomsecret" />
 	</bean>
-	<bean id="muc.pro.owner.get.list.option.affiliation" class="com.sissi.protocol.iq.data.Select">
+	<bean id="muc.pro.owner.get.list.option.affiliation" class="com.sissi.protocol.iq.data.XSelect">
 		<constructor-arg index="0" value="list-single" />
 		<constructor-arg index="1" value="Affiliation Limit" />
 		<constructor-arg index="2" value="muc#roomconfig_affiliation" />
@@ -74,7 +74,7 @@
 		<constructor-arg index="0" value="NONE" />
 		<constructor-arg index="1" value="NONE" />
 	</bean>
-	<bean id="muc.pro.owner.get.list.option.persistentroom" class="com.sissi.protocol.iq.data.Select">
+	<bean id="muc.pro.owner.get.list.option.persistentroom" class="com.sissi.protocol.iq.data.XSelect">
 		<constructor-arg index="0" value="list-single" />
 		<constructor-arg index="1" value="Persistent Room" />
 		<constructor-arg index="2" value="muc#roomconfig_persistentroom" />

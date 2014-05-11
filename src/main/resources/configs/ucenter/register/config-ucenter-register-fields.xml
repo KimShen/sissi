@@ -49,10 +49,10 @@
 			<util:constant static-field="com.sissi.protocol.iq.register.Register.XMLNS" />
 		</constructor-arg>
 	</bean>
-	<bean id="uncenter.register.fields.form.xdata.title" class="com.sissi.protocol.iq.data.Title">
+	<bean id="uncenter.register.fields.form.xdata.title" class="com.sissi.protocol.iq.data.XTitle">
 		<constructor-arg value="This is my title" />
 	</bean>
-	<bean id="uncenter.register.fields.form.xdata.instructions" class="com.sissi.protocol.iq.data.Instructions">
+	<bean id="uncenter.register.fields.form.xdata.instructions" class="com.sissi.protocol.iq.data.XInstructions">
 		<constructor-arg value="This is my introduce" />
 	</bean>
 	<bean id="uncenter.register.fields.form.xdata.username" class="com.sissi.protocol.iq.data.XInput">
@@ -76,7 +76,7 @@
 		<constructor-arg index="1" value="Desc" />
 		<constructor-arg index="2" value="desc" />
 	</bean>
-	<bean id="uncenter.register.fields.form.xdata.gender" class="com.sissi.protocol.iq.data.Select">
+	<bean id="uncenter.register.fields.form.xdata.gender" class="com.sissi.protocol.iq.data.XSelect">
 		<constructor-arg index="0" value="list-single" />
 		<constructor-arg index="1" value="Gender" />
 		<constructor-arg index="2" value="gender" />
@@ -95,7 +95,7 @@
 		<constructor-arg index="0" value="Female" />
 		<constructor-arg index="1" value="F" />
 	</bean>
-	<bean id="uncenter.register.fields.form.xdata.level" class="com.sissi.protocol.iq.data.Select">
+	<bean id="uncenter.register.fields.form.xdata.level" class="com.sissi.protocol.iq.data.XSelect">
 		<constructor-arg index="0" value="list-multi" />
 		<constructor-arg index="1" value="Level" />
 		<constructor-arg index="2" value="level" />

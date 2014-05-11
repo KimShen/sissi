@@ -22,6 +22,10 @@ public class File implements Collector {
 
 	private String size;
 
+	private String date;
+
+	private String hash;
+
 	private Desc desc;
 
 	@XmlElement
@@ -46,6 +50,26 @@ public class File implements Collector {
 
 	public File setSize(String size) {
 		this.size = size;
+		return this;
+	}
+
+	@XmlAttribute
+	public String getDate() {
+		return date;
+	}
+
+	public File setDate(String date) {
+		this.date = date;
+		return this;
+	}
+
+	@XmlAttribute
+	public String getHash() {
+		return hash;
+	}
+
+	public File setHash(String hash) {
+		this.hash = hash;
 		return this;
 	}
 

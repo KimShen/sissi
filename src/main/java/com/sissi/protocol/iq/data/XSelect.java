@@ -10,29 +10,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * @author kim 2013年12月5日
  */
-@XmlRootElement(name = Select.NAME)
-public class Select extends XInput {
+@XmlRootElement(name = XSelect.NAME)
+public class XSelect extends XInput {
 
 	public final static String NAME = "field";
 
 	private List<XOption> option;
 
-	public Select() {
+	public XSelect() {
 	}
 
-	public Select(String type, String name, String var, XOption... options) {
+	public XSelect(String type, String name, String var, XOption... options) {
 		this(type, name, var, (String) null, options);
 	}
 
-	public Select(String type, String name, String var, String value, XOption... options) {
+	public XSelect(String type, String name, String var, String value, XOption... options) {
 		this(type, name, var, value, null, options);
 	}
 
-	public Select(String type, String name, String var, XRequired required, XOption... options) {
+	public XSelect(String type, String name, String var, XRequired required, XOption... options) {
 		this(type, name, var, null, required, options);
 	}
 
-	public Select(String type, String name, String var, String value, XRequired required, XOption... options) {
+	public XSelect(String type, String name, String var, String value, XRequired required, XOption... options) {
 		super(XFieldType.parse(type).toString(), name, var, value, required);
 		if (options != null) {
 			for (XOption each : options) {
@@ -41,7 +41,7 @@ public class Select extends XInput {
 		}
 	}
 
-	private Select add(XOption option) {
+	private XSelect add(XOption option) {
 		if (this.option == null) {
 			this.option = new ArrayList<XOption>();
 		}
