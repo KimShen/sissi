@@ -176,17 +176,6 @@
 			<artifactId>spring-core</artifactId>
 			<version>${maven.project.spring.version}</version>
 		</dependency>
-		<!-- For project -->
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-core-asl</artifactId>
-			<version>1.9.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.1</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<finalName>${maven.project.name}</finalName>
