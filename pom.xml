@@ -83,7 +83,7 @@
 		<maven.login.bind.resource>5</maven.login.bind.resource>
 		<maven.login.bind.kick>您有其他客户端上线了</maven.login.bind.kick>
 
-		<maven.persistent.resend>3</maven.persistent.resend>
+		<maven.persistent.resend>1</maven.persistent.resend>
 		<maven.persistent.tip>From Sissi offline</maven.persistent.tip>
 
 		<maven.ucenter.roster.group>fans</maven.ucenter.roster.group>
