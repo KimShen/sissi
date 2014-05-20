@@ -348,7 +348,7 @@ public class OnlineContextBuilder implements JIDContextBuilder {
 		private JIDContext write(Element element, Output output, boolean bare) {
 			try {
 				// 忽略相同JID的消息回路
-				if (this.jid().same(element.getFrom())) {
+				if (this.jid().same(element.getFrom(true))) {
 					OnlineContextBuilder.this.log.debug("Loop write: " + this.jid.asString() + " on " + element.getClass());
 					return this;
 				}

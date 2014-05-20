@@ -26,8 +26,4 @@ public class RosterSet2SelfsProcessor extends RosterItemProcessor {
 	protected boolean ask() {
 		return true;
 	}
-
-	protected boolean next(String subscription) {
-		return RosterSubscription.parse(subscription) == RosterSubscription.NONE;
-	}
 }

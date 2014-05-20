@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.message;
+package com.sissi.pipeline.in.iq;
 
 import java.util.UUID;
 
@@ -14,7 +14,7 @@ import com.sissi.protocol.iq.ack.ServerAck;
  * 
  * @author kim 2014年3月6日
  */
-public class MessageTimeCallProcessor implements Input {
+public class IQTimeCallProcessor implements Input {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {

@@ -35,7 +35,7 @@ public class Unique extends Protocol {
 	public static class UniqueSequence implements Element {
 
 		private Unique unique;
- 
+
 		public UniqueSequence() {
 			super();
 		}
@@ -69,6 +69,10 @@ public class Unique extends Protocol {
 		@Override
 		@XmlTransient
 		public String getFrom() {
+			return null;
+		}
+
+		public String getFrom(boolean snapshot) {
 			return null;
 		}
 

@@ -166,8 +166,9 @@ public class MongoRelationRosterContext implements RelationContext, RelationAck 
 	public MongoRelationRosterContext remove(JID from, JID to) {
 		if (MongoUtils.effect(this.config.collection().remove(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), WriteConcern.SAFE)) && MongoUtils.effect(this.config.collection().remove(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), WriteConcern.SAFE))) {
 			this.relationCascade.remove(to, from);
+		} else {
+			this.log.error("Remove warning: " + from.asStringWithBare() + " / " + to.asStringWithBare());
 		}
-		this.log.error("Remove warning: " + from.asStringWithBare() + " / " + to.asStringWithBare());
 		return this;
 	}
 

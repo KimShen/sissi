@@ -32,7 +32,7 @@ abstract public class RosterItemProcessor extends ProxyProcessor {
 		JID to = super.build(item.getJid());
 		item.addOnEmpty(this.group).setAsk(this.ask()).setSubscription(this.subscription(context.jid(), to)).setJid(to.asStringWithBare());
 		super.broadcast(context.jid(), protocol.parent());
-		return this.next(item.getSubscription());
+		return true;
 	}
 
 	/**
@@ -41,14 +41,6 @@ abstract public class RosterItemProcessor extends ProxyProcessor {
 	 * @return
 	 */
 	abstract protected boolean ask();
-
-	/**
-	 * 实现类是否终止Pipeline
-	 * 
-	 * @param subscription
-	 * @return
-	 */
-	abstract protected boolean next(String subscription);
 
 	/**
 	 * 实现类附加的订阅关系

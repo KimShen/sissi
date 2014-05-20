@@ -17,6 +17,7 @@
 	<bean id="si.pro.2fans.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
+				<ref bean="iq.pro.time" />
 				<ref bean="si.pro.trace" />
 				<ref bean="si.pro.delay" />
 				<ref bean="si.pro.2fans" />

@@ -55,6 +55,10 @@ public class Success implements Element {
 		return null;
 	}
 
+	public String getFrom(boolean snapshot) {
+		return null;
+	}
+
 	@Override
 	public Success setFrom(String from) {
 		return this;

@@ -5,6 +5,7 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="iq.pro.time" class="com.sissi.pipeline.in.iq.IQTimeCallProcessor" />
 	<bean id="iq.pro.check" class="com.sissi.pipeline.in.iq.IQCheckProcessor" />
 	<bean id="iq.pro.fork" class="com.sissi.pipeline.in.iq.IQForkProcessor">
 		<constructor-arg ref="finder.iq" />

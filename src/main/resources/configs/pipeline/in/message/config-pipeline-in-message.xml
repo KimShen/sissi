@@ -10,7 +10,6 @@
 	</bean>
 	<bean id="message.pro.check.ack" class="com.sissi.pipeline.in.message.MessageCheckAckProcessor" />
 	<bean id="message.pro.check.body" class="com.sissi.pipeline.in.message.MessageCheckBodyProcessor" />
-	<bean id="message.pro.call" class="com.sissi.pipeline.in.message.MessageTimeCallProcessor" />
 	<bean id="message.pro.delay" class="com.sissi.pipeline.in.message.MessageTimeDelayProcessor" />
 	<bean id="message.pro.received" class="com.sissi.pipeline.in.message.MessageReceivedProcessor" parent="global.pro.proxy">
 		<constructor-arg ref="persistent.message.offline" />
@@ -26,7 +25,7 @@
 			<util:list>
 				<ref bean="global.pro.check.chained" />
 				<ref bean="message.pro.check.relation" />
-				<ref bean="message.pro.call" />
+				<ref bean="iq.pro.time" />
 				<ref bean="message.pro.delay" />
 				<ref bean="message.pro.received" />
 				<ref bean="message.pro.check.body" />

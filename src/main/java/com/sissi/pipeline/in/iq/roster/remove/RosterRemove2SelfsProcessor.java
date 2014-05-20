@@ -25,8 +25,4 @@ public class RosterRemove2SelfsProcessor extends RosterItemProcessor {
 	protected boolean ask() {
 		return false;
 	}
-
-	protected boolean next(String subscription) {
-		return true;
-	}
 }

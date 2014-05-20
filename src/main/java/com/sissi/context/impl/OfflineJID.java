@@ -3,7 +3,7 @@ package com.sissi.context.impl;
 import com.sissi.context.JID;
 
 /**
- * 离线JID,用于未登陆的用户(已连接未验证身份)
+ * 离线JID,用于未登录的用户(已连接未验证身份)
  * 
  * @author kim 2014年2月11日
  */

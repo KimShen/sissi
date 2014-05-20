@@ -14,6 +14,8 @@ abstract public class Protocol implements Element {
 
 	private String id;
 
+	private String from_;
+
 	private String from;
 
 	private String to;
@@ -50,13 +52,20 @@ abstract public class Protocol implements Element {
 		return this.from;
 	}
 
+	public String getFrom(boolean snapshot) {
+		return snapshot ? this.from_ : this.from;
+	}
+
 	public Protocol setFrom(JID from) {
-		this.from = from.asString();
+		this.setFrom(from.asString());
 		return this;
 	}
 
 	public Protocol setFrom(String from) {
 		this.from = from;
+		if (this.from_ != null) {
+			this.from_ = this.from;
+		}
 		return this;
 	}
 
@@ -83,8 +92,7 @@ abstract public class Protocol implements Element {
 	}
 
 	public Protocol setTo(String to) {
-		this.to = to;
-		return this;
+		return to != null && (this.to = to).equals(this.from) ? this.setFrom((String) null) : this;
 	}
 
 	public Protocol setTo(JID to) {
