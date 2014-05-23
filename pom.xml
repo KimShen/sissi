@@ -44,8 +44,8 @@
 		<maven.server.exchanger.delegation.user>delegation</maven.server.exchanger.delegation.user>
 		<maven.server.exchanger.delegation.resource>true</maven.server.exchanger.delegation.resource>
 		<maven.server.exchanger.delegation.dir>/Users/kim/Downloads</maven.server.exchanger.delegation.dir>
-		<maven.server.exchanger.bytestreams.jid>proxy.sissi.pw</maven.server.exchanger.bytestreams.jid>
-		<maven.server.exchanger.bytestreams.host>sissi.pw</maven.server.exchanger.bytestreams.host>
+		<maven.server.exchanger.bytestreams.jid>proxy.${maven.domain.server}</maven.server.exchanger.bytestreams.jid>
+		<maven.server.exchanger.bytestreams.host>${maven.domain.server}</maven.server.exchanger.bytestreams.host>
 		<maven.server.exchanger.bytestreams.port>${maven.domain.port.exchange}</maven.server.exchanger.bytestreams.port>
 		<maven.server.exchanger.bytestreams.name>Socks 5 Bytestreams Proxy</maven.server.exchanger.bytestreams.name>
 

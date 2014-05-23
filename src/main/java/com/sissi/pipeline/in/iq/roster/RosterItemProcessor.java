@@ -31,7 +31,8 @@ abstract public class RosterItemProcessor extends ProxyProcessor {
 		GroupItem item = protocol.cast(Roster.class).first();
 		JID to = super.build(item.getJid());
 		item.addOnEmpty(this.group).setAsk(this.ask()).setSubscription(this.subscription(context.jid(), to)).setJid(to.asStringWithBare());
-		super.broadcast(context.jid(), protocol.parent());
+		// Roster Set/Remove From必须=null
+		super.broadcast(context.jid(), protocol.parent().setFrom((String) null));
 		return true;
 	}
 
