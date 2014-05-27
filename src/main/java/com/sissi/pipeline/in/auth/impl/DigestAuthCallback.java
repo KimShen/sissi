@@ -118,7 +118,7 @@ public class DigestAuthCallback implements AuthCallback {
 
 		@Override
 		public void handler(JIDContext context, Callback callback) {
-			String pass = DigestAuthCallback.this.authAccessor.access(context.jid().user());
+			String pass = DigestAuthCallback.this.authAccessor.access(context.jid().user(), null);
 			PasswordCallback.class.cast(callback).setPassword(pass != null ? pass.toCharArray() : new char[0]);
 		}
 	}

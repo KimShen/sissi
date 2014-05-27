@@ -36,7 +36,7 @@ public class PlainAuthCallback implements AuthCallback {
 	@Override
 	public boolean auth(Auth auth, JIDContext context) {
 		AuthCertificate certificate = new AuthCertificate(auth);
-		return context.auth(certificate.pass(this.authAccessor.access(certificate.getUser()))).auth() ? this.writeAndReturn(context, certificate) : false;
+		return context.auth(certificate.pass(this.authAccessor.access(certificate.getUser(), certificate.getPass()))).auth() ? this.writeAndReturn(context, certificate) : false;
 	}
 
 	@Override
@@ -66,6 +66,10 @@ public class PlainAuthCallback implements AuthCallback {
 
 		public String getUser() {
 			return this.user;
+		}
+
+		public String getPass() {
+			return pass;
 		}
 
 		public boolean pass(String pass) {

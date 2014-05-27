@@ -9,7 +9,8 @@ public interface AuthAccessor {
 
 	/**
 	 * @param username
-	 * @return password
+	 * @param password 请求密码
+	 * @return 原始密码
 	 */
-	public String access(String username);
+	public String access(String username, String password);
 }
