@@ -45,7 +45,7 @@ public class Decline implements Collector {
 
 	@XmlElement
 	public Reason getReason() {
-		return this.reason;
+		return this.reason != null ? this.reason : null;
 	}
 
 	@Override

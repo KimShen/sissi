@@ -57,13 +57,13 @@ public class Invite implements Collector {
 
 	@XmlElement
 	public Reason getReason() {
-		return this.reason;
+		return this.reason != null ? this.reason : null;
 	}
 
 	public String continued() {
 		return this.continued != null ? this.continued.getThread() : null;
 	}
-	
+
 	public Invite continued(String thread) {
 		this.continued = thread != null ? new Continue(thread) : null;
 		return this;

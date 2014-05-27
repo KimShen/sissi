@@ -47,8 +47,9 @@
 			<util:list>
 				<!-- 服务也应该 SHOULD 返回成员列表给任何房客 -->
 				<ref bean="muc.admin.pro.check.exists" />
-				<!-- Close after test: muc.admin.pro.affiliation.check.4self -->
+				<!-- Close after test: muc.admin.pro.affiliation.check.4self
 				<ref bean="muc.admin.pro.affiliation.check.4self" />
+				--> 
 				<ref bean="muc.admin.pro.affiliation.get" />
 			</util:list>
 		</constructor-arg>

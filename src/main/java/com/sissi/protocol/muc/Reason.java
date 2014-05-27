@@ -27,7 +27,7 @@ public class Reason {
 
 	@XmlValue
 	public String getText() {
-		return this.text != null & !this.text.isEmpty() ? this.text : null;
+		return this.text != null && !this.text.isEmpty() ? this.text : "";
 	}
 
 	public Reason setText(String text) {
