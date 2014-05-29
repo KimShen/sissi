@@ -27,7 +27,7 @@ public class MongoAuthAccessor implements AuthAccessor {
 	 * @see com.sissi.ucenter.user.access.AuthAccessor#access(java.lang.String)
 	 */
 	@Override
-	public String access(String username, String password) {
+	public String access(String username, String request) {
 		return MongoUtils.asString(this.config.collection().findOne(BasicDBObjectBuilder.start().add(Dictionary.FIELD_USERNAME, username).add(Dictionary.FIELD_ACTIVATE, true).get(), this.filter), Dictionary.FIELD_PASSWORD);
 	}
 }
