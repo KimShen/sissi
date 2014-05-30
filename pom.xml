@@ -49,7 +49,7 @@
 		<maven.server.exchanger.bytestreams.port>${maven.domain.port.exchange}</maven.server.exchanger.bytestreams.port>
 		<maven.server.exchanger.bytestreams.name>Socks 5 Bytestreams Proxy</maven.server.exchanger.bytestreams.name>
 
-		<maven.looper.count.global>40</maven.looper.count.global>
+		<maven.looper.count.global>10</maven.looper.count.global>
 		<maven.looper.unit.global>MILLISECONDS</maven.looper.unit.global>
 		<maven.looper.interval.global>50</maven.looper.interval.global>
 		<maven.looper.count.personal>2</maven.looper.count.personal>

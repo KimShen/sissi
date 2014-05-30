@@ -1,7 +1,9 @@
 package com.sissi.looper.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -32,6 +34,8 @@ public class GlobalLooperBuilder implements Looper, LooperBuilder, Runnable {
 	 */
 	private final List<GlobalLooper> loopers = new ArrayList<GlobalLooper>();
 
+	private final Random random = new Random(new Date().getTime());
+
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final AtomicBoolean state = new AtomicBoolean();
@@ -45,6 +49,8 @@ public class GlobalLooperBuilder implements Looper, LooperBuilder, Runnable {
 
 	private final Interval interval;
 
+	private final int threadNum;
+
 	/**
 	 * @param runner
 	 * @param interval 堵塞时间
@@ -55,6 +61,7 @@ public class GlobalLooperBuilder implements Looper, LooperBuilder, Runnable {
 		super();
 		this.start();
 		this.interval = interval;
+		this.threadNum = threadNum;
 		this.resourceCounter = resourceCounter;
 		runner.executor(threadNum, this);
 	}
@@ -89,7 +96,7 @@ public class GlobalLooperBuilder implements Looper, LooperBuilder, Runnable {
 					this.getAndFeed(mod);
 				} else {
 					// TODO: change to wait();
-					Thread.sleep(this.interval.convert(TimeUnit.SECONDS) * 1000);
+					Thread.sleep(this.interval.convert(TimeUnit.SECONDS) * 1000 * this.random.nextInt(this.threadNum));
 				}
 			} catch (Exception e) {
 				this.log.warn(e.toString());
