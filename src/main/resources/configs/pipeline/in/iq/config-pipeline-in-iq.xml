@@ -44,6 +44,7 @@
 				<ref bean="condition.time" />
 				<ref bean="condition.vcard" />
 				<ref bean="condition.block" />
+				<ref bean="condition.search" />
 				<ref bean="condition.roster" />
 				<ref bean="condition.version" />
 				<ref bean="condition.session" />
@@ -95,6 +96,7 @@
 	<import resource="vcard/config-pipeline-in-iq-vcard.xml" />
 	<import resource="disco/config-pipeline-in-iq-disco.xml" />
 	<import resource="roster/config-pipeline-in-iq-roster.xml" />
+	<import resource="search/config-pipeline-in-iq-search.xml" />
 	<import resource="transfer/config-pipeline-in-iq-transfer.xml" />
 	<import resource="register/config-pipeline-in-iq-register.xml" />
 	<import resource="muc/owner/config-pipeline-in-iq-muc-owner.xml" />

@@ -22,6 +22,7 @@
 				<value>classpath:config-thread.properties</value>
 				<value>classpath:config-ucenter.properties</value>
 				<value>classpath:config-ucenter-muc.properties</value>
+				<value>classpath:config-ucenter-search.properties</value>
 				<value>classpath:config-ucenter-roster.properties</value>
 				<value>classpath:config-ucenter-register.properties</value>
 			</list>

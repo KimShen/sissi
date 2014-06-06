@@ -5,7 +5,7 @@ import java.util.Map;
 import com.sissi.config.Dictionary;
 import com.sissi.field.Field;
 import com.sissi.field.FieldParser;
-import com.sissi.protocol.iq.vcard.field.Nickname;
+import com.sissi.protocol.iq.data.XNickname;
 
 /**
  * 房间名称
@@ -14,12 +14,12 @@ import com.sissi.protocol.iq.vcard.field.Nickname;
  */
 public class NicknameFieldParser implements FieldParser<Map<String, Object>> {
 
-	private final Nickname empty = new Nickname();
+	private final XNickname empty = new XNickname();
 
 	@Override
 	public Field<?> read(Map<String, Object> element) {
 		Object subject = element.get(Dictionary.FIELD_SUBJECT);
-		return subject == null ? this.empty : new Nickname(subject.toString());
+		return subject == null ? this.empty : new XNickname(subject.toString());
 	}
 
 	public String support() {

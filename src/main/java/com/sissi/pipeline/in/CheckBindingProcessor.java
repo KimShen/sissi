@@ -1,7 +1,6 @@
-package com.sissi.pipeline.in.iq.register.remove;
+package com.sissi.pipeline.in;
 
 import com.sissi.context.JIDContext;
-import com.sissi.pipeline.Input;
 import com.sissi.protocol.Error;
 import com.sissi.protocol.Protocol;
 import com.sissi.protocol.ProtocolType;
@@ -11,9 +10,9 @@ import com.sissi.protocol.error.detail.NotAllowed;
 /**
  * 已登录校验
  * 
- * @author kim 2014年5月9日
+ * @author kim 2014年5月8日
  */
-public class RegisterRemoveCheckAllowedProcessor implements Input {
+public class CheckBindingProcessor extends ProxyProcessor {
 
 	private final Error error = new ServerError().type(ProtocolType.CANCEL).add(NotAllowed.DETAIL);
 

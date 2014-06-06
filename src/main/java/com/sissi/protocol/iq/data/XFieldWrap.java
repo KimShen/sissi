@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlElements;
 import com.sissi.field.Field;
 import com.sissi.field.Fields;
 import com.sissi.field.impl.BeanFields;
-import com.sissi.protocol.iq.vcard.field.Nickname;
 
 /**
  * @author kim 2014年2月8日
@@ -23,7 +22,7 @@ abstract class XFieldWrap extends BeanFields {
 		super(isEmbed);
 	}
 
-	@XmlElements({ @XmlElement(name = XField.NAME, type = XField.class), @XmlElement(name = XItem.NAME, type = XItem.class), @XmlElement(name = XReported.NAME, type = XReported.class), @XmlElement(name = XInput.NAME, type = XInput.class), @XmlElement(name = XSelect.NAME, type = XSelect.class), @XmlElement(name = XTitle.NAME, type = XTitle.class), @XmlElement(name = XInstructions.NAME, type = XInstructions.class) ,@XmlElement(name = Nickname.NAME, type = Nickname.class)})
+	@XmlElements({ @XmlElement(name = XField.NAME, type = XField.class), @XmlElement(name = XItem.NAME, type = XItem.class), @XmlElement(name = XReported.NAME, type = XReported.class), @XmlElement(name = XInput.NAME, type = XInput.class), @XmlElement(name = XSelect.NAME, type = XSelect.class), @XmlElement(name = XTitle.NAME, type = XTitle.class), @XmlElement(name = XInstructions.NAME, type = XInstructions.class), @XmlElement(name = XNickname.NAME, type = XNickname.class) })
 	public List<Field<?>> getFields() {
 		return super.getFields();
 	}

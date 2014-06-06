@@ -38,6 +38,7 @@
 			</util:list>
 		</constructor-arg>
 	</bean>
+	<bean id="global.pro.check.binding" class="com.sissi.pipeline.in.CheckBindingProcessor" />
 	<bean id="global.pro.check.jid.from" class="com.sissi.pipeline.in.CheckJIDFromProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.format" class="com.sissi.pipeline.in.CheckJIDMalformedProcessor" parent="global.pro.proxy" />
 	<bean id="global.pro.check.jid.exists" class="com.sissi.pipeline.in.CheckJIDExistsProcessor" parent="global.pro.proxy">

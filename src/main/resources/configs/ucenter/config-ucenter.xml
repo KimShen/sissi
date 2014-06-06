@@ -17,5 +17,6 @@
 	<import resource="status/config-ucenter-status.xml" />
 	<import resource="roster/config-ucenter-roster.xml" />
 	<import resource="access/config-ucenter-access.xml" />
+	<import resource="search/config-ucenter-search.xml" />
 	<import resource="register/config-ucenter-register.xml" />
 </beans>

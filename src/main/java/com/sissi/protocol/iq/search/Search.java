@@ -1,4 +1,4 @@
-package com.sissi.protocol.iq.vcard;
+package com.sissi.protocol.iq.search;
 
 import java.util.Iterator;
 import java.util.List;
@@ -15,46 +15,60 @@ import com.sissi.field.impl.BeanFields;
 import com.sissi.io.read.Collector;
 import com.sissi.io.read.Metadata;
 import com.sissi.protocol.Protocol;
-import com.sissi.protocol.iq.data.XInput;
-import com.sissi.protocol.iq.data.XNickname;
-import com.sissi.protocol.iq.vcard.field.Photo;
-import com.sissi.protocol.iq.vcard.field.muc.Activate;
+import com.sissi.protocol.iq.data.XData;
 
 /**
- * @author kim 2013年12月5日
+ * @author kim 2014年6月6日
  */
-@Metadata(uri = VCard.XMLNS, localName = VCard.NAME)
-@XmlType(namespace = VCard.XMLNS)
-@XmlRootElement(name = VCard.NAME)
-public class VCard extends Protocol implements Fields, Collector {
+@Metadata(uri = Search.XMLNS, localName = Search.NAME)
+@XmlType(namespace = Search.XMLNS)
+@XmlRootElement(name = Search.NAME)
+public class Search extends Protocol implements Fields, Collector {
 
-	public final static String XMLNS = "vcard-temp";
+	public final static String XMLNS = "jabber:iq:search";
 
-	public final static String NAME = "vCard";
+	public final static String NAME = "query";
 
 	private final BeanFields fields = new BeanFields(false);
+
+	private XData data;
 
 	@XmlAttribute
 	public String getXmlns() {
 		return XMLNS;
 	}
 
-	@XmlElements({ @XmlElement(name = Activate.NAME, type = Activate.class),@XmlElement(name = XInput.NAME, type = XInput.class), @XmlElement(name = XNickname.NAME, type = XNickname.class), @XmlElement(name = Photo.NAME, type = Photo.class) })
+	@XmlElements({ @XmlElement(name = XData.NAME, type = XData.class) })
 	public List<Field<?>> getFields() {
 		return this.fields.getFields();
 	}
 
-	public VCard add(Field<?> field) {
+	public Search x(XData data) {
+		this.data = data;
+		return this;
+	}
+
+	@XmlElement
+	public XData getX() {
+		return this.data;
+	}
+
+	public Search add(Field<?> field) {
 		this.fields.add(field);
+		return this;
+	}
+
+	public Search add(Fields fields) {
+		this.fields.add(fields);
 		return this;
 	}
 
 	@Override
 	public void set(String localName, Object ob) {
-		this.fields.add(Field.class.cast(ob));
+		this.x(XData.class.cast(ob));
 	}
 
-	public Fields addField(Field<?> field) {
+	public Search addField(Field<?> field) {
 		this.fields.add(field);
 		return this;
 	}
@@ -71,6 +85,11 @@ public class VCard extends Protocol implements Fields, Collector {
 
 	public boolean isEmpty() {
 		return this.fields.isEmpty();
+	}
+
+	public Search clear() {
+		this.fields.reset();
+		return this;
 	}
 
 	public Fields findFields(String name) {

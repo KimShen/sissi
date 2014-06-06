@@ -1,4 +1,4 @@
-package com.sissi.protocol.iq.vcard.field;
+package com.sissi.protocol.iq.data;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
@@ -11,19 +11,19 @@ import com.sissi.protocol.iq.vcard.VCard;
 /**
  * @author kim 2014年2月10日
  */
-@Metadata(uri = VCard.XMLNS, localName = Nickname.NAME)
-@XmlRootElement(name = Nickname.NAME)
-public class Nickname implements Field<String> {
+@Metadata(uri = VCard.XMLNS, localName = XNickname.NAME)
+@XmlRootElement(name = XNickname.NAME)
+public class XNickname implements Field<String> {
 
 	public final static String NAME = "NICKNAME";
 
 	private String value;
 
-	public Nickname() {
+	public XNickname() {
 		super();
 	}
 
-	public Nickname(String text) {
+	public XNickname(String text) {
 		super();
 		this.value = text;
 	}
@@ -33,7 +33,7 @@ public class Nickname implements Field<String> {
 		return this.value != null ? value.toString() : null;
 	}
 
-	public Nickname setText(String text) {
+	public XNickname setText(String text) {
 		this.value = text;
 		return this;
 	}

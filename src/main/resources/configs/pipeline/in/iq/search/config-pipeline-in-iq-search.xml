@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<alias name="global.pro.check.binding" alias="search.pro.check" />
+	<bean id="search.pro.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.search" />
+	</bean>
+
+	<bean id="finder.search" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="search.condition.get" />
+				<ref bean="search.condition.fields" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+
+	<alias name="search.condition" alias="condition.search" />
+	<bean id="search.condition" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="search.condition.matcher" />
+		<constructor-arg ref="search.pro.fork" />
+	</bean>
+	<bean id="search.condition.matcher" class="com.sissi.pipeline.in.ClassMatcher">
+		<constructor-arg value="com.sissi.protocol.iq.search.Search" />
+	</bean>
+
+	<import resource="config-pipeline-in-iq-search-get.xml" />
+	<import resource="config-pipeline-in-iq-search-init.xml" />
+</beans>

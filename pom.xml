@@ -90,6 +90,7 @@
 		<maven.ucenter.relation.shortcut>false</maven.ucenter.relation.shortcut>
 		<maven.ucenter.roster.length.name>10</maven.ucenter.roster.length.name>
 		<maven.ucenter.roster.length.group>10</maven.ucenter.roster.length.group>
+		<maven.ucenter.search.limit>5</maven.ucenter.search.limit>
 		<maven.ucenter.register.muc>注册通知</maven.ucenter.register.muc>
 		<maven.ucenter.register.title>Welcome 2 register</maven.ucenter.register.title>
 		<manve.ucenter.register.redirect>http://${maven.domain.server}</manve.ucenter.register.redirect>

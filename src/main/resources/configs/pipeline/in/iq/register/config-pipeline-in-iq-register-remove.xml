@@ -10,12 +10,12 @@
 	</bean>
 	<bean id="register.pro.remove.leave" class="com.sissi.pipeline.in.iq.register.remove.RegisterRemoveLeaveProcessor" parent="global.pro.proxy" />
 	<bean id="register.pro.remove.check.valid" class="com.sissi.pipeline.in.iq.register.remove.RegisterRemoveCheckValidProcessor" />
-	<bean id="register.pro.remove.check.allowed" class="com.sissi.pipeline.in.iq.register.remove.RegisterRemoveCheckAllowedProcessor" />
+	<alias name="global.pro.check.binding" alias="register.pro.remove.check.binding" />
 	<bean id="register.pro.remove.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="register.pro.remove.check.valid" />
-				<ref bean="register.pro.remove.check.allowed" />
+				<ref bean="register.pro.remove.check.binding" />
 				<ref bean="register.pro.remove" />
 				<ref bean="iq.pro.result.next" />
 				<ref bean="register.pro.remove.leave" />
