@@ -22,11 +22,13 @@
 	<bean id="presence.pro.init.4subscribe" class="com.sissi.pipeline.in.presence.init.PresenceInit4SubscribeProcessor">
 		<constructor-arg ref="ucenter.relation.roster.user" />
 	</bean>
+	<alias name="global.pro.check.binding" alias="presence.pro.init.check" />
 	<bean id="presence.pro.init.chained" class="com.sissi.pipeline.in.presence.init.PresenceInitChainedProcessor">
 		<constructor-arg value="true" />
 		<constructor-arg>
 			<util:list>
-				<ref bean="presence.pro.init.4muc" /> 
+				<ref bean="presence.pro.init.check" />
+				<ref bean="presence.pro.init.4muc" />
 				<ref bean="presence.pro.init.4fans" />
 				<ref bean="presence.pro.init.4selfs" />
 				<ref bean="presence.pro.init.4delay" />

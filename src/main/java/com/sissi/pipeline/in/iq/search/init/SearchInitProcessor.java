@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.iq.search;
+package com.sissi.pipeline.in.iq.search.init;
 
 import com.sissi.context.JIDContext;
 import com.sissi.field.Fields;
@@ -12,11 +12,11 @@ import com.sissi.protocol.iq.search.Search;
  * 
  * @author kim 2013年12月3日
  */
-public class SearchFieldsProcessor implements Input {
+public class SearchInitProcessor implements Input {
 
 	private final Fields fields;
 
-	public SearchFieldsProcessor(Fields fields) {
+	public SearchInitProcessor(Fields fields) {
 		super();
 		this.fields = fields;
 	}

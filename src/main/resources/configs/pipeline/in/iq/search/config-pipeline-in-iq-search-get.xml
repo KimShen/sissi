@@ -5,17 +5,46 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="search.pro.get" class="com.sissi.pipeline.in.iq.search.SearchProcessor">
+	<bean id="search.pro.get.multi" class="com.sissi.pipeline.in.iq.search.get.SearchGetMultiProcessor">
 		<constructor-arg ref="ucenter.search.data" />
-		<constructor-arg ref="ucenter.search.context" />
+		<constructor-arg ref="ucenter.search.context.multi" />
+	</bean>
+	<bean id="search.pro.get.simple" class="com.sissi.pipeline.in.iq.search.get.SearchGetSimpleProcessor">
+		<constructor-arg ref="ucenter.search.context.simple" />
+	</bean>
+	<bean id="search.pro.get.fork" class="com.sissi.pipeline.in.ForkProcessor">
+		<constructor-arg ref="finder.search.get" />
+	</bean>
+
+	<bean id="finder.search.get" class="com.sissi.pipeline.in.ChainedFinder">
+		<constructor-arg>
+			<util:list>
+				<ref bean="search.condition.get.multi" />
+				<ref bean="search.condition.get.simple" />
+			</util:list>
+		</constructor-arg>
 	</bean>
 
 	<bean id="search.condition.get" class="com.sissi.pipeline.in.PairCondition">
 		<constructor-arg ref="search.condition.get.matcher" />
-		<constructor-arg ref="search.pro.get" />
+		<constructor-arg ref="search.pro.get.fork" />
 	</bean>
 	<bean id="search.condition.get.matcher" class="com.sissi.pipeline.in.iq.IQActionMatcher">
 		<constructor-arg value="com.sissi.protocol.iq.search.Search" />
 		<constructor-arg value="SET" />
+	</bean>
+	<bean id="search.condition.get.multi" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="search.condition.get.multi.matcher" />
+		<constructor-arg ref="search.pro.get.multi" />
+	</bean>
+	<bean id="search.condition.get.multi.matcher" class="com.sissi.pipeline.in.iq.search.get.SearchGetMatcher">
+		<constructor-arg value="true" />
+	</bean>
+	<bean id="search.condition.get.simple" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="search.condition.get.simple.matcher" />
+		<constructor-arg ref="search.pro.get.simple" />
+	</bean>
+	<bean id="search.condition.get.simple.matcher" class="com.sissi.pipeline.in.iq.search.get.SearchGetMatcher">
+		<constructor-arg value="false" />
 	</bean>
 </beans>

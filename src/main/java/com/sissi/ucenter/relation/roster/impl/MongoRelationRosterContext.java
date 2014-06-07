@@ -240,15 +240,13 @@ public class MongoRelationRosterContext implements RelationContext, RelationAck 
 		 * @param field
 		 */
 		private MongoRelations(DBCursor cursor, String field) {
-			try {
-				if (cursor == null) {
+			try (DBCursor iterator = cursor) {
+				if (iterator == null) {
 					return;
 				}
-				while (cursor.hasNext()) {
-					this.add(new MongoRosterRelation(cursor.next(), field, MongoRelationRosterContext.this.groups, MongoRelationRosterContext.this.plus));
+				while (iterator.hasNext()) {
+					this.add(new MongoRosterRelation(iterator.next(), field, MongoRelationRosterContext.this.groups, MongoRelationRosterContext.this.plus));
 				}
-			} finally {
-				cursor.close();
 			}
 		}
 	}
@@ -258,15 +256,13 @@ public class MongoRelationRosterContext implements RelationContext, RelationAck 
 		private final static long serialVersionUID = 1L;
 
 		private MongoJIDGroup(DBCursor cursor, String key) {
-			try {
-				if (cursor == null) {
+			try (DBCursor iterator = cursor) {
+				if (iterator == null) {
 					return;
 				}
-				while (cursor.hasNext()) {
-					this.add(MongoRelationRosterContext.this.jidBuilder.build(cursor.next().get(key).toString()));
+				while (iterator.hasNext()) {
+					this.add(MongoRelationRosterContext.this.jidBuilder.build(iterator.next().get(key).toString()));
 				}
-			} finally {
-				cursor.close();
 			}
 		}
 	}

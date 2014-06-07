@@ -1,4 +1,4 @@
-package com.sissi.pipeline.in.iq.search;
+package com.sissi.pipeline.in.iq.search.get;
 
 import java.util.List;
 
@@ -17,21 +17,24 @@ import com.sissi.protocol.iq.search.Search;
 import com.sissi.ucenter.search.SearchContext;
 
 /**
+ * 表单用户查询
+ * 
  * @author kim 2014年6月6日
  */
-public class SearchProcessor implements Input {
+public class SearchGetMultiProcessor implements Input {
 
 	private final XData data;
-	
+
 	private final SearchContext searchContext;
 
-	public SearchProcessor(List<Field<?>> reports, SearchContext searchContext) {
+	/**
+	 * @param reports 报表
+	 * @param searchContext
+	 */
+	public SearchGetMultiProcessor(List<Field<?>> reports, SearchContext searchContext) {
 		super();
 		this.searchContext = searchContext;
-		XReported reported = new XReported();
-		reported.add(reports);
-		this.data = new XData().setType(XDataType.RESULT.toString());
-		this.data.add(new XField().setType(XFieldType.HIDDEN.toString()).setVar(XDataType.FORM_TYPE.toString()).add(new XValue(Search.XMLNS))).add(Field.class.cast(reported));
+		this.data = new XData().setType(XDataType.RESULT.toString()).add(new XField().setType(XFieldType.HIDDEN.toString()).setVar(XDataType.FORM_TYPE.toString()).add(new XValue(Search.XMLNS))).add(Field.class.cast(new XReported().add(reports)));
 	}
 
 	@Override

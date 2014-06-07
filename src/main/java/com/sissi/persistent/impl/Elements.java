@@ -18,17 +18,15 @@ public class Elements extends ArrayList<Element> {
 
 	public Elements(DBCursor cursor, List<PersistentElement> elements) {
 		super();
-		try {
-			while (cursor.hasNext()) {
-				Map<String, Object> each = MongoUtils.asMap(cursor.next());
+		try (DBCursor iterator = cursor) {
+			while (iterator.hasNext()) {
+				Map<String, Object> each = MongoUtils.asMap(iterator.next());
 				for (PersistentElement element : elements) {
 					if (element.isSupport(each)) {
 						this.add(element.read(each));
 					}
 				}
 			}
-		} finally {
-			cursor.close();
 		}
 	}
 }

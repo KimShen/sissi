@@ -181,12 +181,10 @@ public class MongoMucRelation4AffiliationContext extends MongoMucRelationContext
 		private static final long serialVersionUID = 1L;
 
 		public Relations(DBCursor cursor) {
-			try {
-				while (cursor.hasNext()) {
-					super.add(new RoomRelation(cursor.next()));
+			try (DBCursor iterator = cursor) {
+				while (iterator.hasNext()) {
+					super.add(new RoomRelation(iterator.next()));
 				}
-			} finally {
-				cursor.close();
 			}
 		}
 	}

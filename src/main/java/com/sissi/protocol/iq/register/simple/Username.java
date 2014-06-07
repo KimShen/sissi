@@ -2,6 +2,7 @@ package com.sissi.protocol.iq.register.simple;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.sissi.field.FieldValue;
 import com.sissi.io.read.Metadata;
 import com.sissi.protocol.iq.register.Register;
 
@@ -10,7 +11,7 @@ import com.sissi.protocol.iq.register.Register;
  */
 @Metadata(uri = Register.XMLNS, localName = Username.NAME)
 @XmlRootElement(name = Username.NAME)
-public class Username extends ValueField {
+public class Username extends FieldValue {
 
 	public final static Username FIELD = new Username();
 

@@ -130,8 +130,7 @@ public class BridgeExchangerContext implements ExchangerContext {
 		}
 
 		private Timeout timeout() {
-			DBCursor cursor = BridgeExchangerContext.this.config.collection().find(BasicDBObjectBuilder.start(BridgeExchangerContext.this.date, BasicDBObjectBuilder.start("$lt", System.currentTimeMillis() - BridgeExchangerContext.this.timeout).get()).get(), BridgeExchangerContext.this.filter);
-			try {
+			try (DBCursor cursor = BridgeExchangerContext.this.config.collection().find(BasicDBObjectBuilder.start(BridgeExchangerContext.this.date, BasicDBObjectBuilder.start("$lt", System.currentTimeMillis() - BridgeExchangerContext.this.timeout).get()).get(), BridgeExchangerContext.this.filter)) {
 				while (cursor.hasNext()) {
 					Exchanger exchanger = BridgeExchangerContext.this.activate(MongoUtils.asString(DBObject.class.cast(cursor.next()), Dictionary.FIELD_HOST));
 					// Double check 4 multi thread
@@ -140,8 +139,6 @@ public class BridgeExchangerContext implements ExchangerContext {
 						exchanger.close(Terminal.ALL);
 					}
 				}
-			} finally {
-				cursor.close();
 			}
 			return this;
 		}

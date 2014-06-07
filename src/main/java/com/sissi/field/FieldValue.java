@@ -1,23 +1,29 @@
-package com.sissi.protocol.iq.register.simple;
+package com.sissi.field;
 
 import javax.xml.bind.annotation.XmlValue;
-
-import com.sissi.field.Field;
-import com.sissi.field.Fields;
 
 /**
  * @author kim 2013年12月16日
  */
-abstract class ValueField implements Field<String> {
+abstract public class FieldValue implements Field<String> {
 
 	private String value;
+
+	public FieldValue() {
+		super();
+	}
+
+	public FieldValue(String value) {
+		super();
+		this.value = value;
+	}
 
 	@XmlValue
 	public String getValue() {
 		return this.value;
 	}
 
-	public ValueField setText(String text) {
+	public FieldValue setText(String text) {
 		this.value = text;
 		return this;
 	}

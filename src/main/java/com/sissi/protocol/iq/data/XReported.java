@@ -1,5 +1,7 @@
 package com.sissi.protocol.iq.data;
 
+import java.util.Collection;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sissi.field.Field;
@@ -8,7 +10,7 @@ import com.sissi.field.Field;
  * @author kim 2014年2月8日
  */
 @XmlRootElement(name = XReported.NAME)
-public class XReported extends XFieldWrap implements Field<Object>{
+public class XReported extends XFieldWrap implements Field<Object> {
 
 	public final static String NAME = "reported";
 
@@ -20,5 +22,10 @@ public class XReported extends XFieldWrap implements Field<Object>{
 	@Override
 	public Object getValue() {
 		return null;
+	}
+
+	public XReported add(Collection<Field<?>> fields) {
+		super.add(fields);
+		return this;
 	}
 }

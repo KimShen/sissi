@@ -5,6 +5,22 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="ucenter.search.fields.simple" class="com.sissi.field.impl.BeanFields">
+		<constructor-arg value="false" />
+		<constructor-arg>
+			<util:list>
+				<ref bean="ucenter.search.fields.simple.instruction" />
+				<util:constant static-field="com.sissi.protocol.iq.search.field.Nick.FIELD" />
+				<util:constant static-field="com.sissi.protocol.iq.search.field.First.FIELD" />
+				<util:constant static-field="com.sissi.protocol.iq.search.field.Last.FIELD" />
+				<util:constant static-field="com.sissi.protocol.iq.search.field.Email.FIELD" />
+			</util:list>
+		</constructor-arg>
+	</bean>
+	<bean id="ucenter.search.fields.simple.instruction" class="com.sissi.protocol.iq.search.field.Instructions">
+		<constructor-arg value="This is my introduce" />
+	</bean>
+
 	<bean id="ucenter.search.fields.form" class="com.sissi.field.impl.BeanFields">
 		<constructor-arg value="false" />
 		<constructor-arg>
@@ -44,7 +60,7 @@
 	<bean id="ucenter.search.fields.form.xdata.nickname" class="com.sissi.protocol.iq.data.XInput">
 		<constructor-arg index="0" value="text-single" />
 		<constructor-arg index="1" value="Nickname" />
-		<constructor-arg index="2" value="NICKNAME" />
+		<constructor-arg index="2" value="NICK" />
 		<constructor-arg>
 			<util:constant static-field="com.sissi.protocol.iq.data.XRequired.FIELD" />
 		</constructor-arg>

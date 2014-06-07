@@ -5,16 +5,6 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<util:list id="ucenter.search.context.block">
-		<value>FORM_TYPE</value>
-	</util:list>
-	<bean id="ucenter.search.context" class="com.sissi.ucenter.search.impl.MongoSearchContext">
-		<constructor-arg ref="context.jid" />
-		<constructor-arg ref="ucenter.config" />
-		<constructor-arg ref="ucenter.search.context.block" />
-		<constructor-arg index="2" value="${ucenter.search.limit}" />
-	</bean>
-
 	<util:list id="ucenter.search.data">
 		<ref bean="ucenter.search.data.jid" />
 		<ref bean="ucenter.search.data.nickname" />
@@ -25,10 +15,11 @@
 		<property name="type" value="jid-single" />
 	</bean>
 	<bean id="ucenter.search.data.nickname" class="com.sissi.protocol.iq.data.XField">
-		<property name="var" value="nickname" />
+		<property name="var" value="nick" />
 		<property name="label" value="Nickname" />
 		<property name="type" value="text-single" />
 	</bean>
 
 	<import resource="config-ucenter-search-fields.xml" />
+	<import resource="config-ucenter-search-context.xml" />
 </beans>

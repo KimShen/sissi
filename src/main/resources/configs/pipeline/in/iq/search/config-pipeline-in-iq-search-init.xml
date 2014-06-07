@@ -5,31 +5,23 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="search.pro.fields" class="com.sissi.pipeline.in.iq.search.SearchFieldsProcessor">
+	<bean id="search.pro.init" class="com.sissi.pipeline.in.iq.search.init.SearchInitProcessor">
 		<constructor-arg ref="ucenter.search.fields.form" />
 	</bean>
-	<bean id="search.pro.fields.chained" class="com.sissi.pipeline.in.ChainedProcessor">
+	<bean id="search.pro.init.chained" class="com.sissi.pipeline.in.ChainedProcessor">
 		<constructor-arg>
 			<util:list>
 				<ref bean="search.pro.check" />
-				<ref bean="search.pro.fields" />
+				<ref bean="search.pro.init" />
 			</util:list>
 		</constructor-arg>
 	</bean>
 
-	<bean id="finder.search.fields" class="com.sissi.pipeline.in.ChainedFinder">
-		<constructor-arg>
-			<util:list>
-				<ref bean="search.condition.fields" />
-			</util:list>
-		</constructor-arg>
+	<bean id="search.condition.init" class="com.sissi.pipeline.in.PairCondition">
+		<constructor-arg ref="search.condition.init.matcher" />
+		<constructor-arg ref="search.pro.init.chained" />
 	</bean>
-
-	<bean id="search.condition.fields" class="com.sissi.pipeline.in.PairCondition">
-		<constructor-arg ref="search.condition.fields.matcher" />
-		<constructor-arg ref="search.pro.fields.chained" />
-	</bean>
-	<bean id="search.condition.fields.matcher" class="com.sissi.pipeline.in.iq.IQActionMatcher">
+	<bean id="search.condition.init.matcher" class="com.sissi.pipeline.in.iq.IQActionMatcher">
 		<constructor-arg value="com.sissi.protocol.iq.search.Search" />
 		<constructor-arg value="GET" />
 	</bean>

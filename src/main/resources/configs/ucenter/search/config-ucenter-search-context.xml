@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<util:list id="ucenter.search.context.block">
+		<value>FORM_TYPE</value>
+	</util:list>
+	<util:map id="ucenter.search.context.mapping.map">
+		<entry key="nick" value="NICK" />
+	</util:map>
+	<bean id="ucenter.search.context.mapping" class="com.sissi.field.impl.MappingFieldMapping">
+		<constructor-arg ref="ucenter.search.context.block" />
+		<constructor-arg ref="ucenter.search.context.mapping.map" />
+	</bean>
+	<bean id="ucenter.search.context" abstract="true">
+		<constructor-arg ref="context.jid" />
+		<constructor-arg ref="ucenter.config" />
+		<constructor-arg ref="ucenter.search.context.block" />
+		<constructor-arg ref="ucenter.search.context.mapping" />
+		<constructor-arg index="2" value="${ucenter.search.limit}" />
+	</bean>
+	<bean id="ucenter.search.context.multi" class="com.sissi.ucenter.search.impl.MultiMongoSearchContext" parent="ucenter.search.context" />
+	<bean id="ucenter.search.context.simple" class="com.sissi.ucenter.search.impl.SimpleMongoSearchContext" parent="ucenter.search.context" />
+</beans>

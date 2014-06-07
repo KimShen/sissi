@@ -20,7 +20,7 @@ import com.sissi.context.impl.JIDContexts;
 import com.sissi.context.impl.ShareJIDs;
 
 /**
- * 基于ConcurrentHashMap的MongoDB寻址策略</p>索引策略1:{"jid":1},索引策略2:{"jid":1,"resource":1,"priority":-1},索引策略3:{"index":-1,"jid":1,"resource":1}</p>
+ * 基于ConcurrentHashMap的寻址策略</p>索引策略1:{"jid":1},索引策略2:{"jid":1,"resource":1,"priority":-1},索引策略3:{"index":-1,"jid":1,"resource":1}</p>
  * 
  * @author kim 2014年1月29日
  */
@@ -159,16 +159,14 @@ public class MongoAddressing implements Addressing {
 		}
 
 		private MongoJIDContexts read(DBCursor cursor) {
-			try {
-				while (cursor.hasNext()) {
-					JIDContext context = MongoAddressing.this.contexts.get(MongoUtils.asLong(cursor.next(), Dictionary.FIELD_INDEX));
+			try (DBCursor iterator = cursor) {
+				while (iterator.hasNext()) {
+					JIDContext context = MongoAddressing.this.contexts.get(MongoUtils.asLong(iterator.next(), Dictionary.FIELD_INDEX));
 					// Double check 4 multi thread
 					if (context != null) {
 						super.add(context);
 					}
 				}
-			} finally {
-				cursor.close();
 			}
 			return this;
 		}

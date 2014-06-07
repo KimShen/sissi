@@ -30,7 +30,7 @@ public class XNickname implements Field<String> {
 
 	@XmlValue
 	public String getValue() {
-		return this.value != null ? value.toString() : null;
+		return this.value;
 	}
 
 	public XNickname setText(String text) {

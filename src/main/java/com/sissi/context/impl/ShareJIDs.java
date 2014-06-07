@@ -26,12 +26,10 @@ public class ShareJIDs implements JIDs {
 
 	public ShareJIDs(JID source, DBCursor cursor) {
 		this.jid = source.bare();
-		try {
-			while (cursor.hasNext()) {
-				this.resources.add(MongoUtils.asString(cursor.next(), Dictionary.FIELD_RESOURCE));
+		try (DBCursor iterator = cursor) {
+			while (iterator.hasNext()) {
+				this.resources.add(MongoUtils.asString(iterator.next(), Dictionary.FIELD_RESOURCE));
 			}
-		} finally {
-			cursor.close();
 		}
 	}
 

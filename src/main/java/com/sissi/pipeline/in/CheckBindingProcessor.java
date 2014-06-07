@@ -8,7 +8,7 @@ import com.sissi.protocol.error.ServerError;
 import com.sissi.protocol.error.detail.NotAllowed;
 
 /**
- * 已登录校验
+ * 已绑定资源校验
  * 
  * @author kim 2014年5月8日
  */

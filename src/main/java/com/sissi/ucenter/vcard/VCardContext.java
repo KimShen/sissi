@@ -10,12 +10,12 @@ import com.sissi.field.Fields;
  * @author kim 2013年12月10日
  */
 public interface VCardContext {
+	
+	public final static String FIELD_NICK = "NICK";
 
 	public final static String FIELD_LOGOUT = "LOGOUT";
 	
 	public final static String FIELD_AVATOR = "AVATOR";
-
-	public final static String FIELD_NICKNAME = "NICKNAME";
 
 	public final static String FIELD_SIGNATURE = "SIGNATURE";
 
