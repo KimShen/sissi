@@ -172,6 +172,7 @@ public class Presence extends Protocol implements com.sissi.context.Status, Fiel
 
 	@Override
 	public Presence clauses(StatusClauses clauses) {
+		this.fields = this.fields != null ? this.fields.reset() : this.fields;
 		this.show(clauses.find(StatusClauses.KEY_SHOW)).status(clauses.find(StatusClauses.KEY_STATUS)).avator(clauses.find(StatusClauses.KEY_AVATOR)).priority(clauses.find(StatusClauses.KEY_PRIORITY)).setType(clauses.find(StatusClauses.KEY_TYPE));
 		return this;
 	}
