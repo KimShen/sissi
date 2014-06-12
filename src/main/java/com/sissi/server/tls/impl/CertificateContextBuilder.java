@@ -13,7 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.Trace;
-import com.sissi.commons.apache.IOUtils;
+import com.sissi.commons.apache.IOUtil;
 import com.sissi.server.tls.SSLContextBuilder;
 
 /**
@@ -59,7 +59,7 @@ public class CertificateContextBuilder implements SSLContextBuilder {
 			ks.load(certificate, key.getPassword());
 			factory.init(ks, key.getPassword());
 		} finally {
-			IOUtils.closeQuietly(certificate);
+			IOUtil.closeQuietly(certificate);
 		}
 		return factory.getKeyManagers();
 	}
@@ -72,7 +72,7 @@ public class CertificateContextBuilder implements SSLContextBuilder {
 			ks.load(certificate, trust.getPassword());
 			factory.init(ks);
 		} finally {
-			IOUtils.closeQuietly(certificate);
+			IOUtil.closeQuietly(certificate);
 		}
 		return factory.getTrustManagers();
 	}

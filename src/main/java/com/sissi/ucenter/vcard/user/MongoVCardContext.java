@@ -19,7 +19,7 @@ import com.sissi.ucenter.impl.MongoFieldsContext;
 import com.sissi.ucenter.vcard.VCardContext;
 
 /**
- * 索引策略:{"username":Xxx}
+ * 索引策略:{"username":1}
  * 
  * @author kim 2013年12月10日
  */

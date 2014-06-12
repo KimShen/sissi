@@ -6,7 +6,7 @@ import com.sissi.config.MongoConfig;
 import com.sissi.resource.ResourceCounter;
 
 /**
- * 索引策略: {"resource":Xxx}
+ * 索引策略: 无需索引
  * 
  * @author kim 2014年1月15日
  */

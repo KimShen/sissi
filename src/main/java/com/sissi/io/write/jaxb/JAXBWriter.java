@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.ScanUtil;
 import com.sissi.commons.Trace;
-import com.sissi.commons.apache.IOUtils;
+import com.sissi.commons.apache.IOUtil;
 import com.sissi.commons.apache.LineIterator;
 import com.sissi.context.JIDContext;
 import com.sissi.io.write.Writer;
@@ -101,7 +101,7 @@ public class JAXBWriter implements Writer {
 				return output;
 			}
 		} finally {
-			IOUtils.closeQuietly(output);
+			IOUtil.closeQuietly(output);
 		}
 	}
 
@@ -177,7 +177,7 @@ public class JAXBWriter implements Writer {
 		try {
 			marshaller.marshal(node, buffer);
 			buffer.flush();
-			LineIterator iterator = IOUtils.lineIterator(new ByteArrayInputStream(source.toByteArray()), "UTF-8");
+			LineIterator iterator = IOUtil.lineIterator(new ByteArrayInputStream(source.toByteArray()), "UTF-8");
 			LinkedList<String> contents = new LinkedList<String>();
 			while (iterator.hasNext()) {
 				String each = iterator.next().trim();
@@ -187,8 +187,8 @@ public class JAXBWriter implements Writer {
 			}
 			return contents;
 		} finally {
-			IOUtils.closeQuietly(buffer);
-			IOUtils.closeQuietly(source);
+			IOUtil.closeQuietly(buffer);
+			IOUtil.closeQuietly(source);
 		}
 	}
 

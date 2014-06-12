@@ -14,7 +14,7 @@ import com.sissi.ucenter.relation.Relation;
 import com.sissi.ucenter.relation.impl.DefaultRelation;
 
 /**
- * 获取订阅关系
+ * 获取订阅关系. 索引策略1: {"master":1,"slave":1}</p> 索引策略2: {"slave":1,"master":1},
  * 
  * @author kim 2014年4月22日
  */
@@ -42,7 +42,7 @@ public class MongoOurRelation {
 	}
 
 	/**
-	 * {"master":Xxx,"slave":Xxx}
+	 * {"master":1,"slave":1}
 	 * 
 	 * @param master
 	 * @param slave

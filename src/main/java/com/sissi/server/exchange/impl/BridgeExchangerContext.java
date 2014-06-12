@@ -13,7 +13,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.sissi.commons.Trace;
-import com.sissi.commons.apache.IOUtils;
+import com.sissi.commons.apache.IOUtil;
 import com.sissi.commons.thread.Interval;
 import com.sissi.commons.thread.Runner;
 import com.sissi.config.Dictionary;
@@ -204,7 +204,7 @@ public class BridgeExchangerContext implements ExchangerContext {
 		 */
 		private BridgeExchanger close(Closeable closer) {
 			try {
-				IOUtils.closeQuietly(closer);
+				IOUtil.closeQuietly(closer);
 			} catch (Exception e) {
 				BridgeExchangerContext.this.log.warn(e.toString());
 				Trace.trace(BridgeExchangerContext.this.log, e);

@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.mongodb.BasicDBObjectBuilder;
 import com.sissi.commons.Trace;
-import com.sissi.commons.apache.IOUtils;
+import com.sissi.commons.apache.IOUtil;
 import com.sissi.config.Dictionary;
 import com.sissi.config.impl.MongoUtils;
 import com.sissi.persistent.Persistent;
@@ -104,7 +104,7 @@ public class FSDelegation implements Delegation {
 			Trace.trace(this.log, e);
 			throw new RuntimeException(e);
 		} finally {
-			IOUtils.closeQuietly(buffer);
+			IOUtil.closeQuietly(buffer);
 		}
 	}
 
@@ -211,7 +211,7 @@ public class FSDelegation implements Delegation {
 		@Override
 		public void close() throws IOException {
 			this.current.set(-1);
-			IOUtils.closeQuietly(this.input);
+			IOUtil.closeQuietly(this.input);
 			FSDelegation.this.resourceCounter.decrement(FSDelegation.this.transfer);
 		}
 	}

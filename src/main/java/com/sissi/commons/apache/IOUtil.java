@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
-public class IOUtils {
+public class IOUtil {
 
 	public static void closeQuietly(Closeable closeable) {
 		try {

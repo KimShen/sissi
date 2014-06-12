@@ -12,7 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.Trace;
-import com.sissi.commons.apache.IOUtils;
+import com.sissi.commons.apache.IOUtil;
 import com.sissi.context.JIDContext;
 import com.sissi.io.write.Writer;
 import com.sissi.pipeline.Output;
@@ -60,8 +60,8 @@ public class NetworkOutputBuilder implements OutputBuilder {
 				NetworkOutputBuilder.this.log.error(e.toString());
 				Trace.trace(NetworkOutputBuilder.this.log, e);
 			} finally {
-				IOUtils.closeQuietly(buf);
-				IOUtils.closeQuietly(output);
+				IOUtil.closeQuietly(buf);
+				IOUtil.closeQuietly(output);
 			}
 			return false;
 		}

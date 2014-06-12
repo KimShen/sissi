@@ -8,7 +8,7 @@ import com.sissi.field.Fields;
  * 
  * @author kim 2014年5月4日
  */
-public class MongoRegisterApproveContext extends MongoRegisterApplyContext {
+public class MongoRegisterApproveContext extends RegisterApplyContext {
 
 	public MongoRegisterApproveContext() {
 		super("1");

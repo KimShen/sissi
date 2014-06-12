@@ -25,6 +25,7 @@ import com.sissi.ucenter.relation.roster.RelationAck;
 import com.sissi.ucenter.relation.roster.RelationCascade;
 
 /**
+ * 索引策略1: {"master":1,"slave":1}</p> 索引策略2: {"slave":1,"master":1}</p> 索引策略3: {"master":1,"activate":1}</p> 索引策略4: {"slave":1,"activate":1}</p> 索引策略5: {"master":1,"activate":1,"status":1}</p> 索引策略6: {"slave":1,"activate":1,"status":1}</p> 索引策略7: {"slave":1,"ack":1}
  * @author kim 2014年4月22日
  */
 public class MongoRelationRosterContext implements RelationContext, RelationAck {
@@ -105,7 +106,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationAck 
 	}
 
 	/**
-	 * {"master":Xxx,"slave":Xxx}
+	 * {"master":1,"slave":1}
 	 * 
 	 * @param master
 	 * @param slave

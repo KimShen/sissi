@@ -12,6 +12,7 @@ import com.sissi.ucenter.relation.muc.affiliation.AffiliationBuilder;
 import com.sissi.ucenter.relation.muc.affiliation.AffiliationUpdater;
 
 /**
+ * 索引策略: {"jid":1,"affiliations.jid":1}
  * @author kim 2014年3月9日
  */
 public class MongoAffiliationBuilder implements AffiliationBuilder {

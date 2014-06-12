@@ -21,7 +21,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.sissi.addressing.Addressing;
 import com.sissi.commons.Trace;
-import com.sissi.commons.apache.IOUtils;
+import com.sissi.commons.apache.IOUtil;
 import com.sissi.context.JIDContext;
 import com.sissi.context.JIDContextBuilder;
 import com.sissi.context.JIDContextParam;
@@ -151,8 +151,8 @@ public class MainServerHandlerBuilder implements ChannelHandlerBuilder {
 		private PersonalServerHandler closeParser() throws IOException {
 			this.output.write(-1);
 			this.output.flush();
-			IOUtils.closeQuietly(this.output);
-			IOUtils.closeQuietly(this.outPipe);
+			IOUtil.closeQuietly(this.output);
+			IOUtil.closeQuietly(this.outPipe);
 			return this;
 		}
 

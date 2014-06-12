@@ -15,7 +15,7 @@ import com.sissi.context.impl.OfflineJID;
 import com.sissi.ucenter.block.BlockContext;
 
 /**
- * 索引策略1:{"username":1}</p>索引策略2:{"username":Xxx,"blocks":Xxx}
+ * 索引策略1:{"username":1}</p>索引策略2:{"username":1,"blocks":1}
  * 
  * @author kim 2013年12月6日
  */

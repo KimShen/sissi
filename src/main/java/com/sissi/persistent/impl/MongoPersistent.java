@@ -18,7 +18,7 @@ import com.sissi.pipeline.Output;
 import com.sissi.protocol.Element;
 
 /**
- * 索引策略1: {"activate":1,"ack":1}</p>索引策略2: {"to",1,"activate":1,"ack":1,"class":1,"resend",1}</p>索引策略3: {"sid":Xxx","calss":1}</p>索引策略4: {"pid":Xxx","calss":1}
+ * 索引策略1: {"activate":1,"ack":1}</p>索引策略2: {"to":1,"activate":1,"ack":1,"class":1,"resend":1}</p>索引策略3: {"sid":1,"calss":1}</p>索引策略4: {"pid":1,"calss":1}
  * @author kim 2013-11-15
  */
 public class MongoPersistent implements Persistent, Output {

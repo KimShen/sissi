@@ -12,7 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.Trace;
-import com.sissi.commons.apache.IOUtils;
+import com.sissi.commons.apache.IOUtil;
 import com.sissi.context.JIDBuilder;
 import com.sissi.persistent.Persistent;
 import com.sissi.pipeline.Transfer;
@@ -105,7 +105,7 @@ public class DegelationTransferBuilder implements TransferBuilder {
 
 		@Override
 		public void close() {
-			IOUtils.closeQuietly(this.output);
+			IOUtil.closeQuietly(this.output);
 			DegelationTransferBuilder.this.persistent.push(this.si);
 			DegelationTransferBuilder.this.resourceCounter.decrement(DegelationTransferBuilder.this.resoure);
 			DegelationTransferBuilder.this.recall.call(DegelationTransferBuilder.this.jidBuilder.build(si.parent().getTo()).asStringWithBare());

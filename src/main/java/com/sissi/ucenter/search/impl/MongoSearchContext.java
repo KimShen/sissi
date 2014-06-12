@@ -13,7 +13,7 @@ import com.sissi.ucenter.impl.MongoFieldsContext;
 import com.sissi.ucenter.search.SearchContext;
 
 /**
- * 索引策略: 动态,由FieldMapping所能解析的Field.name决定
+ * 索引策略: 动态,由FieldMapping所能解析的Field.name决定. 默认索引策略: {"NICK":1}
  * 
  * @author kim 2014年6月6日
  */

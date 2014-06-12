@@ -9,11 +9,11 @@ import com.sissi.ucenter.relation.muc.register.RegisterConfig;
 /**
  * @author kim 2014年5月4日
  */
-abstract class MongoRegisterApplyContext implements ApplySupport {
+abstract class RegisterApplyContext implements ApplySupport {
 
 	private final String allow;
 
-	public MongoRegisterApplyContext(String allow) {
+	public RegisterApplyContext(String allow) {
 		super();
 		this.allow = allow;
 	}

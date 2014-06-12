@@ -14,7 +14,7 @@ import com.sissi.ucenter.relation.muc.apply.RequestConfig;
  * 
  * @author kim 2014年5月4日
  */
-public class MongoRegisterRejectContext extends MongoRegisterApplyContext {
+public class MongoRegisterRejectContext extends RegisterApplyContext {
 
 	private final MongoConfig config;
 

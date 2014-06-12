@@ -16,7 +16,7 @@ import com.sissi.ucenter.relation.Relation;
 import com.sissi.ucenter.vcard.VCardContext;
 
 /**
- * 索引策略1: {"roles.jid":1,"roles.resource":1}</p>索引策略2: {"jid":1}}</p>索引策略3: {"roles.role":1}}</p>索引策略4: {"roles.path":1}
+ * 索引策略1: {"roles.jid":1,"roles.resource":1}</p>索引策略2: {"jid":1}}</p>索引策略3: {"roles.role":1}</p>索引策略4: {"roles.path":1}
  * 
  * @author kim 2014年3月19日
  */

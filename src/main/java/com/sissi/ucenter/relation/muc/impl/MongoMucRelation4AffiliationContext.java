@@ -20,7 +20,7 @@ import com.sissi.ucenter.relation.muc.affiliation.AffiliationBuilder;
 import com.sissi.ucenter.vcard.VCardContext;
 
 /**
- * 索引策略1: {affiliations.jid":1,"affiliations.nick":1}</p>索引策略2: {"affiliations.jid":1}</p>索引策略3: {"jid":1}</p>索引策略4: {"affiliations.affiliation":1}</p>索引策略5: {"configs.persistent":1}
+ * 索引策略1: {"affiliations.jid":1,"affiliations.nick":1}</p>索引策略2: {"affiliations.jid":1}</p>索引策略3: {"jid":1}</p>索引策略4: {"affiliations.affiliation":1}</p>索引策略5: {"configs.persistent":1}
  * 
  * @author kim 2014年4月25日
  */

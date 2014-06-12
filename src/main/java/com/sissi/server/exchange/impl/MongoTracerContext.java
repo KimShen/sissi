@@ -10,6 +10,7 @@ import com.sissi.server.exchange.Tracer;
 import com.sissi.server.exchange.TracerContext;
 
 /**
+ * 索引策略: {"pid":1}
  * @author kim 2014年5月8日
  */
 public class MongoTracerContext implements TracerContext {

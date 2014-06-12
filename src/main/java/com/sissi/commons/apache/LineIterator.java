@@ -152,7 +152,7 @@ public class LineIterator implements Iterator<String> {
      */
     public void close() {
         finished = true;
-        IOUtils.closeQuietly(bufferedReader);
+        IOUtil.closeQuietly(bufferedReader);
         cachedLine = null;
     }
 

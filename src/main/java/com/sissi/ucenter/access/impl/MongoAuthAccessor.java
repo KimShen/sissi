@@ -8,6 +8,7 @@ import com.sissi.config.impl.MongoUtils;
 import com.sissi.ucenter.access.AuthAccessor;
 
 /**
+ * 索引策略: {"username":1,"activate":1}
  * @author kim 2013-11-6
  */
 public class MongoAuthAccessor implements AuthAccessor {
