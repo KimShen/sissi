@@ -16,6 +16,8 @@
 				<ref bean="message.pro.muc.check.exists" />
 				<ref bean="message.pro.muc.check.relation" />
 				<ref bean="message.pro.muc.2fans.check" />
+				<ref bean="iq.pro.time" />
+				<ref bean="message.pro.delay" />
 				<ref bean="message.pro.muc.2fans" />
 			</util:list>
 		</constructor-arg>

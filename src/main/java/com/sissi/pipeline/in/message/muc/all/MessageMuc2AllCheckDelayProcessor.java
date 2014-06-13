@@ -12,7 +12,7 @@ import com.sissi.ucenter.relation.muc.room.RoomBuilder;
 import com.sissi.ucenter.relation.muc.room.RoomConfig;
 
 /**
- * 发送显式Delay消息时房间激活校验
+ * 发送显式Delay消息时房间激活校验(带有Delay的消息禁止作为初始化历史记录消息发送)
  * 
  * @author kim 2014年4月6日
  */
@@ -29,7 +29,7 @@ public class MessageMuc2AllCheckDelayProcessor extends ProxyProcessor {
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
-		return protocol.cast(Message.class).delay() ? this.room.build(super.build(protocol.parent().getTo())).allowed(context.jid(), RoomConfig.CONFIGED) ? this.writeAndReturn(context, protocol) : true : true;
+		return protocol.cast(Message.class).delay() ? this.room.build(super.build(protocol.parent().getTo())).allowed(context.jid(), RoomConfig.CONFIGED) ? true : this.writeAndReturn(context, protocol) : true;
 	}
 
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
