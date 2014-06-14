@@ -15,7 +15,8 @@ public enum PresenceType {
 	}
 
 	public boolean equals(String type) {
-		return this.equals(type.toString());
+		String value = toString();
+		return (value == null) ? false : value.equals(type);
 	}
 
 	public boolean in(PresenceType... types) {
