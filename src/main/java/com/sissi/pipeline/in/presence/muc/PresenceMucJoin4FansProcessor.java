@@ -39,7 +39,7 @@ public class PresenceMucJoin4FansProcessor extends ProxyProcessor {
 		for (Relation each : super.myRelations(group)) {
 			MucRelation relation = each.cast(MucRelation.class);
 			JID to = super.build(relation.jid());
-			context.write(presence.clear().add(this.judeger.add(new XUser(group, context.jid(), room.allowed(context.jid(), RoomConfig.WHOISEXISTS)).item(new Item(room.allowed(context.jid(), RoomConfig.WHOISALLOW, to), relation))).cast(XUser.class)).clauses(super.findOne(to, true).status().clauses()).setFrom(group.resource(relation.name())));
+			context.write(presence.clear().clauses(super.findOne(to, true).status().clauses()).add(this.judeger.add(new XUser(group, context.jid(), room.allowed(context.jid(), RoomConfig.WHOISEXISTS)).item(new Item(room.allowed(context.jid(), RoomConfig.WHOISALLOW, to), relation))).cast(XUser.class)).setFrom(group.resource(relation.name())));
 		}
 		return true;
 	}
