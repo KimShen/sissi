@@ -18,10 +18,10 @@
 				<ref bean="message.pro.muc.check.exists" />
 				<ref bean="message.pro.muc.check.relation" />
 				<ref bean="iq.pro.time" />
-				<ref bean="message.pro.delay" />
 				<ref bean="message.pro.muc.2all.check" />
 				<ref bean="message.pro.muc.nonethread" />
 				<ref bean="message.pro.muc.persistent" />
+				<ref bean="message.pro.delay" />
 				<ref bean="message.pro.muc.2all" />
 			</util:list>
 		</constructor-arg>

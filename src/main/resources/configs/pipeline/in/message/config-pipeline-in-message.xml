@@ -26,11 +26,11 @@
 				<ref bean="global.pro.check.chained" />
 				<ref bean="message.pro.check.relation" />
 				<ref bean="iq.pro.time" />
-				<ref bean="message.pro.delay" />
 				<ref bean="message.pro.received" />
 				<ref bean="message.pro.check.body" />
 				<ref bean="message.pro.check.ack" />
 				<ref bean="message.pro.persistent" />
+				<ref bean="message.pro.delay" />
 				<ref bean="message.pro.2self" />
 				<ref bean="message.pro.2fan" />
 			</util:list>
