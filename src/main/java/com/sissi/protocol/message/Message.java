@@ -103,7 +103,7 @@ public class Message extends Protocol implements Collector {
 	}
 
 	public Message delay(Delay delay) {
-		this.delay = delay;
+		this.delay = this.delay != null ? this.delay : delay;
 		return this;
 	}
 
