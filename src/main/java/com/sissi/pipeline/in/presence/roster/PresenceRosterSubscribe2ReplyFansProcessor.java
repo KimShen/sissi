@@ -11,7 +11,7 @@ import com.sissi.protocol.presence.PresenceType;
 import com.sissi.ucenter.relation.roster.RosterRelation;
 
 /**
- * 自动批准,Presence type = subscribed
+ * 自动批准,对方已订阅,Presence type = subscribed
  * 
  * @author kim 2014年1月24日
  */

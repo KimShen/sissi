@@ -65,6 +65,7 @@
 	</bean>
 
 	<bean id="global.pro.forward" class="com.sissi.pipeline.in.ForwardProcessor" parent="global.pro.proxy" />
+	<bean id="global.pro.forwards" class="com.sissi.pipeline.in.ForwardsProcessor" parent="global.pro.proxy" />
 
 	<bean id="global.finder" class="com.sissi.pipeline.in.ChainedFinder">
 		<constructor-arg>

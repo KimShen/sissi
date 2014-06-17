@@ -18,6 +18,7 @@
 			<util:list>
 				<ref bean="presence.pro.roster.subscribe.check" />
 				<ref bean="presence.pro.roster.subscribed" />
+				<ref bean="global.pro.forwards" />
 				<ref bean="presence.pro.roster.subscribed.2item" />
 				<ref bean="presence.pro.roster.subscribed.2presence" />
 			</util:list>
@@ -43,6 +44,7 @@
 			<util:list>
 				<ref bean="presence.pro.roster.unsubscribed.check" />
 				<ref bean="presence.pro.roster.unsubscribed" />
+				<ref bean="global.pro.forwards" />
 				<ref bean="presence.pro.roster.unsubscribed.2item" />
 				<ref bean="presence.pro.roster.unsubscribed.2presence" />
 			</util:list>
@@ -57,8 +59,10 @@
 			<util:list>
 				<ref bean="presence.pro.roster.subscribed.check" />
 				<ref bean="presence.pro.roster.subscribed" />
+				<ref bean="global.pro.forwards" />
 				<ref bean="presence.pro.roster.subscribed.2item" />
 				<ref bean="presence.pro.roster.subscribed.2presence" />
+				<ref bean="global.pro.forwards" />
 			</util:list>
 		</constructor-arg>
 	</bean>
@@ -71,6 +75,7 @@
 			<util:list>
 				<ref bean="presence.pro.roster.unsubscribe.check" />
 				<ref bean="presence.pro.roster.unsubscribe" />
+				<ref bean="global.pro.forwards" />
 				<ref bean="presence.pro.roster.unsubscribe.2item" />
 				<ref bean="presence.pro.roster.unsubscribe.2presence" />
 			</util:list>
