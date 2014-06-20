@@ -41,7 +41,7 @@ public class MessageReceivedProcessor extends ProxyProcessor {
 	 * @return
 	 */
 	private boolean writeAndReturn(JIDContext context, Protocol protocol) {
-		this.persistent.peek(MongoUtils.asMap(BasicDBObjectBuilder.start(Dictionary.FIELD_PID, protocol.cast(Message.class).getReceived().id()).get()), MongoUtils.asMap(BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(Dictionary.FIELD_ACK, false).get()).get()));
+		this.persistent.peek(MongoUtils.asMap(BasicDBObjectBuilder.start(Dictionary.FIELD_PID, protocol.cast(Message.class).getReceived().id()).get()), MongoUtils.asMap(BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(Dictionary.FIELD_ACK, true).get()).get()));
 		return false;
 	}
 }
