@@ -11,7 +11,9 @@
 	<bean id="stream.pro.context.lang" class="com.sissi.pipeline.in.stream.StreamContextLangProcessor" />
 	<bean id="stream.pro.context.reset" class="com.sissi.pipeline.in.stream.StreamContextResetProcessor" />
 	<bean id="stream.pro.context.domain" class="com.sissi.pipeline.in.stream.StreamContextDomainProcessor" />
-	<bean id="stream.pro.feature.auth" class="com.sissi.pipeline.in.stream.StreamFeatureAuthProcessor" />
+	<bean id="stream.pro.feature.auth" class="com.sissi.pipeline.in.stream.StreamFeatureAuthProcessor">
+		<constructor-arg ref="auth.mechanisms" />
+	</bean>
 	<bean id="stream.pro.feature.binding" class="com.sissi.pipeline.in.stream.StreamFeatureBindingProcessor" />
 	<bean id="stream.pro.feature.starttls" class="com.sissi.pipeline.in.stream.StreamFeatureStarttlsProcessor" />
 	<bean id="stream.pro.check.xmlns" class="com.sissi.pipeline.in.stream.StreamCheckXmlnsProcessor">

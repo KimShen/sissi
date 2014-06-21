@@ -1,5 +1,7 @@
 package com.sissi.pipeline.in.auth.impl;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import com.sissi.context.JIDContext;
@@ -15,21 +17,19 @@ import com.sissi.protocol.iq.auth.Failure;
  */
 public class AuthMechanismProcessor extends ProxyProcessor {
 
-	private final Set<AuthCallback> authCallbacks;
+	private final Map<String, AuthCallback> authCallbacks = new HashMap<String, AuthCallback>();
 
 	public AuthMechanismProcessor(Set<AuthCallback> authCallbacks) {
 		super();
-		this.authCallbacks = authCallbacks;
+		for (AuthCallback authCallback : authCallbacks) {
+			this.authCallbacks.put(authCallback.support(), authCallback);
+		}
 	}
 
 	@Override
 	public boolean input(JIDContext context, Protocol protocol) {
 		Auth auth = protocol.cast(Auth.class);
-		for (AuthCallback ac : this.authCallbacks) {
-			if (ac.support(auth.getMechanism())) {
-				return !ac.auth(auth, context);
-			}
-		}
-		return !context.write(Failure.INSTANCE_INVALIDMECHANISM).write(Stream.closeGraceFully()).close();
+		AuthCallback callback = this.authCallbacks.get(auth.getMechanism());
+		return callback != null ? !callback.auth(auth, context) : !context.write(Failure.INSTANCE_INVALIDMECHANISM).write(Stream.closeGraceFully()).close();
 	}
 }

@@ -19,7 +19,7 @@ import com.sissi.ucenter.access.AuthAccessor;
  */
 public class PlainAuthCallback implements AuthCallback {
 
-	public final static String MECHANISM = "PLAIN";
+	public final static String mechanism = "PLAIN";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -40,8 +40,8 @@ public class PlainAuthCallback implements AuthCallback {
 	}
 
 	@Override
-	public boolean support(String mechanism) {
-		return MECHANISM.equals(mechanism);
+	public String support() {
+		return mechanism;
 	}
 
 	private boolean writeAndReturn(JIDContext context, AuthCertificate certificate) {

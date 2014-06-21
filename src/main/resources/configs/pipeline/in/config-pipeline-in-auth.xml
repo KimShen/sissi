@@ -9,6 +9,7 @@
 		<constructor-arg ref="counter" />
 	</bean>
 
+	<alias name="auth.callback.chained" alias="auth.mechanisms" />
 	<util:list id="auth.callback.chained">
 		<ref bean="auth.callback.digest" />
 		<ref bean="auth.callback.plain" />

@@ -30,7 +30,7 @@ import com.sissi.ucenter.access.AuthAccessor;
  */
 public class DigestAuthCallback implements AuthCallback {
 
-	public final static String MECHANISM = "DIGEST-MD5";
+	private final static String mechanism = "DIGEST-MD5";
 
 	private final String protocol = "XMPP";
 
@@ -68,7 +68,7 @@ public class DigestAuthCallback implements AuthCallback {
 	@Override
 	public boolean auth(Auth auth, JIDContext context) {
 		try {
-			context.write(new Challenge(this.saslServers.push(context, Sasl.createSaslServer(MECHANISM, this.protocol, context.domain(), this.props, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
+			context.write(new Challenge(this.saslServers.push(context, Sasl.createSaslServer(mechanism, this.protocol, context.domain(), this.props, new ServerCallbackHandler(context))).evaluateResponse(new byte[0])));
 			return true;
 		} catch (Exception e) {
 			this.log.error(e.toString());
@@ -77,9 +77,8 @@ public class DigestAuthCallback implements AuthCallback {
 		}
 	}
 
-	@Override
-	public boolean support(String mechanism) {
-		return MECHANISM.equals(mechanism);
+	public String support() {
+		return mechanism;
 	}
 
 	private class ServerCallbackHandler implements CallbackHandler {
