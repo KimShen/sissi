@@ -35,7 +35,7 @@
 				<ref bean="stream.pro.check.version" />
 				<ref bean="stream.pro.feature.auth" />
 				<ref bean="stream.pro.feature.binding" />
-				<ref bean="stream.pro.feature.starttls" />
+				<ref bean="stream.pro.feature.starttls" /> 
 				<ref bean="stream.pro.context.reset" />
 				<ref bean="stream.pro.context.lang" />
 				<ref bean="stream.pro.context.domain" />
