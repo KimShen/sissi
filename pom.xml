@@ -9,8 +9,8 @@
 		<!-- For compile -->
 		<maven.project.name>sissi</maven.project.name>
 		<maven.project.compile.version>1.7</maven.project.compile.version>
-		<maven.project.spring.version>3.2.4.RELEASE</maven.project.spring.version>
 		<maven.project.entry>com.sissi.server.impl.Main</maven.project.entry>
+		<maven.project.spring.version>3.2.4.RELEASE</maven.project.spring.version>
 		<maven.project.build.sourceEncoding>UTF-8</maven.project.build.sourceEncoding>
 		<!-- For Server -->
 		<maven.domain.server>sissi.pw</maven.domain.server>
@@ -50,10 +50,10 @@
 		<maven.server.exchanger.bytestreams.name>Socks 5 Bytestreams Proxy</maven.server.exchanger.bytestreams.name>
 
 		<maven.looper.count.global>10</maven.looper.count.global>
-		<maven.looper.unit.global>MILLISECONDS</maven.looper.unit.global>
-		<maven.looper.interval.global>50</maven.looper.interval.global>
 		<maven.looper.count.personal>2</maven.looper.count.personal>
+		<maven.looper.unit.global>MILLISECONDS</maven.looper.unit.global>
 		<maven.looper.unit.personal>MILLISECONDS</maven.looper.unit.personal>
+		<maven.looper.interval.global>50</maven.looper.interval.global>
 		<maven.looper.interval.personal>30000</maven.looper.interval.personal>
 
 		<maven.thread.core>1000</maven.thread.core>

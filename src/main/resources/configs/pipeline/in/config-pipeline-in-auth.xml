@@ -16,6 +16,7 @@
 	</util:list>
 	<bean id="auth.callback.plain" class="com.sissi.pipeline.in.auth.impl.PlainAuthCallback">
 		<constructor-arg ref="context.jid" />
+		<constructor-arg ref="auth.pro.failed" />
 		<constructor-arg ref="ucenter.accessor" />
 	</bean>
 	<bean id="auth.callback.digest" class="com.sissi.pipeline.in.auth.impl.DigestAuthCallback">

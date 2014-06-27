@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.sissi.context.JIDBuilder;
 import com.sissi.context.JIDContext;
+import com.sissi.pipeline.Input;
 import com.sissi.pipeline.in.auth.AuthCallback;
 import com.sissi.protocol.iq.auth.Auth;
 import com.sissi.protocol.iq.auth.Success;
@@ -23,12 +24,15 @@ public class PlainAuthCallback implements AuthCallback {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
+	private final Input proxy;
+
 	private final JIDBuilder jidBuilder;
 
 	private final AuthAccessor authAccessor;
 
-	public PlainAuthCallback(JIDBuilder jidBuilder, AuthAccessor authAccessor) {
+	public PlainAuthCallback(Input proxy, JIDBuilder jidBuilder, AuthAccessor authAccessor) {
 		super();
+		this.proxy = proxy;
 		this.jidBuilder = jidBuilder;
 		this.authAccessor = authAccessor;
 	}
@@ -36,7 +40,7 @@ public class PlainAuthCallback implements AuthCallback {
 	@Override
 	public boolean auth(Auth auth, JIDContext context) {
 		AuthCertificate certificate = new AuthCertificate(auth);
-		return context.auth(certificate.pass(this.authAccessor.access(certificate.getUser(), certificate.getPass()))).auth() ? this.writeAndReturn(context, certificate) : false;
+		return context.auth(certificate.pass(this.authAccessor.access(certificate.getUser(), certificate.getPass()))).auth() ? this.writeAndReturn(context, certificate) : this.proxy.input(context, null);
 	}
 
 	@Override
