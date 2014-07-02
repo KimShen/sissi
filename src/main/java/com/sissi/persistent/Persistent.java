@@ -12,6 +12,8 @@ import com.sissi.protocol.Element;
  * @author kim 2013-11-15
  */
 public interface Persistent {
+	
+	public boolean exists(String pid);
 
 	public Persistent push(Element element);
 
