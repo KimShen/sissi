@@ -24,6 +24,8 @@ XEP-0199 Ping,
 XEP-0045 群聊的持久化  
 XEP-0065 离线文件传输  
 
+3, [近期计划](https://github.com/KimShen/sissi/wiki/%E8%BF%91%E6%9C%9F%E8%AE%A1%E5%88%92)
+
 ### 如何安装Sissi?
 1. 安装[JDK 1.7](http://www.oracle.com/technetwork/cn/java/javase/downloads/jdk7-downloads-1880260.html)及以上版本
 2. 安装[MongoDB 2.4.10](http://www.mongodb.org/downloads)及以上版本   
