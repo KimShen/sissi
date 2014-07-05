@@ -1,5 +1,3 @@
-### **移动互联网时代如果还未体验过即时服务,建议尝试下Sissi.**
-
 ### 什么是Sissi?
 Sissi是由Java编写的XMPP服务器.[Whats XMPP?](http://xmpp.org/)
 ***
