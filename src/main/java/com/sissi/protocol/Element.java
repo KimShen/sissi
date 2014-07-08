@@ -11,8 +11,6 @@ public interface Element {
 
 	public String getFrom();
 
-	public String getFrom(boolean snapshot);
-
 	public Element setFrom(String from);
 
 	public String getTo();

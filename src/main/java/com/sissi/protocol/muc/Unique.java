@@ -72,10 +72,6 @@ public class Unique extends Protocol {
 			return null;
 		}
 
-		public String getFrom(boolean snapshot) {
-			return null;
-		}
-
 		@Override
 		public UniqueSequence setFrom(String from) {
 			return this;

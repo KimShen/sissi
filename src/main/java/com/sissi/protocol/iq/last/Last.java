@@ -94,10 +94,6 @@ public class Last extends Protocol {
 			return this.last.getFrom();
 		}
 
-		public String getFrom(boolean snapshot) {
-			return this.getFrom();
-		}
-
 		@Override
 		public LastSeconds setFrom(String from) {
 			this.last.setFrom(from);

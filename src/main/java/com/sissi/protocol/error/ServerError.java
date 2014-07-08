@@ -95,10 +95,6 @@ public class ServerError implements Error {
 		return null;
 	}
 
-	public String getFrom(boolean snapshot) {
-		return null;
-	}
-
 	@Override
 	public ServerError setFrom(String from) {
 		return this;

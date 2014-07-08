@@ -51,10 +51,6 @@ public class Challenge implements Element {
 		return null;
 	}
 
-	public String getFrom(boolean snapshot) {
-		return null;
-	}
-
 	public Challenge setFrom(String from) {
 		return this;
 	}
