@@ -59,7 +59,7 @@ public class MongoAddressing implements Addressing {
 
 	@Override
 	public Addressing join(JIDContext context) {
-		if (MongoUtils.effect(this.config.collection().save(this.buildQueryWithNecessaryFields(context), WriteConcern.SAFE))) {
+		if (MongoUtils.success(this.config.collection().save(this.buildQueryWithNecessaryFields(context), WriteConcern.SAFE))) {
 			this.contexts.put(context.index(), context);
 		}
 		return this;
@@ -67,7 +67,7 @@ public class MongoAddressing implements Addressing {
 
 	@Override
 	public Addressing leave(JIDContext context) {
-		if (MongoUtils.effect(this.config.collection().remove(this.buildQueryWithNecessaryFields(context), WriteConcern.SAFE))) {
+		if (MongoUtils.success(this.config.collection().remove(this.buildQueryWithNecessaryFields(context), WriteConcern.SAFE))) {
 			this.contexts.remove(context.index());
 		}
 		return this;

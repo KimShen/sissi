@@ -49,10 +49,10 @@ public class MongoAffiliationBuilder implements AffiliationBuilder {
 					entity.add(Dictionary.FIELD_CREATOR, jid.asStringWithBare());
 				}
 				// {"jid":group.bare,"affiliations.jid":jid.bare"},{"$set":...entity...}
-				return MongoUtils.effect(MongoAffiliationBuilder.this.config.collection().update(BasicDBObjectBuilder.start().add(Dictionary.FIELD_JID, this.group.asStringWithBare()).add(Dictionary.FIELD_AFFILIATIONS + "." + Dictionary.FIELD_JID, jid.asStringWithBare()).get(), BasicDBObjectBuilder.start().add("$set", entity.get()).get(), true, false, WriteConcern.SAFE));
+				return MongoUtils.success(MongoAffiliationBuilder.this.config.collection().update(BasicDBObjectBuilder.start().add(Dictionary.FIELD_JID, this.group.asStringWithBare()).add(Dictionary.FIELD_AFFILIATIONS + "." + Dictionary.FIELD_JID, jid.asStringWithBare()).get(), BasicDBObjectBuilder.start().add("$set", entity.get()).get(), true, false, WriteConcern.SAFE));
 			} catch (MongoException e) {
 				// {"jid":group.bare},{"$addToSet":{"affiliations":{"jid":Xxx,"affiliation":Xxx}}}
-				return MongoUtils.effect(MongoAffiliationBuilder.this.config.collection().update(BasicDBObjectBuilder.start().add(Dictionary.FIELD_JID, this.group.asStringWithBare()).get(), BasicDBObjectBuilder.start("$addToSet", BasicDBObjectBuilder.start(Dictionary.FIELD_AFFILIATIONS, BasicDBObjectBuilder.start().add(Dictionary.FIELD_JID, jid.asStringWithBare()).add(Dictionary.FIELD_AFFILIATION, affiliation).get()).get()).get(), true, false, WriteConcern.SAFE));
+				return MongoUtils.success(MongoAffiliationBuilder.this.config.collection().update(BasicDBObjectBuilder.start().add(Dictionary.FIELD_JID, this.group.asStringWithBare()).get(), BasicDBObjectBuilder.start("$addToSet", BasicDBObjectBuilder.start(Dictionary.FIELD_AFFILIATIONS, BasicDBObjectBuilder.start().add(Dictionary.FIELD_JID, jid.asStringWithBare()).add(Dictionary.FIELD_AFFILIATION, affiliation).get()).get()).get(), true, false, WriteConcern.SAFE));
 			}
 		}
 	}

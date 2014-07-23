@@ -98,7 +98,11 @@ public class MongoUtils {
 	 * @param result
 	 * @return
 	 */
-	public static boolean effect(WriteResult result) {
+	public static boolean success(WriteResult result) {
 		return result.getError() == null;
+	}
+
+	public static boolean effect(WriteResult result) {
+		return result.getN() != 0;
 	}
 }

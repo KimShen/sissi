@@ -50,14 +50,14 @@ public class MongoRegisterContext extends MongoFieldsContext implements Register
 	@Override
 	public boolean register(String username, Fields fields) {
 		try {
-			return this.valid(fields) ? MongoUtils.effect(this.config.collection().update(BasicDBObjectBuilder.start(Dictionary.FIELD_USERNAME, username).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(super.entities(fields, BasicDBObjectBuilder.start()).toMap()).add(Dictionary.FIELD_ACTIVATE, true).get()).get(), true, false, WriteConcern.SAFE)) : false;
+			return this.valid(fields) ? MongoUtils.success(this.config.collection().update(BasicDBObjectBuilder.start(Dictionary.FIELD_USERNAME, username).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start(super.entities(fields, BasicDBObjectBuilder.start()).toMap()).add(Dictionary.FIELD_ACTIVATE, true).get()).get(), true, false, WriteConcern.SAFE)) : false;
 		} catch (MongoException e) {
 			return false;
 		}
 	}
 
 	public boolean unregister(String username) {
-		return MongoUtils.effect(this.config.collection().update(BasicDBObjectBuilder.start(Dictionary.FIELD_USERNAME, username).get(), this.remove, false, false, WriteConcern.SAFE));
+		return MongoUtils.success(this.config.collection().update(BasicDBObjectBuilder.start(Dictionary.FIELD_USERNAME, username).get(), this.remove, false, false, WriteConcern.SAFE));
 	}
 
 	private boolean valid(Fields fields) {

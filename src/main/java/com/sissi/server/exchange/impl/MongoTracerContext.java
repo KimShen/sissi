@@ -27,7 +27,7 @@ public class MongoTracerContext implements TracerContext {
 
 	@Override
 	public boolean trace(Tracer tracer) {
-		return MongoUtils.effect(this.config.collection().save(BasicDBObjectBuilder.start(tracer.plus()).add(Dictionary.FIELD_PID, tracer.id()).add(Dictionary.FIELD_FROM, tracer.initiator()).add(Dictionary.FIELD_ACTIVATE, true).add(Dictionary.FIELD_TO, tracer.target()).add(Dictionary.FIELD_TIMESTAMP, System.currentTimeMillis()).get(), WriteConcern.SAFE));
+		return MongoUtils.success(this.config.collection().save(BasicDBObjectBuilder.start(tracer.plus()).add(Dictionary.FIELD_PID, tracer.id()).add(Dictionary.FIELD_FROM, tracer.initiator()).add(Dictionary.FIELD_ACTIVATE, true).add(Dictionary.FIELD_TO, tracer.target()).add(Dictionary.FIELD_TIMESTAMP, System.currentTimeMillis()).get(), WriteConcern.SAFE));
 	}
 
 	public boolean trace(String id) {

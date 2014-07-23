@@ -145,7 +145,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationAck 
 	public MongoRelationRosterContext establish(JID from, Relation relation) {
 		// {"$set":{(...relation.plus()...),"nick":relation.name(),"activate":true},"$setOnInsert":{"status":0}}
 		// {"$setOnInsert":{"activate":false,"status":0}}
-		if (MongoUtils.effect(this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.jid()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(Dictionary.FIELD_NICK, relation.name()).add(Dictionary.FIELD_ACTIVATE, true).get()).add("$setOnInsert", this.initMaster).get(), true, false, WriteConcern.SAFE)) && MongoUtils.effect(this.config.collection().update(this.buildQuery(relation.jid(), from.asStringWithBare()), BasicDBObjectBuilder.start("$setOnInsert", this.initSlave).get(), true, false, WriteConcern.SAFE))) {
+		if (MongoUtils.success(this.config.collection().update(this.buildQuery(from.asStringWithBare(), relation.jid()), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start(relation.plus()).add(Dictionary.FIELD_NICK, relation.name()).add(Dictionary.FIELD_ACTIVATE, true).get()).add("$setOnInsert", this.initMaster).get(), true, false, WriteConcern.SAFE)) && MongoUtils.success(this.config.collection().update(this.buildQuery(relation.jid(), from.asStringWithBare()), BasicDBObjectBuilder.start("$setOnInsert", this.initSlave).get(), true, false, WriteConcern.SAFE))) {
 			return this;
 		}
 		this.log.error("Establish warning: " + from.asStringWithBare() + " / " + relation.jid());
@@ -156,7 +156,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationAck 
 	public MongoRelationRosterContext update(JID from, JID to, String state) {
 		// {"$unset":{"ack":true},"$bit":{"status",this.update.Xxx}}
 		// {"$bit":{"status",this.update.Xxx}}
-		if (MongoUtils.effect(this.config.collection().update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start(Dictionary.FIELD_ACK, true).get()).add("$bit", BasicDBObjectBuilder.start().add(Dictionary.FIELD_STATUS, this.update.get(state).getTo()).get()).get(), true, false, WriteConcern.SAFE)) && MongoUtils.effect(this.config.collection().update(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(Dictionary.FIELD_STATUS, this.update.get(state).getFrom()).get()).get(), true, false, WriteConcern.SAFE))) {
+		if (MongoUtils.success(this.config.collection().update(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), BasicDBObjectBuilder.start().add("$unset", BasicDBObjectBuilder.start(Dictionary.FIELD_ACK, true).get()).add("$bit", BasicDBObjectBuilder.start().add(Dictionary.FIELD_STATUS, this.update.get(state).getTo()).get()).get(), true, false, WriteConcern.SAFE)) && MongoUtils.success(this.config.collection().update(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), BasicDBObjectBuilder.start("$bit", BasicDBObjectBuilder.start().add(Dictionary.FIELD_STATUS, this.update.get(state).getFrom()).get()).get(), true, false, WriteConcern.SAFE))) {
 			this.relationCascade.update(to, from);
 			return this;
 		}
@@ -165,7 +165,7 @@ public class MongoRelationRosterContext implements RelationContext, RelationAck 
 	}
 
 	public MongoRelationRosterContext remove(JID from, JID to) {
-		if (MongoUtils.effect(this.config.collection().remove(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), WriteConcern.SAFE)) && MongoUtils.effect(this.config.collection().remove(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), WriteConcern.SAFE))) {
+		if (MongoUtils.success(this.config.collection().remove(this.buildQuery(from.asStringWithBare(), to.asStringWithBare()), WriteConcern.SAFE)) && MongoUtils.success(this.config.collection().remove(this.buildQuery(to.asStringWithBare(), from.asStringWithBare()), WriteConcern.SAFE))) {
 			this.relationCascade.remove(to, from);
 		} else {
 			this.log.error("Remove warning: " + from.asStringWithBare() + " / " + to.asStringWithBare());

@@ -66,7 +66,7 @@ public class MongoStatusBuilder implements StatusBuilder {
 	 * @return
 	 */
 	private MongoStatusBuilder set(JIDContext context, String type, String show, String status, String avator) {
-		if (MongoUtils.effect(this.config.collection().update(this.buildQuery(context), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(Dictionary.FIELD_PRIORITY, context.priority()).get()).get()))) {
+		if (MongoUtils.success(this.config.collection().update(this.buildQuery(context), BasicDBObjectBuilder.start().add("$set", BasicDBObjectBuilder.start().add(StatusClauses.KEY_TYPE, type).add(StatusClauses.KEY_SHOW, show).add(StatusClauses.KEY_STATUS, status).add(StatusClauses.KEY_AVATOR, avator).add(Dictionary.FIELD_PRIORITY, context.priority()).get()).get()))) {
 			if (avator != null) {
 				this.vcardContext.push(context.jid(), new BeanField<String>().name(VCardContext.FIELD_AVATOR).value(avator));
 			}

@@ -206,7 +206,7 @@ abstract class MongoMucRelationContext implements MucRelationContext, MucRelatio
 	public MongoMucRelationContext establish(JID from, Relation relation) {
 		try {
 			// {"jid":relation.jid,"roles.path":from.asString}, {"$set":{"roles.nick":relation.name}}
-			if (MongoUtils.effect(this.config.collection().update(BasicDBObjectBuilder.start(this.buildQuery(relation.jid()).toMap()).add(Dictionary.FIELD_ROLES + "." + Dictionary.FIELD_PATH, from.asString()).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start().add(Dictionary.FIELD_ROLES + ".$." + Dictionary.FIELD_NICK, relation.name()).get()).get(), true, false, WriteConcern.SAFE))) {
+			if (MongoUtils.success(this.config.collection().update(BasicDBObjectBuilder.start(this.buildQuery(relation.jid()).toMap()).add(Dictionary.FIELD_ROLES + "." + Dictionary.FIELD_PATH, from.asString()).get(), BasicDBObjectBuilder.start("$set", BasicDBObjectBuilder.start().add(Dictionary.FIELD_ROLES + ".$." + Dictionary.FIELD_NICK, relation.name()).get()).get(), true, false, WriteConcern.SAFE))) {
 				// The positional $ operator cannot be used for queries which traverse more than one array
 				// https://jira.mongodb.org/browse/SERVER-13509
 				// {"jid":relation.jid,"affiliations.jid":from.bare}, {"$set":{"affiliations.nick":relation.name}}

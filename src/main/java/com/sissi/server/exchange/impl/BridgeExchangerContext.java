@@ -64,7 +64,7 @@ public class BridgeExchangerContext implements ExchangerContext {
 	@Override
 	public Exchanger wait(String host, boolean cascade, Transfer transfer) {
 		BridgeExchanger exchanger = new BridgeExchanger(host, cascade, transfer);
-		if (MongoUtils.effect(this.config.collection().save(this.build(host, true), WriteConcern.SAFE))) {
+		if (MongoUtils.success(this.config.collection().save(this.build(host, true), WriteConcern.SAFE))) {
 			this.exchangers.put(host, exchanger);
 		}
 		return exchanger;
@@ -72,7 +72,7 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 	@Override
 	public Exchanger activate(String host) {
-		if (MongoUtils.effect(this.config.collection().remove(this.build(host, false), WriteConcern.SAFE))) {
+		if (MongoUtils.success(this.config.collection().remove(this.build(host, false), WriteConcern.SAFE))) {
 			// Double check 4 multi thread
 			Exchanger exchanger = this.exchangers.remove(host);
 			return exchanger != null ? exchanger : new NothingExchanger(host);
