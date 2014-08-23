@@ -66,12 +66,12 @@ public class MongoProxyConfig implements MongoConfig {
 
 	private class MongoWrapCollection implements MongoCollection {
 
-		private void log(String op, DBObject first, DBObject... entity) {
-			log.debug(op + ": " + first + entity != null ? (" / " + Arrays.toString(entity)) : "");
+		private void log(String op, DBObject... entity) {
+			log.debug(op + ": " + entity != null ? (" / " + Arrays.toString(entity)) : "");
 		}
 
 		public WriteResult remove(DBObject query) {
-			return this.remove(query, WriteConcern.NONE);
+			return this.remove(query, WriteConcern.MAJORITY);
 		}
 
 		public WriteResult remove(DBObject query, WriteConcern concern) {
@@ -81,7 +81,7 @@ public class MongoProxyConfig implements MongoConfig {
 
 		@Override
 		public WriteResult save(DBObject entity) {
-			return this.save(entity, WriteConcern.NONE);
+			return this.save(entity, WriteConcern.MAJORITY);
 		}
 
 		public WriteResult save(DBObject entity, WriteConcern concern) {
@@ -91,12 +91,12 @@ public class MongoProxyConfig implements MongoConfig {
 
 		@Override
 		public WriteResult update(DBObject query, DBObject entity) {
-			return this.update(query, entity, false, false, WriteConcern.NONE);
+			return this.update(query, entity, false, false, WriteConcern.MAJORITY);
 		}
 
 		@Override
 		public WriteResult update(DBObject query, DBObject entity, boolean upsert, boolean batch) {
-			return this.update(query, entity, upsert, batch, WriteConcern.NONE);
+			return this.update(query, entity, upsert, batch, WriteConcern.MAJORITY);
 		}
 
 		public WriteResult update(DBObject query, DBObject entity, boolean upsert, boolean batch, WriteConcern concern) {
@@ -133,9 +133,9 @@ public class MongoProxyConfig implements MongoConfig {
 			return MongoProxyConfig.this.collection.findAndModify(query, entity);
 		}
 
-		public AggregationOutput aggregate(DBObject firstOp, DBObject... additionalOps) {
-			this.log("aggregate", firstOp, additionalOps);
-			return MongoProxyConfig.this.collection.aggregate(firstOp, additionalOps);
+		public AggregationOutput aggregate(final DBObject... ops) {
+			this.log("aggregate", ops);
+			return MongoProxyConfig.this.collection.aggregate(Arrays.asList(ops));
 		}
 	}
 }

@@ -96,7 +96,7 @@ public class GlobalLooperBuilder implements Looper, LooperBuilder, Runnable {
 					this.getAndFeed(mod);
 				} else {
 					// TODO: change to wait();
-					Thread.sleep(this.interval.convert(TimeUnit.SECONDS) * 1000 * this.random.nextInt(this.threadNum));
+					Thread.sleep(this.interval.convert(TimeUnit.MILLISECONDS) * this.random.nextInt(this.threadNum));
 				}
 			} catch (Exception e) {
 				this.log.warn(e.toString());

@@ -98,6 +98,7 @@ public class MongoUtils {
 	 * @param result
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean success(WriteResult result) {
 		return result.getError() == null;
 	}

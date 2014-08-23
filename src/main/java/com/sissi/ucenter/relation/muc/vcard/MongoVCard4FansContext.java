@@ -100,6 +100,7 @@ public class MongoVCard4FansContext extends MongoFieldsContext implements VCardC
 		// ucenter.vcard.user获取个人信息
 		this.proxy.pull(this.jidBuilder.build(jid.resource()), fields);
 		// 激活时间和个人信息{"$match":{"jid":jid.bare},{"$unwind":"$informations"},{"$match":{"informations.jid":jid.resource},{"$project":{"activate":"$informations.activate","information" :"$informations.information"}}
+		@SuppressWarnings("deprecation")
 		List<?> vcards = MongoUtils.asList(this.config.collection().aggregate(BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_JID, jid.asStringWithBare()).get()).get(), this.unwind, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_INFORMATIONS + "." + Dictionary.FIELD_JID, jid.resource()).get()).get(), this.project).getCommandResult(), Dictionary.FIELD_RESULT);
 		Map<String, Object> entity = MongoUtils.asMap(vcards.isEmpty() ? null : DBObject.class.cast(vcards.get(0)));
 		for (String element : entity.keySet()) {

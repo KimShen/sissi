@@ -19,7 +19,7 @@ public class Runner {
 		this.executor = executor;
 	}
 
-	public void executor(Integer threadNum, Runnable runnable) {
+	public void executor(int threadNum, Runnable runnable) {
 		for (int num = 0; num < threadNum; num++) {
 			this.executor.execute(runnable);
 		}

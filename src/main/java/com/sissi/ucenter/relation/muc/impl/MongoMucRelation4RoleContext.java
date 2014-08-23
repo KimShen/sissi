@@ -46,6 +46,7 @@ public class MongoMucRelation4RoleContext extends MongoMucRelationContext {
 	 * 
 	 * @see com.sissi.ucenter.relation.RelationContext#iSubscribedWho(com.sissi.context.JID)
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public Set<JID> iSubscribedWho(JID from) {
 		// {"$match":{"roles.jid":from.bare,"roles.resource":from.resource}}
@@ -62,6 +63,7 @@ public class MongoMucRelation4RoleContext extends MongoMucRelationContext {
 	public Set<Relation> myRelations(JID from, String role) {
 		// {"$match":{"jid":group.bare}}, {"$unwind":"$roles"}, {"$match":{"roles.role":Xxx}}, {"$group":{"_id":{"jid":"$jid","creator":"$creator","affiliations":"$affiliations"},"roles":{"$addToSet":"$roles"}}}, {"$project":{"jid":"$_id.jid","creator":"$_id.creator","affiliations":"$_id.affiliations","roles":"$roles"}}
 		AggregationOutput output = super.config.collection().aggregate(this.buildMatcher(from), super.unwindRoles, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_ROLES + "." + Dictionary.FIELD_ROLE, role).get()).get(), this.group, this.projectRole);
+		@SuppressWarnings("deprecation")
 		List<?> result = MongoUtils.asList(output.getCommandResult(), Dictionary.FIELD_RESULT);
 		return result.isEmpty() ? this.relations : new MongoRelations(DBObject.class.cast(result.get(0)));
 	}

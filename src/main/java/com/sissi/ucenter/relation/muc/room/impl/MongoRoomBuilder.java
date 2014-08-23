@@ -216,6 +216,7 @@ public class MongoRoomBuilder implements RoomBuilder {
 		public String reserved(JID jid) {
 			// {"$match":{"jid":group.bare}}, {"$unwind":"$affiliations"}, {"$match":{"affiliations.jid":jid.bare}}, {"$project":{"nick":"$affiliations.nick"}}
 			AggregationOutput output = MongoRoomBuilder.this.config.collection().aggregate(BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_JID, this.group.asStringWithBare()).get()).get(), MongoRoomBuilder.this.unwind, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_AFFILIATIONS + "." + Dictionary.FIELD_JID, jid.asStringWithBare()).get()).get(), MongoRoomBuilder.this.project);
+			@SuppressWarnings("deprecation")
 			List<?> result = MongoUtils.asList(output.getCommandResult(), Dictionary.FIELD_RESULT);
 			return result.isEmpty() ? null : MongoUtils.asString(DBObject.class.cast(result.get(0)), Dictionary.FIELD_NICK);
 		}

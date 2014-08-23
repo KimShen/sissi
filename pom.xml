@@ -53,7 +53,7 @@
 		<maven.looper.count.personal>2</maven.looper.count.personal>
 		<maven.looper.unit.global>MILLISECONDS</maven.looper.unit.global>
 		<maven.looper.unit.personal>MILLISECONDS</maven.looper.unit.personal>
-		<maven.looper.interval.global>50</maven.looper.interval.global>
+		<maven.looper.interval.global>500</maven.looper.interval.global>
 		<maven.looper.interval.personal>30000</maven.looper.interval.personal>
 
 		<maven.thread.core>1000</maven.thread.core>

@@ -82,6 +82,7 @@ public class MongoMucRelation4AffiliationContext extends MongoMucRelationContext
 	 * 
 	 * @see com.sissi.ucenter.relation.RelationContext#iSubscribedWho(com.sissi.context.JID)
 	 */
+	@SuppressWarnings("deprecation")
 	public Set<JID> iSubscribedWho(JID from) {
 		// {"$match":{"affiliations.jid",from.bare,"affiliations.nick":{"$exists":true}}}
 		DBObject match = BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start().add(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_JID, from.asStringWithBare()).add(MongoConfig.FIELD_AFFILIATIONS + "." + MongoConfig.FIELD_NICK, BasicDBObjectBuilder.start("$exists", true).get()).get()).get();
@@ -106,6 +107,7 @@ public class MongoMucRelation4AffiliationContext extends MongoMucRelationContext
 	public Set<Relation> myRelations(JID from, String affiliation) {
 		// {"$match":{"jid":group.bare}}, {"$unwind":"$affiliations"}, {"$match":{"affiliations.affiliation":Xxx}}, {"$project":{"affiliation":"$affiliations"}}
 		AggregationOutput output = super.config.collection().aggregate(super.buildMatcher(from), super.unwindAffiliation, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_AFFILIATIONS + "." + Dictionary.FIELD_AFFILIATION, affiliation).get()).get(), this.projectAffiliation);
+		@SuppressWarnings("deprecation")
 		List<?> result = MongoUtils.asList(output.getCommandResult(), Dictionary.FIELD_RESULT);
 		return result.isEmpty() ? super.relations : new AffiliationRelations(result);
 	}

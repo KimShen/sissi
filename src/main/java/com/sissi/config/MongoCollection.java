@@ -37,5 +37,5 @@ public interface MongoCollection {
 
 	public DBObject findAndModify(DBObject query, DBObject entity);
 
-	public AggregationOutput aggregate(DBObject firstOp, DBObject... additionalOps);
+	public AggregationOutput aggregate(DBObject ... ops);
 }

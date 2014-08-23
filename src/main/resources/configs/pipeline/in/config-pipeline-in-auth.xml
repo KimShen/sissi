@@ -11,7 +11,7 @@
 
 	<alias name="auth.callback.chained" alias="auth.mechanisms" />
 	<util:list id="auth.callback.chained">
-		<ref bean="auth.callback.digest" />
+		<!-- <ref bean="auth.callback.digest" /> -->
 		<ref bean="auth.callback.plain" />
 	</util:list>
 	<bean id="auth.callback.plain" class="com.sissi.pipeline.in.auth.impl.PlainAuthCallback">

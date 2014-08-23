@@ -193,6 +193,7 @@ abstract class MongoMucRelationContext implements MucRelationContext, MucRelatio
 	private ItemAffiliation affiliation(JID from, JID to, ItemAffiliation def) {
 		// {"$match":{"jid":to.bare}},{"$unwind":"$affiliations"},{"$match":{"affiliations.jid":from.bare}},{"$project":{"affiliation":"$affiliations.affiliation"}}
 		AggregationOutput output = this.config.collection().aggregate(BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_JID, to.asStringWithBare()).get()).get(), this.unwindAffiliation, BasicDBObjectBuilder.start("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_AFFILIATIONS + "." + Dictionary.FIELD_JID, from.asStringWithBare()).get()).get(), this.projectAffiliations);
+		@SuppressWarnings("deprecation")
 		List<?> result = MongoUtils.asList(output.getCommandResult(), Dictionary.FIELD_RESULT);
 		return result.isEmpty() ? def : ItemAffiliation.parse(MongoUtils.asString(DBObject.class.cast(result.get(0)), Dictionary.FIELD_AFFILIATION).toString());
 	}
@@ -247,6 +248,7 @@ abstract class MongoMucRelationContext implements MucRelationContext, MucRelatio
 	@Override
 	public Relation ourRelation(JID from, JID to) {
 		AggregationOutput output = this.config.collection().aggregate(this.buildMatcher(to), this.unwindRoles, this.unwindAffiliation, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start().add(Dictionary.FIELD_ROLES + "." + Dictionary.FIELD_JID, from.asStringWithBare()).add(Dictionary.FIELD_ROLES + "." + Dictionary.FIELD_RESOURCE, from.resource()).get()).get(), this.projectRelation, this.match, this.sort, this.limit);
+		@SuppressWarnings("deprecation")
 		List<?> result = MongoUtils.asList(output.getCommandResult(), Dictionary.FIELD_RESULT);
 		return result.isEmpty() ? new NoneRelation(from, to, this.affiliation(from, to)) : new MongoRelation(DBObject.class.cast(result.get(0)));
 	}
@@ -258,6 +260,7 @@ abstract class MongoMucRelationContext implements MucRelationContext, MucRelatio
 	 */
 	public Set<Relation> ourRelations(JID from, JID to) {
 		AggregationOutput output = this.config.collection().aggregate(this.buildMatcher(to), this.unwindRoles, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start().add(Dictionary.FIELD_ROLES + "." + Dictionary.FIELD_JID, from.asStringWithBare()).get()).get(), this.groupRelations, this.projectRelations);
+		@SuppressWarnings("deprecation")
 		List<?> result = MongoUtils.asList(output.getCommandResult(), Dictionary.FIELD_RESULT);
 		return result.isEmpty() ? this.relations : new MongoRelations(DBObject.class.cast(result.get(0)));
 	}
@@ -280,6 +283,7 @@ abstract class MongoMucRelationContext implements MucRelationContext, MucRelatio
 	@Override
 	public Set<JID> whoSubscribedMe(JID from) {
 		AggregationOutput output = this.config.collection().aggregate(this.buildMatcher(from), this.projectRoles, this.unwindRoles, this.groupSubscribe);
+		@SuppressWarnings("deprecation")
 		List<?> result = MongoUtils.asList(output.getCommandResult(), Dictionary.FIELD_RESULT);
 		return result.isEmpty() ? this.jidset : new JIDGroup(MongoUtils.asList(DBObject.class.cast(result.get(0)), Dictionary.FIELD_ROLES));
 	}
@@ -288,6 +292,7 @@ abstract class MongoMucRelationContext implements MucRelationContext, MucRelatio
 	public JIDs mapping(JID group) {
 		// {"$match":{"jid":group.bare}}, {"$unwind":"$roles"}, {"$match":{"roles.nick":Xxx}}, {"$project":{"roles":"$roles"}}, {"$group":{"_id":"$roles.jid","resource":{"$push":"$roles.resource"}}}
 		AggregationOutput output = this.config.collection().aggregate(this.buildMatcher(group), this.unwindRoles, BasicDBObjectBuilder.start().add("$match", BasicDBObjectBuilder.start(Dictionary.FIELD_ROLES + "." + Dictionary.FIELD_NICK, group.resource()).get()).get(), this.projectRoles, this.groupMapping);
+		@SuppressWarnings("deprecation")
 		List<?> result = MongoUtils.asList(output.getCommandResult(), Dictionary.FIELD_RESULT);
 		return result.isEmpty() ? this.jids : this.extract(DBObject.class.cast(result.get(0)));
 	}
