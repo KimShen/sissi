@@ -9,14 +9,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.Trace;
-import com.sissi.commons.thread.Interval;
-import com.sissi.commons.thread.Runner;
 import com.sissi.context.JIDContext;
 import com.sissi.protocol.ProtocolType;
 import com.sissi.protocol.iq.IQ;
 import com.sissi.protocol.iq.ping.Ping;
 import com.sissi.resource.ResourceCounter;
 import com.sissi.server.ha.Keepalive;
+import com.sissi.thread.Runner;
+import com.sissi.thread.impl.ExecuteInterval;
 
 /**
  * Ping/Pong
@@ -35,7 +35,7 @@ public class PingKeepalive implements Keepalive, Runnable {
 
 	private final ResourceCounter resourceCounter;
 
-	public PingKeepalive(Runner runner, Interval interval, ResourceCounter resourceCounter) {
+	public PingKeepalive(Runner runner, ExecuteInterval interval, ResourceCounter resourceCounter) {
 		super();
 		this.resourceCounter = resourceCounter;
 		this.interval = interval.convert(TimeUnit.MILLISECONDS);

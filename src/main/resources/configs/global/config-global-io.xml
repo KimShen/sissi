@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<bean id="io.reader" class="com.sissi.io.read.sax.SAXReader">
-		<constructor-arg ref="commons.thread.executor" />
+		<constructor-arg ref="thread.executor" />
 		<constructor-arg ref="counter" />
 		<constructor-arg index="0" value="${global.maxlength.xml}" />
 		<constructor-arg index="1" value="${global.maxlength.queue}" />

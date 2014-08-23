@@ -13,12 +13,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.Trace;
-import com.sissi.commons.thread.Interval;
-import com.sissi.commons.thread.Runner;
 import com.sissi.feed.Feeder;
 import com.sissi.looper.Looper;
 import com.sissi.looper.LooperBuilder;
 import com.sissi.resource.ResourceCounter;
+import com.sissi.thread.Runner;
+import com.sissi.thread.impl.ExecuteInterval;
 
 /**
  * 公共Loop策略,所有Loop共享公共线程
@@ -47,7 +47,7 @@ public class GlobalLooperBuilder implements Looper, LooperBuilder, Runnable {
 
 	private final ResourceCounter resourceCounter;
 
-	private final Interval interval;
+	private final ExecuteInterval interval;
 
 	private final int threadNum;
 
@@ -57,7 +57,7 @@ public class GlobalLooperBuilder implements Looper, LooperBuilder, Runnable {
 	 * @param threadNum 线程数量
 	 * @param resourceCounter
 	 */
-	public GlobalLooperBuilder(Runner runner, Interval interval, int threadNum, ResourceCounter resourceCounter) {
+	public GlobalLooperBuilder(Runner runner, ExecuteInterval interval, int threadNum, ResourceCounter resourceCounter) {
 		super();
 		this.start();
 		this.interval = interval;

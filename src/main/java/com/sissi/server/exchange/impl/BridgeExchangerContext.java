@@ -14,8 +14,6 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.sissi.commons.Trace;
 import com.sissi.commons.apache.IOUtil;
-import com.sissi.commons.thread.Interval;
-import com.sissi.commons.thread.Runner;
 import com.sissi.config.Dictionary;
 import com.sissi.config.MongoConfig;
 import com.sissi.config.impl.MongoUtils;
@@ -25,6 +23,8 @@ import com.sissi.resource.ResourceCounter;
 import com.sissi.server.exchange.Exchanger;
 import com.sissi.server.exchange.ExchangerContext;
 import com.sissi.server.exchange.Terminal;
+import com.sissi.thread.Runner;
+import com.sissi.thread.impl.ExecuteInterval;
 
 /**
  * 索引策略: {"host":1},{"date":1}
@@ -48,11 +48,11 @@ public class BridgeExchangerContext implements ExchangerContext {
 
 	private final MongoConfig config;
 
-	private final Interval interval;
+	private final ExecuteInterval interval;
 
 	private final long timeout;
 
-	public BridgeExchangerContext(long timeout, Runner runner, Interval interval, MongoConfig config, ResourceCounter resourceCounter) {
+	public BridgeExchangerContext(long timeout, Runner runner, ExecuteInterval interval, MongoConfig config, ResourceCounter resourceCounter) {
 		super();
 		this.timeout = timeout;
 		this.interval = interval;

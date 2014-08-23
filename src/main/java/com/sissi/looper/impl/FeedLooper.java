@@ -2,23 +2,23 @@ package com.sissi.looper.impl;
 
 import java.util.concurrent.Future;
 
-import com.sissi.commons.thread.Interval;
 import com.sissi.feed.Feeder;
 import com.sissi.looper.Looper;
 import com.sissi.protocol.Protocol;
+import com.sissi.thread.impl.ExecuteInterval;
 
 /**
  * @author kim 2014年4月14日
  */
 abstract class FeedLooper implements Looper {
 
-	private final Interval interval;
+	private final ExecuteInterval interval;
 
 	private final Future<?> future;
 
 	private final Feeder feeder;
 
-	FeedLooper(Interval interval, Future<?> future, Feeder feeder) {
+	FeedLooper(ExecuteInterval interval, Future<?> future, Feeder feeder) {
 		super();
 		this.interval = interval;
 		this.future = future;

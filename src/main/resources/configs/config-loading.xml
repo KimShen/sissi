@@ -6,11 +6,11 @@
 	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<import resource="route/config-route.xml" />
+	<import resource="thread/config-thread.xml" />
 	<import resource="server/config-server.xml" />
 	<import resource="global/config-global.xml" />
 	<import resource="context/config-context.xml" />
 	<import resource="ucenter/config-ucenter.xml" />
-	<import resource="commons/config-commons.xml" />
 	<import resource="ucenter/config-ucenter.xml" />
 	<import resource="pipeline/config-pipeline.xml" />
 	<import resource="persistent/config-persistent.xml" />

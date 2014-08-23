@@ -8,11 +8,11 @@
 	<bean id="server.exchanger.context" class="com.sissi.server.exchange.impl.BridgeExchangerContext">
 		<constructor-arg index="0" value="${server.exchanger.gc.timeout}" />
 		<constructor-arg ref="counter" />
-		<constructor-arg ref="commons.thread.runner" />
+		<constructor-arg ref="thread.runner" />
 		<constructor-arg ref="server.exchanger.context.config" />
 		<constructor-arg ref="server.exchanger.context.interval" />
 	</bean>
-	<bean id="server.exchanger.context.interval" class="com.sissi.commons.thread.Interval">
+	<bean id="server.exchanger.context.interval" class="com.sissi.thread.impl.ExecuteInterval">
 		<constructor-arg value="${server.exchanger.gc.interval}" />
 		<constructor-arg value="${server.exchanger.gc.unit}" />
 	</bean>

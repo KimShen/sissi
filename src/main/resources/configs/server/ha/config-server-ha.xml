@@ -7,10 +7,10 @@
 
 	<bean id="server.ha.keepalive" class="com.sissi.server.ha.impl.PingKeepalive">
 		<constructor-arg ref="counter" />
-		<constructor-arg ref="commons.thread.runner" />
+		<constructor-arg ref="thread.runner" />
 		<constructor-arg ref="server.ha.keepalive.interval" />
 	</bean>
-	<bean id="server.ha.keepalive.interval" class="com.sissi.commons.thread.Interval">
+	<bean id="server.ha.keepalive.interval" class="com.sissi.thread.impl.ExecuteInterval">
 		<constructor-arg value="${server.keepalive.interval}" />
 		<constructor-arg value="${server.keepalive.unit}" />
 	</bean>

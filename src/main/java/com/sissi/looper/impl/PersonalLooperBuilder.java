@@ -7,11 +7,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.sissi.commons.Trace;
-import com.sissi.commons.thread.Interval;
-import com.sissi.commons.thread.Runner;
 import com.sissi.feed.Feeder;
 import com.sissi.looper.LooperBuilder;
 import com.sissi.resource.ResourceCounter;
+import com.sissi.thread.Runner;
+import com.sissi.thread.impl.ExecuteInterval;
 
 /**
  * 私有Loop策略,每个Loop独享私有线程
@@ -26,7 +26,7 @@ public class PersonalLooperBuilder implements LooperBuilder {
 
 	private final ResourceCounter resourceCounter;
 
-	private final Interval interval;
+	private final ExecuteInterval interval;
 
 	private final Runner runner;
 
@@ -38,7 +38,7 @@ public class PersonalLooperBuilder implements LooperBuilder {
 	 * @param threadNum 线程数量
 	 * @param resourceCounter
 	 */
-	public PersonalLooperBuilder(Runner runner, Interval interval, int threadNum, ResourceCounter resourceCounter) {
+	public PersonalLooperBuilder(Runner runner, ExecuteInterval interval, int threadNum, ResourceCounter resourceCounter) {
 		super();
 		this.runner = runner;
 		this.interval = interval;

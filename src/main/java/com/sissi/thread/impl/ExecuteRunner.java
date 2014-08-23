@@ -1,20 +1,22 @@
-package com.sissi.commons.thread;
+package com.sissi.thread.impl;
 
 import java.util.concurrent.Executor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.sissi.thread.Runner;
+
 /**
  * @author kim 2013年11月28日
  */
-public class Runner {
+public class ExecuteRunner implements Runner {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	private final Executor executor;
 
-	public Runner(Executor executor) {
+	public ExecuteRunner(Executor executor) {
 		super();
 		this.executor = executor;
 	}

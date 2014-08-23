@@ -11,20 +11,20 @@
 	<bean id="looper.global" class="com.sissi.looper.impl.GlobalLooperBuilder">
 		<constructor-arg value="${looper.count.global}" />
 		<constructor-arg ref="counter" />
-		<constructor-arg ref="commons.thread.runner" />
+		<constructor-arg ref="thread.runner" />
 		<constructor-arg ref="looper.interval.global" />
 	</bean>
-	<bean id="looper.interval.global" class="com.sissi.commons.thread.Interval">
+	<bean id="looper.interval.global" class="com.sissi.thread.impl.ExecuteInterval">
 		<constructor-arg value="${looper.interval.global}" />
 		<constructor-arg value="${looper.unit.global}" />
 	</bean>
 	<bean id="looper.personal" class="com.sissi.looper.impl.PersonalLooperBuilder">
 		<constructor-arg value="${looper.count.personal}" />
 		<constructor-arg ref="counter" />
-		<constructor-arg ref="commons.thread.runner" />
+		<constructor-arg ref="thread.runner" />
 		<constructor-arg ref="looper.interval.personal" />
 	</bean>
-	<bean id="looper.interval.personal" class="com.sissi.commons.thread.Interval">
+	<bean id="looper.interval.personal" class="com.sissi.thread.impl.ExecuteInterval">
 		<constructor-arg value="${looper.interval.personal}" />
 		<constructor-arg value="${looper.unit.personal}" />
 	</bean>

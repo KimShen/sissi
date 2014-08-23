@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="thread.executor" class="java.util.concurrent.ThreadPoolExecutor">
+		<constructor-arg index="0" value="${thread.core}" />
+		<constructor-arg index="1" value="${thread.maximum}" />
+		<constructor-arg index="2" value="${thread.keepalive}" />
+		<constructor-arg index="3" value="${thread.unit}" />
+		<constructor-arg ref="thread.executor.queue" />
+		<constructor-arg ref="thread.executor.factory" />
+		<constructor-arg ref="thread.executor.executor" />
+	</bean>
+	<bean id="thread.executor.factory" class="java.util.concurrent.Executors" factory-method="defaultThreadFactory" />
+	<bean id="thread.executor.executor" class="java.util.concurrent.ThreadPoolExecutor$AbortPolicy" />
+	<bean id="thread.executor.queue" class="java.util.concurrent.LinkedBlockingQueue" />
+
+	<bean id="thread.runner" class="com.sissi.thread.impl.ExecuteRunner">
+		<constructor-arg ref="thread.executor" />
+	</bean>
+</beans>
