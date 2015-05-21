@@ -51,6 +51,7 @@ public class PingKeepalive implements Keepalive, Runnable {
 
 	@Override
 	public void run() {
+		// TODO for shutdown
 		while (true) {
 			try {
 				this.timeouts.take().timeout();
